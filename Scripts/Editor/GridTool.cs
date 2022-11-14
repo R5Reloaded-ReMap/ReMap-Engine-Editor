@@ -46,6 +46,9 @@ public class GridTool : EditorWindow
 
     void CreateGrid()
     {
+        if(source == null)
+            return;
+
         if(!source.name.Contains("mdl#"))
             return;
 

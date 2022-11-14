@@ -15,6 +15,9 @@ public class RealmParent : MonoBehaviour
 
     void OnHierarchyChanged()
     {
+        if(gameObject == null)
+            return;
+        
         foreach (PropScript a in gameObject.GetComponentsInChildren<PropScript>())
             a.realmID = realmId;
     }

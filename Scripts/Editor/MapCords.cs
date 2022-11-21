@@ -108,6 +108,16 @@ public class MapCords : EditorWindow
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
+            GUILayout.Label("Size:");
+            GUILayout.Label("W",GUILayout.ExpandWidth(false));
+            GUILayout.TextField("-", GUILayout.Width(100));
+            GUILayout.Label("D",GUILayout.ExpandWidth(false));
+            GUILayout.TextField("-", GUILayout.Width(100));
+            GUILayout.Label("H",GUILayout.ExpandWidth(false));
+            GUILayout.TextField("-", GUILayout.Width(100));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
             GUILayout.Label("Scale:");
             GUILayout.TextField("-", GUILayout.Width(100));
             GUILayout.EndHorizontal();

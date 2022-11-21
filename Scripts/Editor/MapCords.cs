@@ -50,6 +50,31 @@ public class MapCords : EditorWindow
             GUILayout.TextField((WrapAngle(SelectedObject.transform.eulerAngles.z)).ToString(), GUILayout.Width(100));
             GUILayout.EndHorizontal();
 
+            float w = 0;
+            float d = 0;
+            float h = 0;
+
+            foreach(Renderer o in SelectedObject.GetComponentsInChildren<Renderer>()) {
+                if(o.bounds.size.z > w)
+                    w = o.bounds.size.z;
+
+                if(o.bounds.size.x > d)
+                    d = o.bounds.size.x;
+
+                if(o.bounds.size.y > h)
+                    h = o.bounds.size.y;
+            }
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Size:");
+            GUILayout.Label("W",GUILayout.ExpandWidth(false));
+            GUILayout.TextField((w).ToString(), GUILayout.Width(100));
+            GUILayout.Label("D",GUILayout.ExpandWidth(false));
+            GUILayout.TextField((d).ToString(), GUILayout.Width(100));
+            GUILayout.Label("H",GUILayout.ExpandWidth(false));
+            GUILayout.TextField((h).ToString(), GUILayout.Width(100));
+            GUILayout.EndHorizontal();
+
             GUILayout.BeginHorizontal();
             GUILayout.Label("Scale:");
             GUILayout.TextField(SelectedObject.transform.localScale.x.ToString(), GUILayout.Width(100));

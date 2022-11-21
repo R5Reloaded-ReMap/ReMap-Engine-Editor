@@ -16,7 +16,7 @@ public class CopyPasteCode : EditorWindow
 
     static string StartFunction;
 
-    [MenuItem("R5Reloaded/Live Map Code", false, 25)]
+    [MenuItem("R5Reloaded/Map Code", false, 25)]
     static void Init()
     {
         CopyPasteCode window = (CopyPasteCode)GetWindow(typeof(CopyPasteCode), false, "Live Map Code");

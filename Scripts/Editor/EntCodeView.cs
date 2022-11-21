@@ -11,7 +11,7 @@ public class EntCodeView : EditorWindow
     bool OverrideTextLimit = false;
     Vector2 scroll;
 
-    [MenuItem("R5Reloaded/Live script.ent Code", false, 25)]
+    [MenuItem("R5Reloaded/script.ent Code", false, 25)]
     static void Init()
     {
         EntCodeView window = (EntCodeView)GetWindow(typeof(EntCodeView), false, "Live script.ent Code");

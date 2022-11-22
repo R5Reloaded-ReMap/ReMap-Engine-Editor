@@ -37,17 +37,17 @@ public class PropInfo : EditorWindow
             //Origin
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Origin:");
-            GUILayout.TextField("<" + GetOrgX(SelectedObject) + "," + GetOrgY(SelectedObject) + "," + GetOrgZ(SelectedObject) + ">", GUILayout.Width(200));
+            GUILayout.TextField("<" + GetOrgX(SelectedObject).ToString().Replace(",", ".") + "," + GetOrgY(SelectedObject).ToString().Replace(",", ".") + "," + GetOrgZ(SelectedObject).ToString().Replace(",", ".") + ">", GUILayout.Width(200));
             if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "<" + GetOrgX(SelectedObject) + "," + GetOrgY(SelectedObject) + "," + GetOrgZ(SelectedObject) + ">";
+                GUIUtility.systemCopyBuffer = "<" + GetOrgX(SelectedObject).ToString().Replace(",", ".") + "," + GetOrgY(SelectedObject).ToString().Replace(",", ".") + "," + GetOrgZ(SelectedObject).ToString().Replace(",", ".") + ">";
             GUILayout.EndHorizontal();
 
             //Angles
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Angle:");
-            GUILayout.TextField("<" + (-WrapAngle(SelectedObject.transform.eulerAngles.x)) + "," + (-WrapAngle(SelectedObject.transform.eulerAngles.y)) + "," + (WrapAngle(SelectedObject.transform.eulerAngles.z)) + ">", GUILayout.Width(200));
+            GUILayout.TextField("<" + (-WrapAngle(SelectedObject.transform.eulerAngles.x)).ToString().Replace(",", ".") + "," + (-WrapAngle(SelectedObject.transform.eulerAngles.y)).ToString().Replace(",", ".") + "," + (WrapAngle(SelectedObject.transform.eulerAngles.z)).ToString().Replace(",", ".") + ">", GUILayout.Width(200));
             if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "<" + (-WrapAngle(SelectedObject.transform.eulerAngles.x)) + "," + (-WrapAngle(SelectedObject.transform.eulerAngles.y)) + "," + (WrapAngle(SelectedObject.transform.eulerAngles.z)) + ">";
+                GUIUtility.systemCopyBuffer = "<" + (-WrapAngle(SelectedObject.transform.eulerAngles.x)).ToString().Replace(",", ".") + "," + (-WrapAngle(SelectedObject.transform.eulerAngles.y)).ToString().Replace(",", ".") + "," + (WrapAngle(SelectedObject.transform.eulerAngles.z)).ToString().Replace(",", ".") + ">";
             GUILayout.EndHorizontal();
 
             float w = 0;
@@ -67,12 +67,12 @@ public class PropInfo : EditorWindow
 
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Size:");
-            GUILayout.TextField("W: " + w + "   D: " + d + "   H: " + h, GUILayout.Width(267));
+            GUILayout.TextField("W: " + w.ToString().Replace(",", ".") + "   D: " + d.ToString().Replace(",", ".") + "   H: " + h.ToString().Replace(",", "."), GUILayout.Width(267));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Scale:");
-            GUILayout.TextField(SelectedObject.transform.localScale.x.ToString(), GUILayout.Width(267));
+            GUILayout.TextField(SelectedObject.transform.localScale.x.ToString().Replace(",", "."), GUILayout.Width(267));
             GUILayout.EndHorizontal();
         }
         else

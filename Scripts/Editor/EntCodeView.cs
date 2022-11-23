@@ -147,6 +147,7 @@ public class EntCodeView : EditorWindow
         return origin;
     }
 
+    //Tags Custom Prefabs so users cant retag a item wrong
     private static void SetPropTagsItem()
     {
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;
@@ -162,10 +163,26 @@ public class EntCodeView : EditorWindow
                 go.tag = "LootBin";
             } else if(go.name.Contains("custom_zipline")) {
                 go.tag = "ZipLine";
+            } else if(go.name.Contains("custom_jumppad")) {
+                go.tag = "Jumppad";
+            } else if(go.name.Contains("custom_linked_zipline")) {
+                go.tag = "LinkedZipline";
             } else if(go.name.Contains("custom_single_door")) {
                 go.tag = "SingleDoor";
             } else if(go.name.Contains("custom_double_door")) {
                 go.tag = "DoubleDoor";
+            } else if(go.name.Contains("custom_vertical_door")) {
+                go.tag = "VerticalDoor";
+            } else if(go.name.Contains("custom_sliding_door")) {
+                go.tag = "HorzDoor";
+            } else if(go.name.Contains("custom_weaponrack")) {
+                go.tag = "WeaponRack";
+            } else if(go.name.Contains("custom_button")) {
+                go.tag = "Button";
+            } else if(go.name.Contains("trigger_cylinder")) {
+                go.tag = "Trigger";
+            } else if(go.name.Contains("#bb_shield")) {
+                go.tag = "BubbleShield";
             } else if(go.name.Contains("mdl")) {
                 go.tag = "Prop";
             }

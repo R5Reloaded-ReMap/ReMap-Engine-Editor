@@ -24,21 +24,29 @@ public class GridTool : EditorWindow
 
     void OnGUI()
     {
+        GUILayout.BeginVertical("box");
         GUILayout.Label("Prefab to use:");
         source = EditorGUILayout.ObjectField(source, typeof(Object), true);
+        GUILayout.EndVertical();
 
-        GUILayout.Label("\nRotation:");
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Checked: Floor / Unchecked: Wall");
+        isfloor = EditorGUILayout.Toggle("", isfloor);
+        GUILayout.EndVertical();
+
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Rotation:");
         rotx = EditorGUILayout.FloatField("X:", rotx);
         roty = EditorGUILayout.FloatField("Y:", roty);
         rotz = EditorGUILayout.FloatField("Z:", rotz);
-
-        GUILayout.Label("\nChecked: Floor / Unchecked: Wall");
-        isfloor = EditorGUILayout.Toggle("", isfloor);
+        GUILayout.EndVertical();
         
-        GUILayout.Label("\nGrid Settings:");
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Grid Settings:");
         gridX = EditorGUILayout.FloatField("Grid X:", gridX);
         gridY = EditorGUILayout.FloatField("Grid Y:", gridY);
         spacing = EditorGUILayout.FloatField("Spacing:", spacing);
+        GUILayout.EndVertical();
 
         if (GUILayout.Button("Create Grid"))
             CreateGrid();

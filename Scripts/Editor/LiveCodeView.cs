@@ -19,7 +19,7 @@ public class CopyPasteCode : EditorWindow
     [MenuItem("R5Reloaded/Map Code", false, 25)]
     static void Init()
     {
-        CopyPasteCode window = (CopyPasteCode)GetWindow(typeof(CopyPasteCode), false, "Live Map Code");
+        CopyPasteCode window = (CopyPasteCode)GetWindow(typeof(CopyPasteCode), false, "Map Code");
         window.Show();
     }
 
@@ -58,6 +58,7 @@ public class CopyPasteCode : EditorWindow
         else
             GUI.contentColor = Color.red;
 
+        GUILayout.BeginVertical("box");
         GUILayout.Label("Entity Count: " + finalcount);
         if(finalcount < 1500)
             GUILayout.Label("Entity Status: Safe");
@@ -65,35 +66,42 @@ public class CopyPasteCode : EditorWindow
             GUILayout.Label("Entity Status: Safe");
         else
             GUILayout.Label("Entity Status: Warning! Game could crash!");
+        GUILayout.EndVertical();
             
         GUI.contentColor = Color.white;
 
+        GUILayout.BeginVertical("box");
         OnlyExportMap = EditorGUILayout.Toggle("Only Show Map Code", OnlyExportMap);
         UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
-
-        if (GUILayout.Button("Copy Export Code"))
-            GenerateMap(OnlyExportMap, true);
+        GUILayout.EndVertical();
 
         if (text.Length > 75000)
         {
+            GUILayout.BeginVertical("box");
             GUI.contentColor = Color.yellow;
-            GUILayout.Label("Export is to long to show in the textbox, Please copy using the button above!");
+            GUILayout.Label("Output code is longer then the text limit. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!");
             GUI.contentColor = Color.white;
             OverrideTextLimit = EditorGUILayout.Toggle("Override Text Limit", OverrideTextLimit);
+            GUILayout.EndVertical();
         }
-
-        scroll = EditorGUILayout.BeginScrollView(scroll);
+        
         if(text.Length > 75000 && !OverrideTextLimit) {
+            if (GUILayout.Button("Copy"))
+                GenerateMap(OnlyExportMap, true);
+
             GUI.contentColor = Color.yellow;
-            GUILayout.TextArea("Output code is to long. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!", GUILayout.ExpandHeight(true));
+            GUILayout.Label("Text area disabled, please use the copy button!");
             GUI.contentColor = Color.white;
         }
         else
         {
+            if (GUILayout.Button("Copy"))
+                GenerateMap(OnlyExportMap, true);
+            scroll = EditorGUILayout.BeginScrollView(scroll);
             GenerateMap(OnlyExportMap, false);
             GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
+            EditorGUILayout.EndScrollView();
         }
-        EditorGUILayout.EndScrollView();
     }
 
     void GenerateMap(bool onlymap, bool copytext)

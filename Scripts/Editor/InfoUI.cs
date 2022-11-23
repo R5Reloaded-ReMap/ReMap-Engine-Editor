@@ -17,28 +17,30 @@ public class InfoUI : EditorWindow
 
     void OnGUI()
     {
-        scroll = EditorGUILayout.BeginScrollView(scroll);
-
         GUI.contentColor = Color.white;
-        GUILayout.Label(" ", EditorStyles.boldLabel);
+        GUILayout.BeginVertical("box");
         GUILayout.Label("Credits:", EditorStyles.boldLabel);
-        GuiLine(1);
-        GUILayout.Label("   Unity Scripts/Map Export Code/Custom Prefabs:", EditorStyles.boldLabel);
-        GUILayout.Label("       AyeZee#6969 \n");
-        GUILayout.Label("   Importing/Organizing All Models:", EditorStyles.boldLabel);
-        GUILayout.Label("       Julefox#0050 \n");
+        GUILayout.Label("Unity Scripts/Map Export Code/Custom Prefabs:", EditorStyles.boldLabel);
+        GUILayout.Label("  AyeZee#6969 \n");
+        GUILayout.Label("Importing/Organizing All Models:", EditorStyles.boldLabel);
+        GUILayout.Label("  Julefox#0050 \n");
+        GUILayout.EndVertical();
+
+        GUILayout.BeginVertical("box");
         GUILayout.Label("Map Editor Docs:", EditorStyles.boldLabel);
-        GuiLine(1);
         GUILayout.TextArea("https://docs.r5reloaded.com/");
-        GUILayout.Label(" ");
-        GUILayout.Label("Feel free to donate and show support!", EditorStyles.boldLabel);
-        GuiLine(1);
-        GUILayout.Label("   Donations are not required by anymeans, \n   just a way to show support for a project. :)");
+        GUILayout.EndVertical();
+
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Feel free to donate and show support!\n", EditorStyles.boldLabel);
+        GUILayout.Label("Donations are not required by anymeans,\njust a way to show support for a project. :)");
         GUILayout.Label(" ", EditorStyles.boldLabel);
         GUILayout.TextArea("https://ko-fi.com/ayezee");
-        GUILayout.Label("\n\n\n\n");
+        GUILayout.EndVertical();
+
+        GUILayout.BeginVertical("box");
         GUILayout.Label("Version: 1.0");
-        EditorGUILayout.EndScrollView();
+        GUILayout.EndVertical();
     }
 
     void GuiLine( int i_height = 1 )

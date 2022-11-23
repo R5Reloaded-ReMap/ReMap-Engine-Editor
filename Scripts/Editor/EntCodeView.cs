@@ -41,6 +41,7 @@ public class EntCodeView : EditorWindow
         else
             GUI.contentColor = Color.red;
 
+        GUILayout.BeginVertical("box");
         GUILayout.Label("Entity Count: " + finalcount);
 
         if(finalcount < 1500)
@@ -49,32 +50,38 @@ public class EntCodeView : EditorWindow
             GUILayout.Label("Entity Status: Safe");
         else
             GUILayout.Label("Entity Status: Warning! Game might crash!");
+        GUILayout.EndVertical();
 
         GUI.contentColor = Color.white;
 
-        if (GUILayout.Button("Copy Code"))
-            GenerateMap(true);
-
         if (text.Length > 75000)
         {
+            GUILayout.BeginVertical("box");
             GUI.contentColor = Color.yellow;
-            GUILayout.Label("Text is to long to show in the textbox, Please copy using the button above!");
+            GUILayout.Label("Output code is longer then the text limit. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!");
             GUI.contentColor = Color.white;
             OverrideTextLimit = EditorGUILayout.Toggle("Override Text Limit", OverrideTextLimit);
+            GUILayout.EndVertical();
         }
 
-        scroll = EditorGUILayout.BeginScrollView(scroll);
         if(text.Length > 75000 && !OverrideTextLimit) {
+            if (GUILayout.Button("Copy Code"))
+                GenerateMap(true);
+
             GUI.contentColor = Color.yellow;
-            GUILayout.TextArea("Output code is to long. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!", GUILayout.ExpandHeight(true));
+            GUILayout.Label("Text area disabled, please use the copy button!");
             GUI.contentColor = Color.white;
         }
         else
         {
+            if (GUILayout.Button("Copy Code"))
+                GenerateMap(true);
+
+            scroll = EditorGUILayout.BeginScrollView(scroll);
             GenerateMap(false);
             GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
+            EditorGUILayout.EndScrollView();
         }
-        EditorGUILayout.EndScrollView();
     }
 
     void GenerateMap(bool copytext)
@@ -109,6 +116,17 @@ public class EntCodeView : EditorWindow
         }
     }
 
+    private static string BuildAngles(GameObject go)
+    {
+        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4");
+        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4");
+        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4");
+                    
+        string angles = "< " + x.Replace(",", ".") + ", " + y.Replace(",", ".") + ", " + z.Replace(",", ".") + " >";
+
+        return angles;
+    }
+
     private static float WrapAngle(float angle)
     {
         angle%=360;
@@ -118,25 +136,15 @@ public class EntCodeView : EditorWindow
         return angle;
     }
 
-    private static float GetOrgX(GameObject go)
+    private static string BuildOrigin(GameObject go)
     {
-        float orgx = -go.transform.position.z;
+        string x = (-go.transform.position.z).ToString("F4");
+        string y = (go.transform.position.x).ToString("F4");
+        string z = (go.transform.position.y).ToString("F4");
 
-        return orgx;
-    }
+        string origin = "< " + x.Replace(",", ".") + ", " + y.Replace(",", ".") + ", " + z.Replace(",", ".") + " >";
 
-    private static float GetOrgY(GameObject go)
-    {
-        float orgy = go.transform.position.x;
-
-        return orgy;
-    }
-
-    private static float GetOrgZ(GameObject go)
-    {
-        float orgz = go.transform.position.y;
-
-        return orgz;
+        return origin;
     }
 
     private static void SetPropTagsItem()
@@ -169,17 +177,6 @@ public class EntCodeView : EditorWindow
         string scale = go.transform.localScale.x.ToString();
         scale = scale.Replace(",", ".");
 
-        string orgx = GetOrgX(go).ToString("F4");
-        string orgy = GetOrgY(go).ToString("F4");
-        string orgz = GetOrgZ(go).ToString("F4");
-
-        string angx = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4");
-        string angy = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4");
-        string angz = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4");
-                    
-        string origin = "< " + orgx.Replace(",", ".") + ", " + orgy.Replace(",", ".") + ", " + orgz.Replace(",", ".") + " >";
-        string angles = "< " + angx.Replace(",", ".") + ", " + angy.Replace(",", ".") + ", " + angz.Replace(",", ".") + " >";
-
         int clientside = 0;
         if(go.transform.localScale.x > 1)
             clientside = 1;
@@ -191,8 +188,8 @@ public class EntCodeView : EditorWindow
 ""collide_titan"" ""1""
 ""collide_ai"" ""1""
 ""scale"" """ + scale + @"""
-""angles"" """ + angles + @"""
-""origin"" """ + origin + @"""
+""angles"" """ + BuildAngles(go) + @"""
+""origin"" """ + BuildOrigin(go) + @"""
 ""targetname"" ""MapEditorProp""
 ""solid"" ""6""
 ""model"" """ +  model + @"""

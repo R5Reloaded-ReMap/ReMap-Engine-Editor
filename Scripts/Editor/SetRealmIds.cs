@@ -17,8 +17,10 @@ public class SetRealmIds : EditorWindow
 
     void OnGUI()
     {
+        GUILayout.BeginVertical("box");
         source = EditorGUILayout.ObjectField(source, typeof(Object), true) as GameObject;
         realmID = EditorGUILayout.IntField("RealmID:", realmID);
+        GUILayout.EndVertical();
 
         if (GUILayout.Button("Set Realm IDS"))
             SetID();
@@ -26,6 +28,9 @@ public class SetRealmIds : EditorWindow
 
     void SetID()
     {
+        if(source == null)
+            return;
+
         foreach (Transform child in source.transform) {
             PropScript script = child.gameObject.GetComponent<PropScript>();
             if(script != null)

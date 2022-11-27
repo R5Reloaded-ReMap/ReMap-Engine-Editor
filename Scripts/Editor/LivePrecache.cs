@@ -32,29 +32,34 @@ public class PrecacheCode : EditorWindow
 
     void OnGUI()
     {
-        if (GUILayout.Button("Copy"))
-            GeneratePrecacheCode(true);
-
         if (text.Length > 75000)
         {
+            GUILayout.BeginVertical("box");
             GUI.contentColor = Color.yellow;
-            GUILayout.Label("Export is to long to show in the textbox, Please copy using the button above!");
+            GUILayout.Label("Output code is longer then the text limit. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!");
             GUI.contentColor = Color.white;
             OverrideTextLimit = EditorGUILayout.Toggle("Override Text Limit", OverrideTextLimit);
+            GUILayout.EndVertical();
         }
-
-        scroll = EditorGUILayout.BeginScrollView(scroll);
+        
         if(text.Length > 75000 && !OverrideTextLimit) {
+            if (GUILayout.Button("Copy"))
+                GeneratePrecacheCode(true);
+
             GUI.contentColor = Color.yellow;
-            GUILayout.TextArea("Output code is to long. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!", GUILayout.ExpandHeight(true));
+            GUILayout.Label("Text area disabled, please use the copy button!");
             GUI.contentColor = Color.white;
         }
         else
         {
+            if (GUILayout.Button("Copy"))
+                GeneratePrecacheCode(true);
+
+            scroll = EditorGUILayout.BeginScrollView(scroll);
             GeneratePrecacheCode(false);
             GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
+            EditorGUILayout.EndScrollView();
         }
-        EditorGUILayout.EndScrollView();
     }
 
     /// <summary>

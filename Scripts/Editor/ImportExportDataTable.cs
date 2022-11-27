@@ -6,16 +6,16 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-public class ImportDataTable
+public class ImportExportDataTable
 {
     [MenuItem("R5Reloaded/DataTable/Import DataTable", false, 100)]
-    private static void ImportScript()
+    private static void Import()
     {
-        ImportData();
+        ImportDataTable();
     }
 
     [MenuItem("R5Reloaded/DataTable/Export DataTable", false, 100)]
-    private static void ExportScript()
+    private static void Export()
     {
         ExportDataTable();
     }
@@ -23,7 +23,7 @@ public class ImportDataTable
     /// <summary>
     /// Imports datatable
     /// </summary>
-    private static void ImportData()
+    private static void ImportDataTable()
     {
         string path = EditorUtility.OpenFilePanel("Datatable Import", "", "csv");
 

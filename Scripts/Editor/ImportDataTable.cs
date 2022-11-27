@@ -156,28 +156,7 @@ public class ImportDataTable
 
             foreach (GameObject go in PropObjects)
             {
-                string[] splitArray = go.name.Split(char.Parse(" "));
-                string finished = splitArray[0].Replace("#", "/") + ".rmdl";
-
-                PropScript script = go.GetComponent<PropScript>();
-
-                string type = "\"dynamic_prop\",";
-                string origin = "\"" + Helper.BuildOrigin(go) + "\",";
-                string angles = "\"" + Helper.BuildAngles(go) + "\",";
-                string scale = go.transform.localScale.x.ToString().Replace(",", ".") + ",";
-                string fade = script.fadeDistance.ToString() + ",";
-                string mantle = script.allowMantle.ToString().ToLower() + ",";
-                string visible = "true,";
-                string mdl = "\"" + finished + "\",";
-                string collection = "\"None\"";
-
-                if (go.transform.parent != null)
-                {
-                    GameObject parent = go.transform.parent.gameObject;
-                    collection = "\"" + parent.name.Replace("\r", "").Replace("\n", "") + "\"";
-                }
-
-                saved += type + origin + angles + scale + fade + mantle + visible + mdl + collection + "\n";
+                saved += Helper.BuildDataTableItem(go);
             }
 
             saved += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";

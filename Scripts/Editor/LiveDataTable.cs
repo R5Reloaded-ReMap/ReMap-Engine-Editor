@@ -54,7 +54,7 @@ public class LiveDataTable : EditorWindow
         {
             if (GUILayout.Button("Copy"))
                 GenerateDataTable(true);
-                
+
             scroll = EditorGUILayout.BeginScrollView(scroll);
             GenerateDataTable(false);
             GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
@@ -63,7 +63,7 @@ public class LiveDataTable : EditorWindow
     }
 
     /// <summary>
-    /// Generates map precache code
+    /// Generates datatable export
     /// </summary>
     /// <param name="copytext">copy to clipboard</param>
     void GenerateDataTable(bool copytext)

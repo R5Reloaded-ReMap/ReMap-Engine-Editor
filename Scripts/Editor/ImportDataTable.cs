@@ -17,186 +17,172 @@ public class ImportDataTable
     [MenuItem("R5Reloaded/DataTable/Export DataTable", false, 100)]
     private static void ExportScript()
     {
-        ExportData();
+        ExportDataTable();
     }
 
+    /// <summary>
+    /// Imports datatable
+    /// </summary>
     private static void ImportData()
     {
         string path = EditorUtility.OpenFilePanel("Datatable Import", "", "csv");
-        string contents = File.ReadAllText(path);
 
-        string[] splitArray = contents.Split(char.Parse("\n"));
-
-        //First get a list of collections
-        List<String> collectionList = new List<String>();
-        foreach(string item in splitArray)
+        if (path.Length != 0)
         {
-            string cleaneditem = item.Replace("\"", "");
-            string[] itemsplit = item.Split(char.Parse(","));
+            string contents = File.ReadAllText(path);
 
-            if(itemsplit.Length < 12)
-                continue;
+            string[] splitArray = contents.Split(char.Parse("\n"));
 
-            string collection = itemsplit[12].Replace("\"", "");
+            //First get a list of collections
+            List<String> collectionList = new List<String>();
+            foreach (string item in splitArray)
+            {
+                string cleaneditem = item.Replace("\"", "");
+                string[] itemsplit = item.Split(char.Parse(","));
 
-            if(collection == "None")
-                continue;
+                if (itemsplit.Length < 12)
+                    continue;
 
-            if(!collectionList.Contains(collection))
-                collectionList.Add(collection);
-        }
+                string collection = itemsplit[12].Replace("\"", "");
 
-        //Create empty game objects for collection
-        foreach(string col in collectionList)
-        {
-            GameObject objToSpawn = new GameObject(col);
-            objToSpawn.name = col;
-        }
+                if (collection == "None")
+                    continue;
 
-        //Import datatable
-        foreach(string item in splitArray)
-        {
-            string cleaneditem = item.Replace("\"", "");
-            string[] itemsplit = item.Split(char.Parse(","));
-
-            if(itemsplit.Length < 12)
-                continue;
-
-            //Not Used
-            string type = itemsplit[0];
-
-            //Origin
-            float orgx = float.Parse(itemsplit[1].Replace("\"<", ""));
-            float orgy = float.Parse(itemsplit[2]);
-            float orgz = float.Parse(itemsplit[3].Replace(">\"", ""));
-            Vector3 org = new Vector3(orgy, orgz, -orgx);
-
-            //Angles
-            float angx = float.Parse(itemsplit[4].Replace("\"<", ""));
-            float angy = float.Parse(itemsplit[5]);
-            float angz = float.Parse(itemsplit[6].Replace(">\"", ""));
-            Vector3 ang = new Vector3(-angx, -angy, angz);
-
-            float scale = float.Parse(itemsplit[7]);
-            string fade = itemsplit[8];
-            string mantle = itemsplit[9];
-            string visible = itemsplit[10];
-
-            //Model
-            string mdl = itemsplit[11].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "");
-
-            string collection = itemsplit[12].Replace("\"", "");
-
-
-            //Find Model GUID in Assets
-            string[] results;
-            results = AssetDatabase.FindAssets(mdl);
-            
-            //If not found dont continue
-            if(results.Length == 0)
-                continue;
-
-
-            //Get model path from guid and load it
-            string prefabpath = AssetDatabase.GUIDToAssetPath(results[0]);
-            UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(prefabpath, typeof(UnityEngine.Object)) as GameObject;
-            
-            //If its null dont continue
-            if(loadedPrefabResource == null)
-                continue;
-
-            //Create new model in scene
-            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-
-            obj.transform.position = org;
-            obj.transform.eulerAngles = ang;
-            obj.name = mdl;
-            obj.gameObject.transform.localScale = new Vector3(scale, scale, scale);
-            obj.SetActive(visible == "true");
-
-            PropScript script = obj.GetComponent<PropScript>();
-
-            script.fadeDistance = float.Parse(fade);
-            script.allowMantle = mantle == "true";
-
-            if(collection == "None")
-                continue;
-
-            //Get the correct parrent gameobject
-            GameObject parent = GameObject.Find(collection);
-            if(parent != null) //If its not null set it as a child
-                obj.gameObject.transform.parent = parent.transform;
-        }
-    }
-
-    private static void ExportData()
-    {
-        EditorSceneManager.SaveOpenScenes();
-        var path = EditorUtility.SaveFilePanel( "Datatable Export", "", "mapexport.csv", "csv");
-
-        //Generate All Props
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-
-        string saved = "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
-            
-        foreach(GameObject go in PropObjects)
-        {
-            string[] splitArray = go.name.Split(char.Parse(" "));
-            string finished = splitArray[0].Replace("#", "/") + ".rmdl";
-
-            PropScript script = go.GetComponent<PropScript>();
-
-            string type = "\"dynamic_prop\",";
-            string origin = "\"" + BuildOrigin(go) + "\",";
-            string angles = "\"" + BuildAngles(go) + "\",";
-            string scale = go.transform.localScale.x.ToString().Replace(",", ".") + ",";
-            string fade = script.fadeDistance.ToString() + ",";
-            string mantle = script.allowMantle.ToString().ToLower() + ",";
-            string visible = "true,";
-            string mdl = "\"" + finished + "\",";
-            string collection = "\"None\"";
-
-            if(go.transform.parent != null) {
-                GameObject parent = go.transform.parent.gameObject;
-                collection = "\"" + parent.name.Replace("\r", "").Replace("\n", "") + "\"";
+                if (!collectionList.Contains(collection))
+                    collectionList.Add(collection);
             }
 
-            saved += type + origin + angles + scale + fade + mantle + visible + mdl + collection + "\n";
+            //Create empty game objects for collection
+            foreach (string col in collectionList)
+            {
+                GameObject objToSpawn = new GameObject(col);
+                objToSpawn.name = col;
+            }
+
+            //Import datatable
+            foreach (string item in splitArray)
+            {
+                string cleaneditem = item.Replace("\"", "");
+                string[] itemsplit = item.Split(char.Parse(","));
+
+                if (itemsplit.Length < 12)
+                    continue;
+
+                //Not Used
+                string type = itemsplit[0];
+
+                //Origin
+                float orgx = float.Parse(itemsplit[1].Replace("\"<", ""));
+                float orgy = float.Parse(itemsplit[2]);
+                float orgz = float.Parse(itemsplit[3].Replace(">\"", ""));
+                Vector3 org = new Vector3(orgy, orgz, -orgx);
+
+                //Angles
+                float angx = float.Parse(itemsplit[4].Replace("\"<", ""));
+                float angy = float.Parse(itemsplit[5]);
+                float angz = float.Parse(itemsplit[6].Replace(">\"", ""));
+                Vector3 ang = new Vector3(-angx, -angy, angz);
+
+                //Other
+                float scale = float.Parse(itemsplit[7]);
+                string fade = itemsplit[8];
+                string mantle = itemsplit[9];
+                string visible = itemsplit[10];
+
+                //Model
+                string mdl = itemsplit[11].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "");
+
+                //Collection
+                string collection = itemsplit[12].Replace("\"", "");
+
+
+                //Find Model GUID in Assets
+                string[] results;
+                results = AssetDatabase.FindAssets(mdl);
+
+                //If not found dont continue
+                if (results.Length == 0)
+                    continue;
+
+
+                //Get model path from guid and load it
+                string prefabpath = AssetDatabase.GUIDToAssetPath(results[0]);
+                UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(prefabpath, typeof(UnityEngine.Object)) as GameObject;
+
+                //If its null dont continue
+                if (loadedPrefabResource == null)
+                    continue;
+
+                //Create new model in scene
+                GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+
+                obj.transform.position = org;
+                obj.transform.eulerAngles = ang;
+                obj.name = mdl;
+                obj.gameObject.transform.localScale = new Vector3(scale, scale, scale);
+                obj.SetActive(visible == "true");
+
+                PropScript script = obj.GetComponent<PropScript>();
+
+                script.fadeDistance = float.Parse(fade);
+                script.allowMantle = mantle == "true";
+
+                if (collection == "None")
+                    continue;
+
+                //Get the correct parrent gameobject
+                GameObject parent = GameObject.Find(collection);
+                if (parent != null) //If its not null set it as a child
+                    obj.gameObject.transform.parent = parent.transform;
+            }
         }
-
-        saved += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
-
-        System.IO.File.WriteAllText(path, saved);
     }
 
-    private static string BuildAngles(GameObject go)
+    /// <summary>
+    /// Exports Datatable
+    /// </summary>
+    private static void ExportDataTable()
     {
-        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4");
-        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4");
-        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4");
-                    
-        string angles = "< " + x.Replace(",", ".") + ", " + y.Replace(",", ".") + ", " + z.Replace(",", ".") + " >";
+        Helper.FixPropTags();
+        EditorSceneManager.SaveOpenScenes();
 
-        return angles;
-    }
+        var path = EditorUtility.SaveFilePanel("Datatable Export", "", "mapexport.csv", "csv");
+        if (path.Length != 0)
+        {
+            //Generate All Props
+            GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
 
-    private static float WrapAngle(float angle)
-    {
-        angle%=360;
-        if(angle >180)
-            return angle - 360;
- 
-        return angle;
-    }
+            string saved = "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
 
-    private static string BuildOrigin(GameObject go)
-    {
-        string x = (-go.transform.position.z).ToString("F4");
-        string y = (go.transform.position.x).ToString("F4");
-        string z = (go.transform.position.y).ToString("F4");
+            foreach (GameObject go in PropObjects)
+            {
+                string[] splitArray = go.name.Split(char.Parse(" "));
+                string finished = splitArray[0].Replace("#", "/") + ".rmdl";
 
-        string origin = "< " + x.Replace(",", ".") + ", " + y.Replace(",", ".") + ", " + z.Replace(",", ".") + " >";
+                PropScript script = go.GetComponent<PropScript>();
 
-        return origin;
+                string type = "\"dynamic_prop\",";
+                string origin = "\"" + Helper.BuildOrigin(go) + "\",";
+                string angles = "\"" + Helper.BuildAngles(go) + "\",";
+                string scale = go.transform.localScale.x.ToString().Replace(",", ".") + ",";
+                string fade = script.fadeDistance.ToString() + ",";
+                string mantle = script.allowMantle.ToString().ToLower() + ",";
+                string visible = "true,";
+                string mdl = "\"" + finished + "\",";
+                string collection = "\"None\"";
+
+                if (go.transform.parent != null)
+                {
+                    GameObject parent = go.transform.parent.gameObject;
+                    collection = "\"" + parent.name.Replace("\r", "").Replace("\n", "") + "\"";
+                }
+
+                saved += type + origin + angles + scale + fade + mantle + visible + mdl + collection + "\n";
+            }
+
+            saved += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
+
+            System.IO.File.WriteAllText(path, saved);
+        }
     }
 }

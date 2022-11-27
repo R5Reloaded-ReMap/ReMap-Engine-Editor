@@ -42,14 +42,4 @@ public class InfoUI : EditorWindow
         GUILayout.Label("Version: 1.0");
         GUILayout.EndVertical();
     }
-
-    void GuiLine( int i_height = 1 )
-    {
-        Rect rect = EditorGUILayout.GetControlRect(false, i_height );
-
-        rect.height = i_height;
-
-        EditorGUI.DrawRect(rect, new Color ( 0.5f,0.5f,0.5f, 1 ) );
-
-    }
 }

@@ -49,10 +49,13 @@ public class GridTool : EditorWindow
         GUILayout.EndVertical();
 
         if (GUILayout.Button("Create Grid"))
-            CreateGrid();
+            CreatePropGrid();
     }
 
-    void CreateGrid()
+    /// <summary>
+    /// Creates Gird With Given Settings
+    /// </summary>
+    void CreatePropGrid()
     {
         if(source == null)
             return;

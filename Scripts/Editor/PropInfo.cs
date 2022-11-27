@@ -37,17 +37,17 @@ public class PropInfo : EditorWindow
             //Origin
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Origin:");
-            GUILayout.TextField("<" + GetOrgX(SelectedObject).ToString().Replace(",", ".") + "," + GetOrgY(SelectedObject).ToString().Replace(",", ".") + "," + GetOrgZ(SelectedObject).ToString().Replace(",", ".") + ">", GUILayout.Width(200));
+            GUILayout.TextField(Helper.BuildOrigin(SelectedObject), GUILayout.Width(200));
             if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "<" + GetOrgX(SelectedObject).ToString().Replace(",", ".") + "," + GetOrgY(SelectedObject).ToString().Replace(",", ".") + "," + GetOrgZ(SelectedObject).ToString().Replace(",", ".") + ">";
+                GUIUtility.systemCopyBuffer = Helper.BuildOrigin(SelectedObject);
             GUILayout.EndHorizontal();
 
             //Angles
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Angle:");
-            GUILayout.TextField("<" + (-WrapAngle(SelectedObject.transform.eulerAngles.x)).ToString().Replace(",", ".") + "," + (-WrapAngle(SelectedObject.transform.eulerAngles.y)).ToString().Replace(",", ".") + "," + (WrapAngle(SelectedObject.transform.eulerAngles.z)).ToString().Replace(",", ".") + ">", GUILayout.Width(200));
+            GUILayout.TextField(Helper.BuildAngles(SelectedObject), GUILayout.Width(200));
             if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "<" + (-WrapAngle(SelectedObject.transform.eulerAngles.x)).ToString().Replace(",", ".") + "," + (-WrapAngle(SelectedObject.transform.eulerAngles.y)).ToString().Replace(",", ".") + "," + (WrapAngle(SelectedObject.transform.eulerAngles.z)).ToString().Replace(",", ".") + ">";
+                GUIUtility.systemCopyBuffer = Helper.BuildAngles(SelectedObject);
             GUILayout.EndHorizontal();
 
             float w = 0;
@@ -111,36 +111,6 @@ public class PropInfo : EditorWindow
             GUILayout.TextField("0", GUILayout.Width(267));
             GUILayout.EndHorizontal();
         }
-    }
-
-    private static float WrapAngle(float angle)
-    {
-        angle%=360;
-        if(angle >180)
-            return angle - 360;
- 
-        return angle;
-    }
-
-    private static float GetOrgX(GameObject go)
-    {
-        float orgx = -go.transform.position.z;
-
-        return orgx;
-    }
-
-    private static float GetOrgY(GameObject go)
-    {
-        float orgy = go.transform.position.x;
-
-        return orgy;
-    }
-
-    private static float GetOrgZ(GameObject go)
-    {
-        float orgz = go.transform.position.y;
-
-        return orgz;
     }
 
     void Update()

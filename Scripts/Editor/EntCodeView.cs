@@ -136,6 +136,11 @@ public class EntCodeView : EditorWindow
         return angle;
     }
 
+    /// <summary>
+    /// Builds correct ingame origin from gameobject
+    /// </summary>
+    /// <param name="go"></param>
+    /// <returns></returns>
     private static string BuildOrigin(GameObject go)
     {
         string x = (-go.transform.position.z).ToString("F4");
@@ -147,7 +152,9 @@ public class EntCodeView : EditorWindow
         return origin;
     }
 
-    //Tags Custom Prefabs so users cant retag a item wrong
+    /// <summary>
+    /// Tags Custom Prefabs so users cant retag a item wrong
+    /// </summary>
     private static void SetPropTagsItem()
     {
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;

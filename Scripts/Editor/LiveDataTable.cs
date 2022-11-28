@@ -69,32 +69,31 @@ public class LiveDataTable : EditorWindow
     void GenerateDataTable(bool copytext)
     {
         Helper.FixPropTags();
-
         EditorSceneManager.SaveOpenScenes();
+
+        string tableCode = "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
 
         //Generate All Props
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-
-        string saved = "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
-
         foreach (GameObject go in PropObjects)
         {
-            saved += Helper.BuildDataTableItem(go);
+            tableCode += Helper.BuildDataTableItem(go);
         }
+        //End Of Props
 
-        saved += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
+        tableCode += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
 
         if (copytext)
         {
-            GUIUtility.systemCopyBuffer = saved;
+            GUIUtility.systemCopyBuffer = tableCode;
 
-            if (saved.Length > 75000)
-                saved = "";
+            if (tableCode.Length > 75000)
+                tableCode = "";
+
+            return;
         }
-        else
-        {
-            text = saved;
-            saved = "";
-        }
+        
+        text = tableCode;
+        tableCode = "";
     }
 }

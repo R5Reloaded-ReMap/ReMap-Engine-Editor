@@ -68,37 +68,20 @@ public class ImportExportDataTable
                 if (itemsplit.Length < 12)
                     continue;
 
-                //Not Used
-                string type = itemsplit[0];
-
-                //Origin
-                float orgx = float.Parse(itemsplit[1].Replace("\"<", ""));
-                float orgy = float.Parse(itemsplit[2]);
-                float orgz = float.Parse(itemsplit[3].Replace(">\"", ""));
-                Vector3 org = new Vector3(orgy, orgz, -orgx);
-
-                //Angles
-                float angx = float.Parse(itemsplit[4].Replace("\"<", ""));
-                float angy = float.Parse(itemsplit[5]);
-                float angz = float.Parse(itemsplit[6].Replace(">\"", ""));
-                Vector3 ang = new Vector3(-angx, -angy, angz);
-
-                //Other
-                float scale = float.Parse(itemsplit[7]);
-                string fade = itemsplit[8];
-                string mantle = itemsplit[9];
-                string visible = itemsplit[10];
-
-                //Model
-                string mdl = itemsplit[11].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "");
-
-                //Collection
-                string collection = itemsplit[12].Replace("\"", "");
-
+                //Vars
+                string Type = itemsplit[0];
+                Vector3 Origin = new Vector3(float.Parse(itemsplit[2]), float.Parse(itemsplit[3].Replace(">\"", "")), -(float.Parse(itemsplit[1].Replace("\"<", ""))));
+                Vector3 Angles = new Vector3(-(float.Parse(itemsplit[4].Replace("\"<", ""))), -(float.Parse(itemsplit[5])), float.Parse(itemsplit[6].Replace(">\"", "")));
+                float Scale = float.Parse(itemsplit[7]);
+                string Fade = itemsplit[8];
+                string Mantle = itemsplit[9];
+                string Visible = itemsplit[10];
+                string Model = itemsplit[11].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "");
+                string Collection = itemsplit[12].Replace("\"", "");
 
                 //Find Model GUID in Assets
                 string[] results;
-                results = AssetDatabase.FindAssets(mdl);
+                results = AssetDatabase.FindAssets(Model);
 
                 //If not found dont continue
                 if (results.Length == 0)
@@ -116,22 +99,22 @@ public class ImportExportDataTable
                 //Create new model in scene
                 GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
 
-                obj.transform.position = org;
-                obj.transform.eulerAngles = ang;
-                obj.name = mdl;
-                obj.gameObject.transform.localScale = new Vector3(scale, scale, scale);
-                obj.SetActive(visible == "true");
+                obj.transform.position = Origin;
+                obj.transform.eulerAngles = Angles;
+                obj.name = Model;
+                obj.gameObject.transform.localScale = new Vector3(Scale, Scale, Scale);
+                obj.SetActive(Visible == "true");
 
                 PropScript script = obj.GetComponent<PropScript>();
 
-                script.fadeDistance = float.Parse(fade);
-                script.allowMantle = mantle == "true";
+                script.fadeDistance = float.Parse(Fade);
+                script.allowMantle = Mantle == "true";
 
-                if (collection == "None")
+                if (Collection == "None")
                     continue;
 
                 //Get the correct parrent gameobject
-                GameObject parent = GameObject.Find(collection);
+                GameObject parent = GameObject.Find(Collection);
                 if (parent != null) //If its not null set it as a child
                     obj.gameObject.transform.parent = parent.transform;
             }
@@ -149,19 +132,17 @@ public class ImportExportDataTable
         var path = EditorUtility.SaveFilePanel("Datatable Export", "", "mapexport.csv", "csv");
         if (path.Length != 0)
         {
-            //Generate All Props
+            string tableCode = "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
+
             GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-
-            string saved = "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
-
             foreach (GameObject go in PropObjects)
             {
-                saved += Helper.BuildDataTableItem(go);
+                tableCode += Helper.BuildDataTableItem(go);
             }
 
-            saved += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
+            tableCode += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
 
-            System.IO.File.WriteAllText(path, saved);
+            System.IO.File.WriteAllText(path, tableCode);
         }
     }
 }

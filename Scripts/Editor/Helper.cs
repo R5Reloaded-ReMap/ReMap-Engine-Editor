@@ -167,6 +167,237 @@ public class Helper
     }
 
     /// <summary>
+    /// Builds Map Code
+    /// </summary>
+    /// <param name="UseStartingOffset">want to use starting offset</param>
+    /// <returns>built map code string</returns>
+    public static string BuildMapCode(bool UseStartingOffset)
+    {
+        string code = "";
+
+        //Generate All Buttons
+        GameObject[] ButtonObjects = GameObject.FindGameObjectsWithTag("Button");
+        if (ButtonObjects.Length > 0)
+        {
+            code += "    //Buttons" + "\n";
+
+            foreach (GameObject go in ButtonObjects)
+            {
+                ButtonScripting script = go.GetComponent<ButtonScripting>();
+                code += "    AddCallback_OnUseEntity( CreateFRButton(" + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", \"" + script.UseText + "\"), void function(entity panel, entity user, int input)" + "\n" + "    {" + "\n" + script.OnUseCallback + "\n" + "    })" + "\n";
+            }
+
+            code += "\n";
+        }
+        //End of Buttons
+
+        //Generate All JumpPads
+        GameObject[] JumppadObjects = GameObject.FindGameObjectsWithTag("Jumppad");
+        if (JumppadObjects.Length > 0)
+        {
+            code += "    //Jumppads" + "\n";
+
+            foreach (GameObject go in JumppadObjects)
+            {
+                PropScript script = go.GetComponent<PropScript>();
+                code += "    JumpPad_CreatedCallback( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\" , " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", " + script.allowMantle.ToString().ToLower() + ", " + script.fadeDistance + ", " + script.realmID + ", " + go.transform.localScale.x.ToString().Replace(",", ".") + ")" + " )" + "\n";
+            }
+
+            code += "\n";
+        }
+        //End of JumpPads
+
+        //Generate All BubbleShields
+        GameObject[] BubbleShieldObjects = GameObject.FindGameObjectsWithTag("BubbleShield");
+        if (BubbleShieldObjects.Length > 0)
+        {
+            code += "    //BubbleShields" + "\n";
+
+            foreach (GameObject go in BubbleShieldObjects)
+            {
+                string[] splitArray = go.name.Split(char.Parse(" "));
+                string finished = splitArray[0].Replace("#", "/") + ".rmdl";
+                BubbleScript script = go.GetComponent<BubbleScript>();
+                string shieldColor = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
+                code += "    MapEditor_CreateBubbleShieldWithSettings( " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", " + go.transform.localScale.x.ToString().Replace(",", ".") + ", \"" + shieldColor + "\", $\"" + finished + "\" )" + "\n";
+            }
+
+            code += "\n";
+        }
+        //End of BubbleShields
+
+        //Generate All WeaponRacks
+        GameObject[] WeaponRackObjects = GameObject.FindGameObjectsWithTag("WeaponRack");
+        if (WeaponRackObjects.Length > 0)
+        {
+            code += "    //Weapon Racks" + "\n";
+
+            foreach (GameObject go in WeaponRackObjects)
+            {
+                WeaponRackScript script = go.GetComponent<WeaponRackScript>();
+                code += @"    MapEditor_CreateRespawnableWeaponRack( " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", \"" + go.name.Replace("custom_weaponrack_", "mp_weapon_") + "\", " + script.respawnTime + " )" + "\n";
+            }
+
+            code += "\n";
+        }
+        //End of WeaponRacks
+
+        //Generate All LootBins
+        GameObject[] LootBinObjects = GameObject.FindGameObjectsWithTag("LootBin");
+        if (LootBinObjects.Length > 0)
+        {
+            code += "    //LootBins" + "\n";
+
+            foreach (GameObject go in LootBinObjects)
+            {
+                LootBinScript script = go.GetComponent<LootBinScript>();
+                code += @"    MapEditor_CreateLootBin( " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", " + script.lootbinSkin + " )" + "\n";
+            }
+
+            code += "\n";
+        }
+        //End of LootBins
+
+        //Generate All ZipLines
+        GameObject[] ZipLineObjects = GameObject.FindGameObjectsWithTag("ZipLine");
+        GameObject[] LinkedZipLineObjects = GameObject.FindGameObjectsWithTag("LinkedZipline");
+        if (ZipLineObjects.Length > 0 || LinkedZipLineObjects.Length > 0)
+        {
+            code += "    //ZipLines" + "\n";
+
+            foreach (GameObject go in ZipLineObjects)
+            {
+                string ziplinestart = "";
+                string ziplineend = "";
+
+                foreach (Transform child in go.transform)
+                {
+                    if (child.name == "zipline_start")
+                    {
+                        ziplinestart = Helper.BuildOrigin(child.gameObject);
+                    }
+                    else if (child.name == "zipline_end")
+                    {
+                        ziplineend = Helper.BuildOrigin(child.gameObject);
+                    }
+                }
+
+                code += @"    CreateZipline(" + ziplinestart + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + ziplineend + Helper.ShouldAddStartingOrg(UseStartingOffset) + ")" + "\n";
+            }
+
+            foreach (GameObject go in LinkedZipLineObjects)
+            {
+                bool first = true;
+                string nodes = "[ ";
+
+                LinkedZiplineScript script = go.GetComponent<LinkedZiplineScript>();
+
+                foreach (Transform child in go.transform)
+                {
+                    if (!first)
+                        nodes += ", ";
+
+                    nodes += Helper.BuildOrigin(child.gameObject);
+
+                    first = false;
+                }
+
+                string smoothType = "GetAllPointsOnBezier";
+                if (!script.smoothType)
+                    smoothType = "GetBezierOfPath";
+
+                nodes += " ]";
+
+                code += @"    MapEditor_CreateLinkedZipline( ";
+                if (script.enableSmoothing) code += smoothType + "( ";
+                code += nodes;
+                if (script.enableSmoothing) code += ", " + script.smoothAmount;
+                code += " )";
+                if (script.enableSmoothing) code += " )";
+                code += "\n";
+            }
+
+            code += "\n";
+        }
+        //End of ziplines
+
+        //Generate All Doors
+        GameObject[] SingleDoorObjects = GameObject.FindGameObjectsWithTag("SingleDoor");
+        GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
+        GameObject[] VertDoorObjects = GameObject.FindGameObjectsWithTag("VerticalDoor");
+        GameObject[] HorzDoorObjects = GameObject.FindGameObjectsWithTag("HorzDoor");
+        if (SingleDoorObjects.Length > 0 || DoubleDoorObjects.Length > 0 || VertDoorObjects.Length > 0 || HorzDoorObjects.Length > 0)
+        {
+            code += "    //Doors" + "\n";
+
+            foreach (GameObject go in SingleDoorObjects)
+            {
+                DoorScript script = go.GetComponent<DoorScript>();
+                code += @"    MapEditor_SpawnDoor( " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", eMapEditorDoorType.Single, " + script.goldDoor.ToString().ToLower() + " )" + "\n";
+            }
+
+            foreach (GameObject go in DoubleDoorObjects)
+            {
+                DoorScript script = go.GetComponent<DoorScript>();
+                code += @"    MapEditor_SpawnDoor( " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", eMapEditorDoorType.Double, " + script.goldDoor.ToString().ToLower() + " )" + "\n";
+            }
+
+            foreach (GameObject go in VertDoorObjects)
+                code += @"    MapEditor_SpawnDoor( " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", eMapEditorDoorType.Vertical)" + "\n";
+
+            foreach (GameObject go in HorzDoorObjects)
+                code += @"    MapEditor_SpawnDoor( " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", eMapEditorDoorType.Horizontal)" + "\n";
+
+            code += "\n";
+        }
+        //End of Doors
+
+        //Generate All Props
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        if (PropObjects.Length > 0)
+        {
+            code += "    //Props" + "\n";
+
+            foreach (GameObject go in PropObjects)
+            {
+                string[] splitArray = go.name.Split(char.Parse(" "));
+                string finished = splitArray[0].Replace("#", "/") + ".rmdl";
+                PropScript script = go.GetComponent<PropScript>();
+                code += "    MapEditor_CreateProp( $\"" + finished + "\", " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", " + script.allowMantle.ToString().ToLower() + ", " + script.fadeDistance + ", " + script.realmID + ", " + go.transform.localScale.x.ToString().Replace(",", ".") + ")" + "\n";
+            }
+
+            code += "\n";
+        }
+        //End of Props
+
+        //Generate All Triggers
+        GameObject[] TriggerObjects = GameObject.FindGameObjectsWithTag("Trigger");
+        if (TriggerObjects.Length > 0)
+        {
+            code += "    //Triggers" + "\n";
+
+            int triggerid = 0;
+            foreach (GameObject go in TriggerObjects)
+            {
+                TriggerScripting script = go.GetComponent<TriggerScripting>();
+                code += @"    entity trigger" + triggerid + " = MapEditor_CreateTrigger( " + Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset) + ", " + Helper.BuildAngles(go) + ", " + go.transform.localScale.x.ToString().Replace(",", ".") + ", " + go.transform.localScale.y.ToString().Replace(",", ".") + ", " + script.Debug.ToString().ToLower() + ")" + "\n";
+
+                if (script.EnterCallback != "")
+                    code += @"    trigger" + triggerid + ".SetEnterCallback( void function(entity trigger , entity ent) {" + "\n" + script.EnterCallback + "\n" + "    })" + "\n";
+
+                if (script.LeaveCallback != "")
+                    code += @"    trigger" + triggerid + ".SetLeaveCallback( void function(entity trigger , entity ent) {" + "\n" + script.LeaveCallback + "\n" + "    })" + "\n";
+
+                code += @"    DispatchSpawn( trigger" + triggerid + " )" + "\n";
+                triggerid++;
+            }
+        }
+        //End of Triggers
+
+        return code;
+    }
+
+    /// <summary>
     /// Builds script ent code
     /// </summary>
     /// <param name="model"></param>

@@ -69,32 +69,33 @@ public class PrecacheCode : EditorWindow
     void GeneratePrecacheCode(bool copytext)
     {
         Helper.FixPropTags();
-
         EditorSceneManager.SaveOpenScenes();
 
-        string saved = "";
+        string precacheCode = "";
 
         //Generate All Props
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-            
         foreach(GameObject go in PropObjects) {
             string[] splitArray = go.name.Split(char.Parse(" "));
             string finished = splitArray[0].Replace("#", "/") + ".rmdl";
 
-            if(saved.Contains(finished))
+            if(precacheCode.Contains(finished))
                 continue;
             
-            saved += "    PrecacheModel( $\"" + finished + "\"" + ")" + "\n";
+            precacheCode += "    PrecacheModel( $\"" + finished + "\"" + ")" + "\n";
         }
+        //End of props
      
         if(copytext) {
-            GUIUtility.systemCopyBuffer = saved;
+            GUIUtility.systemCopyBuffer = precacheCode;
 
-            if(saved.Length > 75000)
-                saved = "";
-        } else {
-            text = saved;
-            saved = "";
+            if(precacheCode.Length > 75000)
+                precacheCode = "";
+
+            return;
         }
+
+        text = precacheCode;
+        precacheCode = "";
     }
 }

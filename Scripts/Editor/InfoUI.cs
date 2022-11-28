@@ -12,9 +12,6 @@ public class InfoUI : EditorWindow
         window.Show();
     }
 
-    Object source;
-    Vector2 scroll;
-
     void OnGUI()
     {
         GUI.contentColor = Color.white;

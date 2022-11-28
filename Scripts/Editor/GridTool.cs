@@ -63,12 +63,12 @@ public class GridTool : EditorWindow
         if(!source.name.Contains("mdl#"))
             return;
 
-        string name = "Grid (" + Random.Range(0, 100) + ")";
+        string name = "Grid";
 
         GameObject objToSpawn = new GameObject(name);
         objToSpawn.name = name;
 
-        GameObject parent = GameObject.Find(name);
+        GameObject parent = objToSpawn;
 
         for (int y = 0; y < gridY; y++) 
         {

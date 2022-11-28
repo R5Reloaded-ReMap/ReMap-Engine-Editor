@@ -92,30 +92,29 @@ public class EntCodeView : EditorWindow
     {
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
-        string saved = "";
+        
+        string entCode = "";
 
-        //Generate All Props
+        //Generate all props
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
         foreach(GameObject go in PropObjects) {
             if (!go.activeInHierarchy)
                 continue;
 
-            string[] splitArray = go.name.Split(char.Parse(" "));
-            string finished = splitArray[0].Replace("#", "/") + ".rmdl";
-
-            saved += Helper.BuildScriptEnt(go);
+            entCode += Helper.BuildScriptEnt(go);
         }
+        //End of props
 
         if(copytext) {
-            GUIUtility.systemCopyBuffer = saved;
+            GUIUtility.systemCopyBuffer = entCode;
 
-            if(saved.Length > 50000)
-                saved = "";
+            if(entCode.Length > 50000)
+                entCode = "";
 
             return;
         }
         
-        
-        text = saved;
+        text = entCode;
+        entCode = "";
     }
 }

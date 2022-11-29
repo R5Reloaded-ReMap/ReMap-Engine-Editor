@@ -6,5 +6,6 @@ using UnityEditor;
 
 public class DoorScript : MonoBehaviour
 {
+    [Header("Settings:")]
     public bool goldDoor = false;
 }

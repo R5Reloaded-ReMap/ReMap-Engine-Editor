@@ -6,6 +6,7 @@ using UnityEditor;
 
 public class BubbleScript : MonoBehaviour
 {
+    [Header("Settings:")]
     public Color32 shieldColor = new Color32(128, 255, 128, 255);
 
     public Transform Mesh;

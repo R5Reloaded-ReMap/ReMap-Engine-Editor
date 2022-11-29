@@ -5,9 +5,11 @@ using UnityEditor;
 
 public class DrawZipline : MonoBehaviour
 {
+    [Header("Dont change start and end transforms:")]
     public Transform zipline_start;
     public Transform zipline_end;
 
+    [Header("Settings:")]
     public bool ShowZipline = true;
     public float ShowZiplineDistance = 8000;
 

@@ -6,6 +6,7 @@ using UnityEditor;
 
 public class DrawLinkedZipline : MonoBehaviour
 {
+    [Header("Settings:")]
     public bool ShowZipline = true;
     public float ShowZiplineDistance = 8000;
     

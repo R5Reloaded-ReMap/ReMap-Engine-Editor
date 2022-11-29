@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TriggerScripting : MonoBehaviour
 {
+    [Header("Settings:")]
     public bool Debug = false;
 
     [TextArea(15,20)]

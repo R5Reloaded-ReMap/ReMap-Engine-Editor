@@ -50,22 +50,9 @@ public class MapExport
         var path = EditorUtility.SaveFilePanel( "Map Export", "", "scriptentexport.txt", "txt");
         if (path.Length != 0)
         {
-            string mapcode = "";
+            string mapcode = Build.Props(true, Build.BuildType.Ent);
 
-            //Generate All Props
-            GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-            foreach(GameObject go in PropObjects) {
-                if (!go.activeInHierarchy)
-                    continue;
-
-                mapcode += Helper.BuildScriptEnt(go);
-            }
-            
             System.IO.File.WriteAllText(path, mapcode);
-        }
-        else
-        {
-            Debug.Log("Failed: Didnt pick a save path!");
         }
     }
 

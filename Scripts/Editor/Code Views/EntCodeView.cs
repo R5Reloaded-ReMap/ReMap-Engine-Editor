@@ -34,9 +34,9 @@ public class EntCodeView : EditorWindow
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
         int finalcount = PropObjects.Length;
 
-        if(finalcount < 1500)
+        if(finalcount < Helper.greenPropCount)
             GUI.contentColor = Color.green;
-        else if((finalcount < 3000)) 
+        else if(finalcount < Helper.yellowPropCount)
             GUI.contentColor = Color.yellow;
         else
             GUI.contentColor = Color.red;
@@ -44,9 +44,9 @@ public class EntCodeView : EditorWindow
         GUILayout.BeginVertical("box");
         GUILayout.Label("Entity Count: " + finalcount);
 
-        if(finalcount < 1500)
+        if(finalcount < Helper.greenPropCount)
             GUILayout.Label("Entity Status: Safe");
-        else if((finalcount < 3000)) 
+        else if((finalcount < Helper.yellowPropCount)) 
             GUILayout.Label("Entity Status: Safe");
         else
             GUILayout.Label("Entity Status: Warning! Game might crash!");
@@ -54,7 +54,7 @@ public class EntCodeView : EditorWindow
 
         GUI.contentColor = Color.white;
 
-        if (text.Length > 75000)
+        if (text.Length > Helper.maxBuildLength)
         {
             GUILayout.BeginVertical("box");
             GUI.contentColor = Color.yellow;
@@ -64,7 +64,7 @@ public class EntCodeView : EditorWindow
             GUILayout.EndVertical();
         }
 
-        if(text.Length > 75000 && !OverrideTextLimit) {
+        if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
             if (GUILayout.Button("Copy Code"))
                 GenerateEntCode(true);
 
@@ -93,22 +93,12 @@ public class EntCodeView : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
         
-        string entCode = "";
-
-        //Generate all props
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-        foreach(GameObject go in PropObjects) {
-            if (!go.activeInHierarchy)
-                continue;
-
-            entCode += Helper.BuildScriptEnt(go);
-        }
-        //End of props
+        string entCode = Build.Props(true, Build.BuildType.Ent);
 
         if(copytext) {
             GUIUtility.systemCopyBuffer = entCode;
 
-            if(entCode.Length > 50000)
+            if(entCode.Length > Helper.maxBuildLength)
                 entCode = "";
 
             return;

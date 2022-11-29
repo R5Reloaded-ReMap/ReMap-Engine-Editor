@@ -132,15 +132,7 @@ public class ImportExportDataTable
         var path = EditorUtility.SaveFilePanel("Datatable Export", "", "mapexport.csv", "csv");
         if (path.Length != 0)
         {
-            string tableCode = "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
-
-            GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-            foreach (GameObject go in PropObjects)
-            {
-                tableCode += Helper.BuildDataTableItem(go);
-            }
-
-            tableCode += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
+            string tableCode = Build.Props(true, Build.BuildType.DataTable);
 
             System.IO.File.WriteAllText(path, tableCode);
         }

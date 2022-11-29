@@ -37,18 +37,18 @@ public class CopyPasteCode : EditorWindow
     {
         int finalcount = Helper.GetPropCount();
 
-        if(finalcount < 1500)
+        if(finalcount < Helper.greenPropCount)
             GUI.contentColor = Color.green;
-        else if((finalcount < 3000)) 
+        else if((finalcount < Helper.yellowPropCount)) 
             GUI.contentColor = Color.yellow;
         else
             GUI.contentColor = Color.red;
 
         GUILayout.BeginVertical("box");
         GUILayout.Label("Entity Count: " + finalcount);
-        if(finalcount < 1500)
+        if(finalcount < Helper.greenPropCount)
             GUILayout.Label("Entity Status: Safe");
-        else if((finalcount < 3000)) 
+        else if((finalcount < Helper.yellowPropCount)) 
             GUILayout.Label("Entity Status: Safe");
         else
             GUILayout.Label("Entity Status: Warning! Game could crash!");
@@ -61,7 +61,7 @@ public class CopyPasteCode : EditorWindow
         UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
         GUILayout.EndVertical();
 
-        if (text.Length > 75000)
+        if (text.Length > Helper.maxBuildLength)
         {
             GUILayout.BeginVertical("box");
             GUI.contentColor = Color.yellow;
@@ -71,7 +71,7 @@ public class CopyPasteCode : EditorWindow
             GUILayout.EndVertical();
         }
         
-        if(text.Length > 75000 && !OverrideTextLimit) {
+        if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
             if (GUILayout.Button("Copy"))
                 GenerateMap(OnlyExportMap, true);
 

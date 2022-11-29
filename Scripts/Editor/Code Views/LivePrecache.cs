@@ -32,7 +32,7 @@ public class PrecacheCode : EditorWindow
 
     void OnGUI()
     {
-        if (text.Length > 75000)
+        if (text.Length > Helper.maxBuildLength)
         {
             GUILayout.BeginVertical("box");
             GUI.contentColor = Color.yellow;
@@ -42,7 +42,7 @@ public class PrecacheCode : EditorWindow
             GUILayout.EndVertical();
         }
         
-        if(text.Length > 75000 && !OverrideTextLimit) {
+        if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
             if (GUILayout.Button("Copy"))
                 GeneratePrecacheCode(true);
 
@@ -71,25 +71,12 @@ public class PrecacheCode : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string precacheCode = "";
-
-        //Generate All Props
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-        foreach(GameObject go in PropObjects) {
-            string[] splitArray = go.name.Split(char.Parse(" "));
-            string finished = splitArray[0].Replace("#", "/") + ".rmdl";
-
-            if(precacheCode.Contains(finished))
-                continue;
-            
-            precacheCode += "    PrecacheModel( $\"" + finished + "\"" + ")" + "\n";
-        }
-        //End of props
+        string precacheCode = Build.Props(true, Build.BuildType.Precache);
      
         if(copytext) {
             GUIUtility.systemCopyBuffer = precacheCode;
 
-            if(precacheCode.Length > 75000)
+            if(precacheCode.Length > Helper.maxBuildLength)
                 precacheCode = "";
 
             return;

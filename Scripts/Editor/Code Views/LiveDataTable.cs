@@ -32,7 +32,7 @@ public class LiveDataTable : EditorWindow
 
     void OnGUI()
     {
-        if (text.Length > 75000)
+        if (text.Length > Helper.maxBuildLength)
         {
             GUILayout.BeginVertical("box");
             GUI.contentColor = Color.yellow;
@@ -42,7 +42,7 @@ public class LiveDataTable : EditorWindow
             GUILayout.EndVertical();
         }
         
-        if(text.Length > 75000 && !OverrideTextLimit) {
+        if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
             if (GUILayout.Button("Copy"))
                 GenerateDataTable(true);
 
@@ -71,23 +71,13 @@ public class LiveDataTable : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string tableCode = "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
-
-        //Generate All Props
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-        foreach (GameObject go in PropObjects)
-        {
-            tableCode += Helper.BuildDataTableItem(go);
-        }
-        //End Of Props
-
-        tableCode += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
+        string tableCode = Build.Props(true, Build.BuildType.DataTable);
 
         if (copytext)
         {
             GUIUtility.systemCopyBuffer = tableCode;
 
-            if (tableCode.Length > 75000)
+            if (tableCode.Length > Helper.maxBuildLength)
                 tableCode = "";
 
             return;

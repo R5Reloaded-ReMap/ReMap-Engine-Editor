@@ -6,16 +6,16 @@ using System.Reflection;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-public class LiveDataTable : EditorWindow
+public class LivePrecacheView : EditorWindow
 {
     static bool OverrideTextLimit = false;
     static string text = "";
     static Vector2 scroll;
 
-    [MenuItem("R5Reloaded/DataTable View", false, 25)]
+    [MenuItem("R5Reloaded/Precache Code", false, 25)]
     static void Init()
     {
-        LiveDataTable window = (LiveDataTable)GetWindow(typeof(LiveDataTable), false, "Datatable View");
+        PrecacheCode window = (PrecacheCode)GetWindow(typeof(PrecacheCode), false, "Precache Code");
         window.Show();
     }
 
@@ -44,7 +44,7 @@ public class LiveDataTable : EditorWindow
         
         if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
             if (GUILayout.Button("Copy"))
-                GenerateDataTable(true);
+                GeneratePrecacheCode(true);
 
             GUI.contentColor = Color.yellow;
             GUILayout.Label("Text area disabled, please use the copy button!");
@@ -53,37 +53,36 @@ public class LiveDataTable : EditorWindow
         else
         {
             if (GUILayout.Button("Copy"))
-                GenerateDataTable(true);
+                GeneratePrecacheCode(true);
 
             scroll = EditorGUILayout.BeginScrollView(scroll);
-            GenerateDataTable(false);
+            GeneratePrecacheCode(false);
             GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
             EditorGUILayout.EndScrollView();
         }
     }
 
     /// <summary>
-    /// Generates datatable export
+    /// Generates map precache code
     /// </summary>
     /// <param name="copytext">copy to clipboard</param>
-    void GenerateDataTable(bool copytext)
+    void GeneratePrecacheCode(bool copytext)
     {
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string tableCode = Build.Props(true, Build.BuildType.DataTable);
+        string precacheCode = Build.Props(true, Build.BuildType.Precache);
+     
+        if(copytext) {
+            GUIUtility.systemCopyBuffer = precacheCode;
 
-        if (copytext)
-        {
-            GUIUtility.systemCopyBuffer = tableCode;
-
-            if (tableCode.Length > Helper.maxBuildLength)
-                tableCode = "";
+            if(precacheCode.Length > Helper.maxBuildLength)
+                precacheCode = "";
 
             return;
         }
-        
-        text = tableCode;
-        tableCode = "";
+
+        text = precacheCode;
+        precacheCode = "";
     }
 }

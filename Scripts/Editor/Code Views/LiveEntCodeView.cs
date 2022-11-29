@@ -5,7 +5,7 @@ using UnityEditor;
 using System.Reflection;
 using UnityEditor.SceneManagement;
 
-public class EntCodeView : EditorWindow
+public class LiveEntCodeView : EditorWindow
 {
     string text = "";
     bool OverrideTextLimit = false;

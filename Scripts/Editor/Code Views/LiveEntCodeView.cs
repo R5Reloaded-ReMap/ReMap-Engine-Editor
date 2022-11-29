@@ -11,7 +11,7 @@ public class LiveEntCodeView : EditorWindow
     bool OverrideTextLimit = false;
     Vector2 scroll;
 
-    [MenuItem("R5Reloaded/script.ent Code", false, 25)]
+    [MenuItem("R5Reloaded/script.ent Code View", false, 25)]
     static void Init()
     {
         LiveEntCodeView window = (LiveEntCodeView)GetWindow(typeof(LiveEntCodeView), false, "Live script.ent Code");
@@ -97,10 +97,7 @@ public class LiveEntCodeView : EditorWindow
 
         if(copytext) {
             GUIUtility.systemCopyBuffer = entCode;
-
-            if(entCode.Length > Helper.maxBuildLength)
-                entCode = "";
-
+            entCode = "";
             return;
         }
         

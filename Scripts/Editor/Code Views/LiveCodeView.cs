@@ -13,9 +13,8 @@ public class CopyPasteCode : EditorWindow
     static bool OverrideTextLimit = false;
     static string text = "";
     static Vector2 scroll;
-    static string StartFunction;
 
-    [MenuItem("R5Reloaded/Map Code", false, 25)]
+    [MenuItem("R5Reloaded/Map Code View", false, 25)]
     static void Init()
     {
         CopyPasteCode window = (CopyPasteCode)GetWindow(typeof(CopyPasteCode), false, "Map Code");
@@ -97,11 +96,10 @@ public class CopyPasteCode : EditorWindow
     /// <param name="copytext">copy to clipboard</param>
     void GenerateMap(bool onlymap, bool copytext)
     {
-        BuildStartingString();
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string mapcode = Helper.Credits + "\n" + StartFunction +  Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
+        string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
 
         if(onlymap)
             mapcode = Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
@@ -114,23 +112,11 @@ public class CopyPasteCode : EditorWindow
      
         if(copytext) {
             GUIUtility.systemCopyBuffer = mapcode;
-
-            if(mapcode.Length > 75000)
-                mapcode = "";
-
+            mapcode = "";
             return;
         }
 
         text = mapcode;
         mapcode = "";
-    }
-
-    /// <summary>
-    /// Builds map starting function
-    /// </summary>
-    void BuildStartingString()
-    {
-        Scene scene = SceneManager.GetActiveScene();
-        StartFunction = @"void function " + scene.name.Replace(" ", "_") + "()" + "\n" + "{" + "\n";
     }
 }

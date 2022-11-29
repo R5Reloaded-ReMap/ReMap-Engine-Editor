@@ -12,7 +12,7 @@ public class LivePrecacheView : EditorWindow
     static string text = "";
     static Vector2 scroll;
 
-    [MenuItem("R5Reloaded/Precache Code", false, 25)]
+    [MenuItem("R5Reloaded/Precache Code View", false, 25)]
     static void Init()
     {
         LivePrecacheView window = (LivePrecacheView)GetWindow(typeof(LivePrecacheView), false, "Precache Code");
@@ -75,10 +75,7 @@ public class LivePrecacheView : EditorWindow
      
         if(copytext) {
             GUIUtility.systemCopyBuffer = precacheCode;
-
-            if(precacheCode.Length > Helper.maxBuildLength)
-                precacheCode = "";
-
+            precacheCode = "";
             return;
         }
 

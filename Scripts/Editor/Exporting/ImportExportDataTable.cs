@@ -9,36 +9,18 @@ using System.Collections.Generic;
 public class ImportExportDataTable
 {
     [MenuItem("R5Reloaded/DataTable/Import DataTable", false, 100)]
-    private static void Import()
-    {
-        ImportDataTable();
-    }
-
-    [MenuItem("R5Reloaded/DataTable/Export DataTable", false, 100)]
-    private static void Export()
-    {
-        ExportDataTable();
-    }
-
-    /// <summary>
-    /// Imports datatable
-    /// </summary>
     private static void ImportDataTable()
     {
         string path = EditorUtility.OpenFilePanel("Datatable Import", "", "csv");
 
         if (path.Length != 0)
         {
-            string contents = File.ReadAllText(path);
-
-            string[] splitArray = contents.Split(char.Parse("\n"));
+            string[] splitArray = File.ReadAllText(path).Split(char.Parse("\n"));
 
             //First get a list of collections
             List<String> collectionList = new List<String>();
-            foreach (string item in splitArray)
-            {
-                string cleaneditem = item.Replace("\"", "");
-                string[] itemsplit = item.Split(char.Parse(","));
+            foreach (string item in splitArray) {
+                string[] itemsplit = item.Replace("\"", "").Split(char.Parse(","));
 
                 if (itemsplit.Length < 12)
                     continue;
@@ -53,8 +35,7 @@ public class ImportExportDataTable
             }
 
             //Create empty game objects for collection
-            foreach (string col in collectionList)
-            {
+            foreach (string col in collectionList) {
                 GameObject objToSpawn = new GameObject(col);
                 objToSpawn.name = col;
             }
@@ -62,8 +43,7 @@ public class ImportExportDataTable
             //Import datatable
             foreach (string item in splitArray)
             {
-                string cleaneditem = item.Replace("\"", "");
-                string[] itemsplit = item.Split(char.Parse(","));
+                string[] itemsplit = item.Replace("\"", "").Split(char.Parse(","));
 
                 if (itemsplit.Length < 12)
                     continue;
@@ -80,17 +60,14 @@ public class ImportExportDataTable
                 string Collection = itemsplit[12].Replace("\"", "");
 
                 //Find Model GUID in Assets
-                string[] results;
-                results = AssetDatabase.FindAssets(Model);
+                string[] results = AssetDatabase.FindAssets(Model);
 
                 //If not found dont continue
                 if (results.Length == 0)
                     continue;
 
-
                 //Get model path from guid and load it
-                string prefabpath = AssetDatabase.GUIDToAssetPath(results[0]);
-                UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(prefabpath, typeof(UnityEngine.Object)) as GameObject;
+                UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(results[0]), typeof(UnityEngine.Object)) as GameObject;
 
                 //If its null dont continue
                 if (loadedPrefabResource == null)
@@ -98,7 +75,6 @@ public class ImportExportDataTable
 
                 //Create new model in scene
                 GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-
                 obj.transform.position = Origin;
                 obj.transform.eulerAngles = Angles;
                 obj.name = Model;
@@ -106,7 +82,6 @@ public class ImportExportDataTable
                 obj.SetActive(Visible == "true");
 
                 PropScript script = obj.GetComponent<PropScript>();
-
                 script.fadeDistance = float.Parse(Fade);
                 script.allowMantle = Mantle == "true";
 
@@ -121,9 +96,7 @@ public class ImportExportDataTable
         }
     }
 
-    /// <summary>
-    /// Exports Datatable
-    /// </summary>
+    [MenuItem("R5Reloaded/DataTable/Export DataTable", false, 100)]
     private static void ExportDataTable()
     {
         Helper.FixPropTags();

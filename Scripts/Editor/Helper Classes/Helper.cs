@@ -49,22 +49,16 @@ public class Helper
     /// <returns></returns>
     public static int GetPropCount()
     {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-        GameObject[] ZipLineObjects = GameObject.FindGameObjectsWithTag("ZipLine");
-        GameObject[] LinkedZipLineObjects = GameObject.FindGameObjectsWithTag("LinkedZipline");
-        GameObject[] SingleDoorObjects = GameObject.FindGameObjectsWithTag("SingleDoor");
-        GameObject[] VertDoorObjects = GameObject.FindGameObjectsWithTag("VerticalDoor");
-        GameObject[] HorzDoorObjects = GameObject.FindGameObjectsWithTag("HorzDoor");
-        GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
-        GameObject[] LootBinObjects = GameObject.FindGameObjectsWithTag("LootBin");
-        GameObject[] WeaponRackObjects = GameObject.FindGameObjectsWithTag("WeaponRack");
-        GameObject[] ButtonObjects = GameObject.FindGameObjectsWithTag("Button");
-        GameObject[] JumppadObjects = GameObject.FindGameObjectsWithTag("Jumppad");
-        GameObject[] TriggerObjects = GameObject.FindGameObjectsWithTag("Trigger");
-        GameObject[] ShieldObjects = GameObject.FindGameObjectsWithTag("BubbleShield");
-        int finalcount = PropObjects.Length + SingleDoorObjects.Length + DoubleDoorObjects.Length + ZipLineObjects.Length + LootBinObjects.Length + VertDoorObjects.Length + HorzDoorObjects.Length + WeaponRackObjects.Length + LinkedZipLineObjects.Length + ButtonObjects.Length + JumppadObjects.Length + TriggerObjects.Length + ShieldObjects.Length;
+        int objectCount = 0;
+        
+        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        foreach (GameObject go in allObjects) {
+            for (int i = 0; i < ObjectNames.Length - 1; i++)
+                if (go.name.Contains(ObjectNames[i]))
+                    objectCount++;
+        }
 
-        return finalcount;
+        return objectCount;
     }
 
     /// <summary>

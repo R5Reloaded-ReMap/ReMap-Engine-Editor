@@ -73,13 +73,9 @@ public class LiveDataTableView : EditorWindow
 
         string tableCode = Build.Props(true, Build.BuildType.DataTable);
 
-        if (copytext)
-        {
+        if (copytext) {
             GUIUtility.systemCopyBuffer = tableCode;
-
-            if (tableCode.Length > Helper.maxBuildLength)
-                tableCode = "";
-
+            tableCode = "";
             return;
         }
         

@@ -6,43 +6,40 @@ using UnityEngine.SceneManagement;
 
 public class MapExport
 {
-    static bool UseStartingOffset = false;
-    static string StartFunction = "";
-
-    [MenuItem("R5Reloaded/Text File/Export With Origin Offset/Whole Script", false, 100)]
-    private static void ExportMapScript()
+    enum ExportType
     {
-        ExportMap(false, true);
+        WholeScriptOffset,
+        MapOnlyOffset,
+        WholeScript,
+        MapOnly
     }
 
-    [MenuItem("R5Reloaded/Text File/Export With Origin Offset/Map Only", false, 100)]
+    [MenuItem("R5Reloaded/Export Map/Export With Origin Offset/Whole Script", false, 100)]
+    private static void ExportWholeScriptOffset()
+    {
+        ExportMap(ExportType.WholeScriptOffset);
+    }
+
+    [MenuItem("R5Reloaded/Export Map/Export With Origin Offset/Map Only", false, 100)]
+    private static void ExportMapOnlyOffset()
+    {
+        ExportMap(ExportType.MapOnlyOffset);
+    }
+
+    [MenuItem("R5Reloaded/Export Map/Export Without Origin Offset/Whole Script", false, 100)]
+    private static void ExportWholeScript()
+    {
+        ExportMap(ExportType.WholeScript);
+    }
+
+    [MenuItem("R5Reloaded/Export Map/Export Without Origin Offset/Map Only", false, 100)]
     private static void ExportOnlyMap()
     {
-        ExportMap(true, true);
+        ExportMap(ExportType.MapOnly);
     }
 
-    [MenuItem("R5Reloaded/Text File/Export Without Origin Offset/Whole Script", false, 100)]
-    private static void ExportMapScript2()
-    {
-        ExportMap(false, false);
-    }
-
-    [MenuItem("R5Reloaded/Text File/Export Without Origin Offset/Map Only", false, 100)]
-    private static void ExportOnlyMap2()
-    {
-        ExportMap(true, false);
-    }
-
-    [MenuItem("R5Reloaded/Text File/Export script.ent Code", false, 100)]
+    [MenuItem("R5Reloaded/Export Map/Export script.ent Code", false, 100)]
     private static void ExportScriptEntCode()
-    {
-        ExportScriptEnt();
-    }
-
-    /// <summary>
-    /// Exports script ent code
-    /// </summary>
-    static void ExportScriptEnt()
     {
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
@@ -60,45 +57,30 @@ public class MapExport
     /// <summary>
     /// Exports map code
     /// </summary>
-    /// <param name="onlymap"></param>
-    /// <param name="offset"></param>
-    private static void ExportMap(bool onlymap, bool offset = false)
+    private static void ExportMap(ExportType type)
     {
-        UseStartingOffset = offset;
-
-        BuildStartingString();
         Helper.FixPropTags();
-
         EditorSceneManager.SaveOpenScenes();
+
+        bool UseStartingOffset = false;
+        if(type == ExportType.MapOnlyOffset || type == ExportType.WholeScriptOffset)
+            UseStartingOffset = true;
 
         var path = EditorUtility.SaveFilePanel( "Map Export", "", "mapexport.txt", "txt");
         if (path.Length != 0)
         {
-            string mapcode = Helper.Credits + "\n" + StartFunction +  Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
+            string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
 
-            if(onlymap)
+            if(type == ExportType.MapOnly || type == ExportType.MapOnlyOffset)
                 mapcode = Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
 
             //Build Map Code
             mapcode += Helper.BuildMapCode(UseStartingOffset);
 
-            if(!onlymap)
+            if(type == ExportType.WholeScript || type == ExportType.WholeScriptOffset)
                 mapcode += "}";
 
             System.IO.File.WriteAllText(path, mapcode);
         }
-        else
-        {
-            Debug.Log("Failed: Didnt pick a save path!");
-        }
-    }
-
-    /// <summary>
-    /// Builds map starting function
-    /// </summary>
-    private static void BuildStartingString()
-    {
-        Scene scene = SceneManager.GetActiveScene();
-        StartFunction = @"void function " + scene.name.Replace(" ", "_") + "()" + "\n" + "{" + "\n";
     }
 } 

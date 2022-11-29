@@ -14,7 +14,7 @@ public class LiveEntCodeView : EditorWindow
     [MenuItem("R5Reloaded/script.ent Code", false, 25)]
     static void Init()
     {
-        EntCodeView window = (EntCodeView)GetWindow(typeof(EntCodeView), false, "Live script.ent Code");
+        LiveEntCodeView window = (LiveEntCodeView)GetWindow(typeof(LiveEntCodeView), false, "Live script.ent Code");
         window.Show();
     }
 

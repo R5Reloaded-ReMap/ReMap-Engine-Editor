@@ -15,7 +15,7 @@ public class LivePrecacheView : EditorWindow
     [MenuItem("R5Reloaded/Precache Code", false, 25)]
     static void Init()
     {
-        PrecacheCode window = (PrecacheCode)GetWindow(typeof(PrecacheCode), false, "Precache Code");
+        LivePrecacheView window = (LivePrecacheView)GetWindow(typeof(LivePrecacheView), false, "Precache Code");
         window.Show();
     }
 

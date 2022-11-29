@@ -242,13 +242,13 @@ public class Build
                 PropScript script = go.GetComponent<PropScript>();
 
                 if(type == BuildType.Ent) {
-                    code += Helper.BuildScriptEnt(go);
+                    code += BuildScriptEntItem(go);
                     continue;
                 }
 
                 if (type == BuildType.DataTable)
                 { 
-                    code += Helper.BuildDataTableItem(go);
+                    code += BuildDataTableItem(go);
                     continue;
                 }
 
@@ -299,5 +299,52 @@ public class Build
         }
 
         return code;
+    }
+
+    public static string BuildDataTableItem(GameObject go)
+    {
+        string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
+        PropScript script = go.GetComponent<PropScript>();
+
+        string type = "\"dynamic_prop\",";
+        string origin = "\"" + Helper.BuildOrigin(go) + "\",";
+        string angles = "\"" + Helper.BuildAngles(go) + "\",";
+        string scale = go.transform.localScale.x.ToString().Replace(",", ".") + ",";
+        string fade = script.fadeDistance.ToString() + ",";
+        string mantle = script.allowMantle.ToString().ToLower() + ",";
+        string visible = "true,";
+        string mdl = "\"" + model + "\",";
+        string collection = "\"None\"";
+
+        if (go.transform.parent != null) {
+            GameObject parent = go.transform.parent.gameObject;
+            collection = "\"" + parent.name.Replace("\r", "").Replace("\n", "") + "\"";
+        }
+
+        return type + origin + angles + scale + fade + mantle + visible + mdl + collection + "\n";
+    }
+
+    public static string BuildScriptEntItem(GameObject go)
+    {
+        string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
+        PropScript script = go.GetComponent<PropScript>();
+        
+        string buildent = @"{
+""StartDisabled"" ""0""
+""spawnflags"" ""0""
+""fadedist"" """ + script.fadeDistance + @"""
+""collide_titan"" ""1""
+""collide_ai"" ""1""
+""scale"" """ + go.transform.localScale.x.ToString().Replace(",", ".") + @"""
+""angles"" """ + Helper.BuildAngles(go)  + @"""
+""origin"" """ + Helper.BuildOrigin(go) + @"""
+""targetname"" ""MapEditorProp""
+""solid"" ""6""
+""model"" """ +  model + @"""
+""ClientSide"" ""0""
+""classname"" ""prop_dynamic""
+}
+";
+        return buildent;
     }
 }

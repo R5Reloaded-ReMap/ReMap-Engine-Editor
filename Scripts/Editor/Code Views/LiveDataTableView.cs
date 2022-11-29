@@ -15,7 +15,7 @@ public class LiveDataTableView : EditorWindow
     [MenuItem("R5Reloaded/DataTable View", false, 25)]
     static void Init()
     {
-        LiveDataTable window = (LiveDataTable)GetWindow(typeof(LiveDataTable), false, "Datatable View");
+        LiveDataTableView window = (LiveDataTableView)GetWindow(typeof(LiveDataTableView), false, "Datatable View");
         window.Show();
     }
 

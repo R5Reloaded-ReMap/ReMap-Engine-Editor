@@ -163,7 +163,7 @@ public class Helper
         code += Build.LootBins(UseStartingOffset);
         code += Build.ZipLines(UseStartingOffset);
         code += Build.Doors(UseStartingOffset);
-        code += Build.Props(UseStartingOffset);
+        code += Build.Props(UseStartingOffset, Build.BuildType.Map);
         code += Build.Triggers(UseStartingOffset);
 
         return code;

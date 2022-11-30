@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using System.Reflection;
-using UnityEditor.SceneManagement;
 
 public class Build
 {
@@ -307,14 +302,14 @@ public class Build
         PropScript script = go.GetComponent<PropScript>();
 
         string type = "\"dynamic_prop\",";
-        string origin = "\"" + Helper.BuildOrigin(go) + "\",";
-        string angles = "\"" + Helper.BuildAngles(go) + "\",";
+        string origin = "\"" + Helper.BuildOrigin(go).Replace(" ", "") + "\",";
+        string angles = "\"" + Helper.BuildAngles(go).Replace(" ", "") + "\",";
         string scale = go.transform.localScale.x.ToString().Replace(",", ".") + ",";
         string fade = script.fadeDistance.ToString() + ",";
         string mantle = script.allowMantle.ToString().ToLower() + ",";
         string visible = "true,";
         string mdl = "\"" + model + "\",";
-        string collection = "\"None\"";
+        string collection = "\"\"";
 
         if (go.transform.parent != null) {
             GameObject parent = go.transform.parent.gameObject;

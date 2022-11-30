@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.Reflection;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
@@ -92,25 +89,24 @@ public class CopyPasteCode : EditorWindow
     /// <summary>
     /// Generates map code
     /// </summary>
-    /// <param name="onlymap">code w/o function</param>
-    /// <param name="copytext">copy to clipboard</param>
-    void GenerateMap(bool onlymap, bool copytext)
+    /// <param name="onlyMapCode">code w/o function</param>
+    /// <param name="copyCode">copy to clipboard</param>
+    void GenerateMap(bool onlyMapCode, bool copyCode)
     {
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
         string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
-
-        if(onlymap)
+        if(onlyMapCode)
             mapcode = Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
 
         //Build Map Code
         mapcode += Helper.BuildMapCode(UseStartingOffset);
 
-        if(!onlymap)
+        if(!onlyMapCode)
             mapcode += "}";
      
-        if(copytext) {
+        if(copyCode) {
             GUIUtility.systemCopyBuffer = mapcode;
             mapcode = "";
             return;

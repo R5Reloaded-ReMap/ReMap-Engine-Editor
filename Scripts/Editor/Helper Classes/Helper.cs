@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.Reflection;
-using UnityEditor.SceneManagement;
+using System;
 
 public class Helper
 {
@@ -42,6 +40,25 @@ public class Helper
         "BubbleShield", //#bb_shield
     };
 
+    public enum ExportType
+    {
+        WholeScriptOffset,
+        MapOnlyOffset,
+        WholeScript,
+        MapOnly
+    }
+
+    public struct NewDataTable {
+        public string Type;
+        public Vector3 Origin;
+        public Vector3 Angles;
+        public float Scale;
+        public string fadeDistance;
+        public string canMantle;
+        public string isVisible;
+        public string Model;
+        public string Collection;
+    }
 
     /// <summary>
     /// Gets Total Prop Count
@@ -139,6 +156,66 @@ public class Helper
                 if (go.name.Contains(ObjectNames[i]))
                     go.tag = TagNames[i];
         }
+    }
+
+    public static NewDataTable BuildDataTable(string item)
+    {
+        string[] items = item.Replace("\"", "").Split(char.Parse(","));
+
+        NewDataTable dt = new NewDataTable();
+        dt.Type = items[0];
+        dt.Origin = new Vector3(float.Parse(items[2]), float.Parse(items[3].Replace(">", "")), -(float.Parse(items[1].Replace("<", ""))));
+        dt.Angles = new Vector3(-(float.Parse(items[4].Replace("<", ""))), -(float.Parse(items[5])), float.Parse(items[6].Replace(">", "")));
+        dt.Scale = float.Parse(items[7]);
+        dt.fadeDistance = items[8];
+        dt.canMantle = items[9];
+        dt.isVisible = items[10];
+        dt.Model = items[11].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "");
+        dt.Collection = items[12].Replace("\"", "");
+
+        return dt;
+    }
+
+    public static void CreateDataTableItem(NewDataTable dt, UnityEngine.Object loadedPrefabResource)
+    {
+        GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+        obj.transform.position = dt.Origin;
+        obj.transform.eulerAngles = dt.Angles;
+        obj.name = dt.Model;
+        obj.gameObject.transform.localScale = new Vector3(dt.Scale, dt.Scale, dt.Scale);
+        obj.SetActive(dt.isVisible == "true");
+
+        PropScript script = obj.GetComponent<PropScript>();
+        script.fadeDistance = float.Parse(dt.fadeDistance);
+        script.allowMantle = dt.canMantle == "true";
+
+        if (dt.Collection == "")
+            return;
+
+        GameObject parent = GameObject.Find(dt.Collection);
+        if (parent != null)
+            obj.gameObject.transform.parent = parent.transform;
+    }
+
+    public static List<String> BuildCollectionList(string[] items)
+    {
+        List<String> collectionList = new List<String>();
+        foreach (string item in items) {
+            string[] itemsplit = item.Replace("\"", "").Split(char.Parse(","));
+
+            if (itemsplit.Length < 12)
+                continue;
+
+            string collection = itemsplit[12].Replace("\"", "");
+
+            if (collection == "")
+                continue;
+
+            if (!collectionList.Contains(collection))
+                collectionList.Add(collection);
+        }
+
+        return collectionList;
     }
 
     /// <summary>

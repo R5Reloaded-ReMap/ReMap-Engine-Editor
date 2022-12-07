@@ -13,6 +13,8 @@ public class Helper
     static Dictionary<string, string> ObjectToTag = new Dictionary<string, string> {
         {"custom_lootbin", "LootBin"},
         {"custom_zipline", "ZipLine"},
+        {"_vertical_zipline", "VerticalZipLine"},
+        {"_non_vertical_zipline", "NonVerticalZipLine"},
         {"custom_jumppad", "Jumppad"},
         {"custom_linked_zipline", "LinkedZipline"},
         {"custom_single_door", "SingleDoor"},

@@ -9,288 +9,318 @@ public class Build
         DataTable
     };
 
-    public static string Buttons(bool UseStartingOffset)
+    public static string Buttons()
     {
-        string code = "";
-
         GameObject[] ButtonObjects = GameObject.FindGameObjectsWithTag("Button");
-        if (ButtonObjects.Length > 0)
+        if (ButtonObjects.Length < 1)
+            return "";
+        
+        string code = "    //Buttons \n";
+
+        foreach (GameObject go in ButtonObjects)
         {
-            code += "    //Buttons \n";
-
-            foreach (GameObject go in ButtonObjects)
-            {
-                ButtonScripting script = go.GetComponent<ButtonScripting>();
-                code += $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n";
-            }
-
-            code += "\n";
+            ButtonScripting script = go.GetComponent<ButtonScripting>();
+            code += $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n";
         }
+
+        code += "\n";
 
         return code;
     }
 
-    public static string Jumpads(bool UseStartingOffset)
+    public static string Jumpads()
     {
-        string code = "";
-
         GameObject[] JumppadObjects = GameObject.FindGameObjectsWithTag("Jumppad");
-        if (JumppadObjects.Length > 0)
+        if (JumppadObjects.Length < 1)
+            return "";
+
+        string code = "    //Jumppads \n";
+
+        foreach (GameObject go in JumppadObjects)
         {
-            code += "    //Jumppads \n";
-
-            foreach (GameObject go in JumppadObjects)
-            {
-                PropScript script = go.GetComponent<PropScript>();
-                code += $"    JumpPad_CreatedCallback( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
-            }
-
-            code += "\n";
+            PropScript script = go.GetComponent<PropScript>();
+            code += $"    JumpPad_CreatedCallback( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
         }
+
+        code += "\n";
 
         return code;
     }
 
-    public static string BubbleShields(bool UseStartingOffset)
+    public static string BubbleShields()
     {
-        string code = "";
-
         GameObject[] BubbleShieldObjects = GameObject.FindGameObjectsWithTag("BubbleShield");
-        if (BubbleShieldObjects.Length > 0)
-        {
-            code += "    //BubbleShields \n";
+        if (BubbleShieldObjects.Length < 1)
+            return "";
 
-            foreach (GameObject go in BubbleShieldObjects)
-            {
-                string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
-                BubbleScript script = go.GetComponent<BubbleScript>();
-                string shieldColor = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
+        string code = "    //BubbleShields \n";
+
+        foreach (GameObject go in BubbleShieldObjects)
+        {
+            string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
+            BubbleScript script = go.GetComponent<BubbleScript>();
+            string shieldColor = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
                 
-                code += $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, \"{shieldColor}\", $\"{model}\" )" + "\n";
-            }
-
-            code += "\n";
+            code += $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, \"{shieldColor}\", $\"{model}\" )" + "\n";
         }
+
+        code += "\n";
 
         return code;
     }
 
-    public static string WeaponRacks(bool UseStartingOffset)
+    public static string WeaponRacks()
     {
-        string code = "";
-
         GameObject[] WeaponRackObjects = GameObject.FindGameObjectsWithTag("WeaponRack");
-        if (WeaponRackObjects.Length > 0)
+        if (WeaponRackObjects.Length < 1)
+            return "";
+
+        string code = "    //Weapon Racks \n";
+
+        foreach (GameObject go in WeaponRackObjects)
         {
-            code += "    //Weapon Racks \n";
-
-            foreach (GameObject go in WeaponRackObjects)
-            {
-                WeaponRackScript script = go.GetComponent<WeaponRackScript>();
-                code += $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, \"{go.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {script.respawnTime} )" + "\n";
-            }
-
-            code += "\n";
+            WeaponRackScript script = go.GetComponent<WeaponRackScript>();
+            code += $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, \"{go.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {script.respawnTime} )" + "\n";
         }
+
+        code += "\n";
 
         return code;
     }
 
-    public static string LootBins(bool UseStartingOffset)
+    public static string LootBins()
     {
-        string code = "";
-
         GameObject[] LootBinObjects = GameObject.FindGameObjectsWithTag("LootBin");
-        if (LootBinObjects.Length > 0)
+        if (LootBinObjects.Length < 1)
+            return "";
+
+        string code = "    //LootBins \n";
+
+        foreach (GameObject go in LootBinObjects)
         {
-            code += "    //LootBins \n";
-
-            foreach (GameObject go in LootBinObjects)
-            {
-                LootBinScript script = go.GetComponent<LootBinScript>();
-                code += $"    MapEditor_CreateLootBin( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, {script.lootbinSkin} )" + "\n";
-            }
-
-            code += "\n";
+            LootBinScript script = go.GetComponent<LootBinScript>();
+            code += $"    MapEditor_CreateLootBin( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.lootbinSkin} )" + "\n";
         }
+
+        code += "\n";
 
         return code;
     }
 
-    public static string ZipLines(bool UseStartingOffset)
+    public static string ZipLines()
     {
-        string code = "";
-
         GameObject[] ZipLineObjects = GameObject.FindGameObjectsWithTag("ZipLine");
+        if (ZipLineObjects.Length < 1)
+            return "";
+
+        string code = "    //ZipLines \n";
+
+        foreach (GameObject go in ZipLineObjects)
+        {
+            string ziplinestart = "";
+            string ziplineend = "";
+
+            foreach (Transform child in go.transform)
+            {
+                if (child.name == "zipline_start")
+                    ziplinestart = Helper.BuildOrigin(child.gameObject);
+                else if (child.name == "zipline_end")
+                    ziplineend = Helper.BuildOrigin(child.gameObject);
+            }
+
+            code += $"    CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )" + "\n";
+        }
+
+        code += "\n";
+
+        return code;
+    }
+
+    public static string LinkedZipLines()
+    {
         GameObject[] LinkedZipLineObjects = GameObject.FindGameObjectsWithTag("LinkedZipline");
-        if (ZipLineObjects.Length > 0 || LinkedZipLineObjects.Length > 0)
+        if(LinkedZipLineObjects.Length < 1)
+            return "";
+
+        string code = "    //LinkedZipLines \n";
+
+        foreach (GameObject go in LinkedZipLineObjects)
         {
-            code += "    //ZipLines \n";
+            bool first = true;
+            string nodes = "[ ";
 
-            foreach (GameObject go in ZipLineObjects)
+            LinkedZiplineScript script = go.GetComponent<LinkedZiplineScript>();
+
+            foreach (Transform child in go.transform)
             {
-                string ziplinestart = "";
-                string ziplineend = "";
+                if (!first)
+                    nodes += ", ";
 
-                foreach (Transform child in go.transform)
-                {
-                    if (child.name == "zipline_start")
-                    {
-                        ziplinestart = Helper.BuildOrigin(child.gameObject);
-                    }
-                    else if (child.name == "zipline_end")
-                    {
-                        ziplineend = Helper.BuildOrigin(child.gameObject);
-                    }
-                }
+                nodes += Helper.BuildOrigin(child.gameObject);
 
-                code += $"    CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {ziplineend + Helper.ShouldAddStartingOrg(UseStartingOffset)} )" + "\n";
+                first = false;
             }
 
-            foreach (GameObject go in LinkedZipLineObjects)
-            {
-                bool first = true;
-                string nodes = "[ ";
+            string smoothType = "GetAllPointsOnBezier";
+            if (!script.smoothType)
+                smoothType = "GetBezierOfPath";
 
-                LinkedZiplineScript script = go.GetComponent<LinkedZiplineScript>();
+            nodes += " ]";
 
-                foreach (Transform child in go.transform)
-                {
-                    if (!first)
-                        nodes += ", ";
-
-                    nodes += Helper.BuildOrigin(child.gameObject);
-
-                    first = false;
-                }
-
-                string smoothType = "GetAllPointsOnBezier";
-                if (!script.smoothType)
-                    smoothType = "GetBezierOfPath";
-
-                nodes += " ]";
-
-                code += @"    MapEditor_CreateLinkedZipline( ";
-                if (script.enableSmoothing) code += $"{smoothType}( ";
-                code += nodes;
-                if (script.enableSmoothing) code += $", {script.smoothAmount}";
-                code += " )";
-                if (script.enableSmoothing) code += " )";
-                code += "\n";
-            }
-
+            code += @"    MapEditor_CreateLinkedZipline( ";
+            if (script.enableSmoothing) code += $"{smoothType}( ";
+            code += nodes;
+            if (script.enableSmoothing) code += $", {script.smoothAmount}";
+            code += " )";
+            if (script.enableSmoothing) code += " )";
             code += "\n";
         }
+
+        code += "\n";
 
         return code;
     }
 
-    public static string Doors(bool UseStartingOffset)
+    public static string SingleDoors()
     {
-        string code = "";
-
         GameObject[] SingleDoorObjects = GameObject.FindGameObjectsWithTag("SingleDoor");
-        GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
-        GameObject[] VertDoorObjects = GameObject.FindGameObjectsWithTag("VerticalDoor");
-        GameObject[] HorzDoorObjects = GameObject.FindGameObjectsWithTag("HorzDoor");
-        if (SingleDoorObjects.Length > 0 || DoubleDoorObjects.Length > 0 || VertDoorObjects.Length > 0 || HorzDoorObjects.Length > 0)
-        {
-            code += "    //Doors \n";
+        if (SingleDoorObjects.Length < 1)
+            return "";
 
-            foreach (GameObject go in SingleDoorObjects) {
-                DoorScript script = go.GetComponent<DoorScript>();
-                code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Single, {script.goldDoor.ToString().ToLower()} )" + "\n";
-            }
+        string code = "    //Single Doors \n";
 
-            foreach (GameObject go in DoubleDoorObjects) {
-                DoorScript script = go.GetComponent<DoorScript>();
-                code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Double, {script.goldDoor.ToString().ToLower()} )" + "\n";
-            }
-
-            foreach (GameObject go in VertDoorObjects)
-                code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Vertical)" + "\n";
-
-            foreach (GameObject go in HorzDoorObjects)
-                code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Horizontal)" + "\n";
-
-            code += "\n";
+        foreach (GameObject go in SingleDoorObjects) {
+            DoorScript script = go.GetComponent<DoorScript>();
+            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Single, {script.goldDoor.ToString().ToLower()} )" + "\n";
         }
+
+        code += "\n";
 
         return code;
     }
 
-    public static string Props(bool UseStartingOffset, BuildType type = BuildType.Map)
+    public static string DoubleDoors()
     {
+        GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
+        if (DoubleDoorObjects.Length < 1)
+            return "";
+
+        string code = "    //Double Doors \n";
+
+        foreach (GameObject go in DoubleDoorObjects) {
+            DoorScript script = go.GetComponent<DoorScript>();
+            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Double, {script.goldDoor.ToString().ToLower()} )" + "\n";
+        }
+
+        code += "\n";
+
+        return code;
+    }
+
+    public static string VertDoors()
+    {
+        GameObject[] VertDoorObjects = GameObject.FindGameObjectsWithTag("VerticalDoor");
+        if (VertDoorObjects.Length < 1)
+            return "";
+
+        string code = "    //Vertical Doors \n";
+
+        foreach (GameObject go in VertDoorObjects)
+            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Vertical)" + "\n";
+
+        code += "\n";
+
+        return code;
+    }
+
+    public static string HorizontalDoors()
+    {
+        GameObject[] HorzDoorObjects = GameObject.FindGameObjectsWithTag("HorzDoor");
+        if (HorzDoorObjects.Length < 1)
+            return "";
+
+        string code = "    //Horizontal Doors \n";
+
+        foreach (GameObject go in HorzDoorObjects)
+            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Horizontal)" + "\n";
+
+        code += "\n";
+
+        return code;
+    }
+
+    public static string Props(BuildType type = BuildType.Map)
+    {
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        if (PropObjects.Length < 1)
+            return "";
+
         string code = "";
 
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-        if (PropObjects.Length > 0)
-        {
-            if(type == BuildType.Map)
+        switch(type) {
+            case BuildType.Map:
                 code += "    //Props \n";
-
-            if(type == BuildType.DataTable)
+                break;
+            case BuildType.DataTable:
                 code += "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
+                break;
+        }
 
-            foreach (GameObject go in PropObjects) {
-                string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
-                PropScript script = go.GetComponent<PropScript>();
+        foreach (GameObject go in PropObjects)
+        {
+            string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
+            PropScript script = go.GetComponent<PropScript>();
 
-                if(type == BuildType.Ent) {
+            switch (type) {
+                case BuildType.Ent:
                     code += BuildScriptEntItem(go);
                     continue;
-                }
-
-                if (type == BuildType.DataTable)
-                { 
+                case BuildType.DataTable:
                     code += BuildDataTableItem(go);
                     continue;
-                }
-
-                if(type == BuildType.Precache) {
+                case BuildType.Precache:
                     code += $"    PrecacheModel( $\"{model}\" )" + "\n";
                     continue;
-                }
-
-                if (type == BuildType.Map) {
-                    code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
-                }
+                case BuildType.Map:
+                    code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
+                    continue;
             }
+        }
 
-            if(type == BuildType.Map)
+        switch(type) {
+            case BuildType.Map:
                 code += "\n";
-
-            if(type == BuildType.DataTable)
+                break;
+            case BuildType.DataTable:
                 code += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
+                break;
         }
 
         return code;
     }
 
-    public static string Triggers(bool UseStartingOffset)
+    public static string Triggers()
     {
-        string code = "";
-
         GameObject[] TriggerObjects = GameObject.FindGameObjectsWithTag("Trigger");
-        if (TriggerObjects.Length > 0)
+        if (TriggerObjects.Length < 1)
+            return "";
+
+        string code = "    //Triggers \n";
+
+        int triggerid = 0;
+        foreach (GameObject go in TriggerObjects)
         {
-            code += "    //Triggers \n";
+            TriggerScripting script = go.GetComponent<TriggerScripting>();
+            code += $"    entity trigger" + triggerid + $" = MapEditor_CreateTrigger( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, {go.transform.localScale.y.ToString().Replace(",", ".")}, {script.Debug.ToString().ToLower()} )" + "\n";
 
-            int triggerid = 0;
-            foreach (GameObject go in TriggerObjects)
-            {
-                TriggerScripting script = go.GetComponent<TriggerScripting>();
-                code += $"    entity trigger" + triggerid + $" = MapEditor_CreateTrigger( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg(UseStartingOffset)}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, {go.transform.localScale.y.ToString().Replace(",", ".")}, {script.Debug.ToString().ToLower()} )" + "\n";
+            if (script.EnterCallback != "")
+                code += $"    trigger{triggerid}.SetEnterCallback( void function(entity trigger , entity ent)" + "{\n" + script.EnterCallback + "\n    })" + "\n";
 
-                if (script.EnterCallback != "")
-                    code += $"    trigger{triggerid}.SetEnterCallback( void function(entity trigger , entity ent)" + "{\n" + script.EnterCallback + "\n    })" + "\n";
+            if (script.LeaveCallback != "")
+                code += $"    trigger{triggerid}.SetLeaveCallback( void function(entity trigger , entity ent)" + "{\n" + script.LeaveCallback + "\n    })" + "\n";
 
-                if (script.LeaveCallback != "")
-                    code += $"    trigger{triggerid}.SetLeaveCallback( void function(entity trigger , entity ent)" + "{\n" + script.LeaveCallback + "\n    })" + "\n";
-
-                code += $"    DispatchSpawn( trigger{triggerid} )" + "\n";
-                triggerid++;
-            }
+            code += $"    DispatchSpawn( trigger{triggerid} )" + "\n";
+            triggerid++;
         }
 
         return code;

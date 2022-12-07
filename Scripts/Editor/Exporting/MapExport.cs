@@ -32,16 +32,18 @@ public class MapExport
     [MenuItem("R5Reloaded/Export Map/Export script.ent Code", false, 100)]
     private static void ExportScriptEntCode()
     {
+        var path = EditorUtility.SaveFilePanel("Map Export", "", "scriptentexport.txt", "txt");
+        if (path.Length == 0)
+            return;
+
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        var path = EditorUtility.SaveFilePanel( "Map Export", "", "scriptentexport.txt", "txt");
-        if (path.Length != 0)
-        {
-            string mapcode = Build.Props(true, Build.BuildType.Ent);
+        Helper.Is_Using_Starting_Offset = true;
+        string mapcode = Build.Props(Build.BuildType.Ent);
 
-            System.IO.File.WriteAllText(path, mapcode);
-        }
+        System.IO.File.WriteAllText(path, mapcode);
+
     }
 
 
@@ -50,28 +52,28 @@ public class MapExport
     /// </summary>
     private static void ExportMap(Helper.ExportType type)
     {
+        var path = EditorUtility.SaveFilePanel("Map Export", "", "mapexport.txt", "txt");
+        if (path.Length == 0)
+            return;
+
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        bool UseStartingOffset = false;
-        if(type == Helper.ExportType.MapOnlyOffset || type == Helper.ExportType.WholeScriptOffset)
-            UseStartingOffset = true;
+        Helper.Is_Using_Starting_Offset = false;
+        if (type == Helper.ExportType.MapOnlyOffset || type == Helper.ExportType.WholeScriptOffset)
+            Helper.Is_Using_Starting_Offset = true;
 
-        var path = EditorUtility.SaveFilePanel( "Map Export", "", "mapexport.txt", "txt");
-        if (path.Length != 0)
-        {
-            string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
+        string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" + Helper.ShouldAddStartingOrg(1);
 
-            if(type == Helper.ExportType.MapOnly || type == Helper.ExportType.MapOnlyOffset)
-                mapcode = Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
+        if (type == Helper.ExportType.MapOnly || type == Helper.ExportType.MapOnlyOffset)
+            mapcode = Helper.ShouldAddStartingOrg(1);
 
-            //Build Map Code
-            mapcode += Helper.BuildMapCode(UseStartingOffset);
+        //Build Map Code
+        mapcode += Helper.BuildMapCode();
 
-            if(type == Helper.ExportType.WholeScript || type == Helper.ExportType.WholeScriptOffset)
-                mapcode += "}";
+        if (type == Helper.ExportType.WholeScript || type == Helper.ExportType.WholeScriptOffset)
+            mapcode += "}";
 
-            System.IO.File.WriteAllText(path, mapcode);
-        }
+        System.IO.File.WriteAllText(path, mapcode);
     }
 } 

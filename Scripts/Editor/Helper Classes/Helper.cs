@@ -8,6 +8,7 @@ public class Helper
     public static int maxBuildLength = 75000;
     public static int greenPropCount = 1500;
     public static int yellowPropCount = 1500;
+    public static bool Is_Using_Starting_Offset = false;
     static string[] ObjectNames = new string[] {
         "custom_lootbin", //LootBin
         "custom_zipline", //ZipLine
@@ -67,9 +68,10 @@ public class Helper
     public static int GetPropCount()
     {
         int objectCount = 0;
-        
+
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
-        foreach (GameObject go in allObjects) {
+        foreach (GameObject go in allObjects)
+        {
             for (int i = 0; i < ObjectNames.Length - 1; i++)
                 if (go.name.Contains(ObjectNames[i]))
                     objectCount++;
@@ -81,12 +83,11 @@ public class Helper
     /// <summary>
     /// Should add starting origin to object location
     /// </summary>
-    /// <param name="UseStartingOffset"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string ShouldAddStartingOrg(bool UseStartingOffset, int type = 0)
+    public static string ShouldAddStartingOrg(int type = 0)
     {
-        if(!UseStartingOffset)
+        if(!Is_Using_Starting_Offset)
             return "";
 
         if(type == 0)
@@ -149,7 +150,8 @@ public class Helper
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
 
         //Retag All Objects
-        foreach (GameObject go in allObjects) {
+        foreach (GameObject go in allObjects)
+        {
             go.tag = "Untagged";
 
             for (int i = 0; i < ObjectNames.Length; i++)
@@ -200,7 +202,8 @@ public class Helper
     public static List<String> BuildCollectionList(string[] items)
     {
         List<String> collectionList = new List<String>();
-        foreach (string item in items) {
+        foreach (string item in items)
+        {
             string[] itemsplit = item.Replace("\"", "").Split(char.Parse(","));
 
             if (itemsplit.Length < 12)
@@ -221,22 +224,21 @@ public class Helper
     /// <summary>
     /// Builds Map Code
     /// </summary>
-    /// <param name="UseStartingOffset">want to use starting offset</param>
     /// <returns>built map code string</returns>
-    public static string BuildMapCode(bool UseStartingOffset)
+    public static string BuildMapCode()
     {
-        string code = "";
-
-        code += Build.Buttons(UseStartingOffset);
-        code += Build.Jumpads(UseStartingOffset);
-        code += Build.BubbleShields(UseStartingOffset);
-        code += Build.WeaponRacks(UseStartingOffset);
-        code += Build.LootBins(UseStartingOffset);
-        code += Build.ZipLines(UseStartingOffset);
-        code += Build.Doors(UseStartingOffset);
-        code += Build.Props(UseStartingOffset, Build.BuildType.Map);
-        code += Build.Triggers(UseStartingOffset);
-
+        string code = Build.Buttons();
+        code += Build.Jumpads();
+        code += Build.BubbleShields();
+        code += Build.WeaponRacks();
+        code += Build.LootBins();
+        code += Build.ZipLines();
+        code += Build.SingleDoors();
+        code += Build.DoubleDoors();
+        code += Build.VertDoors();
+        code += Build.HorizontalDoors();
+        code += Build.Props(Build.BuildType.Map);
+        code += Build.Triggers();
         return code;
     }
 

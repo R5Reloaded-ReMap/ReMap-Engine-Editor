@@ -96,12 +96,14 @@ public class CopyPasteCode : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
+        Helper.Is_Using_Starting_Offset = UseStartingOffset;
+
+        string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(1);
         if(onlyMapCode)
-            mapcode = Helper.ShouldAddStartingOrg(UseStartingOffset, 1);
+            mapcode = Helper.ShouldAddStartingOrg(1);
 
         //Build Map Code
-        mapcode += Helper.BuildMapCode(UseStartingOffset);
+        mapcode += Helper.BuildMapCode();
 
         if(!onlyMapCode)
             mapcode += "}";

@@ -30,9 +30,18 @@ public class DrawVerticalZipline : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        // Origin && Angles
         zipline_end.position = new Vector3( zipline_start.position.x, ZiplineHeightOffset, zipline_start.position.z );
         zipline_start.eulerAngles = new Vector3( 0, ZiplineAnglesOffset, 0 );
-        zipline_end.eulerAngles = zipline_start.eulerAngles;;
+        zipline_end.eulerAngles = zipline_start.eulerAngles;
+
+        // Show / Hide: Arrow
+        GameObject arrow = zipline_start.transform.Find("arrow").gameObject;
+        arrow.SetActive(true);
+        if(!pushOffInDirectionX) arrow.SetActive(false);
+
+        // Angles -> 0
+        if(ZiplineAnglesOffset > 360 || ZiplineAnglesOffset < -360) ZiplineAnglesOffset = 0;
 
         if(!ShowZipline)
             return;

@@ -67,7 +67,7 @@ public class LiveDataTableView : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string tableCode = Build.Props(true, Build.BuildType.DataTable);
+        string tableCode = Build.Props(Build.BuildType.DataTable);
 
         if (copytext) {
             GUIUtility.systemCopyBuffer = tableCode;

@@ -89,8 +89,8 @@ public class LiveEntCodeView : EditorWindow
     {
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
-        
-        string entCode = Build.Props(true, Build.BuildType.Ent);
+
+        string entCode = Build.Props(Build.BuildType.Ent);
 
         if(copytext) {
             GUIUtility.systemCopyBuffer = entCode;

@@ -67,7 +67,7 @@ public class LivePrecacheView : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string precacheCode = Build.Props(true, Build.BuildType.Precache);
+        string precacheCode = Build.Props(Build.BuildType.Precache);
      
         if(copytext) {
             GUIUtility.systemCopyBuffer = precacheCode;

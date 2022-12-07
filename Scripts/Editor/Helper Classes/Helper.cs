@@ -22,6 +22,7 @@ public class Helper
         "trigger_cylinder", //Trigger
         "mdl", //Prop
         "mdl#fx#bb_shield", //BubbleShield
+        "_vertical_zipline", //VerticalZipline
     };
 
      static string[] TagNames = new string[] {
@@ -38,6 +39,7 @@ public class Helper
         "Trigger", //trigger_cylinder
         "Prop", //mdl
         "BubbleShield", //#bb_shield
+        "VerticalZipLine" // _vertical_zipline
     };
 
     public enum ExportType

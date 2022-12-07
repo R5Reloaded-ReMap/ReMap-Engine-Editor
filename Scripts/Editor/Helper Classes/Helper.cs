@@ -233,6 +233,7 @@ public class Helper
         code += Build.WeaponRacks();
         code += Build.LootBins();
         code += Build.ZipLines();
+        code += Build.LinkedZipLines();
         code += Build.SingleDoors();
         code += Build.DoubleDoors();
         code += Build.VertDoors();

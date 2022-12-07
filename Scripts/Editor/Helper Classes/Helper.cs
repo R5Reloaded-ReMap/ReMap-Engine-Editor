@@ -217,6 +217,8 @@ public class Helper
         code += Build.LootBins();
         code += Build.ZipLines();
         code += Build.LinkedZipLines();
+        code += Build.VerticalZipLines();
+        code += Build.NonVerticalZipLines();
         code += Build.SingleDoors();
         code += Build.DoubleDoors();
         code += Build.VertDoors();

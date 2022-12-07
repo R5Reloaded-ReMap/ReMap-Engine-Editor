@@ -194,7 +194,7 @@ public class Build
         foreach (GameObject go in VerticalZipLineObjects)
         {
             DrawVerticalZipline ziplineScript = go.GetComponent<DrawVerticalZipline>();
-            if (ziplineScript != null)
+            if (ziplineScript == null)
                 continue;
 
             string preservevelocity = "false";
@@ -230,7 +230,7 @@ public class Build
         foreach (GameObject go in NonVerticalZipLineObjects)
         {
             DrawNonVerticalZipline ziplineScript = go.GetComponent<DrawNonVerticalZipline>();
-            if (ziplineScript != null)
+            if (ziplineScript == null)
                 continue;
 
             string preservevelocity = "false";

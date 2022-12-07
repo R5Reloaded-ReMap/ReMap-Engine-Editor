@@ -193,27 +193,24 @@ public class Build
 
         foreach (GameObject go in VerticalZipLineObjects)
         {
-            string ziplinestart = ""; string ziplinestartAng = ""; string ziplineend = "";
-            string isvertical = "true"; string preservevelocity = ""; string disabledroptobottom = "";
-            string restpoint = ""; string pushoffindirectionx = ""; string ismoving = "";
-
             DrawVerticalZipline ziplineScript = go.GetComponent<DrawVerticalZipline>();
-
             if (ziplineScript != null)
-            {
-                ziplinestart = Helper.BuildOrigin(ziplineScript.zipline_start.gameObject);
-                ziplinestartAng = Helper.BuildAngles(ziplineScript.zipline_start.gameObject);
-                ziplineend = Helper.BuildOrigin(ziplineScript.zipline_end.gameObject);
+                continue;
 
-                if (ziplineScript.preserveVelocity) preservevelocity = "true"; else preservevelocity = "false";
-                if (ziplineScript.disableDropToBottom) disabledroptobottom = "true"; else disabledroptobottom = "false";
+            string preservevelocity = "false";
+            string disabledroptobottom = "false";
+            string restpoint = "false";
+            string pushoffindirectionx = "false";
+            string ismoving = "false";
 
-                if (ziplineScript.restPoint) restpoint = "true"; else restpoint = "false";
-                if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = "true"; else pushoffindirectionx = "false";
-                if (ziplineScript.isMoving) ismoving = "true"; else ismoving = "false";
+            if (ziplineScript.preserveVelocity) preservevelocity = "true";
+            if (ziplineScript.disableDropToBottom) disabledroptobottom = "true";
+            if (ziplineScript.restPoint) restpoint = "true";
+            if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = "true";
+            if (ziplineScript.isMoving) ismoving = "true";
 
-                code += $"    CreateZiplineByUnityEditor( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplinestartAng}, {ziplineend + Helper.ShouldAddStartingOrg()}, {ziplinestartAng}, {isvertical}, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {disabledroptobottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving} )" + "\n";
-            }
+            code += $"    CreateZiplineByUnityEditor( {Helper.BuildOrigin(ziplineScript.zipline_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.zipline_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.zipline_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.zipline_start.gameObject)}, true, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {disabledroptobottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving} )" + "\n";
+
         }
 
         code += "\n";
@@ -232,27 +229,23 @@ public class Build
 
         foreach (GameObject go in NonVerticalZipLineObjects)
         {
-            string ziplinestart = ""; string ziplinestartAng = ""; string ziplineend = "";
-            string isvertical = "false"; string preservevelocity = ""; string disabledroptobottom = "";
-            string restpoint = ""; string pushoffindirectionx = ""; string ismoving = "";
-
             DrawNonVerticalZipline ziplineScript = go.GetComponent<DrawNonVerticalZipline>();
-
             if (ziplineScript != null)
-            {
-                ziplinestart = Helper.BuildOrigin(ziplineScript.zipline_start.gameObject);
-                ziplinestartAng = Helper.BuildAngles(ziplineScript.zipline_start.gameObject);
-                ziplineend = Helper.BuildOrigin(ziplineScript.zipline_end.gameObject);
+                continue;
 
-                if (ziplineScript.preserveVelocity) preservevelocity = "true"; else preservevelocity = "false";
-                if (ziplineScript.disableDropToBottom) disabledroptobottom = "true"; else disabledroptobottom = "false";
+            string preservevelocity = "false";
+            string disabledroptobottom = "false";
+            string restpoint = "false";
+            string pushoffindirectionx = "false";
+            string ismoving = "false";
 
-                if (ziplineScript.restPoint) restpoint = "true"; else restpoint = "false";
-                if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = "true"; else pushoffindirectionx = "false";
-                if (ziplineScript.isMoving) ismoving = "true"; else ismoving = "false";
+            if (ziplineScript.preserveVelocity) preservevelocity = "true";
+            if (ziplineScript.disableDropToBottom) disabledroptobottom = "true";
+            if (ziplineScript.restPoint) restpoint = "true";
+            if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = "true";
+            if (ziplineScript.isMoving) ismoving = "true";
 
-                code += $"    CreateZiplineByUnityEditor( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplinestartAng}, {ziplineend + Helper.ShouldAddStartingOrg()}, {ziplinestartAng}, {isvertical}, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {disabledroptobottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving} )" + "\n";
-            }
+            code += $"    CreateZiplineByUnityEditor( {Helper.BuildOrigin(ziplineScript.zipline_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.zipline_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.zipline_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.zipline_start.gameObject)}, false, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {disabledroptobottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving} )" + "\n";
         }
 
         code += "\n";

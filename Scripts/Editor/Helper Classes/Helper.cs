@@ -9,36 +9,21 @@ public class Helper
     public static int greenPropCount = 1500;
     public static int yellowPropCount = 1500;
     public static bool Is_Using_Starting_Offset = false;
-    static string[] ObjectNames = new string[] {
-        "custom_lootbin", //LootBin
-        "custom_zipline", //ZipLine
-        "custom_jumppad", //Jumppad
-        "custom_linked_zipline", //LinkedZipline
-        "custom_single_door", //SingleDoor
-        "custom_double_door", //DoubleDoor
-        "custom_vertical_door", //VerticalDoor
-        "custom_sliding_door", //HorzDoor
-        "custom_weaponrack", //WeaponRack
-        "custom_button", //Button
-        "trigger_cylinder", //Trigger
-        "mdl", //Prop
-        "mdl#fx#bb_shield", //BubbleShield
-    };
 
-     static string[] TagNames = new string[] {
-        "LootBin", //custom_lootbin
-        "ZipLine", //custom_zipline
-        "Jumppad", //custom_jumppad
-        "LinkedZipline", //custom_linked_zipline
-        "SingleDoor", //custom_single_door
-        "DoubleDoor", //custom_double_door
-        "VerticalDoor", //custom_vertical_door
-        "HorzDoor", //custom_sliding_door
-        "WeaponRack", //custom_weaponrack
-        "Button", //custom_button
-        "Trigger", //trigger_cylinder
-        "Prop", //mdl
-        "BubbleShield", //#bb_shield
+    static Dictionary<string, string> ObjectToTag = new Dictionary<string, string> {
+        {"custom_lootbin", "LootBin"},
+        {"custom_zipline", "ZipLine"},
+        {"custom_jumppad", "Jumppad"},
+        {"custom_linked_zipline", "LinkedZipline"},
+        {"custom_single_door", "SingleDoor"},
+        {"custom_double_door", "DoubleDoor"},
+        {"custom_vertical_door", "VerticalDoor"},
+        {"custom_sliding_door", "HorzDoor"},
+        {"custom_weaponrack", "WeaponRack"},
+        {"custom_button", "Button"},
+        {"trigger_cylinder", "Trigger"},
+        {"mdl", "Prop"},
+        {"mdl#fx#bb_shield", "BubbleShield"}
     };
 
     public enum ExportType
@@ -70,10 +55,9 @@ public class Helper
         int objectCount = 0;
 
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
-        foreach (GameObject go in allObjects)
-        {
-            for (int i = 0; i < ObjectNames.Length - 1; i++)
-                if (go.name.Contains(ObjectNames[i]))
+        foreach (GameObject go in allObjects) {
+            foreach (string key in ObjectToTag.Keys)
+                if (go.name.Contains(key))
                     objectCount++;
         }
 
@@ -150,13 +134,12 @@ public class Helper
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
 
         //Retag All Objects
-        foreach (GameObject go in allObjects)
-        {
+        foreach (GameObject go in allObjects) {
             go.tag = "Untagged";
 
-            for (int i = 0; i < ObjectNames.Length; i++)
-                if (go.name.Contains(ObjectNames[i]))
-                    go.tag = TagNames[i];
+            foreach (string key in ObjectToTag.Keys)
+                if (go.name.Contains(key))
+                    go.tag = ObjectToTag[key];
         }
     }
 

@@ -24,6 +24,7 @@ public class Helper
         "mdl", //Prop
         "mdl#fx#bb_shield", //BubbleShield
         "_vertical_zipline", //VerticalZipline
+        "_non_vertical_zipline", //NonVerticalZipLine
     };
 
      static string[] TagNames = new string[] {
@@ -40,7 +41,8 @@ public class Helper
         "Trigger", //trigger_cylinder
         "Prop", //mdl
         "BubbleShield", //#bb_shield
-        "VerticalZipLine" // _vertical_zipline
+        "VerticalZipLine", // _vertical_zipline
+        "NonVerticalZipLine", // _non_vertical_zipline
     };
 
     public enum ExportType
@@ -237,6 +239,7 @@ public class Helper
         code += Build.ZipLines();
         code += Build.LinkedZipLines();
         code += Build.VerticalZipLines();
+        code += Build.NonVerticalZipLines();
         code += Build.SingleDoors();
         code += Build.DoubleDoors();
         code += Build.VertDoors();

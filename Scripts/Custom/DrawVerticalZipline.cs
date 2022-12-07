@@ -12,7 +12,6 @@ public class DrawVerticalZipline : MonoBehaviour
     public float ShowZiplineDistance = 8000;
 
     [Header("Zipline Parameters:")]
-    //public bool IsVertical = true;
     public float ZiplineHeightOffset = 0;
     public float ZiplineAnglesOffset = 0;
     public float fadeDistance = -1;

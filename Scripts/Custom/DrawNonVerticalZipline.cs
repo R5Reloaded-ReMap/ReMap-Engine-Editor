@@ -12,7 +12,6 @@ public class DrawNonVerticalZipline : MonoBehaviour
     public float ShowZiplineDistance = 8000;
 
     [Header("Zipline Parameters:")]
-    //public bool IsVertical = true;
     public float fadeDistance = -1;
     public float scale = 1;
     public float width = 2;

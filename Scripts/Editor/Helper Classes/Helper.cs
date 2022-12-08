@@ -9,6 +9,7 @@ public class Helper
     public static int greenPropCount = 1500;
     public static int yellowPropCount = 1500;
     public static bool Is_Using_Starting_Offset = false;
+    public static bool DisableStartingOffsetString = false;
 
     static Dictionary<string, string> ObjectToTag = new Dictionary<string, string> {
         {"custom_lootbin", "LootBin"},
@@ -78,6 +79,9 @@ public class Helper
 
         if(type == 0)
             return " + startingorg";
+
+        if(DisableStartingOffsetString)
+            return "";
 
         return "    //Starting Origin, Change this to a origin in a map \n    vector startingorg = <0,0,0>" + "\n\n";
     }

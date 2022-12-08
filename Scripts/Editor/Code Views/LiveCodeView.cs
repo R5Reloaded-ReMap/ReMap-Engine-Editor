@@ -7,6 +7,7 @@ public class CopyPasteCode : EditorWindow
 {
     static bool OnlyExportMap = true;
     static bool UseStartingOffset = false;
+    static bool DisableStartingOffsetString = false;
     static bool OverrideTextLimit = false;
     static string text = "";
     static Vector2 scroll;
@@ -55,6 +56,7 @@ public class CopyPasteCode : EditorWindow
         GUILayout.BeginVertical("box");
         OnlyExportMap = EditorGUILayout.Toggle("Only Show Map Code", OnlyExportMap);
         UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
+        DisableStartingOffsetString = EditorGUILayout.Toggle("Don't Show Startingorg", DisableStartingOffsetString);
         GUILayout.EndVertical();
 
         if (text.Length > Helper.maxBuildLength)
@@ -97,6 +99,7 @@ public class CopyPasteCode : EditorWindow
         EditorSceneManager.SaveOpenScenes();
 
         Helper.Is_Using_Starting_Offset = UseStartingOffset;
+        Helper.DisableStartingOffsetString = DisableStartingOffsetString;
 
         string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(1);
         if(onlyMapCode)

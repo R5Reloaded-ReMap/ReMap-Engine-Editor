@@ -13,8 +13,8 @@ public class DrawVerticalZipline : MonoBehaviour
     public bool ShowAutoDetachDistance = true;
 
     [Header("Zipline Parameters:")]
-    public float ZiplineHeightOffset = 0;
-    public float ZiplineAnglesOffset = 0;
+    public float heightOffset = 0;
+    public float anglesOffset = 0;
     public float fadeDistance = -1;
     public float scale = 1;
     public float width = 2;
@@ -32,8 +32,8 @@ public class DrawVerticalZipline : MonoBehaviour
     void OnDrawGizmos()
     {
         // Origin && Angles
-        zipline_end.position = new Vector3( zipline_start.position.x, ZiplineHeightOffset, zipline_start.position.z );
-        zipline_start.eulerAngles = new Vector3( 0, ZiplineAnglesOffset, 0 );
+        zipline_end.position = new Vector3( zipline_start.position.x, heightOffset, zipline_start.position.z );
+        zipline_start.eulerAngles = new Vector3( 0, anglesOffset, 0 );
         zipline_end.eulerAngles = zipline_start.eulerAngles;
 
         // Show / Hide: Arrow
@@ -41,7 +41,7 @@ public class DrawVerticalZipline : MonoBehaviour
         arrow.SetActive(true);
         if(!pushOffInDirectionX) arrow.SetActive(false);
 
-        ZiplineAnglesOffset = ZiplineAnglesOffset % 360;
+        anglesOffset = anglesOffset % 360;
 
         if(!ShowZipline)
             return;

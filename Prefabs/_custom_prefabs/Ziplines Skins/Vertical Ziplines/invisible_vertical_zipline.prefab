@@ -126,7 +126,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2491718136424982578}
-  m_Father: {fileID: 5918809287686563973}
+  m_Father: {fileID: 4017111842507411686}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1852837283453008540
@@ -170,7 +170,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5918809287686563973}
+  - component: {fileID: 4017111842507411686}
   - component: {fileID: 3036985210238554186}
   m_Layer: 0
   m_Name: invisible_vertical_zipline
@@ -179,7 +179,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5918809287686563973
+--- !u!4 &4017111842507411686
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,7 +187,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039729782036904066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 180, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -208,12 +208,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb5d1cc48940fb4db1120e08688f418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zipline_start: {fileID: 2491718136424982578}
-  zipline_end: {fileID: 8562730517170661930}
+  zipline: {fileID: 4017111842507411686}
+  rope_start: {fileID: 2491718136424982578}
+  rope_end: {fileID: 8562730517170661930}
   ShowZipline: 1
   ShowZiplineDistance: 8000
-  heightOffset: -100
-  anglesOffset: 0
+  ShowAutoDetachDistance: 1
+  ziplinePosition: {x: 0, y: 180, z: 0}
+  ziplineAngles: {x: 0, y: 0, z: 0}
+  heightOffset: 0
+  anglesOffset: -86.3
   fadeDistance: -1
   scale: 1
   width: 2
@@ -350,7 +354,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2681134594845396520}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5, y: -12, z: -54}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -448,7 +452,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3392606067464044917}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5, y: -100, z: -54}
+  m_LocalPosition: {x: 0, y: -180, z: 0}
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -580,7 +584,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8562730517170661930}
-  m_Father: {fileID: 5918809287686563973}
+  m_Father: {fileID: 4017111842507411686}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8223159493540157240

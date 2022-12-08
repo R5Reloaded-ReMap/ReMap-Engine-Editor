@@ -4,8 +4,9 @@ using UnityEditor;
 public class DrawVerticalZipline : MonoBehaviour
 {
     [Header("Dont change start and end transforms:")]
-    public Transform zipline_start;
-    public Transform zipline_end;
+    public Transform zipline;
+    public Transform rope_start;
+    public Transform rope_end;
 
     [Header("Settings:")]
     public bool ShowZipline = true;
@@ -13,6 +14,8 @@ public class DrawVerticalZipline : MonoBehaviour
     public bool ShowAutoDetachDistance = true;
 
     [Header("Zipline Parameters:")]
+    public Vector3 ziplinePosition;
+    public Vector3 ziplineAngles;
     public float heightOffset = 0;
     public float anglesOffset = 0;
     public float fadeDistance = -1;
@@ -32,29 +35,30 @@ public class DrawVerticalZipline : MonoBehaviour
     void OnDrawGizmos()
     {
         // Origin && Angles
-        zipline_end.position = new Vector3( zipline_start.position.x, heightOffset, zipline_start.position.z );
-        zipline_start.eulerAngles = new Vector3( 0, anglesOffset, 0 );
-        zipline_end.eulerAngles = zipline_start.eulerAngles;
+        rope_end.position = new Vector3( rope_start.position.x, heightOffset, rope_start.position.z );
+        rope_start.eulerAngles = new Vector3( 0, anglesOffset, 0 );
+        rope_end.eulerAngles = rope_start.eulerAngles;
+        zipline.position = ziplinePosition;
+        zipline.eulerAngles = ziplineAngles;
+        anglesOffset = anglesOffset % 360;
 
         // Show / Hide: Arrow
-        GameObject arrow = zipline_start.transform.Find("arrow").gameObject;
+        GameObject arrow = rope_start.transform.Find("arrow").gameObject;
         arrow.SetActive(true);
         if(!pushOffInDirectionX) arrow.SetActive(false);
-
-        anglesOffset = anglesOffset % 360;
 
         if(!ShowZipline)
             return;
 
-        float dist = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, zipline_start.position);
-        float dist2 = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, zipline_end.position);
+        float dist = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, rope_start.position);
+        float dist2 = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, rope_end.position);
         if(dist < ShowZiplineDistance || dist2 < ShowZiplineDistance)
         {
-            if (zipline_start != null && zipline_end != null)
+            if (rope_start != null && rope_end != null)
             {
                 // Draws a line from this transform to the target
-                var startPos = zipline_start.position;
-                var endPos = zipline_end.position;
+                var startPos = rope_start.position;
+                var endPos = rope_end.position;
                 var thickness = 3;
             
                 Handles.DrawBezier(startPos, endPos, startPos, endPos, Color.yellow, null, thickness);
@@ -62,7 +66,7 @@ public class DrawVerticalZipline : MonoBehaviour
                 if(ShowAutoDetachDistance)
                 {
                     // Draw Start Auto Detach
-                    var startDir = zipline_end.position - zipline_start.position;
+                    var startDir = rope_end.position - rope_start.position;
                     var startDistance = startDir.magnitude;
                     var startDirection = startDir / startDistance;
                     if(autoDetachStart < 0) autoDetachStart = 0;
@@ -70,7 +74,7 @@ public class DrawVerticalZipline : MonoBehaviour
                     if(autoDetachStart != 0) Handles.DrawBezier(startPos, startPos + startDirection * autoDetachStart, startPos, startPos + startDirection * autoDetachStart, Color.red, null, thickness);
 
                     // Draw End Auto Detach
-                    var endDir = zipline_start.position - zipline_end.position;
+                    var endDir = rope_start.position - rope_end.position;
                     var endDistance = endDir.magnitude;
                     var endDirection = endDir / endDistance;
                     if(autoDetachEnd < 0) autoDetachEnd = 0;

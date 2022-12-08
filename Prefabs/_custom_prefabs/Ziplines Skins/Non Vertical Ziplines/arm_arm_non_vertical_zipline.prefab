@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1662660209404718550}
+  - component: {fileID: 1985864728346009896}
   - component: {fileID: -2831368932557019463}
   m_Layer: 0
   m_Name: arm_arm_non_vertical_zipline
@@ -17,7 +17,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1662660209404718550
+--- !u!4 &1985864728346009896
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,11 +46,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6bb1b89e6f5c44baf323c51c06ba96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zipline_start: {fileID: 617796665275450797}
-  zipline_end: {fileID: 898032407702243266}
+  zipline_start: {fileID: 1985864728346009896}
+  zipline_end: {fileID: 6554928581716246346}
+  rope_start: {fileID: 617796665275450797}
+  rope_end: {fileID: 898032407702243266}
   ShowZipline: 1
   ShowZiplineDistance: 8000
   ShowAutoDetachDistance: 1
+  ziplineStartPosition: {x: 0, y: 0, z: 0}
+  ziplineStartAngles: {x: 0, y: 0, z: 0}
+  ziplineEndPosition: {x: 0, y: 0, z: -600}
+  ziplineEndAngles: {x: 0, y: 180, z: 0}
   fadeDistance: -1
   scale: 1
   width: 2
@@ -125,7 +131,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6693092697108926243}
-  m_Father: {fileID: 1662660209404718550}
+  m_Father: {fileID: 1985864728346009896}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6378750013499801844
@@ -154,8 +160,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6378750013499801844}
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 55.500008, y: -12, z: 4.2000084}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 55, y: -12, z: 4}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -248,13 +254,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6652233231519189877}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00000004371139}
   m_LocalPosition: {x: 0, y: 0, z: -600}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7959970511346355988}
-  m_Father: {fileID: 1662660209404718550}
+  m_Father: {fileID: 1985864728346009896}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &7603967260247792831
@@ -317,7 +323,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8004496867374884548}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 55.500008, y: -12, z: 4.2000084}
+  m_LocalPosition: {x: 55, y: -12, z: 4}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []

@@ -27,8 +27,8 @@ public class DrawVerticalZipline : MonoBehaviour
     public float lengthScale = 1;
     public bool preserveVelocity = false;
     public bool disableDropToBottom = true;
-    public float autoDetachStart = 100;
-    public float autoDetachEnd = 50;
+    public float autoDetachStart = 50;
+    public float autoDetachEnd = 25;
     public bool restPoint = false;
     public bool pushOffInDirectionX = true;
     public bool isMoving = false;

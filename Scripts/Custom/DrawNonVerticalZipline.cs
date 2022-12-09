@@ -4,8 +4,11 @@ using UnityEditor;
 public class DrawNonVerticalZipline : MonoBehaviour
 {
     [Header("Dont change start and end transforms:")]
-    public Transform zipline_start;
-    public Transform zipline_end;
+    public Transform zipline;
+    public Transform fence_post_start;
+    public Transform arm_start;
+    public Transform fence_post_end;
+    public Transform arm_end;
     public Transform rope_start;
     public Transform rope_end;
 
@@ -15,10 +18,8 @@ public class DrawNonVerticalZipline : MonoBehaviour
     public bool ShowAutoDetachDistance = true;
 
     [Header("Zipline Parameters:")]
-    public Vector3 ziplineStartPosition;
-    public Vector3 ziplineStartAngles;
-    public Vector3 ziplineEndPosition;
-    public Vector3 ziplineEndAngles;
+    public float armOffsetStart = 160;
+    public float armOffsetEnd = 160;
     public float fadeDistance = -1;
     public float scale = 1;
     public float width = 2;
@@ -35,10 +36,76 @@ public class DrawNonVerticalZipline : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        zipline_start.position = ziplineStartPosition;
-        zipline_start.eulerAngles = ziplineStartAngles;
-        zipline_end.position = ziplineEndPosition;
-        zipline_end.eulerAngles = ziplineEndAngles;
+        // Origin && Angles
+        // Start
+        GameObject support_start = zipline.transform.Find("support_start").gameObject;
+        GameObject support_end = zipline.transform.Find("support_end").gameObject;
+
+        if( fence_post_start != null )
+        {
+            fence_post_start.transform.SetParent(support_start.transform);
+            fence_post_start.transform.localPosition = new Vector3(0, 0, 0);
+            fence_post_start.transform.localEulerAngles = new Vector3(0, 0, 0);
+            arm_start.transform.SetParent(support_start.transform);
+            arm_start.transform.localPosition = new Vector3((float)0.8, armOffsetStart, 1);
+            arm_start.transform.localEulerAngles = new Vector3(0, 90, 0);
+            rope_start.SetParent(arm_start.transform);
+            rope_start.localPosition = new Vector3(55, -12, 4);
+
+            if(armOffsetStart < 46) armOffsetStart = 46;
+            if(armOffsetStart > 300) armOffsetStart = 300;
+        }
+
+        if( fence_post_start == null && arm_start != null )
+        {
+            arm_start.transform.SetParent(support_start.transform);
+            arm_start.transform.localPosition = new Vector3(0, 0, 0);
+            arm_start.transform.localEulerAngles = new Vector3(0, 90, 0);
+            rope_start.SetParent(arm_start.transform);
+            rope_start.localPosition = new Vector3(55, -12, 4);
+            armOffsetStart = 0;
+        }
+
+        if( arm_start == null )
+        {
+            rope_start.SetParent(support_start.transform);
+            rope_start.localPosition = new Vector3(0, 0, 0);
+            armOffsetStart = 0;
+        }
+
+        // End
+        if( fence_post_end != null )
+        {
+            fence_post_end.transform.SetParent(support_end.transform);
+            fence_post_end.transform.localPosition = new Vector3(0, 0, 0);
+            fence_post_end.transform.localEulerAngles = new Vector3(0, 0, 0);
+            arm_end.transform.SetParent(support_end.transform);
+            arm_end.transform.localPosition = new Vector3((float)0.8, armOffsetEnd, 1);
+            arm_end.transform.localEulerAngles = new Vector3(0, 90, 0);
+            rope_end.SetParent(arm_end.transform);
+            rope_end.localPosition = new Vector3(55, -12, 4);
+
+            if(armOffsetEnd < 46) armOffsetEnd = 46;
+            if(armOffsetEnd > 300) armOffsetEnd = 300;
+        }
+
+        if( fence_post_end == null && arm_end != null )
+        {
+            arm_end.transform.SetParent(support_end.transform);
+            arm_end.transform.localPosition = new Vector3(0, 0, 0);
+            arm_end.transform.localEulerAngles = new Vector3(0, 90, 0);
+            rope_end.SetParent(arm_end.transform);
+            rope_end.localPosition = new Vector3(55, -12, 4);
+            armOffsetEnd = 0;
+        }
+
+        if( arm_end == null )
+        {
+            rope_end.SetParent(support_end.transform);
+            rope_end.localPosition = new Vector3(0, 0, 0);
+            armOffsetEnd = 0;
+        }
+
 
         if(!ShowZipline)
             return;

@@ -56,7 +56,7 @@ public class CopyPasteCode : EditorWindow
         GUILayout.BeginVertical("box");
         OnlyExportMap = EditorGUILayout.Toggle("Only Show Map Code", OnlyExportMap);
         UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
-        DisableStartingOffsetString = EditorGUILayout.Toggle("Don't Show Startingorg", DisableStartingOffsetString);
+        if(UseStartingOffset) DisableStartingOffsetString = EditorGUILayout.Toggle("Don't Show Startingorg", DisableStartingOffsetString);
         GUILayout.EndVertical();
 
         if (text.Length > Helper.maxBuildLength)

@@ -3,14 +3,14 @@ using UnityEditor;
 
 public class DrawNonVerticalZipline : MonoBehaviour
 {
-    [Header("Dont change start and end transforms:")]
-    public Transform zipline;
-    public Transform fence_post_start;
-    public Transform arm_start;
-    public Transform fence_post_end;
-    public Transform arm_end;
-    public Transform rope_start;
-    public Transform rope_end;
+    [Header("Do not change all the transformations:")]
+    [HideInInspector] public Transform zipline;
+    [HideInInspector] public Transform fence_post_start;
+    [HideInInspector] public Transform arm_start;
+    [HideInInspector] public Transform fence_post_end;
+    [HideInInspector] public Transform arm_end;
+    [HideInInspector] public Transform rope_start;
+    [HideInInspector] public Transform rope_end;
 
     [Header("Settings:")]
     public bool ShowZipline = true;

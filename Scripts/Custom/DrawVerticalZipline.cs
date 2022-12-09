@@ -4,11 +4,12 @@ using UnityEditor;
 public class DrawVerticalZipline : MonoBehaviour
 {
     [Header("Do not change all the transformations:")]
-    public Transform zipline;
-    public Transform fence_post;
-    public Transform arm;
-    public Transform rope_start;
-    public Transform rope_end;
+
+    [HideInInspector] public Transform zipline;
+    [HideInInspector] public Transform fence_post;
+    [HideInInspector] public Transform arm;
+    [HideInInspector] public Transform rope_start;
+    [HideInInspector] public Transform rope_end;
 
     [Header("Settings:")]
     public bool ShowZipline = true;

@@ -12,7 +12,7 @@ public class DrawNonVerticalZipline : MonoBehaviour
     [HideInInspector] public Transform rope_start;
     [HideInInspector] public Transform rope_end;
 
-    [Header("Settings:")]
+    [Header("Unity Settings:")]
     public bool ShowZipline = true;
     public float ShowZiplineDistance = 8000;
     public bool ShowAutoDetachDistance = true;

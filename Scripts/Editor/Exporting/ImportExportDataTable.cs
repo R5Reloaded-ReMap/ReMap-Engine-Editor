@@ -53,7 +53,7 @@ public class ImportExportDataTable
     private static void ExportDataTable()
     {
         var path = EditorUtility.SaveFilePanel("Datatable Export", "", "mapexport.csv", "csv");
-        if (path.Length != 0)
+        if (path.Length == 0)
             return;
 
         Helper.FixPropTags();

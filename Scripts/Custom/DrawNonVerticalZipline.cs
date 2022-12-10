@@ -1,25 +1,31 @@
+#define CONDITION_NAME
+
 using UnityEngine;
 using UnityEditor;
+using System.Diagnostics;
 
 public class DrawNonVerticalZipline : MonoBehaviour
 {
-    [Header("Do not change all the transformations:")]
-    [HideInInspector] public Transform zipline;
-    [HideInInspector] public Transform fence_post_start;
-    [HideInInspector] public Transform arm_start;
-    [HideInInspector] public Transform fence_post_end;
-    [HideInInspector] public Transform arm_end;
-    [HideInInspector] public Transform rope_start;
-    [HideInInspector] public Transform rope_end;
+    [Header("Developer options, do not modify:")]
+    public bool ShowDevelopersOptions = false;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform zipline;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform fence_post_start;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform arm_start;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform fence_post_end;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform arm_end;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_start;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_end;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform helperPlacement_start;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform helperPlacement_end;
 
     [Header("Unity Settings:")]
     public bool ShowZipline = true;
-    public float ShowZiplineDistance = 8000;
-    public bool ShowAutoDetachDistance = true;
+    [ConditionalHide("ShowZipline", true)] public float ShowZiplineDistance = 8000;
+    [ConditionalHide("ShowZipline", true)] public bool ShowAutoDetachDistance = true;
 
     [Header("Zipline Parameters:")]
-    public float armOffsetStart = 160;
-    public float armOffsetEnd = 160;
+    [ConditionalHide("ShowArmOffsetStart", true)] public float armOffsetStart = 160;
+    [ConditionalHide("ShowArmOffsetEnd", true)] public float armOffsetEnd = 160;
     public float fadeDistance = -1;
     public float scale = 1;
     public float width = 2;
@@ -33,6 +39,10 @@ public class DrawNonVerticalZipline : MonoBehaviour
     public bool pushOffInDirectionX = false;
     public bool isMoving = false;
 
+    // If true show the param
+    [HideInInspector] public bool ShowArmOffsetStart = false;
+    [HideInInspector] public bool ShowArmOffsetEnd = false;
+
 
     void OnDrawGizmos()
     {
@@ -41,8 +51,13 @@ public class DrawNonVerticalZipline : MonoBehaviour
         GameObject support_start = zipline.transform.Find("support_start").gameObject;
         GameObject support_end = zipline.transform.Find("support_end").gameObject;
 
+        if (helperPlacement_start != null) support_start.transform.position = helperPlacement_start.position;
+        if(helperPlacement_end != null) support_end.transform.position = helperPlacement_end.position;
+
         if( fence_post_start != null )
         {
+            ShowArmOffsetStart = true;
+
             fence_post_start.transform.SetParent(support_start.transform);
             fence_post_start.transform.localPosition = new Vector3(0, 0, 0);
             fence_post_start.transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -64,7 +79,7 @@ public class DrawNonVerticalZipline : MonoBehaviour
             rope_start.SetParent(arm_start.transform);
             rope_start.localPosition = new Vector3(55, -12, 4);
             armOffsetStart = 0;
-        }
+}
 
         if( arm_start == null )
         {
@@ -76,6 +91,8 @@ public class DrawNonVerticalZipline : MonoBehaviour
         // End
         if( fence_post_end != null )
         {
+            ShowArmOffsetEnd = true;
+
             fence_post_end.transform.SetParent(support_end.transform);
             fence_post_end.transform.localPosition = new Vector3(0, 0, 0);
             fence_post_end.transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -128,7 +145,7 @@ public class DrawNonVerticalZipline : MonoBehaviour
                 //if(lengthScale < 0.90) length = new Vector3( 0, 0, 0 );
                 //Handles.DrawBezier(startPos, endPos, startPos + length, endPos + length, Color.yellow, null, thickness);
 
-                if(ShowAutoDetachDistance)
+                if(ShowAutoDetachDistance && Vector3.Distance(startPos, endPos) > 200)
                 {
                     // Draw Start Auto Detach
                     var startDir = rope_end.position - rope_start.position;

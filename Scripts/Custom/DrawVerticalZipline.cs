@@ -3,23 +3,24 @@ using UnityEditor;
 
 public class DrawVerticalZipline : MonoBehaviour
 {
-    [Header("Do not change all the transformations:")]
-
-    [HideInInspector] public Transform zipline;
-    [HideInInspector] public Transform fence_post;
-    [HideInInspector] public Transform arm;
-    [HideInInspector] public Transform rope_start;
-    [HideInInspector] public Transform rope_end;
+    [Header("Developer options, do not modify:")]
+    public bool ShowDevelopersOptions = false;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform zipline;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform fence_post;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform arm;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_start;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_end;
+    [ConditionalHide("ShowDevelopersOptions", true)] public Transform helperPlacement;
 
     [Header("Unity Settings:")]
     public bool ShowZipline = true;
-    public float ShowZiplineDistance = 8000;
-    public bool ShowAutoDetachDistance = true;
+    [ConditionalHide("ShowZipline", true)] public float ShowZiplineDistance = 8000;
+    [ConditionalHide("ShowZipline", true)] public bool ShowAutoDetachDistance = true;
 
     [Header("Zipline Parameters:")]
-    public float armOffset = 180;
+    [ConditionalHide("ShowArmOffset", true)] public float armOffset = 180;
     public float heightOffset = 0;
-    public float anglesOffset = 0;
+    [ConditionalHide("pushOffInDirectionX", true)] public float anglesOffset = 0;
     public float fadeDistance = -1;
     public float scale = 1;
     public float width = 2;
@@ -33,6 +34,9 @@ public class DrawVerticalZipline : MonoBehaviour
     public bool pushOffInDirectionX = true;
     public bool isMoving = false;
 
+    // If true show the param
+    [HideInInspector] public bool ShowArmOffset = false;
+
 
     void OnDrawGizmos()
     {
@@ -44,8 +48,12 @@ public class DrawVerticalZipline : MonoBehaviour
         support_start.transform.position = zipline.position;
         support_start.transform.eulerAngles = zipline.eulerAngles;
 
+        if(helperPlacement != null) zipline.position = helperPlacement.position;
+
         if( fence_post != null )
         {
+            ShowArmOffset = true;
+
             fence_post.transform.SetParent(support_start.transform);
             fence_post.transform.localPosition = new Vector3(0, 0, 0);
             fence_post.transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -90,7 +98,7 @@ public class DrawVerticalZipline : MonoBehaviour
         arrow.SetActive(true);
         if(!pushOffInDirectionX) arrow.SetActive(false);
 
-        if(!ShowZipline)
+        if (!ShowZipline)
             return;
 
         float dist = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, rope_start.position);

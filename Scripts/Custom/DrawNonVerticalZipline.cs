@@ -32,12 +32,14 @@ public class DrawNonVerticalZipline : MonoBehaviour
     public float speedScale = 1;
     public float lengthScale = 1;
     public bool preserveVelocity = false;
-    public bool disableDropToBottom = true;
+    public bool dropToBottom = false;
     public float autoDetachStart = 150;
     public float autoDetachEnd = 150;
     public bool restPoint = false;
     public bool pushOffInDirectionX = false;
     public bool isMoving = false;
+    public bool detachEndOnSpawn = false;
+    public bool detachEndOnUse = false;
 
     // If true show the param
     [HideInInspector] public bool ShowArmOffsetStart = false;

@@ -197,19 +197,23 @@ public class Build
             if (ziplineScript == null)
                 continue;
 
-            string preservevelocity = "false";
-            string disabledroptobottom = "false";
+            int preservevelocity = 0;
+            int dropToBottom = 0;
             string restpoint = "false";
-            string pushoffindirectionx = "false";
+            int pushoffindirectionx = 0;
             string ismoving = "false";
+            int detachEndOnSpawn = 0;
+            int detachEndOnUse = 0;
 
-            if (ziplineScript.preserveVelocity) preservevelocity = "true";
-            if (ziplineScript.disableDropToBottom) disabledroptobottom = "true";
+            if (ziplineScript.preserveVelocity) preservevelocity = 1;
+            if (ziplineScript.dropToBottom) dropToBottom = 1;
             if (ziplineScript.restPoint) restpoint = "true";
-            if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = "true";
+            if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = 1;
             if (ziplineScript.isMoving) ismoving = "true";
+            if (ziplineScript.detachEndOnSpawn) detachEndOnSpawn = 1;
+            if (ziplineScript.detachEndOnUse) detachEndOnUse = 1;
 
-            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {disabledroptobottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving} )" + "\n";
+            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse} )" + "\n";
 
         }
 
@@ -233,19 +237,23 @@ public class Build
             if (ziplineScript == null)
                 continue;
 
-            string preservevelocity = "false";
-            string disabledroptobottom = "false";
+            int preservevelocity = 0;
+            int dropToBottom = 0;
             string restpoint = "false";
-            string pushoffindirectionx = "false";
+            int pushoffindirectionx = 0;
             string ismoving = "false";
+            int detachEndOnSpawn = 0;
+            int detachEndOnUse = 0;
 
-            if (ziplineScript.preserveVelocity) preservevelocity = "true";
-            if (ziplineScript.disableDropToBottom) disabledroptobottom = "true";
+            if (ziplineScript.preserveVelocity) preservevelocity = 1;
+            if (ziplineScript.dropToBottom) dropToBottom = 1;
             if (ziplineScript.restPoint) restpoint = "true";
-            if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = "true";
+            if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = 1;
             if (ziplineScript.isMoving) ismoving = "true";
+            if (ziplineScript.detachEndOnSpawn) detachEndOnSpawn = 1;
+            if (ziplineScript.detachEndOnUse) detachEndOnUse = 1;
 
-            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, false, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {disabledroptobottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving} )" + "\n";
+            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse} )" + "\n";
         }
 
         code += "\n";

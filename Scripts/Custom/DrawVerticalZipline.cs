@@ -27,12 +27,15 @@ public class DrawVerticalZipline : MonoBehaviour
     public float speedScale = 1;
     public float lengthScale = 1;
     public bool preserveVelocity = false;
-    public bool disableDropToBottom = true;
+    public bool dropToBottom = true;
     public float autoDetachStart = 50;
     public float autoDetachEnd = 25;
     public bool restPoint = false;
     public bool pushOffInDirectionX = true;
     public bool isMoving = false;
+    public bool detachEndOnSpawn = false;
+    public bool detachEndOnUse = false;
+    //public Transform[] panels;
 
     // If true show the param
     [HideInInspector] public bool ShowArmOffset = false;

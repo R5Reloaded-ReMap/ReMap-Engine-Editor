@@ -162,9 +162,7 @@ public class Build
                 first = false;
             }
 
-            string smoothType = "GetAllPointsOnBezier";
-            if (!script.smoothType)
-                smoothType = "GetBezierOfPath";
+            string smoothType = script.smoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
 
             nodes += " ]";
 
@@ -197,24 +195,16 @@ public class Build
             if (ziplineScript == null)
                 continue;
 
-            int preservevelocity = 0;
-            int dropToBottom = 0;
-            string restpoint = "false";
-            int pushoffindirectionx = 0;
-            string ismoving = "false";
-            int detachEndOnSpawn = 0;
-            int detachEndOnUse = 0;
+            int preservevelocity = ziplineScript.preserveVelocity ? 1 : 0;
+            int dropToBottom = ziplineScript.dropToBottom ? 1 : 0;
+            string restpoint = ziplineScript.restPoint.ToString().ToLower();
+            int pushoffindirectionx = ziplineScript.pushOffInDirectionX ? 1 : 0;
+            string ismoving = ziplineScript.isMoving.ToString().ToLower();
+            int detachEndOnSpawn = ziplineScript.detachEndOnSpawn ? 1 : 0;
+            int detachEndOnUse = ziplineScript.detachEndOnUse ? 1 : 0;
             float panelTimerMin = ziplineScript.panelTimerMin;
             float panelTimerMax = ziplineScript.panelTimerMax;
             int panelMaxUse = ziplineScript.panelMaxUse;
-
-            if (ziplineScript.preserveVelocity) preservevelocity = 1;
-            if (ziplineScript.dropToBottom) dropToBottom = 1;
-            if (ziplineScript.restPoint) restpoint = "true";
-            if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = 1;
-            if (ziplineScript.isMoving) ismoving = "true";
-            if (ziplineScript.detachEndOnSpawn) detachEndOnSpawn = 1;
-            if (ziplineScript.detachEndOnUse) detachEndOnUse = 1;
 
             string panelOrigin = "[";
             string panelAngles = "[";
@@ -261,24 +251,16 @@ public class Build
             if (ziplineScript == null)
                 continue;
 
-            int preservevelocity = 0;
-            int dropToBottom = 0;
-            string restpoint = "false";
-            int pushoffindirectionx = 0;
-            string ismoving = "false";
-            int detachEndOnSpawn = 0;
-            int detachEndOnUse = 0;
+            int preservevelocity = ziplineScript.preserveVelocity ? 1 : 0;
+            int dropToBottom = ziplineScript.dropToBottom ? 1 : 0;
+            string restpoint = ziplineScript.restPoint.ToString().ToLower();
+            int pushoffindirectionx = ziplineScript.pushOffInDirectionX ? 1 : 0;
+            string ismoving = ziplineScript.isMoving.ToString().ToLower();
+            int detachEndOnSpawn = ziplineScript.detachEndOnSpawn ? 1 : 0;
+            int detachEndOnUse = ziplineScript.detachEndOnUse ? 1 : 0;
             float panelTimerMin = ziplineScript.panelTimerMin;
             float panelTimerMax = ziplineScript.panelTimerMax;
             int panelMaxUse = ziplineScript.panelMaxUse;
-
-            if (ziplineScript.preserveVelocity) preservevelocity = 1;
-            if (ziplineScript.dropToBottom) dropToBottom = 1;
-            if (ziplineScript.restPoint) restpoint = "true";
-            if (ziplineScript.pushOffInDirectionX) pushoffindirectionx = 1;
-            if (ziplineScript.isMoving) ismoving = "true";
-            if (ziplineScript.detachEndOnSpawn) detachEndOnSpawn = 1;
-            if (ziplineScript.detachEndOnUse) detachEndOnUse = 1;
 
             string panelOrigin = "[";
             string panelAngles = "[";

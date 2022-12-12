@@ -204,6 +204,9 @@ public class Build
             string ismoving = "false";
             int detachEndOnSpawn = 0;
             int detachEndOnUse = 0;
+            float panelTimerMin = ziplineScript.panelTimerMin;
+            float panelTimerMax = ziplineScript.panelTimerMax;
+            int panelMaxUse = ziplineScript.panelMaxUse;
 
             if (ziplineScript.preserveVelocity) preservevelocity = 1;
             if (ziplineScript.dropToBottom) dropToBottom = 1;
@@ -213,8 +216,29 @@ public class Build
             if (ziplineScript.detachEndOnSpawn) detachEndOnSpawn = 1;
             if (ziplineScript.detachEndOnUse) detachEndOnUse = 1;
 
-            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse} )" + "\n";
+            string panelOrigin = "[";
+            string panelAngles = "[";
+            string panelModel = "[";
 
+            for(int i = 0; i < ziplineScript.panels.Length; i++ )
+            {
+                panelOrigin += " " + Helper.BuildOrigin(ziplineScript.panels[i]) + Helper.ShouldAddStartingOrg();
+                panelAngles += " " + Helper.BuildAngles(ziplineScript.panels[i]);
+                panelModel += " $\"mdl/" + ziplineScript.panels[i].name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl\"";
+
+                if (i != ziplineScript.panels.Length - 1)
+                {
+                    panelOrigin += ",";
+                    panelAngles += ",";
+                    panelModel += ",";
+                }
+            }
+
+            panelOrigin += " ]";
+            panelAngles += " ]";
+            panelModel += " ]";
+
+            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {panelTimerMin}, {panelTimerMax}, {panelMaxUse} )" + "\n";
         }
 
         code += "\n";
@@ -244,6 +268,9 @@ public class Build
             string ismoving = "false";
             int detachEndOnSpawn = 0;
             int detachEndOnUse = 0;
+            float panelTimerMin = ziplineScript.panelTimerMin;
+            float panelTimerMax = ziplineScript.panelTimerMax;
+            int panelMaxUse = ziplineScript.panelMaxUse;
 
             if (ziplineScript.preserveVelocity) preservevelocity = 1;
             if (ziplineScript.dropToBottom) dropToBottom = 1;
@@ -253,7 +280,29 @@ public class Build
             if (ziplineScript.detachEndOnSpawn) detachEndOnSpawn = 1;
             if (ziplineScript.detachEndOnUse) detachEndOnUse = 1;
 
-            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse} )" + "\n";
+            string panelOrigin = "[";
+            string panelAngles = "[";
+            string panelModel = "[";
+
+            for (int i = 0; i < ziplineScript.panels.Length; i++)
+            {
+                panelOrigin += " " + Helper.BuildOrigin(ziplineScript.panels[i]) + Helper.ShouldAddStartingOrg();
+                panelAngles += " " + Helper.BuildAngles(ziplineScript.panels[i]);
+                panelModel += " $\"mdl/" + ziplineScript.panels[i].name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl\"";
+
+                if (i != ziplineScript.panels.Length - 1)
+                {
+                    panelOrigin += ",";
+                    panelAngles += ",";
+                    panelModel += ",";
+                }
+            }
+
+            panelOrigin += " ]";
+            panelAngles += " ]";
+            panelModel += " ]";
+
+            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, false, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {panelTimerMin}, {panelTimerMax}, {panelMaxUse} )" + "\n";
         }
 
         code += "\n";

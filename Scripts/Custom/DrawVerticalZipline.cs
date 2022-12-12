@@ -35,7 +35,12 @@ public class DrawVerticalZipline : MonoBehaviour
     public bool isMoving = false;
     public bool detachEndOnSpawn = false;
     public bool detachEndOnUse = false;
-    //public Transform[] panels;
+
+    [Header("Panels:")]
+    public GameObject[] panels;
+    public float panelTimerMin = 32;
+    public float panelTimerMax = 60;
+    public int panelMaxUse = 0;
 
     // If true show the param
     [HideInInspector] public bool ShowArmOffset = false;
@@ -100,6 +105,14 @@ public class DrawVerticalZipline : MonoBehaviour
         GameObject arrow = rope_start.transform.Find("arrow").gameObject;
         arrow.SetActive(true);
         if(!pushOffInDirectionX) arrow.SetActive(false);
+
+        foreach ( GameObject go in panels)
+        {
+            if(go.name.Contains("mdl#"))
+            {
+                go.name = go.name.Split(char.Parse(" "))[0].Replace("mdl#", "");
+            }
+        }
 
         if (!ShowZipline)
             return;

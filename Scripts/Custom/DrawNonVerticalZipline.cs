@@ -41,6 +41,12 @@ public class DrawNonVerticalZipline : MonoBehaviour
     public bool detachEndOnSpawn = false;
     public bool detachEndOnUse = false;
 
+    [Header("Panels:")]
+    public GameObject[] panels;
+    public float panelTimerMin = 32;
+    public float panelTimerMax = 60;
+    public int panelMaxUse = 0;
+
     // If true show the param
     [HideInInspector] public bool ShowArmOffsetStart = false;
     [HideInInspector] public bool ShowArmOffsetEnd = false;
@@ -125,8 +131,15 @@ public class DrawNonVerticalZipline : MonoBehaviour
             armOffsetEnd = 0;
         }
 
+        foreach (GameObject go in panels)
+        {
+            if (go.name.Contains("mdl#"))
+            {
+                go.name = go.name.Split(char.Parse(" "))[0].Replace("mdl#", "");
+            }
+        }
 
-        if(!ShowZipline)
+        if (!ShowZipline)
             return;
 
         float dist = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, rope_start.position);

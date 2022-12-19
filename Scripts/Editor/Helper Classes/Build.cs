@@ -337,7 +337,7 @@ public class Build
         string code = "    //Vertical Doors \n";
 
         foreach (GameObject go in VertDoorObjects)
-            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Vertical)" + "\n";
+            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Vertical )" + "\n";
 
         code += "\n";
 
@@ -353,7 +353,7 @@ public class Build
         string code = "    //Horizontal Doors \n";
 
         foreach (GameObject go in HorzDoorObjects)
-            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Horizontal)" + "\n";
+            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Horizontal )" + "\n";
 
         code += "\n";
 

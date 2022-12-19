@@ -535,7 +535,7 @@ public class Build
         buildent += "\"classname\" \"" + "ambient_generic" + "\"\n";
         
         
-        buildent += "}";
+        buildent += "}\n";
         
         return buildent;
     }

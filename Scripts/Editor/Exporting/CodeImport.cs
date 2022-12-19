@@ -4,11 +4,22 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 
 public class CodeImport : EditorWindow
 {
     static string text = "";
     static Vector2 scroll;
+
+    List<String> Props = new List<String>();
+    List<String> JumpPads = new List<String>();
+    List<String> BubbleSheilds = new List<String>();
+    List<String> WeaponRacks = new List<String>();
+    List<String> LootBins = new List<String>();
+    List<String> Ziplines = new List<String>();
+    List<String> LinkedZiplines = new List<String>();
+    List<String> Doors = new List<String>();
+    List<String> Triggers = new List<String>();
 
     [MenuItem("R5Reloaded/Import Map Code", false, 100)]
     static void Init()
@@ -26,17 +37,34 @@ public class CodeImport : EditorWindow
             ImportMapCode();
     }
 
-    void ImportMapCode()
+    async void ImportMapCode()
     {
-        List<String> Props = new List<String>();
-        List<String> JumpPads = new List<String>();
-        List<String> BubbleSheilds = new List<String>();
-        List<String> WeaponRacks = new List<String>();
-        List<String> LootBins = new List<String>();
-        List<String> Ziplines = new List<String>();
-        List<String> LinkedZiplines = new List<String>();
-        List<String> Doors = new List<String>();
-        List<String> Triggers = new List<String>();
+        Props.Clear();
+        JumpPads.Clear();
+        BubbleSheilds.Clear();
+        WeaponRacks.Clear();
+        LootBins.Clear();
+        Ziplines.Clear();
+        LinkedZiplines.Clear();
+        Doors.Clear();
+        Triggers.Clear();
+
+        await BuildImportList();
+        await ImportProps();
+        await ImportJumpPads();
+        await ImportBubbleSheilds();
+        await ImportWeaponRacks();
+        await ImportLootBins();
+        await ImportZiplines();
+        await ImportDoors();
+        await ImportTriggers();
+
+        EditorUtility.ClearProgressBar();
+    }
+
+    async Task BuildImportList()
+    {
+        EditorUtility.DisplayProgressBar("Building Import List", "Building...", 0.0f);
 
         string[] lines = text.Split(char.Parse("\n"));
         foreach(string line in lines) {
@@ -60,66 +88,29 @@ public class CodeImport : EditorWindow
                 Triggers.Add(line.Replace("MapEditor_CreateTrigger(", "").Replace(" )", "").Replace(" ", ""));
         }
 
-        if(Props.Count > 0) {
+        await Task.Delay(TimeSpan.FromSeconds(0.001));
+    }
+
+    async Task ImportProps()
+    {
+        if(Props.Count == 0)
+            return;
+
+        GameObject find = GameObject.Find("Props");
+        if (find == null)
+        {
             GameObject objToSpawn = new GameObject("Props");
             objToSpawn.name = "Props";
         }
 
-        if(JumpPads.Count > 0) {
-            GameObject objToSpawn = new GameObject("JumpPads");
-            objToSpawn.name = "JumpPads";
-        }
-
-        if(BubbleSheilds.Count > 0) {
-            GameObject objToSpawn = new GameObject("BubbleSheilds");
-            objToSpawn.name = "BubbleSheilds";
-        }
-
-        if(WeaponRacks.Count > 0) {
-            GameObject objToSpawn = new GameObject("WeaponRacks");
-            objToSpawn.name = "WeaponRacks";
-        }
-
-        if(LootBins.Count > 0) {
-            GameObject objToSpawn = new GameObject("LootBins");
-            objToSpawn.name = "LootBins";
-        }
-
-        if(Ziplines.Count > 0 || LinkedZiplines.Count > 0) {
-            GameObject objToSpawn = new GameObject("Ziplines");
-            objToSpawn.name = "Ziplines";
-        }
-
-        if(Doors.Count > 0) {
-            GameObject objToSpawn = new GameObject("Doors");
-            objToSpawn.name = "Doors";
-        }
-
-        if(Triggers.Count > 0) {
-            GameObject objToSpawn = new GameObject("Triggers");
-            objToSpawn.name = "Triggers";
-        }
-
-        ImportProps(Props);
-        ImportJumpPads(JumpPads);
-        ImportBubbleSheilds(BubbleSheilds);
-        ImportWeaponRacks(WeaponRacks);
-        ImportLootBins(LootBins);
-        ImportZiplines(Ziplines, LinkedZiplines);
-        ImportDoors(Doors);
-        ImportTriggers(Triggers);
-    }
-
-    void ImportProps(List<String> Props)
-    {
-        if(Props.Count == 0)
-            return;
-        
+        int i = 0;
         foreach(string prop in Props)
         {
             string[] split = prop.Split(char.Parse(","));
             if (split.Length < 11)
                 continue;
+
+            EditorUtility.DisplayProgressBar("Importing Props", "Importing: " + split[0], (i + 1) / (float)Props.Count);
 
             string Model = split[0].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "").Replace("$", "");
 
@@ -147,19 +138,32 @@ public class CodeImport : EditorWindow
             GameObject parent = GameObject.Find("Props");
             if (parent != null)
                 obj.gameObject.transform.parent = parent.transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
         }
     }
 
-    void ImportBubbleSheilds(List<String> BubbleSheilds)
+    async Task ImportBubbleSheilds()
     {
         if(BubbleSheilds.Count == 0)
             return;
+
+        GameObject find = GameObject.Find("BubbleSheilds");
+        if (find == null)
+        {
+            GameObject objToSpawn = new GameObject("BubbleSheilds");
+            objToSpawn.name = "BubbleSheilds";
+        }
         
+        int i = 0;
         foreach(string bsheild in BubbleSheilds)
         {
             string[] split = bsheild.Split(char.Parse(","));
             if (split.Length < 9)
                 continue;
+
+            EditorUtility.DisplayProgressBar("Importing BubbleSheilds", "Importing: BubbleSheild" + i, (i + 1) / (float)BubbleSheilds.Count);
 
             string Model = split[8].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "").Replace("$", "").Replace(" ", "");
 
@@ -188,19 +192,32 @@ public class CodeImport : EditorWindow
             GameObject parent = GameObject.Find("BubbleSheilds");
             if (parent != null)
                 obj.gameObject.transform.parent = parent.transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
         }
     }
 
-    void ImportJumpPads(List<String> JumpPads)
+    async Task ImportJumpPads()
     {
         if(JumpPads.Count == 0)
             return;
-        
+
+        GameObject find = GameObject.Find("JumpPads");
+        if (find == null)
+        {
+            GameObject objToSpawn = new GameObject("JumpPads");
+            objToSpawn.name = "JumpPads";
+        }
+
+        int i = 0;
         foreach(string jumppad in JumpPads)
         {
             string[] split = jumppad.Split(char.Parse(","));
             if (split.Length < 7)
                 continue;
+
+            EditorUtility.DisplayProgressBar("Importing Jumppads", "Importing: Jumppad" + i, (i + 1) / (float)JumpPads.Count);
 
             string Model = "custom_jumppad";
 
@@ -228,19 +245,32 @@ public class CodeImport : EditorWindow
             GameObject parent = GameObject.Find("JumpPads");
             if (parent != null)
                 obj.gameObject.transform.parent = parent.transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
         }
     }
 
-    void ImportLootBins(List<String> LootBins)
+    async Task ImportLootBins()
     {
         if(LootBins.Count == 0)
             return;
+
+        GameObject find = GameObject.Find("LootBins");
+        if (find == null)
+        {
+            GameObject objToSpawn = new GameObject("LootBins");
+            objToSpawn.name = "LootBins";
+        }
         
+        int i = 0;
         foreach(string bin in LootBins)
         {
             string[] split = bin.Split(char.Parse(","));
             if (split.Length < 7)
                 continue;
+
+            EditorUtility.DisplayProgressBar("Importing Lootbins", "Importing: Lootbin" + i, (i + 1) / (float)LootBins.Count);
 
             string Model = "custom_lootbin";
 
@@ -265,14 +295,25 @@ public class CodeImport : EditorWindow
             GameObject parent = GameObject.Find("LootBins");
             if (parent != null)
                 obj.gameObject.transform.parent = parent.transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
         }
     }
 
-    void ImportWeaponRacks(List<String> WeaponRacks)
+    async Task ImportWeaponRacks()
     {
         if(WeaponRacks.Count == 0)
             return;
+
+        GameObject find = GameObject.Find("WeaponRacks");
+        if (find == null)
+        {
+            GameObject objToSpawn = new GameObject("WeaponRacks");
+            objToSpawn.name = "WeaponRacks";
+        }
         
+        int i = 0;
         foreach(string wrack in WeaponRacks)
         {
             string[] split = wrack.Split(char.Parse(","));
@@ -280,6 +321,8 @@ public class CodeImport : EditorWindow
                 continue;
 
             string Model = split[6].Replace("\"", "").Replace("mp_weapon_", "custom_weaponrack_");
+
+            EditorUtility.DisplayProgressBar("Importing WeaponRacks", "Importing: " + Model, (i + 1) / (float)WeaponRacks.Count);
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(Model);
@@ -302,18 +345,34 @@ public class CodeImport : EditorWindow
             GameObject parent = GameObject.Find("WeaponRacks");
             if (parent != null)
                 obj.gameObject.transform.parent = parent.transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
         }
     }
 
-    void ImportZiplines(List<String> ZipLines, List<String> LinkedZiplines)
+    async Task ImportZiplines()
     {
-        if (ZipLines.Count != 0)
+        if(Ziplines.Count == 0 && LinkedZiplines.Count == 0)
+            return;
+
+        GameObject find = GameObject.Find("Ziplines");
+        if (find == null)
         {
-            foreach (string zip in ZipLines)
+            GameObject objToSpawn = new GameObject("Ziplines");
+            objToSpawn.name = "Ziplines";
+        }
+
+        if (Ziplines.Count != 0)
+        {
+            int i = 0;
+            foreach (string zip in Ziplines)
             {
                 string[] split = zip.Split(char.Parse(","));
                 if (split.Length < 6)
                     continue;
+
+                EditorUtility.DisplayProgressBar("Importing Ziplines", "Importing: custom_zipline " + i, (i + 1) / (float)Ziplines.Count);
 
                 string Model = "custom_zipline";
 
@@ -339,11 +398,15 @@ public class CodeImport : EditorWindow
                 GameObject parent = GameObject.Find("Ziplines");
                 if (parent != null)
                     obj.gameObject.transform.parent = parent.transform;
+
+                await Task.Delay(TimeSpan.FromSeconds(0.001));
+                i++;
             }
         }
 
         if (LinkedZiplines.Count != 0)
         {
+            int f = 0;
             foreach(string zip in LinkedZiplines)
             {
                 bool isSmoothed = false;
@@ -363,6 +426,8 @@ public class CodeImport : EditorWindow
 
                 string finishedzip = zip.Replace("GetAllPointsOnBezier(", "").Replace("GetBezierOfPath(", "").Replace(")", "").Replace("[", "").Replace("]", "").Replace(">,<", ":");
                 string[] split = finishedzip.Split(char.Parse(":"));
+
+                EditorUtility.DisplayProgressBar("Importing Linked Ziplines", "Importing: custom_linked_zipline " + f, (f + 1) / (float)LinkedZiplines.Count);
 
                 GameObject obj = new GameObject("custom_linked_zipline");
                 obj.AddComponent<DrawLinkedZipline>();
@@ -391,15 +456,26 @@ public class CodeImport : EditorWindow
                 GameObject parent = GameObject.Find("Ziplines");
                 if (parent != null)
                     obj.gameObject.transform.parent = parent.transform;
+
+                await Task.Delay(TimeSpan.FromSeconds(0.001));
+                f++;
             }   
         }
     }
 
-    void ImportDoors(List<String> Doors)
+    async Task ImportDoors()
     {
         if(Doors.Count == 0)
             return;
+
+        GameObject find = GameObject.Find("Doors");
+        if (find == null)
+        {
+            GameObject objToSpawn = new GameObject("Doors");
+            objToSpawn.name = "Doors";
+        }
         
+        int i = 0;
         foreach(string door in Doors)
         {
             string[] split = door.Split(char.Parse(","));
@@ -423,6 +499,8 @@ public class CodeImport : EditorWindow
                     Model = "custom_sliding_door";
                     break;
             }
+
+            EditorUtility.DisplayProgressBar("Importing Doors", "Importing: " + Model, (i + 1) / (float)Doors.Count);
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(Model);
@@ -448,20 +526,33 @@ public class CodeImport : EditorWindow
             GameObject parent = GameObject.Find("Doors");
             if (parent != null)
                 obj.gameObject.transform.parent = parent.transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
         }
     }
 
-    void ImportTriggers(List<String> Triggers)
+    async Task ImportTriggers()
     {
         if(Triggers.Count == 0)
             return;
+
+        GameObject find = GameObject.Find("Triggers");
+        if (find == null)
+        {
+            GameObject objToSpawn = new GameObject("Triggers");
+            objToSpawn.name = "Triggers";
+        }
         
+        int i = 0;
         foreach(string trigger in Triggers)
         {
             string[] split1 = trigger.Split(char.Parse("="));
             string[] split = split1[1].Split(char.Parse(","));
 
             string Model = "trigger_cylinder";
+
+            EditorUtility.DisplayProgressBar("Importing Doors", "Importing: trigger_cylinder " + i, (i + 1) / (float)Triggers.Count);
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(Model);
@@ -485,6 +576,9 @@ public class CodeImport : EditorWindow
             GameObject parent = GameObject.Find("Triggers");
             if (parent != null)
                 obj.gameObject.transform.parent = parent.transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
         }
     }
 }

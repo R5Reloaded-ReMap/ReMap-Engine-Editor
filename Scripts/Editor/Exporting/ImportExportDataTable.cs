@@ -4,14 +4,15 @@ using UnityEditor.SceneManagement;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class ImportExportDataTable
 {
     [MenuItem("R5Reloaded/DataTable/Import DataTable", false, 100)]
-    private static void ImportDataTable()
+    private async static void ImportDataTable()
     {
         string path = EditorUtility.OpenFilePanel("Datatable Import", "", "csv");
-        if (path.Length != 0)
+        if (path.Length == 0)
             return;
 
         string[] splitArray = File.ReadAllText(path).Split(char.Parse("\n"));
@@ -24,12 +25,15 @@ public class ImportExportDataTable
         }
 
         //Import datatable
+        int i = 0;
         foreach (string item in splitArray)
         {
             string[] itemsplit = item.Replace("\"", "").Split(char.Parse(","));
 
             if (itemsplit.Length < 12)
                 continue;
+
+            EditorUtility.DisplayProgressBar("Importing DataTable", "Importing: " + itemsplit[11], (i + 1) / (float)splitArray.Length);
 
             //Build DataTable
             Helper.NewDataTable dt = Helper.BuildDataTable(item);
@@ -46,7 +50,12 @@ public class ImportExportDataTable
 
             //Create new model in scene
             Helper.CreateDataTableItem(dt, loadedPrefabResource);
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
         }
+
+        EditorUtility.ClearProgressBar();
     }
 
     [MenuItem("R5Reloaded/DataTable/Export DataTable", false, 100)]

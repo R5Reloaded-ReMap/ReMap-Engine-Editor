@@ -6,6 +6,8 @@ public class LiveSoundCodeView : EditorWindow
 {
     string text = "";
     bool OverrideTextLimit = false;
+    bool UseOriginOffset = false;
+    Vector3 OriginOffset;
     Vector2 scroll;
 
     [MenuItem("R5Reloaded/sound.ent Code View", false, 25)]
@@ -28,7 +30,7 @@ public class LiveSoundCodeView : EditorWindow
 
     void OnGUI()
     {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
         int finalcount = PropObjects.Length;
 
         if(finalcount < Helper.greenPropCount)
@@ -50,6 +52,11 @@ public class LiveSoundCodeView : EditorWindow
         GUILayout.EndVertical();
 
         GUI.contentColor = Color.white;
+
+        GUILayout.BeginVertical("box");
+        UseOriginOffset = EditorGUILayout.Toggle("Add a origin offset", UseOriginOffset);
+        if(UseOriginOffset) OriginOffset = EditorGUILayout.Vector3Field("Origin Offset", OriginOffset);
+        GUILayout.EndVertical();
 
         if (text.Length > Helper.maxBuildLength)
         {

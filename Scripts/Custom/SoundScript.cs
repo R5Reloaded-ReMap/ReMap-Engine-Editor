@@ -49,13 +49,15 @@ public class SoundScript : MonoBehaviour
             // Draw all polyline segments
             for ( int i = 0 ; i < polylineSegment.Length ; i++ )
             {
-                if ( i == 0 )
+                if ( i == 0 && startPos != polylineSegmentTransformed[i] )
+                {
                     Handles.DrawBezier(startPos, polylineSegmentTransformed[i], startPos, polylineSegmentTransformed[i], Color.green, null, thickness);
-                else
-                Handles.DrawBezier(polylineSegmentTransformed[i], polylineSegmentTransformed[i-1], polylineSegmentTransformed[i], polylineSegmentTransformed[i-1], Color.green, null, thickness);
+                }
+                else if ( polylineSegmentTransformed[i] != polylineSegmentTransformed[i-1] )
+                {
+                    Handles.DrawBezier(polylineSegmentTransformed[i], polylineSegmentTransformed[i-1], polylineSegmentTransformed[i], polylineSegmentTransformed[i-1], Color.green, null, thickness);
+                }  
             }
         }
-
     }
-
 }

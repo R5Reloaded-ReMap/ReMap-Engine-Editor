@@ -410,6 +410,22 @@ public class Build
         return code;
     }
 
+
+    public static string Sounds()
+    {
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
+        if (PropObjects.Length < 1)
+            return "";
+
+        string code = "";
+
+        foreach (GameObject go in PropObjects)
+            code += BuildSoundEntItem(go);
+
+        return code;
+    }
+
+
     public static string Triggers()
     {
         GameObject[] TriggerObjects = GameObject.FindGameObjectsWithTag("Trigger");
@@ -472,8 +488,8 @@ public class Build
 ""collide_titan"" ""1""
 ""collide_ai"" ""1""
 ""scale"" """ + go.transform.localScale.x.ToString().Replace(",", ".") + @"""
-""angles"" """ + Helper.BuildAngles(go)  + @"""
-""origin"" """ + Helper.BuildOrigin(go) + @"""
+""angles"" """ + Helper.BuildAngles(go, true)  + @"""
+""origin"" """ + Helper.BuildOrigin(go, true) + @"""
 ""targetname"" ""MapEditorProp""
 ""solid"" ""6""
 ""model"" """ +  model + @"""
@@ -481,6 +497,46 @@ public class Build
 ""classname"" ""prop_dynamic""
 }
 ";
+        return buildent;
+    }
+
+    public static string BuildSoundEntItem(GameObject go)
+    {
+        SoundScript script = go.GetComponent<SoundScript>();
+
+        int isWaveAmbient = 0;
+        int enable = 0;
+
+        if ( script.isWaveAmbient )
+            isWaveAmbient = 1;
+        
+        if ( script.enable )
+            enable = 1;
+
+        string buildent = "";
+
+        buildent += "{\n";
+
+        // Polyline segments
+        for ( int i = script.polylineSegment.Length - 1 ; i > -1 ; i-- )
+        {
+            if ( i != 0 )
+                buildent += $"\"polyline_segment_" + i + "\" \"" + script.polylineSegment[i-1].ToString().Replace(",", "") + " " + script.polylineSegment[i].ToString().Replace(",", "") + "\"\n";
+            else
+                buildent += $"\"polyline_segment_" + i + "\" \"" + go.transform.position.ToString().Replace(",", "") + " " + script.polylineSegment[i].ToString().Replace(",", "") + "\"\n";
+        }
+
+        buildent += "\"radius\" \"" + script.radius + "\"\n";
+        buildent += "\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n";
+        buildent += "\"isWaveAmbient\" \"" + isWaveAmbient + "\"\n";
+        buildent += "\"enabled\" \"" + enable + "\"\n";
+        buildent += "\"origin\" \"" + Helper.BuildOrigin(go, true).Replace(",", "") + "\"\n";
+        buildent += "\"soundName\" \"" + script.soundName + "\"\n";
+        buildent += "\"classname\" \"" + "ambient_generic" + "\"\n";
+        
+        
+        buildent += "}";
+        
         return buildent;
     }
 }

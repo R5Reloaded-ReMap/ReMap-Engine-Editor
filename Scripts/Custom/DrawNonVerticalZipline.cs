@@ -1,5 +1,3 @@
-#define CONDITION_NAME
-
 using UnityEngine;
 using UnityEditor;
 using System.Diagnostics;

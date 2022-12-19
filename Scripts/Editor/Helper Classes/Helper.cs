@@ -26,7 +26,8 @@ public class Helper
         {"custom_button", "Button"},
         {"trigger_cylinder", "Trigger"},
         {"mdl", "Prop"},
-        {"mdl#fx#bb_shield", "BubbleShield"}
+        {"mdl#fx#bb_shield", "BubbleShield"},
+        {"custom_sound", "Sound"}
     };
 
     public enum ExportType
@@ -91,13 +92,16 @@ public class Helper
     /// </summary>
     /// <param name="go">Prop Object</param>
     /// <returns></returns>
-    public static string BuildAngles(GameObject go)
+    public static string BuildAngles(GameObject go, bool isEntFile = false)
     {
         string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4").Replace(",", ".");
         string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4").Replace(",", ".");
         string z = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4").Replace(",", ".");
                     
         string angles = $"< {x}, {y}, {z} >";
+
+        if( isEntFile )
+            angles = $"{x} {y} {z}";
 
         return angles;
     }
@@ -121,13 +125,16 @@ public class Helper
     /// </summary>
     /// <param name="go">Prop Object</param>
     /// <returns></returns>
-    public static string BuildOrigin(GameObject go)
+    public static string BuildOrigin(GameObject go, bool isEntFile = false)
     {
         string x = (-go.transform.position.z).ToString("F4").Replace(",", ".");
         string y = (go.transform.position.x).ToString("F4").Replace(",", ".");
         string z = (go.transform.position.y).ToString("F4").Replace(",", ".");
 
         string origin = $"< {x}, {y}, {z} >";
+
+        if( isEntFile )
+            origin = $"{x} {y} {z}";
 
         return origin;
     }

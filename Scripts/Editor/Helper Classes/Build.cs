@@ -524,21 +524,21 @@ public class Build
             {
                 string polylineSegmentStart = Helper.BuildOriginVector( script.polylineSegment[i-1], true ).ToString().Replace(",", "");
 
-                buildent += string.Format( "\"polyline_segment_{0}\" \"{1} {2}\"\n", i, polylineSegmentStart, polylineSegmentEnd );
+                buildent += $"\"polyline_segment_{i}\" \"{polylineSegmentStart} {polylineSegmentEnd}\"\n";
             }
             else
             {
-                buildent += string.Format( "\"polyline_segment_{0}\" \"(0 0 0) {1}\"\n", i, polylineSegmentEnd );
+                buildent += $"\"polyline_segment_{i}\" \"(0 0 0) {polylineSegmentEnd}\"\n";
             }
         }
 
-        buildent += string.Format( "\"radius\" \"{0}\"\n", script.radius );
-        buildent += "\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n"; // don't change this
-        buildent += string.Format( "\"isWaveAmbient\" \"{0}\"\n", isWaveAmbient );
-        buildent += string.Format( "\"enabled\" \"{0}\"\n", enable );
-        buildent += string.Format( "\"origin\" \"{0}\"\n", origin );
-        buildent += string.Format( "\"soundName\" \"{0}\"\n", script.soundName );
-        buildent += "\"classname\" \"" + "ambient_generic" + "\"\n"; // don't change this
+        buildent += $"\"radius\" \"{script.radius}\"\n";
+        buildent += $"\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n"; // don't change this
+        buildent += $"\"isWaveAmbient\" \"{isWaveAmbient}\"\n";
+        buildent += $"\"enabled\" \"{enable}\"\n";
+        buildent += $"\"origin\" \"{origin}\"\n";
+        buildent += $"\"soundName\" \"{script.soundName}\"\n";
+        buildent += $"\"classname\" \"" + "ambient_generic" + "\"\n"; // don't change this
         buildent += "}\n";
         
         return buildent;

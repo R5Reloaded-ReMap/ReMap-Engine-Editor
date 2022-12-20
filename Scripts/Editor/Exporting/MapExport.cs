@@ -1,3 +1,5 @@
+using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
@@ -5,34 +7,34 @@ using UnityEngine.SceneManagement;
 public class MapExport
 {
 
-    [MenuItem("R5Reloaded/Export Map/Export With Origin Offset/Whole Script", false, 100)]
+    [MenuItem("R5Reloaded/Export/Export With Origin Offset/Whole Script", false, 100)]
     private static void ExportWholeScriptOffset()
     {
         ExportMap(Helper.ExportType.WholeScriptOffset);
     }
 
-    [MenuItem("R5Reloaded/Export Map/Export With Origin Offset/Map Only", false, 100)]
+    [MenuItem("R5Reloaded/Export/Export With Origin Offset/Map Only", false, 100)]
     private static void ExportMapOnlyOffset()
     {
         ExportMap(Helper.ExportType.MapOnlyOffset);
     }
 
-    [MenuItem("R5Reloaded/Export Map/Export Without Origin Offset/Whole Script", false, 100)]
+    [MenuItem("R5Reloaded/Export/Export Without Origin Offset/Whole Script", false, 100)]
     private static void ExportWholeScript()
     {
         ExportMap(Helper.ExportType.WholeScript);
     }
 
-    [MenuItem("R5Reloaded/Export Map/Export Without Origin Offset/Map Only", false, 100)]
+    [MenuItem("R5Reloaded/Export/Export Without Origin Offset/Map Only", false, 100)]
     private static void ExportOnlyMap()
     {
         ExportMap(Helper.ExportType.MapOnly);
     }
 
-    [MenuItem("R5Reloaded/Export Map/Export script.ent Code", false, 100)]
+    [MenuItem("R5Reloaded/Export/Export script.ent Code", false, 100)]
     private static void ExportScriptEntCode()
     {
-        var path = EditorUtility.SaveFilePanel("Map Export", "", "scriptentexport.txt", "txt");
+        var path = EditorUtility.SaveFilePanel("Script.ent", "", "scriptentexport.ent", "ent");
         if (path.Length == 0)
             return;
 
@@ -40,10 +42,24 @@ public class MapExport
         EditorSceneManager.SaveOpenScenes();
 
         Helper.Is_Using_Starting_Offset = true;
-        string mapcode = Build.Props(Build.BuildType.Ent);
+        string entCode = Build.Props(Build.BuildType.Ent);
 
-        System.IO.File.WriteAllText(path, mapcode);
+        System.IO.File.WriteAllText(path, entCode + "\n" + "\u0000");
+    }
 
+    [MenuItem("R5Reloaded/Export/Export sound.ent Code", false, 100)]
+    private static void ExportSoundEntCode()
+    {
+        var path = EditorUtility.SaveFilePanel("Sound.ent Export", "", "soundentexport.ent", "ent");
+        if (path.Length == 0)
+            return;
+
+        Helper.FixPropTags();
+        EditorSceneManager.SaveOpenScenes();
+
+        string entCode = Build.Sounds();
+
+        System.IO.File.WriteAllText(path, entCode + "\n" + "\u0000");
     }
 
 

@@ -503,15 +503,9 @@ public class Build
     {
         SoundScript script = go.GetComponent<SoundScript>();
 
-        int isWaveAmbient = 0;
-        int enable = 0;
+        int isWaveAmbient = script.isWaveAmbient ? 1 : 0;
+        int enable = script.enable ? 1 : 0;
         string origin = Helper.BuildOrigin(go, true).Replace(",", "");
-
-        if ( script.isWaveAmbient )
-            isWaveAmbient = 1;
-        
-        if ( script.enable )
-            enable = 1;
 
         string buildent = "";
 

@@ -97,6 +97,10 @@ public class Helper
         string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4").Replace(",", ".");
         string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4").Replace(",", ".");
         string z = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4").Replace(",", ".");
+
+        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
+        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
+        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
                     
         string angles = $"< {x}, {y}, {z} >";
 
@@ -131,6 +135,10 @@ public class Helper
         string y = (go.transform.position.x).ToString("F4").Replace(",", ".");
         string z = (go.transform.position.y).ToString("F4").Replace(",", ".");
 
+        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
+        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
+        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
+
         string origin = $"< {x}, {y}, {z} >";
 
         if( isEntFile )
@@ -149,6 +157,10 @@ public class Helper
         string x = (-vec.z).ToString("F4").Replace(",", ".");
         string y = (vec.x).ToString("F4").Replace(",", ".");
         string z = (vec.y).ToString("F4").Replace(",", ".");
+
+        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
+        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
+        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
 
         string origin = $"< {x}, {y}, {z} >";
 

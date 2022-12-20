@@ -498,7 +498,7 @@ public class Build
         buildent += $"\"model\" \"{model}\"\n";
         buildent += "\"ClientSide\" \"0\"\n";
         buildent += "\"classname\" \"prop_dynamic\"\n";
-        buildent += "}";
+        buildent += "}\n";
 
         return buildent;
     }
@@ -539,7 +539,7 @@ public class Build
         buildent += string.Format( "\"origin\" \"{0}\"\n", origin );
         buildent += string.Format( "\"soundName\" \"{0}\"\n", script.soundName );
         buildent += "\"classname\" \"" + "ambient_generic" + "\"\n"; // don't change this
-        buildent += "}";
+        buildent += "}\n";
         
         return buildent;
     }

@@ -44,7 +44,7 @@ public class MapExport
         Helper.Is_Using_Starting_Offset = true;
         string entCode = Build.Props(Build.BuildType.Ent);
 
-        System.IO.File.WriteAllText(path, entCode + "\n" + "\u0000");
+        System.IO.File.WriteAllText(path, entCode + "\u0000");
     }
 
     [MenuItem("R5Reloaded/Export/Export sound.ent Code", false, 100)]
@@ -59,7 +59,7 @@ public class MapExport
 
         string entCode = Build.Sounds();
 
-        System.IO.File.WriteAllText(path, entCode + "\n" + "\u0000");
+        System.IO.File.WriteAllText(path, entCode + "\u0000");
     }
 
 

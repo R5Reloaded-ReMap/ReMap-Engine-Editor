@@ -521,9 +521,9 @@ public class Build
         for ( int i = script.polylineSegment.Length - 1 ; i > -1 ; i-- )
         {
             if ( i != 0 )
-                buildent += $"\"polyline_segment_" + i + "\" \"" + script.polylineSegment[i-1].ToString().Replace(",", "") + " " + script.polylineSegment[i].ToString().Replace(",", "") + "\"\n";
+                buildent += $"\"polyline_segment_" + i + "\" \"" + Helper.BuildOriginVector( script.polylineSegment[i-1], true ).ToString().Replace(",", "") + " " + Helper.BuildOriginVector( script.polylineSegment[i], true ).ToString().Replace(",", "") + "\"\n";
             else
-                buildent += $"\"polyline_segment_" + i + "\" \"" + go.transform.position.ToString().Replace(",", "") + " " + script.polylineSegment[i].ToString().Replace(",", "") + "\"\n";
+                buildent += $"\"polyline_segment_" + i + "\" \"" + "(0 0 0)" + " " + Helper.BuildOriginVector( script.polylineSegment[i], true ).ToString().Replace(",", "") + "\"\n";
         }
 
         buildent += "\"radius\" \"" + script.radius + "\"\n";

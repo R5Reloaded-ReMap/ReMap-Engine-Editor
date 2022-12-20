@@ -140,6 +140,25 @@ public class Helper
     }
 
     /// <summary>
+    /// Builds correct ingame origin from vector3
+    /// </summary>
+    /// <param name="go">Prop Object</param>
+    /// <returns></returns>
+    public static string BuildOriginVector(Vector3 vec, bool isEntFile = false)
+    {
+        string x = (-vec.z).ToString("F4").Replace(",", ".");
+        string y = (vec.x).ToString("F4").Replace(",", ".");
+        string z = (vec.y).ToString("F4").Replace(",", ".");
+
+        string origin = $"< {x}, {y}, {z} >";
+
+        if( isEntFile )
+            origin = $"( {x} {y} {z} )";
+
+        return origin;
+    }
+
+    /// <summary>
     /// Tags Custom Prefabs so users cant wrongly tag a item
     /// </summary>
     public static void FixPropTags()

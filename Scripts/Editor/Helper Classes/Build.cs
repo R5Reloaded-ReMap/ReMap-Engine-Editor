@@ -375,6 +375,9 @@ public class Build
             case BuildType.DataTable:
                 code += "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
                 break;
+            case BuildType.Ent:
+                code += $"ENTITIES02 num_models={PropObjects.Length}\n";
+                break;
         }
 
         foreach (GameObject go in PropObjects)
@@ -417,7 +420,7 @@ public class Build
         if (PropObjects.Length < 1)
             return "";
 
-        string code = "";
+        string code = $"ENTITIES02 num_models={PropObjects.Length}\n";
 
         foreach (GameObject go in PropObjects)
             code += BuildSoundEntItem(go);
@@ -495,6 +498,7 @@ public class Build
         buildent += $"\"model\" \"{model}\"\n";
         buildent += "\"ClientSide\" \"0\"\n";
         buildent += "\"classname\" \"prop_dynamic\"\n";
+        buildent += "}\n";
 
         return buildent;
     }
@@ -535,7 +539,6 @@ public class Build
         buildent += string.Format( "\"origin\" \"{0}\"\n", origin );
         buildent += string.Format( "\"soundName\" \"{0}\"\n", script.soundName );
         buildent += "\"classname\" \"" + "ambient_generic" + "\"\n"; // don't change this
-        
         buildent += "}\n";
         
         return buildent;

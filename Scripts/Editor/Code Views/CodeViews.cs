@@ -348,7 +348,7 @@ public class CodeViews : EditorWindow
 
         GUILayout.BeginVertical("box");
         if (GUILayout.Button("Copy To Clipboard"))
-            GenerateEntCode(true);
+            GenerateSoundEntCode(true);
         GUILayout.EndVertical();
     }
 

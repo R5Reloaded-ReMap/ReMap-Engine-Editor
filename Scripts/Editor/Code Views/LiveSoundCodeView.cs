@@ -5,10 +5,11 @@ using UnityEditor.SceneManagement;
 public class LiveSoundCodeView : EditorWindow
 {
     string text = "";
-    bool OverrideTextLimit = false;
     bool UseOriginOffset = false;
     Vector3 OriginOffset;
     Vector2 scroll;
+
+    int finalcount = 0;
 
     [MenuItem("R5Reloaded/sound.ent Code View", false, 25)]
     static void Init()
@@ -20,12 +21,25 @@ public class LiveSoundCodeView : EditorWindow
     void OnEnable()
     {
         EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
+        EditorSceneManager.sceneSaved += EditorSceneManager_sceneSaved;
+
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
+        finalcount = PropObjects.Length;
+        GenerateEntCode(false);
+    }
+
+    private void EditorSceneManager_sceneSaved(UnityEngine.SceneManagement.Scene arg0)
+    {
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
+        finalcount = PropObjects.Length;
+        GenerateEntCode(false);
     }
 
     private void EditorSceneManager_sceneOpened(UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode)
     {
-        OverrideTextLimit = false;
-        text = "";
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
+        finalcount = PropObjects.Length;
+        GenerateEntCode(false);
     }
 
     void OnGUI()
@@ -58,34 +72,12 @@ public class LiveSoundCodeView : EditorWindow
         if(UseOriginOffset) OriginOffset = EditorGUILayout.Vector3Field("Origin Offset", OriginOffset);
         GUILayout.EndVertical();
 
-        if (text.Length > Helper.maxBuildLength)
-        {
-            GUILayout.BeginVertical("box");
-            GUI.contentColor = Color.yellow;
-            GUILayout.Label("Output code is longer then the text limit. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!");
-            GUI.contentColor = Color.white;
-            OverrideTextLimit = EditorGUILayout.Toggle("Override Text Limit", OverrideTextLimit);
-            GUILayout.EndVertical();
-        }
+        if (GUILayout.Button("Copy Code"))
+            GenerateEntCode(true);
 
-        if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
-            if (GUILayout.Button("Copy Code"))
-                GenerateEntCode(true);
-
-            GUI.contentColor = Color.yellow;
-            GUILayout.Label("Text area disabled, please use the copy button!");
-            GUI.contentColor = Color.white;
-        }
-        else
-        {
-            if (GUILayout.Button("Copy Code"))
-                GenerateEntCode(true);
-
-            scroll = EditorGUILayout.BeginScrollView(scroll);
-            GenerateEntCode(false);
-            GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
-            EditorGUILayout.EndScrollView();
-        }
+        scroll = EditorGUILayout.BeginScrollView(scroll);
+        GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
+        EditorGUILayout.EndScrollView();
     }
 
     /// <summary>

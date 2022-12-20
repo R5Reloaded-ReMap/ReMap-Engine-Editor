@@ -5,8 +5,9 @@ using UnityEditor.SceneManagement;
 public class LiveEntCodeView : EditorWindow
 {
     string text = "";
-    bool OverrideTextLimit = false;
     Vector2 scroll;
+
+    int finalcount = 0;
 
     [MenuItem("R5Reloaded/script.ent Code View", false, 25)]
     static void Init()
@@ -18,19 +19,29 @@ public class LiveEntCodeView : EditorWindow
     void OnEnable()
     {
         EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
+        EditorSceneManager.sceneSaved += EditorSceneManager_sceneSaved;
+
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        finalcount = PropObjects.Length;
+        GenerateEntCode(false);
+    }
+
+    private void EditorSceneManager_sceneSaved(UnityEngine.SceneManagement.Scene arg0)
+    {
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        finalcount = PropObjects.Length;
+        GenerateEntCode(false);
     }
 
     private void EditorSceneManager_sceneOpened(UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode)
     {
-        OverrideTextLimit = false;
-        text = "";
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        finalcount = PropObjects.Length;
+        GenerateEntCode(false);
     }
 
     void OnGUI()
     {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-        int finalcount = PropObjects.Length;
-
         if(finalcount < Helper.greenPropCount)
             GUI.contentColor = Color.green;
         else if(finalcount < Helper.yellowPropCount)
@@ -51,34 +62,12 @@ public class LiveEntCodeView : EditorWindow
 
         GUI.contentColor = Color.white;
 
-        if (text.Length > Helper.maxBuildLength)
-        {
-            GUILayout.BeginVertical("box");
-            GUI.contentColor = Color.yellow;
-            GUILayout.Label("Output code is longer then the text limit. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!");
-            GUI.contentColor = Color.white;
-            OverrideTextLimit = EditorGUILayout.Toggle("Override Text Limit", OverrideTextLimit);
-            GUILayout.EndVertical();
-        }
+        if (GUILayout.Button("Copy Code"))
+            GenerateEntCode(true);
 
-        if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
-            if (GUILayout.Button("Copy Code"))
-                GenerateEntCode(true);
-
-            GUI.contentColor = Color.yellow;
-            GUILayout.Label("Text area disabled, please use the copy button!");
-            GUI.contentColor = Color.white;
-        }
-        else
-        {
-            if (GUILayout.Button("Copy Code"))
-                GenerateEntCode(true);
-
-            scroll = EditorGUILayout.BeginScrollView(scroll);
-            GenerateEntCode(false);
-            GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
-            EditorGUILayout.EndScrollView();
-        }
+        scroll = EditorGUILayout.BeginScrollView(scroll);
+        GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
+        EditorGUILayout.EndScrollView();
     }
 
     /// <summary>

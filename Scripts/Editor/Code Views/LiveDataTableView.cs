@@ -4,7 +4,6 @@ using UnityEditor.SceneManagement;
 
 public class LiveDataTableView : EditorWindow
 {
-    static bool OverrideTextLimit = false;
     static string text = "";
     static Vector2 scroll;
 
@@ -18,44 +17,29 @@ public class LiveDataTableView : EditorWindow
     void OnEnable()
     {
         EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
+        EditorSceneManager.sceneSaved += EditorSceneManager_sceneSaved;
+
+        GenerateDataTable(false);
+    }
+
+    private void EditorSceneManager_sceneSaved(UnityEngine.SceneManagement.Scene arg0)
+    {
+        GenerateDataTable(false);
     }
 
     private void EditorSceneManager_sceneOpened(UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode)
     {
-        OverrideTextLimit = false;
-        text = "";
+        GenerateDataTable(false);
     }
 
     void OnGUI()
     {
-        if (text.Length > Helper.maxBuildLength)
-        {
-            GUILayout.BeginVertical("box");
-            GUI.contentColor = Color.yellow;
-            GUILayout.Label("Output code is longer then the text limit. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!");
-            GUI.contentColor = Color.white;
-            OverrideTextLimit = EditorGUILayout.Toggle("Override Text Limit", OverrideTextLimit);
-            GUILayout.EndVertical();
-        }
-        
-        if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
-            if (GUILayout.Button("Copy"))
-                GenerateDataTable(true);
+        if (GUILayout.Button("Copy"))
+            GenerateDataTable(true);
 
-            GUI.contentColor = Color.yellow;
-            GUILayout.Label("Text area disabled, please use the copy button!");
-            GUI.contentColor = Color.white;
-        }
-        else
-        {
-            if (GUILayout.Button("Copy"))
-                GenerateDataTable(true);
-
-            scroll = EditorGUILayout.BeginScrollView(scroll);
-            GenerateDataTable(false);
-            GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
-            EditorGUILayout.EndScrollView();
-        }
+        scroll = EditorGUILayout.BeginScrollView(scroll);
+        GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
+        EditorGUILayout.EndScrollView();
     }
 
     /// <summary>

@@ -2,38 +2,49 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class CopyPasteCode : EditorWindow
 {
     static bool OnlyExportMap = true;
     static bool UseStartingOffset = false;
     static bool DisableStartingOffsetString = false;
-    static bool OverrideTextLimit = false;
     static string text = "";
     static Vector2 scroll;
+
+    static int finalcount = 0;
 
     [MenuItem("R5Reloaded/Map Code View", false, 25)]
     static void Init()
     {
         CopyPasteCode window = (CopyPasteCode)GetWindow(typeof(CopyPasteCode), false, "Map Code");
         window.Show();
+        
     }
 
     void OnEnable()
     {
         EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
+        EditorSceneManager.sceneSaved += EditorSceneManager_sceneSaved;
+
+        finalcount = Helper.GetPropCount();
+        GenerateMap(OnlyExportMap, false);
+    }
+
+    private void EditorSceneManager_sceneSaved(UnityEngine.SceneManagement.Scene arg0)
+    {
+        finalcount = Helper.GetPropCount();
+        GenerateMap(OnlyExportMap, false);
     }
 
     private void EditorSceneManager_sceneOpened(UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode)
     {
-        OverrideTextLimit = false;
-        text = "";
+        finalcount = Helper.GetPropCount();
+        GenerateMap(OnlyExportMap, false);
     }
 
     void OnGUI()
     {
-        int finalcount = Helper.GetPropCount();
-
         if(finalcount < Helper.greenPropCount)
             GUI.contentColor = Color.green;
         else if((finalcount < Helper.yellowPropCount)) 
@@ -59,33 +70,11 @@ public class CopyPasteCode : EditorWindow
         if(UseStartingOffset) DisableStartingOffsetString = EditorGUILayout.Toggle("Don't Show Startingorg", DisableStartingOffsetString);
         GUILayout.EndVertical();
 
-        if (text.Length > Helper.maxBuildLength)
-        {
-            GUILayout.BeginVertical("box");
-            GUI.contentColor = Color.yellow;
-            GUILayout.Label("Output code is longer then the text limit. You can override this with the toggle above. \nWARNING: MAY CAUSE LAG!");
-            GUI.contentColor = Color.white;
-            OverrideTextLimit = EditorGUILayout.Toggle("Override Text Limit", OverrideTextLimit);
-            GUILayout.EndVertical();
-        }
-        
-        if(text.Length > Helper.maxBuildLength && !OverrideTextLimit) {
-            if (GUILayout.Button("Copy"))
-                GenerateMap(OnlyExportMap, true);
-
-            GUI.contentColor = Color.yellow;
-            GUILayout.Label("Text area disabled, please use the copy button!");
-            GUI.contentColor = Color.white;
-        }
-        else
-        {
-            if (GUILayout.Button("Copy"))
-                GenerateMap(OnlyExportMap, true);
-            scroll = EditorGUILayout.BeginScrollView(scroll);
-            GenerateMap(OnlyExportMap, false);
-            GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
-            EditorGUILayout.EndScrollView();
-        }
+        if (GUILayout.Button("Copy"))
+            GenerateMap(OnlyExportMap, true);
+        scroll = EditorGUILayout.BeginScrollView(scroll);
+        GUILayout.TextArea(text, GUILayout.ExpandHeight(true));
+        EditorGUILayout.EndScrollView();
     }
 
     /// <summary>
@@ -96,7 +85,6 @@ public class CopyPasteCode : EditorWindow
     void GenerateMap(bool onlyMapCode, bool copyCode)
     {
         Helper.FixPropTags();
-        EditorSceneManager.SaveOpenScenes();
 
         Helper.Is_Using_Starting_Offset = UseStartingOffset;
         Helper.DisableStartingOffsetString = DisableStartingOffsetString;

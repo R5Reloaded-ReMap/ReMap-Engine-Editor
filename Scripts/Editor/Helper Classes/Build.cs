@@ -503,27 +503,44 @@ public class Build
     {
         SoundScript script = go.GetComponent<SoundScript>();
 
-        int isWaveAmbient = script.isWaveAmbient ? 1 : 0;
-        int enable = script.enable ? 1 : 0;
+        int isWaveAmbient = 0;
+        int enable = 0;
+        string origin = Helper.BuildOrigin(go, true).Replace(",", "");
 
-        string buildent = "{\n";
+        if ( script.isWaveAmbient )
+            isWaveAmbient = 1;
+        
+        if ( script.enable )
+            enable = 1;
+
+        string buildent = "";
+
+        buildent += "{\n";
 
         // Polyline segments
-        for (int i = script.polylineSegment.Length - 1; i > -1; i--)
+        for ( int i = script.polylineSegment.Length - 1 ; i > -1 ; i-- )
         {
-            if (i != 0)
-                buildent += $"\"polyline_segment_{i}\" \"{Helper.BuildOriginVector(script.polylineSegment[i - 1], true).ToString().Replace(",", "")} {Helper.BuildOriginVector(script.polylineSegment[i], true).ToString().Replace(",", "")}\"\n";
+            string polylineSegmentEnd = Helper.BuildOriginVector( script.polylineSegment[i], true ).ToString().Replace(",", "");
+
+            if ( i != 0 )
+            {
+                string polylineSegmentStart = Helper.BuildOriginVector( script.polylineSegment[i-1], true ).ToString().Replace(",", "");
+
+                buildent += string.Format( "\"polyline_segment_{0}\" \"{1} {2}\"\n", i, polylineSegmentStart, polylineSegmentEnd );
+            }
             else
-                buildent += $"\"polyline_segment_{i}\" \"(0 0 0) {Helper.BuildOriginVector(script.polylineSegment[i], true).ToString().Replace(",", "")}\"\n";
+            {
+                buildent += string.Format( "\"polyline_segment_{0}\" \"(0 0 0) {1}\"\n", i, polylineSegmentEnd );
+            }
         }
 
-        buildent += $"\"radius\" \"{script.radius}\"\n";
-        buildent += $"\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n";
-        buildent += $"\"isWaveAmbient\" \"{isWaveAmbient}\"\n";
-        buildent += $"\"enabled\" \"{enable}\"\n";
-        buildent += $"\"origin\" \"{Helper.BuildOrigin(go, true).Replace(",", "")}\"\n";
-        buildent += $"\"soundName\" \"{script.soundName}\"\n";
-        buildent += $"\"classname\" \"ambient_generic\"\n";
+        buildent += string.Format( "\"radius\" \"{0}\"\n", script.radius );
+        buildent += "\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n"; // don't change this
+        buildent += string.Format( "\"isWaveAmbient\" \"{0}\"\n", isWaveAmbient );
+        buildent += string.Format( "\"enabled\" \"{0}\"\n", enable );
+        buildent += string.Format( "\"origin\" \"{0}\"\n", origin );
+        buildent += string.Format( "\"soundName\" \"{0}\"\n", script.soundName );
+        buildent += "\"classname\" \"" + "ambient_generic" + "\"\n"; // don't change this
         
         buildent += "}\n";
         

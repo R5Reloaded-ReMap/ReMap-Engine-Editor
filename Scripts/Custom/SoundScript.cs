@@ -31,6 +31,8 @@ public class SoundScript : MonoBehaviour
 
         GameObject go = soundModel.gameObject;
 
+        soundModel.eulerAngles = new Vector3(0, 0, 0);
+
         // Remove "mdl#" so that the props script does not find it
         if (go.name.Contains("mdl#")) go.name = go.name.Split(char.Parse(" "))[0].Replace("mdl#", "");
 
@@ -52,14 +54,15 @@ public class SoundScript : MonoBehaviour
             // Draw all polyline segments
             for ( int i = 0 ; i < polylineSegment.Length ; i++ )
             {
-                if ( i == 0 && startPos != polylineSegmentTransformed[i] )
+                if ( i == 0 )
                 {
-                    Handles.DrawBezier(startPos, polylineSegmentTransformed[i], startPos, polylineSegmentTransformed[i], Color.green, null, thickness);
+                    if ( startPos != polylineSegmentTransformed[i] )
+                        Handles.DrawBezier(startPos, polylineSegmentTransformed[i], startPos, polylineSegmentTransformed[i], Color.green, null, thickness);
                 }
                 else if ( polylineSegmentTransformed[i] != polylineSegmentTransformed[i-1] )
                 {
                     Handles.DrawBezier(polylineSegmentTransformed[i], polylineSegmentTransformed[i-1], polylineSegmentTransformed[i], polylineSegmentTransformed[i-1], Color.green, null, thickness);
-                }  
+                }
             }
         }
     }

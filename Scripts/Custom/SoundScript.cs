@@ -23,6 +23,9 @@ public class SoundScript : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        if(soundModel == null)
+            return;
+
         var startPos = soundModel.position;
         var thickness = 3;
 

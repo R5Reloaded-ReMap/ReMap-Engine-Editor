@@ -3,12 +3,16 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using UnityEngine.UIElements;
 
 public class CopyPasteCode : EditorWindow
 {
-    static bool OnlyExportMap = true;
-    static bool UseStartingOffset = false;
+    bool OnlyExportMap = true;
+    bool temp1 = true;
+    bool UseStartingOffset = false;
+    bool temp2 = false;
     static bool DisableStartingOffsetString = false;
+    bool temp3 = false;
     static string text = "";
     static Vector2 scroll;
 
@@ -19,7 +23,6 @@ public class CopyPasteCode : EditorWindow
     {
         CopyPasteCode window = (CopyPasteCode)GetWindow(typeof(CopyPasteCode), false, "Map Code");
         window.Show();
-        
     }
 
     void OnEnable()
@@ -65,9 +68,28 @@ public class CopyPasteCode : EditorWindow
         GUI.contentColor = Color.white;
 
         GUILayout.BeginVertical("box");
+
         OnlyExportMap = EditorGUILayout.Toggle("Only Show Map Code", OnlyExportMap);
+        if(OnlyExportMap != temp1) {
+            temp1 = OnlyExportMap;
+            GenerateMap(OnlyExportMap, false);
+        }
+
         UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
-        if(UseStartingOffset) DisableStartingOffsetString = EditorGUILayout.Toggle("Don't Show Startingorg", DisableStartingOffsetString);
+        if(UseStartingOffset != temp2) {
+            temp2 = UseStartingOffset;
+            GenerateMap(OnlyExportMap, false);
+        }
+
+        if(UseStartingOffset) 
+        {
+            DisableStartingOffsetString = EditorGUILayout.Toggle("Don't Show Startingorg", DisableStartingOffsetString);
+            if(DisableStartingOffsetString != temp3) {
+                temp3 = DisableStartingOffsetString;
+                GenerateMap(OnlyExportMap, false);
+            }
+        }
+
         GUILayout.EndVertical();
 
         if (GUILayout.Button("Copy"))

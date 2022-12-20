@@ -66,7 +66,7 @@ public class CodeImport : EditorWindow
     {
         EditorUtility.DisplayProgressBar("Building Import List", "Building...", 0.0f);
 
-        string[] lines = text.Split(char.Parse("\n"));
+        string[] lines = text.Replace("+ startingorg", "").Split(char.Parse("\n"));
         foreach(string line in lines) {
             if(line.Contains("JumpPad_CreatedCallback("))
                 JumpPads.Add(line.Replace("JumpPad_CreatedCallback( MapEditor_CreateProp(", "").Replace(" ) )", "").Replace(" ", ""));

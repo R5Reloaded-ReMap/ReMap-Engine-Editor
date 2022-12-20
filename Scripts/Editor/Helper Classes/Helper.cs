@@ -51,10 +51,10 @@ public class Helper
     }
 
     /// <summary>
-    /// Gets Total Prop Count
+    /// Gets Total Count of all objects in scene
     /// </summary>
     /// <returns></returns>
-    public static int GetPropCount()
+    public static int GetAllCount()
     {
         int objectCount = 0;
 
@@ -66,6 +66,18 @@ public class Helper
         }
 
         return objectCount;
+    }
+
+    public static int GetPropCount()
+    {
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        return PropObjects.Length;
+    }
+
+    public static int GetSoundCount()
+    {
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
+        return PropObjects.Length;
     }
 
     /// <summary>

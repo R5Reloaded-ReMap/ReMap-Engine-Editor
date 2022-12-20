@@ -480,23 +480,22 @@ public class Build
     {
         string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
         PropScript script = go.GetComponent<PropScript>();
-        
-        string buildent = @"{
-""StartDisabled"" ""0""
-""spawnflags"" ""0""
-""fadedist"" """ + script.fadeDistance + @"""
-""collide_titan"" ""1""
-""collide_ai"" ""1""
-""scale"" """ + go.transform.localScale.x.ToString().Replace(",", ".") + @"""
-""angles"" """ + Helper.BuildAngles(go, true)  + @"""
-""origin"" """ + Helper.BuildOrigin(go, true) + @"""
-""targetname"" ""MapEditorProp""
-""solid"" ""6""
-""model"" """ +  model + @"""
-""ClientSide"" ""0""
-""classname"" ""prop_dynamic""
-}
-";
+
+        string buildent = "{\n";
+        buildent += "\"StartDisabled\" \"0\"\n";
+        buildent += "\"spawnflags\" \"0\"\n";
+        buildent += $"\"fadedist\" \"{script.fadeDistance}\"\n";
+        buildent += $"\"collide_titan\" \"1\"\n";
+        buildent += $"\"collide_ai\" \"1\"\n";
+        buildent += $"\"scale\" \"{go.transform.localScale.x.ToString().Replace(",", ".")}\"\n";
+        buildent += $"\"angles\" \"{Helper.BuildAngles(go, true)}\"\n";
+        buildent += $"\"origin\" \"{Helper.BuildOrigin(go, true)}\"\n";
+        buildent += "\"targetname\" \"MapEditorProp\"\n";
+        buildent += "\"solid\" \"6\"\n";
+        buildent += $"\"model\" \"{model}\"\n";
+        buildent += "\"ClientSide\" \"0\"\n";
+        buildent += "\"classname\" \"prop_dynamic\"\n";
+
         return buildent;
     }
 
@@ -504,36 +503,27 @@ public class Build
     {
         SoundScript script = go.GetComponent<SoundScript>();
 
-        int isWaveAmbient = 0;
-        int enable = 0;
+        int isWaveAmbient = script.isWaveAmbient ? 1 : 0;
+        int enable = script.enable ? 1 : 0;
 
-        if ( script.isWaveAmbient )
-            isWaveAmbient = 1;
-        
-        if ( script.enable )
-            enable = 1;
-
-        string buildent = "";
-
-        buildent += "{\n";
+        string buildent = "{\n";
 
         // Polyline segments
-        for ( int i = script.polylineSegment.Length - 1 ; i > -1 ; i-- )
+        for (int i = script.polylineSegment.Length - 1; i > -1; i--)
         {
-            if ( i != 0 )
-                buildent += $"\"polyline_segment_" + i + "\" \"" + Helper.BuildOriginVector( script.polylineSegment[i-1], true ).ToString().Replace(",", "") + " " + Helper.BuildOriginVector( script.polylineSegment[i], true ).ToString().Replace(",", "") + "\"\n";
+            if (i != 0)
+                buildent += $"\"polyline_segment_{i}\" \"{Helper.BuildOriginVector(script.polylineSegment[i - 1], true).ToString().Replace(",", "")} {Helper.BuildOriginVector(script.polylineSegment[i], true).ToString().Replace(",", "")}\"\n";
             else
-                buildent += $"\"polyline_segment_" + i + "\" \"" + "(0 0 0)" + " " + Helper.BuildOriginVector( script.polylineSegment[i], true ).ToString().Replace(",", "") + "\"\n";
+                buildent += $"\"polyline_segment_{i}\" \"(0 0 0) {Helper.BuildOriginVector(script.polylineSegment[i], true).ToString().Replace(",", "")}\"\n";
         }
 
-        buildent += "\"radius\" \"" + script.radius + "\"\n";
-        buildent += "\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n";
-        buildent += "\"isWaveAmbient\" \"" + isWaveAmbient + "\"\n";
-        buildent += "\"enabled\" \"" + enable + "\"\n";
-        buildent += "\"origin\" \"" + Helper.BuildOrigin(go, true).Replace(",", "") + "\"\n";
-        buildent += "\"soundName\" \"" + script.soundName + "\"\n";
-        buildent += "\"classname\" \"" + "ambient_generic" + "\"\n";
-        
+        buildent += $"\"radius\" \"{script.radius}\"\n";
+        buildent += $"\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n";
+        buildent += $"\"isWaveAmbient\" \"{isWaveAmbient}\"\n";
+        buildent += $"\"enabled\" \"{enable}\"\n";
+        buildent += $"\"origin\" \"{Helper.BuildOrigin(go, true).Replace(",", "")}\"\n";
+        buildent += $"\"soundName\" \"{script.soundName}\"\n";
+        buildent += $"\"classname\" \"ambient_generic\"\n";
         
         buildent += "}\n";
         

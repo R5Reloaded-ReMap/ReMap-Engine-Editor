@@ -11,6 +11,17 @@ public class Helper
     public static bool Is_Using_Starting_Offset = false;
     public static bool DisableStartingOffsetString = false;
 
+    // Gen Settings
+    public static bool GenerateProps = true;
+    public static bool GenerateButtons = true;
+    public static bool GenerateJumppads = true;
+    public static bool GenerateBubbleShields = true;
+    public static bool GenerateDoors = true;
+    public static bool GenerateLootBins = true;
+    public static bool GenerateZipLines = true;
+    public static bool GenerateWeaponRacks = true;
+    public static bool GenerateTriggers = true;
+
     static Dictionary<string, string> ObjectToTag = new Dictionary<string, string> {
         {"custom_lootbin", "LootBin"},
         {"custom_zipline", "ZipLine"},
@@ -252,23 +263,24 @@ public class Helper
     /// Builds Map Code
     /// </summary>
     /// <returns>built map code string</returns>
-    public static string BuildMapCode()
+    public static string BuildMapCode(bool buttons = true, bool jumppads = true, bool bubbleshields = true, bool weaponracks = true, bool lootbins = true, bool ziplines = true, bool doors = true, bool props = true, bool triggers = true)
     {
-        string code = Build.Buttons();
-        code += Build.Jumpads();
-        code += Build.BubbleShields();
-        code += Build.WeaponRacks();
-        code += Build.LootBins();
-        code += Build.ZipLines();
-        code += Build.LinkedZipLines();
-        code += Build.VerticalZipLines();
-        code += Build.NonVerticalZipLines();
-        code += Build.SingleDoors();
-        code += Build.DoubleDoors();
-        code += Build.VertDoors();
-        code += Build.HorizontalDoors();
-        code += Build.Props(Build.BuildType.Map);
-        code += Build.Triggers();
+        string code = "";
+        if(buttons) code += Build.Buttons();
+        if(jumppads) code += Build.Jumpads();
+        if(bubbleshields) code += Build.BubbleShields();
+        if(weaponracks) code += Build.WeaponRacks();
+        if(lootbins) code += Build.LootBins();
+        if(ziplines) code += Build.ZipLines();
+        if(ziplines) code += Build.LinkedZipLines();
+        if(ziplines) code += Build.VerticalZipLines();
+        if(ziplines) code += Build.NonVerticalZipLines();
+        if(doors) code += Build.SingleDoors();
+        if(doors) code += Build.DoubleDoors();
+        if(doors) code += Build.VertDoors();
+        if(doors) code += Build.HorizontalDoors();
+        if(props) code += Build.Props(Build.BuildType.Map);
+        if(triggers) code += Build.Triggers();
         return code;
     }
 

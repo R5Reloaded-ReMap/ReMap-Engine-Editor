@@ -18,8 +18,20 @@ public class CodeViews : EditorWindow
     bool UseStartingOffset_temp = false;
     static bool DisableStartingOffsetString = false;
     static bool DisableStartingOffsetString_temp = false;
+    bool ShowAdvanced = false;
     bool UseOriginOffset = false;
     Vector3 OriginOffset;
+
+    // Gen Settings
+    bool GenerateProps = true;
+    bool GenerateButtons = true;
+    bool GenerateJumppads = true;
+    bool GenerateBubbleShields = true;
+    bool GenerateDoors = true;
+    bool GenerateLootBins = true;
+    bool GenerateZipLines = true;
+    bool GenerateWeaponRacks = true;
+    bool GenerateTriggers = true;
 
     //Counts
     int mapcodecount = 0;
@@ -88,31 +100,6 @@ public class CodeViews : EditorWindow
     void OnGUI()
     {
         GUILayout.BeginVertical("box");
-            GUILayout.BeginHorizontal();
-                SetCorrectColor(mapcodecount);
-                GUILayout.Label("Map Code Entity Count: " + mapcodecount, EditorStyles.boldLabel);
-                SetCorrectColor(datatablecount);
-                GUILayout.Label("DataTable Entity Count: " + datatablecount, EditorStyles.boldLabel);
-                SetCorrectColor(scriptentcount);
-                GUILayout.Label("Script.ent Entity Count: " + scriptentcount, EditorStyles.boldLabel);
-                SetCorrectColor(soundentcount);
-                GUILayout.Label("Sound.ent Entity Count: " + soundentcount, EditorStyles.boldLabel);
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-                SetCorrectColor(mapcodecount);
-                SetCorrectEntityLabel(mapcodecount);
-                SetCorrectColor(datatablecount);
-                SetCorrectEntityLabel(datatablecount);
-                SetCorrectColor(scriptentcount);
-                SetCorrectEntityLabel(scriptentcount);
-                SetCorrectColor(soundentcount);
-                SetCorrectEntityLabel(soundentcount);
-            GUILayout.EndHorizontal();
-        GUILayout.EndVertical();
-
-        GUI.contentColor = Color.white;
-
-        GUILayout.BeginVertical("box");
         tab = GUILayout.Toolbar (tab, new string[] {"Map Code", "DataTable Code", "Precache Code", "Script.ent Code", "Sound.ent Code"});
         GUILayout.EndVertical();
 
@@ -120,22 +107,21 @@ public class CodeViews : EditorWindow
             GetLatestCounts();
 
         switch (tab) {
-            case 0:
+            case 0: //Map Code
                 MapCodeGUI();
                 if (tab != tab_temp)
                     GenerateMap(OnlyExportMap, false);
                 tab_temp = tab;
                 break;
-            case 1:
+            case 1: //DataTable Code
                 DataTableGUI();
                 if(tab != tab_temp)
                     GenerateDataTable(false);
                 tab_temp = tab;
                 break;
-            case 2:
+            case 2: //Precache Code
                 PrecacheGUI();
                 if(tab != tab_temp)
-                    
                     GeneratePrecacheCode(false);
                 tab_temp = tab;
                 break;
@@ -177,24 +163,96 @@ public class CodeViews : EditorWindow
     void MapCodeGUI()
     {
         GUILayout.BeginVertical("box");
-        OnlyExportMap = EditorGUILayout.Toggle("Only Show Map Code", OnlyExportMap);
-        if(OnlyExportMap != OnlyExportMap_temp) {
-            OnlyExportMap_temp = OnlyExportMap;
-            GenerateMap(OnlyExportMap, false);
-        }
-        UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
-        if(UseStartingOffset != UseStartingOffset_temp) {
-            UseStartingOffset_temp = UseStartingOffset;
-            GenerateMap(OnlyExportMap, false);
-        }
-        if(UseStartingOffset) {
-            DisableStartingOffsetString = EditorGUILayout.Toggle("    Hide Starting Vector", DisableStartingOffsetString);
+        SetCorrectColor(mapcodecount);
+        GUILayout.Label("Entity Count: " + mapcodecount, EditorStyles.boldLabel);
+        SetCorrectEntityLabel(mapcodecount);
+        GUILayout.EndVertical();
+
+        GUI.contentColor = Color.white;
+        
+        GUILayout.BeginVertical("box");
+            GUILayout.BeginHorizontal();
+            OnlyExportMap = EditorGUILayout.Toggle("Only Show Map Code", OnlyExportMap);
+            if(OnlyExportMap != OnlyExportMap_temp) {
+                OnlyExportMap_temp = OnlyExportMap;
+                GenerateMap(OnlyExportMap, false);
+            }
+            UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
+            if(UseStartingOffset != UseStartingOffset_temp) {
+                UseStartingOffset_temp = UseStartingOffset;
+                GenerateMap(OnlyExportMap, false);
+            }
+            DisableStartingOffsetString = EditorGUILayout.Toggle("Hide Starting Vector", DisableStartingOffsetString);
             if(DisableStartingOffsetString != DisableStartingOffsetString_temp) {
                 DisableStartingOffsetString_temp = DisableStartingOffsetString;
                 GenerateMap(OnlyExportMap, false);
             }
-        }
+            ShowAdvanced = EditorGUILayout.Toggle("Show Advanced Options", ShowAdvanced);
+            GUILayout.EndHorizontal();
         GUILayout.EndVertical();
+
+            if (ShowAdvanced)
+            {
+                GUILayout.BeginVertical("box");
+                GUILayout.BeginHorizontal();
+                Helper.GenerateProps = EditorGUILayout.Toggle("Build Props", Helper.GenerateProps);
+                if(Helper.GenerateProps != GenerateProps) {
+                    GenerateProps = Helper.GenerateProps;
+                    GenerateMap(OnlyExportMap, false);
+                }
+
+                Helper.GenerateButtons = EditorGUILayout.Toggle("Build Buttons", Helper.GenerateButtons);
+                if(Helper.GenerateButtons != GenerateButtons) {
+                    GenerateButtons = Helper.GenerateButtons;
+                    GenerateMap(OnlyExportMap, false);
+                }
+
+                Helper.GenerateTriggers = EditorGUILayout.Toggle("Build Triggers", Helper.GenerateTriggers);
+                if(Helper.GenerateTriggers != GenerateTriggers) {
+                    GenerateTriggers = Helper.GenerateTriggers;
+                    GenerateMap(OnlyExportMap, false);
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                Helper.GenerateDoors = EditorGUILayout.Toggle("Build Doors", Helper.GenerateDoors);
+                if(Helper.GenerateDoors != GenerateDoors) {
+                    GenerateDoors = Helper.GenerateDoors;
+                    GenerateMap(OnlyExportMap, false);
+                }
+
+                Helper.GenerateJumppads = EditorGUILayout.Toggle("Build Jumppads", Helper.GenerateJumppads);
+                if(Helper.GenerateJumppads != GenerateJumppads) {
+                    GenerateJumppads = Helper.GenerateJumppads;
+                    GenerateMap(OnlyExportMap, false);
+                }
+
+                Helper.GenerateBubbleShields = EditorGUILayout.Toggle("Build BubbleShields", Helper.GenerateBubbleShields);
+                if(Helper.GenerateBubbleShields != GenerateBubbleShields) {
+                    GenerateBubbleShields = Helper.GenerateBubbleShields;
+                    GenerateMap(OnlyExportMap, false);
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                Helper.GenerateZipLines = EditorGUILayout.Toggle("Build ZipLines", Helper.GenerateZipLines);
+                if(Helper.GenerateZipLines != GenerateZipLines) {
+                    GenerateZipLines = Helper.GenerateZipLines;
+                    GenerateMap(OnlyExportMap, false);
+                }
+
+                Helper.GenerateWeaponRacks = EditorGUILayout.Toggle("Build WeaponRacks", Helper.GenerateWeaponRacks);
+                if(Helper.GenerateWeaponRacks != GenerateWeaponRacks) {
+                    GenerateWeaponRacks = Helper.GenerateWeaponRacks;
+                    GenerateMap(OnlyExportMap, false);
+                }
+
+                Helper.GenerateLootBins = EditorGUILayout.Toggle("Build LootBins", Helper.GenerateLootBins);
+                if(Helper.GenerateLootBins != GenerateLootBins) {
+                    GenerateLootBins = Helper.GenerateLootBins;
+                    GenerateMap(OnlyExportMap, false);
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+            }
 
         GUILayout.BeginVertical("box");
         scroll = EditorGUILayout.BeginScrollView(scroll);
@@ -211,6 +269,14 @@ public class CodeViews : EditorWindow
 
     void DataTableGUI()
     {
+        GUILayout.BeginVertical("box");
+        SetCorrectColor(datatablecount);
+        GUILayout.Label("Entity Count: " + datatablecount, EditorStyles.boldLabel);
+        SetCorrectEntityLabel(datatablecount);
+        GUILayout.EndVertical();
+
+        GUI.contentColor = Color.white;
+
         GUILayout.BeginVertical("box");
         scroll = EditorGUILayout.BeginScrollView(scroll);
         GUILayout.TextArea(code_text, GUILayout.ExpandHeight(true));
@@ -240,6 +306,14 @@ public class CodeViews : EditorWindow
     void EntCodeGUI()
     {
         GUILayout.BeginVertical("box");
+        SetCorrectColor(scriptentcount);
+        GUILayout.Label("Entity Count: " + scriptentcount, EditorStyles.boldLabel);
+        SetCorrectEntityLabel(scriptentcount);
+        GUILayout.EndVertical();
+
+        GUI.contentColor = Color.white;
+
+        GUILayout.BeginVertical("box");
         scroll = EditorGUILayout.BeginScrollView(scroll);
         GUILayout.TextArea(code_text, GUILayout.ExpandHeight(true));
         EditorGUILayout.EndScrollView();
@@ -253,6 +327,14 @@ public class CodeViews : EditorWindow
 
     void SoundEntGUI()
     {
+        GUILayout.BeginVertical("box");
+        SetCorrectColor(soundentcount);
+        GUILayout.Label("Entity Count: " + soundentcount, EditorStyles.boldLabel);
+        SetCorrectEntityLabel(soundentcount);
+        GUILayout.EndVertical();
+
+        GUI.contentColor = Color.white;
+
         GUILayout.BeginVertical("box");
         UseOriginOffset = EditorGUILayout.Toggle("Add a origin offset", UseOriginOffset);
         if(UseOriginOffset) OriginOffset = EditorGUILayout.Vector3Field("Origin Offset", OriginOffset);
@@ -282,7 +364,7 @@ public class CodeViews : EditorWindow
             mapcode = Helper.ShouldAddStartingOrg(1);
 
         //Build Map Code
-        mapcode += Helper.BuildMapCode();
+        mapcode += Helper.BuildMapCode(Helper.GenerateButtons, Helper.GenerateJumppads, Helper.GenerateBubbleShields, Helper.GenerateWeaponRacks, Helper.GenerateLootBins, Helper.GenerateZipLines, Helper.GenerateDoors, Helper.GenerateProps, Helper.GenerateTriggers);
 
         if(!onlyMapCode)
             mapcode += "}";

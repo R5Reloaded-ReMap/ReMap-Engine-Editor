@@ -30,15 +30,15 @@ namespace Bewildered.SmartLibrary
 
                 if (_rootCollection == null)
                 {
-                    LibraryUtility.LoadAllCollections();
-                }
-
-                if (_rootCollection == null)
-                {
                     var roots = Resources.FindObjectsOfTypeAll<RootLibraryCollection>();
 
                     if (roots.Length > 0)
                         _rootCollection = roots[0];
+                }
+                
+                if (_rootCollection == null)
+                {
+                    LibraryUtility.LoadAllCollections();
                 }
                 
                 return _rootCollection;

@@ -15,7 +15,7 @@ namespace Bewildered.SmartLibrary
 
         public static readonly string LibraryWindowTitle = "Smart Library";
         public static readonly string DefaultLibraryDataPath = "Assets/Smart Library.asset";
-        public static readonly string CollectionsPath = "Assets/SmartLibrary/Settings/Collections";
+        public static readonly string CollectionsPath = "SmartLibrarySettings/Collections";
         public static readonly string DefaultEmptyCollectionPromptText = "No items in collection ";
         public static readonly string SmartCollectionEmpty = "Check that the rule and folder settings are properly setup?";
         public static readonly string SmartCollectionEmptyNoFiltersFolders = "Add at least one rule or folder setting to add items to the collection.";

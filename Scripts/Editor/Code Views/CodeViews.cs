@@ -42,6 +42,8 @@ public class CodeViews : EditorWindow
     [MenuItem("R5Reloaded/Code Views", false, 25)]
     static void Init()
     {
+        TagHelper.CheckAndCreateTags();
+
         CodeViews window = (CodeViews)GetWindow(typeof(CodeViews), false, "Code Views");
         window.minSize = new Vector2(1000, 500);
         window.Show();

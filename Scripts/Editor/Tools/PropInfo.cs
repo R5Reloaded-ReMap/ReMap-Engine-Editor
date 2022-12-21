@@ -21,14 +21,16 @@ public class PropInfo : EditorWindow
     {
         if(SelectedObject) {
             string[] splitArray = SelectedObject.name.Split(char.Parse(" "));
-            string finished = splitArray[0].Replace("#", "/") + ".rmdl";
+            string model = "$\"" + splitArray[0].Replace("#", "/") + ".rmdl" + "\"";
+            if(!splitArray[0].Contains("mdl#"))
+                model = splitArray[0];
 
             //Asset
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Asset:");
-            GUILayout.TextField("$\"" + finished + "\"", GUILayout.Width(200));
+            GUILayout.TextField(model, GUILayout.Width(200));
             if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "$\"" + finished + "\"";
+                GUIUtility.systemCopyBuffer = model;
             GUILayout.EndHorizontal();
 
 

@@ -93,7 +93,7 @@ namespace Bewildered.SmartLibrary.UI
             get { return _libraryWindows; }
         }
 
-        [MenuItem("Window/Smart Library #l", priority = 1000)]
+        [MenuItem("R5Reloaded/Smart Library #l", priority = 1000)]
         private static void Open()
         {
             var window = GetWindow<SmartLibraryWindow>();

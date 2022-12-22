@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 public class ImportExportDataTable
 {
-    [MenuItem("R5Reloaded/DataTable/Import DataTable", false, 100)]
+    [MenuItem("ReMap/Import/DataTable", false, 50)]
     private async static void ImportDataTable()
     {
         string path = EditorUtility.OpenFilePanel("Datatable Import", "", "csv");
@@ -58,7 +58,7 @@ public class ImportExportDataTable
         EditorUtility.ClearProgressBar();
     }
 
-    [MenuItem("R5Reloaded/DataTable/Export DataTable", false, 100)]
+    [MenuItem("ReMap/Export/DataTable", false, 50, priority = 25)]
     private static void ExportDataTable()
     {
         var path = EditorUtility.SaveFilePanel("Datatable Export", "", "mapexport.csv", "csv");

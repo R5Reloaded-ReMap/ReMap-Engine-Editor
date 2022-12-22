@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class InfoUI : EditorWindow
 {
-    [MenuItem("R5Reloaded/Info", false, 0)]
+    [MenuItem("ReMap/Info", false, 0)]
     static void Init()
     {
         InfoUI window = (InfoUI)EditorWindow.GetWindow(typeof(InfoUI), false, "R5R Unity Map Editor");

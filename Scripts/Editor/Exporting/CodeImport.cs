@@ -21,7 +21,7 @@ public class CodeImport : EditorWindow
     List<String> Doors = new List<String>();
     List<String> Triggers = new List<String>();
 
-    [MenuItem("R5Reloaded/Import Map Code", false, 100)]
+    [MenuItem("ReMap/Import/Map Code", false, 50)]
     static void Init()
     {
         CodeImport window = (CodeImport)GetWindow(typeof(CodeImport), false, "Import Map Code");

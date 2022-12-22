@@ -39,7 +39,7 @@ public class CodeViews : EditorWindow
     int scriptentcount = 0;
     int soundentcount = 0;
 
-    [MenuItem("R5Reloaded/Code Views", false, 25)]
+    [MenuItem("ReMap/Code Views", false, 25)]
     static void Init()
     {
         TagHelper.CheckAndCreateTags();

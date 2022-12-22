@@ -5,7 +5,7 @@ public class PropInfo : EditorWindow
 {
     GameObject SelectedObject = null;
 
-    [MenuItem("R5Reloaded/Tools/Prop Info", false, 200)]
+    [MenuItem("ReMap/Tools/Prop Info", false, 100)]
     static void Init()
     {
         PropInfo window = (PropInfo)EditorWindow.GetWindow(typeof(PropInfo), false, "Prop Info");

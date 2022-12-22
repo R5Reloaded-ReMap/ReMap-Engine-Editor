@@ -8,9 +8,9 @@ namespace ThemesPlugin
 { 
     public static class ThemesUtility
     {
-        readonly public static string CustomThemesPath = Application.dataPath + "/Scripts/Plugins/EditorThemes/Editor/Themes/";
-        readonly public static string UssFilePath = Application.dataPath + "/Scripts/Plugins/EditorThemes/Editor/StyleSheets/Extensions/";
-        readonly public static string PresetsPath = Application.dataPath + "/Scripts/Plugins/EditorThemes/Editor/CreatePresets/";
+        readonly public static string CustomThemesPath = Application.dataPath + "/ReMap/Plugins/EditorThemes/Editor/Themes/";
+        readonly public static string UssFilePath = Application.dataPath + "/ReMap/Plugins/EditorThemes/Editor/StyleSheets/Extensions/";
+        readonly public static string PresetsPath = Application.dataPath + "/ReMap/Plugins/EditorThemes/Editor/CreatePresets/";
         readonly public static string Version = "v0.65";
         readonly public static string Enc = ".json";
         public static string currentTheme;
@@ -121,7 +121,7 @@ namespace ThemesPlugin
             string Path = UssFilePath + "/dark.uss";
             DeleteFileWithMeta(Path);
             File.WriteAllText(Path, ussText);
-            string Path2 = Application.dataPath + "/Scripts/Plugins/EditorThemes/Editor/StyleSheets/Extensions/light.uss";
+            string Path2 = Application.dataPath + "/ReMap/Plugins/EditorThemes/Editor/StyleSheets/Extensions/light.uss";
             DeleteFileWithMeta(Path2);
             File.WriteAllText(Path2, ussText);
             AssetDatabase.Refresh();

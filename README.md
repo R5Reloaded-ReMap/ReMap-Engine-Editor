@@ -1,9 +1,11 @@
-# R5Reloaded Unity Map Editor
+# ReMap
 
 ### Installation
 https://docs.r5reloaded.com/en/Unity-map-editor-install
 
-### Credits
+### Usefull Information
+- Do not rename any of the prefabs. this will break them
 
-AyeZee#6969 - Code, Initial setup of the editor <br>
-Julefox#0050 - Importing and organizing the models
+### Credits
+AyeZee#6969<br>
+Julefox#0050

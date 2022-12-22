@@ -67,7 +67,7 @@ namespace ThemesPlugin
 
             if (create)
             {
-                string Path = Application.dataPath + "/Scripts/Plugins/EditorThemes/Editor/StyleSheets/Extensions/CustomThemes/" + Name + ".json";
+                string Path = Application.dataPath + "/ReMap/Plugins/EditorThemes/Editor/StyleSheets/Extensions/CustomThemes/" + Name + ".json";
                 if (File.Exists(Path))
                     if( EditorUtility.DisplayDialog("This Theme already exsists", "Do you want to overide the old Theme?", "Yes",  "Cancel") == false)
                         return;

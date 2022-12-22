@@ -76,7 +76,6 @@ public class CodeViews : EditorWindow
         datatablecount = Helper.GetPropCount();
         scriptentcount = Helper.GetPropCount();
         soundentcount = Helper.GetSoundCount();
-        string s = Helper.GetRandomGUIDForEnt();
     }
 
     void GenerateCorrectCode()

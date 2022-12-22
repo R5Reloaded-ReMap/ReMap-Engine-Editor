@@ -296,6 +296,12 @@ public class Helper
         return code;
     }
 
+    public static string GetRandomGUIDForEnt()
+    {
+        Debug.Log(Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16));
+        return Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
+    }
+
     public static string Credits = @"
 //Made with Unity Map Editor
 //By AyeZee#6969

@@ -58,7 +58,7 @@ public class ImportExportDataTable
         EditorUtility.ClearProgressBar();
     }
 
-    [MenuItem("ReMap/Export/DataTable", false, 50, priority = 25)]
+    [MenuItem("ReMap/Export/DataTable", false, 51)]
     private static void ExportDataTable()
     {
         var path = EditorUtility.SaveFilePanel("Datatable Export", "", "mapexport.csv", "csv");

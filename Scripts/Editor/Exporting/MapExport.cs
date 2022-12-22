@@ -7,31 +7,31 @@ using UnityEngine.SceneManagement;
 public class MapExport
 {
 
-    [MenuItem("ReMap/Export/Map With Origin Offset/Whole Script", false, 50, priority = 1)]
+    [MenuItem("ReMap/Export/Map With Origin Offset/Whole Script", false, 50)]
     private static void ExportWholeScriptOffset()
     {
         ExportMap(Helper.ExportType.WholeScriptOffset);
     }
 
-    [MenuItem("ReMap/Export/Map With Origin Offset/Map Only", false, 50, priority = 2)]
+    [MenuItem("ReMap/Export/Map With Origin Offset/Map Only", false, 50)]
     private static void ExportMapOnlyOffset()
     {
         ExportMap(Helper.ExportType.MapOnlyOffset);
     }
 
-    [MenuItem("ReMap/Export/Map Without Origin Offset/Whole Script", false, 50, priority = 3)]
+    [MenuItem("ReMap/Export/Map Without Origin Offset/Whole Script", false, 50)]
     private static void ExportWholeScript()
     {
         ExportMap(Helper.ExportType.WholeScript);
     }
 
-    [MenuItem("ReMap/Export/Map Without Origin Offset/Map Only", false, 50, priority = 4)]
+    [MenuItem("ReMap/Export/Map Without Origin Offset/Map Only", false, 50)]
     private static void ExportOnlyMap()
     {
         ExportMap(Helper.ExportType.MapOnly);
     }
 
-    [MenuItem("ReMap/Export/script.ent", false, 50, priority = 20)]
+    [MenuItem("ReMap/Export/script.ent", false, 50)]
     private static void ExportScriptEntCode()
     {
         var path = EditorUtility.SaveFilePanel("Script.ent", "", "scriptentexport.ent", "ent");
@@ -47,7 +47,7 @@ public class MapExport
         System.IO.File.WriteAllText(path, entCode + "\u0000");
     }
 
-    [MenuItem("ReMap/Export/sound.ent", false, 50, priority = 21)]
+    [MenuItem("ReMap/Export/sound.ent", false, 50)]
     private static void ExportSoundEntCode()
     {
         var path = EditorUtility.SaveFilePanel("Sound.ent Export", "", "soundentexport.ent", "ent");

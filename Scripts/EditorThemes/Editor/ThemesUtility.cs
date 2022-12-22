@@ -117,10 +117,9 @@ namespace ThemesPlugin
 
             CustomTheme t = ThemesUtility.GetCustomThemeFromJson(Path);
 
-            if ((EditorGUIUtility.isProSkin && t.unityTheme == CustomTheme.UnityTheme.Light) || (!EditorGUIUtility.isProSkin && t.unityTheme == CustomTheme.UnityTheme.Dark))
+            if ((EditorGUIUtility.isProSkin && t.unityTheme == CustomTheme.UnityTheme.Light) || (!EditorGUIUtility.isProSkin && t.unityTheme == CustomTheme.UnityTheme.Dark) || (!EditorGUIUtility.isProSkin && t.unityTheme == CustomTheme.UnityTheme.Remap))
             {
                 InternalEditorUtility.SwitchSkinAndRepaintAllViews();
-
             }
 
             string ussText = ThemesUtility.GenerateUssString(t);

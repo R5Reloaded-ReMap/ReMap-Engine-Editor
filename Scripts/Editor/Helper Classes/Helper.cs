@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.IO;
 
 public class Helper
 {
@@ -269,6 +270,30 @@ public class Helper
         }
 
         return collectionList;
+    }
+
+    /// <summary>
+    /// Build Guid Link
+    /// </summary>
+    /// <returns>return a guid link</returns>
+    public static string BuildGuidLink(int value)
+    {
+        string[] arrayGuidLink = new string[20000];
+
+        string linkGuidFile = Path.Combine(Directory.GetCurrentDirectory(), "Assets/Scripts/Editor/Helper Classes", "r5apexGuidList.txt");
+
+        int row = 0;
+        using (StreamReader reader = new StreamReader(linkGuidFile))
+        {
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                arrayGuidLink[row] = line;
+                row++;
+            }
+        }
+
+        return arrayGuidLink[value];
     }
 
     /// <summary>

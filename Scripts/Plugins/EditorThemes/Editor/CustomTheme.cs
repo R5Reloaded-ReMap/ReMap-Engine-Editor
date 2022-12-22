@@ -11,14 +11,11 @@ namespace ThemesPlugin
     public class CustomTheme
     {
         public string Name;
-        
-    
         public enum UnityTheme { Dark,Light,Both,Remap}
         public UnityTheme unityTheme;
         public bool IsUnDeletable;
         public bool IsUnEditable;
         public string Version;
-        
         public List<UIItem> Items;
         
         [System.Serializable]

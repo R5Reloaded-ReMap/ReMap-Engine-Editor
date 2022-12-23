@@ -9,14 +9,15 @@ public class AssetLibrarySorter
     public static void LibrarySorter()
     {
         int totalFiles = 0;
-        Array[] totalArrayMap = new Array[10];
-        string[] files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Scripts\Editor\Helper Classes", "TextFile"), "*.txt");
+        Array[] totalArrayMap = new Array[20];
+        string[] files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Assets/ReMap/Scripts/Editor/Helper Classes", "TextFile"), "*.txt");
 
         foreach (string file in files)
         {
             string[] arrayMap = new string[2000];
 
             string mapPath = file;
+            string mapName = Path.GetFileName(file).Replace(".txt", "");
 
             int row = 0;
 
@@ -33,9 +34,8 @@ public class AssetLibrarySorter
             totalArrayMap[totalFiles] = arrayMap;
             totalFiles++;
 
-            //if ( !Directory.Exists( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", file.Replace(".txt", "")) ) )
-                Directory.CreateDirectory( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", Path.GetFileName(file) ) );
-                
+            if ( !Directory.Exists( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", mapName ) ) )
+            Directory.CreateDirectory( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", mapName ) ); 
         }
 
         //foreach ()

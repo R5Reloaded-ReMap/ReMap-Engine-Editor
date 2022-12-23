@@ -20,6 +20,7 @@ public class CodeImport : EditorWindow
     List<String> LinkedZiplines = new List<String>();
     List<String> Doors = new List<String>();
     List<String> Triggers = new List<String>();
+    List<String> Buttons = new List<String>();
 
     [MenuItem("ReMap/Import/Map Code", false, 50)]
     static void Init()
@@ -48,9 +49,11 @@ public class CodeImport : EditorWindow
         LinkedZiplines.Clear();
         Doors.Clear();
         Triggers.Clear();
+        Buttons.Clear();
 
         await BuildImportList();
         await ImportProps();
+        await ImportButtons();
         await ImportJumpPads();
         await ImportBubbleSheilds();
         await ImportWeaponRacks();
@@ -86,6 +89,8 @@ public class CodeImport : EditorWindow
                 Doors.Add(line.Replace("MapEditor_SpawnDoor(", "").Replace(" )", "").Replace(" ", ""));
             else if (line.Contains("MapEditor_CreateTrigger("))
                 Triggers.Add(line.Replace("MapEditor_CreateTrigger(", "").Replace(" )", "").Replace(" ", ""));
+            else if (line.Contains("AddCallback_OnUseEntity( CreateFRButton("))
+                Buttons.Add(line.Replace("AddCallback_OnUseEntity( CreateFRButton(", "").Replace("), void function(entity panel, entity user, int input)", "").Replace(", ", ","));
         }
 
         await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -136,6 +141,56 @@ public class CodeImport : EditorWindow
             script.realmID = int.Parse(split[9]);
 
             GameObject parent = GameObject.Find("Props");
+            if (parent != null)
+                obj.gameObject.transform.parent = parent.transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
+        }
+    }
+
+    async Task ImportButtons()
+    {
+        if(Buttons.Count == 0)
+            return;
+
+        GameObject find = GameObject.Find("Buttons");
+        if (find == null)
+        {
+            GameObject objToSpawn = new GameObject("Buttons");
+            objToSpawn.name = "Buttons";
+        }
+
+        int i = 0;
+        foreach(string button in Buttons)
+        {
+            string[] split = button.Split(char.Parse(","));
+            if (split.Length < 3)
+                continue;
+
+            EditorUtility.DisplayProgressBar("Importing Buttons", "Importing: Button " + i, (i + 1) / (float)Buttons.Count);
+
+            string Model = "custom_button";
+
+            //Find Model GUID in Assets
+            string[] results = AssetDatabase.FindAssets(Model);
+            if (results.Length == 0)
+                continue;
+
+            //Get model path from guid and load it
+            UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(results[0]), typeof(UnityEngine.Object)) as GameObject;
+            if (loadedPrefabResource == null)
+                continue;
+
+            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+            obj.transform.position = new Vector3(float.Parse(split[1]), float.Parse(split[2].Replace(">", "").Replace(" ", "")), -(float.Parse(split[0].Replace("<", "").Replace(" ", ""))));
+            obj.transform.eulerAngles = new Vector3(-(float.Parse(split[3].Replace("<", "").Replace(" ", ""))), -(float.Parse(split[4])), float.Parse(split[5].Replace(">", "").Replace(" ", "")));
+            obj.name = Model;
+
+            ButtonScripting script = obj.GetComponent<ButtonScripting>();
+            script.UseText = split[6].Replace("\"", "");
+
+            GameObject parent = GameObject.Find("Buttons");
             if (parent != null)
                 obj.gameObject.transform.parent = parent.transform;
 

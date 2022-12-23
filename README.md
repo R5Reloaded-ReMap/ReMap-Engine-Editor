@@ -1,4 +1,13 @@
 # ReMap
+### What is ReMap?
+ReMap is a map making tool made in unity for R5Reloaded. This allows you to make prop based maps easily.
+ReMap contains a bunch of tools to make prop map making as easy as possible.
+Such as:
+-> r5squirrel generation
+-> datatable generation
+-> .ent generation
+-> ability to create ziplines, buttons, doors, lootbins and more
+-> export/import maps with json to store or share maps with ease
 
 ### Installation
 https://docs.r5reloaded.com/en/Unity-map-editor-install

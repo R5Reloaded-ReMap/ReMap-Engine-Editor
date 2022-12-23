@@ -436,6 +436,7 @@ public class CodeViews : EditorWindow
     {
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
+        AssetLibrarySorter.LibrarySorter();
 
         string entCode = Build.Sounds();
 

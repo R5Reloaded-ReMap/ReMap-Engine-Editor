@@ -19,7 +19,7 @@ namespace ThemesPlugin
         Vector2 scrollPosition;
         
 
-        [MenuItem("ReMap/Themes", false, 1000)]
+        [MenuItem("ReMap/Themes", false, 1070)]
         public static void ShowWindow()
         {
             EditorWindow.GetWindow<ThemeSettings>("Theme Settings");

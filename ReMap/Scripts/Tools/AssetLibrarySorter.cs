@@ -39,7 +39,7 @@ public class AssetLibrarySorter
             if ( !Directory.Exists( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", mapName ) ) )
             Directory.CreateDirectory( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", mapName ) );
 
-            string modelPath_; string modelName;
+            string modelPath_; string modelName ;
 
             foreach ( string models in arrayMap )
             {
@@ -49,10 +49,21 @@ public class AssetLibrarySorter
                 if ( File.Exists(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\ReMap\Lods - Dont use these\Models", modelName + "_LOD0.fbx") ) )
                 {
                     if ( !File.Exists(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Prefabs\" + mapName, modelPath_.Replace(".rmdl", "").Replace("/", "#") + ".prefab") ) )
-                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\ReMap\Lods - Dont use these\", "EmptyPrefab.prefab"), Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Prefabs\" + mapName, modelPath_.Replace(".rmdl", "").Replace("/", "#") + ".prefab") );
+                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\ReMap\Lods - Dont use these\", "EmptyPrefab.prefab"), Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Prefabs\" + mapName, modelPath_.Replace(".rmdl", ".prefab").Replace("/", "#")) );
 
-                        //GameObject prefab = Resources.Load(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Prefabs\" + mapName, modelPath_.Replace(".rmdl", "").Replace("/", "#"))) as GameObject;
-                        //GameObject parent = UnityEngine.Object.Instantiate(prefab);
+                        GameObject prefab = AssetDatabase.LoadAssetAtPath(@"Assets\Prefabs\" + mapName + @"\" + modelPath_.Replace(".rmdl", ".prefab").Replace("/", "#"), typeof(UnityEngine.Object) ) as GameObject;
+                        GameObject objectToAdd = AssetDatabase.LoadAssetAtPath( @"Assets\ReMap\Lods - Dont use these\Models" + @"\" + modelName + "_LOD0.fbx", typeof(UnityEngine.Object) )as GameObject;
+                        if (prefab == null) return;
+                        if (objectToAdd == null) return;
+                        GameObject prefabInstance = UnityEngine.Object.Instantiate(prefab) as GameObject;
+                        GameObject instance = UnityEngine.Object.Instantiate(objectToAdd) as GameObject;
+                        instance.transform.SetParent(prefabInstance.transform);
+                        PrefabUtility.ApplyAddedGameObject( instance, @"Assets\Prefabs\" + mapName + @"\" + modelPath_.Replace(".rmdl", ".prefab").Replace("/", "#"), InteractionMode.AutomatedAction );
+                        //
+                        //instance.transform.SetParent(prefabInstance.transform);
+                        //PrefabUtility.ApplyPrefabInstance(prefabInstance, InteractionMode.AutomatedAction);
+
+                        //UnityEngine.Object.Destroy(instance);
 
                         //prefab.AddComponent<PropScript>();
 

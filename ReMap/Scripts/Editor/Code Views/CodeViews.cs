@@ -40,7 +40,7 @@ public class CodeViews : EditorWindow
     int soundentcount = 0;
 
     [MenuItem("ReMap/Code Views", false, 25)]
-    static void Init()
+    public static void Init()
     {
         TagHelper.CheckAndCreateTags();
 

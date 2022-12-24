@@ -6,7 +6,7 @@ public class PropInfo : EditorWindow
     GameObject SelectedObject = null;
 
     [MenuItem("ReMap/Tools/Prop Info", false, 100)]
-    static void Init()
+    public static void Init()
     {
         PropInfo window = (PropInfo)EditorWindow.GetWindow(typeof(PropInfo), false, "Prop Info");
         window.Show();

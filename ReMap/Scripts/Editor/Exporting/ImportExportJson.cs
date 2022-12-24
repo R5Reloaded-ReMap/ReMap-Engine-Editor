@@ -10,7 +10,7 @@ public class ImportExportJson
     static SaveJson save = new SaveJson();
 
     [MenuItem("ReMap/Import/Json", false, 51)]
-    private static async void ImportJson()
+    public static async void ImportJson()
     {
         var path = EditorUtility.OpenFilePanel("Json Import", "", "json");
         if (path.Length == 0)
@@ -385,7 +385,7 @@ public class ImportExportJson
     }
 
     [MenuItem("ReMap/Export/Json", false, 51)]
-    private static async void ExportJson()
+    public static async void ExportJson()
     {
         var path = EditorUtility.SaveFilePanel("Json Export", "", "mapexport.json", "json");
         if (path.Length == 0)

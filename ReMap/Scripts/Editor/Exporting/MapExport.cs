@@ -8,31 +8,31 @@ public class MapExport
 {
 
     [MenuItem("ReMap/Export/Map With Origin Offset/Whole Script", false, 50)]
-    private static void ExportWholeScriptOffset()
+    public static void ExportWholeScriptOffset()
     {
         ExportMap(Helper.ExportType.WholeScriptOffset);
     }
 
     [MenuItem("ReMap/Export/Map With Origin Offset/Map Only", false, 50)]
-    private static void ExportMapOnlyOffset()
+    public static void ExportMapOnlyOffset()
     {
         ExportMap(Helper.ExportType.MapOnlyOffset);
     }
 
     [MenuItem("ReMap/Export/Map Without Origin Offset/Whole Script", false, 50)]
-    private static void ExportWholeScript()
+    public static void ExportWholeScript()
     {
         ExportMap(Helper.ExportType.WholeScript);
     }
 
     [MenuItem("ReMap/Export/Map Without Origin Offset/Map Only", false, 50)]
-    private static void ExportOnlyMap()
+    public static void ExportOnlyMap()
     {
         ExportMap(Helper.ExportType.MapOnly);
     }
 
     [MenuItem("ReMap/Export/script.ent", false, 50)]
-    private static void ExportScriptEntCode()
+    public static void ExportScriptEntCode()
     {
         var path = EditorUtility.SaveFilePanel("Script.ent", "", "scriptentexport.ent", "ent");
         if (path.Length == 0)
@@ -48,7 +48,7 @@ public class MapExport
     }
 
     [MenuItem("ReMap/Export/sound.ent", false, 50)]
-    private static void ExportSoundEntCode()
+    public static void ExportSoundEntCode()
     {
         var path = EditorUtility.SaveFilePanel("Sound.ent Export", "", "soundentexport.ent", "ent");
         if (path.Length == 0)

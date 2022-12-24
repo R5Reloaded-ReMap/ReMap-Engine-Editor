@@ -14,7 +14,7 @@ public class GridTool : EditorWindow
     private bool isfloor = true;
 
     [MenuItem("ReMap/Tools/Grid Tool", false, 100)]
-    static void Init()
+    public static void Init()
     {
         GridTool window = (GridTool)EditorWindow.GetWindow(typeof(GridTool), false, "Grid Tool");
         window.Show();

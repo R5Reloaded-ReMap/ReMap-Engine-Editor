@@ -23,7 +23,7 @@ public class CodeImport : EditorWindow
     List<String> Buttons = new List<String>();
 
     [MenuItem("ReMap/Import/Map Code", false, 50)]
-    static void Init()
+    public static void Init()
     {
         CodeImport window = (CodeImport)GetWindow(typeof(CodeImport), false, "Import Map Code");
         window.Show();

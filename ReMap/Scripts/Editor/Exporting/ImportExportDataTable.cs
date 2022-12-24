@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 public class ImportExportDataTable
 {
     [MenuItem("ReMap/Import/DataTable", false, 50)]
-    private async static void ImportDataTable()
+    public async static void ImportDataTable()
     {
         string path = EditorUtility.OpenFilePanel("Datatable Import", "", "csv");
         if (path.Length == 0)
@@ -59,7 +59,7 @@ public class ImportExportDataTable
     }
 
     [MenuItem("ReMap/Export/DataTable", false, 51)]
-    private static void ExportDataTable()
+    public static void ExportDataTable()
     {
         var path = EditorUtility.SaveFilePanel("Datatable Export", "", "mapexport.csv", "csv");
         if (path.Length == 0)

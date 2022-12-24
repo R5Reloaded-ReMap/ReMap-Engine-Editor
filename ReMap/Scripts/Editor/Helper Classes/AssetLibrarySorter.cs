@@ -14,19 +14,21 @@ public class AssetLibrarySorter
 
         foreach (string file in files)
         {
-            string[] arrayMap = new string[2000];
+            int lineCount = File.ReadAllLines(file).Length;
+
+            string[] arrayMap = new string[lineCount];
 
             string mapPath = file;
-            string mapName = Path.GetFileName(file).Replace(".txt", "");
+            string mapName = Path.GetFileNameWithoutExtension(file);
 
             int row = 0;
 
             using (StreamReader reader = new StreamReader(mapPath))
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                string modelPath;
+                while ((modelPath = reader.ReadLine()) != null)
                 {
-                    arrayMap[row] = line;
+                    arrayMap[row] = modelPath;
                     row++;
                 }
             }
@@ -35,9 +37,38 @@ public class AssetLibrarySorter
             totalFiles++;
 
             if ( !Directory.Exists( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", mapName ) ) )
-            Directory.CreateDirectory( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", mapName ) ); 
-        }
+            Directory.CreateDirectory( Path.Combine(Directory.GetCurrentDirectory(), "Assets/Prefabs", mapName ) );
 
-        //foreach ()
+            string modelPath_; string modelName;
+
+            foreach ( string models in arrayMap )
+            {
+                modelPath_ = models;
+                modelName = Path.GetFileNameWithoutExtension(modelPath_);
+
+                if ( File.Exists(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\ReMap\Lods - Dont use these\Models", modelName + "_LOD0.fbx") ) )
+                {
+                    if ( !File.Exists(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Prefabs\" + mapName, modelPath_.Replace(".rmdl", "").Replace("/", "#") + ".prefab") ) )
+                        File.Copy(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\ReMap\Lods - Dont use these\", "EmptyPrefab.prefab"), Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Prefabs\" + mapName, modelPath_.Replace(".rmdl", "").Replace("/", "#") + ".prefab") );
+
+                        //GameObject prefab = Resources.Load(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Prefabs\" + mapName, modelPath_.Replace(".rmdl", "").Replace("/", "#"))) as GameObject;
+                        //GameObject parent = UnityEngine.Object.Instantiate(prefab);
+
+                        //prefab.AddComponent<PropScript>();
+
+                    // TESTS || I will do the code clean up after
+
+                    //GameObject model = (GameObject)Resources.Load(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\ReMap\Lods - Dont use these\Models\", modelName + "_LOD0.fbx"));
+
+                    
+                    //if ( model != null ){
+                    //GameObject instance = /* (GameObject)PrefabUtility.Object. */UnityEngine.Object.Instantiate(model);}
+
+                    //PrefabUtility.SaveAsPrefabAsset(emptyPrefab, Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Prefabs\" + mapName, modelPath_.Replace(".rmdl", "").Replace("/", "#") + ".prefab" ) );
+
+                    //UnityEngine.Object.Destroy(emptyPrefab);
+                }
+            }
+        }
     }
 }

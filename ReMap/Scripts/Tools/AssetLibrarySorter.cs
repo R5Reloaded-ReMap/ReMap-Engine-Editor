@@ -11,19 +11,24 @@ public class AssetLibrarySorter
         int totalFiles = 0;
         Array[] totalArrayMap = new Array[20];
         string currentDirectory = Directory.GetCurrentDirectory();
-        string[] files = Directory.GetFiles(Path.Combine(currentDirectory, @"Assets\ReMap\Scripts\Tools", "rpakModelFile"), "*.txt");
+        string relativeLods =$"Assets/ReMap/Lods - Dont use these";
+        string relativePrefabs =$"Assets/Prefabs";
+        string relativeRpakFile = $"Assets/ReMap/Scripts/Tools/rpakModelFile";
+        string relativeEmptyPrefab = $"Assets/ReMap/Lods - Dont use these/EmptyPrefab.prefab";
+        string relativeModel =$"Assets/ReMap/Lods - Dont use these/Models";
+
+        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt");
         foreach (string file in files)
         {
             int lineCount = File.ReadAllLines(file).Length;
 
             string[] arrayMap = new string[lineCount];
 
-            string mapPath = file;
             string mapName = Path.GetFileNameWithoutExtension(file);
 
             int row = 0;
 
-            using (StreamReader reader = new StreamReader(mapPath))
+            using (StreamReader reader = new StreamReader(file))
             {
                 string modelPath;
                 while ((modelPath = reader.ReadLine()) != null)
@@ -36,8 +41,9 @@ public class AssetLibrarySorter
             totalArrayMap[totalFiles] = arrayMap;
             totalFiles++;
 
-            if ( !Directory.Exists( Path.Combine(currentDirectory, @"Assets\Prefabs", mapName ) ) )
-                Directory.CreateDirectory( Path.Combine(currentDirectory, @"Assets\Prefabs", mapName ) );
+            string mapPath = $"{currentDirectory}/{relativePrefabs}/{mapName}";
+            if ( !Directory.Exists( mapPath ) )
+                Directory.CreateDirectory( mapPath );
 
             string modelName ; string modelReplacePath; string category;
             GameObject prefabToAdd; GameObject prefabInstance;
@@ -45,18 +51,18 @@ public class AssetLibrarySorter
 
             foreach ( string modelPath in arrayMap )
             {
-                modelName = Path.GetFileNameWithoutExtension(modelPath);
+                modelName = Path.GetFileNameWithoutExtension(modelPath.Split(";")[0]);
 
-                if ( File.Exists(Path.Combine(currentDirectory, @"Assets\ReMap\Lods - Dont use these\Models\", modelName + "_LOD0.fbx") ) )
+                if (File.Exists($"{currentDirectory}/{relativeModel}/{modelName + "_LOD0.fbx"}"))
                 {
-                    modelReplacePath = modelPath.Replace("/", "#").Replace(".rmdl", ".prefab");
-                    category = modelPath.Split("/")[1];
+                    modelReplacePath = modelPath.Split(";")[0].Replace("/", "#").Replace(".rmdl", ".prefab");
+                    category = modelPath.Split(";")[0].Split("/")[1];
 
-                    if ( !File.Exists(Path.Combine(currentDirectory, @"Assets\Prefabs\" + mapName, modelReplacePath) ) )
+                    if ( !File.Exists( $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}" ) )
                     {
-
-                        prefabToAdd = AssetDatabase.LoadAssetAtPath(@"Assets\ReMap\Lods - Dont use these\EmptyPrefab.prefab", typeof(UnityEngine.Object) ) as GameObject;
-                        objectToAdd = AssetDatabase.LoadAssetAtPath( @"Assets\ReMap\Lods - Dont use these\Models\" + modelName + "_LOD0.fbx", typeof(UnityEngine.Object) )as GameObject;
+                        
+                        prefabToAdd = AssetDatabase.LoadAssetAtPath($"{relativeEmptyPrefab}", typeof(UnityEngine.Object) ) as GameObject;
+                        objectToAdd = AssetDatabase.LoadAssetAtPath( $"{relativeModel}/{modelName + "_LOD0.fbx"}", typeof(UnityEngine.Object) )as GameObject;
                             if ( prefabToAdd == null || objectToAdd == null ) return;
                         prefabInstance = UnityEngine.Object.Instantiate(prefabToAdd) as GameObject;
                         objectInstance = UnityEngine.Object.Instantiate(objectToAdd) as GameObject;
@@ -68,11 +74,19 @@ public class AssetLibrarySorter
                         prefabInstance.transform.position = new Vector3( 0, 0, 0 );
                         prefabInstance.transform.eulerAngles = new Vector3( 0, 0, 0 );
                         objectInstance.transform.position = new Vector3( 0, 0, 0 );
-                        objectInstance.transform.eulerAngles = new Vector3( 0, -90, 0 );
 
-                        objectInstance.transform.SetParent(prefabInstance.transform);
+                        string[] parts = modelPath.Split(";")[1].Replace("(", "").Replace(")", "").Split(',');
+    
+                        // Convertir chaque partie en float et créer un vecteur 3 avec ces valeurs
+                        float x = float.Parse(parts[0]);
+                        float y = float.Parse(parts[1]);
+                        float z = float.Parse(parts[2]);
+                        Vector3 vector = new Vector3(x, y, z);
+                        objectInstance.transform.eulerAngles = vector;
 
-                        PrefabUtility.SaveAsPrefabAsset( prefabInstance, Path.Combine(currentDirectory, @"Assets\Prefabs\" + mapName, modelReplacePath) );
+                        objectInstance.transform.SetParent( prefabInstance.transform );
+
+                        PrefabUtility.SaveAsPrefabAsset( prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}" );
 
                         UnityEngine.Object.DestroyImmediate( prefabInstance );
                     }

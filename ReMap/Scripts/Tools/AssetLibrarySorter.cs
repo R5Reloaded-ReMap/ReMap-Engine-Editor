@@ -77,7 +77,6 @@ public class AssetLibrarySorter
 
                         string[] parts = modelPath.Split(";")[1].Replace("(", "").Replace(")", "").Split(',');
     
-                        // Convertir chaque partie en float et créer un vecteur 3 avec ces valeurs
                         float x = float.Parse(parts[0]);
                         float y = float.Parse(parts[1]);
                         float z = float.Parse(parts[2]);

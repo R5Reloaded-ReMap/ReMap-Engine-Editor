@@ -8,6 +8,6 @@ public class Startup {
         //These will run when Unity starts up
         TagHelper.CheckAndCreateTags();
         //AssetLibrarySorter.LibrarySorter();
-        AssetLibrarySorter.SetModelLabels();
+        //AssetLibrarySorter.SetModelLabels();
     }
 }

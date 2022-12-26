@@ -73,14 +73,13 @@ public class AssetLibrarySorter : EditorWindow
 
                     if (!File.Exists($"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}"))
                     {
-                        ReMapConsole.Log($"[Library Sorter] Creating prefab: {relativePrefabs}/{mapName}/{modelReplacePath}", ReMapConsole.LogType.Info);
                         prefabToAdd = AssetDatabase.LoadAssetAtPath($"{relativeEmptyPrefab}", typeof(UnityEngine.Object)) as GameObject;
                         objectToAdd = AssetDatabase.LoadAssetAtPath($"{relativeModel}/{modelName + "_LOD0.fbx"}", typeof(UnityEngine.Object)) as GameObject;
 
                         if (prefabToAdd == null || objectToAdd == null)
                         {
                             ReMapConsole.Log($"[Library Sorter] Error loading prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
-                            return;
+                            continue;
                         }
 
                         prefabInstance = UnityEngine.Object.Instantiate(prefabToAdd) as GameObject;
@@ -89,7 +88,7 @@ public class AssetLibrarySorter : EditorWindow
                         if (prefabInstance == null || objectInstance == null)
                         {
                             ReMapConsole.Log($"[Library Sorter] Error creating prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
-                            return;
+                            continue;
                         }
 
                         prefabInstance.AddComponent<PropScript>();
@@ -102,12 +101,35 @@ public class AssetLibrarySorter : EditorWindow
 
                         objectInstance.transform.parent = prefabInstance.transform;
                         objectInstance.transform.position = Vector3.zero;
-                        objectInstance.transform.rotation = Quaternion.Euler(FindAnglesOffset(modelPath));
+                        objectInstance.transform.eulerAngles = FindAnglesOffset(modelPath);
                         objectInstance.transform.localScale = new Vector3(1, 1, 1);
 
                         PrefabUtility.SaveAsPrefabAsset(prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}");
 
                         UnityEngine.Object.DestroyImmediate(prefabInstance);
+                        ReMapConsole.Log($"[Library Sorter] Creating prefab: {relativePrefabs}/{mapName}/{modelReplacePath}", ReMapConsole.LogType.Info);
+                    }
+                    else
+                    {
+                        UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath($"{relativePrefabs}/{mapName}/{modelReplacePath}", typeof(UnityEngine.Object)) as GameObject;
+                        if (loadedPrefabResource == null) {
+                            ReMapConsole.Log($"[Library Sorter] Error loading prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
+                            continue;
+                        }
+
+                        Transform child = loadedPrefabResource.GetComponentsInChildren<Transform>()[1];
+
+                        if(child.transform.eulerAngles == FindAnglesOffset(modelPath))
+                            continue;
+
+                        loadedPrefabResource.transform.position = Vector3.zero;
+                        loadedPrefabResource.transform.eulerAngles = Vector3.zero;
+                        child.transform.eulerAngles = FindAnglesOffset(modelPath);
+                        child.transform.position = Vector3.zero;
+
+                        PrefabUtility.SavePrefabAsset(loadedPrefabResource);
+
+                        ReMapConsole.Log($"[Library Sorter] Fixed and saved prefab: {relativePrefabs}/{mapName}/{modelReplacePath}", ReMapConsole.LogType.Success);
                     }
                 }
             }

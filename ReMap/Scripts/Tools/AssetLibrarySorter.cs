@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 public class AssetLibrarySorter
 {
@@ -94,14 +95,25 @@ public class AssetLibrarySorter
         }
     }
 
-    public static void SetModelLabels()
+    public static Task SetModelLabels()
     {
-        foreach (var guid in AssetDatabase.FindAssets("mdl#", new [] {"Assets/Prefabs"}))
+        string[] guids = AssetDatabase.FindAssets("mdl#", new [] {"Assets/Prefabs"});
+        int i = 0;
+        foreach (var guid in guids)
         {
-            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            var asset = AssetDatabase.LoadMainAssetAtPath(assetPath);
-            string category = assetPath.ToString().Split("#")[1];
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath(assetPath);
+            string category = assetPath.Split("#")[1];
             AssetDatabase.SetLabels(asset, new []{category});
+
+            string[] modelnamesplit = assetPath.Split("/");
+            string modelname = modelnamesplit[modelnamesplit.Length - 1].Replace(".prefab", "");
+            EditorUtility.DisplayProgressBar("Sorting Tags", "Setting " + modelname + " to " + category, (i + 1) / (float)guids.Length);
+            i++;
         }
+
+        EditorUtility.ClearProgressBar();
+
+        return Task.CompletedTask;
     }
 }

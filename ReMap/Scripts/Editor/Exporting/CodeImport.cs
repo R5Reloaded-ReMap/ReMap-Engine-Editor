@@ -40,6 +40,7 @@ public class CodeImport : EditorWindow
 
     async void ImportMapCode()
     {
+        ReMapConsole.Log("[Code Import] Starting Import", ReMapConsole.LogType.Info);
         Props.Clear();
         JumpPads.Clear();
         BubbleSheilds.Clear();
@@ -62,12 +63,16 @@ public class CodeImport : EditorWindow
         await ImportDoors();
         await ImportTriggers();
 
+        ReMapConsole.Log("[Code Import] Finished", ReMapConsole.LogType.Success);
+
         EditorUtility.ClearProgressBar();
     }
 
     async Task BuildImportList()
     {
         EditorUtility.DisplayProgressBar("Building Import List", "Building...", 0.0f);
+
+        ReMapConsole.Log("[Code Import] Building Import List", ReMapConsole.LogType.Info);
 
         string[] lines = text.Replace("+ startingorg", "").Split(char.Parse("\n"));
         foreach(string line in lines) {
@@ -116,13 +121,19 @@ public class CodeImport : EditorWindow
                 continue;
 
             EditorUtility.DisplayProgressBar("Importing Props", "Importing: " + split[0], (i + 1) / (float)Props.Count);
+            
 
             string Model = split[0].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "").Replace("$", "");
+
+            ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(Model);
             if (results.Length == 0)
+            {
+                ReMapConsole.Log("[Code Import] Prefab not found for: " + Model, ReMapConsole.LogType.Error);
                 continue;
+            }
 
             //Get model path from guid and load it
             UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(results[0]), typeof(UnityEngine.Object)) as GameObject;
@@ -171,6 +182,8 @@ public class CodeImport : EditorWindow
             EditorUtility.DisplayProgressBar("Importing Buttons", "Importing: Button " + i, (i + 1) / (float)Buttons.Count);
 
             string Model = "custom_button";
+
+            ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(Model);
@@ -221,6 +234,8 @@ public class CodeImport : EditorWindow
             EditorUtility.DisplayProgressBar("Importing BubbleSheilds", "Importing: BubbleSheild" + i, (i + 1) / (float)BubbleSheilds.Count);
 
             string Model = split[8].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "").Replace("$", "").Replace(" ", "");
+
+            ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(Model);
@@ -276,6 +291,8 @@ public class CodeImport : EditorWindow
 
             string Model = "custom_jumppad";
 
+            ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
+
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(Model);
             if (results.Length == 0)
@@ -329,6 +346,8 @@ public class CodeImport : EditorWindow
 
             string Model = "custom_lootbin";
 
+            ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
+
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(Model);
             if (results.Length == 0)
@@ -376,6 +395,8 @@ public class CodeImport : EditorWindow
                 continue;
 
             string Model = split[6].Replace("\"", "").Replace("mp_weapon_", "custom_weaponrack_");
+
+            ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
 
             EditorUtility.DisplayProgressBar("Importing WeaponRacks", "Importing: " + Model, (i + 1) / (float)WeaponRacks.Count);
 
@@ -431,6 +452,8 @@ public class CodeImport : EditorWindow
 
                 string Model = "custom_zipline";
 
+                ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
+
                 //Find Model GUID in Assets
                 string[] results = AssetDatabase.FindAssets(Model);
                 if (results.Length == 0)
@@ -481,6 +504,8 @@ public class CodeImport : EditorWindow
 
                 string finishedzip = zip.Replace("GetAllPointsOnBezier(", "").Replace("GetBezierOfPath(", "").Replace(")", "").Replace("[", "").Replace("]", "").Replace(">,<", ":");
                 string[] split = finishedzip.Split(char.Parse(":"));
+
+                ReMapConsole.Log("[Code Import] Importing: custom_linked_zipline", ReMapConsole.LogType.Info);
 
                 EditorUtility.DisplayProgressBar("Importing Linked Ziplines", "Importing: custom_linked_zipline " + f, (f + 1) / (float)LinkedZiplines.Count);
 
@@ -555,6 +580,8 @@ public class CodeImport : EditorWindow
                     break;
             }
 
+            ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
+
             EditorUtility.DisplayProgressBar("Importing Doors", "Importing: " + Model, (i + 1) / (float)Doors.Count);
 
             //Find Model GUID in Assets
@@ -606,6 +633,8 @@ public class CodeImport : EditorWindow
             string[] split = split1[1].Split(char.Parse(","));
 
             string Model = "trigger_cylinder";
+
+            ReMapConsole.Log("[Code Import] Importing: " + Model, ReMapConsole.LogType.Info);
 
             EditorUtility.DisplayProgressBar("Importing Doors", "Importing: trigger_cylinder " + i, (i + 1) / (float)Triggers.Count);
 

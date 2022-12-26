@@ -379,6 +379,8 @@ public class CodeViews : EditorWindow
 
         code_text = mapcode;
         mapcode = "";
+
+        ReMapConsole.Log("[Code Views] Map Code Generated", ReMapConsole.LogType.Success);
     }
 
     void GenerateDataTable(bool copycode_text)
@@ -396,6 +398,8 @@ public class CodeViews : EditorWindow
         
         code_text = tableCode;
         tableCode = "";
+
+        ReMapConsole.Log("[Code Views] Datatable Code Generated", ReMapConsole.LogType.Success);
     }
 
     void GeneratePrecacheCode(bool copycode_text)
@@ -413,6 +417,8 @@ public class CodeViews : EditorWindow
 
         code_text = precacheCode;
         precacheCode = "";
+
+        ReMapConsole.Log("[Code Views] Precache Code Generated", ReMapConsole.LogType.Success);
     }
 
     void GenerateEntCode(bool copycode_text)
@@ -430,6 +436,8 @@ public class CodeViews : EditorWindow
         
         code_text = entCode;
         entCode = "";
+
+        ReMapConsole.Log("[Code Views] Script.ent Code Generated", ReMapConsole.LogType.Success);
     }
 
     void GenerateSoundEntCode(bool copycode_text)
@@ -447,5 +455,7 @@ public class CodeViews : EditorWindow
         
         code_text = entCode;
         entCode = "";
+
+        ReMapConsole.Log("[Code Views] Sound.ent Code Generated", ReMapConsole.LogType.Success);
     }
 }

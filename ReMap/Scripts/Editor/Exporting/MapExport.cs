@@ -38,13 +38,17 @@ public class MapExport
         if (path.Length == 0)
             return;
 
+        ReMapConsole.Log("[Script.ent Export] Starting Export", ReMapConsole.LogType.Warning);
+
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
         Helper.Is_Using_Starting_Offset = true;
         string entCode = Build.Props(Build.BuildType.Ent);
 
+        ReMapConsole.Log("[Script.ent Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
         System.IO.File.WriteAllText(path, entCode + "\u0000");
+        ReMapConsole.Log("[Script.ent Export] Finished", ReMapConsole.LogType.Success);
     }
 
     [MenuItem("ReMap/Export/sound.ent", false, 50)]
@@ -54,12 +58,16 @@ public class MapExport
         if (path.Length == 0)
             return;
 
+        ReMapConsole.Log("[Sound.ent Export] Starting Export", ReMapConsole.LogType.Warning);
+
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
         string entCode = Build.Sounds();
 
+        ReMapConsole.Log("[Sound.ent Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
         System.IO.File.WriteAllText(path, entCode + "\u0000");
+        ReMapConsole.Log("[Sound.ent Export] Finished", ReMapConsole.LogType.Success);
     }
 
 
@@ -71,6 +79,8 @@ public class MapExport
         var path = EditorUtility.SaveFilePanel("Map Export", "", "mapexport.txt", "txt");
         if (path.Length == 0)
             return;
+
+        ReMapConsole.Log("[Map Export] Starting Export", ReMapConsole.LogType.Warning);
 
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
@@ -90,6 +100,8 @@ public class MapExport
         if (type == Helper.ExportType.WholeScript || type == Helper.ExportType.WholeScriptOffset)
             mapcode += "}";
 
+        ReMapConsole.Log("[Map Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
         System.IO.File.WriteAllText(path, mapcode);
+        ReMapConsole.Log("[Map Export] Finished", ReMapConsole.LogType.Warning);
     }
 } 

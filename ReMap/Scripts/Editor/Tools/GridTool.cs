@@ -86,5 +86,7 @@ public class GridTool : EditorWindow
                     obj.gameObject.transform.parent = parent.transform;
             }
         }
+
+        ReMapConsole.Log("[Grid Tool] Created " + gridX + "X" + gridY + " Grid", ReMapConsole.LogType.Info);
     }
 }

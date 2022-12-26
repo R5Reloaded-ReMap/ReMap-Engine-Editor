@@ -16,6 +16,7 @@ public class ImportExportJson
         if (path.Length == 0)
             return;
 
+        ReMapConsole.Log("[Json Import] Reading file: " + path, ReMapConsole.LogType.Warning);
         EditorUtility.DisplayProgressBar("Starting Import", "Reading File" , 0);
         string json = System.IO.File.ReadAllText(path);
         SaveJson myObject = JsonUtility.FromJson<SaveJson>(json);
@@ -30,6 +31,8 @@ public class ImportExportJson
         await ImportDoors(myObject.Doors);
         await ImportTriggers(myObject.Triggers);
 
+        ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
+
         EditorUtility.ClearProgressBar();
     }
 
@@ -38,6 +41,7 @@ public class ImportExportJson
         int i = 0;
         foreach(PropsClass prop in Props)
         {
+            ReMapConsole.Log("[Json Import] Importing: " + prop.Name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Importing Props", "Importing: " + prop.Name, (i + 1) / (float)Props.Count);
             i++;
 
@@ -75,6 +79,7 @@ public class ImportExportJson
         int i = 0;
         foreach(JumpPadsClass jumppad in JumpPads)
         {
+            ReMapConsole.Log("[Json Import] Importing: custom_jumppad", ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Importing Jumppads", "Importing: custom_jumppad " + i, (i + 1) / (float)JumpPads.Count);
 
             string Model = "custom_jumppad";
@@ -110,6 +115,7 @@ public class ImportExportJson
         int i = 0;
         foreach(ButtonsClass button in Buttons)
         {
+            ReMapConsole.Log("[Json Import] Importing: custom_button", ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Importing Buttons", "Importing: custom_button " + i, (i + 1) / (float)Buttons.Count);
 
             string Model = "custom_button";
@@ -142,6 +148,7 @@ public class ImportExportJson
         int i = 0;
         foreach(BubbleShieldsClass sheild in BSheilds)
         {
+            ReMapConsole.Log("[Json Import] Importing: " + sheild.Model, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Importing BubbleShields", "Importing: " + sheild.Model, (i + 1) / (float)BSheilds.Count);
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(sheild.Model);
@@ -176,6 +183,7 @@ public class ImportExportJson
         int i = 0;
         foreach(WeaponRacksClass weaponrack in WeaponRacks)
         {
+            ReMapConsole.Log("[Json Import] Importing: " + weaponrack.Weapon, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Importing WeaponRacks", "Importing: " + weaponrack.Weapon, (i + 1) / (float)WeaponRacks.Count);
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(weaponrack.Weapon);
@@ -206,6 +214,7 @@ public class ImportExportJson
         int i = 0;
         foreach(LootBinsClass lootbin in LootBins)
         {
+            ReMapConsole.Log("[Json Import] Importing: custom_lootbin", ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Importing LootBins", "Importing: custom_lootbin " + i, (i + 1) / (float)LootBins.Count);
 
             string Model = "custom_lootbin";
@@ -237,7 +246,8 @@ public class ImportExportJson
         int i = 0;
         foreach(ZipLinesClass zipline in Ziplines)
         {
-            EditorUtility.DisplayProgressBar("Importing Ziplines", "Importing: custom_zipline" + i, (i + 1) / (float)Ziplines.Count);
+            ReMapConsole.Log("[Json Import] Importing: custom_zipline", ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Importing Ziplines", "Importing: custom_zipline " + i, (i + 1) / (float)Ziplines.Count);
 
             string Model = "custom_zipline";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -266,7 +276,8 @@ public class ImportExportJson
         i = 0;
         foreach(LinkedZipLinesClass zipline in LinkedZiplines)
         {
-            EditorUtility.DisplayProgressBar("Importing LinkedZiplines", "Importing: BubbleShields" + i, (i + 1) / (float)Ziplines.Count);
+            ReMapConsole.Log("[Json Import] Importing: Linked Zipline", ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Importing LinkedZiplines", "Importing: Linked Zipline " + i, (i + 1) / (float)Ziplines.Count);
 
             GameObject obj = new GameObject("custom_linked_zipline");
             obj.AddComponent<DrawLinkedZipline>();
@@ -322,6 +333,7 @@ public class ImportExportJson
                     break;
             }
 
+            ReMapConsole.Log("[Json Import] Importing: " + Model, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Importing Doors", "Importing: " + Model, (i + 1) / (float)Doors.Count);
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -355,7 +367,8 @@ public class ImportExportJson
         int i = 0;
         foreach(TriggersClass trigger in Triggers)
         {
-            EditorUtility.DisplayProgressBar("Importing BubbleShields", "Importing: BubbleShields" + i, (i + 1) / (float)Triggers.Count);
+            ReMapConsole.Log("[Json Import] Importing: Trigger", ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Importing Triggers", "Importing: Triggers" + i, (i + 1) / (float)Triggers.Count);
 
             string Model = "trigger_cylinder";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -404,8 +417,11 @@ public class ImportExportJson
         await ExportDoors();
         await ExportTriggers();
 
+        ReMapConsole.Log("[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
         string json = JsonUtility.ToJson(save);
         System.IO.File.WriteAllText(path, json);
+
+        ReMapConsole.Log("[Json Export] Finished.", ReMapConsole.LogType.Success);
 
         EditorUtility.ClearProgressBar();
     }
@@ -416,6 +432,7 @@ public class ImportExportJson
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
         foreach(GameObject obj in PropObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Props", "Exporting: " + obj.name, (i + 1) / (float)PropObjects.Length);
             PropScript script = obj.GetComponent<PropScript>();
             if (script == null)
@@ -451,6 +468,7 @@ public class ImportExportJson
         GameObject[] JumpPadObjects = GameObject.FindGameObjectsWithTag("Jumppad");
         foreach (GameObject obj in JumpPadObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Jumppads", "Exporting: " + obj.name, (i + 1) / (float)JumpPadObjects.Length);
 
             PropScript script = obj.GetComponent<PropScript>();
@@ -486,6 +504,7 @@ public class ImportExportJson
         GameObject[] ButtonObjects = GameObject.FindGameObjectsWithTag("Button");
         foreach (GameObject obj in ButtonObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Buttons", "Exporting: " + obj.name, (i + 1) / (float)ButtonObjects.Length);
 
             ButtonScripting script = obj.GetComponent<ButtonScripting>();
@@ -517,6 +536,7 @@ public class ImportExportJson
         GameObject[] BubbleShieldObjects = GameObject.FindGameObjectsWithTag("BubbleShield");
         foreach (GameObject obj in BubbleShieldObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting BubbleShields", "Exporting: " + obj.name, (i + 1) / (float)BubbleShieldObjects.Length);
 
             BubbleScript script = obj.GetComponent<BubbleScript>();
@@ -549,6 +569,7 @@ public class ImportExportJson
         GameObject[] WeaponRackObjects = GameObject.FindGameObjectsWithTag("WeaponRack");
         foreach (GameObject obj in WeaponRackObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting LootBins", "Exporting: " + obj.name, (i + 1) / (float)WeaponRackObjects.Length);
 
             WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
@@ -580,6 +601,7 @@ public class ImportExportJson
         GameObject[] LootBinObjects = GameObject.FindGameObjectsWithTag("LootBin");
         foreach (GameObject obj in LootBinObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting LootBins", "Exporting: " + obj.name, (i + 1) / (float)LootBinObjects.Length);
 
             LootBinScript script = obj.GetComponent<LootBinScript>();
@@ -610,6 +632,7 @@ public class ImportExportJson
         GameObject[] ZipLineObjects = GameObject.FindGameObjectsWithTag("ZipLine");
         foreach (GameObject obj in ZipLineObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)ZipLineObjects.Length);
 
             ZipLinesClass zipLine = new ZipLinesClass();
@@ -640,6 +663,7 @@ public class ImportExportJson
         GameObject[] LinkedZipLineObjects = GameObject.FindGameObjectsWithTag("LinkedZipline");
         foreach (GameObject obj in LinkedZipLineObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)LinkedZipLineObjects.Length);
 
             LinkedZiplineScript script = obj.GetComponent<LinkedZiplineScript>();
@@ -675,6 +699,7 @@ public class ImportExportJson
         GameObject[] SingleDoorObjects = GameObject.FindGameObjectsWithTag("SingleDoor");
         foreach (GameObject obj in SingleDoorObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)SingleDoorObjects.Length);
 
             DoorScript script = obj.GetComponent<DoorScript>();
@@ -703,6 +728,7 @@ public class ImportExportJson
         GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
         foreach (GameObject obj in DoubleDoorObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)DoubleDoorObjects.Length);
 
             DoorScript script = obj.GetComponent<DoorScript>();
@@ -731,6 +757,7 @@ public class ImportExportJson
         GameObject[] VertDoorObjects = GameObject.FindGameObjectsWithTag("VerticalDoor");
         foreach (GameObject obj in VertDoorObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)VertDoorObjects.Length);
 
             DoorsClass vertDoor = new DoorsClass();
@@ -754,6 +781,7 @@ public class ImportExportJson
         GameObject[] HorDoorObjects = GameObject.FindGameObjectsWithTag("HorzDoor");
         foreach (GameObject obj in HorDoorObjects)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)HorDoorObjects.Length);
 
             DoorsClass horDoor = new DoorsClass();
@@ -781,6 +809,7 @@ public class ImportExportJson
         int i = 0;
         foreach (GameObject obj in Triggers)
         {
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Triggers", "Exporting: " + obj.name, (i + 1) / (float)Triggers.Length);
 
             TriggerScripting script = obj.GetComponent<TriggerScripting>();

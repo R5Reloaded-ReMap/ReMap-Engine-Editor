@@ -360,7 +360,7 @@ public class Build
         return code;
     }
 
-    public static string Props(BuildType type = BuildType.Map)
+    public static string Props(BuildType type = BuildType.Map, bool isexport = false)
     {
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
         if (PropObjects.Length < 1)
@@ -387,15 +387,17 @@ public class Build
 
             switch (type) {
                 case BuildType.Ent:
-                    code += BuildScriptEntItem(go);
+                    code += BuildScriptEntItem(go, isexport);
                     continue;
                 case BuildType.DataTable:
-                    code += BuildDataTableItem(go);
+                    code += BuildDataTableItem(go, isexport);
                     continue;
                 case BuildType.Precache:
                     code += $"    PrecacheModel( $\"{model}\" )" + "\n";
                     continue;
                 case BuildType.Map:
+                    if (isexport)
+                        ReMapConsole.Log("[Map Export] Exporting: " + model, ReMapConsole.LogType.Info);
                     code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
                     continue;
             }
@@ -414,7 +416,7 @@ public class Build
     }
 
 
-    public static string Sounds()
+    public static string Sounds(bool isexport = false)
     {
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
         if (PropObjects.Length < 1)
@@ -423,7 +425,7 @@ public class Build
         string code = ""; //= $"ENTITIES02 num_models={PropObjects.Length}\n";
 
         foreach (GameObject go in PropObjects)
-            code += BuildSoundEntItem(go);
+            code += BuildSoundEntItem(go, isexport);
 
         return code;
     }
@@ -456,10 +458,13 @@ public class Build
         return code;
     }
 
-    public static string BuildDataTableItem(GameObject go)
+    public static string BuildDataTableItem(GameObject go, bool isexport)
     {
         string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
         PropScript script = go.GetComponent<PropScript>();
+
+        if (isexport)
+            ReMapConsole.Log("[Datatable Export] Exporting: " + model, ReMapConsole.LogType.Info);
 
         string type = "\"dynamic_prop\",";
         string origin = "\"" + Helper.BuildOrigin(go).Replace(" ", "") + "\",";
@@ -479,10 +484,13 @@ public class Build
         return type + origin + angles + scale + fade + mantle + visible + mdl + collection + "\n";
     }
 
-    public static string BuildScriptEntItem(GameObject go)
+    public static string BuildScriptEntItem(GameObject go, bool isexport)
     {
         string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
         PropScript script = go.GetComponent<PropScript>();
+
+        if (isexport)
+            ReMapConsole.Log("[Script.ent Export] Exporting: " + model, ReMapConsole.LogType.Info);
 
         string buildent = "{\n";
         buildent += "\"StartDisabled\" \"0\"\n";
@@ -503,13 +511,16 @@ public class Build
         return buildent;
     }
 
-    public static string BuildSoundEntItem(GameObject go)
+    public static string BuildSoundEntItem(GameObject go, bool isexport)
     {
         SoundScript script = go.GetComponent<SoundScript>();
 
         int isWaveAmbient = script.isWaveAmbient ? 1 : 0;
         int enable = script.enable ? 1 : 0;
         string origin = Helper.BuildOrigin(go, true).Replace(",", "");
+
+        if (isexport)
+            ReMapConsole.Log("[Sound.ent Export] Exporting: " + script.soundName, ReMapConsole.LogType.Info);
 
         string buildent = "";
 

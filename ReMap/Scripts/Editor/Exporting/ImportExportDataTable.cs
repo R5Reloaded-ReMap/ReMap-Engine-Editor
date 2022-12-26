@@ -15,6 +15,7 @@ public class ImportExportDataTable
         if (path.Length == 0)
             return;
 
+        ReMapConsole.Log("[Datatable Import] Reading file: " + path, ReMapConsole.LogType.Warning);
         string[] splitArray = File.ReadAllText(path).Split(char.Parse("\n"));
 
         List<String> collectionList = Helper.BuildCollectionList(splitArray);
@@ -33,10 +34,17 @@ public class ImportExportDataTable
             if (itemsplit.Length < 12)
                 continue;
 
+            ReMapConsole.Log("[Datatable Import] Importing: " + itemsplit[11], ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Importing DataTable", "Importing: " + itemsplit[11], (i + 1) / (float)splitArray.Length);
 
             //Build DataTable
             Helper.NewDataTable dt = Helper.BuildDataTable(item);
+
+            ReMapConsole.Log("Origin: " + dt.Origin, ReMapConsole.LogType.Info);
+            ReMapConsole.Log("Angles: " + dt.Angles, ReMapConsole.LogType.Info);
+            ReMapConsole.Log("Scale: " + dt.Scale, ReMapConsole.LogType.Info);
+            ReMapConsole.Log("Type: " + dt.Type, ReMapConsole.LogType.Info);
+            ReMapConsole.Log("Collection: " + dt.Collection, ReMapConsole.LogType.Info);
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets(dt.Model);
@@ -55,6 +63,7 @@ public class ImportExportDataTable
             i++;
         }
 
+        ReMapConsole.Log("[Datatable Import] Finished", ReMapConsole.LogType.Success);
         EditorUtility.ClearProgressBar();
     }
 
@@ -65,13 +74,18 @@ public class ImportExportDataTable
         if (path.Length == 0)
             return;
 
+        ReMapConsole.Log("[Datatable Export] Starting Export", ReMapConsole.LogType.Warning);
+
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
         Helper.Is_Using_Starting_Offset = true;
 
-        string tableCode = Build.Props(Build.BuildType.DataTable);
+        string tableCode = Build.Props(Build.BuildType.DataTable, true);
+        ReMapConsole.Log("[Datatable Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
 
         System.IO.File.WriteAllText(path, tableCode);
+
+        ReMapConsole.Log("[Datatable Export] Finished", ReMapConsole.LogType.Success);
     }
 }

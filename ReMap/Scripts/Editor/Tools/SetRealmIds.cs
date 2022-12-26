@@ -11,6 +11,8 @@ public class SetRealmIds : EditorWindow
     {
         SetRealmIds window = (SetRealmIds)EditorWindow.GetWindow(typeof(SetRealmIds), false, "RealmID Tool");
         window.Show();
+        window.minSize = new Vector2(375, 70);
+        window.maxSize = new Vector2(375, 70);
     }
 
     void OnGUI()

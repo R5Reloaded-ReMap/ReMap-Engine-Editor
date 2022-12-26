@@ -73,7 +73,7 @@ public class AssetLibrarySorter
                         prefabInstance.transform.eulerAngles = new Vector3( 0, 0, 0 );
                         objectInstance.transform.localPosition = new Vector3( 0, 0, 0 );
 
-                        string[] parts = FindAnglesOffset(modelPath).Replace("(", "").Replace(")", "").Split(',');
+                        string[] parts = FindAnglesOffset(modelPath).Replace("(", "").Replace(")", "").Split(",");
     
                         float x = float.Parse(parts[0]);
                         float y = float.Parse(parts[1]);
@@ -92,6 +92,8 @@ public class AssetLibrarySorter
                     }
                 }
             }
+
+            AssetLibrarySorter.SetFolderLabels(mapName);
         }
     }
 
@@ -116,9 +118,19 @@ public class AssetLibrarySorter
         return returnedString;
     }
 
-    public static Task SetModelLabels()
+    public static async void SetFolderLabels(string mapName)
     {
-        string[] guids = AssetDatabase.FindAssets("mdl#", new [] {"Assets/Prefabs"});
+        await AssetLibrarySorter.SetModelLabels(mapName);
+    }
+
+    public static Task SetModelLabels( string specificFolderOrnull = null )
+    {
+        string specificFolder = $""; 
+        
+        if ( specificFolderOrnull != null )
+            specificFolder = $"/{specificFolderOrnull}";
+        
+        string[] guids = AssetDatabase.FindAssets("mdl#", new [] {$"Assets/Prefabs{specificFolder}"});
         int i = 0;
         foreach (var guid in guids)
         {

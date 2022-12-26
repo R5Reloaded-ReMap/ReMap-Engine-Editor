@@ -20,6 +20,10 @@ public class Build
         foreach (GameObject go in ButtonObjects)
         {
             ButtonScripting script = go.GetComponent<ButtonScripting>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing ButtonScripting on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
             code += $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n";
         }
 
@@ -39,6 +43,10 @@ public class Build
         foreach (GameObject go in JumppadObjects)
         {
             PropScript script = go.GetComponent<PropScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
             code += $"    JumpPad_CreatedCallback( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
         }
 
@@ -59,6 +67,10 @@ public class Build
         {
             string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
             BubbleScript script = go.GetComponent<BubbleScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing BubbleScript on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
             string shieldColor = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
                 
             code += $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, \"{shieldColor}\", $\"{model}\" )" + "\n";
@@ -80,6 +92,10 @@ public class Build
         foreach (GameObject go in WeaponRackObjects)
         {
             WeaponRackScript script = go.GetComponent<WeaponRackScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing WeaponRackScript on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
             code += $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, \"{go.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {script.respawnTime} )" + "\n";
         }
 
@@ -99,6 +115,10 @@ public class Build
         foreach (GameObject go in LootBinObjects)
         {
             LootBinScript script = go.GetComponent<LootBinScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing LootBinScript on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
             code += $"    MapEditor_CreateLootBin( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.lootbinSkin} )" + "\n";
         }
 
@@ -152,6 +172,11 @@ public class Build
 
             LinkedZiplineScript script = go.GetComponent<LinkedZiplineScript>();
 
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing LinkedZiplineScript on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             foreach (Transform child in go.transform)
             {
                 if (!first)
@@ -192,8 +217,10 @@ public class Build
         foreach (GameObject go in VerticalZipLineObjects)
         {
             DrawVerticalZipline ziplineScript = go.GetComponent<DrawVerticalZipline>();
-            if (ziplineScript == null)
+            if (ziplineScript == null) {
+                ReMapConsole.Log("[Map Export] Missing DrawVerticalZipline on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
+            }
 
             int preservevelocity = ziplineScript.preserveVelocity ? 1 : 0;
             int dropToBottom = ziplineScript.dropToBottom ? 1 : 0;
@@ -248,8 +275,10 @@ public class Build
         foreach (GameObject go in NonVerticalZipLineObjects)
         {
             DrawNonVerticalZipline ziplineScript = go.GetComponent<DrawNonVerticalZipline>();
-            if (ziplineScript == null)
+            if (ziplineScript == null) {
+                ReMapConsole.Log("[Map Export] Missing DrawNonVerticalZipline on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
+            }
 
             int preservevelocity = ziplineScript.preserveVelocity ? 1 : 0;
             int dropToBottom = ziplineScript.dropToBottom ? 1 : 0;
@@ -302,6 +331,12 @@ public class Build
 
         foreach (GameObject go in SingleDoorObjects) {
             DoorScript script = go.GetComponent<DoorScript>();
+
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing DoorScript on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Single, {script.goldDoor.ToString().ToLower()} )" + "\n";
         }
 
@@ -320,6 +355,10 @@ public class Build
 
         foreach (GameObject go in DoubleDoorObjects) {
             DoorScript script = go.GetComponent<DoorScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing DoorScript on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
             code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Double, {script.goldDoor.ToString().ToLower()} )" + "\n";
         }
 
@@ -385,6 +424,11 @@ public class Build
             string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
             PropScript script = go.GetComponent<PropScript>();
 
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             switch (type) {
                 case BuildType.Ent:
                     code += BuildScriptEntItem(go, isexport);
@@ -398,6 +442,7 @@ public class Build
                 case BuildType.Map:
                     if (isexport)
                         ReMapConsole.Log("[Map Export] Exporting: " + model, ReMapConsole.LogType.Info);
+                    
                     code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
                     continue;
             }

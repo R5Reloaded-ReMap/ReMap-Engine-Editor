@@ -385,6 +385,11 @@ public class Build
             string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
             PropScript script = go.GetComponent<PropScript>();
 
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Model didnt have prop script: " + model, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             switch (type) {
                 case BuildType.Ent:
                     code += BuildScriptEntItem(go, isexport);
@@ -398,6 +403,7 @@ public class Build
                 case BuildType.Map:
                     if (isexport)
                         ReMapConsole.Log("[Map Export] Exporting: " + model, ReMapConsole.LogType.Info);
+                    
                     code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
                     continue;
             }

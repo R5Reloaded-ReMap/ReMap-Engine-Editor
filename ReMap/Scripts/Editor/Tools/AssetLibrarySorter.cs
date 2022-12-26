@@ -145,7 +145,7 @@ public class AssetLibrarySorter : EditorWindow
             if (children[1].transform.eulerAngles != normang && children[1].transform.eulerAngles != normang2)
             {
                 string name = Path.GetFileNameWithoutExtension(path).Replace(" ", "").Replace(".prefab", "");
-                ReMapConsole.Log($"{name};( {children[1].transform.eulerAngles.x}, {children[1].transform.eulerAngles.y}, {children[1].transform.eulerAngles.z} )", ReMapConsole.LogType.Success);
+                ReMapConsole.Log($"{name};( {children[1].transform.eulerAngles.x}, {children[1].transform.eulerAngles.y}, {children[1].transform.eulerAngles.z} )", ReMapConsole.LogType.Info);
                 prefabsList.Add(path);
             }
         }

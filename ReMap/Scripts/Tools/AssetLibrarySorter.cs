@@ -101,7 +101,7 @@ public class AssetLibrarySorter
             {
                 if (line.Contains(searchTerm) && !line.Contains("//"))
                 {
-                    string[] parts = line.Split(";")[1].Replace("(", "").Replace(")", "").Split(",");
+                    string[] parts = line.Split(";")[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
     
                     float x = float.Parse(parts[0]);
                     float y = float.Parse(parts[1]);

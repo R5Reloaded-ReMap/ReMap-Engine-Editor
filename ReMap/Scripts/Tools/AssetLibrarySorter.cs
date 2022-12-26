@@ -65,6 +65,8 @@ public class AssetLibrarySorter
                         objectInstance = UnityEngine.Object.Instantiate(objectToAdd) as GameObject;
                             if ( prefabInstance == null || objectInstance == null ) return;
 
+                        prefabInstance.AddComponent<PropScript>();
+
                         prefabInstance.name = modelReplacePath.Replace(".prefab", "");
                         objectInstance.name = modelName + "_LOD0";
 

@@ -10,6 +10,8 @@ public class PropInfo : EditorWindow
     {
         PropInfo window = (PropInfo)EditorWindow.GetWindow(typeof(PropInfo), false, "Prop Info");
         window.Show();
+        window.minSize = new Vector2(375, 140);
+        window.maxSize = new Vector2(375, 140);
     }
 
     void OnInspectorUpdate()

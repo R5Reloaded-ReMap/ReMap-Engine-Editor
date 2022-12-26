@@ -17,6 +17,8 @@ public class GridTool : EditorWindow
     public static void Init()
     {
         GridTool window = (GridTool)EditorWindow.GetWindow(typeof(GridTool), false, "Grid Tool");
+        window.minSize = new Vector2(300, 290);
+        window.maxSize = new Vector2(300, 290);
         window.Show();
     }
 

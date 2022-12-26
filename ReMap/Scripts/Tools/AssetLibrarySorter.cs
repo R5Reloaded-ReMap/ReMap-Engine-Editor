@@ -71,7 +71,7 @@ public class AssetLibrarySorter
 
                         prefabInstance.transform.position = new Vector3( 0, 0, 0 );
                         prefabInstance.transform.eulerAngles = new Vector3( 0, 0, 0 );
-                        objectInstance.transform.position = new Vector3( 0, 0, 0 );
+                        objectInstance.transform.localPosition = new Vector3( 0, 0, 0 );
 
                         string[] parts = FindAnglesOffset(modelPath).Replace("(", "").Replace(")", "").Split(',');
     
@@ -80,7 +80,9 @@ public class AssetLibrarySorter
                         float z = float.Parse(parts[2]);
                         //ReMapConsole.Log($"X: {parts[0]} | {x} Y: {parts[1]} | {y} Z: {parts[2]} | {z}", ReMapConsole.LogType.Info);
 
-                        objectInstance.transform.eulerAngles = new Vector3(x, y, z);
+                        objectInstance.transform.localEulerAngles = new Vector3(x, y, z);
+
+                        objectInstance.transform.localScale = new Vector3(1, 1, 1);
 
                         objectInstance.transform.SetParent( prefabInstance.transform );
 

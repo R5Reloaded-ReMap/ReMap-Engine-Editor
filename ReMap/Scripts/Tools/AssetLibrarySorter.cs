@@ -42,7 +42,7 @@ public class AssetLibrarySorter
             if ( !Directory.Exists( mapPath ) )
                 Directory.CreateDirectory( mapPath );
 
-            string modelName ; string modelReplacePath; string category;
+            string modelName ; string modelReplacePath;
             GameObject prefabToAdd; GameObject prefabInstance;
             GameObject objectToAdd; GameObject objectInstance;
 
@@ -53,7 +53,6 @@ public class AssetLibrarySorter
                 if (File.Exists($"{currentDirectory}/{relativeModel}/{modelName + "_LOD0.fbx"}"))
                 {
                     modelReplacePath = modelPath.Replace("/", "#").Replace(".rmdl", ".prefab");
-                    category = modelPath.Split("/")[1];
 
                     if ( !File.Exists( $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}" ) )
                     {
@@ -79,6 +78,7 @@ public class AssetLibrarySorter
                         float x = float.Parse(parts[0]);
                         float y = float.Parse(parts[1]);
                         float z = float.Parse(parts[2]);
+                        //ReMapConsole.Log($"X: {parts[0]} | {x} Y: {parts[1]} | {y} Z: {parts[2]} | {z}", ReMapConsole.LogType.Info);
 
                         objectInstance.transform.eulerAngles = new Vector3(x, y, z);
 
@@ -97,13 +97,13 @@ public class AssetLibrarySorter
     {
         string returnedString = "( 0, -90, 0 )";
 
-        using (StreamReader reader = new StreamReader($"{Directory.GetCurrentDirectory()}/Assets/ReMap/Scripts/Tools/rpakModelFile/modelAnglesOffset.txt"))
+        using (StreamReader reader = new StreamReader($"{currentDirectory}/{relativeRpakFile}/modelAnglesOffset.txt"))
         {
             string line;
 
             while ((line = reader.ReadLine()) != null)
             {
-                if (line.Contains(searchTerm))
+                if (line.Contains(searchTerm) && !line.Contains("//"))
                 {
                     returnedString = line.Split(";")[1];
                     break;

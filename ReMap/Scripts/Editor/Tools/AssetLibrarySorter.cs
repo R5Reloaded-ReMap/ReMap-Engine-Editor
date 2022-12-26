@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class AssetLibrarySorter
+public class AssetLibrarySorter : EditorWindow
 {
     static string currentDirectory = Directory.GetCurrentDirectory();
     static string relativeEmptyPrefab = $"Assets/ReMap/Lods - Dont use these/EmptyPrefab.prefab";
@@ -15,11 +15,24 @@ public class AssetLibrarySorter
     static string relativePrefabs =$"Assets/Prefabs";
     static string relativeRpakFile = $"Assets/ReMap/Scripts/Tools/rpakModelFile";
 
+    [MenuItem("ReMap/Asset Library Sorter/Sort Labels", false, 100)]
+    public static async void SetModelLabelsInit()
+    {
+        await SetModelLabels();
+    }
+
+    [MenuItem("ReMap/Asset Library Sorter/Check Models Files", false, 100)]
+    public static void LibrarySorterInit()
+    {
+        LibrarySorter();
+    }
+
     public static void LibrarySorter()
     {
         string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt").ToArray();
         foreach (string file in files)
         {
+            ReMapConsole.Log($"[Library Sorter] Reading file: {file}", ReMapConsole.LogType.Warning);
             int lineCount = File.ReadAllLines(file).Length;
 
             string[] arrayMap = new string[lineCount];
@@ -39,8 +52,12 @@ public class AssetLibrarySorter
             }
 
             string mapPath = $"{currentDirectory}/{relativePrefabs}/{mapName}";
-            if ( !Directory.Exists( mapPath ) )
-                Directory.CreateDirectory( mapPath );
+            if (!Directory.Exists(mapPath))
+            {
+                ReMapConsole.Log($"[Library Sorter] Creating directory: {mapPath}", ReMapConsole.LogType.Info);
+                Directory.CreateDirectory(mapPath);
+            }
+
 
             string modelName ; string modelReplacePath;
             GameObject prefabToAdd; GameObject prefabInstance;
@@ -56,13 +73,24 @@ public class AssetLibrarySorter
 
                     if ( !File.Exists( $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}" ) )
                     {
-                        
+                        ReMapConsole.Log($"[Library Sorter] Creating prefab: {modelReplacePath}", ReMapConsole.LogType.Info);
                         prefabToAdd = AssetDatabase.LoadAssetAtPath($"{relativeEmptyPrefab}", typeof(UnityEngine.Object) ) as GameObject;
                         objectToAdd = AssetDatabase.LoadAssetAtPath( $"{relativeModel}/{modelName + "_LOD0.fbx"}", typeof(UnityEngine.Object) )as GameObject;
-                            if ( prefabToAdd == null || objectToAdd == null ) return;
+
+                        if (prefabToAdd == null || objectToAdd == null)
+                        {
+                            ReMapConsole.Log($"[Library Sorter] Error loading prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
+                            return;
+                        }
+
                         prefabInstance = UnityEngine.Object.Instantiate(prefabToAdd) as GameObject;
                         objectInstance = UnityEngine.Object.Instantiate(objectToAdd) as GameObject;
-                            if ( prefabInstance == null || objectInstance == null ) return;
+
+                        if ( prefabInstance == null || objectInstance == null )
+                        {
+                            ReMapConsole.Log($"[Library Sorter] Error creating prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
+                            return;
+                        }
 
                         prefabInstance.AddComponent<PropScript>();
 
@@ -84,6 +112,7 @@ public class AssetLibrarySorter
                 }
             }
 
+            ReMapConsole.Log($"[Library Sorter] Setting labels for prefabs in: {mapName}", ReMapConsole.LogType.Success);
             AssetLibrarySorter.SetFolderLabels(mapName);
         }
     }

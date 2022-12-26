@@ -13,7 +13,7 @@ public class AssetLibrarySorter : EditorWindow
     static string relativeLods =$"Assets/ReMap/Lods - Dont use these";
     static string relativeModel =$"Assets/ReMap/Lods - Dont use these/Models";
     static string relativePrefabs =$"Assets/Prefabs";
-    static string relativeRpakFile = $"Assets/ReMap/Scripts/Tools/rpakModelFile";
+    static string relativeRpakFile = $"Assets/ReMap/Resources/rpakModelFile";
 
     [MenuItem("ReMap/Asset Library Sorter/Sort Labels", false, 100)]
     public static async void SetModelLabelsInit()
@@ -54,16 +54,16 @@ public class AssetLibrarySorter : EditorWindow
             string mapPath = $"{currentDirectory}/{relativePrefabs}/{mapName}";
             if (!Directory.Exists(mapPath))
             {
-                ReMapConsole.Log($"[Library Sorter] Creating directory: {mapPath}", ReMapConsole.LogType.Info);
+                ReMapConsole.Log($"[Library Sorter] Creating directory: {relativePrefabs}/{mapName}", ReMapConsole.LogType.Info);
                 Directory.CreateDirectory(mapPath);
             }
 
 
-            string modelName ; string modelReplacePath;
+            string modelName; string modelReplacePath;
             GameObject prefabToAdd; GameObject prefabInstance;
             GameObject objectToAdd; GameObject objectInstance;
 
-            foreach ( string modelPath in arrayMap )
+            foreach (string modelPath in arrayMap)
             {
                 modelName = Path.GetFileNameWithoutExtension(modelPath);
 
@@ -71,11 +71,11 @@ public class AssetLibrarySorter : EditorWindow
                 {
                     modelReplacePath = modelPath.Replace("/", "#").Replace(".rmdl", ".prefab");
 
-                    if ( !File.Exists( $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}" ) )
+                    if (!File.Exists($"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}"))
                     {
-                        ReMapConsole.Log($"[Library Sorter] Creating prefab: {modelReplacePath}", ReMapConsole.LogType.Info);
-                        prefabToAdd = AssetDatabase.LoadAssetAtPath($"{relativeEmptyPrefab}", typeof(UnityEngine.Object) ) as GameObject;
-                        objectToAdd = AssetDatabase.LoadAssetAtPath( $"{relativeModel}/{modelName + "_LOD0.fbx"}", typeof(UnityEngine.Object) )as GameObject;
+                        ReMapConsole.Log($"[Library Sorter] Creating prefab: {relativePrefabs}/{mapName}/{modelReplacePath}", ReMapConsole.LogType.Info);
+                        prefabToAdd = AssetDatabase.LoadAssetAtPath($"{relativeEmptyPrefab}", typeof(UnityEngine.Object)) as GameObject;
+                        objectToAdd = AssetDatabase.LoadAssetAtPath($"{relativeModel}/{modelName + "_LOD0.fbx"}", typeof(UnityEngine.Object)) as GameObject;
 
                         if (prefabToAdd == null || objectToAdd == null)
                         {
@@ -86,7 +86,7 @@ public class AssetLibrarySorter : EditorWindow
                         prefabInstance = UnityEngine.Object.Instantiate(prefabToAdd) as GameObject;
                         objectInstance = UnityEngine.Object.Instantiate(objectToAdd) as GameObject;
 
-                        if ( prefabInstance == null || objectInstance == null )
+                        if (prefabInstance == null || objectInstance == null)
                         {
                             ReMapConsole.Log($"[Library Sorter] Error creating prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
                             return;
@@ -105,16 +105,18 @@ public class AssetLibrarySorter : EditorWindow
                         objectInstance.transform.rotation = Quaternion.Euler(FindAnglesOffset(modelPath));
                         objectInstance.transform.localScale = new Vector3(1, 1, 1);
 
-                        PrefabUtility.SaveAsPrefabAsset( prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}" );
+                        PrefabUtility.SaveAsPrefabAsset(prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}");
 
-                        UnityEngine.Object.DestroyImmediate( prefabInstance );
+                        UnityEngine.Object.DestroyImmediate(prefabInstance);
                     }
                 }
             }
 
-            ReMapConsole.Log($"[Library Sorter] Setting labels for prefabs in: {mapName}", ReMapConsole.LogType.Success);
+            ReMapConsole.Log($"[Library Sorter] Setting labels for prefabs in: {mapName}", ReMapConsole.LogType.Info);
             AssetLibrarySorter.SetFolderLabels(mapName);
         }
+
+        ReMapConsole.Log($"[Library Sorter] Finished sorting models", ReMapConsole.LogType.Success);
     }
 
     public static Vector3 FindAnglesOffset(string searchTerm)
@@ -130,6 +132,8 @@ public class AssetLibrarySorter : EditorWindow
                 if (line.Contains(searchTerm) && !line.Contains("//"))
                 {
                     string[] parts = line.Split(";")[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+
+                    ReMapConsole.Log($"[Library Sorter] Angle override found for {searchTerm}, setting angles to: {line.Split(";")[1]}", ReMapConsole.LogType.Info);
     
                     float x = float.Parse(parts[0]);
                     float y = float.Parse(parts[1]);
@@ -166,10 +170,12 @@ public class AssetLibrarySorter : EditorWindow
 
             string[] modelnamesplit = assetPath.Split("/");
             string modelname = modelnamesplit[modelnamesplit.Length - 1].Replace(".prefab", "");
+            ReMapConsole.Log($"[Library Sorter] Setting label for {modelname} to {category}", ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Sorting Tags", "Setting " + modelname + " to " + category, (i + 1) / (float)guids.Length);
             i++;
         }
 
+        ReMapConsole.Log($"[Library Sorter] Finished setting labels", ReMapConsole.LogType.Success);
         EditorUtility.ClearProgressBar();
 
         return Task.CompletedTask;

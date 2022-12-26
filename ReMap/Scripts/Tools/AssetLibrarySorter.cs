@@ -69,14 +69,13 @@ public class AssetLibrarySorter
                         prefabInstance.name = modelReplacePath.Replace(".prefab", "");
                         objectInstance.name = modelName + "_LOD0";
 
-                        prefabInstance.transform.position = new Vector3( 0, 0, 0 );
-                        prefabInstance.transform.eulerAngles = new Vector3( 0, 0, 0 );
-                        objectInstance.transform.localPosition = new Vector3( 0, 0, 0 );
-                        objectInstance.transform.localEulerAngles = FindAnglesOffset(modelPath);
+                        prefabInstance.transform.position = Vector3.zero;
+                        prefabInstance.transform.eulerAngles = Vector3.zero;
 
+                        objectInstance.transform.parent = prefabInstance.transform;
+                        objectInstance.transform.position = Vector3.zero;
+                        objectInstance.transform.rotation = Quaternion.Euler(FindAnglesOffset(modelPath));
                         objectInstance.transform.localScale = new Vector3(1, 1, 1);
-
-                        objectInstance.transform.SetParent( prefabInstance.transform );
 
                         PrefabUtility.SaveAsPrefabAsset( prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}" );
 

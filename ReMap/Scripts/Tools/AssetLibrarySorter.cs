@@ -3,21 +3,20 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
+using System.Linq;
 
 public class AssetLibrarySorter
 {
+    static string currentDirectory = Directory.GetCurrentDirectory();
+    static string relativeEmptyPrefab = $"Assets/ReMap/Lods - Dont use these/EmptyPrefab.prefab";
+    static string relativeLods =$"Assets/ReMap/Lods - Dont use these";
+    static string relativeModel =$"Assets/ReMap/Lods - Dont use these/Models";
+    static string relativePrefabs =$"Assets/Prefabs";
+    static string relativeRpakFile = $"Assets/ReMap/Scripts/Tools/rpakModelFile";
+
     public static void LibrarySorter()
     {
-        int totalFiles = 0;
-        Array[] totalArrayMap = new Array[20];
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string relativeLods =$"Assets/ReMap/Lods - Dont use these";
-        string relativePrefabs =$"Assets/Prefabs";
-        string relativeRpakFile = $"Assets/ReMap/Scripts/Tools/rpakModelFile";
-        string relativeEmptyPrefab = $"Assets/ReMap/Lods - Dont use these/EmptyPrefab.prefab";
-        string relativeModel =$"Assets/ReMap/Lods - Dont use these/Models";
-
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt");
+        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt").ToArray();
         foreach (string file in files)
         {
             int lineCount = File.ReadAllLines(file).Length;
@@ -38,9 +37,6 @@ public class AssetLibrarySorter
                 }
             }
 
-            totalArrayMap[totalFiles] = arrayMap;
-            totalFiles++;
-
             string mapPath = $"{currentDirectory}/{relativePrefabs}/{mapName}";
             if ( !Directory.Exists( mapPath ) )
                 Directory.CreateDirectory( mapPath );
@@ -51,12 +47,12 @@ public class AssetLibrarySorter
 
             foreach ( string modelPath in arrayMap )
             {
-                modelName = Path.GetFileNameWithoutExtension(modelPath.Split(";")[0]);
+                modelName = Path.GetFileNameWithoutExtension(modelPath);
 
                 if (File.Exists($"{currentDirectory}/{relativeModel}/{modelName + "_LOD0.fbx"}"))
                 {
-                    modelReplacePath = modelPath.Split(";")[0].Replace("/", "#").Replace(".rmdl", ".prefab");
-                    category = modelPath.Split(";")[0].Split("/")[1];
+                    modelReplacePath = modelPath.Replace("/", "#").Replace(".rmdl", ".prefab");
+                    category = modelPath.Split("/")[1];
 
                     if ( !File.Exists( $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}" ) )
                     {
@@ -75,13 +71,13 @@ public class AssetLibrarySorter
                         prefabInstance.transform.eulerAngles = new Vector3( 0, 0, 0 );
                         objectInstance.transform.position = new Vector3( 0, 0, 0 );
 
-                        string[] parts = modelPath.Split(";")[1].Replace("(", "").Replace(")", "").Split(',');
+                        string[] parts = FindAnglesOffset(modelPath).Replace("(", "").Replace(")", "").Split(',');
     
                         float x = float.Parse(parts[0]);
                         float y = float.Parse(parts[1]);
                         float z = float.Parse(parts[2]);
-                        Vector3 vector = new Vector3(x, y, z);
-                        objectInstance.transform.eulerAngles = vector;
+
+                        objectInstance.transform.eulerAngles = new Vector3(x, y, z);
 
                         objectInstance.transform.SetParent( prefabInstance.transform );
 
@@ -92,6 +88,27 @@ public class AssetLibrarySorter
                 }
             }
         }
+    }
+
+    public static string FindAnglesOffset(string searchTerm)
+    {
+        string returnedString = "( 0, -90, 0 )";
+
+        using (StreamReader reader = new StreamReader($"{Directory.GetCurrentDirectory()}/Assets/ReMap/Scripts/Tools/rpakModelFile/modelAnglesOffset.txt"))
+        {
+            string line;
+
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (line.Contains(searchTerm))
+                {
+                    returnedString = line.Split(";")[1];
+                    break;
+                }
+            }
+        }
+
+        return returnedString;
     }
 
     public static void SetModelLabels()

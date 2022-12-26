@@ -47,7 +47,10 @@ public class ImportExportJson
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(prop.Name);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {prop.Name}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = prop.Postion;
@@ -85,7 +88,10 @@ public class ImportExportJson
             string Model = "custom_jumppad";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = jumppad.Postion;
@@ -121,7 +127,10 @@ public class ImportExportJson
             string Model = "custom_button";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = button.Postion;
@@ -153,7 +162,10 @@ public class ImportExportJson
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(sheild.Model);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {sheild.Model}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = sheild.Postion;
@@ -188,7 +200,10 @@ public class ImportExportJson
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(weaponrack.Weapon);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {weaponrack.Weapon}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = weaponrack.Postion;
@@ -220,7 +235,10 @@ public class ImportExportJson
             string Model = "custom_lootbin";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = lootbin.Postion;
@@ -252,7 +270,10 @@ public class ImportExportJson
             string Model = "custom_zipline";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             foreach (Transform child in obj.transform)
@@ -338,7 +359,10 @@ public class ImportExportJson
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = door.Postion;
@@ -373,7 +397,10 @@ public class ImportExportJson
             string Model = "trigger_cylinder";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
             if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
                 continue;
+            }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = trigger.Postion;
@@ -432,11 +459,14 @@ public class ImportExportJson
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
         foreach(GameObject obj in PropObjects)
         {
+            PropScript script = obj.GetComponent<PropScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing PropScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Props", "Exporting: " + obj.name, (i + 1) / (float)PropObjects.Length);
-            PropScript script = obj.GetComponent<PropScript>();
-            if (script == null)
-                continue;
             
             PropsClass prop = new PropsClass();
             PropScriptClass propScript = new PropScriptClass();
@@ -468,12 +498,14 @@ public class ImportExportJson
         GameObject[] JumpPadObjects = GameObject.FindGameObjectsWithTag("Jumppad");
         foreach (GameObject obj in JumpPadObjects)
         {
+            PropScript script = obj.GetComponent<PropScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing PropScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Jumppads", "Exporting: " + obj.name, (i + 1) / (float)JumpPadObjects.Length);
-
-            PropScript script = obj.GetComponent<PropScript>();
-            if (script == null)
-                continue;
 
             JumpPadsClass jumpPad = new JumpPadsClass();
             PropScriptClass propScript = new PropScriptClass();
@@ -504,12 +536,14 @@ public class ImportExportJson
         GameObject[] ButtonObjects = GameObject.FindGameObjectsWithTag("Button");
         foreach (GameObject obj in ButtonObjects)
         {
+            ButtonScripting script = obj.GetComponent<ButtonScripting>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing ButtonScripting on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Buttons", "Exporting: " + obj.name, (i + 1) / (float)ButtonObjects.Length);
-
-            ButtonScripting script = obj.GetComponent<ButtonScripting>();
-            if (script == null)
-                continue;
 
             ButtonsClass button = new ButtonsClass();
             button.Postion = obj.transform.position;
@@ -536,12 +570,14 @@ public class ImportExportJson
         GameObject[] BubbleShieldObjects = GameObject.FindGameObjectsWithTag("BubbleShield");
         foreach (GameObject obj in BubbleShieldObjects)
         {
+            BubbleScript script = obj.GetComponent<BubbleScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing BubbleScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting BubbleShields", "Exporting: " + obj.name, (i + 1) / (float)BubbleShieldObjects.Length);
-
-            BubbleScript script = obj.GetComponent<BubbleScript>();
-            if (script == null)
-                continue;
 
             BubbleShieldsClass bubbleShield = new BubbleShieldsClass();
             bubbleShield.Postion = obj.transform.position;
@@ -569,12 +605,14 @@ public class ImportExportJson
         GameObject[] WeaponRackObjects = GameObject.FindGameObjectsWithTag("WeaponRack");
         foreach (GameObject obj in WeaponRackObjects)
         {
+            WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing WeaponRackScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting LootBins", "Exporting: " + obj.name, (i + 1) / (float)WeaponRackObjects.Length);
-
-            WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
-            if (script == null)
-                continue;
 
             WeaponRacksClass weaponRack = new WeaponRacksClass();
             weaponRack.Postion = obj.transform.position;
@@ -601,12 +639,14 @@ public class ImportExportJson
         GameObject[] LootBinObjects = GameObject.FindGameObjectsWithTag("LootBin");
         foreach (GameObject obj in LootBinObjects)
         {
+            LootBinScript script = obj.GetComponent<LootBinScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing LootBinScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting LootBins", "Exporting: " + obj.name, (i + 1) / (float)LootBinObjects.Length);
-
-            LootBinScript script = obj.GetComponent<LootBinScript>();
-            if (script == null)
-                continue;
 
             LootBinsClass lootBin = new LootBinsClass();
             lootBin.Postion = obj.transform.position;
@@ -663,12 +703,14 @@ public class ImportExportJson
         GameObject[] LinkedZipLineObjects = GameObject.FindGameObjectsWithTag("LinkedZipline");
         foreach (GameObject obj in LinkedZipLineObjects)
         {
+            LinkedZiplineScript script = obj.GetComponent<LinkedZiplineScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing LinkedZiplineScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)LinkedZipLineObjects.Length);
-
-            LinkedZiplineScript script = obj.GetComponent<LinkedZiplineScript>();
-            if (script == null)
-                continue;
 
             List<Vector3> nodes = new List<Vector3>();
             LinkedZipLinesClass linkedZipLine = new LinkedZipLinesClass();
@@ -699,12 +741,14 @@ public class ImportExportJson
         GameObject[] SingleDoorObjects = GameObject.FindGameObjectsWithTag("SingleDoor");
         foreach (GameObject obj in SingleDoorObjects)
         {
+            DoorScript script = obj.GetComponent<DoorScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing DoorScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)SingleDoorObjects.Length);
-
-            DoorScript script = obj.GetComponent<DoorScript>();
-            if (script == null)
-                continue;
 
             DoorsClass singleDoor = new DoorsClass();
             singleDoor.Postion = obj.transform.position;
@@ -728,12 +772,14 @@ public class ImportExportJson
         GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
         foreach (GameObject obj in DoubleDoorObjects)
         {
+            DoorScript script = obj.GetComponent<DoorScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing DoorScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)DoubleDoorObjects.Length);
-
-            DoorScript script = obj.GetComponent<DoorScript>();
-            if (script == null)
-                continue;
 
             DoorsClass doubleDoor = new DoorsClass();
             doubleDoor.Postion = obj.transform.position;
@@ -809,12 +855,14 @@ public class ImportExportJson
         int i = 0;
         foreach (GameObject obj in Triggers)
         {
+            TriggerScripting script = obj.GetComponent<TriggerScripting>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing TriggerScripting on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar("Exporting Triggers", "Exporting: " + obj.name, (i + 1) / (float)Triggers.Length);
-
-            TriggerScripting script = obj.GetComponent<TriggerScripting>();
-            if (script == null)
-                continue;
 
             TriggersClass trigger = new TriggersClass();
             trigger.Postion = obj.transform.position;

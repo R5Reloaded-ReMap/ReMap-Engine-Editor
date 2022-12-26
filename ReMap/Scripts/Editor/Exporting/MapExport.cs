@@ -35,8 +35,10 @@ public class MapExport
     public static void ExportScriptEntCode()
     {
         var path = EditorUtility.SaveFilePanel("Script.ent", "", "scriptentexport.ent", "ent");
-        if (path.Length == 0)
+        if (path.Length == 0) {
+            ReMapConsole.Log("[Script.ent Export] No path selected, canceling export", ReMapConsole.LogType.Error);
             return;
+        }
 
         ReMapConsole.Log("[Script.ent Export] Starting Export", ReMapConsole.LogType.Warning);
 
@@ -55,8 +57,10 @@ public class MapExport
     public static void ExportSoundEntCode()
     {
         var path = EditorUtility.SaveFilePanel("Sound.ent Export", "", "soundentexport.ent", "ent");
-        if (path.Length == 0)
+        if (path.Length == 0) {
+            ReMapConsole.Log("[Sound.ent Export] No path selected, canceling export", ReMapConsole.LogType.Error);
             return;
+        }
 
         ReMapConsole.Log("[Sound.ent Export] Starting Export", ReMapConsole.LogType.Warning);
 
@@ -77,8 +81,10 @@ public class MapExport
     private static void ExportMap(Helper.ExportType type)
     {
         var path = EditorUtility.SaveFilePanel("Map Export", "", "mapexport.txt", "txt");
-        if (path.Length == 0)
+        if (path.Length == 0) {
+            ReMapConsole.Log("[Map Export] No path selected, canceling export", ReMapConsole.LogType.Error);
             return;
+        }
 
         ReMapConsole.Log("[Map Export] Starting Export", ReMapConsole.LogType.Warning);
 

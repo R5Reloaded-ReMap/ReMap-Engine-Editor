@@ -72,15 +72,7 @@ public class AssetLibrarySorter
                         prefabInstance.transform.position = new Vector3( 0, 0, 0 );
                         prefabInstance.transform.eulerAngles = new Vector3( 0, 0, 0 );
                         objectInstance.transform.localPosition = new Vector3( 0, 0, 0 );
-
-                        string[] parts = FindAnglesOffset(modelPath).Replace("(", "").Replace(")", "").Split(",");
-    
-                        float x = float.Parse(parts[0]);
-                        float y = float.Parse(parts[1]);
-                        float z = float.Parse(parts[2]);
-                        //ReMapConsole.Log($"X: {parts[0]} | {x} Y: {parts[1]} | {y} Z: {parts[2]} | {z}", ReMapConsole.LogType.Info);
-
-                        objectInstance.transform.localEulerAngles = new Vector3(x, y, z);
+                        objectInstance.transform.localEulerAngles = FindAnglesOffset(modelPath);
 
                         objectInstance.transform.localScale = new Vector3(1, 1, 1);
 
@@ -97,9 +89,9 @@ public class AssetLibrarySorter
         }
     }
 
-    public static string FindAnglesOffset(string searchTerm)
+    public static Vector3 FindAnglesOffset(string searchTerm)
     {
-        string returnedString = "( 0, -90, 0 )";
+        Vector3 returnedVector = new Vector3( 0, -90, 0 );
 
         using (StreamReader reader = new StreamReader($"{currentDirectory}/{relativeRpakFile}/modelAnglesOffset.txt"))
         {
@@ -109,13 +101,18 @@ public class AssetLibrarySorter
             {
                 if (line.Contains(searchTerm) && !line.Contains("//"))
                 {
-                    returnedString = line.Split(";")[1];
+                    string[] parts = line.Split(";")[1].Replace("(", "").Replace(")", "").Split(",");
+    
+                    float x = float.Parse(parts[0]);
+                    float y = float.Parse(parts[1]);
+                    float z = float.Parse(parts[2]);
+                    returnedVector = new Vector3( x, y, z );
                     break;
                 }
             }
         }
 
-        return returnedString;
+        return returnedVector;
     }
 
     public static async void SetFolderLabels(string mapName)

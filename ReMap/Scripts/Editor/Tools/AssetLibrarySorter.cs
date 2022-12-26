@@ -117,6 +117,38 @@ public class AssetLibrarySorter : EditorWindow
         }
 
         ReMapConsole.Log($"[Library Sorter] Finished sorting models", ReMapConsole.LogType.Success);
+
+        //Dev_GetPrefabAnglesThatAreDiffrent();
+    }
+
+    public static void Dev_GetPrefabAnglesThatAreDiffrent()
+    {
+        string[] prefabs = AssetDatabase.FindAssets("t:prefab", new string[] {"Assets/Prefabs"});
+        List<string> prefabsList = new List<string>();
+
+        foreach (string prefab in prefabs)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(prefab);
+            if(!path.Contains("mdl#"))
+                continue;
+
+            if(prefabsList.Contains(path))
+                continue;
+
+            GameObject prefabObject = AssetDatabase.LoadAssetAtPath(path, typeof(UnityEngine.Object)) as GameObject;
+
+            Transform[] children = prefabObject.GetComponentsInChildren<Transform>();
+
+            Vector3 normang = new Vector3(0, -90, 0);
+            Vector3 normang2 = new Vector3(0, 270, 0);
+
+            if (children[1].transform.eulerAngles != normang && children[1].transform.eulerAngles != normang2)
+            {
+                string name = Path.GetFileNameWithoutExtension(path).Replace(" ", "").Replace(".prefab", "");
+                ReMapConsole.Log($"{name};( {children[1].transform.eulerAngles.x}, {children[1].transform.eulerAngles.y}, {children[1].transform.eulerAngles.z} )", ReMapConsole.LogType.Success);
+                prefabsList.Add(path);
+            }
+        }
     }
 
     public static Vector3 FindAnglesOffset(string searchTerm)

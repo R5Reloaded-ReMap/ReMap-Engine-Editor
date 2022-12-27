@@ -342,9 +342,7 @@ public class AssetLibrarySorter : EditorWindow
         if ( specificModelOrFolderOrnull != null )
         {
             if ( specificModelOrFolderOrnull.Contains("mdl#") )
-            {
                 specificModel = specificModelOrFolderOrnull;
-            }
             else specificFolder = $"/{specificModelOrFolderOrnull}";
         }
         

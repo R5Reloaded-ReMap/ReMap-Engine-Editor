@@ -38,6 +38,12 @@ public class AssetLibrarySorter : EditorWindow
         window.Show();
     }
 
+    [MenuItem("ReMap/Dev Tools/Asset Library Sorter/Delete Not Used Texture", false, 100)]
+    public static void TextureInit()
+    {
+        AssetLibrarySorter.DeleteNotUsedTexture();
+    }
+
     void OnGUI()
     {
         GUILayout.Label("WARNING: ONLY USE THIS IF YOU KNOW WHAT YOU ARE DOING!", EditorStyles.boldLabel);
@@ -327,6 +333,21 @@ public class AssetLibrarySorter : EditorWindow
         }
 
         return returnedVector;
+    }
+
+    public static void DeleteNotUsedTexture()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:texture", new [] {"Assets/ReMap/Lods - Dont use these/Materials"});
+        int i = 0;
+        foreach (var guid in guids)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            Texture2D texture = (Texture2D)AssetDatabase.LoadMainAssetAtPath(assetPath);
+            ReMapConsole.Log($"{texture.name}", ReMapConsole.LogType.Success);
+            
+        }
+
+        ReMapConsole.Log($"Total files: {i}", ReMapConsole.LogType.Success);
     }
 
     public static async void SetFolderLabels(string mapName)

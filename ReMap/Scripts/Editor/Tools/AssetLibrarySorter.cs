@@ -83,7 +83,10 @@ public class AssetLibrarySorter : EditorWindow
                 {
                     string prefabname = Path.GetFileNameWithoutExtension(prefab);
                     if (GUILayout.Button(prefabname))
+                    {
                         FixPrefab(prefabname);
+                        SetModelLabels(prefabname);
+                    }
                 }
                 GUILayout.EndScrollView();
             }
@@ -331,25 +334,38 @@ public class AssetLibrarySorter : EditorWindow
         await AssetLibrarySorter.SetModelLabels(mapName);
     }
 
-    public static Task SetModelLabels( string specificFolderOrnull = null )
+    public static Task SetModelLabels( string specificModelOrFolderOrnull = null )
     {
-        string specificFolder = $""; 
+        string specificFolder = $"";
+        string specificModel = $"mdl#";
         
-        if ( specificFolderOrnull != null )
-            specificFolder = $"/{specificFolderOrnull}";
+        if ( specificModelOrFolderOrnull != null )
+        {
+            if ( specificModelOrFolderOrnull.Contains("mdl#") )
+            {
+                specificModel = specificModelOrFolderOrnull;
+            }
+            else specificFolder = $"/{specificModelOrFolderOrnull}";
+        }
         
-        string[] guids = AssetDatabase.FindAssets("mdl#", new [] {$"Assets/Prefabs{specificFolder}"});
+        string[] guids = AssetDatabase.FindAssets($"{specificModel}", new [] {$"Assets/Prefabs{specificFolder}"});
         int i = 0;
         foreach (var guid in guids)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
             UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath(assetPath);
-            string category = assetPath.Split("#")[1];
-            AssetDatabase.SetLabels(asset, new []{category});
+            string category = assetPath.Split("#")[1].Replace(".prefab", "");
 
             string[] modelnamesplit = assetPath.Split("/");
             string modelname = modelnamesplit[modelnamesplit.Length - 1].Replace(".prefab", "");
-            ReMapConsole.Log($"[Library Sorter] Setting label for {modelname} to {category}", ReMapConsole.LogType.Info);
+
+            string[] label = AssetDatabase.GetLabels(asset);
+            if( !label.Contains(category) )
+            {
+                AssetDatabase.SetLabels(asset, new []{category});
+                ReMapConsole.Log($"[Library Sorter] Setting label for {modelname} to {category}", ReMapConsole.LogType.Info);
+            }
+
             EditorUtility.DisplayProgressBar("Sorting Tags", "Setting " + modelname + " to " + category, (i + 1) / (float)guids.Length);
             i++;
         }

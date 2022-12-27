@@ -106,7 +106,7 @@ public class AssetLibrarySorter : EditorWindow
             if(!path.Contains("mdl#"))
                 continue;
 
-            if(!path.Contains("all_prefabs"))
+            if(!path.Contains("all_models"))
                 continue;
 
             if(search != "" && !path.Contains(search))

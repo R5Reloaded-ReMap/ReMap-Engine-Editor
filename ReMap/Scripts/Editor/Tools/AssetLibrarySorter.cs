@@ -361,6 +361,13 @@ public class AssetLibrarySorter : EditorWindow
 
     public static async void LibrarySortFolder(string file)
     {
+        string mapPath = $"{currentDirectory}/{relativePrefabs}/{Path.GetFileNameWithoutExtension(file)}";
+        if (!Directory.Exists(mapPath))
+        {
+            ReMapConsole.Log($"[Library Sorter] Creating directory: {relativePrefabs}/{Path.GetFileNameWithoutExtension(file)}", ReMapConsole.LogType.Info);
+            Directory.CreateDirectory(mapPath);
+        }
+        
         await SortFolder(file);
         UpdateLastestSort(file);
 

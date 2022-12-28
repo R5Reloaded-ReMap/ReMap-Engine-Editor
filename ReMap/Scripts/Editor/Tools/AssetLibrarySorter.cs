@@ -15,12 +15,20 @@ public class AssetLibrarySorter : EditorWindow
     static string relativePrefabs =$"Assets/Prefabs";
     static string relativeRpakFile = $"Assets/ReMap/Resources/rpakModelFile";
 
+    static string[] protectedFolders = {
+        "_custom_prefabs"
+    };
+
     Vector2 scrollPos = Vector2.zero;
 
     bool byfile = true;
-    bool byprefab = false;
+    bool findmissing = true;
+    bool byprefab = true;
+    bool options = true;
     string search = "";
     string search_tmp = "";
+
+    static bool checkandfixifexists = false;
 
     static List<string> allprefabs = new List<string>();
 
@@ -50,20 +58,50 @@ public class AssetLibrarySorter : EditorWindow
         GUILayout.Label("This will sort all the models in the library into their respective folders.", EditorStyles.boldLabel);
         GUILayout.Space(20);
 
+        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt").ToArray();
+
+        options = EditorGUILayout.BeginFoldoutHeaderGroup(options, "Options");
+        if (options)
+        {
+            GUILayout.BeginVertical("box");
+            checkandfixifexists = EditorGUILayout.Toggle("Fix existing prefabs", checkandfixifexists);
+            GUILayout.EndVertical();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
         byfile = EditorGUILayout.BeginFoldoutHeaderGroup(byfile, "Sort By File");
         if (byfile)
         {
             GUILayout.BeginVertical("box");
-            string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt").ToArray();
             foreach (string file in files)
             {
+                if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
+                    continue;
+
                 string mapName = Path.GetFileNameWithoutExtension(file);
                 if (GUILayout.Button(mapName))
-                    SortFolder(file);
+                    LibrarySortFolder(file);
             }
             if (GUILayout.Button("Sort All"))
                 if (EditorUtility.DisplayDialog("Sort All", "Are you sure you want to sort all files?", "Yes", "No"))
                     LibrarySorter();
+            GUILayout.EndVertical();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        findmissing = EditorGUILayout.BeginFoldoutHeaderGroup(findmissing, "Find Missing By File");
+        if (findmissing)
+        {
+            GUILayout.BeginVertical("box");
+            foreach (string file in files)
+            {
+                if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
+                    continue;
+
+                string mapName = Path.GetFileNameWithoutExtension(file);
+                if (GUILayout.Button(mapName))
+                    FindMissing(file);
+            }
             GUILayout.EndVertical();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -156,7 +194,36 @@ public class AssetLibrarySorter : EditorWindow
         }
     }
 
-    public static void SortFolder(string file)
+    public static async void FindMissing(string file)
+    {
+        ReMapConsole.Log($"[Library Sorter] Reading file: {file}", ReMapConsole.LogType.Warning);
+        string[] models = File.ReadAllLines(file);
+        string mapName = Path.GetFileNameWithoutExtension(file);
+
+        int i = 0;
+        foreach (string model in models)
+        {
+            if(model.Contains("/pov") || model.Contains("/ptpov") || model.Contains("_pov"))
+                continue; 
+
+            string modelname = model.Replace("/", "#").Replace(".rmdl", ".prefab");
+
+            EditorUtility.DisplayProgressBar("Checking for missing models", $"Checking: {mapName}/{modelname}", (i + 1) / (float)models.Length);
+
+            if (!File.Exists($"{currentDirectory}/{relativePrefabs}/{mapName}/{modelname}"))
+            {
+                ReMapConsole.Log($"[Library Sorter] Missing prefab: {mapName}/{modelname}", ReMapConsole.LogType.Error);
+            }
+
+            await Task.Yield();
+            i++;
+        }
+
+        ReMapConsole.Log($"[Library Sorter] Finished", ReMapConsole.LogType.Success);
+        EditorUtility.ClearProgressBar();
+    }
+
+    public static async Task SortFolder(string file)
     {
         ReMapConsole.Log($"[Library Sorter] Reading file: {file}", ReMapConsole.LogType.Warning);
         int lineCount = File.ReadAllLines(file).Length;
@@ -189,6 +256,9 @@ public class AssetLibrarySorter : EditorWindow
         GameObject prefabToAdd; GameObject prefabInstance;
         GameObject objectToAdd; GameObject objectInstance;
 
+        int arraylen = arrayMap.Length;
+
+        int i = 0;
         foreach (string modelPath in arrayMap)
         {
             modelName = Path.GetFileNameWithoutExtension(modelPath);
@@ -196,6 +266,8 @@ public class AssetLibrarySorter : EditorWindow
             if (File.Exists($"{currentDirectory}/{relativeModel}/{modelName + "_LOD0.fbx"}"))
             {
                 modelReplacePath = modelPath.Replace("/", "#").Replace(".rmdl", ".prefab");
+
+                EditorUtility.DisplayProgressBar("Sorting Files", $"Sorting: {mapName}/{modelReplacePath}", (i + 1) / (float)arraylen);
 
                 if (!File.Exists($"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}"))
                 {
@@ -237,6 +309,9 @@ public class AssetLibrarySorter : EditorWindow
                 }
                 else
                 {
+                    if(!checkandfixifexists)
+                        continue;
+
                     UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath($"{relativePrefabs}/{mapName}/{modelReplacePath}", typeof(UnityEngine.Object)) as GameObject;
                     if (loadedPrefabResource == null)
                     {
@@ -259,23 +334,36 @@ public class AssetLibrarySorter : EditorWindow
                     ReMapConsole.Log($"[Library Sorter] Fixed and saved prefab: {relativePrefabs}/{mapName}/{modelReplacePath}", ReMapConsole.LogType.Success);
                 }
             }
+
+            await Task.Yield();
+            i++;
         }
 
         ReMapConsole.Log($"[Library Sorter] Setting labels for prefabs in: {mapName}", ReMapConsole.LogType.Info);
+        EditorUtility.ClearProgressBar();
         AssetLibrarySorter.SetFolderLabels(mapName);
     }
 
-    public static void LibrarySorter()
+    public static async void LibrarySorter()
     {
         string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt").ToArray();
         foreach (string file in files)
         {
-            SortFolder(file);
+            if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
+                continue;
+
+            await SortFolder(file);
         }
 
         ReMapConsole.Log($"[Library Sorter] Finished sorting models", ReMapConsole.LogType.Success);
     }
-    
+
+    public static async void LibrarySortFolder(string file)
+    {
+        await SortFolder(file);
+
+        ReMapConsole.Log($"[Library Sorter] Finished sorting models", ReMapConsole.LogType.Success);
+    }
 
     public static void Dev_GetPrefabAnglesThatAreDiffrent()
     {

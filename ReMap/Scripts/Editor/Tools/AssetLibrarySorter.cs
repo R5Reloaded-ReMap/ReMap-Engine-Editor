@@ -540,11 +540,11 @@ public class AssetLibrarySorter : EditorWindow
 
         if ( index != -1 )
         {
-            line[index] = $"[ {fileName} ]|[ {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} ]";
+            line[index] = $"[ {fileName} ]|[ {DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss")} ]";
         }
         else
         {
-            line.Add($"[ {fileName} ]|[ {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} ]");
+            line.Add($"[ {fileName} ]|[ {DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss")} ]");
         }
 
         line.Sort();

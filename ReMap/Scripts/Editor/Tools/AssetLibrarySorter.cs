@@ -337,17 +337,39 @@ public class AssetLibrarySorter : EditorWindow
 
     public static void DeleteNotUsedTexture()
     {
-        string[] guids = AssetDatabase.FindAssets("t:texture", new [] {"Assets/ReMap/Lods - Dont use these/Materials"});
-        int i = 0;
-        foreach (var guid in guids)
+        List<string> texturesList = new List<string>();
+
+        string[] modeltextureGUID = AssetDatabase.FindAssets("t:model", new [] {"Assets/ReMap/Lods - Dont use these/Models"});
+
+        foreach (var guid in modeltextureGUID)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            Texture2D texture = (Texture2D)AssetDatabase.LoadMainAssetAtPath(assetPath);
-            ReMapConsole.Log($"{texture.name}", ReMapConsole.LogType.Success);
-            
+            string[] dependencie = AssetDatabase.GetDependencies(assetPath);
+            foreach( string dependencies in dependencie )
+            {
+                if ( dependencies.Contains(".dds") )
+                {
+                    texturesList.Add(Path.GetFileNameWithoutExtension(dependencies));
+                    ReMapConsole.Log($"{dependencies}", ReMapConsole.LogType.Success);
+                }
+            }
         }
 
-        ReMapConsole.Log($"Total files: {i}", ReMapConsole.LogType.Success);
+        string[] usedTextures = texturesList.ToArray();
+
+        // string[] textureGUID = AssetDatabase.FindAssets("t:texture", new [] {"Assets/ReMap/Lods - Dont use these/Materials"});
+        int i = 0;
+        // foreach (var guid in textureGUID)
+        // {
+        //     string texturePath = AssetDatabase.GUIDToAssetPath(guid);
+
+        //     if( !usedTextures.Contains(Path.GetFileNameWithoutExtension(texturePath)) )
+        //     {
+        //         File.Delete(texturePath); i++;
+        //     }
+        // }
+
+        ReMapConsole.Log($"{i} Not used textures are been deleted", ReMapConsole.LogType.Success);
     }
 
     public static async void SetFolderLabels(string mapName)

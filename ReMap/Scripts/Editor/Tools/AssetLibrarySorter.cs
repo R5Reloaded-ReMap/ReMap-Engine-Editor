@@ -347,27 +347,28 @@ public class AssetLibrarySorter : EditorWindow
             string[] dependencie = AssetDatabase.GetDependencies(assetPath);
             foreach( string dependencies in dependencie )
             {
-                if ( dependencies.Contains(".dds") )
+                if ( Path.GetExtension(dependencies) == ".dds")
                 {
                     texturesList.Add(Path.GetFileNameWithoutExtension(dependencies));
-                    ReMapConsole.Log($"{dependencies}", ReMapConsole.LogType.Success);
                 }
             }
         }
 
         string[] usedTextures = texturesList.ToArray();
 
-        // string[] textureGUID = AssetDatabase.FindAssets("t:texture", new [] {"Assets/ReMap/Lods - Dont use these/Materials"});
+        string[] textureGUID = AssetDatabase.FindAssets("t:texture", new [] {"Assets/ReMap/Lods - Dont use these/Materials"});
         int i = 0;
-        // foreach (var guid in textureGUID)
-        // {
-        //     string texturePath = AssetDatabase.GUIDToAssetPath(guid);
+        foreach (var guid in textureGUID)
+        {
+            string texturePath = AssetDatabase.GUIDToAssetPath(guid);
 
-        //     if( !usedTextures.Contains(Path.GetFileNameWithoutExtension(texturePath)) )
-        //     {
-        //         File.Delete(texturePath); i++;
-        //     }
-        // }
+            if( !usedTextures.Contains(Path.GetFileNameWithoutExtension(texturePath)) )
+            {
+                File.Delete(texturePath);
+                File.Delete(texturePath + ".meta");
+                i++;
+            }
+        }
 
         ReMapConsole.Log($"{i} Not used textures are been deleted", ReMapConsole.LogType.Success);
     }

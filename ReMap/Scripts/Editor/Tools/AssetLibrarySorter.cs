@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 public class AssetLibrarySorter : EditorWindow
 {
-    static string currentDirectory = Directory.GetCurrentDirectory();
+    static string currentDirectory = Directory.GetCurrentDirectory().Replace("\\","/");
     static string relativeEmptyPrefab = $"Assets/ReMap/Lods - Dont use these/EmptyPrefab.prefab";
     static string relativeLods =$"Assets/ReMap/Lods - Dont use these";
     static string relativeModel =$"Assets/ReMap/Lods - Dont use these/Models";
@@ -58,7 +58,7 @@ public class AssetLibrarySorter : EditorWindow
         GUILayout.Label("This will sort all the models in the library into their respective folders.", EditorStyles.boldLabel);
         GUILayout.Space(20);
 
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt").ToArray();
+        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt").ToArray();
 
         options = EditorGUILayout.BeginFoldoutHeaderGroup(options, "Options");
         if (options)
@@ -346,13 +346,14 @@ public class AssetLibrarySorter : EditorWindow
 
     public static async void LibrarySorter()
     {
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt").ToArray();
+        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt").ToArray();
         foreach (string file in files)
         {
             if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
                 continue;
 
             await SortFolder(file);
+            UpdateLastestSort(file);
         }
 
         ReMapConsole.Log($"[Library Sorter] Finished sorting models", ReMapConsole.LogType.Success);
@@ -361,6 +362,7 @@ public class AssetLibrarySorter : EditorWindow
     public static async void LibrarySortFolder(string file)
     {
         await SortFolder(file);
+        UpdateLastestSort(file);
 
         ReMapConsole.Log($"[Library Sorter] Finished sorting models", ReMapConsole.LogType.Success);
     }
@@ -521,5 +523,32 @@ public class AssetLibrarySorter : EditorWindow
         EditorUtility.ClearProgressBar();
 
         return Task.CompletedTask;
+    }
+
+    public static void UpdateLastestSort(string filePath)
+    {
+        string fileName = Path.GetFileNameWithoutExtension(filePath);
+        string registerUpdatesFile = $"{currentDirectory}/{relativeRpakFile}/lastestFolderUpdate.txt";
+        if (!File.Exists(registerUpdatesFile))
+            File.Create(registerUpdatesFile);
+
+        List<string> line = File.ReadAllLines(registerUpdatesFile).ToList();
+
+        int index = -1;
+
+        foreach(string lines in line) if(lines.Contains($"[ {fileName} ]")) index = line.FindIndex(s => s.Contains(fileName));
+
+        if ( index != -1 )
+        {
+            line[index] = $"[ {fileName} ]|[ {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} ]";
+        }
+        else
+        {
+            line.Add($"[ {fileName} ]|[ {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")} ]");
+        }
+
+        line.Sort();
+
+        File.WriteAllLines(registerUpdatesFile, line);
     }
 }

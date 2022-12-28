@@ -503,7 +503,7 @@ public class AssetLibrarySorter : EditorWindow
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
             UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath(assetPath);
-            string category = assetPath.Split("#")[1].Replace(".prefab", "");
+            string category = assetPath.Split("#")[1].Replace(".prefab", "").ToLower();
 
             string[] modelnamesplit = assetPath.Split("/");
             string modelname = modelnamesplit[modelnamesplit.Length - 1].Replace(".prefab", "");

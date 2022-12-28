@@ -475,7 +475,7 @@ public class AssetLibrarySorter : EditorWindow
 
         ReMapConsole.Log($"{i} textures not used have been deleted", ReMapConsole.LogType.Success);
         ReMapConsole.Log($"{j} native assets have been deleted", ReMapConsole.LogType.Success);
-        ReMapConsole.Log($"Total used textures: {usedTextures.Length}", ReMapConsole.LogType.Info);
+        ReMapConsole.Log($"Total used textures: {usedTextures.Length} for {modeltextureGUID.Length} models", ReMapConsole.LogType.Info);
     }
 
     public static async void SetFolderLabels(string mapName)

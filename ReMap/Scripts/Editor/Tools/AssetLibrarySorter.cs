@@ -347,14 +347,29 @@ public class AssetLibrarySorter : EditorWindow
             string[] dependencie = AssetDatabase.GetDependencies(assetPath);
             foreach( string dependencies in dependencie )
             {
-                if ( Path.GetExtension(dependencies) == ".dds")
+                string fileName = Path.GetFileNameWithoutExtension(dependencies);
+                if ( Path.GetExtension(dependencies) == ".dds" && !texturesList.Contains(fileName))
                 {
-                    texturesList.Add(Path.GetFileNameWithoutExtension(dependencies));
+                    texturesList.Add(fileName);
                 }
             }
         }
 
         string[] usedTextures = texturesList.ToArray();
+
+        string[] defaultAssetGUID = AssetDatabase.FindAssets("t:defaultAsset", new [] {"Assets/ReMap/Lods - Dont use these/Materials"});
+        int j = 0;
+        foreach (var guid in defaultAssetGUID)
+        {
+            string defaultAssetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+            if ( Path.GetExtension(defaultAssetPath) == ".dds")
+            {
+                File.Delete(defaultAssetPath);
+                File.Delete(defaultAssetPath + ".meta");
+                j++;
+            }
+        }
 
         string[] textureGUID = AssetDatabase.FindAssets("t:texture", new [] {"Assets/ReMap/Lods - Dont use these/Materials"});
         int i = 0;
@@ -370,7 +385,9 @@ public class AssetLibrarySorter : EditorWindow
             }
         }
 
-        ReMapConsole.Log($"{i} Not used textures are been deleted", ReMapConsole.LogType.Success);
+        ReMapConsole.Log($"{i} textures not used have been deleted", ReMapConsole.LogType.Success);
+        ReMapConsole.Log($"{j} native assets have been deleted", ReMapConsole.LogType.Success);
+        ReMapConsole.Log($"Total used textures: {usedTextures.Length}", ReMapConsole.LogType.Info);
     }
 
     public static async void SetFolderLabels(string mapName)

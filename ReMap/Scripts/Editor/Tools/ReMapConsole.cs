@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class ReMapConsole : EditorWindow
 {
+    #if ReMapDev
     [MenuItem("ReMap/Dev Tools/Console", false, 100)]
     public static void Init()
     {
@@ -11,6 +12,7 @@ public class ReMapConsole : EditorWindow
         window.minSize = new Vector2(300, 360);
         window.Show();
     }
+    #endif
 
     public enum LogType { Error, Warning, Success, Info };
     public static Dictionary<LogType, string> consolecolors = new Dictionary<LogType, string>(){

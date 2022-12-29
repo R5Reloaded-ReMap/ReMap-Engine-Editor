@@ -32,6 +32,7 @@ public class AssetLibrarySorter : EditorWindow
 
     static List<string> allprefabs = new List<string>();
 
+    #if ReMapDev
     [MenuItem("ReMap/Dev Tools/Asset Library Sorter/Sort Labels", false, 100)]
     public static async void SetModelLabelsInit()
     {
@@ -51,6 +52,7 @@ public class AssetLibrarySorter : EditorWindow
     {
         AssetLibrarySorter.DeleteNotUsedTexture();
     }
+    #endif
 
     void OnGUI()
     {

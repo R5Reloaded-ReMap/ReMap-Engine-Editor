@@ -428,7 +428,7 @@ public class ImportExportJson
     public static async void ExportJson()
     {
         Helper.FixPropTags();
-        
+
         var path = EditorUtility.SaveFilePanel("Json Export", "", "mapexport.json", "json");
         if (path.Length == 0)
             return;

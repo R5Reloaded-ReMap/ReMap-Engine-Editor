@@ -71,6 +71,11 @@ public class AssetLibrarySorter : EditorWindow
             GUILayout.FlexibleSpace();
             checkandfixifexists = EditorGUILayout.Toggle("Fix existing prefabs", checkandfixifexists);
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Fix Tags", GUILayout.Width(400)))
+                FixPropTags();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -152,6 +157,33 @@ public class AssetLibrarySorter : EditorWindow
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+    }
+
+    public static void FixPropTags()
+    {
+        string[] prefabs = AssetDatabase.FindAssets("t:prefab", new string[] {"Assets/Prefabs"});
+        allprefabs = new List<string>();
+
+        foreach (string prefab in prefabs)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(prefab);
+            if (path.Contains("_custom_prefabs"))
+                continue;
+
+            UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath($"{path}", typeof(UnityEngine.Object)) as GameObject;
+            if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Library Sorter] Error loading prefab: {path}", ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            if(loadedPrefabResource.tag != "Prop")
+                loadedPrefabResource.tag = "Prop";
+
+            ReMapConsole.Log($"[Library Sorter] Set {path} tag to: Prop", ReMapConsole.LogType.Info);
+
+            PrefabUtility.SavePrefabAsset(loadedPrefabResource);
+        }
     }
 
     public static void GetAllPrefabs(string search = "")
@@ -357,6 +389,8 @@ public class AssetLibrarySorter : EditorWindow
                     objectInstance.transform.position = Vector3.zero;
                     objectInstance.transform.eulerAngles = FindAnglesOffset(modelPath);
                     objectInstance.transform.localScale = new Vector3(1, 1, 1);
+
+                    prefabInstance.tag = "Prop";
 
                     PrefabUtility.SaveAsPrefabAsset(prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}");
 

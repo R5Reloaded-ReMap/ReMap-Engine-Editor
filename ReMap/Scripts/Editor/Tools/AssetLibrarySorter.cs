@@ -64,7 +64,11 @@ public class AssetLibrarySorter : EditorWindow
         if (options)
         {
             GUILayout.BeginVertical("box");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Create all_models.txt file", GUILayout.Width(150)))
+                CreateAllModels();
             checkandfixifexists = EditorGUILayout.Toggle("Fix existing prefabs", checkandfixifexists);
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -161,6 +165,48 @@ public class AssetLibrarySorter : EditorWindow
 
             allprefabs.Add(path);
         }
+    }
+
+    public static async void CreateAllModels()
+    {
+        if(File.Exists($"{currentDirectory}/{relativeRpakFile}/all_models.txt"))
+            File.Delete($"{currentDirectory}/{relativeRpakFile}/all_models.txt");
+        
+        File.Create($"{currentDirectory}/{relativeRpakFile}/all_models.txt");
+
+        List<string> allModels = new List<string>();
+
+        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt" && Path.GetFileName(f) != "all_models.txt").ToArray();
+        foreach (string file in files)
+        {
+            if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
+                continue;
+
+            ReMapConsole.Log($"[Library Sorter] Reading {file}", ReMapConsole.LogType.Info);
+
+            string[] lines = File.ReadAllLines(file);
+            int i = 0;
+            foreach (string line in lines)
+            {
+                if (!allModels.Contains(line))
+                {
+                    allModels.Add(line);
+                    EditorUtility.DisplayProgressBar("Creating all_models.txt", $"Adding {line} to all_models.txt", (i + 1) / (float)lines.Length);
+                    ReMapConsole.Log($"[Library Sorter] Added {line} to all_models.txt", ReMapConsole.LogType.Info);
+                }
+            }
+
+            ReMapConsole.Log($"[Library Sorter] Finished reading {file}", ReMapConsole.LogType.Success);
+
+            await Task.Yield();
+        }
+
+        ReMapConsole.Log($"[Library Sorter] Writing all_models.txt", ReMapConsole.LogType.Info);
+        File.WriteAllLines( $"{currentDirectory}/{relativeRpakFile}/all_models.txt", allModels);
+
+        ReMapConsole.Log($"[Library Sorter] Finished writing all_models.txt", ReMapConsole.LogType.Success);
+        EditorUtility.DisplayProgressBar("Creating all_models.txt", "Finished writing all_models.txt", 1);
+        EditorUtility.ClearProgressBar();
     }
 
     public static void FixPrefab(string prefabname)

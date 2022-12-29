@@ -65,9 +65,12 @@ public class AssetLibrarySorter : EditorWindow
         {
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
             if (GUILayout.Button("Create all_models.txt file", GUILayout.Width(150)))
                 CreateAllModels();
+            GUILayout.FlexibleSpace();
             checkandfixifexists = EditorGUILayout.Toggle("Fix existing prefabs", checkandfixifexists);
+            GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }

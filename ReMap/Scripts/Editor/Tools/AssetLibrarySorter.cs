@@ -59,18 +59,17 @@ public class AssetLibrarySorter : EditorWindow
         GUILayout.Space(20);
 
         string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt").ToArray();
+        string[] timestamps = File.ReadAllLines($"{currentDirectory}/{relativeRpakFile}/lastestFolderUpdate.txt");
 
         options = EditorGUILayout.BeginFoldoutHeaderGroup(options, "Options");
         if (options)
         {
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Create all_models.txt file", GUILayout.Width(150)))
+            if (GUILayout.Button("Create all_models.txt file", GUILayout.Width(400)))
                 CreateAllModels();
             GUILayout.FlexibleSpace();
             checkandfixifexists = EditorGUILayout.Toggle("Fix existing prefabs", checkandfixifexists);
-            GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
@@ -86,9 +85,15 @@ public class AssetLibrarySorter : EditorWindow
                     continue;
 
                 string mapName = Path.GetFileNameWithoutExtension(file);
-                if (GUILayout.Button(mapName))
+                string timestamp = timestamps.Where(t => t.Contains(mapName)).FirstOrDefault().Split('|')[1].Replace("[ ", "").Replace(" ]", "");
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button($"{mapName}", GUILayout.Width(400)))
                     LibrarySortFolder(file);
+                GUILayout.FlexibleSpace();
+                GUILayout.Label($"Last Update: {timestamp}");
+                GUILayout.EndHorizontal();
             }
+            GUILayout.Space(10);
             if (GUILayout.Button("Sort All"))
                 if (EditorUtility.DisplayDialog("Sort All", "Are you sure you want to sort all files?", "Yes", "No"))
                     LibrarySorter();

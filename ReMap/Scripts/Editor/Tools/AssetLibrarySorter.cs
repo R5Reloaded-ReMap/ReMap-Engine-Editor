@@ -201,6 +201,8 @@ public class AssetLibrarySorter : EditorWindow
             await Task.Yield();
         }
 
+        allModels.Sort();
+
         ReMapConsole.Log($"[Library Sorter] Writing all_models.txt", ReMapConsole.LogType.Info);
         File.WriteAllLines( $"{currentDirectory}/{relativeRpakFile}/all_models.txt", allModels);
 

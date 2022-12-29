@@ -33,13 +33,13 @@ public class AssetLibrarySorter : EditorWindow
     static List<string> allprefabs = new List<string>();
 
     #if ReMapDev
-    [MenuItem("ReMap/Dev Tools/Asset Library Sorter/Sort Labels", false, 100)]
+    [MenuItem("ReMap Dev Tools/Asset Library Sorter/Sort Labels", false, 100)]
     public static async void SetModelLabelsInit()
     {
         await SetModelLabels();
     }
 
-    [MenuItem("ReMap/Dev Tools/Asset Library Sorter/Check Models Files", false, 100)]
+    [MenuItem("ReMap Dev Tools/Asset Library Sorter/Check Models Files", false, 100)]
     public static void Init()
     {
         AssetLibrarySorter window = (AssetLibrarySorter)GetWindow(typeof(AssetLibrarySorter), false, "Check Models Files");
@@ -47,7 +47,7 @@ public class AssetLibrarySorter : EditorWindow
         window.Show();
     }
 
-    [MenuItem("ReMap/Dev Tools/Asset Library Sorter/Delete Not Used Texture", false, 100)]
+    [MenuItem("ReMap Dev Tools/Asset Library Sorter/Delete Not Used Texture", false, 100)]
     public static void TextureInit()
     {
         AssetLibrarySorter.DeleteNotUsedTexture();

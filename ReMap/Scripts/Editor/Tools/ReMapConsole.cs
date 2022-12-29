@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ReMapConsole : EditorWindow
 {
     #if ReMapDev
-    [MenuItem("ReMap/Dev Tools/Console", false, 100)]
+    [MenuItem("ReMap Dev Tools/Console", false, 100)]
     public static void Init()
     {
         ReMapConsole window = (ReMapConsole)EditorWindow.GetWindow(typeof(ReMapConsole), false, "ReMap Debug Console");

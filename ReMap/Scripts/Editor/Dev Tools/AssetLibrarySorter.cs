@@ -92,7 +92,8 @@ public class AssetLibrarySorter : EditorWindow
                     continue;
 
                 string mapName = Path.GetFileNameWithoutExtension(file);
-                string timestamp = timestamps.Where(t => t.Contains(mapName)).FirstOrDefault().Split('|')[1].Replace("[ ", "").Replace(" ]", "");
+                string timestamp = "Not Updated";
+                foreach( string verifiedFile in timestamps ) if ( verifiedFile.Contains(mapName) ) timestamp = timestamps.Where(t => t.Contains(mapName)).FirstOrDefault().Split('|')[1].Replace("[ ", "").Replace(" ]", "");
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button($"{mapName}", GUILayout.Width(400)))
                     LibrarySortFolder(file);

@@ -67,11 +67,82 @@ public class ImportExportJson
             if (prop.Collection == "")
                 continue;
 
-            GameObject parent = GameObject.Find(prop.Collection);
-            if(parent == null)
-                parent = new GameObject(prop.Collection);
+            List<string> parentsList = new List<string>();
+            int startIndex = 0;
+            while (true)
+            {
+                int slashIndex = prop.Collection.IndexOf("/", startIndex);
+                if (slashIndex < 0)
+                {
+                    parentsList.Add(prop.Collection.Substring(startIndex));
+                    break;
+                }
+                else
+                {
+                    parentsList.Add(prop.Collection.Substring(startIndex, slashIndex - startIndex));
+                    startIndex = slashIndex + 1;
+                }
+            }
+            string[] parents = parentsList.ToArray();
 
-            obj.gameObject.transform.parent = parent.transform;
+            GameObject folder;
+            folder = GameObject.Find(parents[0].Split("|")[0]);
+                if(folder == null)
+            folder = new GameObject(parents[0].Split("|")[0]);
+
+            string[] partsPosF = parents[0].Split("|")[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+            string[] partsAngF = parents[0].Split("|")[2].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+
+            float xPosF = float.Parse(partsPosF[0].Replace(".", ","));
+            float yPosF = float.Parse(partsPosF[1].Replace(".", ","));
+            float zPosF = float.Parse(partsPosF[2].Replace(".", ","));
+
+            float xAngF = float.Parse(partsAngF[0].Replace(".", ","));
+            float yAngF = float.Parse(partsAngF[1].Replace(".", ","));
+            float zAngF = float.Parse(partsAngF[2].Replace(".", ","));
+
+            folder.transform.position = new Vector3( xPosF, yPosF, zPosF );
+            folder.transform.eulerAngles = new Vector3( xAngF, yAngF, zAngF );
+
+            int folderNum = parents.Length;
+
+            string path = parents[0].Split("|")[0];
+
+            if ( folderNum >= 2 )
+            {
+                for ( int j = 1 ; j < folderNum ; j++ )
+                {
+                    string parentName = parents[j].Split("|")[0];
+                    string parentPosString = parents[j].Split("|")[1];
+                    string parentAngString = parents[j].Split("|")[2];
+
+                    string[] partsPos = parentPosString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+                    string[] partsAng = parentAngString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+
+                    path = path + "/" + parentName;
+                    GameObject newFolder;
+                    newFolder = GameObject.Find(path);
+                        if(newFolder == null)
+                    newFolder = new GameObject(parentName);
+
+                    float xPos = float.Parse(partsPos[0].Replace(".", ","));
+                    float yPos = float.Parse(partsPos[1].Replace(".", ","));
+                    float zPos = float.Parse(partsPos[2].Replace(".", ","));
+
+                    float xAng = float.Parse(partsAng[0].Replace(".", ","));
+                    float yAng = float.Parse(partsAng[1].Replace(".", ","));
+                    float zAng = float.Parse(partsAng[2].Replace(".", ","));
+
+                    newFolder.transform.position = new Vector3( xPos, yPos, zPos );
+                    newFolder.transform.eulerAngles = new Vector3( xAng, yAng, zAng );
+
+                    newFolder.transform.SetParent(folder.transform);
+
+                    folder = newFolder;
+                }
+            }
+
+            obj.gameObject.transform.parent = folder.transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
         }
@@ -481,11 +552,33 @@ public class ImportExportJson
             propScript.RealmID = script.realmID;
             prop.script = propScript;
 
-            if (obj.transform.parent != null)
+            List<GameObject> parents = new List<GameObject>();
+            GameObject currentParent = obj;
+            string collectionPath = "";
+
+            while (currentParent.transform.parent != null)
             {
-                GameObject parent = obj.transform.parent.gameObject;
-                prop.Collection = parent.name.Replace("\r", "").Replace("\n", "");
+                if ( currentParent != obj ) parents.Add(currentParent);
+                currentParent = currentParent.transform.parent.gameObject;
             }
+
+            if ( currentParent != obj ) parents.Add(currentParent);
+
+            foreach (GameObject parent in parents)
+            {
+                Vector3 pos = parent.transform.position;
+                Vector3 ang = parent.transform.eulerAngles;
+                collectionPath = $"{parent.name}|{parent.transform.position}|{parent.transform.eulerAngles}/{collectionPath}"; // Add this so we can set origin and angles to "folders"
+                //collectionPath = parent.name + "/" + collectionPath;
+            }
+
+            int lastSlashIndex = collectionPath.LastIndexOf("/");
+            if (lastSlashIndex >= 0)
+            {
+                collectionPath = collectionPath.Remove(lastSlashIndex, collectionPath.Length - lastSlashIndex);
+            }
+
+            prop.Collection = collectionPath.Replace("\r", "").Replace("\n", "");
 
             save.Props.Add(prop);
 

@@ -59,7 +59,7 @@ public class ImportExportJson
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = prop.Postion;
+            obj.transform.position = prop.Position;
             obj.transform.eulerAngles = prop.Rotation;
             obj.name = prop.Name;
             obj.gameObject.transform.localScale = prop.Scale;
@@ -94,7 +94,7 @@ public class ImportExportJson
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = jumppad.Postion;
+            obj.transform.position = jumppad.Position;
             obj.transform.eulerAngles = jumppad.Rotation;
             obj.name = Model;
             obj.gameObject.transform.localScale =  jumppad.Scale;
@@ -130,7 +130,7 @@ public class ImportExportJson
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = button.Postion;
+            obj.transform.position = button.Position;
             obj.transform.eulerAngles = button.Rotation;
             obj.name = Model;
 
@@ -162,7 +162,7 @@ public class ImportExportJson
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = sheild.Postion;
+            obj.transform.position = sheild.Position;
             obj.transform.eulerAngles = sheild.Rotation;
             obj.name = sheild.Model;
             obj.gameObject.transform.localScale = sheild.Scale;
@@ -197,7 +197,7 @@ public class ImportExportJson
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = weaponrack.Postion;
+            obj.transform.position = weaponrack.Position;
             obj.transform.eulerAngles = weaponrack.Rotation;
             obj.name = weaponrack.Weapon;
 
@@ -229,7 +229,7 @@ public class ImportExportJson
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = lootbin.Postion;
+            obj.transform.position = lootbin.Position;
             obj.transform.eulerAngles = lootbin.Rotation;
             obj.name = Model;
 
@@ -478,7 +478,7 @@ public class ImportExportJson
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = door.Postion;
+            obj.transform.position = door.Position;
             obj.transform.eulerAngles = door.Rotation;
             obj.name = Model;
 
@@ -513,7 +513,7 @@ public class ImportExportJson
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = trigger.Postion;
+            obj.transform.position = trigger.Position;
             obj.transform.eulerAngles = trigger.Rotation;
             obj.name = Model;
             obj.gameObject.transform.localScale = new Vector3(trigger.Radius, trigger.Height, trigger.Radius);
@@ -580,7 +580,7 @@ public class ImportExportJson
             PropsClass prop = new PropsClass();
             PropScriptClass propScript = new PropScriptClass();
             prop.Name = obj.name.Split(char.Parse(" "))[0];
-            prop.Postion = obj.transform.position;
+            prop.Position = obj.transform.position;
             prop.Rotation = obj.transform.rotation.eulerAngles;
             prop.Scale = obj.transform.localScale;
             propScript.AllowMantle = script.allowMantle;
@@ -615,7 +615,7 @@ public class ImportExportJson
 
             JumpPadsClass jumpPad = new JumpPadsClass();
             PropScriptClass propScript = new PropScriptClass();
-            jumpPad.Postion = obj.transform.position;
+            jumpPad.Position = obj.transform.position;
             jumpPad.Rotation = obj.transform.rotation.eulerAngles;
             jumpPad.Scale = obj.transform.localScale;
             propScript.AllowMantle = script.allowMantle;
@@ -648,7 +648,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting Buttons", "Exporting: " + obj.name, (i + 1) / (float)ButtonObjects.Length);
 
             ButtonsClass button = new ButtonsClass();
-            button.Postion = obj.transform.position;
+            button.Position = obj.transform.position;
             button.Rotation = obj.transform.rotation.eulerAngles;
             button.UseText = script.UseText;
             button.OnUseCallback = script.OnUseCallback;
@@ -678,7 +678,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting BubbleShields", "Exporting: " + obj.name, (i + 1) / (float)BubbleShieldObjects.Length);
 
             BubbleShieldsClass bubbleShield = new BubbleShieldsClass();
-            bubbleShield.Postion = obj.transform.position;
+            bubbleShield.Position = obj.transform.position;
             bubbleShield.Rotation = obj.transform.rotation.eulerAngles;
             bubbleShield.Scale = obj.transform.localScale;
             bubbleShield.Color = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
@@ -709,7 +709,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting LootBins", "Exporting: " + obj.name, (i + 1) / (float)WeaponRackObjects.Length);
 
             WeaponRacksClass weaponRack = new WeaponRacksClass();
-            weaponRack.Postion = obj.transform.position;
+            weaponRack.Position = obj.transform.position;
             weaponRack.Rotation = obj.transform.rotation.eulerAngles;
             weaponRack.Weapon = obj.name.Split(char.Parse(" "))[0];
             weaponRack.RespawnTime = script.respawnTime;
@@ -739,7 +739,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting LootBins", "Exporting: " + obj.name, (i + 1) / (float)LootBinObjects.Length);
 
             LootBinsClass lootBin = new LootBinsClass();
-            lootBin.Postion = obj.transform.position;
+            lootBin.Position = obj.transform.position;
             lootBin.Rotation = obj.transform.rotation.eulerAngles;
             lootBin.Skin = script.lootbinSkin;
 
@@ -952,7 +952,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)SingleDoorObjects.Length);
 
             DoorsClass singleDoor = new DoorsClass();
-            singleDoor.Postion = obj.transform.position;
+            singleDoor.Position = obj.transform.position;
             singleDoor.Rotation = obj.transform.rotation.eulerAngles;
             singleDoor.Type = "eMapEditorDoorType.Single";
             singleDoor.Gold = script.goldDoor;
@@ -979,7 +979,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)DoubleDoorObjects.Length);
 
             DoorsClass doubleDoor = new DoorsClass();
-            doubleDoor.Postion = obj.transform.position;
+            doubleDoor.Position = obj.transform.position;
             doubleDoor.Rotation = obj.transform.rotation.eulerAngles;
             doubleDoor.Type = "eMapEditorDoorType.Double";
             doubleDoor.Gold = script.goldDoor;
@@ -1000,7 +1000,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)VertDoorObjects.Length);
 
             DoorsClass vertDoor = new DoorsClass();
-            vertDoor.Postion = obj.transform.position;
+            vertDoor.Position = obj.transform.position;
             vertDoor.Rotation = obj.transform.rotation.eulerAngles;
             vertDoor.Type = "eMapEditorDoorType.Vertical";
             vertDoor.Gold = false;
@@ -1020,7 +1020,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)HorDoorObjects.Length);
 
             DoorsClass horDoor = new DoorsClass();
-            horDoor.Postion = obj.transform.position;
+            horDoor.Position = obj.transform.position;
             horDoor.Rotation = obj.transform.rotation.eulerAngles;
             horDoor.Type = "eMapEditorDoorType.Horizontal";
             horDoor.Gold = false;
@@ -1050,7 +1050,7 @@ public class ImportExportJson
             EditorUtility.DisplayProgressBar("Exporting Triggers", "Exporting: " + obj.name, (i + 1) / (float)Triggers.Length);
 
             TriggersClass trigger = new TriggersClass();
-            trigger.Postion = obj.transform.position;
+            trigger.Position = obj.transform.position;
             trigger.Rotation = obj.transform.rotation.eulerAngles;
             trigger.Radius = obj.transform.localScale.x;
             trigger.Height = obj.transform.localScale.y;
@@ -1233,7 +1233,7 @@ public class SaveJson
 public class PropsClass
 {
     public string Name;
-    public Vector3 Postion;
+    public Vector3 Position;
     public Vector3 Rotation;
     public Vector3 Scale;
     public PropScriptClass script;
@@ -1243,7 +1243,7 @@ public class PropsClass
 [Serializable]
 public class JumpPadsClass
 {
-    public Vector3 Postion;
+    public Vector3 Position;
     public Vector3 Rotation;
     public Vector3 Scale;
     public PropScriptClass script;
@@ -1253,7 +1253,7 @@ public class JumpPadsClass
 [Serializable]
 public class ButtonsClass
 {
-    public Vector3 Postion;
+    public Vector3 Position;
     public Vector3 Rotation;
     public string UseText;
     public string OnUseCallback;
@@ -1263,7 +1263,7 @@ public class ButtonsClass
 [Serializable]
 public class BubbleShieldsClass
 {
-    public Vector3 Postion;
+    public Vector3 Position;
     public Vector3 Rotation;
     public Vector3 Scale;
     public string Color;
@@ -1274,7 +1274,7 @@ public class BubbleShieldsClass
 [Serializable]
 public class WeaponRacksClass
 {
-    public Vector3 Postion;
+    public Vector3 Position;
     public Vector3 Rotation;
     public string Weapon;
     public float RespawnTime;
@@ -1284,7 +1284,7 @@ public class WeaponRacksClass
 [Serializable]
 public class LootBinsClass
 {
-    public Vector3 Postion;
+    public Vector3 Position;
     public Vector3 Rotation;
     public int Skin;
     public string Collection;
@@ -1381,7 +1381,7 @@ public class VCPanelsClass
 [Serializable]
 public class DoorsClass
 {
-    public Vector3 Postion;
+    public Vector3 Position;
     public Vector3 Rotation;
     public string Type;
     public bool Gold;
@@ -1391,7 +1391,7 @@ public class DoorsClass
 [Serializable]
 public class TriggersClass
 {
-    public Vector3 Postion;
+    public Vector3 Position;
     public Vector3 Rotation;
     public string EnterCallback;
     public string ExitCallback;

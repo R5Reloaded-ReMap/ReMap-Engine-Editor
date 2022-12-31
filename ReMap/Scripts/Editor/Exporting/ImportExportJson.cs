@@ -404,6 +404,7 @@ public class ImportExportJson
             script.speedScale = zipline.SpeedScale;
             script.lengthScale = zipline.LengthScale;
             script.preserveVelocity = zipline.PreserveVelocity;
+            script.dropToBottom = zipline.DropToBottom;
             script.autoDetachStart = zipline.AutoDetachStart;
             script.autoDetachEnd = zipline.AutoDetachEnd;
             script.restPoint = zipline.RestPoint;
@@ -900,6 +901,7 @@ public class ImportExportJson
             nonVerticalZipLine.SpeedScale = script.speedScale;
             nonVerticalZipLine.LengthScale = script.lengthScale;
             nonVerticalZipLine.PreserveVelocity = script.preserveVelocity;
+            nonVerticalZipLine.DropToBottom = script.dropToBottom;
             nonVerticalZipLine.AutoDetachStart = script.autoDetachStart;
             nonVerticalZipLine.AutoDetachEnd = script.autoDetachEnd;
             nonVerticalZipLine.RestPoint = script.restPoint;
@@ -1352,6 +1354,7 @@ public class NonVerticalZipLinesClass
     public float SpeedScale;
     public float LengthScale;
     public bool PreserveVelocity;
+    public bool DropToBottom;
     public float AutoDetachStart;
     public float AutoDetachEnd;
     public bool RestPoint;

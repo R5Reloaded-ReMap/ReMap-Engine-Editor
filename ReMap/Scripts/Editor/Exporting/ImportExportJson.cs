@@ -706,7 +706,21 @@ public class ImportExportJson
             verticalZipLine.IsMoving = script.isMoving;
             verticalZipLine.DetachEndOnSpawn = script.detachEndOnSpawn;
             verticalZipLine.DetachEndOnUse = script.detachEndOnUse;
+
             //public GameObject[] Panels; // How to convert each game objects ( model / position / angles )
+            //Like this?
+            List<VCPanelsClass> panels = new List<VCPanelsClass>();
+            foreach (GameObject panel in script.panels)
+            {
+                VCPanelsClass panelClass = new VCPanelsClass();
+                panelClass.Model = panel.name;
+                panelClass.Position = panel.transform.position;
+                panelClass.Angles = panel.transform.eulerAngles;
+                panels.Add(panelClass);
+            }
+
+            verticalZipLine.Panels = panels.ToArray();
+
             verticalZipLine.PanelTimerMin = script.panelTimerMin;
             verticalZipLine.PanelTimerMax = script.panelTimerMax;
             verticalZipLine.PanelMaxUse = script.panelMaxUse;
@@ -1113,11 +1127,18 @@ public class VerticalZipLinesClass
     public bool IsMoving;
     public bool DetachEndOnSpawn;
     public bool DetachEndOnUse;
-    public GameObject[] Panels; // How to convert each game objects ( model / position / angles )
+    public VCPanelsClass[] Panels; // Like this.
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;
     public string Collection;
+}
+
+public class VCPanelsClass
+{
+    public string Model;
+    public Vector3 Position;
+    public Vector3 Angles;
 }
 
 [Serializable]

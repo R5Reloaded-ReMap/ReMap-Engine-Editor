@@ -346,17 +346,29 @@ public class ImportExportJson
             script.detachEndOnSpawn = zipline.DetachEndOnSpawn;
             script.detachEndOnUse = zipline.DetachEndOnUse;
 
-            // foreach( GameObject panel in zipline.panels )
-            // {
+            foreach( VCPanelsClass panelInfo in zipline.Panels )
+            {
+                UnityEngine.Object loadedPrefabResourcePanel = FindPrefabFromName( "mdl#" + panelInfo.Model);
+                if (loadedPrefabResourcePanel == null)
+                {
+                    ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {panelInfo.Model}" , ReMapConsole.LogType.Error);
+                    continue;
+                }
 
-            // }
+                GameObject panel = PrefabUtility.InstantiatePrefab(loadedPrefabResourcePanel as GameObject) as GameObject;
+                panel.transform.position = panelInfo.Position;
+                panel.transform.eulerAngles = panelInfo.Angles;
+                panel.transform.parent = CreateGameObjectWithCollectionPath( panelInfo.Collection ).transform;
+                Array.Resize( ref script.panels, script.panels.Length + 1 );
+                script.panels[script.panels.Length - 1] = panel;
+            }
 
             script.panelTimerMin = zipline.PanelTimerMin;
             script.panelTimerMax = zipline.PanelTimerMax;
             script.panelMaxUse = zipline.PanelMaxUse;
 
             if (zipline.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
+            obj.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -776,6 +788,7 @@ public class ImportExportJson
                 panelClass.Model = panel.name;
                 panelClass.Position = panel.transform.position;
                 panelClass.Angles = panel.transform.eulerAngles;
+                panelClass.Collection = FindCollectionPath( panel );
                 panels.Add(panelClass);
             }
 
@@ -1194,11 +1207,13 @@ public class VerticalZipLinesClass
     public string Collection;
 }
 
+[Serializable]
 public class VCPanelsClass
 {
     public string Model;
     public Vector3 Position;
     public Vector3 Angles;
+    public string Collection;
 }
 
 [Serializable]

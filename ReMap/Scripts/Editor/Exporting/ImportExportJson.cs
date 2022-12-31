@@ -9,6 +9,12 @@ public class ImportExportJson
 {
     static SaveJson save = new SaveJson();
 
+    static string[] protectedModels =
+    {
+        "_vertical_zipline",
+        "_non_vertical_zipline"
+    };
+
     [MenuItem("ReMap/Import/Json", false, 51)]
     public static async void ImportJson()
     {
@@ -580,7 +586,8 @@ public class ImportExportJson
 
             prop.Collection = collectionPath.Replace("\r", "").Replace("\n", "");
 
-            save.Props.Add(prop);
+            if ( !prop.Collection.Contains(protectedModels[0]) && !prop.Collection.Contains(protectedModels[1]) )
+                save.Props.Add(prop);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;

@@ -73,82 +73,7 @@ public class ImportExportJson
             if (prop.Collection == "")
                 continue;
 
-            List<string> parentsList = new List<string>();
-            int startIndex = 0;
-            while (true)
-            {
-                int slashIndex = prop.Collection.IndexOf("/", startIndex);
-                if (slashIndex < 0)
-                {
-                    parentsList.Add(prop.Collection.Substring(startIndex));
-                    break;
-                }
-                else
-                {
-                    parentsList.Add(prop.Collection.Substring(startIndex, slashIndex - startIndex));
-                    startIndex = slashIndex + 1;
-                }
-            }
-            string[] parents = parentsList.ToArray();
-
-            GameObject folder;
-            folder = GameObject.Find(parents[0].Split("|")[0]);
-                if(folder == null)
-            folder = new GameObject(parents[0].Split("|")[0]);
-
-            string[] partsPosF = parents[0].Split("|")[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
-            string[] partsAngF = parents[0].Split("|")[2].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
-
-            float xPosF = float.Parse(partsPosF[0].Replace(".", ","));
-            float yPosF = float.Parse(partsPosF[1].Replace(".", ","));
-            float zPosF = float.Parse(partsPosF[2].Replace(".", ","));
-
-            float xAngF = float.Parse(partsAngF[0].Replace(".", ","));
-            float yAngF = float.Parse(partsAngF[1].Replace(".", ","));
-            float zAngF = float.Parse(partsAngF[2].Replace(".", ","));
-
-            folder.transform.position = new Vector3( xPosF, yPosF, zPosF );
-            folder.transform.eulerAngles = new Vector3( xAngF, yAngF, zAngF );
-
-            int folderNum = parents.Length;
-
-            string path = parents[0].Split("|")[0];
-
-            if ( folderNum >= 2 )
-            {
-                for ( int j = 1 ; j < folderNum ; j++ )
-                {
-                    string parentName = parents[j].Split("|")[0];
-                    string parentPosString = parents[j].Split("|")[1];
-                    string parentAngString = parents[j].Split("|")[2];
-
-                    string[] partsPos = parentPosString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
-                    string[] partsAng = parentAngString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
-
-                    path = path + "/" + parentName;
-                    GameObject newFolder;
-                    newFolder = GameObject.Find(path);
-                        if(newFolder == null)
-                    newFolder = new GameObject(parentName);
-
-                    float xPos = float.Parse(partsPos[0].Replace(".", ","));
-                    float yPos = float.Parse(partsPos[1].Replace(".", ","));
-                    float zPos = float.Parse(partsPos[2].Replace(".", ","));
-
-                    float xAng = float.Parse(partsAng[0].Replace(".", ","));
-                    float yAng = float.Parse(partsAng[1].Replace(".", ","));
-                    float zAng = float.Parse(partsAng[2].Replace(".", ","));
-
-                    newFolder.transform.position = new Vector3( xPos, yPos, zPos );
-                    newFolder.transform.eulerAngles = new Vector3( xAng, yAng, zAng );
-
-                    newFolder.transform.SetParent(folder.transform);
-
-                    folder = newFolder;
-                }
-            }
-
-            obj.gameObject.transform.parent = folder.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( prop.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
         }
@@ -182,11 +107,7 @@ public class ImportExportJson
             propScript.AllowMantle = script.allowMantle;
             propScript.RealmID = script.realmID;
 
-            GameObject parent = GameObject.Find(jumppad.Collection);
-            if(parent == null)
-                parent = new GameObject(jumppad.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( jumppad.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -218,11 +139,7 @@ public class ImportExportJson
             script.OnUseCallback = button.OnUseCallback;
             script.UseText = button.UseText;
 
-            GameObject parent = GameObject.Find(button.Collection);
-            if(parent == null)
-                parent = new GameObject(button.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( button.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -256,11 +173,7 @@ public class ImportExportJson
             script.shieldColor.g = byte.Parse(split[1].Replace("\"", ""));
             script.shieldColor.b = byte.Parse(split[2].Replace("\"", ""));
 
-            GameObject parent = GameObject.Find(sheild.Collection);
-            if(parent == null)
-                parent = new GameObject(sheild.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( sheild.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -290,11 +203,7 @@ public class ImportExportJson
             WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
             script.respawnTime = weaponrack.RespawnTime;
 
-            GameObject parent = GameObject.Find(weaponrack.Collection);
-            if(parent == null)
-                parent = new GameObject(weaponrack.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( weaponrack.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -325,11 +234,7 @@ public class ImportExportJson
             LootBinScript script = obj.GetComponent<LootBinScript>();
             script.lootbinSkin = lootbin.Skin;
 
-            GameObject parent = GameObject.Find(lootbin.Collection);
-            if(parent == null)
-                parent = new GameObject(lootbin.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( lootbin.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -361,11 +266,7 @@ public class ImportExportJson
                     child.transform.position = zipline.End;
             }
 
-            GameObject parent = GameObject.Find(zipline.Collection);
-            if(parent == null)
-                parent = new GameObject(zipline.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -395,11 +296,7 @@ public class ImportExportJson
             script.smoothType = zipline.SmoothType;
             script.smoothAmount = zipline.SmoothAmount;
 
-            GameObject parent = GameObject.Find(zipline.Collection);
-            if(parent == null)
-                parent = new GameObject(zipline.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -452,11 +349,7 @@ public class ImportExportJson
                 script.goldDoor = door.Gold;
             }
 
-            GameObject parent = GameObject.Find(door.Collection);
-            if(parent == null)
-                parent = new GameObject(door.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( door.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -490,11 +383,7 @@ public class ImportExportJson
             script.EnterCallback = trigger.EnterCallback;
             script.LeaveCallback = trigger.ExitCallback;
 
-            GameObject parent = GameObject.Find(trigger.Collection);
-            if(parent == null)
-                parent = new GameObject(trigger.Collection);
-
-            obj.gameObject.transform.parent = parent.transform;
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( trigger.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
@@ -593,11 +482,7 @@ public class ImportExportJson
             propScript.RealmID = script.realmID;
             jumpPad.script = propScript;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                jumpPad.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            jumpPad.Collection = FindCollectionPath( obj );
 
             save.JumpPads.Add(jumpPad);
 
@@ -627,11 +512,7 @@ public class ImportExportJson
             button.UseText = script.UseText;
             button.OnUseCallback = script.OnUseCallback;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                button.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            button.Collection = FindCollectionPath( obj );
 
             save.Buttons.Add(button);
 
@@ -662,11 +543,7 @@ public class ImportExportJson
             bubbleShield.Color = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
             bubbleShield.Model = obj.name.Split(char.Parse(" "))[0];
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                bubbleShield.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            bubbleShield.Collection = FindCollectionPath( obj );
 
             save.BubbleShields.Add(bubbleShield);
 
@@ -696,11 +573,7 @@ public class ImportExportJson
             weaponRack.Weapon = obj.name.Split(char.Parse(" "))[0];
             weaponRack.RespawnTime = script.respawnTime;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                weaponRack.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            weaponRack.Collection = FindCollectionPath( obj );
 
             save.WeaponRacks.Add(weaponRack);
 
@@ -729,11 +602,7 @@ public class ImportExportJson
             lootBin.Rotation = obj.transform.rotation.eulerAngles;
             lootBin.Skin = script.lootbinSkin;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                lootBin.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            lootBin.Collection = FindCollectionPath( obj );
 
             save.LootBins.Add(lootBin);
 
@@ -763,11 +632,7 @@ public class ImportExportJson
             if(zipLine.Start == null || zipLine.End == null)
                 continue;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                zipLine.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            zipLine.Collection = FindCollectionPath( obj );
 
             save.ZipLines.Add(zipLine);
 
@@ -798,11 +663,7 @@ public class ImportExportJson
             linkedZipLine.SmoothType = script.smoothType;
             linkedZipLine.SmoothAmount = script.smoothAmount;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                linkedZipLine.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            linkedZipLine.Collection = FindCollectionPath( obj );
 
             save.LinkedZipLines.Add(linkedZipLine);
 
@@ -879,11 +740,7 @@ public class ImportExportJson
             singleDoor.Type = "eMapEditorDoorType.Single";
             singleDoor.Gold = script.goldDoor;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                singleDoor.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            singleDoor.Collection = FindCollectionPath( obj );
 
             save.Doors.Add(singleDoor);
 
@@ -910,11 +767,7 @@ public class ImportExportJson
             doubleDoor.Type = "eMapEditorDoorType.Double";
             doubleDoor.Gold = script.goldDoor;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                doubleDoor.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            doubleDoor.Collection = FindCollectionPath( obj );
 
             save.Doors.Add(doubleDoor);
 
@@ -935,11 +788,7 @@ public class ImportExportJson
             vertDoor.Type = "eMapEditorDoorType.Vertical";
             vertDoor.Gold = false;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                vertDoor.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            vertDoor.Collection = FindCollectionPath( obj );
 
             save.Doors.Add(vertDoor);
 
@@ -959,11 +808,7 @@ public class ImportExportJson
             horDoor.Type = "eMapEditorDoorType.Horizontal";
             horDoor.Gold = false;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                horDoor.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            horDoor.Collection = FindCollectionPath( obj );
 
             save.Doors.Add(horDoor);
 
@@ -996,11 +841,7 @@ public class ImportExportJson
             trigger.ExitCallback = script.LeaveCallback;
             trigger.Debug = script.Debug;
 
-            if (obj.transform.parent != null)
-            {
-                GameObject parent = obj.transform.parent.gameObject;
-                trigger.Collection = parent.name.Replace("\r", "").Replace("\n", "");
-            }
+            trigger.Collection = FindCollectionPath( obj );
 
             save.Triggers.Add(trigger);
 
@@ -1065,6 +906,83 @@ public class ImportExportJson
         }
 
         return collectionPath.Replace("\r", "").Replace("\n", "");
+    }
+
+    private static GameObject CreateGameObjectWithCollectionPath( string collectionPath )
+    {
+        List<string> pathSubstring = new List<string>();
+        int startIndex = 0;
+        while (true)
+        {
+            int slashIndex = collectionPath.IndexOf("/", startIndex);
+            if (slashIndex < 0)
+            {
+                pathSubstring.Add(collectionPath.Substring(startIndex));
+                break;
+            }
+            else
+            {
+                pathSubstring.Add(collectionPath.Substring(startIndex, slashIndex - startIndex));
+                startIndex = slashIndex + 1;
+            }
+        }
+        string[] parents = pathSubstring.ToArray();
+
+        GameObject folder;
+        folder = GameObject.Find(parents[0].Split("|")[0]);
+            if(folder == null)
+        folder = new GameObject(parents[0].Split("|")[0]);
+
+        string[] partsPosF = parents[0].Split("|")[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+        string[] partsAngF = parents[0].Split("|")[2].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+
+        float xPosF = float.Parse(partsPosF[0].Replace(".", ","));
+        float yPosF = float.Parse(partsPosF[1].Replace(".", ","));
+        float zPosF = float.Parse(partsPosF[2].Replace(".", ","));
+
+        float xAngF = float.Parse(partsAngF[0].Replace(".", ","));
+        float yAngF = float.Parse(partsAngF[1].Replace(".", ","));
+        float zAngF = float.Parse(partsAngF[2].Replace(".", ","));
+
+        folder.transform.position = new Vector3( xPosF, yPosF, zPosF );
+        folder.transform.eulerAngles = new Vector3( xAngF, yAngF, zAngF );
+
+        int folderNum = parents.Length;
+
+        string path = parents[0].Split("|")[0];
+
+        if ( folderNum >= 2 )
+        for ( int j = 1 ; j < folderNum ; j++ )
+        {
+            string parentName = parents[j].Split("|")[0];
+            string parentPosString = parents[j].Split("|")[1];
+            string parentAngString = parents[j].Split("|")[2];
+
+            string[] partsPos = parentPosString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+            string[] partsAng = parentAngString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+
+            path = path + "/" + parentName;
+            GameObject newFolder;
+            newFolder = GameObject.Find(path);
+                if(newFolder == null)
+            newFolder = new GameObject(parentName);
+
+            float xPos = float.Parse(partsPos[0].Replace(".", ","));
+            float yPos = float.Parse(partsPos[1].Replace(".", ","));
+            float zPos = float.Parse(partsPos[2].Replace(".", ","));
+
+            float xAng = float.Parse(partsAng[0].Replace(".", ","));
+            float yAng = float.Parse(partsAng[1].Replace(".", ","));
+            float zAng = float.Parse(partsAng[2].Replace(".", ","));
+
+            newFolder.transform.position = new Vector3( xPos, yPos, zPos );
+            newFolder.transform.eulerAngles = new Vector3( xAng, yAng, zAng );
+
+            newFolder.transform.SetParent(folder.transform);
+
+            folder = newFolder;
+        }
+        return folder;
     }
 }
 

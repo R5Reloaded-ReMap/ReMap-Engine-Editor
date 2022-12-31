@@ -574,8 +574,7 @@ public class ImportExportJson
             {
                 Vector3 pos = parent.transform.position;
                 Vector3 ang = parent.transform.eulerAngles;
-                collectionPath = $"{parent.name}|{parent.transform.position}|{parent.transform.eulerAngles}/{collectionPath}"; // Add this so we can set origin and angles to "folders"
-                //collectionPath = parent.name + "/" + collectionPath;
+                collectionPath = $"{parent.name}|{parent.transform.position}|{parent.transform.eulerAngles}/{collectionPath}";
             }
 
             int lastSlashIndex = collectionPath.LastIndexOf("/");

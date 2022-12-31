@@ -805,6 +805,67 @@ public class ImportExportJson
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
         }
+
+        i = 0;
+        GameObject[] NonVerticalZipLineObjects = GameObject.FindGameObjectsWithTag("NonVerticalZipLine");
+        foreach (GameObject obj in NonVerticalZipLineObjects)
+        {
+            DrawNonVerticalZipline script = obj.GetComponent<DrawNonVerticalZipline>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing DrawNonVerticalZipline on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)NonVerticalZipLineObjects.Length);
+
+            NonVerticalZipLinesClass nonVerticalZipLine = new NonVerticalZipLinesClass();
+
+            nonVerticalZipLine.ZiplineType = obj.name;
+            nonVerticalZipLine.ZiplineStartPosition = script.zipline.transform.Find("support_start").position;
+            nonVerticalZipLine.ZiplineStartAngles = script.zipline.transform.Find("support_start").eulerAngles;
+            nonVerticalZipLine.ZiplineEndPosition = script.zipline.transform.Find("support_end").position;
+            nonVerticalZipLine.ZiplineEndAngles = script.zipline.transform.Find("support_end").eulerAngles;
+            nonVerticalZipLine.ArmStartOffset = script.armOffsetStart;
+            nonVerticalZipLine.ArmEndOffset = script.armOffsetEnd;
+            nonVerticalZipLine.FadeDistance = script.fadeDistance;
+            nonVerticalZipLine.Scale = script.scale;
+            nonVerticalZipLine.Width = script.width;
+            nonVerticalZipLine.SpeedScale = script.speedScale;
+            nonVerticalZipLine.LengthScale = script.lengthScale;
+            nonVerticalZipLine.PreserveVelocity = script.preserveVelocity;
+            nonVerticalZipLine.AutoDetachStart = script.autoDetachStart;
+            nonVerticalZipLine.AutoDetachEnd = script.autoDetachEnd;
+            nonVerticalZipLine.RestPoint = script.restPoint;
+            nonVerticalZipLine.PushOffInDirectionX = script.pushOffInDirectionX;
+            nonVerticalZipLine.IsMoving = script.isMoving;
+            nonVerticalZipLine.DetachEndOnSpawn = script.detachEndOnSpawn;
+            nonVerticalZipLine.DetachEndOnUse = script.detachEndOnUse;
+
+            List<VCPanelsClass> panels = new List<VCPanelsClass>();
+            foreach (GameObject panel in script.panels)
+            {
+                VCPanelsClass panelClass = new VCPanelsClass();
+                panelClass.Model = panel.name;
+                panelClass.Position = panel.transform.position;
+                panelClass.Angles = panel.transform.eulerAngles;
+                panelClass.Collection = FindCollectionPath( panel );
+                panels.Add(panelClass);
+            }
+
+            nonVerticalZipLine.Panels = panels.ToArray();
+
+            nonVerticalZipLine.PanelTimerMin = script.panelTimerMin;
+            nonVerticalZipLine.PanelTimerMax = script.panelTimerMax;
+            nonVerticalZipLine.PanelMaxUse = script.panelMaxUse;
+
+            nonVerticalZipLine.Collection = FindCollectionPath( obj );
+
+            save.NonVerticalZipLines.Add(nonVerticalZipLine);
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
+        }
     }
 
     private static async Task ExportDoors()
@@ -950,6 +1011,7 @@ public class ImportExportJson
         save.ZipLines = new List<ZipLinesClass>();
         save.LinkedZipLines = new List<LinkedZipLinesClass>();
         save.VerticalZipLines = new List<VerticalZipLinesClass>();
+        save.NonVerticalZipLines = new List<NonVerticalZipLinesClass>();
         save.Doors = new List<DoorsClass>();
         save.Triggers = new List<TriggersClass>();
     }
@@ -1094,6 +1156,7 @@ public class SaveJson
     public List<ZipLinesClass> ZipLines;
     public List<LinkedZipLinesClass> LinkedZipLines;
     public List<VerticalZipLinesClass> VerticalZipLines;
+    public List<NonVerticalZipLinesClass> NonVerticalZipLines;
     public List<DoorsClass> Doors;
     public List<TriggersClass> Triggers;
 }
@@ -1181,7 +1244,7 @@ public class LinkedZipLinesClass
 public class VerticalZipLinesClass
 {
     public string ZiplineType;
-    public Vector3  ZiplinePosition;
+    public Vector3 ZiplinePosition;
     public Vector3 ZiplineAngles;
     public float ArmOffset;
     public float HeightOffset;
@@ -1193,6 +1256,36 @@ public class VerticalZipLinesClass
     public float LengthScale;
     public bool PreserveVelocity;
     public bool DropToBottom;
+    public float AutoDetachStart;
+    public float AutoDetachEnd;
+    public bool RestPoint;
+    public bool PushOffInDirectionX;
+    public bool IsMoving;
+    public bool DetachEndOnSpawn;
+    public bool DetachEndOnUse;
+    public VCPanelsClass[] Panels;
+    public float PanelTimerMin;
+    public float PanelTimerMax;
+    public int PanelMaxUse;
+    public string Collection;
+}
+
+[Serializable]
+public class NonVerticalZipLinesClass
+{
+    public string ZiplineType;
+    public Vector3 ZiplineStartPosition;
+    public Vector3 ZiplineStartAngles;
+    public Vector3 ZiplineEndPosition;
+    public Vector3 ZiplineEndAngles;
+    public float ArmStartOffset;
+    public float ArmEndOffset;
+    public float FadeDistance;
+    public float Scale;
+    public float Width;
+    public float SpeedScale;
+    public float LengthScale;
+    public bool PreserveVelocity;
     public float AutoDetachStart;
     public float AutoDetachEnd;
     public bool RestPoint;

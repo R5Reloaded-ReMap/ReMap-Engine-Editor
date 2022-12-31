@@ -33,7 +33,7 @@ public class ImportExportJson
         await ImportBubbleSheilds(myObject.BubbleShields);
         await ImportWeaponRacks(myObject.WeaponRacks);
         await ImportLootBins(myObject.LootBins);
-        await ImportZipLines(myObject.ZipLines, myObject.LinkedZipLines, myObject.VerticalZipLines);
+        await ImportZipLines(myObject.ZipLines, myObject.LinkedZipLines, myObject.VerticalZipLines, myObject.NonVerticalZipLines);
         await ImportDoors(myObject.Doors);
         await ImportTriggers(myObject.Triggers);
 
@@ -244,7 +244,7 @@ public class ImportExportJson
         }
     }
 
-    private static async Task ImportZipLines(List<ZipLinesClass> Ziplines, List<LinkedZipLinesClass> LinkedZiplines, List<VerticalZipLinesClass> VerticalZiplines)
+    private static async Task ImportZipLines(List<ZipLinesClass> Ziplines, List<LinkedZipLinesClass> LinkedZiplines, List<VerticalZipLinesClass> VerticalZiplines, List<NonVerticalZipLinesClass> NonVerticalZiplines)
     {
         int i = 0;
         foreach(ZipLinesClass zipline in Ziplines)
@@ -338,6 +338,72 @@ public class ImportExportJson
             script.lengthScale = zipline.LengthScale;
             script.preserveVelocity = zipline.PreserveVelocity;
             script.dropToBottom = zipline.DropToBottom;
+            script.autoDetachStart = zipline.AutoDetachStart;
+            script.autoDetachEnd = zipline.AutoDetachEnd;
+            script.restPoint = zipline.RestPoint;
+            script.pushOffInDirectionX = zipline.PushOffInDirectionX;
+            script.isMoving = zipline.IsMoving;
+            script.detachEndOnSpawn = zipline.DetachEndOnSpawn;
+            script.detachEndOnUse = zipline.DetachEndOnUse;
+
+            foreach( VCPanelsClass panelInfo in zipline.Panels )
+            {
+                UnityEngine.Object loadedPrefabResourcePanel = FindPrefabFromName( "mdl#" + panelInfo.Model);
+                if (loadedPrefabResourcePanel == null)
+                {
+                    ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {panelInfo.Model}" , ReMapConsole.LogType.Error);
+                    continue;
+                }
+
+                GameObject panel = PrefabUtility.InstantiatePrefab(loadedPrefabResourcePanel as GameObject) as GameObject;
+                panel.transform.position = panelInfo.Position;
+                panel.transform.eulerAngles = panelInfo.Angles;
+                panel.transform.parent = CreateGameObjectWithCollectionPath( panelInfo.Collection ).transform;
+                Array.Resize( ref script.panels, script.panels.Length + 1 );
+                script.panels[script.panels.Length - 1] = panel;
+            }
+
+            script.panelTimerMin = zipline.PanelTimerMin;
+            script.panelTimerMax = zipline.PanelTimerMax;
+            script.panelMaxUse = zipline.PanelMaxUse;
+
+            if (zipline.Collection != "")
+            obj.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
+        }
+
+        i = 0;
+        foreach(NonVerticalZipLinesClass zipline in NonVerticalZiplines)
+        {
+            ReMapConsole.Log("[Json Import] Importing: Non Vertical Zipline", ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Importing NonVerticalZiplines", "Importing: Vertical Zipline " + i, (i + 1) / (float)NonVerticalZiplines.Count);
+
+            string Model = zipline.ZiplineType;
+            UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
+            if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+
+            DrawNonVerticalZipline script = obj.GetComponent<DrawNonVerticalZipline>();
+
+            obj.transform.position = zipline.ZiplineStartPosition;
+            obj.transform.eulerAngles = zipline.ZiplineStartAngles;
+            script.zipline.transform.Find("support_end").position = zipline.ZiplineEndPosition;
+            script.zipline.transform.Find("support_end").eulerAngles = zipline.ZiplineEndAngles;
+            script.armOffsetStart = zipline.ArmStartOffset;
+            script.armOffsetEnd = zipline.ArmEndOffset;
+            script.fadeDistance = zipline.FadeDistance;
+            script.scale = zipline.Scale;
+            script.width = zipline.Width;
+            script.speedScale = zipline.SpeedScale;
+            script.lengthScale = zipline.LengthScale;
+            script.preserveVelocity = zipline.PreserveVelocity;
             script.autoDetachStart = zipline.AutoDetachStart;
             script.autoDetachEnd = zipline.AutoDetachEnd;
             script.restPoint = zipline.RestPoint;

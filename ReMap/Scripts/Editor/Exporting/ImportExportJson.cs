@@ -558,32 +558,7 @@ public class ImportExportJson
             propScript.RealmID = script.realmID;
             prop.script = propScript;
 
-            List<GameObject> parents = new List<GameObject>();
-            GameObject currentParent = obj;
-            string collectionPath = "";
-
-            while (currentParent.transform.parent != null)
-            {
-                if ( currentParent != obj ) parents.Add(currentParent);
-                currentParent = currentParent.transform.parent.gameObject;
-            }
-
-            if ( currentParent != obj ) parents.Add(currentParent);
-
-            foreach (GameObject parent in parents)
-            {
-                Vector3 pos = parent.transform.position;
-                Vector3 ang = parent.transform.eulerAngles;
-                collectionPath = $"{parent.name}|{parent.transform.position}|{parent.transform.eulerAngles}/{collectionPath}";
-            }
-
-            int lastSlashIndex = collectionPath.LastIndexOf("/");
-            if (lastSlashIndex >= 0)
-            {
-                collectionPath = collectionPath.Remove(lastSlashIndex, collectionPath.Length - lastSlashIndex);
-            }
-
-            prop.Collection = collectionPath.Replace("\r", "").Replace("\n", "");
+            prop.Collection = FindCollectionPath( obj );
 
             if ( !prop.Collection.Contains(protectedModels[0]) && !prop.Collection.Contains(protectedModels[1]) )
                 save.Props.Add(prop);
@@ -834,6 +809,53 @@ public class ImportExportJson
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;
         }
+
+        i = 0;
+        GameObject[] VerticalZipLineObjects = GameObject.FindGameObjectsWithTag("VerticalZipLine");
+        foreach (GameObject obj in VerticalZipLineObjects)
+        {
+            DrawVerticalZipline script = obj.GetComponent<DrawVerticalZipline>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing DrawVerticalZipline on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)VerticalZipLineObjects.Length);
+
+            VerticalZipLinesClass verticalZipLine = new VerticalZipLinesClass();
+
+            verticalZipLine.ZiplinePosition = script.zipline.position;
+            verticalZipLine.ZiplineAngles = script.zipline.eulerAngles;
+            verticalZipLine.ArmOffset = script.armOffset;
+            verticalZipLine.HeightOffset = script.heightOffset;
+            verticalZipLine.AnglesOffset = script.anglesOffset;
+            verticalZipLine.FadeDistance = script.fadeDistance;
+            verticalZipLine.Scale = script.scale;
+            verticalZipLine.Width = script.width;
+            verticalZipLine.SpeedScale = script.speedScale;
+            verticalZipLine.LengthScale = script.lengthScale;
+            verticalZipLine.PreserveVelocity = script.preserveVelocity;
+            verticalZipLine.DropToBottom = script.dropToBottom;
+            verticalZipLine.AutoDetachStart = script.autoDetachStart;
+            verticalZipLine.AutoDetachEnd = script.autoDetachEnd;
+            verticalZipLine.RestPoint = script.restPoint;
+            verticalZipLine.PushOffInDirectionX = script.pushOffInDirectionX;
+            verticalZipLine.IsMoving = script.isMoving;
+            verticalZipLine.DetachEndOnSpawn = script.detachEndOnSpawn;
+            verticalZipLine.DetachEndOnUse = script.detachEndOnUse;
+            //public GameObject[] Panels; // How to convert each game objects ( model / position / angles )
+            verticalZipLine.PanelTimerMin = script.panelTimerMin;
+            verticalZipLine.PanelTimerMax = script.panelTimerMax;
+            verticalZipLine.PanelMaxUse = script.panelMaxUse;
+
+            verticalZipLine.Collection = FindCollectionPath( obj );
+
+            save.VerticalZipLines.Add(verticalZipLine);
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
+        }
     }
 
     private static async Task ExportDoors()
@@ -998,6 +1020,7 @@ public class ImportExportJson
         save.LootBins = new List<LootBinsClass>();
         save.ZipLines = new List<ZipLinesClass>();
         save.LinkedZipLines = new List<LinkedZipLinesClass>();
+        save.VerticalZipLines = new List<VerticalZipLinesClass>();
         save.Doors = new List<DoorsClass>();
         save.Triggers = new List<TriggersClass>();
     }
@@ -1012,6 +1035,36 @@ public class ImportExportJson
         //Get model path from guid and load it
         UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(results[0]), typeof(UnityEngine.Object)) as GameObject;
         return loadedPrefabResource;
+    }
+
+    private static string FindCollectionPath( GameObject obj )
+    {
+        List<GameObject> parents = new List<GameObject>();
+        GameObject currentParent = obj;
+        string collectionPath = "";
+
+        while (currentParent.transform.parent != null)
+        {
+            if ( currentParent != obj ) parents.Add(currentParent);
+            currentParent = currentParent.transform.parent.gameObject;
+        }
+
+        if ( currentParent != obj ) parents.Add(currentParent);
+
+        foreach (GameObject parent in parents)
+        {
+            Vector3 pos = parent.transform.position;
+            Vector3 ang = parent.transform.eulerAngles;
+            collectionPath = $"{parent.name}|{parent.transform.position}|{parent.transform.eulerAngles}/{collectionPath}";
+        }
+
+        int lastSlashIndex = collectionPath.LastIndexOf("/");
+        if (lastSlashIndex >= 0)
+        {
+            collectionPath = collectionPath.Remove(lastSlashIndex, collectionPath.Length - lastSlashIndex);
+        }
+
+        return collectionPath.Replace("\r", "").Replace("\n", "");
     }
 }
 
@@ -1034,6 +1087,7 @@ public class SaveJson
     public List<LootBinsClass> LootBins;
     public List<ZipLinesClass> ZipLines;
     public List<LinkedZipLinesClass> LinkedZipLines;
+    public List<VerticalZipLinesClass> VerticalZipLines;
     public List<DoorsClass> Doors;
     public List<TriggersClass> Triggers;
 }
@@ -1120,27 +1174,30 @@ public class LinkedZipLinesClass
 [Serializable]
 public class VerticalZipLinesClass
 {
-    public float armOffset;
-    public float heightOffset;
-    public float anglesOffset;
-    public float fadeDistance;
-    public float scale;
-    public float width;
-    public float speedScale;
-    public float lengthScale;
-    public bool preserveVelocity;
-    public bool dropToBottom;
-    public float autoDetachStart;
-    public float autoDetachEnd;
-    public bool restPoint;
-    public bool pushOffInDirectionX;
-    public bool isMoving;
-    public bool detachEndOnSpawn;
-    public bool detachEndOnUse;
-    public GameObject[] panels; // How to convert each game objects ( model / position / angles )
-    public float panelTimerMin;
-    public float panelTimerMax;
-    public int panelMaxUse;
+    public Vector3  ZiplinePosition;
+    public Vector3 ZiplineAngles;
+    public float ArmOffset;
+    public float HeightOffset;
+    public float AnglesOffset;
+    public float FadeDistance;
+    public float Scale;
+    public float Width;
+    public float SpeedScale;
+    public float LengthScale;
+    public bool PreserveVelocity;
+    public bool DropToBottom;
+    public float AutoDetachStart;
+    public float AutoDetachEnd;
+    public bool RestPoint;
+    public bool PushOffInDirectionX;
+    public bool IsMoving;
+    public bool DetachEndOnSpawn;
+    public bool DetachEndOnUse;
+    public GameObject[] Panels; // How to convert each game objects ( model / position / angles )
+    public float PanelTimerMin;
+    public float PanelTimerMax;
+    public int PanelMaxUse;
+    public string Collection;
 }
 
 [Serializable]

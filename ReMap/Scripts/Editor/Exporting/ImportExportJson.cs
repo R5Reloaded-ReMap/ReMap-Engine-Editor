@@ -1118,6 +1118,32 @@ public class LinkedZipLinesClass
 }
 
 [Serializable]
+public class VerticalZipLinesClass
+{
+    public float armOffset;
+    public float heightOffset;
+    public float anglesOffset;
+    public float fadeDistance;
+    public float scale;
+    public float width;
+    public float speedScale;
+    public float lengthScale;
+    public bool preserveVelocity;
+    public bool dropToBottom;
+    public float autoDetachStart;
+    public float autoDetachEnd;
+    public bool restPoint;
+    public bool pushOffInDirectionX;
+    public bool isMoving;
+    public bool detachEndOnSpawn;
+    public bool detachEndOnUse;
+    public GameObject[] panels; // How to convert each game objects ( model / position / angles )
+    public float panelTimerMin;
+    public float panelTimerMax;
+    public int panelMaxUse;
+}
+
+[Serializable]
 public class DoorsClass
 {
     public Vector3 Postion;

@@ -33,7 +33,7 @@ public class ImportExportJson
         await ImportBubbleSheilds(myObject.BubbleShields);
         await ImportWeaponRacks(myObject.WeaponRacks);
         await ImportLootBins(myObject.LootBins);
-        await ImportZipLines(myObject.ZipLines, myObject.LinkedZipLines);
+        await ImportZipLines(myObject.ZipLines, myObject.LinkedZipLines, myObject.VerticalZipLines);
         await ImportDoors(myObject.Doors);
         await ImportTriggers(myObject.Triggers);
 
@@ -70,9 +70,7 @@ public class ImportExportJson
             script.allowMantle = propScript.AllowMantle;
             script.realmID = propScript.RealmID;
 
-            if (prop.Collection == "")
-                continue;
-
+            if (prop.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( prop.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -107,6 +105,7 @@ public class ImportExportJson
             propScript.AllowMantle = script.allowMantle;
             propScript.RealmID = script.realmID;
 
+            if (jumppad.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( jumppad.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -139,6 +138,7 @@ public class ImportExportJson
             script.OnUseCallback = button.OnUseCallback;
             script.UseText = button.UseText;
 
+            if (button.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( button.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -173,6 +173,7 @@ public class ImportExportJson
             script.shieldColor.g = byte.Parse(split[1].Replace("\"", ""));
             script.shieldColor.b = byte.Parse(split[2].Replace("\"", ""));
 
+            if (sheild.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( sheild.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -203,6 +204,7 @@ public class ImportExportJson
             WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
             script.respawnTime = weaponrack.RespawnTime;
 
+            if (weaponrack.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( weaponrack.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -234,6 +236,7 @@ public class ImportExportJson
             LootBinScript script = obj.GetComponent<LootBinScript>();
             script.lootbinSkin = lootbin.Skin;
 
+            if (lootbin.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( lootbin.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -241,7 +244,7 @@ public class ImportExportJson
         }
     }
 
-    private static async Task ImportZipLines(List<ZipLinesClass> Ziplines, List<LinkedZipLinesClass> LinkedZiplines)
+    private static async Task ImportZipLines(List<ZipLinesClass> Ziplines, List<LinkedZipLinesClass> LinkedZiplines, List<VerticalZipLinesClass> VerticalZiplines)
     {
         int i = 0;
         foreach(ZipLinesClass zipline in Ziplines)
@@ -266,6 +269,7 @@ public class ImportExportJson
                     child.transform.position = zipline.End;
             }
 
+            if (zipline.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -276,7 +280,7 @@ public class ImportExportJson
         foreach(LinkedZipLinesClass zipline in LinkedZiplines)
         {
             ReMapConsole.Log("[Json Import] Importing: Linked Zipline", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing LinkedZiplines", "Importing: Linked Zipline " + i, (i + 1) / (float)Ziplines.Count);
+            EditorUtility.DisplayProgressBar("Importing LinkedZiplines", "Importing: Linked Zipline " + i, (i + 1) / (float)LinkedZiplines.Count);
 
             GameObject obj = new GameObject("custom_linked_zipline");
             obj.AddComponent<DrawLinkedZipline>();
@@ -296,6 +300,30 @@ public class ImportExportJson
             script.smoothType = zipline.SmoothType;
             script.smoothAmount = zipline.SmoothAmount;
 
+            if (zipline.Collection != "")
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
+        }
+
+        i = 0;
+        foreach(VerticalZipLinesClass zipline in VerticalZiplines)
+        {
+            ReMapConsole.Log("[Json Import] Importing: Vertical Zipline", ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Importing VerticalZiplines", "Importing: Vertical Zipline " + i, (i + 1) / (float)VerticalZiplines.Count);
+
+            string Model = zipline.ZiplineType;
+            UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
+            if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+
+            if (zipline.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -349,6 +377,7 @@ public class ImportExportJson
                 script.goldDoor = door.Gold;
             }
 
+            if (door.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( door.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -383,6 +412,7 @@ public class ImportExportJson
             script.EnterCallback = trigger.EnterCallback;
             script.LeaveCallback = trigger.ExitCallback;
 
+            if (trigger.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( trigger.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));

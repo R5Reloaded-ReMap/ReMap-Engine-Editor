@@ -686,6 +686,7 @@ public class ImportExportJson
 
             VerticalZipLinesClass verticalZipLine = new VerticalZipLinesClass();
 
+            verticalZipLine.ZiplineType = obj.name;
             verticalZipLine.ZiplinePosition = script.zipline.position;
             verticalZipLine.ZiplineAngles = script.zipline.eulerAngles;
             verticalZipLine.ArmOffset = script.armOffset;
@@ -1092,6 +1093,7 @@ public class LinkedZipLinesClass
 [Serializable]
 public class VerticalZipLinesClass
 {
+    public string ZiplineType;
     public Vector3  ZiplinePosition;
     public Vector3 ZiplineAngles;
     public float ArmOffset;

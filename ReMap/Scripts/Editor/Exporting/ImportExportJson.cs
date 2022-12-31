@@ -323,6 +323,38 @@ public class ImportExportJson
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
 
+            DrawVerticalZipline script = obj.GetComponent<DrawVerticalZipline>();
+
+            obj.transform.position = zipline.ZiplinePosition;
+            obj.transform.eulerAngles = zipline.ZiplineAngles;
+
+            script.armOffset = zipline.ArmOffset;
+            script.heightOffset = zipline.HeightOffset;
+            script.anglesOffset = zipline.AnglesOffset;
+            script.fadeDistance = zipline.FadeDistance;
+            script.scale = zipline.Scale;
+            script.width = zipline.Width;
+            script.speedScale = zipline.SpeedScale;
+            script.lengthScale = zipline.LengthScale;
+            script.preserveVelocity = zipline.PreserveVelocity;
+            script.dropToBottom = zipline.DropToBottom;
+            script.autoDetachStart = zipline.AutoDetachStart;
+            script.autoDetachEnd = zipline.AutoDetachEnd;
+            script.restPoint = zipline.RestPoint;
+            script.pushOffInDirectionX = zipline.PushOffInDirectionX;
+            script.isMoving = zipline.IsMoving;
+            script.detachEndOnSpawn = zipline.DetachEndOnSpawn;
+            script.detachEndOnUse = zipline.DetachEndOnUse;
+
+            // foreach( GameObject panel in zipline.panels )
+            // {
+
+            // }
+
+            script.panelTimerMin = zipline.PanelTimerMin;
+            script.panelTimerMax = zipline.PanelTimerMax;
+            script.panelMaxUse = zipline.PanelMaxUse;
+
             if (zipline.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
@@ -737,8 +769,6 @@ public class ImportExportJson
             verticalZipLine.DetachEndOnSpawn = script.detachEndOnSpawn;
             verticalZipLine.DetachEndOnUse = script.detachEndOnUse;
 
-            //public GameObject[] Panels; // How to convert each game objects ( model / position / angles )
-            //Like this?
             List<VCPanelsClass> panels = new List<VCPanelsClass>();
             foreach (GameObject panel in script.panels)
             {
@@ -1157,7 +1187,7 @@ public class VerticalZipLinesClass
     public bool IsMoving;
     public bool DetachEndOnSpawn;
     public bool DetachEndOnUse;
-    public VCPanelsClass[] Panels; // Like this.
+    public VCPanelsClass[] Panels;
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;

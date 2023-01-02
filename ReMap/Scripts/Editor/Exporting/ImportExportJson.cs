@@ -36,6 +36,7 @@ public class ImportExportJson
         await ImportZipLines(myObject.ZipLines, myObject.LinkedZipLines, myObject.VerticalZipLines, myObject.NonVerticalZipLines);
         await ImportDoors(myObject.Doors);
         await ImportTriggers(myObject.Triggers);
+        await ImportSounds(myObject.Sounds);
 
         ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
 
@@ -525,6 +526,46 @@ public class ImportExportJson
 
             if (trigger.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( trigger.Collection ).transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
+        }
+    }
+
+    private static async Task ImportSounds(List<SoundClass> Sounds)
+    {
+        int i = 0;
+        foreach(SoundClass sound in Sounds)
+        {
+            ReMapConsole.Log("[Json Import] Importing: Sound", ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Importing Sounds", "Importing: Sounds" + i, (i + 1) / (float)Sounds.Count);
+
+            string Model = "custom_sound";
+            UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
+            if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+            obj.transform.position = sound.Position;
+
+            SoundScript script = obj.GetComponent<SoundScript>();
+            script.radius = sound.Radius;
+            script.isWaveAmbient = sound.IsWaveAmbient;
+            script.enable = sound.Enable;
+            script.soundName = sound.SoundName;
+
+            int j = 0;
+            foreach ( Vector3 polylineSegments in sound.PolylineSegments )
+            {
+                Array.Resize( ref script.polylineSegment, script.polylineSegment.Length + 1 );
+                script.polylineSegment[j++] = polylineSegments;
+            }
+
+            if (sound.Collection != "")
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( sound.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++;

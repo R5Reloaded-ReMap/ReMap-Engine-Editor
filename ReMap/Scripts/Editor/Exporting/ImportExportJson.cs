@@ -36,6 +36,7 @@ public class ImportExportJson
         await ImportZipLines(myObject.ZipLines, myObject.LinkedZipLines, myObject.VerticalZipLines, myObject.NonVerticalZipLines);
         await ImportDoors(myObject.Doors);
         await ImportTriggers(myObject.Triggers);
+        await ImportSounds(myObject.Sounds);
 
         ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
 
@@ -531,6 +532,46 @@ public class ImportExportJson
         }
     }
 
+    private static async Task ImportSounds(List<SoundClass> Sounds)
+    {
+        int i = 0;
+        foreach(SoundClass sound in Sounds)
+        {
+            ReMapConsole.Log("[Json Import] Importing: Sound", ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Importing Sounds", "Importing: Sounds" + i, (i + 1) / (float)Sounds.Count);
+
+            string Model = "custom_sound";
+            UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
+            if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+            obj.transform.position = sound.Position;
+
+            SoundScript script = obj.GetComponent<SoundScript>();
+            script.radius = sound.Radius;
+            script.isWaveAmbient = sound.IsWaveAmbient;
+            script.enable = sound.Enable;
+            script.soundName = sound.SoundName;
+
+            int j = 0;
+            foreach ( Vector3 polylineSegments in sound.PolylineSegments )
+            {
+                Array.Resize( ref script.polylineSegment, script.polylineSegment.Length + 1 );
+                script.polylineSegment[j++] = polylineSegments;
+            }
+
+            if (sound.Collection != "")
+            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( sound.Collection ).transform;
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
+        }
+    }
+
     [MenuItem("ReMap/Export/Json", false, 51)]
     public static async void ExportJson()
     {
@@ -552,6 +593,7 @@ public class ImportExportJson
         await ExportZipLines();
         await ExportDoors();
         await ExportTriggers();
+        await ExportSounds();
 
         ReMapConsole.Log("[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
         string json = JsonUtility.ToJson(save);
@@ -1067,6 +1109,44 @@ public class ImportExportJson
         }
     }
 
+    private static async Task ExportSounds()
+    {
+        GameObject[] Sounds = GameObject.FindGameObjectsWithTag("Sound");
+        int i = 0;
+        foreach (GameObject obj in Sounds)
+        {
+            SoundScript script = obj.GetComponent<SoundScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing SoundScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar("Exporting Sounds", "Exporting: " + obj.name, (i + 1) / (float)Sounds.Length);
+
+            SoundClass sound = new SoundClass();
+            sound.Position = script.soundModel.transform.position;
+            sound.Radius = script.radius;
+            sound.IsWaveAmbient = script.isWaveAmbient;
+            sound.Enable = script.enable;
+            sound.SoundName = script.soundName;
+
+            List<Vector3> polylineSegment = new List<Vector3>();
+            foreach ( Vector3 polylineSegments in script.polylineSegment )
+            {
+                polylineSegment.Add( polylineSegments );
+            }
+            sound.PolylineSegments = polylineSegment;
+
+            sound.Collection = FindCollectionPath( obj );
+
+            save.Sounds.Add(sound);
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++;
+        }
+    }
+
     private static void ResetJsonSave()
     {
         save = new SaveJson();
@@ -1082,6 +1162,7 @@ public class ImportExportJson
         save.NonVerticalZipLines = new List<NonVerticalZipLinesClass>();
         save.Doors = new List<DoorsClass>();
         save.Triggers = new List<TriggersClass>();
+        save.Sounds = new List<SoundClass>();
     }
 
     private static UnityEngine.Object FindPrefabFromName(string name)
@@ -1227,6 +1308,7 @@ public class SaveJson
     public List<NonVerticalZipLinesClass> NonVerticalZipLines;
     public List<DoorsClass> Doors;
     public List<TriggersClass> Triggers;
+    public List<SoundClass> Sounds;
 }
 
 [Serializable]
@@ -1398,5 +1480,17 @@ public class TriggersClass
     public float Radius;
     public float Height;
     public bool Debug;
+    public string Collection;
+}
+
+[Serializable]
+public class SoundClass
+{
+    public Vector3 Position;
+    public float Radius;
+    public bool IsWaveAmbient;
+    public bool Enable;
+    public string SoundName;
+    public List<Vector3> PolylineSegments;
     public string Collection;
 }

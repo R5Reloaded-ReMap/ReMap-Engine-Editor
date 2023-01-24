@@ -1228,9 +1228,9 @@ public class ImportExportJson
         string[] parents = pathSubstring.ToArray();
 
         GameObject folder;
-        folder = GameObject.Find(parents[0].Split("|")[0]);
+        folder = GameObject.Find(parents[0].Split(char.Parse("|"))[0]);
             if(folder == null)
-        folder = new GameObject(parents[0].Split("|")[0]);
+        folder = new GameObject(parents[0].Split(char.Parse("|"))[0]);
 
         string[] partsPosF = parents[0].Split(char.Parse("|"))[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
         string[] partsAngF = parents[0].Split(char.Parse("|"))[2].Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));

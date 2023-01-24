@@ -1232,8 +1232,8 @@ public class ImportExportJson
             if(folder == null)
         folder = new GameObject(parents[0].Split("|")[0]);
 
-        string[] partsPosF = parents[0].Split("|")[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
-        string[] partsAngF = parents[0].Split("|")[2].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+        string[] partsPosF = parents[0].Split(char.Parse("|"))[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
+        string[] partsAngF = parents[0].Split(char.Parse("|"))[2].Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
 
         float xPosF = float.Parse(partsPosF[0].Replace(".", ","));
         float yPosF = float.Parse(partsPosF[1].Replace(".", ","));
@@ -1248,17 +1248,17 @@ public class ImportExportJson
 
         int folderNum = parents.Length;
 
-        string path = parents[0].Split("|")[0];
+        string path = parents[0].Split(char.Parse("|"))[0];
 
         if ( folderNum >= 2 )
         for ( int j = 1 ; j < folderNum ; j++ )
         {
-            string parentName = parents[j].Split("|")[0];
-            string parentPosString = parents[j].Split("|")[1];
-            string parentAngString = parents[j].Split("|")[2];
+            string parentName = parents[j].Split(char.Parse("|"))[0];
+            string parentPosString = parents[j].Split(char.Parse("|"))[1];
+            string parentAngString = parents[j].Split(char.Parse("|"))[2];
 
-            string[] partsPos = parentPosString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
-            string[] partsAng = parentAngString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
+            string[] partsPos = parentPosString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
+            string[] partsAng = parentAngString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
 
             path = path + "/" + parentName;
             GameObject newFolder;

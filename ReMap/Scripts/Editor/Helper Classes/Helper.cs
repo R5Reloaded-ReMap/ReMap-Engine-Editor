@@ -8,7 +8,7 @@ public class Helper
 {
     public static int maxBuildLength = 75000;
     public static int greenPropCount = 1500;
-    public static int yellowPropCount = 1500;
+    public static int yellowPropCount = 3000;
     public static bool Is_Using_Starting_Offset = false;
     public static bool DisableStartingOffsetString = false;
 

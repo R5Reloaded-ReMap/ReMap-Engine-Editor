@@ -1,4 +1,7 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System;
+using System.IO;
 
 public class Build
 {
@@ -405,6 +408,8 @@ public class Build
         if (PropObjects.Length < 1)
             return "";
 
+        List<String> precacheList = new List<String>();
+
         string code = "";
 
         switch(type) {
@@ -437,6 +442,10 @@ public class Build
                     code += BuildDataTableItem(go, isexport);
                     continue;
                 case BuildType.Precache:
+                    if (precacheList.Contains(model))
+                        continue;
+
+                    precacheList.Add(model);
                     code += $"    PrecacheModel( $\"{model}\" )" + "\n";
                     continue;
                 case BuildType.Map:

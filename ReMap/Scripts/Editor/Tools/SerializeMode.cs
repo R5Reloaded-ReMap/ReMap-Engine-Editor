@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -22,8 +23,6 @@ public class SerializeMode : EditorWindow
         centeredStyle.alignment = TextAnchor.MiddleCenter;
 
         GUILayout.Label("Amount of props selected: " + Selection.count.ToString(), centeredStyle, GUILayout.ExpandWidth(true));
-
-
 
         if (GUILayout.Button("Duplicate to TOP"))
             DuplicateProp((int)DirectionType.Top);
@@ -50,6 +49,7 @@ public class SerializeMode : EditorWindow
     public static void DuplicateProp(int directionType)
     {
         GameObject[] source = Selection.gameObjects;
+        GameObject[] newSource = new GameObject[0];
 
         foreach ( GameObject go in source )
         {
@@ -81,8 +81,12 @@ public class SerializeMode : EditorWindow
 
             ReMapConsole.Log("[Serialize Mode] Created " + name, ReMapConsole.LogType.Info);
 
-            //Selection.RemoveFromSelection(go);
+            int currentLength = newSource.Length;
+            Array.Resize(ref newSource, currentLength + 1);
+            newSource[currentLength] = obj;
         }
+
+        Selection.objects = newSource;
     }
 
     /// <summary>

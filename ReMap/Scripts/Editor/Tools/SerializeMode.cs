@@ -67,7 +67,7 @@ public class SerializeMode : EditorWindow
                 d_spacing = 0;
                 h_spacing = 0;
             }
-            
+
             EditorGUILayout.Space(4);
         }
 
@@ -106,11 +106,11 @@ public class SerializeMode : EditorWindow
             d_spacing = 0;
             h_spacing = 0;
 
-            float w_max = 0;
+            float w_max = -1000000;
             float w_min = 1000000;
-            float d_max = 0;
+            float d_max = -1000000;
             float d_min = 1000000;
-            float h_max = 0;
+            float h_max = -1000000;
             float h_min = 1000000;
 
             foreach ( GameObject go in source )
@@ -143,7 +143,11 @@ public class SerializeMode : EditorWindow
             w_spacing = w_max - w_min;
             d_spacing = d_max - d_min;
             h_spacing = h_max - h_min;
+
+            ReMapConsole.Log("[Serialize Mode] d_spacing: " + d_max + " " + d_min, ReMapConsole.LogType.Info);
         }
+
+        ReMapConsole.Log("[Serialize Mode] d_spacing: " + d_spacing, ReMapConsole.LogType.Info);
 
         foreach ( GameObject go in source )
         {

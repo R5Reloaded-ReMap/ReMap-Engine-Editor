@@ -143,11 +143,7 @@ public class SerializeMode : EditorWindow
             w_spacing = w_max - w_min;
             d_spacing = d_max - d_min;
             h_spacing = h_max - h_min;
-
-            ReMapConsole.Log("[Serialize Mode] d_spacing: " + d_max + " " + d_min, ReMapConsole.LogType.Info);
         }
-
-        ReMapConsole.Log("[Serialize Mode] d_spacing: " + d_spacing, ReMapConsole.LogType.Info);
 
         foreach ( GameObject go in source )
         {

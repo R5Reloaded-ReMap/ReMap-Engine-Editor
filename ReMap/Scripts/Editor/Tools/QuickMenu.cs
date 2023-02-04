@@ -95,6 +95,8 @@ public class QuickMenu : EditorWindow
                 GridTool.Init();
             if (GUILayout.Button("Realm ID Tool", GUILayout.ExpandWidth(true)))
                 SetRealmIds.Init();
+            if (GUILayout.Button("Serialize Mode Tool", GUILayout.ExpandWidth(true)))
+                SerializeMode.Init();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();

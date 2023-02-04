@@ -1165,7 +1165,7 @@ public class ImportExportJson
         save.Sounds = new List<SoundClass>();
     }
 
-    private static UnityEngine.Object FindPrefabFromName(string name)
+    public static UnityEngine.Object FindPrefabFromName(string name)
     {
         //Find Model GUID in Assets
         string[] results = AssetDatabase.FindAssets(name);

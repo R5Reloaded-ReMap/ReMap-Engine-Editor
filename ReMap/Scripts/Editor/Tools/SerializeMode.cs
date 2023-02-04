@@ -23,23 +23,25 @@ public class SerializeMode : EditorWindow
 
         GUILayout.Label("Amount of props selected: " + Selection.count.ToString(), centeredStyle, GUILayout.ExpandWidth(true));
 
+
+
         if (GUILayout.Button("Duplicate to TOP"))
-            DuplicateProp(DirectionType.Top);
+            DuplicateProp((int)DirectionType.Top);
 
         if (GUILayout.Button("Duplicate to UNDER"))
-            DuplicateProp(DirectionType.Bottom);
+            DuplicateProp((int)DirectionType.Bottom);
 
         if (GUILayout.Button("Duplicate to FORWARD"))
-            DuplicateProp(DirectionType.Forward);
+            DuplicateProp((int)DirectionType.Forward);
 
         if (GUILayout.Button("Duplicate to BACKWARD"))
-            DuplicateProp(DirectionType.Backward);
+            DuplicateProp((int)DirectionType.Backward);
 
         if (GUILayout.Button("Duplicate to LEFT"))
-            DuplicateProp(DirectionType.Left);
+            DuplicateProp((int)DirectionType.Left);
 
         if (GUILayout.Button("Duplicate to RIGHT"))
-            DuplicateProp(DirectionType.Right);
+            DuplicateProp((int)DirectionType.Right);
     }
 
     /// <summary>
@@ -94,6 +96,7 @@ public class SerializeMode : EditorWindow
 
         Vector3 vector = new Vector3(0, 0, 0);
         Vector3 origin = go.transform.position;
+        Vector3 angles = go.transform.eulerAngles;
 
         foreach(Renderer o in go.GetComponentsInChildren<Renderer>())
         {
@@ -109,22 +112,22 @@ public class SerializeMode : EditorWindow
 
         switch(directionType)
         {
-            case DirectionType.Top:
+            case (int)DirectionType.Top:
                 vector = new Vector3(0, h, 0);
                 break;
-            case DirectionType.Bottom:
+            case (int)DirectionType.Bottom:
                 vector = new Vector3(0, -h, 0);
                 break;
-            case DirectionType.Forward:
+            case (int)DirectionType.Forward:
                 vector = new Vector3(0, 0, w);
                 break;
-            case DirectionType.Backward:
+            case (int)DirectionType.Backward:
                 vector = new Vector3(0, 0, -w);
                 break;
-            case DirectionType.Left:
+            case (int)DirectionType.Left:
                 vector = new Vector3(-d, 0, 0);
                 break;
-            case DirectionType.Right:
+            case (int)DirectionType.Right:
                 vector = new Vector3(d, 0, 0);
             break;
         }

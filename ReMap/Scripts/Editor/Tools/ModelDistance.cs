@@ -49,6 +49,7 @@ public class ModelDistance : EditorWindow
         else
         {
             GUILayout.BeginVertical("box");
+            GUILayout.Label("Click on 2 prefabs to add it automatically or:");
             GUILayout.Label("Add two prefabs to Measure the distance:");
             source = EditorGUILayout.ObjectField(source, typeof(Object), true);
             target = EditorGUILayout.ObjectField(target, typeof(Object), true);

@@ -33,9 +33,13 @@ public class SerializeMode : EditorWindow
 
         GUILayout.Label("Amount of props selected: " + Selection.count.ToString(), centeredStyle, GUILayout.ExpandWidth(true));
 
+        EditorGUILayout.Space(4);
+
         GUILayout.BeginHorizontal();
         StackingMode = GUILayout.Toggle(StackingMode, "Stacking Mode");
         GUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(6);
 
         if(!StackingMode)
         {
@@ -63,6 +67,8 @@ public class SerializeMode : EditorWindow
                 d_spacing = 0;
                 h_spacing = 0;
             }
+            
+            EditorGUILayout.Space(4);
         }
 
         if (GUILayout.Button("Duplicate to TOP"))

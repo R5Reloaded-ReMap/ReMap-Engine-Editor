@@ -1167,6 +1167,10 @@ public class ImportExportJson
 
     public static UnityEngine.Object FindPrefabFromName(string name)
     {
+        // Hack so that the models named at the end with "(number)" still work
+        if(name.Contains(" "))
+            name = name.Split(" ")[0];
+
         //Find Model GUID in Assets
         string[] results = AssetDatabase.FindAssets(name);
         if (results.Length == 0)

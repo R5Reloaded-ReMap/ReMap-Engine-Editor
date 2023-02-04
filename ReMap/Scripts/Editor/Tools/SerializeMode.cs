@@ -8,12 +8,16 @@ public class SerializeMode : EditorWindow
 {
     public enum DirectionType { Top, Bottom, Forward, Backward, Left, Right };
 
+    private static int w_spacing = 0;
+    private static int d_spacing = 0;
+    private static int h_spacing = 0;
+
     [MenuItem("ReMap/Tools/Serialize Mode", false, 100)]
     public static void Init()
     {
         SerializeMode window = (SerializeMode)EditorWindow.GetWindow(typeof(SerializeMode), false, "Serialize Mode");
-        window.minSize = new Vector2(300, 180);
-        window.maxSize = new Vector2(300, 180);
+        window.minSize = new Vector2(360, 300);
+        window.maxSize = new Vector2(360, 300);
         window.Show();
     }
 
@@ -23,6 +27,31 @@ public class SerializeMode : EditorWindow
         centeredStyle.alignment = TextAnchor.MiddleCenter;
 
         GUILayout.Label("Amount of props selected: " + Selection.count.ToString(), centeredStyle, GUILayout.ExpandWidth(true));
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("T/U Spacing: ");
+        int.TryParse(GUILayout.TextField(h_spacing.ToString()), out h_spacing);
+        if (GUILayout.Button("Reset T/U values")) h_spacing = 0;
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("F/B Spacing: ");
+        int.TryParse(GUILayout.TextField(w_spacing.ToString()), out w_spacing);
+        if (GUILayout.Button("Reset F/B values")) w_spacing = 0;
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("L/R Spacing: ");
+        int.TryParse(GUILayout.TextField(d_spacing.ToString()), out d_spacing);
+        if (GUILayout.Button("Reset L/R values")) d_spacing = 0;
+        GUILayout.EndHorizontal();
+
+        if (GUILayout.Button("Reset all values"))
+        {
+            w_spacing = 0;
+            d_spacing = 0;
+            h_spacing = 0;
+        }
 
         if (GUILayout.Button("Duplicate to TOP"))
             DuplicateProp((int)DirectionType.Top);
@@ -79,6 +108,8 @@ public class SerializeMode : EditorWindow
             scriptInstance.allowMantle = script.allowMantle;
             scriptInstance.realmID = script.realmID;
 
+            obj.transform.SetParent(go.transform.parent);
+
             ReMapConsole.Log("[Serialize Mode] Created " + name, ReMapConsole.LogType.Info);
 
             int currentLength = newSource.Length;
@@ -118,7 +149,9 @@ public class SerializeMode : EditorWindow
         }
         goTranform.rotation = referenceRotation;
 
-        referenceRotation *= Quaternion.Euler(0, angles.y, 0);
+        if(w_spacing != 0) w = w_spacing;
+        if(d_spacing != 0) d = d_spacing;
+        if(h_spacing != 0) h = h_spacing;
 
         switch(directionType)
         {

@@ -8,9 +8,12 @@ public class SerializeMode : EditorWindow
 {
     public enum DirectionType { Top, Bottom, Forward, Backward, Left, Right };
 
-    private static int w_spacing = 0;
-    private static int d_spacing = 0;
-    private static int h_spacing = 0;
+    //public static bool OnGUIActive = false; //Test
+
+    private static float w_spacing = 0;
+    private static float d_spacing = 0;
+    private static float h_spacing = 0;
+    private static bool StackingMode = false;
 
     [MenuItem("ReMap/Tools/Serialize Mode", false, 100)]
     public static void Init()
@@ -23,34 +26,43 @@ public class SerializeMode : EditorWindow
 
     void OnGUI()
     {
+        //OnGUIActive = true; //Test
+
         GUIStyle centeredStyle = new GUIStyle(GUI.skin.label);
         centeredStyle.alignment = TextAnchor.MiddleCenter;
 
         GUILayout.Label("Amount of props selected: " + Selection.count.ToString(), centeredStyle, GUILayout.ExpandWidth(true));
 
         GUILayout.BeginHorizontal();
-        GUILayout.Label("T/U Spacing: ");
-        int.TryParse(GUILayout.TextField(h_spacing.ToString()), out h_spacing);
-        if (GUILayout.Button("Reset T/U values")) h_spacing = 0;
+        StackingMode = GUILayout.Toggle(StackingMode, "Stacking Mode");
         GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("F/B Spacing: ");
-        int.TryParse(GUILayout.TextField(w_spacing.ToString()), out w_spacing);
-        if (GUILayout.Button("Reset F/B values")) w_spacing = 0;
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("L/R Spacing: ");
-        int.TryParse(GUILayout.TextField(d_spacing.ToString()), out d_spacing);
-        if (GUILayout.Button("Reset L/R values")) d_spacing = 0;
-        GUILayout.EndHorizontal();
-
-        if (GUILayout.Button("Reset all values"))
+        if(!StackingMode)
         {
-            w_spacing = 0;
-            d_spacing = 0;
-            h_spacing = 0;
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("T/U Spacing: ");
+            float.TryParse(GUILayout.TextField(h_spacing.ToString()), out h_spacing);
+            if (GUILayout.Button("Reset T/U values")) h_spacing = 0;
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("F/B Spacing: ");
+            float.TryParse(GUILayout.TextField(w_spacing.ToString()), out w_spacing);
+            if (GUILayout.Button("Reset F/B values")) w_spacing = 0;
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("L/R Spacing: ");
+            float.TryParse(GUILayout.TextField(d_spacing.ToString()), out d_spacing);
+            if (GUILayout.Button("Reset L/R values")) d_spacing = 0;
+            GUILayout.EndHorizontal();
+
+            if (GUILayout.Button("Reset all values"))
+            {
+                w_spacing = 0;
+                d_spacing = 0;
+                h_spacing = 0;
+            }
         }
 
         if (GUILayout.Button("Duplicate to TOP"))
@@ -70,6 +82,8 @@ public class SerializeMode : EditorWindow
 
         if (GUILayout.Button("Duplicate to RIGHT"))
             DuplicateProp((int)DirectionType.Right);
+
+        //DrawSerializeMode.Update(); //Test
     }
 
     /// <summary>
@@ -79,6 +93,51 @@ public class SerializeMode : EditorWindow
     {
         GameObject[] source = Selection.gameObjects;
         GameObject[] newSource = new GameObject[0];
+
+        if(StackingMode)
+        {
+            w_spacing = 0;
+            d_spacing = 0;
+            h_spacing = 0;
+
+            float w_max = 0;
+            float w_min = 1000000;
+            float d_max = 0;
+            float d_min = 1000000;
+            float h_max = 0;
+            float h_min = 1000000;
+
+            foreach ( GameObject go in source )
+            {
+                if(go == null)
+                    return;
+
+                foreach(Renderer o in go.GetComponentsInChildren<Renderer>())
+                {
+                    if(o.bounds.max.z > w_max)
+                        w_max = o.bounds.max.z;
+
+                    if(o.bounds.max.x > d_max)
+                        d_max = o.bounds.max.x;
+
+                    if(o.bounds.max.y > h_max)
+                        h_max = o.bounds.max.y;
+                    
+                    if(o.bounds.min.z < w_min)
+                        w_min = o.bounds.min.z;
+
+                    if(o.bounds.min.x < d_min)
+                        d_min = o.bounds.min.x;
+
+                    if(o.bounds.min.y < h_min)
+                        h_min = o.bounds.min.y;
+                }
+            }
+
+            w_spacing = w_max - w_min;
+            d_spacing = d_max - d_min;
+            h_spacing = h_max - h_min;
+        }
 
         foreach ( GameObject go in source )
         {
@@ -174,8 +233,6 @@ public class SerializeMode : EditorWindow
                 vector = origin + goTranform.right * d;
             break;
         }
-
-        ReMapConsole.Log("[Serialize Mode] directionType: " + directionType, ReMapConsole.LogType.Info);
 
         return vector;
     }

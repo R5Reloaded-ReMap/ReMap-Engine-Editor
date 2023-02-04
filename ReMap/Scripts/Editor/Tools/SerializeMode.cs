@@ -94,10 +94,13 @@ public class SerializeMode : EditorWindow
         float d = 0;
         float h = 0;
 
+        Transform goTranform = go.transform;
         Vector3 vector = new Vector3(0, 0, 0);
-        Vector3 origin = go.transform.position;
-        Vector3 angles = go.transform.eulerAngles;
+        Vector3 origin = goTranform.position;
+        Vector3 angles = goTranform.eulerAngles;
 
+        Quaternion referenceRotation = goTranform.rotation;
+        goTranform.rotation = Quaternion.Euler(0, 0, 0);
         foreach(Renderer o in go.GetComponentsInChildren<Renderer>())
         {
             if(o.bounds.size.z > w)
@@ -109,29 +112,34 @@ public class SerializeMode : EditorWindow
             if(o.bounds.size.y > h)
                 h = o.bounds.size.y;
         }
+        goTranform.rotation = referenceRotation;
+
+        referenceRotation *= Quaternion.Euler(0, angles.y, 0);
 
         switch(directionType)
         {
             case (int)DirectionType.Top:
-                vector = new Vector3(0, h, 0);
+                vector = origin + goTranform.up * h;
                 break;
             case (int)DirectionType.Bottom:
-                vector = new Vector3(0, -h, 0);
+                vector = origin + goTranform.up * -h;
                 break;
             case (int)DirectionType.Forward:
-                vector = new Vector3(0, 0, w);
+                vector = origin + goTranform.forward * w;
                 break;
             case (int)DirectionType.Backward:
-                vector = new Vector3(0, 0, -w);
+                vector = origin + goTranform.forward * -w;
                 break;
             case (int)DirectionType.Left:
-                vector = new Vector3(-d, 0, 0);
+                vector = origin + goTranform.right * -d;
                 break;
             case (int)DirectionType.Right:
-                vector = new Vector3(d, 0, 0);
+                vector = origin + goTranform.right * d;
             break;
         }
 
-        return origin + vector;
+        ReMapConsole.Log("[Serialize Mode] directionType: " + directionType, ReMapConsole.LogType.Info);
+
+        return vector;
     }
 }

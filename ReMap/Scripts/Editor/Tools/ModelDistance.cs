@@ -25,11 +25,7 @@ public class ModelDistance : EditorWindow
     {
         if(isValid)
         {
-
-            if(Selection.count >= 2)
-            {
-                Selection.selectionChanged += SourceAndTargetUpdate;
-            }
+            Selection.selectionChanged += SourceAndTargetUpdate;
 
             GameObject sourceObj = source as GameObject;
             GameObject targetObj = target as GameObject;
@@ -84,7 +80,10 @@ public class ModelDistance : EditorWindow
 
     void SourceAndTargetUpdate()
     {
-        source = Selection.gameObjects[0];
-        target = Selection.gameObjects[1];
+        if(Selection.count >= 2)
+        {
+            source = Selection.gameObjects[0];
+            target = Selection.gameObjects[1];
+        }
     }
 }

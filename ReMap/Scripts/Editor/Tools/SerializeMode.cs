@@ -36,7 +36,12 @@ public class SerializeMode : EditorWindow
         EditorGUILayout.Space(4);
 
         GUILayout.BeginHorizontal();
-        StackingMode = GUILayout.Toggle(StackingMode, "Stacking Mode");
+        if(StackingMode = GUILayout.Toggle(StackingMode, "Stacking Mode"))
+        {
+            w_spacing = 0;
+            d_spacing = 0;
+            h_spacing = 0;
+        }
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space(6);

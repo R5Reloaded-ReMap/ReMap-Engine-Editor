@@ -14,6 +14,7 @@ public class SerializeMode : EditorWindow
     private static float d_spacing = 0;
     private static float h_spacing = 0;
     private static bool StackingMode = false;
+    private static bool UnidirectionalMode = false;
 
     [MenuItem("ReMap/Tools/Serialize Mode", false, 100)]
     public static void Init()
@@ -41,6 +42,17 @@ public class SerializeMode : EditorWindow
             w_spacing = 0;
             d_spacing = 0;
             h_spacing = 0;
+        }
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(6);
+
+        GUILayout.BeginHorizontal();
+        if(UnidirectionalMode = GUILayout.Toggle(UnidirectionalMode, "Unidirectional Mode"))
+        {
+            //w_spacing = 0;
+            //d_spacing = 0;
+            //h_spacing = 0;
         }
         GUILayout.EndHorizontal();
 
@@ -120,8 +132,8 @@ public class SerializeMode : EditorWindow
 
             foreach ( GameObject go in source )
             {
-                if(go == null)
-                    return;
+                if(go == null || !go.name.Contains("mdl#"))
+                    continue;
 
                 foreach(Renderer o in go.GetComponentsInChildren<Renderer>())
                 {
@@ -152,14 +164,12 @@ public class SerializeMode : EditorWindow
 
         foreach ( GameObject go in source )
         {
-            if(go == null)
-                return;
-
             string name = go.name;
-            PropScript script = go.GetComponent<PropScript>();
 
-            if(!name.Contains("mdl#"))
-                return;
+            if(go == null || !name.Contains("mdl#"))
+                continue;
+
+            PropScript script = go.GetComponent<PropScript>();
 
             UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
             if (loadedPrefabResource == null)
@@ -226,23 +236,61 @@ public class SerializeMode : EditorWindow
         switch(directionType)
         {
             case (int)DirectionType.Top:
-                vector = origin + goTranform.up * h;
+
+                if(UnidirectionalMode)
+                {
+                    vector = origin + Selection.gameObjects[0].transform.up * h;
+                }
+                else vector = origin + goTranform.up * h;
+
                 break;
             case (int)DirectionType.Bottom:
-                vector = origin + goTranform.up * -h;
+
+                if(UnidirectionalMode)
+                {
+                    vector = origin + Selection.gameObjects[0].transform.up * -h;
+                }
+                else vector = origin + goTranform.up * -h;
+
                 break;
             case (int)DirectionType.Forward:
-                vector = origin + goTranform.forward * w;
+
+                if(UnidirectionalMode)
+                {
+                    vector = origin + Selection.gameObjects[0].transform.forward * w;
+                }
+                else vector = origin + goTranform.forward * w;
+
                 break;
             case (int)DirectionType.Backward:
-                vector = origin + goTranform.forward * -w;
+
+                if(UnidirectionalMode)
+                {
+                    vector = origin + Selection.gameObjects[0].transform.forward * -w;
+                }
+                else vector = origin + goTranform.forward * -w;
+                
                 break;
             case (int)DirectionType.Left:
-                vector = origin + goTranform.right * -d;
+
+                if(UnidirectionalMode)
+                {
+                    vector = origin + Selection.gameObjects[0].transform.right * -d;
+                }
+                else vector = origin + goTranform.right * -d;
+                
                 break;
             case (int)DirectionType.Right:
-                vector = origin + goTranform.right * d;
-            break;
+
+                if(UnidirectionalMode)
+                {
+                    vector = origin + Selection.gameObjects[0].transform.right * d;
+                }
+                else vector = origin + goTranform.right * d;
+
+                break;
+            
+            default: break;
         }
 
         return vector;

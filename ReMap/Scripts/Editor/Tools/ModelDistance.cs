@@ -6,6 +6,12 @@ public class ModelDistance : EditorWindow
     bool isValid;
     private Object source;
     private Object target;
+    private Vector3 sourceOrigin;
+    private Vector3 targetOrigin;
+    private bool axisX = true;
+    private bool axisY = false;
+    private bool axisZ = false;
+    //private bool edgeToEdge = false;
 
     [MenuItem("ReMap/Tools/Measure Distance", false, 100)]
     public static void Init()
@@ -23,13 +29,63 @@ public class ModelDistance : EditorWindow
 
     void OnGUI()
     {
+        sourceOrigin = new Vector3(0, 0, 0);
+        targetOrigin = new Vector3(0, 0, 0);
+
+        GUILayout.Label("Select Axis: ");
+
+        EditorGUILayout.Space(4);
+
+        GUILayout.BeginHorizontal();
+        axisX = GUILayout.Toggle(axisX, "X");
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        axisY = GUILayout.Toggle(axisY, "Y");
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        axisZ = GUILayout.Toggle(axisZ, "Z");
+        GUILayout.EndHorizontal();
+
+        //GUILayout.BeginHorizontal();
+        //edgeToEdge = GUILayout.Toggle(edgeToEdge, "Edge To Edge Mode");
+        //GUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(4);
+
         if(isValid)
         {
             Selection.selectionChanged += SourceAndTargetUpdate;
 
             GameObject sourceObj = source as GameObject;
             GameObject targetObj = target as GameObject;
-            float dist = Vector3.Distance(sourceObj.transform.position, targetObj.transform.position);
+
+            if(axisX)
+            {
+                sourceOrigin.x = sourceObj.transform.position.x;
+                targetOrigin.x = targetObj.transform.position.x;
+            }
+
+            if(axisY)
+            {
+                sourceOrigin.y = sourceObj.transform.position.y;
+                targetOrigin.y = targetObj.transform.position.y;
+            }
+
+            if(axisZ)
+            {
+                sourceOrigin.z = sourceObj.transform.position.z;
+                targetOrigin.z = targetObj.transform.position.z;
+            }
+
+            //if(edgeToEdge)
+            //{
+            //    
+            //}
+
+
+            float dist = Vector3.Distance(sourceOrigin, targetOrigin);
 
             GUILayout.BeginVertical("box");
             GUILayout.Label("Click on 2 prefabs to add it automatically or:");

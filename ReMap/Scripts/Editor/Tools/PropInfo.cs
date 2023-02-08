@@ -68,8 +68,13 @@ public class PropInfo : EditorWindow
             }
 
             GUILayout.BeginHorizontal("box");
-            GUILayout.Label("Size:");
-            GUILayout.TextField("W: " + w.ToString().Replace(",", ".") + "   D: " + d.ToString().Replace(",", ".") + "   H: " + h.ToString().Replace(",", "."), GUILayout.Width(267));
+            GUILayout.Label("Size (Unity Vector):");
+            GUILayout.TextField("X: " + d.ToString().Replace(",", ".") + "   Y: " + h.ToString().Replace(",", ".") + "   Z: " + w.ToString().Replace(",", "."), GUILayout.Width(267));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal("box");
+            GUILayout.Label("Size (Apex Vector):");
+            GUILayout.TextField("X: " + w.ToString().Replace(",", ".") + "   Y: " + d.ToString().Replace(",", ".") + "   Z: " + h.ToString().Replace(",", "."), GUILayout.Width(267));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal("box");
@@ -104,7 +109,12 @@ public class PropInfo : EditorWindow
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal("box");
-            GUILayout.Label("Size:");
+            GUILayout.Label("Size (Unity Vector):");
+            GUILayout.TextField("W: 0   D: 0   H: 0", GUILayout.Width(267));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal("box");
+            GUILayout.Label("Size (Apex Vector):");
             GUILayout.TextField("W: 0   D: 0   H: 0", GUILayout.Width(267));
             GUILayout.EndHorizontal();
 

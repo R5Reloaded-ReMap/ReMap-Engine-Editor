@@ -4,18 +4,22 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
+/// <summary>
+/// Edit window to copy and recreate existing models
+/// </summary>
 public class SerializeMode : EditorWindow
 {
     public enum DirectionType { Top, Bottom, Forward, Backward, Left, Right };
 
-    //public static bool OnGUIActive = false; //Test
-
-    private static float w_spacing = 0;
-    private static float d_spacing = 0;
-    private static float h_spacing = 0;
+    private static float x_spacing = 0;
+    private static float y_spacing = 0;
+    private static float z_spacing = 0;
     private static bool StackingMode = false;
     private static bool UnidirectionalMode = false;
 
+    /// <summary>
+    /// SerializeMode.Init()
+    /// </summary>
     [MenuItem("ReMap/Tools/Serialize Mode", false, 100)]
     public static void Init()
     {
@@ -25,10 +29,11 @@ public class SerializeMode : EditorWindow
         window.Show();
     }
 
+    /// <summary>
+    /// SerializeMode.OnGUI() : When the window is displayed
+    /// </summary>
     void OnGUI()
     {
-        //OnGUIActive = true; //Test
-
         GUIStyle centeredStyle = new GUIStyle(GUI.skin.label);
         centeredStyle.alignment = TextAnchor.MiddleCenter;
 
@@ -39,21 +44,16 @@ public class SerializeMode : EditorWindow
         GUILayout.BeginHorizontal();
         if(StackingMode = GUILayout.Toggle(StackingMode, "Stacking Mode"))
         {
-            w_spacing = 0;
-            d_spacing = 0;
-            h_spacing = 0;
+            x_spacing = 0;
+            y_spacing = 0;
+            z_spacing = 0;
         }
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space(6);
 
         GUILayout.BeginHorizontal();
-        if(UnidirectionalMode = GUILayout.Toggle(UnidirectionalMode, "Unidirectional Mode"))
-        {
-            //w_spacing = 0;
-            //d_spacing = 0;
-            //h_spacing = 0;
-        }
+        UnidirectionalMode = GUILayout.Toggle(UnidirectionalMode, "Unidirectional Mode");
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space(6);
@@ -62,27 +62,27 @@ public class SerializeMode : EditorWindow
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label("T/U Spacing: ");
-            float.TryParse(GUILayout.TextField(h_spacing.ToString()), out h_spacing);
-            if (GUILayout.Button("Reset T/U values")) h_spacing = 0;
+            float.TryParse(GUILayout.TextField(y_spacing.ToString()), out y_spacing);
+            if (GUILayout.Button("Reset T/U values")) y_spacing = 0;
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("F/B Spacing: ");
-            float.TryParse(GUILayout.TextField(w_spacing.ToString()), out w_spacing);
-            if (GUILayout.Button("Reset F/B values")) w_spacing = 0;
+            float.TryParse(GUILayout.TextField(z_spacing.ToString()), out z_spacing);
+            if (GUILayout.Button("Reset F/B values")) z_spacing = 0;
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("L/R Spacing: ");
-            float.TryParse(GUILayout.TextField(d_spacing.ToString()), out d_spacing);
-            if (GUILayout.Button("Reset L/R values")) d_spacing = 0;
+            float.TryParse(GUILayout.TextField(x_spacing.ToString()), out x_spacing);
+            if (GUILayout.Button("Reset L/R values")) x_spacing = 0;
             GUILayout.EndHorizontal();
 
             if (GUILayout.Button("Reset all values"))
             {
-                w_spacing = 0;
-                d_spacing = 0;
-                h_spacing = 0;
+                z_spacing = 0;
+                x_spacing = 0;
+                y_spacing = 0;
             }
 
             EditorGUILayout.Space(4);
@@ -105,12 +105,10 @@ public class SerializeMode : EditorWindow
 
         if (GUILayout.Button("Duplicate to RIGHT"))
             DuplicateProp((int)DirectionType.Right);
-
-        //DrawSerializeMode.Update(); //Test
     }
 
     /// <summary>
-    /// Duplicate prop in direction you want
+    /// SerializeMode.DuplicateProp(int) : Duplicates the props in a desired direction
     /// </summary>
     public static void DuplicateProp(int directionType)
     {
@@ -120,10 +118,10 @@ public class SerializeMode : EditorWindow
 
         if(StackingMode)
         {
-            Vector3 size = FindSelectionBounds();
-            w_spacing = size.z;
-            d_spacing = size.x;
-            h_spacing = size.y;
+            Vector3 size = FindBoundsInSelection();
+            x_spacing = size.x;
+            y_spacing = size.y;
+            z_spacing = size.z;
             ReMapConsole.Log($"[Serialize Mode] bounds.size: {size}" , ReMapConsole.LogType.Info);
         }
 
@@ -166,13 +164,13 @@ public class SerializeMode : EditorWindow
     }
 
     /// <summary>
-    /// Use for: DuplicateProp(int directionType)
+    /// SerializeMode.SetPropOrigin(GameObject, GameObject, int) : Duplicates the props in a desired direction
     /// </summary>
     public static void SetPropOrigin(GameObject reference, GameObject newGo, int directionType)
     {
-        float w = 0;
-        float d = 0;
-        float h = 0;
+        float x = 0;
+        float y = 0;
+        float z = 0;
 
         Transform refTranform = reference.transform;
         Vector3 origin = refTranform.position;
@@ -183,20 +181,20 @@ public class SerializeMode : EditorWindow
         refTranform.rotation = Quaternion.Euler(0, 0, 0);
         foreach(Renderer o in reference.GetComponentsInChildren<Renderer>())
         {
-            if(o.bounds.size.z > w)
-                w = o.bounds.size.z;
+            if(o.bounds.size.x > x)
+                x = o.bounds.size.x;
 
-            if(o.bounds.size.x > d)
-                d = o.bounds.size.x;
+            if(o.bounds.size.y > y)
+                y = o.bounds.size.y;
 
-            if(o.bounds.size.y > h)
-                h = o.bounds.size.y;
+            if(o.bounds.size.z > z)
+                z = o.bounds.size.z;
         }
         refTranform.rotation = referenceRotation;
 
-        if(w_spacing != 0) w = w_spacing;
-        if(d_spacing != 0) d = d_spacing;
-        if(h_spacing != 0) h = h_spacing;
+        if(x_spacing != 0) x = x_spacing;
+        if(y_spacing != 0) y = y_spacing;
+        if(z_spacing != 0) z = z_spacing;
 
         switch(directionType)
         {
@@ -204,54 +202,54 @@ public class SerializeMode : EditorWindow
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.up * h);
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.up * y);
                 }
-                else goTranform.Translate(origin + refTranform.up * h);
+                else goTranform.Translate(origin + refTranform.up * y);
 
                 break;
             case (int)DirectionType.Bottom:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.up * -h);
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.up * -y);
                 }
-                else goTranform.Translate(origin + refTranform.up * -h);
+                else goTranform.Translate(origin + refTranform.up * -y);
 
                 break;
             case (int)DirectionType.Forward:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.forward * w);
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.forward * z);
                 }
-                else goTranform.Translate(origin + refTranform.forward * w);
+                else goTranform.Translate(origin + refTranform.forward * z);
 
                 break;
             case (int)DirectionType.Backward:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.forward * -w);
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.forward * -z);
                 }
-                else goTranform.Translate(origin + refTranform.forward * -w);
+                else goTranform.Translate(origin + refTranform.forward * -z);
                 
                 break;
             case (int)DirectionType.Left:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.right * -d);
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.right * -x);
                 }
-                else goTranform.Translate(origin + refTranform.right * -d);
+                else goTranform.Translate(origin + refTranform.right * -x);
                 
                 break;
             case (int)DirectionType.Right:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.right * d);
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.right * x);
                 }
-                else goTranform.Translate(origin + refTranform.right * d);
+                else goTranform.Translate(origin + refTranform.right * x);
 
                 break;
             
@@ -259,7 +257,10 @@ public class SerializeMode : EditorWindow
         }
     }
 
-    public static Vector3 FindSelectionBounds()
+    /// <summary>
+    /// SerializeMode.FindBoundsInSelection() : Find the bounds (x, y, z)
+    /// </summary>
+    public static Vector3 FindBoundsInSelection()
     {
         GameObject[] source = Selection.gameObjects;
         GameObject[] newSource = new GameObject[0];

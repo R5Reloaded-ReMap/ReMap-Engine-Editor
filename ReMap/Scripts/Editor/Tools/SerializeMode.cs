@@ -114,52 +114,17 @@ public class SerializeMode : EditorWindow
     /// </summary>
     public static void DuplicateProp(int directionType)
     {
+
         GameObject[] source = Selection.gameObjects;
         GameObject[] newSource = new GameObject[0];
 
         if(StackingMode)
         {
-            w_spacing = 0;
-            d_spacing = 0;
-            h_spacing = 0;
-
-            float w_max = -1000000;
-            float w_min = 1000000;
-            float d_max = -1000000;
-            float d_min = 1000000;
-            float h_max = -1000000;
-            float h_min = 1000000;
-
-            foreach ( GameObject go in source )
-            {
-                if(go == null || !go.name.Contains("mdl#"))
-                    continue;
-
-                foreach(Renderer o in go.GetComponentsInChildren<Renderer>())
-                {
-                    if(o.bounds.max.z > w_max)
-                        w_max = o.bounds.max.z;
-
-                    if(o.bounds.max.x > d_max)
-                        d_max = o.bounds.max.x;
-
-                    if(o.bounds.max.y > h_max)
-                        h_max = o.bounds.max.y;
-                    
-                    if(o.bounds.min.z < w_min)
-                        w_min = o.bounds.min.z;
-
-                    if(o.bounds.min.x < d_min)
-                        d_min = o.bounds.min.x;
-
-                    if(o.bounds.min.y < h_min)
-                        h_min = o.bounds.min.y;
-                }
-            }
-
-            w_spacing = w_max - w_min;
-            d_spacing = d_max - d_min;
-            h_spacing = h_max - h_min;
+            Vector3 size = FindSelectionBounds();
+            w_spacing = size.z;
+            d_spacing = size.x;
+            h_spacing = size.y;
+            ReMapConsole.Log($"[Serialize Mode] bounds.size: {size}" , ReMapConsole.LogType.Info);
         }
 
         foreach ( GameObject go in source )
@@ -179,9 +144,9 @@ public class SerializeMode : EditorWindow
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-            obj.transform.position = SetPropOrigin(go, directionType);
+            /* obj.transform.position = */ SetPropOrigin(go, obj, directionType);
             obj.transform.eulerAngles = go.transform.eulerAngles;
-            obj.gameObject.transform.localScale = go.transform.localScale;
+            obj.gameObject.transform.localScale = go.transform.lossyScale;
 
             PropScript scriptInstance = obj.GetComponent<PropScript>();
             scriptInstance.fadeDistance = script.fadeDistance;
@@ -203,20 +168,20 @@ public class SerializeMode : EditorWindow
     /// <summary>
     /// Use for: DuplicateProp(int directionType)
     /// </summary>
-    public static Vector3 SetPropOrigin(GameObject go, int directionType)
+    public static void SetPropOrigin(GameObject reference, GameObject newGo, int directionType)
     {
         float w = 0;
         float d = 0;
         float h = 0;
 
-        Transform goTranform = go.transform;
-        Vector3 vector = new Vector3(0, 0, 0);
-        Vector3 origin = goTranform.position;
-        Vector3 angles = goTranform.eulerAngles;
+        Transform refTranform = reference.transform;
+        Vector3 origin = refTranform.position;
 
-        Quaternion referenceRotation = goTranform.rotation;
-        goTranform.rotation = Quaternion.Euler(0, 0, 0);
-        foreach(Renderer o in go.GetComponentsInChildren<Renderer>())
+        Transform goTranform = newGo.transform;
+
+        Quaternion referenceRotation = refTranform.rotation;
+        refTranform.rotation = Quaternion.Euler(0, 0, 0);
+        foreach(Renderer o in reference.GetComponentsInChildren<Renderer>())
         {
             if(o.bounds.size.z > w)
                 w = o.bounds.size.z;
@@ -227,7 +192,7 @@ public class SerializeMode : EditorWindow
             if(o.bounds.size.y > h)
                 h = o.bounds.size.y;
         }
-        goTranform.rotation = referenceRotation;
+        refTranform.rotation = referenceRotation;
 
         if(w_spacing != 0) w = w_spacing;
         if(d_spacing != 0) d = d_spacing;
@@ -239,60 +204,112 @@ public class SerializeMode : EditorWindow
 
                 if(UnidirectionalMode)
                 {
-                    vector = origin + Selection.gameObjects[0].transform.up * h;
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.up * h);
                 }
-                else vector = origin + goTranform.up * h;
+                else goTranform.Translate(origin + refTranform.up * h);
 
                 break;
             case (int)DirectionType.Bottom:
 
                 if(UnidirectionalMode)
                 {
-                    vector = origin + Selection.gameObjects[0].transform.up * -h;
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.up * -h);
                 }
-                else vector = origin + goTranform.up * -h;
+                else goTranform.Translate(origin + refTranform.up * -h);
 
                 break;
             case (int)DirectionType.Forward:
 
                 if(UnidirectionalMode)
                 {
-                    vector = origin + Selection.gameObjects[0].transform.forward * w;
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.forward * w);
                 }
-                else vector = origin + goTranform.forward * w;
+                else goTranform.Translate(origin + refTranform.forward * w);
 
                 break;
             case (int)DirectionType.Backward:
 
                 if(UnidirectionalMode)
                 {
-                    vector = origin + Selection.gameObjects[0].transform.forward * -w;
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.forward * -w);
                 }
-                else vector = origin + goTranform.forward * -w;
+                else goTranform.Translate(origin + refTranform.forward * -w);
                 
                 break;
             case (int)DirectionType.Left:
 
                 if(UnidirectionalMode)
                 {
-                    vector = origin + Selection.gameObjects[0].transform.right * -d;
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.right * -d);
                 }
-                else vector = origin + goTranform.right * -d;
+                else goTranform.Translate(origin + refTranform.right * -d);
                 
                 break;
             case (int)DirectionType.Right:
 
                 if(UnidirectionalMode)
                 {
-                    vector = origin + Selection.gameObjects[0].transform.right * d;
+                    goTranform.Translate(origin + Selection.gameObjects[0].transform.right * d);
                 }
-                else vector = origin + goTranform.right * d;
+                else goTranform.Translate(origin + refTranform.right * d);
 
                 break;
             
             default: break;
         }
+    }
 
-        return vector;
+    public static Vector3 FindSelectionBounds()
+    {
+        GameObject[] source = Selection.gameObjects;
+        GameObject[] newSource = new GameObject[0];
+
+        GameObject sourceParent = new GameObject();
+        sourceParent.transform.position = source[0].transform.position;
+        sourceParent.transform.eulerAngles = source[0].transform.eulerAngles;
+
+        Bounds bounds = new Bounds(sourceParent.transform.position, sourceParent.transform.eulerAngles);
+
+        foreach ( GameObject go in source )
+        {
+            string name = go.name;
+
+            if(go == null || !name.Contains("mdl#"))
+                continue;
+
+            UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
+            if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Serialize Mode] Couldnt find prefab with name of: {name}" , ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+            obj.transform.position = go.transform.position;
+            obj.transform.eulerAngles = go.transform.eulerAngles;
+            obj.gameObject.transform.localScale = go.transform.lossyScale;
+
+            obj.transform.SetParent(sourceParent.transform);
+
+            int currentLength = newSource.Length;
+            Array.Resize(ref newSource, currentLength + 1);
+            newSource[currentLength] = obj;
+        }
+
+        sourceParent.transform.eulerAngles = Vector3.zero;
+
+        foreach( GameObject go in newSource )
+        {
+            foreach (Renderer renderer in go.GetComponentsInChildren<Renderer>())
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+        }
+
+        Vector3 size = bounds.size;
+
+        DestroyImmediate(sourceParent as UnityEngine.Object);
+
+        return size;
     }
 }

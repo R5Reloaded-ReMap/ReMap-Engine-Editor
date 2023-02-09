@@ -16,6 +16,9 @@ public class SerializeMode : EditorWindow
     private static float z_spacing = 0;
     private static bool StackingMode = false;
     private static bool UnidirectionalMode = false;
+    private static bool MirrorMode = false;
+    private static Vector3 BoundsMax;
+    private static Vector3 BoundsMin;
 
     /// <summary>
     /// SerializeMode.Init()
@@ -54,6 +57,12 @@ public class SerializeMode : EditorWindow
 
         GUILayout.BeginHorizontal();
         UnidirectionalMode = GUILayout.Toggle(UnidirectionalMode, "Unidirectional Mode");
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(6);
+        
+        GUILayout.BeginHorizontal();
+        MirrorMode = GUILayout.Toggle(MirrorMode, "Mirror Mode");
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space(6);
@@ -196,6 +205,14 @@ public class SerializeMode : EditorWindow
         if(y_spacing != 0) y = y_spacing;
         if(z_spacing != 0) z = z_spacing;
 
+        if(MirrorMode)
+        {
+            x = Vector3.Distance(new Vector3(refTranform.position.x, 0, 0), new Vector3(BoundsMax.x, 0, 0)) * 2;//Mathf.Clamp(refTranform.position.x, BoundsMin.x, BoundsMax.x);
+            y = Vector3.Distance(new Vector3(0, refTranform.position.y, 0), new Vector3(0, BoundsMax.y, 0)) * 2;//Mathf.Clamp(refTranform.position.y, BoundsMin.y, BoundsMax.y);
+            z = Vector3.Distance(new Vector3(0, 0, refTranform.position.z), new Vector3(0, 0, BoundsMax.z)) * 2;//Mathf.Clamp(refTranform.position.z, BoundsMin.z, BoundsMax.z);
+            ReMapConsole.Log($"[Serialize Mode] ({x} {y} {z})", ReMapConsole.LogType.Info);
+        }
+
         switch(directionType)
         {
             case (int)DirectionType.Top:
@@ -308,6 +325,9 @@ public class SerializeMode : EditorWindow
         }
 
         Vector3 size = bounds.size;
+
+        BoundsMax = bounds.max;
+        BoundsMin = bounds.min;
 
         DestroyImmediate(sourceParent as UnityEngine.Object);
 

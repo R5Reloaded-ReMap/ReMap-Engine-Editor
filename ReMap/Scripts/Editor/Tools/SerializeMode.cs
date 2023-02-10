@@ -66,9 +66,9 @@ public class SerializeTool : EditorWindow
 
         EditorGUILayout.Space(6);
         
-        //GUILayout.BeginHorizontal();
-        //MirrorMode = GUILayout.Toggle(MirrorMode, "Mirror Mode");
-        //GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        MirrorMode = GUILayout.Toggle(MirrorMode, "Mirror Mode");
+        GUILayout.EndHorizontal();
 
         EditorGUILayout.Space(6);
 
@@ -137,7 +137,7 @@ public class SerializeTool : EditorWindow
         ReMapConsole.Log($"[Serialize Tool] Bounds Max:  {BoundsMax}",  ReMapConsole.LogType.Info);
         ReMapConsole.Log($"[Serialize Tool] Bounds Min:  {BoundsMin}",  ReMapConsole.LogType.Info);
 
-        if(StackingMode || MirrorMode)
+        if(StackingMode)
         {
             x_spacing = BoundsSize.x;
             y_spacing = BoundsSize.y;
@@ -227,10 +227,22 @@ public class SerializeTool : EditorWindow
 
         if(MirrorMode)
         {
-            Vector3[] BoundsProp = DetermineBoundsInProp( reference );
-            Vector3 CenterProp = BoundsProp[3];
+            Bounds bounds = new Bounds();
+            bool firstRenderer = true;
+            foreach (Renderer renderer in reference.GetComponentsInChildren<Renderer>())
+            {
+                if (firstRenderer)
+                {
+                    bounds = renderer.bounds;
+                    firstRenderer = false;
+                }
+                else
+                {
+                    bounds.Encapsulate(renderer.bounds);
+                }
+            }
 
-            ReMapConsole.Log("[Serialize Tool] CenterProp: " + CenterProp, ReMapConsole.LogType.Info);
+            ReMapConsole.Log("[Serialize Tool] CenterProp: " + bounds.center, ReMapConsole.LogType.Info);
 
             switch(directionType)
             {
@@ -238,9 +250,9 @@ public class SerializeTool : EditorWindow
                 case (int)DirectionType.Forward:
                 case (int)DirectionType.Right:
 
-                    x = Vector3.Distance(new Vector3(CenterProp.x, 0, 0), new Vector3(BoundsMax.x, 0, 0)) * 2;
-                    y = Vector3.Distance(new Vector3(0, CenterProp.y, 0), new Vector3(0, BoundsMax.y, 0)) * 2;
-                    z = Vector3.Distance(new Vector3(0, 0, CenterProp.z), new Vector3(0, 0, BoundsMax.z)) * 2;
+                    x = Vector3.Distance(new Vector3(bounds.center.x, 0, 0), new Vector3(BoundsMax.x, 0, 0)) * 2;
+                    y = Vector3.Distance(new Vector3(0, bounds.center.y, 0), new Vector3(0, BoundsMax.y, 0)) * 2;
+                    z = Vector3.Distance(new Vector3(0, 0, bounds.center.z), new Vector3(0, 0, BoundsMax.z)) * 2;
 
                     break;
 
@@ -248,18 +260,14 @@ public class SerializeTool : EditorWindow
                 case (int)DirectionType.Backward:
                 case (int)DirectionType.Left:
 
-                    x = Vector3.Distance(new Vector3(BoundsMax.x, 0, 0), new Vector3(CenterProp.x, 0, 0)) * 2;
-                    y = Vector3.Distance(new Vector3(0, BoundsMax.y, 0), new Vector3(0, CenterProp.y, 0)) * 2;
-                    z = Vector3.Distance(new Vector3(0, 0, BoundsMax.z), new Vector3(0, 0, CenterProp.z)) * 2;
+                    x = Vector3.Distance(new Vector3(bounds.center.x, 0, 0), new Vector3(BoundsMin.x, 0, 0)) * 2;
+                    y = Vector3.Distance(new Vector3(0, bounds.center.y, 0), new Vector3(0, BoundsMin.y, 0)) * 2;
+                    z = Vector3.Distance(new Vector3(0, 0, bounds.center.z), new Vector3(0, 0, BoundsMin.z)) * 2;
 
                     break;
                 
                 default: break;
             }
-
-            //origin.x = origin.x + Vector3.Distance(new Vector3(origin.x, 0, 0), new Vector3(x, 0, 0));
-            //origin.y = origin.y + Vector3.Distance(new Vector3(0, origin.y, 0), new Vector3(0, y, 0));
-            //origin.z = origin.z + Vector3.Distance(new Vector3(0, 0, origin.z), new Vector3(0, 0, z));
 
             ReMapConsole.Log($"[Serialize Tool] ({x} {y} {z})", ReMapConsole.LogType.Info);
         }
@@ -273,7 +281,6 @@ public class SerializeTool : EditorWindow
                     goTranform.Translate(origin + Selection.gameObjects[0].transform.up * y);
                 }
                 else goTranform.Translate(origin + refTranform.up * y);
-                ReMapConsole.Log($"[Serialize Tool] Y: {y}" , ReMapConsole.LogType.Error);
 
                 break;
             case (int)DirectionType.Bottom:

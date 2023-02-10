@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Edit window to copy and recreate existing models
 /// </summary>
-public class SerializeMode : EditorWindow
+public class SerializeTool : EditorWindow
 {
     public enum DirectionType { Top, Bottom, Forward, Backward, Left, Right };
 
@@ -17,23 +17,28 @@ public class SerializeMode : EditorWindow
     private static bool StackingMode = false;
     private static bool UnidirectionalMode = false;
     private static bool MirrorMode = false;
+
+    // Utility
+    private static GameObject[] Source;
+    private static Vector3 BoundsSize;
     private static Vector3 BoundsMax;
     private static Vector3 BoundsMin;
 
+
     /// <summary>
-    /// SerializeMode.Init()
+    /// SerializeTool.Init()
     /// </summary>
-    [MenuItem("ReMap/Tools/Serialize Mode", false, 100)]
+    [MenuItem("ReMap/Tools/Serialize Tool", false, 100)]
     public static void Init()
     {
-        SerializeMode window = (SerializeMode)EditorWindow.GetWindow(typeof(SerializeMode), false, "Serialize Mode");
+        SerializeTool window = (SerializeTool)EditorWindow.GetWindow(typeof(SerializeTool), false, "Serialize Tool");
         window.minSize = new Vector2(360, 300);
         window.maxSize = new Vector2(360, 300);
         window.Show();
     }
 
     /// <summary>
-    /// SerializeMode.OnGUI() : When the window is displayed
+    /// SerializeTool.OnGUI() : When the window is displayed
     /// </summary>
     void OnGUI()
     {
@@ -61,9 +66,9 @@ public class SerializeMode : EditorWindow
 
         EditorGUILayout.Space(6);
         
-        GUILayout.BeginHorizontal();
-        MirrorMode = GUILayout.Toggle(MirrorMode, "Mirror Mode");
-        GUILayout.EndHorizontal();
+        //GUILayout.BeginHorizontal();
+        //MirrorMode = GUILayout.Toggle(MirrorMode, "Mirror Mode");
+        //GUILayout.EndHorizontal();
 
         EditorGUILayout.Space(6);
 
@@ -98,43 +103,58 @@ public class SerializeMode : EditorWindow
         }
 
         if (GUILayout.Button("Duplicate to TOP"))
-            DuplicateProp((int)DirectionType.Top);
+            DuplicateInit((int)DirectionType.Top);
 
         if (GUILayout.Button("Duplicate to UNDER"))
-            DuplicateProp((int)DirectionType.Bottom);
+            DuplicateInit((int)DirectionType.Bottom);
 
         if (GUILayout.Button("Duplicate to FORWARD"))
-            DuplicateProp((int)DirectionType.Forward);
+            DuplicateInit((int)DirectionType.Forward);
 
         if (GUILayout.Button("Duplicate to BACKWARD"))
-            DuplicateProp((int)DirectionType.Backward);
+            DuplicateInit((int)DirectionType.Backward);
 
         if (GUILayout.Button("Duplicate to LEFT"))
-            DuplicateProp((int)DirectionType.Left);
+            DuplicateInit((int)DirectionType.Left);
 
         if (GUILayout.Button("Duplicate to RIGHT"))
-            DuplicateProp((int)DirectionType.Right);
+            DuplicateInit((int)DirectionType.Right);
     }
 
     /// <summary>
-    /// SerializeMode.DuplicateProp(int) : Duplicates the props in a desired direction
+    /// SerializeTool.DuplicateInit(int) : Init
     /// </summary>
-    public static void DuplicateProp(int directionType)
+    public static void DuplicateInit(int directionType)
     {
+        Source = Selection.gameObjects;
 
-        GameObject[] source = Selection.gameObjects;
-        GameObject[] newSource = new GameObject[0];
+        Vector3[] DeterminedBounds = DetermineBoundsInSelection();
+        BoundsSize = DeterminedBounds[0];
+        BoundsMax = DeterminedBounds[1];
+        BoundsMin = DeterminedBounds[2];
 
-        if(StackingMode)
+        ReMapConsole.Log($"[Serialize Tool] Bounds Size: {BoundsSize}", ReMapConsole.LogType.Info);
+        ReMapConsole.Log($"[Serialize Tool] Bounds Max:  {BoundsMax}",  ReMapConsole.LogType.Info);
+        ReMapConsole.Log($"[Serialize Tool] Bounds Min:  {BoundsMin}",  ReMapConsole.LogType.Info);
+
+        if(StackingMode || MirrorMode)
         {
-            Vector3 size = FindBoundsInSelection();
-            x_spacing = size.x;
-            y_spacing = size.y;
-            z_spacing = size.z;
-            ReMapConsole.Log($"[Serialize Mode] bounds.size: {size}" , ReMapConsole.LogType.Info);
+            x_spacing = BoundsSize.x;
+            y_spacing = BoundsSize.y;
+            z_spacing = BoundsSize.z;
         }
 
-        foreach ( GameObject go in source )
+        DuplicateProps(directionType);
+    }
+
+    /// <summary>
+    /// SerializeTool.DuplicateProps(int) : Duplicates the props in a desired direction
+    /// </summary>
+    public static void DuplicateProps(int directionType)
+    {
+        GameObject[] newSource = new GameObject[0];
+
+        foreach ( GameObject go in Source )
         {
             string name = go.name;
 
@@ -146,7 +166,7 @@ public class SerializeMode : EditorWindow
             UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
             if (loadedPrefabResource == null)
             {
-                ReMapConsole.Log($"[Serialize Mode] Couldnt find prefab with name of: {name}" , ReMapConsole.LogType.Error);
+                ReMapConsole.Log($"[Serialize Tool] Couldnt find prefab with name of: {name}" , ReMapConsole.LogType.Error);
                 continue;
             }
 
@@ -162,7 +182,7 @@ public class SerializeMode : EditorWindow
 
             obj.transform.SetParent(go.transform.parent);
 
-            ReMapConsole.Log("[Serialize Mode] Created " + name, ReMapConsole.LogType.Info);
+            ReMapConsole.Log("[Serialize Tool] Created " + name, ReMapConsole.LogType.Info);
 
             int currentLength = newSource.Length;
             Array.Resize(ref newSource, currentLength + 1);
@@ -173,7 +193,7 @@ public class SerializeMode : EditorWindow
     }
 
     /// <summary>
-    /// SerializeMode.SetPropOrigin(GameObject, GameObject, int) : Duplicates the props in a desired direction
+    /// SerializeTool.SetPropOrigin(GameObject, GameObject, int) : Duplicates the props in a desired direction
     /// </summary>
     public static void SetPropOrigin(GameObject reference, GameObject newGo, int directionType)
     {
@@ -207,10 +227,41 @@ public class SerializeMode : EditorWindow
 
         if(MirrorMode)
         {
-            x = Vector3.Distance(new Vector3(refTranform.position.x, 0, 0), new Vector3(BoundsMax.x, 0, 0)) * 2;//Mathf.Clamp(refTranform.position.x, BoundsMin.x, BoundsMax.x);
-            y = Vector3.Distance(new Vector3(0, refTranform.position.y, 0), new Vector3(0, BoundsMax.y, 0)) * 2;//Mathf.Clamp(refTranform.position.y, BoundsMin.y, BoundsMax.y);
-            z = Vector3.Distance(new Vector3(0, 0, refTranform.position.z), new Vector3(0, 0, BoundsMax.z)) * 2;//Mathf.Clamp(refTranform.position.z, BoundsMin.z, BoundsMax.z);
-            ReMapConsole.Log($"[Serialize Mode] ({x} {y} {z})", ReMapConsole.LogType.Info);
+            Vector3[] BoundsProp = DetermineBoundsInProp( reference );
+            Vector3 CenterProp = BoundsProp[3];
+
+            ReMapConsole.Log("[Serialize Tool] CenterProp: " + CenterProp, ReMapConsole.LogType.Info);
+
+            switch(directionType)
+            {
+                case (int)DirectionType.Top:
+                case (int)DirectionType.Forward:
+                case (int)DirectionType.Right:
+
+                    x = Vector3.Distance(new Vector3(CenterProp.x, 0, 0), new Vector3(BoundsMax.x, 0, 0)) * 2;
+                    y = Vector3.Distance(new Vector3(0, CenterProp.y, 0), new Vector3(0, BoundsMax.y, 0)) * 2;
+                    z = Vector3.Distance(new Vector3(0, 0, CenterProp.z), new Vector3(0, 0, BoundsMax.z)) * 2;
+
+                    break;
+
+                case (int)DirectionType.Bottom:
+                case (int)DirectionType.Backward:
+                case (int)DirectionType.Left:
+
+                    x = Vector3.Distance(new Vector3(BoundsMax.x, 0, 0), new Vector3(CenterProp.x, 0, 0)) * 2;
+                    y = Vector3.Distance(new Vector3(0, BoundsMax.y, 0), new Vector3(0, CenterProp.y, 0)) * 2;
+                    z = Vector3.Distance(new Vector3(0, 0, BoundsMax.z), new Vector3(0, 0, CenterProp.z)) * 2;
+
+                    break;
+                
+                default: break;
+            }
+
+            //origin.x = origin.x + Vector3.Distance(new Vector3(origin.x, 0, 0), new Vector3(x, 0, 0));
+            //origin.y = origin.y + Vector3.Distance(new Vector3(0, origin.y, 0), new Vector3(0, y, 0));
+            //origin.z = origin.z + Vector3.Distance(new Vector3(0, 0, origin.z), new Vector3(0, 0, z));
+
+            ReMapConsole.Log($"[Serialize Tool] ({x} {y} {z})", ReMapConsole.LogType.Info);
         }
 
         switch(directionType)
@@ -222,6 +273,7 @@ public class SerializeMode : EditorWindow
                     goTranform.Translate(origin + Selection.gameObjects[0].transform.up * y);
                 }
                 else goTranform.Translate(origin + refTranform.up * y);
+                ReMapConsole.Log($"[Serialize Tool] Y: {y}" , ReMapConsole.LogType.Error);
 
                 break;
             case (int)DirectionType.Bottom:
@@ -275,62 +327,131 @@ public class SerializeMode : EditorWindow
     }
 
     /// <summary>
-    /// SerializeMode.FindBoundsInSelection() : Find the bounds (x, y, z)
+    /// SerializeTool.DetermineBoundsInSelection() : Determine the bounds
     /// </summary>
-    public static Vector3 FindBoundsInSelection()
+    public static Vector3[] DetermineBoundsInSelection()
     {
-        GameObject[] source = Selection.gameObjects;
-        GameObject[] newSource = new GameObject[0];
+        List<GameObject> newSource = new List<GameObject>();
 
         GameObject sourceParent = new GameObject();
-        sourceParent.transform.position = source[0].transform.position;
-        sourceParent.transform.eulerAngles = source[0].transform.eulerAngles;
+        sourceParent.transform.position = Source[0].transform.position;
+        sourceParent.transform.eulerAngles = Source[0].transform.eulerAngles;
 
-        Bounds bounds = new Bounds(sourceParent.transform.position, sourceParent.transform.eulerAngles);
-
-        foreach ( GameObject go in source )
+        foreach (GameObject go in Source)
         {
             string name = go.name;
 
-            if(go == null || !name.Contains("mdl#"))
+            if (go == null || !name.Contains("mdl#"))
                 continue;
 
             UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
             if (loadedPrefabResource == null)
             {
-                ReMapConsole.Log($"[Serialize Mode] Couldnt find prefab with name of: {name}" , ReMapConsole.LogType.Error);
+                ReMapConsole.Log($"[Serialize Tool] Couldn't find prefab with name of: {name}", ReMapConsole.LogType.Error);
                 continue;
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
             obj.transform.position = go.transform.position;
             obj.transform.eulerAngles = go.transform.eulerAngles;
-            obj.gameObject.transform.localScale = go.transform.lossyScale;
+            obj.transform.localScale = go.transform.localScale;
 
             obj.transform.SetParent(sourceParent.transform);
 
-            int currentLength = newSource.Length;
-            Array.Resize(ref newSource, currentLength + 1);
-            newSource[currentLength] = obj;
+            newSource.Add(obj);
         }
 
         sourceParent.transform.eulerAngles = Vector3.zero;
 
-        foreach( GameObject go in newSource )
+        Bounds bounds = new Bounds();
+        bool firstRenderer = true;
+        foreach (GameObject go in newSource)
         {
             foreach (Renderer renderer in go.GetComponentsInChildren<Renderer>())
+            {
+                if (firstRenderer)
+                {
+                    bounds = renderer.bounds;
+                    firstRenderer = false;
+                }
+                else
+                {
+                    bounds.Encapsulate(renderer.bounds);
+                }
+            }
+        }
+
+        Vector3[] boundsArray = new Vector3[4];
+        boundsArray[0] = bounds.size;
+        boundsArray[1] = bounds.max;
+        boundsArray[2] = bounds.min;
+        boundsArray[3] = bounds.center;
+
+        foreach (GameObject go in newSource)
+        {
+            GameObject.DestroyImmediate(go);
+        }
+
+        GameObject.DestroyImmediate(sourceParent);
+
+        return boundsArray;
+    }
+
+
+    /// <summary>
+    /// SerializeTool.DetermineBoundsInProp() : Determine the bounds of a prop
+    /// </summary>
+    public static Vector3[] DetermineBoundsInProp( GameObject go )
+    {
+        GameObject sourceParent = new GameObject();
+        sourceParent.transform.position = go.transform.position;
+        sourceParent.transform.eulerAngles = go.transform.eulerAngles;
+
+        string name = go.name;
+
+        if (go == null || !name.Contains("mdl#"))
+            return new Vector3[4];
+
+        UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
+        if (loadedPrefabResource == null)
+        {
+            ReMapConsole.Log($"[Serialize Tool] Couldn't find prefab with name of: {name}", ReMapConsole.LogType.Error);
+            return new Vector3[4];
+        }
+
+        GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+        obj.transform.position = go.transform.position;
+        obj.transform.eulerAngles = go.transform.eulerAngles;
+        obj.transform.localScale = go.transform.localScale;
+
+        obj.transform.SetParent(sourceParent.transform);
+
+        sourceParent.transform.eulerAngles = Vector3.zero;
+
+        Bounds bounds = new Bounds();
+        bool firstRenderer = true;
+        foreach (Renderer renderer in go.GetComponentsInChildren<Renderer>())
+        {
+            if (firstRenderer)
+            {
+                bounds = renderer.bounds;
+                firstRenderer = false;
+            }
+            else
             {
                 bounds.Encapsulate(renderer.bounds);
             }
         }
 
-        Vector3 size = bounds.size;
+        Vector3[] boundsArray = new Vector3[4];
+        boundsArray[0] = bounds.size;
+        boundsArray[1] = bounds.max;
+        boundsArray[2] = bounds.min;
+        boundsArray[3] = bounds.center;
 
-        BoundsMax = bounds.max;
-        BoundsMin = bounds.min;
+        GameObject.DestroyImmediate(obj);
+        GameObject.DestroyImmediate(sourceParent);
 
-        DestroyImmediate(sourceParent as UnityEngine.Object);
-
-        return size;
+        return boundsArray;
     }
 }

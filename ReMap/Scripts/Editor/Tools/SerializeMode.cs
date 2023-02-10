@@ -10,11 +10,14 @@ using System.Collections.Generic;
 public class SerializeTool : EditorWindow
 {
     public enum DirectionType { Top, Bottom, Forward, Backward, Left, Right };
+    public enum BoundsInt { Size, Max, Min, Center, Extents };
 
+    private static float x_entry = 0;
+    private static float y_entry = 0;
+    private static float z_entry = 0;
     private static float x_spacing = 0;
     private static float y_spacing = 0;
     private static float z_spacing = 0;
-    private static bool StackingMode = false;
     private static bool UnidirectionalMode = false;
     private static bool MirrorMode = false;
 
@@ -23,6 +26,7 @@ public class SerializeTool : EditorWindow
     private static Vector3 BoundsSize;
     private static Vector3 BoundsMax;
     private static Vector3 BoundsMin;
+    private static Vector3 BoundsExtents;
 
 
     /// <summary>
@@ -49,15 +53,6 @@ public class SerializeTool : EditorWindow
 
         EditorGUILayout.Space(4);
 
-        GUILayout.BeginHorizontal();
-        if(StackingMode = GUILayout.Toggle(StackingMode, "Stacking Mode"))
-        {
-            x_spacing = 0;
-            y_spacing = 0;
-            z_spacing = 0;
-        }
-        GUILayout.EndHorizontal();
-
         EditorGUILayout.Space(6);
 
         GUILayout.BeginHorizontal();
@@ -72,35 +67,32 @@ public class SerializeTool : EditorWindow
 
         EditorGUILayout.Space(6);
 
-        if(!StackingMode)
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("T/U Spacing: ");
+        float.TryParse(GUILayout.TextField(y_entry.ToString()), out y_entry);
+        if (GUILayout.Button("Reset T/U values")) y_entry = 0;
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("F/B Spacing: ");
+        float.TryParse(GUILayout.TextField(z_entry.ToString()), out z_entry);
+        if (GUILayout.Button("Reset F/B values")) z_entry = 0;
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("L/R Spacing: ");
+        float.TryParse(GUILayout.TextField(x_entry.ToString()), out x_entry);
+        if (GUILayout.Button("Reset L/R values")) x_entry = 0;
+        GUILayout.EndHorizontal();
+
+        if (GUILayout.Button("Reset all values"))
         {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("T/U Spacing: ");
-            float.TryParse(GUILayout.TextField(y_spacing.ToString()), out y_spacing);
-            if (GUILayout.Button("Reset T/U values")) y_spacing = 0;
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("F/B Spacing: ");
-            float.TryParse(GUILayout.TextField(z_spacing.ToString()), out z_spacing);
-            if (GUILayout.Button("Reset F/B values")) z_spacing = 0;
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("L/R Spacing: ");
-            float.TryParse(GUILayout.TextField(x_spacing.ToString()), out x_spacing);
-            if (GUILayout.Button("Reset L/R values")) x_spacing = 0;
-            GUILayout.EndHorizontal();
-
-            if (GUILayout.Button("Reset all values"))
-            {
-                z_spacing = 0;
-                x_spacing = 0;
-                y_spacing = 0;
-            }
-
-            EditorGUILayout.Space(4);
+            z_entry = 0;
+            x_entry = 0;
+            y_entry = 0;
         }
+
+        EditorGUILayout.Space(4);
 
         if (GUILayout.Button("Duplicate to TOP"))
             DuplicateInit((int)DirectionType.Top);
@@ -129,20 +121,18 @@ public class SerializeTool : EditorWindow
         Source = Selection.gameObjects;
 
         Vector3[] DeterminedBounds = DetermineBoundsInSelection();
-        BoundsSize = DeterminedBounds[0];
-        BoundsMax = DeterminedBounds[1];
-        BoundsMin = DeterminedBounds[2];
+        BoundsSize = DeterminedBounds[(int)BoundsInt.Size];
+        BoundsMax = DeterminedBounds[(int)BoundsInt.Max];
+        BoundsMin = DeterminedBounds[(int)BoundsInt.Min];
+        BoundsExtents = DeterminedBounds[(int)BoundsInt.Extents];
 
         ReMapConsole.Log($"[Serialize Tool] Bounds Size: {BoundsSize}", ReMapConsole.LogType.Info);
         ReMapConsole.Log($"[Serialize Tool] Bounds Max:  {BoundsMax}",  ReMapConsole.LogType.Info);
         ReMapConsole.Log($"[Serialize Tool] Bounds Min:  {BoundsMin}",  ReMapConsole.LogType.Info);
 
-        if(StackingMode)
-        {
-            x_spacing = BoundsSize.x;
-            y_spacing = BoundsSize.y;
-            z_spacing = BoundsSize.z;
-        }
+        x_spacing = x_entry + BoundsSize.x;
+        y_spacing = y_entry + BoundsSize.y;
+        z_spacing = z_entry + BoundsSize.z;
 
         DuplicateProps(directionType);
     }
@@ -158,7 +148,7 @@ public class SerializeTool : EditorWindow
         {
             string name = go.name;
 
-            if(go == null || !name.Contains("mdl#"))
+            if(!IsValidGameObject(go))
                 continue;
 
             PropScript script = go.GetComponent<PropScript>();
@@ -182,7 +172,7 @@ public class SerializeTool : EditorWindow
 
             obj.transform.SetParent(go.transform.parent);
 
-            ReMapConsole.Log("[Serialize Tool] Created " + name, ReMapConsole.LogType.Info);
+            //ReMapConsole.Log("[Serialize Tool] Created " + name, ReMapConsole.LogType.Info);
 
             int currentLength = newSource.Length;
             Array.Resize(ref newSource, currentLength + 1);
@@ -221,12 +211,13 @@ public class SerializeTool : EditorWindow
         }
         refTranform.rotation = referenceRotation;
 
-        if(x_spacing != 0) x = x_spacing;
-        if(y_spacing != 0) y = y_spacing;
-        if(z_spacing != 0) z = z_spacing;
+        x = x_spacing;
+        y = y_spacing;
+        z = z_spacing;
 
         if(MirrorMode)
         {
+            refTranform.rotation = Quaternion.Euler(0, 0, 0);
             Bounds bounds = new Bounds();
             bool firstRenderer = true;
             foreach (Renderer renderer in reference.GetComponentsInChildren<Renderer>())
@@ -241,6 +232,7 @@ public class SerializeTool : EditorWindow
                     bounds.Encapsulate(renderer.bounds);
                 }
             }
+            refTranform.rotation = referenceRotation;
 
             ReMapConsole.Log("[Serialize Tool] CenterProp: " + bounds.center, ReMapConsole.LogType.Info);
 
@@ -269,7 +261,7 @@ public class SerializeTool : EditorWindow
                 default: break;
             }
 
-            ReMapConsole.Log($"[Serialize Tool] ({x} {y} {z})", ReMapConsole.LogType.Info);
+            ReMapConsole.Log($"[Serialize Tool] MirrorMode Vec: ({x} {y} {z})", ReMapConsole.LogType.Info);
         }
 
         switch(directionType)
@@ -278,54 +270,54 @@ public class SerializeTool : EditorWindow
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.up * y);
+                    goTranform.position = origin + (Selection.gameObjects[0].transform.up * y);
                 }
-                else goTranform.Translate(origin + refTranform.up * y);
+                else goTranform.position = origin + (refTranform.up * y);
 
                 break;
             case (int)DirectionType.Bottom:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.up * -y);
+                    goTranform.position = origin + (Selection.gameObjects[0].transform.up * -y);
                 }
-                else goTranform.Translate(origin + refTranform.up * -y);
+                else goTranform.position = origin + (refTranform.up * -y);
 
                 break;
             case (int)DirectionType.Forward:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.forward * z);
+                    goTranform.position = origin + (Selection.gameObjects[0].transform.forward * z);
                 }
-                else goTranform.Translate(origin + refTranform.forward * z);
+                else goTranform.position = origin + (refTranform.forward * z);
 
                 break;
             case (int)DirectionType.Backward:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.forward * -z);
+                    goTranform.position = origin + (Selection.gameObjects[0].transform.forward * -z);
                 }
-                else goTranform.Translate(origin + refTranform.forward * -z);
+                else goTranform.position = origin + (refTranform.forward * -z);
                 
                 break;
             case (int)DirectionType.Left:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.right * -x);
+                    goTranform.position = origin + (Selection.gameObjects[0].transform.right * -x);
                 }
-                else goTranform.Translate(origin + refTranform.right * -x);
+                else goTranform.position = origin + (refTranform.right * -x);
                 
                 break;
             case (int)DirectionType.Right:
 
                 if(UnidirectionalMode)
                 {
-                    goTranform.Translate(origin + Selection.gameObjects[0].transform.right * x);
+                    goTranform.position = origin + (Selection.gameObjects[0].transform.right * x);
                 }
-                else goTranform.Translate(origin + refTranform.right * x);
+                else goTranform.position = origin + (refTranform.right * x);
 
                 break;
             
@@ -348,7 +340,7 @@ public class SerializeTool : EditorWindow
         {
             string name = go.name;
 
-            if (go == null || !name.Contains("mdl#"))
+            if(!IsValidGameObject(go))
                 continue;
 
             UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
@@ -388,11 +380,12 @@ public class SerializeTool : EditorWindow
             }
         }
 
-        Vector3[] boundsArray = new Vector3[4];
-        boundsArray[0] = bounds.size;
-        boundsArray[1] = bounds.max;
-        boundsArray[2] = bounds.min;
-        boundsArray[3] = bounds.center;
+        Vector3[] boundsArray = new Vector3[5];
+        boundsArray[(int)BoundsInt.Size] = bounds.size;
+        boundsArray[(int)BoundsInt.Max] = bounds.max;
+        boundsArray[(int)BoundsInt.Min] = bounds.min;
+        boundsArray[(int)BoundsInt.Center] = bounds.center;
+        boundsArray[(int)BoundsInt.Extents] = bounds.extents;
 
         foreach (GameObject go in newSource)
         {
@@ -416,7 +409,7 @@ public class SerializeTool : EditorWindow
 
         string name = go.name;
 
-        if (go == null || !name.Contains("mdl#"))
+        if(!IsValidGameObject(go))
             return new Vector3[4];
 
         UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
@@ -451,14 +444,22 @@ public class SerializeTool : EditorWindow
         }
 
         Vector3[] boundsArray = new Vector3[4];
-        boundsArray[0] = bounds.size;
-        boundsArray[1] = bounds.max;
-        boundsArray[2] = bounds.min;
-        boundsArray[3] = bounds.center;
+        boundsArray[(int)BoundsInt.Size] = bounds.size;
+        boundsArray[(int)BoundsInt.Max] = bounds.max;
+        boundsArray[(int)BoundsInt.Min] = bounds.min;
+        boundsArray[(int)BoundsInt.Center] = bounds.center;
 
         GameObject.DestroyImmediate(obj);
         GameObject.DestroyImmediate(sourceParent);
 
         return boundsArray;
+    }
+
+    public static bool IsValidGameObject(GameObject go)
+    {
+        if(go == null || !go.name.Contains("mdl#"))
+            return false;
+
+        return true;
     }
 }

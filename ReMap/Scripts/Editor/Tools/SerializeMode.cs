@@ -9,8 +9,9 @@ using System.Collections.Generic;
 /// </summary>
 public class SerializeTool : EditorWindow
 {
-    public enum DirectionType { Top, Bottom, Forward, Backward, Left, Right };
-    public enum BoundsInt { Size, Max, Min, Center, Extents };
+    private enum DirectionType { Top, Bottom, Forward, Backward, Left, Right };
+    private enum BoundsInt { Size, Max, Min, Center, Extents };
+    private string[] calculationMethod = new string[] {"Bounds only", "Bounds + XYZ entry", "XYZ entry only"};
 
     private static float x_entry = 0;
     private static float y_entry = 0;
@@ -20,12 +21,14 @@ public class SerializeTool : EditorWindow
     private static float z_spacing = 0;
     private static bool UnidirectionalMode = false;
     private static bool MirrorMode = false;
+    private static int selectedMethod = 0;
 
     // Utility
     private static GameObject[] Source;
     private static Vector3 BoundsSize;
     private static Vector3 BoundsMax;
     private static Vector3 BoundsMin;
+    private static Vector3 BoundsCenter;
     private static Vector3 BoundsExtents;
 
 
@@ -36,8 +39,8 @@ public class SerializeTool : EditorWindow
     public static void Init()
     {
         SerializeTool window = (SerializeTool)EditorWindow.GetWindow(typeof(SerializeTool), false, "Serialize Tool");
-        window.minSize = new Vector2(360, 300);
-        window.maxSize = new Vector2(360, 300);
+        window.minSize = new Vector2(420, 300);
+        window.maxSize = new Vector2(420, 300);
         window.Show();
     }
 
@@ -51,48 +54,50 @@ public class SerializeTool : EditorWindow
 
         GUILayout.Label("Amount of props selected: " + Selection.count.ToString(), centeredStyle, GUILayout.ExpandWidth(true));
 
-        EditorGUILayout.Space(4);
-
         EditorGUILayout.Space(6);
 
         GUILayout.BeginHorizontal();
         UnidirectionalMode = GUILayout.Toggle(UnidirectionalMode, "Unidirectional Mode");
         GUILayout.EndHorizontal();
-
-        EditorGUILayout.Space(6);
         
         GUILayout.BeginHorizontal();
         MirrorMode = GUILayout.Toggle(MirrorMode, "Mirror Mode");
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space(6);
+;
+        GUILayout.Label("Method of calculation: ", GUILayout.Width(140));
+        selectedMethod = GUILayout.Toolbar(selectedMethod, calculationMethod);
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("T/U Spacing: ");
-        float.TryParse(GUILayout.TextField(y_entry.ToString()), out y_entry);
-        if (GUILayout.Button("Reset T/U values")) y_entry = 0;
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("F/B Spacing: ");
-        float.TryParse(GUILayout.TextField(z_entry.ToString()), out z_entry);
-        if (GUILayout.Button("Reset F/B values")) z_entry = 0;
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("L/R Spacing: ");
-        float.TryParse(GUILayout.TextField(x_entry.ToString()), out x_entry);
-        if (GUILayout.Button("Reset L/R values")) x_entry = 0;
-        GUILayout.EndHorizontal();
-
-        if (GUILayout.Button("Reset all values"))
+        if ( selectedMethod != 0 )
         {
-            z_entry = 0;
-            x_entry = 0;
-            y_entry = 0;
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("T/U Spacing: ", GUILayout.Width(120));
+            float.TryParse(GUILayout.TextField(y_entry.ToString(), GUILayout.Width(120)), out y_entry);
+            if (GUILayout.Button("Reset T/U values")) y_entry = 0;
+            GUILayout.EndHorizontal();
+    
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("F/B Spacing: ", GUILayout.Width(120));
+            float.TryParse(GUILayout.TextField(z_entry.ToString(), GUILayout.Width(120)), out z_entry);
+            if (GUILayout.Button("Reset F/B values")) z_entry = 0;
+            GUILayout.EndHorizontal();
+    
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("L/R Spacing: ", GUILayout.Width(120));
+            float.TryParse(GUILayout.TextField(x_entry.ToString(), GUILayout.Width(120)), out x_entry);
+            if (GUILayout.Button("Reset L/R values")) x_entry = 0;
+            GUILayout.EndHorizontal();
+    
+            if (GUILayout.Button("Reset all values"))
+            {
+                z_entry = 0;
+                x_entry = 0;
+                y_entry = 0;
+            }
         }
 
-        EditorGUILayout.Space(4);
+        EditorGUILayout.Space(6);
 
         if (GUILayout.Button("Duplicate to TOP"))
             DuplicateInit((int)DirectionType.Top);
@@ -124,15 +129,31 @@ public class SerializeTool : EditorWindow
         BoundsSize = DeterminedBounds[(int)BoundsInt.Size];
         BoundsMax = DeterminedBounds[(int)BoundsInt.Max];
         BoundsMin = DeterminedBounds[(int)BoundsInt.Min];
+        BoundsCenter = DeterminedBounds[(int)BoundsInt.Center];
         BoundsExtents = DeterminedBounds[(int)BoundsInt.Extents];
 
         ReMapConsole.Log($"[Serialize Tool] Bounds Size: {BoundsSize}", ReMapConsole.LogType.Info);
         ReMapConsole.Log($"[Serialize Tool] Bounds Max:  {BoundsMax}",  ReMapConsole.LogType.Info);
         ReMapConsole.Log($"[Serialize Tool] Bounds Min:  {BoundsMin}",  ReMapConsole.LogType.Info);
 
-        x_spacing = x_entry + BoundsSize.x;
-        y_spacing = y_entry + BoundsSize.y;
-        z_spacing = z_entry + BoundsSize.z;
+        switch(selectedMethod)
+        {
+            case 0:
+                x_spacing = BoundsSize.x;
+                y_spacing = BoundsSize.y;
+                z_spacing = BoundsSize.z;
+                break;
+            case 1:
+                x_spacing = x_entry + BoundsSize.x;
+                y_spacing = y_entry + BoundsSize.y;
+                z_spacing = z_entry + BoundsSize.z;
+                break;
+            case 2:
+                x_spacing = x_entry;
+                y_spacing = y_entry;
+                z_spacing = z_entry;
+            break;
+        }
 
         DuplicateProps(directionType);
     }
@@ -242,9 +263,10 @@ public class SerializeTool : EditorWindow
                 case (int)DirectionType.Forward:
                 case (int)DirectionType.Right:
 
-                    x = Vector3.Distance(new Vector3(bounds.center.x, 0, 0), new Vector3(BoundsMax.x, 0, 0)) * 2;
-                    y = Vector3.Distance(new Vector3(0, bounds.center.y, 0), new Vector3(0, BoundsMax.y, 0)) * 2;
-                    z = Vector3.Distance(new Vector3(0, 0, bounds.center.z), new Vector3(0, 0, BoundsMax.z)) * 2;
+                    Vector3 dist = new Vector3(BoundsCenter.x + BoundsExtents.x, BoundsCenter.y + BoundsExtents.y, BoundsCenter.z + BoundsExtents.z);
+                    x = Vector3.Distance(new Vector3(dist.x, 0, 0), new Vector3(origin.x, 0, 0)) * 2;
+                    y = Vector3.Distance(new Vector3(0, dist.y, 0), new Vector3(0, origin.y, 0)) * 2;
+                    z = Vector3.Distance(new Vector3(0, 0, dist.z), new Vector3(0, 0, origin.z)) * 2;
 
                     break;
 

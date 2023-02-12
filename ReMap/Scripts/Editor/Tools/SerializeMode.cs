@@ -258,24 +258,6 @@ public class SerializeTool : EditorWindow
                 case (int)DirectionType.Forward:
                 case (int)DirectionType.Right:
 
-                    x = x_spacing - (bounds.size.x/2);
-                    y = y_spacing - (bounds.size.y/2);
-                    z = z_spacing - (bounds.size.z/2);
-
-                    float DistX = Vector3.Distance(new Vector3(BoundsMin.x, 0, 0), new Vector3(BoundsMax.x, 0, 0));
-                    float DistY = Vector3.Distance(new Vector3(0, BoundsMin.y, 0), new Vector3(0, BoundsMax.y, 0));
-                    float DistZ = Vector3.Distance(new Vector3(0, 0, BoundsMin.z), new Vector3(0, 0, BoundsMax.z));
-
-                    x = DistX;
-                    y = DistY;
-                    z = DistZ;
-
-                    Vector3 vec = new Vector3(x, y, z);
-
-                    //UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName("mdl#dev#editor_ref");
-                    //GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
-                    //obj.transform.position = center;//origin + (refTranform.forward * z);
-
                     break;
 
                 case (int)DirectionType.Bottom:

@@ -27,6 +27,22 @@ public class ImportExportJson
         string json = System.IO.File.ReadAllText(path);
         SaveJson myObject = JsonUtility.FromJson<SaveJson>(json);
 
+        // Sort by alphabetical name
+            myObject.Props.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.JumpPads.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.Buttons.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.BubbleShields.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.WeaponRacks.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.LootBins.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.ZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.LinkedZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.VerticalZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.NonVerticalZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.Doors.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.Triggers.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.Sounds.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+        //
+
         await ImportProps(myObject.Props);
         await ImportJumppads(myObject.JumpPads);
         await ImportButtons(myObject.Buttons);

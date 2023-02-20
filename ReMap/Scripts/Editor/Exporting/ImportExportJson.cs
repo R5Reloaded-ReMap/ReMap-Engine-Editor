@@ -62,11 +62,13 @@ public class ImportExportJson
     private static async Task ImportProps(List<PropsClass> Props)
     {
         int i = 0;
+        int j = 1;
+        int propCount = Props.Count;
         foreach(PropsClass prop in Props)
         {
             ReMapConsole.Log("[Json Import] Importing: " + prop.Name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing Props", "Importing: " + prop.Name, (i + 1) / (float)Props.Count);
-            i++;
+            EditorUtility.DisplayProgressBar($"Importing Props {j}/{propCount}", "Importing: " + prop.Name, (i + 1) / (float)propCount);
+            i++; j++;
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(prop.Name);
             if (loadedPrefabResource == null)
@@ -97,10 +99,12 @@ public class ImportExportJson
     private static async Task ImportJumppads(List<JumpPadsClass> JumpPads)
     {
         int i = 0;
+        int j = 1;
+        int jumpPadsCount = JumpPads.Count;
         foreach(JumpPadsClass jumppad in JumpPads)
         {
             ReMapConsole.Log("[Json Import] Importing: custom_jumppad", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing Jumppads", "Importing: custom_jumppad " + i, (i + 1) / (float)JumpPads.Count);
+            EditorUtility.DisplayProgressBar($"Importing Jumppads {j}/{jumpPadsCount}", "Importing: custom_jumppad " + i, (i + 1) / (float)jumpPadsCount);
 
             string Model = "custom_jumppad";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -126,17 +130,19 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( jumppad.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ImportButtons(List<ButtonsClass> Buttons)
     {
         int i = 0;
+        int j = 1;
+        int buttonsCount = Buttons.Count;
         foreach(ButtonsClass button in Buttons)
         {
             ReMapConsole.Log("[Json Import] Importing: custom_button", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing Buttons", "Importing: custom_button " + i, (i + 1) / (float)Buttons.Count);
+            EditorUtility.DisplayProgressBar($"Importing Buttons {j}/{buttonsCount}", "Importing: custom_button " + i, (i + 1) / (float)buttonsCount);
 
             string Model = "custom_button";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -159,17 +165,19 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( button.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ImportBubbleSheilds(List<BubbleShieldsClass> BSheilds)
     {
         int i = 0;
+        int j = 1;
+        int bSheildsCount = BSheilds.Count;
         foreach(BubbleShieldsClass sheild in BSheilds)
         {
             ReMapConsole.Log("[Json Import] Importing: " + sheild.Model, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing BubbleShields", "Importing: " + sheild.Model, (i + 1) / (float)BSheilds.Count);
+            EditorUtility.DisplayProgressBar($"Importing BubbleShields {j}/{bSheildsCount}", "Importing: " + sheild.Model, (i + 1) / (float)bSheildsCount);
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(sheild.Model);
             if (loadedPrefabResource == null)
@@ -194,17 +202,19 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( sheild.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ImportWeaponRacks(List<WeaponRacksClass> WeaponRacks)
     {
         int i = 0;
+        int j = 1;
+        int weaponRacksCount = WeaponRacks.Count;
         foreach(WeaponRacksClass weaponrack in WeaponRacks)
         {
             ReMapConsole.Log("[Json Import] Importing: " + weaponrack.Weapon, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing WeaponRacks", "Importing: " + weaponrack.Weapon, (i + 1) / (float)WeaponRacks.Count);
+            EditorUtility.DisplayProgressBar($"Importing WeaponRacks {j}/{weaponRacksCount}", "Importing: " + weaponrack.Weapon, (i + 1) / (float)weaponRacksCount);
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(weaponrack.Weapon);
             if (loadedPrefabResource == null)
@@ -225,17 +235,19 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( weaponrack.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ImportLootBins(List<LootBinsClass> LootBins)
     {
         int i = 0;
+        int j = 1;
+        int lootBinsCount = LootBins.Count;
         foreach(LootBinsClass lootbin in LootBins)
         {
             ReMapConsole.Log("[Json Import] Importing: custom_lootbin", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing LootBins", "Importing: custom_lootbin " + i, (i + 1) / (float)LootBins.Count);
+            EditorUtility.DisplayProgressBar($"Importing LootBins {j}/{lootBinsCount}", "Importing: custom_lootbin " + i, (i + 1) / (float)lootBinsCount);
 
             string Model = "custom_lootbin";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -257,17 +269,22 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( lootbin.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ImportZipLines(List<ZipLinesClass> Ziplines, List<LinkedZipLinesClass> LinkedZiplines, List<VerticalZipLinesClass> VerticalZiplines, List<NonVerticalZipLinesClass> NonVerticalZiplines)
     {
         int i = 0;
+        int j = 1;
+        int ziplinesCount = Ziplines.Count;
+        int linkedZiplinesCount = LinkedZiplines.Count;
+        int verticalZiplinesCount = VerticalZiplines.Count;
+        int nonVerticalZiplinesCount = NonVerticalZiplines.Count;
         foreach(ZipLinesClass zipline in Ziplines)
         {
             ReMapConsole.Log("[Json Import] Importing: custom_zipline", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing Ziplines", "Importing: custom_zipline " + i, (i + 1) / (float)Ziplines.Count);
+            EditorUtility.DisplayProgressBar($"Importing Ziplines {j}/{ziplinesCount}", "Importing: custom_zipline " + i, (i + 1) / (float)ziplinesCount);
 
             string Model = "custom_zipline";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -290,14 +307,14 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
-        i = 0;
+        i = 0; j = 1;
         foreach(LinkedZipLinesClass zipline in LinkedZiplines)
         {
             ReMapConsole.Log("[Json Import] Importing: Linked Zipline", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing LinkedZiplines", "Importing: Linked Zipline " + i, (i + 1) / (float)LinkedZiplines.Count);
+            EditorUtility.DisplayProgressBar($"Importing LinkedZiplines {j}/{linkedZiplinesCount}", "Importing: Linked Zipline " + i, (i + 1) / (float)linkedZiplinesCount);
 
             GameObject obj = new GameObject("custom_linked_zipline");
             obj.AddComponent<DrawLinkedZipline>();
@@ -321,14 +338,14 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
-        i = 0;
+        i = 0; j = 1;
         foreach(VerticalZipLinesClass zipline in VerticalZiplines)
         {
             ReMapConsole.Log("[Json Import] Importing: Vertical Zipline", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing VerticalZiplines", "Importing: Vertical Zipline " + i, (i + 1) / (float)VerticalZiplines.Count);
+            EditorUtility.DisplayProgressBar($"Importing VerticalZiplines {j}/{verticalZiplinesCount}", "Importing: Vertical Zipline " + i, (i + 1) / (float)verticalZiplinesCount);
 
             string Model = zipline.ZiplineType;
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -388,14 +405,14 @@ public class ImportExportJson
             obj.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
-        i = 0;
+        i = 0; j = 1;
         foreach(NonVerticalZipLinesClass zipline in NonVerticalZiplines)
         {
             ReMapConsole.Log("[Json Import] Importing: Non Vertical Zipline", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing NonVerticalZiplines", "Importing: Vertical Zipline " + i, (i + 1) / (float)NonVerticalZiplines.Count);
+            EditorUtility.DisplayProgressBar($"Importing NonVerticalZiplines {j}/{nonVerticalZiplinesCount}", "Importing: Vertical Zipline " + i, (i + 1) / (float)nonVerticalZiplinesCount);
 
             string Model = zipline.ZiplineType;
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -455,13 +472,15 @@ public class ImportExportJson
             obj.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ImportDoors(List<DoorsClass> Doors)
     {
         int i = 0;
+        int j = 1;
+        int doorsCount = Doors.Count;
         foreach(DoorsClass door in Doors)
         {
             string Model = "custom_single_door";
@@ -485,7 +504,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Import] Importing: " + Model, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing Doors", "Importing: " + Model, (i + 1) / (float)Doors.Count);
+            EditorUtility.DisplayProgressBar($"Importing Doors {j}/{doorsCount}", "Importing: " + Model, (i + 1) / (float)doorsCount);
 
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
             if (loadedPrefabResource == null)
@@ -509,17 +528,19 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( door.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ImportTriggers(List<TriggersClass> Triggers)
     {
         int i = 0;
+        int j = 1;
+        int triggersCount = Triggers.Count;
         foreach(TriggersClass trigger in Triggers)
         {
             ReMapConsole.Log("[Json Import] Importing: Trigger", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing Triggers", "Importing: Triggers" + i, (i + 1) / (float)Triggers.Count);
+            EditorUtility.DisplayProgressBar($"Importing Triggers {j}/{triggersCount}", "Importing: Triggers" + i, (i + 1) / (float)triggersCount);
 
             string Model = "trigger_cylinder";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -544,17 +565,19 @@ public class ImportExportJson
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( trigger.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ImportSounds(List<SoundClass> Sounds)
     {
         int i = 0;
+        int j = 1;
+        int soundsCount = Sounds.Count;
         foreach(SoundClass sound in Sounds)
         {
             ReMapConsole.Log("[Json Import] Importing: Sound", ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Importing Sounds", "Importing: Sounds" + i, (i + 1) / (float)Sounds.Count);
+            EditorUtility.DisplayProgressBar($"Importing Sounds {j}/{soundsCount}", "Importing: Sounds" + i, (i + 1) / (float)soundsCount);
 
             string Model = "custom_sound";
             UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
@@ -573,18 +596,18 @@ public class ImportExportJson
             script.enable = sound.Enable;
             script.soundName = sound.SoundName;
 
-            int j = 0;
+            int k = 0;
             foreach ( Vector3 polylineSegments in sound.PolylineSegments )
             {
                 Array.Resize( ref script.polylineSegment, script.polylineSegment.Length + 1 );
-                script.polylineSegment[j++] = polylineSegments;
+                script.polylineSegment[k++] = polylineSegments;
             }
 
             if (sound.Collection != "")
             obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( sound.Collection ).transform;
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
@@ -623,7 +646,9 @@ public class ImportExportJson
     private static async Task ExportProps()
     {
         int i = 0;
+        int j = 1;
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        int propObjectsCount = PropObjects.Length;
         foreach(GameObject obj in PropObjects)
         {
             PropScript script = obj.GetComponent<PropScript>();
@@ -633,7 +658,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Props", "Exporting: " + obj.name, (i + 1) / (float)PropObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Props {j}/{propObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)propObjectsCount);
             
             PropsClass prop = new PropsClass();
             PropScriptClass propScript = new PropScriptClass();
@@ -652,14 +677,16 @@ public class ImportExportJson
                 save.Props.Add(prop);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportJumppads()
     {
         int i = 0;
+        int j = 1;
         GameObject[] JumpPadObjects = GameObject.FindGameObjectsWithTag("Jumppad");
+        int jumpPadObjectsCount = JumpPadObjects.Length;
         foreach (GameObject obj in JumpPadObjects)
         {
             PropScript script = obj.GetComponent<PropScript>();
@@ -669,7 +696,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Jumppads", "Exporting: " + obj.name, (i + 1) / (float)JumpPadObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Jumppads {j}/{jumpPadObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)jumpPadObjectsCount);
 
             JumpPadsClass jumpPad = new JumpPadsClass();
             PropScriptClass propScript = new PropScriptClass();
@@ -686,14 +713,16 @@ public class ImportExportJson
             save.JumpPads.Add(jumpPad);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportButtons()
     {
         int i = 0;
+        int j = 1;
         GameObject[] ButtonObjects = GameObject.FindGameObjectsWithTag("Button");
+        int buttonObjectsCount = ButtonObjects.Length;
         foreach (GameObject obj in ButtonObjects)
         {
             ButtonScripting script = obj.GetComponent<ButtonScripting>();
@@ -703,7 +732,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Buttons", "Exporting: " + obj.name, (i + 1) / (float)ButtonObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Buttons {j}/{buttonObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)buttonObjectsCount);
 
             ButtonsClass button = new ButtonsClass();
             button.Position = obj.transform.position;
@@ -716,14 +745,16 @@ public class ImportExportJson
             save.Buttons.Add(button);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportBubbleSheilds()
     {
         int i = 0;
+        int j = 1;
         GameObject[] BubbleShieldObjects = GameObject.FindGameObjectsWithTag("BubbleShield");
+        int bubbleShieldObjectsCount = BubbleShieldObjects.Length;
         foreach (GameObject obj in BubbleShieldObjects)
         {
             BubbleScript script = obj.GetComponent<BubbleScript>();
@@ -733,7 +764,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting BubbleShields", "Exporting: " + obj.name, (i + 1) / (float)BubbleShieldObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting BubbleShields {j}/{bubbleShieldObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)bubbleShieldObjectsCount);
 
             BubbleShieldsClass bubbleShield = new BubbleShieldsClass();
             bubbleShield.Position = obj.transform.position;
@@ -747,14 +778,16 @@ public class ImportExportJson
             save.BubbleShields.Add(bubbleShield);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportWeaponRacks()
     {
         int i = 0;
+        int j = 1;
         GameObject[] WeaponRackObjects = GameObject.FindGameObjectsWithTag("WeaponRack");
+        int weaponRackObjectsCount = WeaponRackObjects.Length;
         foreach (GameObject obj in WeaponRackObjects)
         {
             WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
@@ -764,7 +797,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting LootBins", "Exporting: " + obj.name, (i + 1) / (float)WeaponRackObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting WeaponRacks {j}/{weaponRackObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)weaponRackObjectsCount);
 
             WeaponRacksClass weaponRack = new WeaponRacksClass();
             weaponRack.Position = obj.transform.position;
@@ -777,14 +810,16 @@ public class ImportExportJson
             save.WeaponRacks.Add(weaponRack);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportLootBins()
     {
         int i = 0;
+        int j = 1;
         GameObject[] LootBinObjects = GameObject.FindGameObjectsWithTag("LootBin");
+        int lootBinObjectsCount = LootBinObjects.Length;
         foreach (GameObject obj in LootBinObjects)
         {
             LootBinScript script = obj.GetComponent<LootBinScript>();
@@ -794,7 +829,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting LootBins", "Exporting: " + obj.name, (i + 1) / (float)LootBinObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting LootBins {j}/{lootBinObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)lootBinObjectsCount);
 
             LootBinsClass lootBin = new LootBinsClass();
             lootBin.Position = obj.transform.position;
@@ -806,18 +841,20 @@ public class ImportExportJson
             save.LootBins.Add(lootBin);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportZipLines()
     {
         int i = 0;
+        int j = 1;
         GameObject[] ZipLineObjects = GameObject.FindGameObjectsWithTag("ZipLine");
+        int zipLineObjectsCount = ZipLineObjects.Length;
         foreach (GameObject obj in ZipLineObjects)
         {
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)ZipLineObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Ziplines {j}/{zipLineObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)zipLineObjectsCount);
 
             ZipLinesClass zipLine = new ZipLinesClass();
             foreach (Transform child in obj.transform)
@@ -836,11 +873,12 @@ public class ImportExportJson
             save.ZipLines.Add(zipLine);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
-        i = 0;
+        i = 0; j = 1;
         GameObject[] LinkedZipLineObjects = GameObject.FindGameObjectsWithTag("LinkedZipline");
+        int linkedZipLineObjectsCount = LinkedZipLineObjects.Length;
         foreach (GameObject obj in LinkedZipLineObjects)
         {
             LinkedZiplineScript script = obj.GetComponent<LinkedZiplineScript>();
@@ -850,7 +888,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)LinkedZipLineObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Linked Ziplines {j}/{linkedZipLineObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)linkedZipLineObjectsCount);
 
             List<Vector3> nodes = new List<Vector3>();
             LinkedZipLinesClass linkedZipLine = new LinkedZipLinesClass();
@@ -867,11 +905,12 @@ public class ImportExportJson
             save.LinkedZipLines.Add(linkedZipLine);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
-        i = 0;
+        i = 0; j = 1;
         GameObject[] VerticalZipLineObjects = GameObject.FindGameObjectsWithTag("VerticalZipLine");
+        int verticalZipLineObjectsCount = VerticalZipLineObjects.Length;
         foreach (GameObject obj in VerticalZipLineObjects)
         {
             DrawVerticalZipline script = obj.GetComponent<DrawVerticalZipline>();
@@ -881,7 +920,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)VerticalZipLineObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Vertical Ziplines {j}/{verticalZipLineObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)verticalZipLineObjectsCount);
 
             VerticalZipLinesClass verticalZipLine = new VerticalZipLinesClass();
 
@@ -928,11 +967,12 @@ public class ImportExportJson
             save.VerticalZipLines.Add(verticalZipLine);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
-        i = 0;
+        i = 0; j = 1;
         GameObject[] NonVerticalZipLineObjects = GameObject.FindGameObjectsWithTag("NonVerticalZipLine");
+        int nonVerticalZipLineObjectsCount = NonVerticalZipLineObjects.Length;
         foreach (GameObject obj in NonVerticalZipLineObjects)
         {
             DrawNonVerticalZipline script = obj.GetComponent<DrawNonVerticalZipline>();
@@ -942,7 +982,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Ziplines", "Exporting: " + obj.name, (i + 1) / (float)NonVerticalZipLineObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Non Vertical Ziplines {j}/{nonVerticalZipLineObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)nonVerticalZipLineObjectsCount);
 
             NonVerticalZipLinesClass nonVerticalZipLine = new NonVerticalZipLinesClass();
 
@@ -990,14 +1030,16 @@ public class ImportExportJson
             save.NonVerticalZipLines.Add(nonVerticalZipLine);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportDoors()
     {
         int i = 0;
+        int j = 1;
         GameObject[] SingleDoorObjects = GameObject.FindGameObjectsWithTag("SingleDoor");
+        int singleDoorObjectsCount = SingleDoorObjects.Length;
         foreach (GameObject obj in SingleDoorObjects)
         {
             DoorScript script = obj.GetComponent<DoorScript>();
@@ -1007,7 +1049,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)SingleDoorObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Single Doors {j}/{singleDoorObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)singleDoorObjectsCount);
 
             DoorsClass singleDoor = new DoorsClass();
             singleDoor.Position = obj.transform.position;
@@ -1020,11 +1062,12 @@ public class ImportExportJson
             save.Doors.Add(singleDoor);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
-        i = 0;
+        i = 0; j = 1;
         GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
+        int doubleDoorObjectsCount = DoubleDoorObjects.Length;
         foreach (GameObject obj in DoubleDoorObjects)
         {
             DoorScript script = obj.GetComponent<DoorScript>();
@@ -1034,7 +1077,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)DoubleDoorObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Double Doors {j}/{doubleDoorObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)doubleDoorObjectsCount);
 
             DoorsClass doubleDoor = new DoorsClass();
             doubleDoor.Position = obj.transform.position;
@@ -1047,15 +1090,16 @@ public class ImportExportJson
             save.Doors.Add(doubleDoor);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
-        i = 0;
+        i = 0; j = 1;
         GameObject[] VertDoorObjects = GameObject.FindGameObjectsWithTag("VerticalDoor");
+        int vertDoorObjectsCount = VertDoorObjects.Length;
         foreach (GameObject obj in VertDoorObjects)
         {
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)VertDoorObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Vertical Doors {j}/{vertDoorObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)vertDoorObjectsCount);
 
             DoorsClass vertDoor = new DoorsClass();
             vertDoor.Position = obj.transform.position;
@@ -1068,14 +1112,16 @@ public class ImportExportJson
             save.Doors.Add(vertDoor);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
 
+        i = 0; j = 1;
         GameObject[] HorDoorObjects = GameObject.FindGameObjectsWithTag("HorzDoor");
+        int horDoorObjectsCount = HorDoorObjects.Length;
         foreach (GameObject obj in HorDoorObjects)
         {
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Doors", "Exporting: " + obj.name, (i + 1) / (float)HorDoorObjects.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Doors {j}/{horDoorObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)horDoorObjectsCount);
 
             DoorsClass horDoor = new DoorsClass();
             horDoor.Position = obj.transform.position;
@@ -1088,15 +1134,17 @@ public class ImportExportJson
             save.Doors.Add(horDoor);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportTriggers()
     {
-        GameObject[] Triggers = GameObject.FindGameObjectsWithTag("Trigger");
         int i = 0;
-        foreach (GameObject obj in Triggers)
+        int j = 1;
+        GameObject[] TriggersObjects = GameObject.FindGameObjectsWithTag("Trigger");
+        int triggersObjectsCount = TriggersObjects.Length;
+        foreach (GameObject obj in TriggersObjects)
         {
             TriggerScripting script = obj.GetComponent<TriggerScripting>();
             if (script == null) {
@@ -1105,7 +1153,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Triggers", "Exporting: " + obj.name, (i + 1) / (float)Triggers.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Triggers {j}/{triggersObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)triggersObjectsCount);
 
             TriggersClass trigger = new TriggersClass();
             trigger.Position = obj.transform.position;
@@ -1121,15 +1169,17 @@ public class ImportExportJson
             save.Triggers.Add(trigger);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 
     private static async Task ExportSounds()
     {
-        GameObject[] Sounds = GameObject.FindGameObjectsWithTag("Sound");
         int i = 0;
-        foreach (GameObject obj in Sounds)
+        int j = 1;
+        GameObject[] SoundsObjects = GameObject.FindGameObjectsWithTag("Sound");
+        int soundsObjectsCount = SoundsObjects.Length;
+        foreach (GameObject obj in SoundsObjects)
         {
             SoundScript script = obj.GetComponent<SoundScript>();
             if (script == null) {
@@ -1138,7 +1188,7 @@ public class ImportExportJson
             }
 
             ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar("Exporting Sounds", "Exporting: " + obj.name, (i + 1) / (float)Sounds.Length);
+            EditorUtility.DisplayProgressBar($"Exporting Sounds {j}/{soundsObjectsCount}", "Exporting: " + obj.name, (i + 1) / (float)soundsObjectsCount);
 
             SoundClass sound = new SoundClass();
             sound.Position = script.soundModel.transform.position;
@@ -1159,7 +1209,7 @@ public class ImportExportJson
             save.Sounds.Add(sound);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
-            i++;
+            i++; j++;
         }
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -1212,6 +1213,127 @@ public class ImportExportJson
             i++; j++;
         }
     }
+
+
+    [MenuItem("ReMap/Map Fix/ReImport Map", false, 51)]
+    public static async void ReImportJson()
+    {
+        var path = EditorUtility.SaveFilePanel("Json Export", "", "mapexport.json", "json");
+
+        if (path.Length == 0)
+            return;
+
+        // Export
+        Helper.FixPropTags();
+
+        EditorUtility.DisplayProgressBar("Starting Export", "" , 0);
+
+        ResetJsonSave();
+        await ExportProps();
+        await ExportJumppads();
+        await ExportButtons();
+        await ExportBubbleSheilds();
+        await ExportWeaponRacks();
+        await ExportLootBins();
+        await ExportZipLines();
+        await ExportDoors();
+        await ExportTriggers();
+        await ExportSounds();
+
+        ReMapConsole.Log("[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
+        string jsonExport = JsonUtility.ToJson(save);
+        System.IO.File.WriteAllText(path, jsonExport);
+
+        ReMapConsole.Log("[Json Export] Finished.", ReMapConsole.LogType.Success);
+
+        EditorUtility.ClearProgressBar();
+
+        // Delete All Prefab
+        GameObject[][] Objects = new GameObject[16][];
+
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
+        GameObject[] JumpPadObjects = GameObject.FindGameObjectsWithTag("Jumppad");
+        GameObject[] ButtonObjects = GameObject.FindGameObjectsWithTag("Button");
+        GameObject[] BubbleShieldObjects = GameObject.FindGameObjectsWithTag("BubbleShield");
+        GameObject[] WeaponRackObjects = GameObject.FindGameObjectsWithTag("WeaponRack");
+        GameObject[] LootBinObjects = GameObject.FindGameObjectsWithTag("LootBin");
+        GameObject[] ZipLineObjects = GameObject.FindGameObjectsWithTag("ZipLine");
+        GameObject[] LinkedZipLineObjects = GameObject.FindGameObjectsWithTag("LinkedZipline");
+        GameObject[] VerticalZipLineObjects = GameObject.FindGameObjectsWithTag("VerticalZipLine");
+        GameObject[] NonVerticalZipLineObjects = GameObject.FindGameObjectsWithTag("NonVerticalZipLine");
+        GameObject[] SingleDoorObjects = GameObject.FindGameObjectsWithTag("SingleDoor");
+        GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
+        GameObject[] VertDoorObjects = GameObject.FindGameObjectsWithTag("VerticalDoor");
+        GameObject[] HorDoorObjects = GameObject.FindGameObjectsWithTag("HorzDoor");
+        GameObject[] TriggersObjects = GameObject.FindGameObjectsWithTag("Trigger");
+        GameObject[] SoundsObjects = GameObject.FindGameObjectsWithTag("Sound");
+
+        Objects[0] = PropObjects;
+        Objects[1] = JumpPadObjects;
+        Objects[2] = ButtonObjects;
+        Objects[3] = BubbleShieldObjects;
+        Objects[4] = WeaponRackObjects;
+        Objects[5] = LootBinObjects;
+        Objects[6] = ZipLineObjects;
+        Objects[7] = LinkedZipLineObjects;
+        Objects[8] = VerticalZipLineObjects;
+        Objects[9] = NonVerticalZipLineObjects;
+        Objects[10] = SingleDoorObjects;
+        Objects[11] = DoubleDoorObjects;
+        Objects[12] = VertDoorObjects;
+        Objects[13] = HorDoorObjects;
+        Objects[14] = TriggersObjects;
+        Objects[15] = SoundsObjects;
+
+
+        foreach (GameObject[] goArray in Objects )
+        {
+            if ( goArray.Length != 0 )
+            {
+                for (int i = 0; i < goArray.Length; i++)
+                    GameObject.DestroyImmediate(goArray[i]);
+            }
+        }
+
+
+        // Import
+        ReMapConsole.Log("[Json Import] Reading file: " + path, ReMapConsole.LogType.Warning);
+        EditorUtility.DisplayProgressBar("Starting Import", "Reading File" , 0);
+        string jsonImport = System.IO.File.ReadAllText(path);
+        SaveJson myObject = JsonUtility.FromJson<SaveJson>(jsonImport);
+
+        // Sort by alphabetical name
+            myObject.Props.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.JumpPads.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.Buttons.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.BubbleShields.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.WeaponRacks.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.LootBins.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.ZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.LinkedZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.VerticalZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.NonVerticalZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.Doors.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.Triggers.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            myObject.Sounds.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+        //
+
+        await ImportProps(myObject.Props);
+        await ImportJumppads(myObject.JumpPads);
+        await ImportButtons(myObject.Buttons);
+        await ImportBubbleSheilds(myObject.BubbleShields);
+        await ImportWeaponRacks(myObject.WeaponRacks);
+        await ImportLootBins(myObject.LootBins);
+        await ImportZipLines(myObject.ZipLines, myObject.LinkedZipLines, myObject.VerticalZipLines, myObject.NonVerticalZipLines);
+        await ImportDoors(myObject.Doors);
+        await ImportTriggers(myObject.Triggers);
+        await ImportSounds(myObject.Sounds);
+
+        ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
+
+        EditorUtility.ClearProgressBar();
+    }
+
 
     private static void ResetJsonSave()
     {

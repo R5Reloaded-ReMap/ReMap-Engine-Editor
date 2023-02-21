@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class ModelDistance : EditorWindow
 {
-    bool isValid;
+    private bool isValid;
     private Object source;
     private Object target;
     private Vector3 sourceOrigin;
@@ -18,8 +18,8 @@ public class ModelDistance : EditorWindow
     {
         ModelDistance window = (ModelDistance)EditorWindow.GetWindow(typeof(ModelDistance), false, "Measure Distance");
         window.Show();
-        window.minSize = new Vector2(375, 140);
-        window.maxSize = new Vector2(375, 140);
+        //window.minSize = new Vector2(375, 140);
+        //window.maxSize = new Vector2(375, 140);
     }
 
     void OnInspectorUpdate()
@@ -90,32 +90,49 @@ public class ModelDistance : EditorWindow
             GUILayout.BeginVertical("box");
             GUILayout.Label("Click on 2 prefabs to add it automatically or:");
             GUILayout.Label("Add two prefabs to Measure the distance:");
-            source = EditorGUILayout.ObjectField(source, typeof(Object), true);
-            target = EditorGUILayout.ObjectField(target, typeof(Object), true);
+
+            GUILayout.BeginHorizontal();
+                GUILayout.Label("Source", GUILayout.Width(60));
+                source = EditorGUILayout.ObjectField(source, typeof(Object), true);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+                GUILayout.Label("Target", GUILayout.Width(60));
+                target = EditorGUILayout.ObjectField(target, typeof(Object), true);
+            GUILayout.EndHorizontal();
+
             GUILayout.EndVertical();
 
             // Distance
+            string distToString = dist.ToString().Replace(",",".");
+
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Distance:");
-            GUILayout.TextField(dist.ToString(), GUILayout.Width(200));
+            GUILayout.TextField(distToString, GUILayout.Width(200));
             if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = dist.ToString();
+                GUIUtility.systemCopyBuffer = distToString;
             GUILayout.EndHorizontal();
         }
         else
         {
-            GUILayout.BeginVertical("box");
-            GUILayout.Label("Select two prefabs to add it automatically or\nadd two prefabs to measure the distance:");
-            source = EditorGUILayout.ObjectField(source, typeof(Object), true);
-            target = EditorGUILayout.ObjectField(target, typeof(Object), true);
-            GUILayout.EndVertical();
+            GUILayout.BeginHorizontal();
+                GUILayout.Label("Source", GUILayout.Width(60));
+                source = EditorGUILayout.ObjectField(source, typeof(Object), true);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+                GUILayout.Label("Target", GUILayout.Width(60));
+                target = EditorGUILayout.ObjectField(target, typeof(Object), true);
+            GUILayout.EndHorizontal();
 
             // Distance
+            string distToString = "0.0";
+
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Distance:");
-            GUILayout.TextField("0.0", GUILayout.Width(200));
+            GUILayout.TextField(distToString, GUILayout.Width(200));
             if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "0.0";
+                GUIUtility.systemCopyBuffer = distToString;
             GUILayout.EndHorizontal();
         }
     }

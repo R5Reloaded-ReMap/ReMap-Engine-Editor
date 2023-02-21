@@ -96,7 +96,7 @@ public class DrawVerticalZipline : MonoBehaviour
         }
 
         // End
-        support_end.transform.position = new Vector3( rope_start.position.x, rope_start.position.y + heightOffset, rope_start.position.z );
+        support_end.transform.position = new Vector3( rope_start.position.x, (rope_start.position.y - armOffset) + heightOffset, rope_start.position.z );
         support_end.transform.eulerAngles = rope_start.eulerAngles;
 
         anglesOffset = anglesOffset % 360;

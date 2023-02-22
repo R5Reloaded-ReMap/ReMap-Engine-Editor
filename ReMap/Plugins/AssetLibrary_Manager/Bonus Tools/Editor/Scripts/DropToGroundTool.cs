@@ -32,24 +32,14 @@ class DropToGroundTool : EditorTool
     {
         if (ToolManager.IsActiveTool(this))
         {
-            Undo.RecordObjects(Selection.transforms, "Drop Objects");
-
-            for (int i = 0; i < Selection.transforms.Length; i++)
+            foreach ( GameObject go in Selection.gameObjects )
             {
-                GameObject go = Selection.transforms[i].gameObject;
-
-                Renderer[] renderers = go.GetComponentsInChildren<Renderer>();
-                var combinedBounds = renderers[0].bounds;
-
-                foreach (Renderer render in renderers)
+                RaycastHit hit;
+                if (Physics.Raycast(go.transform.position, Vector3.down, out hit, 20000))
                 {
-                    combinedBounds.Encapsulate(render.bounds);
+                    go.transform.position = hit.point;
                 }
-
-                float diff = go.transform.position.y - combinedBounds.center.y;
-
-                go.transform.position = new Vector3(go.transform.position.x, combinedBounds.extents.y + diff, go.transform.position.z);
-            }    
+            }
         }
     }
 

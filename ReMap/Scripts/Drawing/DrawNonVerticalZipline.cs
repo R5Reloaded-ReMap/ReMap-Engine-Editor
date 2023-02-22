@@ -144,21 +144,17 @@ public class DrawNonVerticalZipline : MonoBehaviour
         float dist2 = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, rope_end.position);
         if(dist < ShowZiplineDistance || dist2 < ShowZiplineDistance)
         {
-            if (rope_start != null && rope_end != null)
+            var startPos = rope_start.position;
+            var endPos = rope_end.position;
+            var thickness = 3;
+            float autoDetachLenght = autoDetachStart + autoDetachEnd;
+
+            if (rope_start != null && rope_end != null && Vector3.Distance(startPos, endPos) > 10)
             {
                 // Draws a line from this transform to the target
-                var startPos = rope_start.position;
-                var endPos = rope_end.position;
-                var thickness = 3;
-            
                 Handles.DrawBezier(startPos, endPos, startPos, endPos, Color.yellow, null, thickness);
-                //float ziplineDistance = Vector3.Distance(rope_start.position, rope_end.position);
-                //float lengthScaleCalc = ziplineDistance * lengthScale;
-                //Vector3 length = new Vector3( 0, ziplineDistance - lengthScaleCalc - 16, 0 );
-                //if(lengthScale < 0.90) length = new Vector3( 0, 0, 0 );
-                //Handles.DrawBezier(startPos, endPos, startPos + length, endPos + length, Color.yellow, null, thickness);
 
-                if(ShowAutoDetachDistance && Vector3.Distance(startPos, endPos) > 200)
+                if(ShowAutoDetachDistance && Vector3.Distance(startPos, endPos) > autoDetachLenght)
                 {
                     // Draw Start Auto Detach
                     var startDir = rope_end.position - rope_start.position;

@@ -70,7 +70,7 @@ public class DrawVerticalZipline : MonoBehaviour
             arm.transform.localEulerAngles = new Vector3(0, 90, 0);
             rope_start.SetParent(arm.transform);
             rope_start.localPosition = new Vector3(55, -12, 4);
-            rope_start.eulerAngles = new Vector3(0, anglesOffset, 0);
+            rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0);
 
             if(armOffset < 46) armOffset = 46;
             if(armOffset > 300) armOffset = 300;
@@ -96,7 +96,7 @@ public class DrawVerticalZipline : MonoBehaviour
         }
 
         // End
-        support_end.transform.position = new Vector3( rope_start.position.x, heightOffset, rope_start.position.z );
+        support_end.transform.position = new Vector3( rope_start.position.x, (rope_start.position.y - armOffset) + heightOffset, rope_start.position.z );
         support_end.transform.eulerAngles = rope_start.eulerAngles;
 
         anglesOffset = anglesOffset % 360;
@@ -121,16 +121,17 @@ public class DrawVerticalZipline : MonoBehaviour
         float dist2 = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, rope_end.position);
         if(dist < ShowZiplineDistance || dist2 < ShowZiplineDistance)
         {
-            if (rope_start != null && rope_end != null)
+            var startPos = rope_start.position;
+            var endPos = rope_end.position;
+            var thickness = 3;
+            float autoDetachLenght = autoDetachStart + autoDetachEnd;
+
+            if (rope_start != null && rope_end != null && Vector3.Distance(startPos, endPos) > 10)
             {
                 // Draws a line from this transform to the target
-                var startPos = rope_start.position;
-                var endPos = rope_end.position;
-                var thickness = 3;
-            
                 Handles.DrawBezier(startPos, endPos, startPos, endPos, Color.yellow, null, thickness);
 
-                if(ShowAutoDetachDistance)
+                if(ShowAutoDetachDistance && Vector3.Distance(startPos, endPos) > autoDetachLenght)
                 {
                     // Draw Start Auto Detach
                     var startDir = rope_end.position - rope_start.position;

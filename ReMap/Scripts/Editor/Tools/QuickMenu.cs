@@ -95,6 +95,10 @@ public class QuickMenu : EditorWindow
                 GridTool.Init();
             if (GUILayout.Button("Realm ID Tool", GUILayout.ExpandWidth(true)))
                 SetRealmIds.Init();
+            if (GUILayout.Button("Serialize Tool", GUILayout.ExpandWidth(true)))
+                SerializeTool.Init();
+            if (GUILayout.Button("Measure Distance Tool", GUILayout.ExpandWidth(true)))
+                ModelDistance.Init();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();

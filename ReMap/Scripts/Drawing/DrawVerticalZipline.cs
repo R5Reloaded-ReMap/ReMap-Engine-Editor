@@ -16,10 +16,12 @@ public class DrawVerticalZipline : MonoBehaviour
     public bool ShowZipline = true;
     [ConditionalHide("ShowZipline", true)] public float ShowZiplineDistance = 8000;
     [ConditionalHide("ShowZipline", true)] public bool ShowAutoDetachDistance = true;
+    public bool EnableAutoOffsetDistance = false;
 
     [Header("Zipline Parameters:")]
     [ConditionalHide("ShowArmOffset", true)] public float armOffset = 180;
     public float heightOffset = 0;
+    [ConditionalHide("EnableAutoOffsetDistance", true)] public float GroundOffset = 0;
     [ConditionalHide("pushOffInDirectionX", true)] public float anglesOffset = 0;
     public float fadeDistance = -1;
     public float scale = 1;
@@ -96,7 +98,7 @@ public class DrawVerticalZipline : MonoBehaviour
         }
 
         // End
-        support_end.transform.position = new Vector3( rope_start.position.x, (rope_start.position.y - armOffset) + heightOffset, rope_start.position.z );
+        support_end.transform.position = new Vector3( rope_start.position.x, rope_start.position.y + heightOffset, rope_start.position.z );
         support_end.transform.eulerAngles = rope_start.eulerAngles;
 
         anglesOffset = anglesOffset % 360;
@@ -111,6 +113,15 @@ public class DrawVerticalZipline : MonoBehaviour
             if(go.name.Contains("mdl#"))
             {
                 go.name = go.name.Split(char.Parse(" "))[0].Replace("mdl#", "");
+            }
+        }
+
+        if ( EnableAutoOffsetDistance )
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(rope_start.transform.position - new Vector3(0, 1, 0), Vector3.down, out hit, 20000))
+            {
+                heightOffset = -(hit.distance - GroundOffset);
             }
         }
 

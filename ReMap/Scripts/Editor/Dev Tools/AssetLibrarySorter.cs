@@ -274,6 +274,9 @@ public class AssetLibrarySorter : EditorWindow
             if (child.transform.eulerAngles == FindAnglesOffset(file))
                 continue;
 
+            foreach(Renderer renderer in loadedPrefabResource.GetComponentsInChildren<Renderer>())
+                renderer.transform.gameObject.AddComponent<BoxCollider>();
+
             loadedPrefabResource.transform.position = Vector3.zero;
             loadedPrefabResource.transform.eulerAngles = Vector3.zero;
             child.transform.eulerAngles = FindAnglesOffset(file);
@@ -395,6 +398,9 @@ public class AssetLibrarySorter : EditorWindow
 
                     prefabInstance.tag = "Prop";
 
+                    foreach(Renderer renderer in prefabInstance.GetComponentsInChildren<Renderer>())
+                        renderer.transform.gameObject.AddComponent<BoxCollider>();
+
                     PrefabUtility.SaveAsPrefabAsset(prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}");
 
                     UnityEngine.Object.DestroyImmediate(prefabInstance);
@@ -421,6 +427,9 @@ public class AssetLibrarySorter : EditorWindow
                     loadedPrefabResource.transform.eulerAngles = Vector3.zero;
                     child.transform.eulerAngles = FindAnglesOffset(modelPath);
                     child.transform.position = Vector3.zero;
+
+                    foreach(Renderer renderer in loadedPrefabResource.GetComponentsInChildren<Renderer>())
+                        renderer.transform.gameObject.AddComponent<BoxCollider>();
 
                     PrefabUtility.SavePrefabAsset(loadedPrefabResource);
 

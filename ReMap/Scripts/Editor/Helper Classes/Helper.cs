@@ -39,7 +39,8 @@ public class Helper
         {"trigger_cylinder", "Trigger"},
         {"mdl", "Prop"},
         {"mdl#fx#bb_shield", "BubbleShield"},
-        {"custom_sound", "Sound"}
+        {"custom_sound", "Sound"},
+        {"info_spawnpoint_human", "SpawnPoint"}
     };
 
     public enum ExportType
@@ -155,9 +156,20 @@ public class Helper
     /// <returns></returns>
     public static string BuildOrigin(GameObject go, bool isEntFile = false)
     {
-        string x = (-go.transform.position.z).ToString("F4").Replace(",", ".");
-        string y = (go.transform.position.x).ToString("F4").Replace(",", ".");
-        string z = (go.transform.position.y).ToString("F4").Replace(",", ".");
+        float xOffset = 0;
+        float yOffset = 0;
+        float zOffset = 0;
+
+        if (CodeViews.UseOriginOffset)
+        {
+            xOffset = CodeViews.OriginOffset.x;
+            yOffset = CodeViews.OriginOffset.y;
+            zOffset = CodeViews.OriginOffset.z;
+        }
+
+        string x = (-go.transform.position.z + zOffset).ToString("F4").Replace(",", ".");
+        string y = (go.transform.position.x + xOffset).ToString("F4").Replace(",", ".");
+        string z = (go.transform.position.y + yOffset).ToString("F4").Replace(",", ".");
 
         if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
         if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
@@ -178,9 +190,20 @@ public class Helper
     /// <returns></returns>
     public static string BuildOriginVector(Vector3 vec, bool isEntFile = false)
     {
-        string x = (-vec.z).ToString("F4").Replace(",", ".");
-        string y = (vec.x).ToString("F4").Replace(",", ".");
-        string z = (vec.y).ToString("F4").Replace(",", ".");
+        float xOffset = 0;
+        float yOffset = 0;
+        float zOffset = 0;
+
+        if (CodeViews.UseOriginOffset)
+        {
+            xOffset = CodeViews.OriginOffset.x;
+            yOffset = CodeViews.OriginOffset.y;
+            zOffset = CodeViews.OriginOffset.z;
+        }
+
+        string x = (-vec.z + zOffset).ToString("F4").Replace(",", ".");
+        string y = (vec.x + xOffset).ToString("F4").Replace(",", ".");
+        string z = (vec.y + yOffset).ToString("F4").Replace(",", ".");
 
         if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
         if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );

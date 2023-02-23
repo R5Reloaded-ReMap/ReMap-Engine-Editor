@@ -512,6 +512,22 @@ public class Build
         return code;
     }
 
+    public static string NewLocPair(bool isexport = false)
+    {
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        if (PropObjects.Length < 1)
+            return "";
+
+        string code = "    // NewLocPair\n\n";
+
+        code += Helper.ShouldAddStartingOrg(1);
+
+        foreach (GameObject go in PropObjects)
+            code += BuildNewLocPairItem(go, isexport);
+
+        return code;
+    }
+
     public static string BuildDataTableItem(GameObject go, bool isexport)
     {
         string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
@@ -607,5 +623,14 @@ public class Build
         buildent += "}\n";
         
         return buildent;
+    }
+
+    public static string BuildNewLocPairItem(GameObject go, bool isexport)
+    {
+        string buildCode = "";
+
+        buildCode += $"    NewLocPair({Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)})\n";
+        
+        return buildCode;
     }
 }

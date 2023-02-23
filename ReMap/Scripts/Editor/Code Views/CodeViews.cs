@@ -19,8 +19,8 @@ public class CodeViews : EditorWindow
     static bool DisableStartingOffsetString = false;
     static bool DisableStartingOffsetString_temp = false;
     bool ShowAdvanced = false;
-    bool UseOriginOffset = false;
-    Vector3 OriginOffset;
+    public static bool UseOriginOffset = false;
+    public static Vector3 OriginOffset;
 
     // Gen Settings
     bool GenerateProps = true;
@@ -96,13 +96,19 @@ public class CodeViews : EditorWindow
             case 4: //Sound.ent Code
                 GenerateSoundEntCode(false);
                 break;
+            case 5: //NewLocPair Code
+                GenerateNewLocPairCode(false);
+                break;
         }
     }
 
     void OnGUI()
     {
         GUILayout.BeginVertical("box");
-        tab = GUILayout.Toolbar (tab, new string[] {"Map Code", "DataTable Code", "Precache Code", "Script.ent Code", "Sound.ent Code"});
+        GUILayout.BeginHorizontal("box");
+        tab = GUILayout.Toolbar (tab, new string[] {"Map Code", "DataTable Code", "Precache Code", "Script.ent Code", "Sound.ent Code", "NewLocPair Code"});
+        if (GUILayout.Button("Reload Page", GUILayout.Width(100) )) GenerateCorrectCode();
+        GUILayout.EndHorizontal();
         GUILayout.EndVertical();
 
         if(tab != tab_temp)
@@ -137,6 +143,12 @@ public class CodeViews : EditorWindow
                 SoundEntGUI();
                 if (tab != tab_temp)
                     GenerateSoundEntCode(false);
+                tab_temp = tab;
+                break;
+            case 5: //NewLocPair Code
+                NewLocPairGUI();
+                if (tab != tab_temp)
+                    GenerateNewLocPairCode(false);
                 tab_temp = tab;
                 break;
         }
@@ -354,6 +366,36 @@ public class CodeViews : EditorWindow
         GUILayout.EndVertical();
     }
 
+    void NewLocPairGUI()
+    {
+        Helper.Is_Using_Starting_Offset = UseStartingOffset;
+
+        GUI.contentColor = Color.white;
+
+        GUILayout.BeginVertical("box");
+        GUILayout.BeginHorizontal();
+        UseOriginOffset = EditorGUILayout.Toggle("Add a origin offset", UseOriginOffset);
+        if(UseOriginOffset) OriginOffset = EditorGUILayout.Vector3Field("Origin Offset", OriginOffset);
+
+        UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
+
+        GenerateNewLocPairCode(false);
+        
+        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
+
+        GUILayout.BeginVertical("box");
+        scroll = EditorGUILayout.BeginScrollView(scroll);
+        GUILayout.TextArea(code_text, GUILayout.ExpandHeight(true));
+        EditorGUILayout.EndScrollView();
+        GUILayout.EndVertical();
+
+        GUILayout.BeginVertical("box");
+        if (GUILayout.Button("Copy To Clipboard"))
+            GenerateNewLocPairCode(true);
+        GUILayout.EndVertical();
+    }
+
     void GenerateMap(bool onlyMapCode, bool copyCode)
     {
         Helper.FixPropTags();
@@ -457,5 +499,24 @@ public class CodeViews : EditorWindow
         entCode = "";
 
         ReMapConsole.Log("[Code Views] Sound.ent Code Generated", ReMapConsole.LogType.Success);
+    }
+
+    void GenerateNewLocPairCode(bool copycode_text)
+    {
+        Helper.FixPropTags();
+        EditorSceneManager.SaveOpenScenes();
+
+        string entCode = Build.NewLocPair();
+
+        if(copycode_text) {
+            GUIUtility.systemCopyBuffer = entCode;
+            entCode = "";
+            return;
+        }
+        
+        code_text = entCode;
+        entCode = "";
+
+        ReMapConsole.Log("[Code Views] NewLocPair Code Generated", ReMapConsole.LogType.Success);
     }
 }

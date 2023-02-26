@@ -22,6 +22,9 @@ public class CodeViews : EditorWindow
     public static bool UseOriginOffset = false;
     public static Vector3 OriginOffset;
 
+    bool UseStartingOffsetLocPair = false;
+    bool UseStartingOffsetLocPair_temp = false;
+
     // Gen Settings
     bool GenerateProps = true;
     bool GenerateButtons = true;
@@ -368,7 +371,7 @@ public class CodeViews : EditorWindow
 
     void NewLocPairGUI()
     {
-        Helper.Is_Using_Starting_Offset = UseStartingOffset;
+        Helper.Is_Using_Starting_Offset = UseStartingOffsetLocPair;
 
         GUI.contentColor = Color.white;
 
@@ -377,10 +380,12 @@ public class CodeViews : EditorWindow
         UseOriginOffset = EditorGUILayout.Toggle("Add a origin offset", UseOriginOffset);
         if(UseOriginOffset) OriginOffset = EditorGUILayout.Vector3Field("Origin Offset", OriginOffset);
 
-        UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
+        UseStartingOffsetLocPair = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffsetLocPair);
+        if(UseStartingOffsetLocPair != UseStartingOffsetLocPair_temp) {
+            UseStartingOffsetLocPair_temp = UseStartingOffsetLocPair;
+            GenerateNewLocPairCode(false);
+        }
 
-        GenerateNewLocPairCode(false);
-        
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
 

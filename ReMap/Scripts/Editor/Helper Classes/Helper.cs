@@ -298,7 +298,6 @@ public class Helper
 
     public static string Credits = @"
 //Made with Unity Map Editor
-//By AyeZee#6969
-//With help from Julefox#0050
+//By AyeZee#6969 & Julefox#0050
 ";
 }

@@ -19,7 +19,7 @@ public class InfoUI : EditorWindow
         GUILayout.Label("Credits:", EditorStyles.boldLabel);
         GUILayout.Label("Unity Scripts/Export Code/Custom Prefabs:", EditorStyles.boldLabel);
         GUILayout.Label("  AyeZee#6969 \n");
-        GUILayout.Label("Importing/Organizing All Models:", EditorStyles.boldLabel);
+        GUILayout.Label("Importing All Models/Scripting Help:", EditorStyles.boldLabel);
         GUILayout.Label("  Julefox#0050");
         GUILayout.EndVertical();
 

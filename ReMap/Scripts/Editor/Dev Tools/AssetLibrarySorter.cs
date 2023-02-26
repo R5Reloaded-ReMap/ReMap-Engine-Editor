@@ -1,23 +1,22 @@
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEditor;
+using UnityEngine;
 
 public class AssetLibrarySorter : EditorWindow
 {
     static string currentDirectory = Directory.GetCurrentDirectory().Replace("\\","/");
     static string relativeEmptyPrefab = $"Assets/ReMap/Lods - Dont use these/EmptyPrefab.prefab";
-    static string relativeLods =$"Assets/ReMap/Lods - Dont use these";
-    static string relativeModel =$"Assets/ReMap/Lods - Dont use these/Models";
-    static string relativePrefabs =$"Assets/Prefabs";
+    static string relativeLods = $"Assets/ReMap/Lods - Dont use these";
+    static string relativeModel = $"Assets/ReMap/Lods - Dont use these/Models";
+    static string relativePrefabs = $"Assets/Prefabs";
     static string relativeRpakFile = $"Assets/ReMap/Resources/rpakModelFile";
 
-    static string[] protectedFolders = {
-        "_custom_prefabs"
-    };
+    static string[] protectedFolders = { "_custom_prefabs" };
 
     Vector2 scrollPos = Vector2.zero;
 
@@ -50,7 +49,7 @@ public class AssetLibrarySorter : EditorWindow
     [MenuItem("ReMap Dev Tools/Asset Library Sorter/Delete Not Used Texture", false, 100)]
     public static void TextureInit()
     {
-        AssetLibrarySorter.DeleteNotUsedTexture();
+        DeleteNotUsedTexture();
     }
     #endif
 

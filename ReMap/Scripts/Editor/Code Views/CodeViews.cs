@@ -72,10 +72,10 @@ public class CodeViews : EditorWindow
 
     void GetLatestCounts()
     {
-        mapcodecount = Helper.GetAllCount();
-        datatablecount = Helper.GetPropCount();
-        scriptentcount = Helper.GetPropCount();
-        soundentcount = Helper.GetSoundCount();
+        mapcodecount = UnityInfo.GetAllCount();
+        datatablecount = UnityInfo.GetPropCount();
+        scriptentcount = UnityInfo.GetPropCount();
+        soundentcount = UnityInfo.GetSoundCount();
     }
 
     void GenerateCorrectCode()

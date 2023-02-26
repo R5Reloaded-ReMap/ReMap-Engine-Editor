@@ -1,8 +1,8 @@
+using System;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System;
-using System.IO;
 
 public class Helper
 {
@@ -23,7 +23,8 @@ public class Helper
     public static bool GenerateWeaponRacks = true;
     public static bool GenerateTriggers = true;
 
-    static Dictionary<string, string> ObjectToTag = new Dictionary<string, string> {
+    public static Dictionary<string, string> ObjectToTag = new Dictionary<string, string>
+    {
         {"custom_lootbin", "LootBin"},
         {"custom_zipline", "ZipLine"},
         {"_vertical_zipline", "VerticalZipLine"},
@@ -61,36 +62,6 @@ public class Helper
         public string isVisible;
         public string Model;
         public string Collection;
-    }
-
-    /// <summary>
-    /// Gets Total Count of all objects in scene
-    /// </summary>
-    /// <returns></returns>
-    public static int GetAllCount()
-    {
-        int objectCount = 0;
-
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
-        foreach (GameObject go in allObjects) {
-            foreach (string key in ObjectToTag.Keys)
-                if (go.name.Contains(key))
-                    objectCount++;
-        }
-
-        return objectCount;
-    }
-
-    public static int GetPropCount()
-    {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-        return PropObjects.Length;
-    }
-
-    public static int GetSoundCount()
-    {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
-        return PropObjects.Length;
     }
 
     /// <summary>

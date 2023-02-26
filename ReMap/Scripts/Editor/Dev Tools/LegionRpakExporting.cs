@@ -192,7 +192,7 @@ public class LegionRpakExporting : EditorWindow
             File.Move( $"{lodsPathR}", $"{relativeModel}/{Path.GetFileName(lodsPathR)}" );
 
             // Update progress bar
-            progress += 1.0f / folderTotalIdx;
+            progress += 1.0f / filesTotalIdx;
             EditorUtility.DisplayProgressBar($"Deleting Useless Models {filesIdx++}/{filesTotalIdx}", $"Moving {Path.GetFileName(lodsPathR)}", progress);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
@@ -207,7 +207,7 @@ public class LegionRpakExporting : EditorWindow
             File.Move( $"{texturesPathR}", $"{relativeMaterials}/{Path.GetFileName(texturesPathR)}" );
 
             // Update progress bar
-            progress += 1.0f / folderTotalIdx;
+            progress += 1.0f / filesTotalIdx;
             EditorUtility.DisplayProgressBar($"Deleting Useless Models {filesIdx++}/{filesTotalIdx}", $"Moving {Path.GetFileName(texturesPathR)}", progress);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));

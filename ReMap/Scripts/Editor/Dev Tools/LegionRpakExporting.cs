@@ -13,6 +13,8 @@ public class LegionRpakExporting : EditorWindow
     static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
     static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
     static string relativeRpakFile = AssetLibrarySorter.relativeRpakFile;
+    static string relativeModel = AssetLibrarySorter.relativeModel;
+    static string relativeMaterials = AssetLibrarySorter.relativeMaterials;
 
     #if ReMapDev
     [MenuItem("ReMap Dev Tools/Asset Library Sorter/Legion/Create All Rpak List", false, 100)]
@@ -24,8 +26,9 @@ public class LegionRpakExporting : EditorWindow
     [MenuItem("ReMap Dev Tools/Asset Library Sorter/Legion/Export Rpak Models", false, 100)]
     public static async void RpakModelsInit()
     {
-        //await ExportModels();
+        await ExportModels();
         await DeleteUselessModels();
+        await MoveModels();
     }
     #endif
 
@@ -70,7 +73,7 @@ public class LegionRpakExporting : EditorWindow
 
                 // Update progress bar
                 progress += 1.0f / fileTotalIdx;
-                EditorUtility.DisplayProgressBar($"Parsing Rpak Files {fileIdx++}/{fileTotalIdx}", $"Processing {rpakPath.Replace("\\","/")}", progress);
+                EditorUtility.DisplayProgressBar($"Parsing Rpak Files {fileIdx++}/{fileTotalIdx}", $"Processing {Path.GetFileName(rpakPath)}", progress);
             }
 
             string exportedFilePath = $"{currentDirectory}/{relativeLegionPlusExportedFiles}/lists/{Path.GetFileNameWithoutExtension(rpakPath)}.txt";
@@ -141,7 +144,7 @@ public class LegionRpakExporting : EditorWindow
 
                 // Update progress bar
                 progress += 1.0f / fileTotalIdx;
-                EditorUtility.DisplayProgressBar($"Extracting Models {fileIdx++}/{fileTotalIdx}", $"Processing {rpakPath.Replace("\\","/")}", progress);
+                EditorUtility.DisplayProgressBar($"Extracting Models {fileIdx++}/{fileTotalIdx}", $"Processing {Path.GetFileName(rpakPath)}", progress);
             }
         }
     }
@@ -167,7 +170,45 @@ public class LegionRpakExporting : EditorWindow
 
             // Update progress bar
             progress += 1.0f / folderTotalIdx;
-            EditorUtility.DisplayProgressBar($"Deleting Useless Models {folderIdx++}/{folderTotalIdx}", $"Checking {modelPathR}", progress);
+            EditorUtility.DisplayProgressBar($"Deleting Useless Models {folderIdx++}/{folderTotalIdx}", $"Checking {Path.GetFileName(modelPathR)}", progress);
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+        }
+    }
+
+    public static async Task MoveModels()
+    {
+        string directorySearch = $"{currentDirectory}/{relativeLegionPlusExportedFiles}/models";
+
+        string[] allLods = Directory.GetFiles( directorySearch, "*.fbx", SearchOption.AllDirectories );
+        string[] allTextures = Directory.GetFiles( directorySearch, "*.dds", SearchOption.AllDirectories );
+
+        float progress = 0.0f; int filesIdx = 0; int filesTotalIdx = allLods.Length;
+
+        foreach ( string lodsPath in allLods )
+        {
+            string lodsPathR = lodsPath.Replace("\\", "/");
+
+            File.Move( $"{lodsPathR}", $"{relativeModel}/{Path.GetFileName(lodsPathR)}" );
+
+            // Update progress bar
+            progress += 1.0f / folderTotalIdx;
+            EditorUtility.DisplayProgressBar($"Deleting Useless Models {filesIdx++}/{filesTotalIdx}", $"Moving {Path.GetFileName(lodsPathR)}", progress);
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+        }
+
+        progress = 0.0f; filesIdx = 0; filesTotalIdx = allTextures.Length;
+
+        foreach ( string texturesPath in allTextures )
+        {
+            string texturesPathR = texturesPath.Replace("\\", "/");
+
+            File.Move( $"{texturesPathR}", $"{relativeMaterials}/{Path.GetFileName(texturesPathR)}" );
+
+            // Update progress bar
+            progress += 1.0f / folderTotalIdx;
+            EditorUtility.DisplayProgressBar($"Deleting Useless Models {filesIdx++}/{filesTotalIdx}", $"Moving {Path.GetFileName(texturesPathR)}", progress);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
         }

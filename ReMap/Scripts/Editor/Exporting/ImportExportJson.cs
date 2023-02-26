@@ -28,20 +28,19 @@ public class ImportExportJson
         SaveJson myObject = JsonUtility.FromJson<SaveJson>(json);
 
         // Sort by alphabetical name
-            myObject.Props.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.JumpPads.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.Buttons.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.BubbleShields.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.WeaponRacks.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.LootBins.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.ZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.LinkedZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.VerticalZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.NonVerticalZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.Doors.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.Triggers.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.Sounds.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-        //
+        SortListByKey(myObject.Props, x => x.Collection);
+        SortListByKey(myObject.JumpPads, x => x.Collection);
+        SortListByKey(myObject.Buttons, x => x.Collection);
+        SortListByKey(myObject.BubbleShields, x => x.Collection);
+        SortListByKey(myObject.WeaponRacks, x => x.Collection);
+        SortListByKey(myObject.LootBins, x => x.Collection);
+        SortListByKey(myObject.ZipLines, x => x.Collection);
+        SortListByKey(myObject.LinkedZipLines, x => x.Collection);
+        SortListByKey(myObject.VerticalZipLines, x => x.Collection);
+        SortListByKey(myObject.NonVerticalZipLines, x => x.Collection);
+        SortListByKey(myObject.Doors, x => x.Collection);
+        SortListByKey(myObject.Triggers, x => x.Collection);
+        SortListByKey(myObject.Sounds, x => x.Collection);
 
         await ImportProps(myObject.Props);
         await ImportJumppads(myObject.JumpPads);
@@ -1473,5 +1472,10 @@ public class ImportExportJson
             folder = newFolder;
         }
         return folder;
+    }
+
+    public static void SortListByKey<T, TKey>(List<T> list, Func<T, TKey> keySelector) where TKey : IComparable
+    {
+        list.Sort((x, y) => keySelector(x).CompareTo(keySelector(y)));
     }
 }

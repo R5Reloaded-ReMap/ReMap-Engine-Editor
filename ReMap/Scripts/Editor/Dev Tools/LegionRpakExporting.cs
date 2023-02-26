@@ -12,12 +12,19 @@ public class LegionRpakExporting : EditorWindow
     static string currentDirectory = Directory.GetCurrentDirectory().Replace("\\","/");
     static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
     static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
+    static string relativeRpakFile = AssetLibrarySorter.relativeRpakFile;
 
     #if ReMapDev
-    [MenuItem("ReMap Dev Tools/Asset Library Sorter/Create All Rpak List", false, 100)]
+    [MenuItem("ReMap Dev Tools/Asset Library Sorter/Legion/Create All Rpak List", false, 100)]
     public static async void RpakListInit()
     {
         await CreateAllRpakList();
+    }
+
+    [MenuItem("ReMap Dev Tools/Asset Library Sorter/Legion/Export Rpak Models", false, 100)]
+    public static async void RpakModelsInit()
+    {
+        await ExportModels();
     }
     #endif
 
@@ -81,17 +88,20 @@ public class LegionRpakExporting : EditorWindow
                     // [TODO] merge in one file multiple rpaks ( rpak, rpak(01), rpak(02) ) either by a function
                     // or most simple would be that Legion supports multiple opening by command argument
 
+                    //if ( Path.GetFileNameWithoutExtension(rpakPath).Contains("(") )
 
-                    //if ( Path.GetFileNameWithoutExtension(rpakPath).Contains("mp_rr_") )
-                    //{
-                    //    File.Move( $"{exportedFilePath}", $"{relativeRpakFile}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt", true );
-                    //}
-                    //if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{relativeRpakFile}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta", true );
+                    File.Move( $"{exportedFilePath}", $"{relativeRpakFile}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt" );
+                    if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{relativeRpakFile}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
                 }
             }
         }
 
         EditorUtility.ClearProgressBar();
+    }
+
+    public static async Task ExportModels()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(0.001));
     }
 
     public static bool IsValidRpakFile( string rpakPath )

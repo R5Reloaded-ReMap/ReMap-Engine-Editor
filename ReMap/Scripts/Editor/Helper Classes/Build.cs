@@ -465,7 +465,7 @@ public class Build
             }
         }
 
-        if(type == BuildType.Map)
+        if(type == BuildType.Map && PlayerClips.Count > 0)
         {
             code += "\n";
             code += "    //PlayerClips \n";

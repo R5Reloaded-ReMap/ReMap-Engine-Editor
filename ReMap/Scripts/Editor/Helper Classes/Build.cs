@@ -424,6 +424,8 @@ public class Build
                 //break;
         }
 
+        List<GameObject> PlayerClips = new List<GameObject>();
+
         foreach (GameObject go in PropObjects)
         {
             string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
@@ -451,10 +453,45 @@ public class Build
                 case BuildType.Map:
                     if (isexport)
                         ReMapConsole.Log("[Map Export] Exporting: " + model, ReMapConsole.LogType.Info);
+
+                    if(script.playerClip)
+                    {
+                        PlayerClips.Add(go);
+                        continue;
+                    }
                     
                     code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
                     continue;
             }
+        }
+
+        if(type == BuildType.Map)
+        {
+            code += "\n";
+            code += "    //PlayerClips \n";
+            code += "    array<entity> playerClips \n";
+            
+            foreach( GameObject go in PlayerClips )
+            {
+                string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
+                PropScript script = go.GetComponent<PropScript>();
+
+                if (script == null) {
+                    ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
+                    continue;
+                }
+
+                code += $"    playerClips.append( MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
+            }
+
+            code += "\n";
+            code += "    foreach( entity clip in playerClips ) {\n";
+            code += "        wall.MakeInvisible()\n";
+            code += "        wall.kv.solid = SOLID_VPHYSICS\n";
+            code += "        wall.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
+            code += "        wall.kv.contents = CONTENTS_PLAYERCLIP\n";
+            code += "    }\n";
+            code += "\n";   
         }
 
         switch(type) {

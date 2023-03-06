@@ -274,8 +274,25 @@ public class AssetLibrarySorter : EditorWindow
             if (child.transform.eulerAngles == FindAnglesOffset(file))
                 continue;
 
+            //
+            BoxCollider coll = loadedPrefabResource.GetComponent<BoxCollider>();
+
+            if(coll == null) coll = loadedPrefabResource.AddComponent<BoxCollider>();
+
+            Bounds bounds = new Bounds();
+
             foreach(Renderer renderer in loadedPrefabResource.GetComponentsInChildren<Renderer>())
-                renderer.transform.gameObject.AddComponent<BoxCollider>();
+            {
+                bounds.Encapsulate(renderer.bounds);
+
+                BoxCollider BoxCollChild = renderer.GetComponent<BoxCollider>();
+
+                if(BoxCollChild != null) DestroyImmediate(BoxCollChild, true);
+            }
+                        
+            coll.center = bounds.center;
+            coll.size = bounds.size;
+            //
 
             loadedPrefabResource.transform.position = Vector3.zero;
             loadedPrefabResource.transform.eulerAngles = Vector3.zero;
@@ -398,8 +415,25 @@ public class AssetLibrarySorter : EditorWindow
 
                     prefabInstance.tag = "Prop";
 
+                    //
+                    BoxCollider coll = prefabInstance.GetComponent<BoxCollider>();
+
+                    if(coll == null) coll = prefabInstance.AddComponent<BoxCollider>();
+
+                    Bounds bounds = new Bounds();
+
                     foreach(Renderer renderer in prefabInstance.GetComponentsInChildren<Renderer>())
-                        renderer.transform.gameObject.AddComponent<BoxCollider>();
+                    {
+                        bounds.Encapsulate(renderer.bounds);
+
+                        BoxCollider BoxCollChild = renderer.GetComponent<BoxCollider>();
+
+                        if(BoxCollChild != null) DestroyImmediate(BoxCollChild, true);
+                    }
+                        
+                    coll.center = bounds.center;
+                    coll.size = bounds.size;
+                    //
 
                     PrefabUtility.SaveAsPrefabAsset(prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}");
 
@@ -428,8 +462,25 @@ public class AssetLibrarySorter : EditorWindow
                     child.transform.eulerAngles = FindAnglesOffset(modelPath);
                     child.transform.position = Vector3.zero;
 
+                    //
+                    BoxCollider coll = loadedPrefabResource.GetComponent<BoxCollider>();
+
+                    if(coll == null) coll = loadedPrefabResource.AddComponent<BoxCollider>();
+
+                    Bounds bounds = new Bounds();
+
                     foreach(Renderer renderer in loadedPrefabResource.GetComponentsInChildren<Renderer>())
-                        renderer.transform.gameObject.AddComponent<BoxCollider>();
+                    {
+                        bounds.Encapsulate(renderer.bounds);
+
+                        BoxCollider BoxCollChild = renderer.GetComponent<BoxCollider>();
+
+                        if(BoxCollChild != null) DestroyImmediate(BoxCollChild, true);
+                    }
+
+                    coll.center = bounds.center;
+                    coll.size = bounds.size;
+                    //
 
                     PrefabUtility.SavePrefabAsset(loadedPrefabResource);
 

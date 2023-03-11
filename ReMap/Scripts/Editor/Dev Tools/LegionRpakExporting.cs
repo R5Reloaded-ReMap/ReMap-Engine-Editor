@@ -1,4 +1,3 @@
-using DevLibrarySorter;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,7 +12,7 @@ public class LegionRpakExporting : EditorWindow
     static string currentDirectory = Directory.GetCurrentDirectory().Replace("\\","/");
     static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
     static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
-    static string relativeRpakFile = LSRelativePath.relativeRpakFile;
+    static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
 
     #if ReMapDev
     [MenuItem("ReMap Dev Tools/Asset Library Sorter/Legion/Create All Rpak List", false, 100)]

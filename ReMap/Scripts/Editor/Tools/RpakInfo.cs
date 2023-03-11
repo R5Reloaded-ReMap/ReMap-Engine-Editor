@@ -2,13 +2,12 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using System.IO;
-using DevLibrarySorter;
 
 public class RpakInfo : EditorWindow
 {
     static string usedRpak = "";
-    static string currentDirectory = LSRelativePath.currentDirectory;
-    static string relativeRpakFile = LSRelativePath.relativeRpakFile;
+    static string currentDirectory = LibrarySorterWindow.currentDirectory;
+    static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
 
     [MenuItem("ReMap/Tools/Rpak Info", false, 100)]
     public static void Init()

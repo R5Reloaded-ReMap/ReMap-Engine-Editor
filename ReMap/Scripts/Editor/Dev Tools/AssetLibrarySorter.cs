@@ -499,7 +499,7 @@ public class AssetLibrarySorter : EditorWindow
 
     public static async void LibrarySorter()
     {
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt").ToArray();
+        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f)).ToArray();
         foreach (string file in files)
         {
             if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
@@ -710,5 +710,13 @@ public class AssetLibrarySorter : EditorWindow
         line.Sort();
 
         File.WriteAllLines(registerUpdatesFile, line);
+    }
+
+    private static bool IsNotExcludedFile(string filePath)
+    {
+        string fileName = Path.GetFileName(filePath);
+        string[] excludedFiles = { "modelAnglesOffset.txt", "lastestFolderUpdate.txt" };
+
+        return !excludedFiles.Contains(fileName);
     }
 }

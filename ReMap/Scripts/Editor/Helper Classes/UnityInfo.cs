@@ -4,6 +4,15 @@ using UnityEngine;
 public class UnityInfo
 {
     /// <summary>
+    /// Gets Total GameObject in scene
+    /// </summary>
+    /// <returns></returns>
+    public static GameObject[] GetAllGameObjectInScene()
+    {
+        return UnityEngine.Object.FindObjectsOfType<GameObject>();
+    }
+
+    /// <summary>
     /// Gets Total Count of all objects in scene
     /// </summary>
     /// <returns></returns>

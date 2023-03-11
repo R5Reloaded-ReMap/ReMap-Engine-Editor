@@ -211,3 +211,24 @@ public class SoundClass
     public List<Vector3> PolylineSegments;
     public string Collection;
 }
+
+
+//  ██████╗ ██████╗  █████╗ ██╗  ██╗ ██████╗ ██████╗ ███╗   ██╗████████╗███████╗███╗   ██╗████████╗
+//  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔════╝████╗  ██║╚══██╔══╝
+//  ██████╔╝██████╔╝███████║█████╔╝ ██║     ██║   ██║██╔██╗ ██║   ██║   █████╗  ██╔██╗ ██║   ██║   
+//  ██╔══██╗██╔═══╝ ██╔══██║██╔═██╗ ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══╝  ██║╚██╗██║   ██║   
+//  ██║  ██║██║     ██║  ██║██║  ██╗╚██████╗╚██████╔╝██║ ╚████║   ██║   ███████╗██║ ╚████║   ██║   
+//  ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═══╝   ╚═╝   
+
+[Serializable]
+public class RpakContentJson
+{
+    public List<RpakContentClass> List;
+}
+
+[Serializable]
+public class RpakContentClass
+{
+    public string modelName;
+    public string[] location;
+}

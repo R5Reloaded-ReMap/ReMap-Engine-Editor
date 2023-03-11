@@ -18,6 +18,8 @@ public class LibrarySorterWindow : EditorWindow
 
     public static string[] protectedFolders = { "_custom_prefabs" };
 
+    static RpakContentJson rpakContent = new RpakContentJson();
+
     Vector2 scrollPos = Vector2.zero;
 
     bool byfile = true;
@@ -50,6 +52,12 @@ public class LibrarySorterWindow : EditorWindow
         public static void TextureInit()
         {
             DeleteNotUsedTexture();
+        }
+
+        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Rpak List", false, 100)]
+        public static async void RpakListInit()
+        {
+            await RpakList();
         }
     #endif
 
@@ -419,29 +427,6 @@ public class LibrarySorterWindow : EditorWindow
         collider.size = bounds.size;
     }
 
-    public static void CheckRpakInfoScriptComponent( GameObject go )
-    {
-        RpakInfoScript info = go.GetComponent<RpakInfoScript>();
-    
-        if( info == null ) info = go.AddComponent<RpakInfoScript>();
-    
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f)).ToArray();
-
-        info.rpakList = new String[0];
-
-        foreach ( string path in files )
-        {
-            string fileName = Path.GetFileNameWithoutExtension(path);
-
-            if ( IsContainsModelName( path, go.name ) )
-            {
-                int listLength = info.rpakList.Length;
-                Array.Resize( ref info.rpakList, listLength + 1 );
-                info.rpakList[listLength] = fileName;
-            }
-        }
-    }
-
     private static bool IsContainsModelName( string filePath, string modelName )
     {
         return System.IO.File.ReadAllText(filePath).Contains( modelName.Replace( "#", "/" ) );
@@ -709,11 +694,85 @@ public class LibrarySorterWindow : EditorWindow
         File.WriteAllLines(registerUpdatesFile, line);
     }
 
-    private static bool IsNotExcludedFile(string filePath)
+    private static bool IsNotExcludedFile(string filePath, bool excludedAllModel = false)
     {
         string fileName = Path.GetFileName(filePath);
-        string[] excludedFiles = { "modelAnglesOffset.txt", "lastestFolderUpdate.txt" };
+        string[] excludedFiles;
+
+        if ( excludedAllModel )
+        {
+            excludedFiles = new string[] { "modelAnglesOffset.txt", "lastestFolderUpdate.txt", "all_models.txt" };
+        }
+        else
+        {
+            excludedFiles = new string[] { "modelAnglesOffset.txt", "lastestFolderUpdate.txt" };
+        }
 
         return !excludedFiles.Contains(fileName);
+    }
+
+    public static async Task RpakList()
+    {
+        ResetRpakContentJson();
+
+        await CreateRpakList();
+    }
+
+    private static async Task CreateRpakList()
+    {
+        //RpakInfoScript info = go.GetComponent<RpakInfoScript>();
+
+        //if( info == null ) info = go.AddComponent<RpakInfoScript>();
+
+        //string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f)).ToArray();
+
+        //info.rpakList = new String[0];
+
+        //foreach ( string path in files )
+        //{
+        //    string fileName = Path.GetFileNameWithoutExtension(path);
+
+        //    if ( IsContainsModelName( path, go.name ) )
+        //    {
+        //        int listLength = info.rpakList.Length;
+        //        Array.Resize( ref info.rpakList, listLength + 1 );
+        //        info.rpakList[listLength] = fileName;
+        //    }
+        //}
+
+        string[] files = Directory.GetFiles($"{currentDirectory}/{relativePrefabs}/all_models", "*.prefab", SearchOption.TopDirectoryOnly).ToArray();
+        string[] folders = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f, true)).ToArray();
+
+        foreach ( string path in files )
+        {
+            RpakContentClass content = new RpakContentClass();
+            content.modelName = Path.GetFileNameWithoutExtension(path);
+
+            /* foreach ( string path_ in folders )
+            {
+                string fileName = Path.GetFileNameWithoutExtension(path_);
+
+                if ( IsContainsModelName( path, content.modelName ) )
+                {
+                    int listLength = content.location.Length;
+                    Array.Resize( ref content.location, listLength + 1 );
+                    content.location[listLength] = fileName;
+                }
+            } */
+            
+            rpakContent.List.Add(content);
+            ReMapConsole.Log($"[TEST] {Path.GetFileNameWithoutExtension(path)}", ReMapConsole.LogType.Info);
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+        }
+
+        string json = JsonUtility.ToJson(rpakContent);
+        System.IO.File.WriteAllText($"{currentDirectory}/{relativePrefabs}/RpakList.json", json);
+    }
+
+    private static void ResetRpakContentJson()
+    {
+        rpakContent = new RpakContentJson();
+        rpakContent.List = new List<RpakContentClass>();
     }
 }

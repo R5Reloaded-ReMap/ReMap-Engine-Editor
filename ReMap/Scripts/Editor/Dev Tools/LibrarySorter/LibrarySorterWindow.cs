@@ -19,7 +19,7 @@ namespace DevLibrarySorter
         static string relativePrefabs = LSRelativePath.relativePrefabs;
         static string relativeRpakFile = LSRelativePath.relativeRpakFile;
 
-        static string[] protectedFolders = { "_custom_prefabs" };
+        static string[] protectedFolders = LSUtility.protectedFolders;
 
         Vector2 scrollPos = Vector2.zero;
 
@@ -71,7 +71,7 @@ namespace DevLibrarySorter
                 GUILayout.BeginVertical("box");
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Create all_models.txt file", GUILayout.Width(400)))
-                    CreateAllModels();
+                    CreateAllModelsList();
                 GUILayout.FlexibleSpace();
                 checkandfixifexists = EditorGUILayout.Toggle("Fix existing prefabs", checkandfixifexists);
                 GUILayout.EndHorizontal();
@@ -106,7 +106,7 @@ namespace DevLibrarySorter
                 GUILayout.Space(10);
                 if (GUILayout.Button("Sort All"))
                     if (EditorUtility.DisplayDialog("Sort All", "Are you sure you want to sort all files?", "Yes", "No"))
-                        LibrarySorter();
+                        LibrarySortAll();
                 GUILayout.EndVertical();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -212,50 +212,6 @@ namespace DevLibrarySorter
             }
         }
 
-        public static async void CreateAllModels()
-        {
-            if(File.Exists($"{currentDirectory}/{relativeRpakFile}/all_models.txt"))
-                File.Delete($"{currentDirectory}/{relativeRpakFile}/all_models.txt");
-
-            File.Create($"{currentDirectory}/{relativeRpakFile}/all_models.txt");
-
-            List<string> allModels = new List<string>();
-
-            string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt" && Path.GetFileName(f) != "all_models.txt").ToArray();
-            foreach (string file in files)
-            {
-                if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
-                    continue;
-
-                ReMapConsole.Log($"[Library Sorter] Reading {file}", ReMapConsole.LogType.Info);
-
-                string[] lines = File.ReadAllLines(file);
-                int i = 0;
-                foreach (string line in lines)
-                {
-                    if (!allModels.Contains(line))
-                    {
-                        allModels.Add(line);
-                        EditorUtility.DisplayProgressBar("Creating all_models.txt", $"Adding {line} to all_models.txt", (i + 1) / (float)lines.Length);
-                        ReMapConsole.Log($"[Library Sorter] Added {line} to all_models.txt", ReMapConsole.LogType.Info);
-                    }
-                }
-
-                ReMapConsole.Log($"[Library Sorter] Finished reading {file}", ReMapConsole.LogType.Success);
-
-                await Task.Yield();
-            }
-
-            allModels.Sort();
-
-            ReMapConsole.Log($"[Library Sorter] Writing all_models.txt", ReMapConsole.LogType.Info);
-            File.WriteAllLines( $"{currentDirectory}/{relativeRpakFile}/all_models.txt", allModels);
-
-            ReMapConsole.Log($"[Library Sorter] Finished writing all_models.txt", ReMapConsole.LogType.Success);
-            EditorUtility.DisplayProgressBar("Creating all_models.txt", "Finished writing all_models.txt", 1);
-            EditorUtility.ClearProgressBar();
-        }
-
         public static void FixPrefab(string prefabname)
         {
             string[] prefabs = AssetDatabase.FindAssets(prefabname, new [] {"Assets/Prefabs"});
@@ -276,25 +232,8 @@ namespace DevLibrarySorter
                 if (child.transform.eulerAngles == FindAnglesOffset(file))
                     continue;
 
-                //
-                BoxCollider coll = loadedPrefabResource.GetComponent<BoxCollider>();
-
-                if(coll == null) coll = loadedPrefabResource.AddComponent<BoxCollider>();
-
-                Bounds bounds = new Bounds();
-
-                foreach(Renderer renderer in loadedPrefabResource.GetComponentsInChildren<Renderer>())
-                {
-                    bounds.Encapsulate(renderer.bounds);
-
-                    BoxCollider BoxCollChild = renderer.GetComponent<BoxCollider>();
-
-                    if(BoxCollChild != null) DestroyImmediate(BoxCollChild, true);
-                }
-
-                coll.center = bounds.center;
-                coll.size = bounds.size;
-                //
+                CheckBoxColliderComponent( loadedPrefabResource );
+                CheckRpakInfoScriptComponent( loadedPrefabResource );
 
                 loadedPrefabResource.transform.position = Vector3.zero;
                 loadedPrefabResource.transform.eulerAngles = Vector3.zero;
@@ -417,25 +356,8 @@ namespace DevLibrarySorter
     
                         prefabInstance.tag = "Prop";
     
-                        //
-                        BoxCollider coll = prefabInstance.GetComponent<BoxCollider>();
-    
-                        if(coll == null) coll = prefabInstance.AddComponent<BoxCollider>();
-    
-                        Bounds bounds = new Bounds();
-    
-                        foreach(Renderer renderer in prefabInstance.GetComponentsInChildren<Renderer>())
-                        {
-                            bounds.Encapsulate(renderer.bounds);
-    
-                            BoxCollider BoxCollChild = renderer.GetComponent<BoxCollider>();
-    
-                            if(BoxCollChild != null) DestroyImmediate(BoxCollChild, true);
-                        }
-                            
-                        coll.center = bounds.center;
-                        coll.size = bounds.size;
-                        //
+                        CheckBoxColliderComponent( prefabInstance );
+                        CheckRpakInfoScriptComponent( prefabInstance );
     
                         PrefabUtility.SaveAsPrefabAsset(prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}");
     
@@ -464,25 +386,8 @@ namespace DevLibrarySorter
                         child.transform.eulerAngles = FindAnglesOffset(modelPath);
                         child.transform.position = Vector3.zero;
     
-                        //
-                        BoxCollider coll = loadedPrefabResource.GetComponent<BoxCollider>();
-    
-                        if(coll == null) coll = loadedPrefabResource.AddComponent<BoxCollider>();
-    
-                        Bounds bounds = new Bounds();
-    
-                        foreach(Renderer renderer in loadedPrefabResource.GetComponentsInChildren<Renderer>())
-                        {
-                            bounds.Encapsulate(renderer.bounds);
-    
-                            BoxCollider BoxCollChild = renderer.GetComponent<BoxCollider>();
-    
-                            if(BoxCollChild != null) DestroyImmediate(BoxCollChild, true);
-                        }
-    
-                        coll.center = bounds.center;
-                        coll.size = bounds.size;
-                        //
+                        CheckBoxColliderComponent( loadedPrefabResource );
+                        CheckRpakInfoScriptComponent( loadedPrefabResource );
     
                         PrefabUtility.SavePrefabAsset(loadedPrefabResource);
     
@@ -499,7 +404,54 @@ namespace DevLibrarySorter
             LibrarySorterWindow.SetFolderLabels(mapName);
         }
 
-        public static async void LibrarySorter()
+        public static void CheckBoxColliderComponent( GameObject go )
+        {
+            BoxCollider collider = go.GetComponent<BoxCollider>();
+    
+            if( collider == null ) collider = go.AddComponent<BoxCollider>();
+    
+            Bounds bounds = new Bounds();
+    
+            foreach(Renderer renderer in go.GetComponentsInChildren<Renderer>())
+            {
+                bounds.Encapsulate(renderer.bounds);
+    
+                BoxCollider BoxColliderChild = renderer.GetComponent<BoxCollider>();
+    
+                if(BoxColliderChild != null) DestroyImmediate(BoxColliderChild, true);
+            }
+    
+            collider.center = bounds.center;
+            collider.size = bounds.size;
+        }
+
+        public static void CheckRpakInfoScriptComponent( GameObject go )
+        {
+            RpakInfoScript info = go.GetComponent<RpakInfoScript>();
+    
+            if( info == null ) info = go.AddComponent<RpakInfoScript>();
+    
+            string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f)).ToArray();
+
+            foreach ( string path in files )
+            {
+                string fileName = Path.GetFileNameWithoutExtension(path);
+
+                if ( IsContainsModelName( path, go.name ) )
+                {
+                    int listLength = info.rpakList.Length;
+                    Array.Resize( ref info.rpakList, listLength + 1 );
+                    info.rpakList[listLength] = fileName;
+                }
+            }
+        }
+
+        private static bool IsContainsModelName( string filePath, string modelName )
+        {
+            return System.IO.File.ReadAllText(filePath).Contains( modelName.Replace( "#", "/" ) );
+        }
+
+        public static async void LibrarySortAll()
         {
             string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f)).ToArray();
             foreach (string file in files)
@@ -630,6 +582,53 @@ namespace DevLibrarySorter
             EditorUtility.ClearProgressBar();
 
             return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Create all_model.txt
+        /// </summary>
+        public static async void CreateAllModelsList()
+        {
+            if(File.Exists($"{currentDirectory}/{relativeRpakFile}/all_models.txt"))
+                File.Delete($"{currentDirectory}/{relativeRpakFile}/all_models.txt");
+
+            File.Create($"{currentDirectory}/{relativeRpakFile}/all_models.txt");
+
+            List<string> allModels = new List<string>();
+
+            string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt" && Path.GetFileName(f) != "all_models.txt").ToArray();
+            foreach (string file in files)
+            {
+                if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
+                    continue;
+
+                ReMapConsole.Log($"[Library Sorter] Reading {file}", ReMapConsole.LogType.Info);
+
+                string[] lines = File.ReadAllLines(file);
+                int i = 0;
+                foreach (string line in lines)
+                {
+                    if (!allModels.Contains(line))
+                    {
+                        allModels.Add(line);
+                        EditorUtility.DisplayProgressBar("Creating all_models.txt", $"Adding {line} to all_models.txt", (i + 1) / (float)lines.Length);
+                        ReMapConsole.Log($"[Library Sorter] Added {line} to all_models.txt", ReMapConsole.LogType.Info);
+                    }
+                }
+
+                ReMapConsole.Log($"[Library Sorter] Finished reading {file}", ReMapConsole.LogType.Success);
+
+                await Task.Yield();
+            }
+
+            allModels.Sort();
+
+            ReMapConsole.Log($"[Library Sorter] Writing all_models.txt", ReMapConsole.LogType.Info);
+            File.WriteAllLines( $"{currentDirectory}/{relativeRpakFile}/all_models.txt", allModels);
+
+            ReMapConsole.Log($"[Library Sorter] Finished writing all_models.txt", ReMapConsole.LogType.Success);
+            EditorUtility.DisplayProgressBar("Creating all_models.txt", "Finished writing all_models.txt", 1);
+            EditorUtility.ClearProgressBar();
         }
 
         public static void UpdateLastestSort(string filePath)

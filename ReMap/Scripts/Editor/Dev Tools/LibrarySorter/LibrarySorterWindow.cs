@@ -433,6 +433,8 @@ namespace DevLibrarySorter
     
             string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f)).ToArray();
 
+            info.rpakList = new String[0];
+
             foreach ( string path in files )
             {
                 string fileName = Path.GetFileNameWithoutExtension(path);

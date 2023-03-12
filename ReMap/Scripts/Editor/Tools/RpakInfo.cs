@@ -9,6 +9,8 @@ public class RpakInfo : EditorWindow
     static string currentDirectory = LibrarySorterWindow.currentDirectory;
     static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
 
+    Vector2 scrollPosition;
+
     [MenuItem("ReMap/Tools/Rpak Info", false, 100)]
     public static void Init()
     {
@@ -26,9 +28,13 @@ public class RpakInfo : EditorWindow
 
     void OnGUI()
     {
-        GUILayout.Label("Rpak Used: ");
+        GUILayout.Label("Models Used:");
 
-        GUILayout.TextField(usedRpak/* , GUILayout.Width(200) */);
+        scrollPosition = EditorGUILayout.BeginScrollView( scrollPosition, GUILayout.Height( 300 ) );
+
+        GUILayout.TextField( usedRpak );
+
+        EditorGUILayout.EndScrollView();
     }
 
     void Update()
@@ -38,29 +44,9 @@ public class RpakInfo : EditorWindow
 
     static void GetUsedRpak()
     {
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f)).ToArray();
-
-        foreach ( GameObject go in UnityInfo.GetAllGameObjectInScene() )
+        foreach ( string models in UnityInfo.GetModelsListInScene() )
         {
-            foreach ( string path in files )
-            {
-                string fileName = Path.GetFileNameWithoutExtension(path);
-
-                if ( IsContainsModelName( path, go.name ) && !usedRpak.Contains( fileName ) ) usedRpak += $"{fileName}\n";
-            }
+            usedRpak += $"{models}\n";
         }
-    }
-
-    private static bool IsContainsModelName( string filePath, string modelName )
-    {
-        return System.IO.File.ReadAllText(filePath).Contains( modelName.Replace( "#", "/" ) );
-    }
-
-    private static bool IsNotExcludedFile(string filePath)
-    {
-        string fileName = Path.GetFileName(filePath);
-        string[] excludedFiles = { "modelAnglesOffset.txt", "lastestFolderUpdate.txt", "all_models.txt" };
-
-        return !excludedFiles.Contains(fileName);
     }
 }

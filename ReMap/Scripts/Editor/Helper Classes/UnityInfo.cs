@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UnityInfo
 {
     /// <summary>
-    /// Gets Total GameObject in scene
+    /// Gets total GameObject in scene
     /// </summary>
     /// <returns></returns>
     public static GameObject[] GetAllGameObjectInScene()
@@ -198,6 +199,25 @@ public class UnityInfo
     {
         GameObject[] SpawnPointObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
         return SpawnPointObjects.Length;
+    }
+
+    /// <summary>
+    /// Get all the models name in the active scene
+    /// </summary>
+    /// <returns></returns>
+    public static string[] GetModelsListInScene()
+    {
+        List<string> modelsInScene = new List<string>();
+
+        foreach ( GameObject go in GetAllGameObjectInScene() )
+        {
+            if ( go.name.Contains( "mdl#" ) && !modelsInScene.Contains( go.name ) )
+                modelsInScene.Add( go.name );
+        }
+
+        modelsInScene.Sort();
+
+        return modelsInScene.ToArray();
     }
 
     /// <summary>

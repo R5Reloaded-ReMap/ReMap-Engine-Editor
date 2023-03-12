@@ -234,21 +234,18 @@ public class UnityInfo
     {
         string[] filePaths = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where( f => IsNotExcludedFile( f, includeAllModelFile ) ).ToArray();
 
-        if ( !returnFileName )
-        {
-            return filePaths;
-        }
-        else
-        {
-            List<string> fileNames = new List<string>();
+        // Return path
+        if ( !returnFileName ) return filePaths;
 
-            foreach ( string filePath in filePaths )
-            {
-                fileNames.Add( Path.GetFileNameWithoutExtension( filePath ) );
-            }
+        // Return file name
+        List<string> fileNames = new List<string>();
 
-            return fileNames.ToArray();
+        foreach ( string filePath in filePaths )
+        {
+            fileNames.Add( Path.GetFileNameWithoutExtension( filePath ) );
         }
+
+        return fileNames.ToArray();
     }
 
     private static bool IsNotExcludedFile( string filePath, bool includeAllModelFile )

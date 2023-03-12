@@ -57,7 +57,7 @@ public class RpakInfo : EditorWindow
 
     static void RpakDetermine()
     {
-        List<string> modelsInScene = new List<string>( UnityInfo.GetModelsListInScene() );
+        List<string> modelsInScene = UnityInfo.GetModelsListInScene().ToList();
 
         List<string> rpakLists = new List<string>( UnityInfo.GetAllRpakModelsFile( true, true ) );
 

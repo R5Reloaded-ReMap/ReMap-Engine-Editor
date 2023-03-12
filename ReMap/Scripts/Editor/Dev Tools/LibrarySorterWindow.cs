@@ -63,11 +63,13 @@ public class LibrarySorterWindow : EditorWindow
 
     void OnGUI()
     {
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+
         GUILayout.Label("WARNING: ONLY USE THIS IF YOU KNOW WHAT YOU ARE DOING!", EditorStyles.boldLabel);
         GUILayout.Label("This will sort all the models in the library into their respective folders.", EditorStyles.boldLabel);
         GUILayout.Space(20);
 
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt").ToArray();
+        string[] files = UnityInfo.GetAllRpakModelsFile();
         string[] timestamps = File.ReadAllLines($"{currentDirectory}/{relativeRpakFile}/lastestFolderUpdate.txt");
 
         options = EditorGUILayout.BeginFoldoutHeaderGroup(options, "Options");
@@ -149,7 +151,6 @@ public class LibrarySorterWindow : EditorWindow
             GUILayout.Space(10);
             if (search.Length >= 3)
             {
-                scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
                 foreach (string prefab in allprefabs)
                 {
                     string prefabname = Path.GetFileNameWithoutExtension(prefab);
@@ -159,7 +160,6 @@ public class LibrarySorterWindow : EditorWindow
                         SetModelLabels(prefabname);
                     }
                 }
-                GUILayout.EndScrollView();
             }
             else
             {
@@ -167,6 +167,7 @@ public class LibrarySorterWindow : EditorWindow
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        GUILayout.EndScrollView();
     }
 
     public static void FixPropTags()
@@ -434,7 +435,7 @@ public class LibrarySorterWindow : EditorWindow
 
     public static async void LibrarySortAll()
     {
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f)).ToArray();
+        string[] files = UnityInfo.GetAllRpakModelsFile();
         foreach (string file in files)
         {
             if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
@@ -632,7 +633,7 @@ public class LibrarySorterWindow : EditorWindow
 
         List<string> allModels = new List<string>();
 
-        string[] files = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => Path.GetFileName(f) != "modelAnglesOffset.txt" && Path.GetFileName(f) != "lastestFolderUpdate.txt" && Path.GetFileName(f) != "all_models.txt").ToArray();
+        string[] files = UnityInfo.GetAllRpakModelsFile( true );
         foreach (string file in files)
         {
             if(protectedFolders.Contains(Path.GetFileNameWithoutExtension(file)))
@@ -694,23 +695,6 @@ public class LibrarySorterWindow : EditorWindow
         File.WriteAllLines(registerUpdatesFile, line);
     }
 
-    private static bool IsNotExcludedFile(string filePath, bool excludedAllModel = false)
-    {
-        string fileName = Path.GetFileName(filePath);
-        string[] excludedFiles;
-
-        if ( excludedAllModel )
-        {
-            excludedFiles = new string[] { "modelAnglesOffset.txt", "lastestFolderUpdate.txt", "all_models.txt" };
-        }
-        else
-        {
-            excludedFiles = new string[] { "modelAnglesOffset.txt", "lastestFolderUpdate.txt" };
-        }
-
-        return !excludedFiles.Contains(fileName);
-    }
-
     public static async Task RpakList()
     {
         ResetRpakContentJson();
@@ -721,7 +705,7 @@ public class LibrarySorterWindow : EditorWindow
     private static async Task CreateRpakList()
     {
         string[] files = Directory.GetFiles($"{currentDirectory}/{relativePrefabs}/all_models", "*.prefab", SearchOption.TopDirectoryOnly).ToArray();
-        string[] rpakLists = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where(f => IsNotExcludedFile(f, true)).ToArray();
+        string[] rpakLists = UnityInfo.GetAllRpakModelsFile( true );
 
         int filesIdx = files.Length - 1;
         int rpakListsIdx = rpakLists.Length - 1;

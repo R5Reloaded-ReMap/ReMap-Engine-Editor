@@ -1,9 +1,15 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UnityInfo
 {
+    public static string currentDirectory = LibrarySorterWindow.currentDirectory;
+    public static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
+
+
     /// <summary>
     /// Gets total GameObject in scene
     /// </summary>
@@ -218,6 +224,44 @@ public class UnityInfo
         modelsInScene.Sort();
 
         return modelsInScene.ToArray();
+    }
+
+    /// <summary>
+    /// Get all rpak list in /ReMap/Resources/rpakModelFile
+    /// </summary>
+    /// <returns></returns>
+    public static string[] GetAllRpakModelsFile( bool includeAllModelFile = false, bool returnFileName = false )
+    {
+        string[] filePaths = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where( f => IsNotExcludedFile( f, includeAllModelFile ) ).ToArray();
+
+        if ( !returnFileName )
+        {
+            return filePaths;
+        }
+        else
+        {
+            List<string> fileNames = new List<string>();
+
+            foreach ( string filePath in filePaths )
+            {
+                fileNames.Add( Path.GetFileNameWithoutExtension( filePath ) );
+            }
+
+            return fileNames.ToArray();
+        }
+    }
+
+    private static bool IsNotExcludedFile( string filePath, bool includeAllModelFile )
+    {
+        string fileName = Path.GetFileName(filePath);
+        string[] excludedFiles;
+
+        if ( includeAllModelFile )
+        {   excludedFiles = new string[] { "modelAnglesOffset.txt", "lastestFolderUpdate.txt", "all_models.txt" }; }
+        else
+        { excludedFiles = new string[] { "modelAnglesOffset.txt", "lastestFolderUpdate.txt" }; }
+
+        return !excludedFiles.Contains(fileName);
     }
 
     /// <summary>

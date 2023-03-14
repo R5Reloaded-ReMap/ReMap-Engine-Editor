@@ -99,7 +99,7 @@ public class ModelSwap : EditorWindow
 
         if ( ArrayIsNull() ) return;
 
-        while ( chosenObject == null ) chosenObject = prefabs[ UnityEngine.Random.Range( 0, prefabs.Length -1 ) ];
+        while ( chosenObject == null ) chosenObject = prefabs[ UnityEngine.Random.Range( 0, prefabs.Length ) ];
 
         UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets( chosenObject.name )[0] ), typeof( UnityEngine.Object ) ) as GameObject;
         if ( loadedPrefabResource == null ) return;

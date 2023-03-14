@@ -88,7 +88,7 @@ public class ImportExportJson
             script.allowMantle = propScript.AllowMantle;
             script.realmID = propScript.RealmID;
 
-            if ( prop.Path.Count != 0 )
+            if ( prop.PathString != "" )
             obj.gameObject.transform.parent = CreatePath( prop.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));

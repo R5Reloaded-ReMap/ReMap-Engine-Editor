@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +37,8 @@ public class PropsClass
     public Vector3 Rotation;
     public Vector3 Scale;
     public PropScriptClass script;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -46,7 +48,8 @@ public class JumpPadsClass
     public Vector3 Rotation;
     public Vector3 Scale;
     public PropScriptClass script;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -56,7 +59,8 @@ public class ButtonsClass
     public Vector3 Rotation;
     public string UseText;
     public string OnUseCallback;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -67,7 +71,8 @@ public class BubbleShieldsClass
     public Vector3 Scale;
     public string Color;
     public string Model;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -77,7 +82,8 @@ public class WeaponRacksClass
     public Vector3 Rotation;
     public string Weapon;
     public float RespawnTime;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -86,7 +92,8 @@ public class LootBinsClass
     public Vector3 Position;
     public Vector3 Rotation;
     public int Skin;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -94,7 +101,8 @@ public class ZipLinesClass
 {
     public Vector3 Start;
     public Vector3 End;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -104,7 +112,8 @@ public class LinkedZipLinesClass
     public bool SmoothType;
     public int SmoothAmount;
     public List<Vector3> Nodes;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -134,7 +143,8 @@ public class VerticalZipLinesClass
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -165,7 +175,8 @@ public class NonVerticalZipLinesClass
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -174,7 +185,8 @@ public class VCPanelsClass
     public string Model;
     public Vector3 Position;
     public Vector3 Angles;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -184,7 +196,8 @@ public class DoorsClass
     public Vector3 Rotation;
     public string Type;
     public bool Gold;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -197,7 +210,8 @@ public class TriggersClass
     public float Radius;
     public float Height;
     public bool Debug;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
 [Serializable]
@@ -209,9 +223,17 @@ public class SoundClass
     public bool Enable;
     public string SoundName;
     public List<Vector3> PolylineSegments;
-    public string Collection;
+    public string PathString;
+    public List<PathClass> Path;
 }
 
+[Serializable]
+public class PathClass
+{
+    public string FolderName;
+    public Vector3 Position;
+    public Vector3 Rotation;
+}
 
 //  ██████╗ ██████╗  █████╗ ██╗  ██╗ ██████╗ ██████╗ ███╗   ██╗████████╗███████╗███╗   ██╗████████╗
 //  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔════╝████╗  ██║╚══██╔══╝

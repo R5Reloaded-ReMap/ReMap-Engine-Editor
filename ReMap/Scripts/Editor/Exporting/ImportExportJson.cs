@@ -28,19 +28,19 @@ public class ImportExportJson
         SaveJson myObject = JsonUtility.FromJson<SaveJson>(json);
 
         // Sort by alphabetical name
-        SortListByKey(myObject.Props, x => x.Collection);
-        SortListByKey(myObject.JumpPads, x => x.Collection);
-        SortListByKey(myObject.Buttons, x => x.Collection);
-        SortListByKey(myObject.BubbleShields, x => x.Collection);
-        SortListByKey(myObject.WeaponRacks, x => x.Collection);
-        SortListByKey(myObject.LootBins, x => x.Collection);
-        SortListByKey(myObject.ZipLines, x => x.Collection);
-        SortListByKey(myObject.LinkedZipLines, x => x.Collection);
-        SortListByKey(myObject.VerticalZipLines, x => x.Collection);
-        SortListByKey(myObject.NonVerticalZipLines, x => x.Collection);
-        SortListByKey(myObject.Doors, x => x.Collection);
-        SortListByKey(myObject.Triggers, x => x.Collection);
-        SortListByKey(myObject.Sounds, x => x.Collection);
+        SortListByKey(myObject.Props, x => x.PathString);
+        SortListByKey(myObject.JumpPads, x => x.PathString);
+        SortListByKey(myObject.Buttons, x => x.PathString);
+        SortListByKey(myObject.BubbleShields, x => x.PathString);
+        SortListByKey(myObject.WeaponRacks, x => x.PathString);
+        SortListByKey(myObject.LootBins, x => x.PathString);
+        SortListByKey(myObject.ZipLines, x => x.PathString);
+        SortListByKey(myObject.LinkedZipLines, x => x.PathString);
+        SortListByKey(myObject.VerticalZipLines, x => x.PathString);
+        SortListByKey(myObject.NonVerticalZipLines, x => x.PathString);
+        SortListByKey(myObject.Doors, x => x.PathString);
+        SortListByKey(myObject.Triggers, x => x.PathString);
+        SortListByKey(myObject.Sounds, x => x.PathString);
 
         await ImportProps(myObject.Props);
         await ImportJumppads(myObject.JumpPads);
@@ -88,8 +88,8 @@ public class ImportExportJson
             script.allowMantle = propScript.AllowMantle;
             script.realmID = propScript.RealmID;
 
-            if (prop.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( prop.Collection ).transform;
+            if ( prop.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( prop.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
         }
@@ -125,8 +125,8 @@ public class ImportExportJson
             propScript.AllowMantle = script.allowMantle;
             propScript.RealmID = script.realmID;
 
-            if (jumppad.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( jumppad.Collection ).transform;
+            if ( jumppad.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( jumppad.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -160,8 +160,8 @@ public class ImportExportJson
             script.OnUseCallback = button.OnUseCallback;
             script.UseText = button.UseText;
 
-            if (button.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( button.Collection ).transform;
+            if ( button.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( button.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -197,8 +197,8 @@ public class ImportExportJson
             script.shieldColor.g = byte.Parse(split[1].Replace("\"", ""));
             script.shieldColor.b = byte.Parse(split[2].Replace("\"", ""));
 
-            if (sheild.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( sheild.Collection ).transform;
+            if ( sheild.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( sheild.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -230,8 +230,8 @@ public class ImportExportJson
             WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
             script.respawnTime = weaponrack.RespawnTime;
 
-            if (weaponrack.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( weaponrack.Collection ).transform;
+            if ( weaponrack.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( weaponrack.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -264,8 +264,8 @@ public class ImportExportJson
             LootBinScript script = obj.GetComponent<LootBinScript>();
             script.lootbinSkin = lootbin.Skin;
 
-            if (lootbin.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( lootbin.Collection ).transform;
+            if ( lootbin.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( lootbin.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -302,8 +302,8 @@ public class ImportExportJson
                     child.transform.position = zipline.End;
             }
 
-            if (zipline.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
+            if ( zipline.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( zipline.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -333,8 +333,8 @@ public class ImportExportJson
             script.smoothType = zipline.SmoothType;
             script.smoothAmount = zipline.SmoothAmount;
 
-            if (zipline.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
+            if ( zipline.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( zipline.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -391,7 +391,7 @@ public class ImportExportJson
                 GameObject panel = PrefabUtility.InstantiatePrefab(loadedPrefabResourcePanel as GameObject) as GameObject;
                 panel.transform.position = panelInfo.Position;
                 panel.transform.eulerAngles = panelInfo.Angles;
-                panel.transform.parent = CreateGameObjectWithCollectionPath( panelInfo.Collection ).transform;
+                panel.transform.parent = CreatePath( panelInfo.Path );
                 Array.Resize( ref script.panels, script.panels.Length + 1 );
                 script.panels[script.panels.Length - 1] = panel;
             }
@@ -400,8 +400,8 @@ public class ImportExportJson
             script.panelTimerMax = zipline.PanelTimerMax;
             script.panelMaxUse = zipline.PanelMaxUse;
 
-            if (zipline.Collection != "")
-            obj.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
+            if ( zipline.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( zipline.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -458,7 +458,7 @@ public class ImportExportJson
                 GameObject panel = PrefabUtility.InstantiatePrefab(loadedPrefabResourcePanel as GameObject) as GameObject;
                 panel.transform.position = panelInfo.Position;
                 panel.transform.eulerAngles = panelInfo.Angles;
-                panel.transform.parent = CreateGameObjectWithCollectionPath( panelInfo.Collection ).transform;
+                panel.transform.parent = CreatePath( panelInfo.Path );
                 Array.Resize( ref script.panels, script.panels.Length + 1 );
                 script.panels[script.panels.Length - 1] = panel;
             }
@@ -467,8 +467,8 @@ public class ImportExportJson
             script.panelTimerMax = zipline.PanelTimerMax;
             script.panelMaxUse = zipline.PanelMaxUse;
 
-            if (zipline.Collection != "")
-            obj.transform.parent = CreateGameObjectWithCollectionPath( zipline.Collection ).transform;
+            if ( zipline.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( zipline.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -523,8 +523,8 @@ public class ImportExportJson
                 script.goldDoor = door.Gold;
             }
 
-            if (door.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( door.Collection ).transform;
+            if ( door.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( door.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -560,8 +560,8 @@ public class ImportExportJson
             script.EnterCallback = trigger.EnterCallback;
             script.LeaveCallback = trigger.ExitCallback;
 
-            if (trigger.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( trigger.Collection ).transform;
+            if ( trigger.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( trigger.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -602,8 +602,8 @@ public class ImportExportJson
                 script.polylineSegment[k++] = polylineSegments;
             }
 
-            if (sound.Collection != "")
-            obj.gameObject.transform.parent = CreateGameObjectWithCollectionPath( sound.Collection ).transform;
+            if ( sound.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( sound.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -670,10 +670,10 @@ public class ImportExportJson
             propScript.RealmID = script.realmID;
             prop.script = propScript;
 
-            prop.Collection = FindCollectionPath( obj );
+            prop.Path = FindPath( obj );
+            prop.PathString = FindPathString( obj );
 
-            if ( !prop.Collection.Contains(protectedModels[0]) && !prop.Collection.Contains(protectedModels[1]) )
-                save.Props.Add(prop);
+            if ( IsValidPath( prop.PathString ) ) save.Props.Add(prop);
 
             await Task.Delay(TimeSpan.FromSeconds(0.001));
             i++; j++;
@@ -707,7 +707,8 @@ public class ImportExportJson
             propScript.RealmID = script.realmID;
             jumpPad.script = propScript;
 
-            jumpPad.Collection = FindCollectionPath( obj );
+            jumpPad.Path = FindPath( obj );
+            jumpPad.PathString = FindPathString( obj );
 
             save.JumpPads.Add(jumpPad);
 
@@ -739,7 +740,8 @@ public class ImportExportJson
             button.UseText = script.UseText;
             button.OnUseCallback = script.OnUseCallback;
 
-            button.Collection = FindCollectionPath( obj );
+            button.Path = FindPath( obj );
+            button.PathString = FindPathString( obj );
 
             save.Buttons.Add(button);
 
@@ -772,7 +774,8 @@ public class ImportExportJson
             bubbleShield.Color = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
             bubbleShield.Model = obj.name.Split(char.Parse(" "))[0];
 
-            bubbleShield.Collection = FindCollectionPath( obj );
+            bubbleShield.Path = FindPath( obj );
+            bubbleShield.PathString = FindPathString( obj );
 
             save.BubbleShields.Add(bubbleShield);
 
@@ -804,7 +807,8 @@ public class ImportExportJson
             weaponRack.Weapon = obj.name.Split(char.Parse(" "))[0];
             weaponRack.RespawnTime = script.respawnTime;
 
-            weaponRack.Collection = FindCollectionPath( obj );
+            weaponRack.Path = FindPath( obj );
+            weaponRack.PathString = FindPathString( obj );
 
             save.WeaponRacks.Add(weaponRack);
 
@@ -835,7 +839,8 @@ public class ImportExportJson
             lootBin.Rotation = obj.transform.rotation.eulerAngles;
             lootBin.Skin = script.lootbinSkin;
 
-            lootBin.Collection = FindCollectionPath( obj );
+            lootBin.Path = FindPath( obj );
+            lootBin.PathString = FindPathString( obj );
 
             save.LootBins.Add(lootBin);
 
@@ -867,7 +872,8 @@ public class ImportExportJson
             if(zipLine.Start == null || zipLine.End == null)
                 continue;
 
-            zipLine.Collection = FindCollectionPath( obj );
+            zipLine.Path = FindPath( obj );
+            zipLine.PathString = FindPathString( obj );
 
             save.ZipLines.Add(zipLine);
 
@@ -899,7 +905,8 @@ public class ImportExportJson
             linkedZipLine.SmoothType = script.smoothType;
             linkedZipLine.SmoothAmount = script.smoothAmount;
 
-            linkedZipLine.Collection = FindCollectionPath( obj );
+            linkedZipLine.Path = FindPath( obj );
+            linkedZipLine.PathString = FindPathString( obj );
 
             save.LinkedZipLines.Add(linkedZipLine);
 
@@ -951,7 +958,8 @@ public class ImportExportJson
                 panelClass.Model = panel.name;
                 panelClass.Position = panel.transform.position;
                 panelClass.Angles = panel.transform.eulerAngles;
-                panelClass.Collection = FindCollectionPath( panel );
+                panelClass.Path = FindPath( panel );
+                panelClass.PathString = FindPathString( obj );
                 panels.Add(panelClass);
             }
 
@@ -961,7 +969,8 @@ public class ImportExportJson
             verticalZipLine.PanelTimerMax = script.panelTimerMax;
             verticalZipLine.PanelMaxUse = script.panelMaxUse;
 
-            verticalZipLine.Collection = FindCollectionPath( obj );
+            verticalZipLine.Path = FindPath( obj );
+            verticalZipLine.PathString = FindPathString( obj );
 
             save.VerticalZipLines.Add(verticalZipLine);
 
@@ -1014,7 +1023,8 @@ public class ImportExportJson
                 panelClass.Model = panel.name;
                 panelClass.Position = panel.transform.position;
                 panelClass.Angles = panel.transform.eulerAngles;
-                panelClass.Collection = FindCollectionPath( panel );
+                panelClass.Path = FindPath( panel );
+                panelClass.PathString = FindPathString( obj );
                 panels.Add(panelClass);
             }
 
@@ -1024,7 +1034,8 @@ public class ImportExportJson
             nonVerticalZipLine.PanelTimerMax = script.panelTimerMax;
             nonVerticalZipLine.PanelMaxUse = script.panelMaxUse;
 
-            nonVerticalZipLine.Collection = FindCollectionPath( obj );
+            nonVerticalZipLine.Path = FindPath( obj );
+            nonVerticalZipLine.PathString = FindPathString( obj );
 
             save.NonVerticalZipLines.Add(nonVerticalZipLine);
 
@@ -1056,7 +1067,8 @@ public class ImportExportJson
             singleDoor.Type = "eMapEditorDoorType.Single";
             singleDoor.Gold = script.goldDoor;
 
-            singleDoor.Collection = FindCollectionPath( obj );
+            singleDoor.Path = FindPath( obj );
+            singleDoor.PathString = FindPathString( obj );
 
             save.Doors.Add(singleDoor);
 
@@ -1084,7 +1096,8 @@ public class ImportExportJson
             doubleDoor.Type = "eMapEditorDoorType.Double";
             doubleDoor.Gold = script.goldDoor;
 
-            doubleDoor.Collection = FindCollectionPath( obj );
+            doubleDoor.Path = FindPath( obj );
+            doubleDoor.PathString = FindPathString( obj );
 
             save.Doors.Add(doubleDoor);
 
@@ -1106,7 +1119,8 @@ public class ImportExportJson
             vertDoor.Type = "eMapEditorDoorType.Vertical";
             vertDoor.Gold = false;
 
-            vertDoor.Collection = FindCollectionPath( obj );
+            vertDoor.Path = FindPath( obj );
+            vertDoor.PathString = FindPathString( obj );
 
             save.Doors.Add(vertDoor);
 
@@ -1128,7 +1142,8 @@ public class ImportExportJson
             horDoor.Type = "eMapEditorDoorType.Horizontal";
             horDoor.Gold = false;
 
-            horDoor.Collection = FindCollectionPath( obj );
+            horDoor.Path = FindPath( obj );
+            horDoor.PathString = FindPathString( obj );
 
             save.Doors.Add(horDoor);
 
@@ -1163,7 +1178,8 @@ public class ImportExportJson
             trigger.ExitCallback = script.LeaveCallback;
             trigger.Debug = script.Debug;
 
-            trigger.Collection = FindCollectionPath( obj );
+            trigger.Path = FindPath( obj );
+            trigger.PathString = FindPathString( obj );
 
             save.Triggers.Add(trigger);
 
@@ -1203,7 +1219,8 @@ public class ImportExportJson
             }
             sound.PolylineSegments = polylineSegment;
 
-            sound.Collection = FindCollectionPath( obj );
+            sound.Path = FindPath( obj );
+            sound.PathString = FindPathString( obj );
 
             save.Sounds.Add(sound);
 
@@ -1301,19 +1318,19 @@ public class ImportExportJson
         SaveJson myObject = JsonUtility.FromJson<SaveJson>(jsonImport);
 
         // Sort by alphabetical name
-            myObject.Props.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.JumpPads.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.Buttons.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.BubbleShields.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.WeaponRacks.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.LootBins.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.ZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.LinkedZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.VerticalZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.NonVerticalZipLines.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.Doors.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.Triggers.Sort((x, y) => x.Collection.CompareTo(y.Collection));
-            myObject.Sounds.Sort((x, y) => x.Collection.CompareTo(y.Collection));
+            SortListByKey(myObject.Props, x => x.PathString);
+            SortListByKey(myObject.JumpPads, x => x.PathString);
+            SortListByKey(myObject.Buttons, x => x.PathString);
+            SortListByKey(myObject.BubbleShields, x => x.PathString);
+            SortListByKey(myObject.WeaponRacks, x => x.PathString);
+            SortListByKey(myObject.LootBins, x => x.PathString);
+            SortListByKey(myObject.ZipLines, x => x.PathString);
+            SortListByKey(myObject.LinkedZipLines, x => x.PathString);
+            SortListByKey(myObject.VerticalZipLines, x => x.PathString);
+            SortListByKey(myObject.NonVerticalZipLines, x => x.PathString);
+            SortListByKey(myObject.Doors, x => x.PathString);
+            SortListByKey(myObject.Triggers, x => x.PathString);
+            SortListByKey(myObject.Sounds, x => x.PathString);
         //
 
         await ImportProps(myObject.Props);
@@ -1367,12 +1384,13 @@ public class ImportExportJson
         return loadedPrefabResource;
     }
 
-    private static string FindCollectionPath( GameObject obj )
+    private static List<PathClass> FindPath( GameObject obj )
     {
         List<GameObject> parents = new List<GameObject>();
+        List<PathClass> pathList = new List<PathClass>();
         GameObject currentParent = obj;
-        string collectionPath = "";
 
+        // find all parented game objects
         while (currentParent.transform.parent != null)
         {
             if ( currentParent != obj ) parents.Add(currentParent);
@@ -1383,95 +1401,84 @@ public class ImportExportJson
 
         foreach (GameObject parent in parents)
         {
-            Vector3 pos = parent.transform.position;
-            Vector3 ang = parent.transform.eulerAngles;
-            collectionPath = $"{parent.name}|{parent.transform.position}|{parent.transform.eulerAngles}/{collectionPath}";
+            PathClass path = new PathClass();
+            path.FolderName = parent.name;
+            path.Position = parent.transform.position;
+            path.Rotation = parent.transform.eulerAngles;
+
+            pathList.Add( path );
         }
 
-        int lastSlashIndex = collectionPath.LastIndexOf("/");
-        if (lastSlashIndex >= 0)
-        {
-            collectionPath = collectionPath.Remove(lastSlashIndex, collectionPath.Length - lastSlashIndex);
-        }
+        pathList.Reverse();
 
-        return collectionPath.Replace("\r", "").Replace("\n", "");
+        return pathList;
     }
 
-    private static GameObject CreateGameObjectWithCollectionPath( string collectionPath )
+    private static string FindPathString( GameObject obj )
     {
-        List<string> pathSubstring = new List<string>();
-        int startIndex = 0;
-        while (true)
+        List<GameObject> parents = new List<GameObject>();
+        string pathString = "";
+        GameObject currentParent = obj;
+
+        // find all parented game objects
+        while (currentParent.transform.parent != null)
         {
-            int slashIndex = collectionPath.IndexOf("/", startIndex);
-            if (slashIndex < 0)
-            {
-                pathSubstring.Add(collectionPath.Substring(startIndex));
-                break;
-            }
-            else
-            {
-                pathSubstring.Add(collectionPath.Substring(startIndex, slashIndex - startIndex));
-                startIndex = slashIndex + 1;
-            }
+            if ( currentParent != obj ) parents.Add(currentParent);
+            currentParent = currentParent.transform.parent.gameObject;
         }
-        string[] parents = pathSubstring.ToArray();
 
-        GameObject folder;
-        folder = GameObject.Find(parents[0].Split(char.Parse("|"))[0]);
-            if(folder == null)
-        folder = new GameObject(parents[0].Split(char.Parse("|"))[0]);
+        if ( currentParent != obj ) parents.Add(currentParent);
 
-        string[] partsPosF = parents[0].Split(char.Parse("|"))[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
-        string[] partsAngF = parents[0].Split(char.Parse("|"))[2].Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
+        parents.Reverse();
 
-        float xPosF = float.Parse(partsPosF[0].Replace(".", ","));
-        float yPosF = float.Parse(partsPosF[1].Replace(".", ","));
-        float zPosF = float.Parse(partsPosF[2].Replace(".", ","));
-
-        float xAngF = float.Parse(partsAngF[0].Replace(".", ","));
-        float yAngF = float.Parse(partsAngF[1].Replace(".", ","));
-        float zAngF = float.Parse(partsAngF[2].Replace(".", ","));
-
-        folder.transform.position = new Vector3( xPosF, yPosF, zPosF );
-        folder.transform.eulerAngles = new Vector3( xAngF, yAngF, zAngF );
-
-        int folderNum = parents.Length;
-
-        string path = parents[0].Split(char.Parse("|"))[0];
-
-        if ( folderNum >= 2 )
-        for ( int j = 1 ; j < folderNum ; j++ )
+        foreach (GameObject parent in parents)
         {
-            string parentName = parents[j].Split(char.Parse("|"))[0];
-            string parentPosString = parents[j].Split(char.Parse("|"))[1];
-            string parentAngString = parents[j].Split(char.Parse("|"))[2];
+            if ( string.IsNullOrEmpty( pathString ) )
+            {
+                pathString = $"{parent.name}";
+            }
+            else pathString = $"{pathString}/{parent.name}";
+        }
 
-            string[] partsPos = parentPosString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
-            string[] partsAng = parentAngString.Replace("(", "").Replace(")", "").Replace(" ", "").Split(char.Parse(","));
+        return pathString;
+    }
 
-            path = path + "/" + parentName;
-            GameObject newFolder;
-            newFolder = GameObject.Find(path);
-                if(newFolder == null)
-            newFolder = new GameObject(parentName);
+    private static Transform CreatePath( List<PathClass> pathList )
+    {
+        GameObject folder = null; string path = "";
 
-            float xPos = float.Parse(partsPos[0].Replace(".", ","));
-            float yPos = float.Parse(partsPos[1].Replace(".", ","));
-            float zPos = float.Parse(partsPos[2].Replace(".", ","));
+        foreach ( PathClass pathClass in pathList )
+        {
+            if ( string.IsNullOrEmpty( path ) )
+            {
+                path = $"{pathClass.FolderName}";
+            }
+            else path = $"{path}/{pathClass.FolderName}";
 
-            float xAng = float.Parse(partsAng[0].Replace(".", ","));
-            float yAng = float.Parse(partsAng[1].Replace(".", ","));
-            float zAng = float.Parse(partsAng[2].Replace(".", ","));
+            GameObject newFolder = GameObject.Find( path );
 
-            newFolder.transform.position = new Vector3( xPos, yPos, zPos );
-            newFolder.transform.eulerAngles = new Vector3( xAng, yAng, zAng );
+            if ( newFolder == null ) newFolder = new GameObject( pathClass.FolderName );
 
-            newFolder.transform.SetParent(folder.transform);
+            newFolder.transform.position = pathClass.Position;
+            newFolder.transform.eulerAngles = pathClass.Rotation;
+
+            if ( folder != null ) newFolder.transform.SetParent(folder.transform);
 
             folder = newFolder;
         }
-        return folder;
+
+        return folder.transform;
+    }
+
+    private static bool IsValidPath( string path )
+    {
+        foreach ( string protectedModel in protectedModels )
+        {
+            if ( path.Contains( protectedModel ) )
+                return false;
+        }
+
+        return true;
     }
 
     public static void SortListByKey<T, TKey>(List<T> list, Func<T, TKey> keySelector) where TKey : IComparable

@@ -503,7 +503,7 @@ public class Build
             code += "        clip.MakeInvisible()\n";
             code += "        clip.kv.solid = SOLID_VPHYSICS\n";
             code += "        clip.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
-            code += "        clip.kv.contents = CONTENTS_SOLID\n";
+            code += "        clip.kv.contents = CONTENTS_PLAYERCLIP\n";
             code += "    }\n";
             code += "\n";   
         }

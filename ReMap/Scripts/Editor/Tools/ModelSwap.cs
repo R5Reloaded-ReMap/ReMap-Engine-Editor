@@ -9,7 +9,9 @@ using System.Collections.Generic;
 /// </summary>
 public class ModelSwap : EditorWindow
 {
-    private GameObject prefab;
+    private GameObject[] prefabs = new GameObject[1];
+    private GameObject[] activeSelection;
+    private GameObject[] newSelection;
     private bool randomlyChanges = true;
 
     /// <summary>
@@ -34,10 +36,23 @@ public class ModelSwap : EditorWindow
 
         EditorGUILayout.Space( 2 );
 
+        for (int i = 0; i < prefabs.Length; i++)
+        {
+            int idx = i + 1;
+            EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField( $"Prefab {idx.ToString("00")}: ", labelStyle, GUILayout.Width( 60 ));
+                prefabs[i] = EditorGUILayout.ObjectField( prefabs[i], typeof( GameObject ), true ) as GameObject;
+                if ( GUILayout.Button( $"Clear Prefab {idx.ToString("00")}", GUILayout.Width( 120 ) ) ) prefabs[i] = null;
+            EditorGUILayout.EndHorizontal();
+        }
+
+        EditorGUILayout.Space( 2 );
+
         EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Prefabs: ", labelStyle, GUILayout.Width( 50 ));
-            prefab = EditorGUILayout.ObjectField( prefab, typeof( GameObject ), true ) as GameObject;
-            if ( GUILayout.Button( "Clear Prefabs", GUILayout.Width( 100 ) ) ) prefab = null;
+
+            if ( GUILayout.Button( $"Remove 1 Row" ) ) Array.Resize( ref prefabs, prefabs.Length - 1 );
+            if ( GUILayout.Button( $"Add 1 Row" ) ) Array.Resize( ref prefabs, prefabs.Length + 1 );
+
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space( 4 );
@@ -56,9 +71,10 @@ public class ModelSwap : EditorWindow
 
     void ChangeSelection()
     {
-        GameObject[] selections = Selection.gameObjects;
+        activeSelection = Selection.gameObjects;
+        newSelection = activeSelection;
 
-        foreach ( GameObject selection in selections )
+        foreach ( GameObject selection in activeSelection )
         {
             if ( randomlyChanges && CoinFlip() )
             {
@@ -69,6 +85,9 @@ public class ModelSwap : EditorWindow
                 SwapModel( selection );
             }
         }
+
+        RemoveNullGameObject( newSelection );
+        Selection.objects = newSelection;
     }
 
     void SwapModel( GameObject selection )
@@ -76,19 +95,25 @@ public class ModelSwap : EditorWindow
         PropScript script = selection.GetComponent<PropScript>();
         if ( script == null || !selection.name.Contains( "mdl#" ) ) return;
 
-        UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets( prefab.name )[0] ), typeof( UnityEngine.Object ) ) as GameObject;
+        GameObject chosenObject = null;
+
+        if ( ArrayIsNull() ) return;
+
+        while ( chosenObject == null ) chosenObject = prefabs[ UnityEngine.Random.Range( 0, prefabs.Length -1 ) ];
+
+        UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets( chosenObject.name )[0] ), typeof( UnityEngine.Object ) ) as GameObject;
         if ( loadedPrefabResource == null ) return;
 
         Vector3 position = selection.transform.position;
         Vector3 rotation = selection.transform.eulerAngles;
         Vector3 localScale = selection.transform.localScale;
 
-        GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+        GameObject obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
         obj.transform.position = position;
         obj.transform.eulerAngles = rotation;
         obj.transform.localScale = localScale;
         obj.transform.parent = FindParent( selection );
-        obj.name = prefab.name;
+        obj.name = chosenObject.name;
 
         PropScript compToAdd = obj.AddComponent<PropScript>();
         compToAdd.allowMantle = script.allowMantle;
@@ -98,17 +123,47 @@ public class ModelSwap : EditorWindow
         compToAdd.playerNoCollision = script.playerNoCollision;
 
         GameObject.DestroyImmediate( selection );
+
+        int currentLength = newSelection.Length;
+        Array.Resize(ref newSelection, currentLength + 1);
+        newSelection[currentLength] = obj;
+    }
+
+    void RemoveNullGameObject( GameObject[] array )
+    {
+        int nullCount = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] == null)
+            {
+                nullCount++;
+            }
+            else if (nullCount > 0)
+            {
+                Array.Copy(array, i, array, i - nullCount, 1);
+            }
+        }
+        Array.Resize(ref array, array.Length - nullCount);
     }
 
     Transform FindParent( GameObject go )
     {
-        if (go.transform.parent != null) return go.transform.parent;
+        if ( go.transform.parent != null ) return go.transform.parent;
         
         return null;
     }
 
+    bool ArrayIsNull()
+    {
+        foreach ( GameObject prefab in prefabs )
+        {
+            if ( prefab != null ) return false;
+        }
+        return true;
+    }
+
     bool CoinFlip()
     {
-        return UnityEngine.Random.Range(0, 2) == 0 ? false : true;
+        return UnityEngine.Random.Range( 0, 2 ) == 0 ? false : true;
     }
 }

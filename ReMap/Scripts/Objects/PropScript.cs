@@ -7,4 +7,6 @@ public class PropScript : MonoBehaviour
     public float fadeDistance = 50000;
     public int realmID = -1;
     public bool playerClip = false;
+    public bool playerNoClimb = false;
+    public bool playerNoCollision = false;
 }

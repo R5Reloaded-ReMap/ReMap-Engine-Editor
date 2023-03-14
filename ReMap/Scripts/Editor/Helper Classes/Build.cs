@@ -425,6 +425,8 @@ public class Build
         }
 
         List<GameObject> PlayerClips = new List<GameObject>();
+	    List<GameObject> PlayerNoCollisions = new List<GameObject>();
+	    List<GameObject> PlayerNoClimbs = new List<GameObject>();
 
         foreach (GameObject go in PropObjects)
         {
@@ -459,6 +461,18 @@ public class Build
                         PlayerClips.Add(go);
                         continue;
                     }
+		    
+		            if(script.playerNoCollision)
+                    {
+                        PlayerNoCollisions.Add(go);
+                        continue;
+                    }
+
+		            if(script.playerNoClimb)
+                    {
+                        PlayerNoClimbs.Add(go);
+                        continue;
+                    }
                     
                     code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
                     continue;
@@ -486,10 +500,62 @@ public class Build
 
             code += "\n";
             code += "    foreach( entity clip in playerClips ) {\n";
-            code += "        wall.MakeInvisible()\n";
-            code += "        wall.kv.solid = SOLID_VPHYSICS\n";
-            code += "        wall.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
-            code += "        wall.kv.contents = CONTENTS_PLAYERCLIP\n";
+            code += "        clip.MakeInvisible()\n";
+            code += "        clip.kv.solid = SOLID_VPHYSICS\n";
+            code += "        clip.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
+            code += "        clip.kv.contents = CONTENTS_SOLID\n";
+            code += "    }\n";
+            code += "\n";   
+        }
+	
+	    if(type == BuildType.Map && PlayerNoCollisions.Count > 0)
+        {
+            code += "\n";
+            code += "    //PlayerNoCollisions \n";
+            code += "    array<entity> PlayerNoCollisions \n";
+            
+            foreach( GameObject go in PlayerNoCollisions )
+            {
+                string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
+                PropScript script = go.GetComponent<PropScript>();
+
+                if (script == null) {
+                    ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
+                    continue;
+                }
+
+                code += $"    PlayerNoCollisions.append( MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
+            }
+
+            code += "\n";
+            code += "    foreach( entity nocollision in PlayerNoCollisions ) {\n";
+            code += "        nocollision.kv.solid = 0\n";
+            code += "    }\n";
+            code += "\n";   
+        }
+	
+	    if(type == BuildType.Map && PlayerNoClimbs.Count > 0)
+        {
+            code += "\n";
+            code += "    //PlayerNoClimbs \n";
+            code += "    array<entity> PlayerNoClimbs \n";
+            
+            foreach( GameObject go in PlayerNoClimbs )
+            {
+                string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
+                PropScript script = go.GetComponent<PropScript>();
+
+                if (script == null) {
+                    ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
+                    continue;
+                }
+
+                code += $"    PlayerNoClimbs.append( MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
+            }
+
+            code += "\n";
+            code += "    foreach( entity noclimb in PlayerNoClimbs ) {\n";
+            code += "        noclimb.kv.solid = 3\n";
             code += "    }\n";
             code += "\n";   
         }

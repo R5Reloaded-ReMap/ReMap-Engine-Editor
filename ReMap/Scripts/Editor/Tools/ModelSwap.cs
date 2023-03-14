@@ -50,17 +50,7 @@ public class ModelSwap : EditorWindow
         EditorGUILayout.Space( 4 );
 
         EditorGUILayout.BeginHorizontal();
-            if ( GUILayout.Button( "Change Selection" ) )
-            {
-                // Enregistre l'état actuel de l'objet pour permettre l'annulation
-                Undo.RecordObject(this, "Change Selection");
-
-                // Appeler la méthode pour effectuer la modification
-                ChangeSelection();
-
-                // Si l'utilisateur appuie sur Ctrl + Z, l'action sera annulée
-                Undo.PerformUndo();
-            }
+            if ( GUILayout.Button( "Change Selection" ) ) ChangeSelection();
         EditorGUILayout.EndHorizontal();
     }
 

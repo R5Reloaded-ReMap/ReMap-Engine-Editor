@@ -115,8 +115,9 @@ public class ModelSwap : EditorWindow
         obj.transform.parent = FindParent( selection );
         obj.name = chosenObject.name;
 
-        PropScript compToAdd = obj.AddComponent<PropScript>();
+        PropScript compToAdd = obj.GetComponent<PropScript>();
         compToAdd.allowMantle = script.allowMantle;
+        compToAdd.fadeDistance = script.fadeDistance;
         compToAdd.realmID = script.realmID;
         compToAdd.playerClip = script.playerClip;
         compToAdd.playerNoClimb = script.playerNoClimb;

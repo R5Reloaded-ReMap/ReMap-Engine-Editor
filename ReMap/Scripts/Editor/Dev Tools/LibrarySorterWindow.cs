@@ -59,6 +59,12 @@ public class LibrarySorterWindow : EditorWindow
         {
             await RpakList();
         }
+
+        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Check FBX Scale", false, 100)]
+        public static async void FBXScaleInit()
+        {
+            await SetScale100ToFBX();
+        }
     #endif
 
     void OnGUI()
@@ -461,6 +467,29 @@ public class LibrarySorterWindow : EditorWindow
         UpdateLastestSort(file);
 
         ReMapConsole.Log($"[Library Sorter] Finished sorting models", ReMapConsole.LogType.Success);
+    }
+
+    public static async Task SetScale100ToFBX()
+    {
+        string[] models = AssetDatabase.FindAssets("t:Model", new string[] {"Assets/ReMap/Lods - Dont use these/Models"});
+
+        int idx = 0; int totalModels = models.Length;
+        foreach (string model in models)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(model);
+            EditorUtility.DisplayProgressBar( $"Checking FBX Scale {idx}/{totalModels}", $"Checking: {Path.GetFileName(path)}", (idx + 1) / (float)models.Length);
+            ModelImporter importer = AssetImporter.GetAtPath(path) as ModelImporter;
+            if (importer != null)
+            {
+                importer.globalScale = 100;
+                importer.SaveAndReimport();
+            }
+            await Task.Delay(TimeSpan.FromSeconds(0.001)); idx++;
+        }
+    
+        EditorUtility.ClearProgressBar();
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
     public static void Dev_GetPrefabAnglesThatAreDiffrent()

@@ -37,36 +37,48 @@ public class LibrarySorterWindow : EditorWindow
     static List<string> allprefabs = new List<string>();
 
     #if ReMapDev
-        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Sort Labels", false, 100)]
+        [MenuItem("ReMap Dev Tools/Prefabs Management/Functions/Check Labels", false, 100)]
         public static async void SetModelLabelsInit()
         {
-            await SetModelLabels();
+            if ( EditorUtility.DisplayDialog("Check Labels", "Are you sure you want to check labels?", "Yes", "No") )
+            {
+                await SetModelLabels();
+            }
         }
 
-        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Check Models Files", false, 100)]
+        [MenuItem("ReMap Dev Tools/Prefabs Management/Windows/Prefab Fix Manager", false, 100)]
         public static void Init()
         {
-            LibrarySorterWindow window = (LibrarySorterWindow)GetWindow(typeof(LibrarySorterWindow), false, "Check Models Files");
+            LibrarySorterWindow window = (LibrarySorterWindow)GetWindow(typeof(LibrarySorterWindow), false, "Prefab Fix Manager");
             window.minSize = new Vector2(650, 600);
             window.Show();
         }
 
-        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Delete Not Used Texture", false, 100)]
+        [MenuItem("ReMap Dev Tools/Prefabs Management/Functions/Check Textures", false, 100)]
         public static void TextureInit()
         {
-            DeleteNotUsedTexture();
+            if ( EditorUtility.DisplayDialog("Check Textures", "Are you sure you want to check textures?", "Yes", "No") )
+            {
+                DeleteNotUsedTexture();
+            }
         }
 
-        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Rpak List", false, 100)]
+        [MenuItem("ReMap Dev Tools/Prefabs Management/Functions/Get Rpak List", false, 100)]
         public static async void RpakListInit()
         {
-            await RpakList();
+            if ( EditorUtility.DisplayDialog("Get Rpak List", "Are you sure you want to get rpak list?", "Yes", "No") )
+            {
+                await RpakList();
+            }
         }
 
-        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Check FBX Scale", false, 100)]
+        [MenuItem("ReMap Dev Tools/Prefabs Management/Functions/Check FBX Scale", false, 100)]
         public static async void FBXScaleInit()
         {
-            await SetScale100ToFBX();
+            if ( EditorUtility.DisplayDialog("Check FBX Scale", "Are you sure you want to check FBX scale?", "Yes", "No") )
+            {
+                await SetScale100ToFBX();
+            }
         }
     #endif
 
@@ -767,10 +779,10 @@ public class JsonWindow : EditorWindow
 
 
     #if ReMapDev
-        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Add Offset To A Prefab", false, 100)]
+        [MenuItem("ReMap Dev Tools/Prefabs Management/Windows/Prefab Offset Manager", false, 100)]
         public static void Init()
         {
-            JsonWindow window = (JsonWindow)GetWindow(typeof(JsonWindow), false, "Offset Prefab");
+            JsonWindow window = (JsonWindow)GetWindow(typeof(JsonWindow), false, "Prefab Offset Manager");
             window.minSize = new Vector2( 300, 700 ); // new Vector2( 888, 700 );
             //window.maxSize = new Vector2( 888, 700 );
             window.Show(); RefreshPage();

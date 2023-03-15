@@ -15,7 +15,7 @@ public class LegionRpakExporting : EditorWindow
     static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
 
     #if ReMapDev
-    [MenuItem("ReMap Dev Tools/Asset Library Sorter/Legion/Create All Rpak List", false, 100)]
+    [MenuItem("ReMap Dev Tools/Prefabs Management/Legion/Create All Rpak List", false, 100)]
     public static async void RpakListInit()
     {
         await CreateAllRpakList();

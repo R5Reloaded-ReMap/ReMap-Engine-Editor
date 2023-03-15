@@ -1,3 +1,4 @@
+using System.Collections;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ public class LibrarySorterWindow : EditorWindow
     public static string relativeMaterials = $"Assets/ReMap/Lods - Dont use these/Materials";
     public static string relativePrefabs = $"Assets/Prefabs";
     public static string relativeRpakFile = $"Assets/ReMap/Resources/rpakModelFile";
+    public static string relativeJsonOffset = $"{relativeRpakFile}/prefabOffsetList.json";
 
     public static string[] protectedFolders = { "_custom_prefabs" };
 
@@ -65,7 +67,27 @@ public class LibrarySorterWindow : EditorWindow
         {
             await SetScale100ToFBX();
         }
+
+        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Test", false, 100)]
+        public static void CreateJsonInit()
+        {
+            CreateJson();
+        }
     #endif
+
+    public static void CreateJson()
+    {
+        PrefabOffsetList list = new PrefabOffsetList();
+        list.List = new List<PrefabOffset>();
+
+        PrefabOffset offset = new PrefabOffset();
+        offset.ModelName = "mdl#";
+        offset.Rotation = new Vector3( 0, 0, 0 );
+        list.List.Add(offset);
+
+        string json = JsonUtility.ToJson(list);
+        System.IO.File.WriteAllText($"{currentDirectory}/{relativeRpakFile}/PrefabOffsetList.json", json);
+    }
 
     void OnGUI()
     {
@@ -228,6 +250,10 @@ public class LibrarySorterWindow : EditorWindow
     {
         string[] prefabs = AssetDatabase.FindAssets(prefabname, new [] {"Assets/Prefabs"});
 
+        string json = System.IO.File.ReadAllText( $"{currentDirectory}/{relativeJsonOffset}" );
+        PrefabOffsetList offsetlist = JsonUtility.FromJson<PrefabOffsetList>( json );
+        List<PrefabOffset> offsets = offsetlist.List;
+
         foreach (string prefab in prefabs)
         {
             string file = AssetDatabase.GUIDToAssetPath(prefab);
@@ -241,14 +267,14 @@ public class LibrarySorterWindow : EditorWindow
 
             Transform child = loadedPrefabResource.GetComponentsInChildren<Transform>()[1];
 
-            if (child.transform.eulerAngles == FindAnglesOffset(file))
+            if (child.transform.eulerAngles == FindAnglesOffset( file, offsets ))
                 continue;
 
             CheckBoxColliderComponent( loadedPrefabResource );
 
             loadedPrefabResource.transform.position = Vector3.zero;
             loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-            child.transform.eulerAngles = FindAnglesOffset(file);
+            child.transform.eulerAngles = FindAnglesOffset( file, offsets );
             child.transform.position = Vector3.zero;
 
             PrefabUtility.SavePrefabAsset(loadedPrefabResource);
@@ -319,6 +345,10 @@ public class LibrarySorterWindow : EditorWindow
         GameObject prefabToAdd; GameObject prefabInstance;
         GameObject objectToAdd; GameObject objectInstance;
 
+        string json = System.IO.File.ReadAllText( $"{currentDirectory}/{relativeJsonOffset}" );
+        PrefabOffsetList offsetlist = JsonUtility.FromJson<PrefabOffsetList>( json );
+        List<PrefabOffset> offsets = offsetlist.List;
+
         int arraylen = arrayMap.Length;
 
         int i = 0;
@@ -362,7 +392,7 @@ public class LibrarySorterWindow : EditorWindow
     
                     objectInstance.transform.parent = prefabInstance.transform;
                     objectInstance.transform.position = Vector3.zero;
-                    objectInstance.transform.eulerAngles = FindAnglesOffset(modelPath);
+                    objectInstance.transform.eulerAngles = FindAnglesOffset( modelPath, offsets );
                     objectInstance.transform.localScale = new Vector3(1, 1, 1);
     
                     prefabInstance.tag = "Prop";
@@ -388,12 +418,12 @@ public class LibrarySorterWindow : EditorWindow
     
                     Transform child = loadedPrefabResource.GetComponentsInChildren<Transform>()[1];
     
-                    if (child.transform.eulerAngles == FindAnglesOffset(modelPath))
+                    if (child.transform.eulerAngles == FindAnglesOffset( modelPath, offsets ))
                         continue;
     
                     loadedPrefabResource.transform.position = Vector3.zero;
                     loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-                    child.transform.eulerAngles = FindAnglesOffset(modelPath);
+                    child.transform.eulerAngles = FindAnglesOffset( modelPath, offsets );
                     child.transform.position = Vector3.zero;
     
                     CheckBoxColliderComponent( loadedPrefabResource );
@@ -492,7 +522,8 @@ public class LibrarySorterWindow : EditorWindow
         AssetDatabase.Refresh();
     }
 
-    public static void Dev_GetPrefabAnglesThatAreDiffrent()
+    // Temp Useless
+    /* public static void Dev_GetPrefabAnglesThatAreDiffrent()
     {
         string[] prefabs = AssetDatabase.FindAssets("t:prefab", new string[] {"Assets/Prefabs"});
         List<string> prefabsList = new List<string>();
@@ -520,30 +551,18 @@ public class LibrarySorterWindow : EditorWindow
                 prefabsList.Add(path);
             }
         }
-    }
+    } */
 
-    public static Vector3 FindAnglesOffset(string searchTerm)
+    public static Vector3 FindAnglesOffset( string searchTerm, List<PrefabOffset> list )
     {
         Vector3 returnedVector = new Vector3( 0, -90, 0 );
 
-        using (StreamReader reader = new StreamReader($"{currentDirectory}/{relativeRpakFile}/modelAnglesOffset.txt"))
+        foreach ( PrefabOffset offset in list )
         {
-            string line;
-
-            while ((line = reader.ReadLine()) != null)
+            if ( offset.ModelName == searchTerm )
             {
-                if (line.Contains(searchTerm) && !line.Contains("//"))
-                {
-                    string[] parts = line.Split(";")[1].Replace("(", "").Replace(")", "").Replace(" ", "").Split(",");
-
-                    ReMapConsole.Log($"[Library Sorter] Angle override found for {searchTerm}, setting angles to: {line.Split(";")[1]}", ReMapConsole.LogType.Info);
-
-                    float x = float.Parse(parts[0]);
-                    float y = float.Parse(parts[1]);
-                    float z = float.Parse(parts[2]);
-                    returnedVector = new Vector3( x, y, z );
-                    break;
-                }
+                returnedVector = offset.Rotation;
+                ReMapConsole.Log($"[Library Sorter] Angle override found for {searchTerm}, setting angles to: {returnedVector}", ReMapConsole.LogType.Info);
             }
         }
 
@@ -777,5 +796,70 @@ public class LibrarySorterWindow : EditorWindow
     {
         rpakContent = new RpakContentJson();
         rpakContent.List = new List<RpakContentClass>();
+    }
+}
+
+public class JsonWindow : EditorWindow
+{
+    static string currentDirectory = LibrarySorterWindow.currentDirectory;
+    static string relativeJsonOffset = LibrarySorterWindow.relativeJsonOffset;
+
+    Vector2 scrollPos = Vector2.zero;
+    string json = System.IO.File.ReadAllText( $"{currentDirectory}/{relativeJsonOffset}" );
+    static PrefabOffsetList offsetlist;
+    static List<PrefabOffset> offsets;
+
+    public static Dictionary<string, Vector3> dictionary = new Dictionary<string, Vector3>();
+
+
+    #if ReMapDev
+        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Add Offset To A Prefab", false, 100)]
+        public static void Init()
+        {
+            JsonWindow window = (JsonWindow)GetWindow(typeof(JsonWindow), false, "Offset Prefab");
+            window.minSize = new Vector2(650, 600);
+            window.Show(); RefreshPage();
+        }
+    #endif
+
+    void OnGUI()
+    {
+        GUIStyle labelStyle = new GUIStyle();
+        labelStyle.normal.textColor = Color.white;
+
+        EditorGUILayout.Space( 2 );
+
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+
+        //if ( GUILayout.Button( "Reload Json" ) )
+        foreach ( KeyValuePair<string, Vector3> pair in dictionary )
+        {
+            EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField( $"{pair.Key}: ", labelStyle, GUILayout.Width( 480 ));
+                EditorGUILayout.Vector3Field( "", pair.Value );
+            EditorGUILayout.EndHorizontal();
+        }
+
+        GUILayout.EndScrollView();
+
+        if ( GUILayout.Button( "Save Json" ) )
+        {
+            json = JsonUtility.ToJson( offsetlist );
+            System.IO.File.WriteAllText( $"{currentDirectory}/{relativeJsonOffset}", json );
+        }
+    }
+
+    public static void RefreshPage()
+    {
+        string json = System.IO.File.ReadAllText( $"{currentDirectory}/{relativeJsonOffset}" );
+        offsetlist = JsonUtility.FromJson<PrefabOffsetList>( json );
+        offsets = offsetlist.List;
+
+        ImportExportJson.SortListByKey(offsets, x => x.ModelName);
+
+        foreach ( PrefabOffset offset in offsets )
+        {
+            dictionary.Add( offset.ModelName, offset.Rotation );
+        }
     }
 }

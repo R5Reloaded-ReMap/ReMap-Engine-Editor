@@ -254,9 +254,9 @@ public class UnityInfo
         string[] excludedFiles;
 
         if ( includeAllModelFile )
-        {   excludedFiles = new string[] { "modelAnglesOffset.txt", "lastestFolderUpdate.txt", "all_models.txt" }; }
+        {   excludedFiles = new string[] { "lastestFolderUpdate.txt", "all_models.txt" }; }
         else
-        { excludedFiles = new string[] { "modelAnglesOffset.txt", "lastestFolderUpdate.txt" }; }
+        { excludedFiles = new string[] { "lastestFolderUpdate.txt" }; }
 
         return !excludedFiles.Contains(fileName);
     }

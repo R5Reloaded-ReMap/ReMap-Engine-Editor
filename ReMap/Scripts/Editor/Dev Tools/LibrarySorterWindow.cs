@@ -68,27 +68,7 @@ public class LibrarySorterWindow : EditorWindow
         {
             await SetScale100ToFBX();
         }
-
-        [MenuItem("ReMap Dev Tools/Asset Library Sorter/Test", false, 100)]
-        public static void CreateJsonInit()
-        {
-            CreateJson();
-        }
     #endif
-
-    public static void CreateJson()
-    {
-        PrefabOffsetList list = new PrefabOffsetList();
-        list.List = new List<PrefabOffset>();
-
-        PrefabOffset offset = new PrefabOffset();
-        offset.ModelName = "mdl#";
-        offset.Rotation = new Vector3( 0, 0, 0 );
-        list.List.Add(offset);
-
-        string json = JsonUtility.ToJson(list);
-        System.IO.File.WriteAllText($"{currentDirectory}/{relativeRpakFile}/PrefabOffsetList.json", json);
-    }
 
     void OnGUI()
     {

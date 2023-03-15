@@ -274,3 +274,23 @@ public class RpakContentClass
     public string modelName;
     public string[] location;
 }
+
+//  ████████╗██╗███╗   ███╗███████╗███████╗████████╗ █████╗ ███╗   ███╗██████╗ 
+//  ╚══██╔══╝██║████╗ ████║██╔════╝██╔════╝╚══██╔══╝██╔══██╗████╗ ████║██╔══██╗
+//     ██║   ██║██╔████╔██║█████╗  ███████╗   ██║   ███████║██╔████╔██║██████╔╝
+//     ██║   ██║██║╚██╔╝██║██╔══╝  ╚════██║   ██║   ██╔══██║██║╚██╔╝██║██╔═══╝ 
+//     ██║   ██║██║ ╚═╝ ██║███████╗███████║   ██║   ██║  ██║██║ ╚═╝ ██║██║     
+//     ╚═╝   ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝     
+
+//[Serializable]
+//public class TimeStampList
+//{
+//    public List<TimeStampClass> List;
+//}
+//
+//[Serializable]
+//public class TimeStampClass
+//{
+//    public string FolderName;
+//    public DateTime TimeStamp;
+//}

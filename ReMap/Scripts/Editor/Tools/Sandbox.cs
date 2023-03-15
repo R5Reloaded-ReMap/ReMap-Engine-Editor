@@ -32,10 +32,11 @@ public class Sandbox
 
             if ( offsetY_Temp < coll.size.y ) offsetY_Temp = coll.size.y + 200;
 
-            if ( offsetX > 6000 )
+            if ( offsetX > 16000 )
             {
                 offsetX = 0;
                 offsetY += offsetY_Temp;
+                offsetY_Temp = 0;
             }
         }
     }

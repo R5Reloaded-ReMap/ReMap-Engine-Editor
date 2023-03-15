@@ -261,9 +261,6 @@ public class LibrarySorterWindow : EditorWindow
 
             Transform child = loadedPrefabResource.GetComponentsInChildren<Transform>()[1];
 
-            if (child.transform.eulerAngles == FindAnglesOffset( rpakName, offsets ))
-                continue;
-
             CheckBoxColliderComponent( loadedPrefabResource );
 
             loadedPrefabResource.transform.position = Vector3.zero;
@@ -412,9 +409,6 @@ public class LibrarySorterWindow : EditorWindow
     
                     Transform child = loadedPrefabResource.GetComponentsInChildren<Transform>()[1];
     
-                    if (child.transform.eulerAngles == FindAnglesOffset( modelPath, offsets ))
-                        continue;
-    
                     loadedPrefabResource.transform.position = Vector3.zero;
                     loadedPrefabResource.transform.eulerAngles = Vector3.zero;
                     child.transform.eulerAngles = FindAnglesOffset( modelPath, offsets );
@@ -452,6 +446,11 @@ public class LibrarySorterWindow : EditorWindow
             BoxCollider BoxColliderChild = renderer.GetComponent<BoxCollider>();
     
             if(BoxColliderChild != null) DestroyImmediate(BoxColliderChild, true);
+        }
+
+        foreach(Renderer renderer in go.GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            bounds.Encapsulate(renderer.bounds);
         }
     
         collider.center = bounds.center;

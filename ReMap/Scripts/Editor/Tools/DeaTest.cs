@@ -1,18 +1,20 @@
+
 using UnityEngine;
 using UnityEditor;
 
 public class DeaTest
 {
-
-    [MenuItem("ReMap/Tools/Dea Test/Move Prop", false, 100)]
-    public static void Init()
-    {
-        //DeaTest window = (DeaTest)EditorWindow.GetWindow(typeof(DeaTest), false, "Dea Test");
-        //window.Show();
-        //window.minSize = new Vector2(375, 140);
-        //window.maxSize = new Vector2(375, 140);
-        MoveProps();
-    }
+    #if DeaTest
+        [MenuItem("ReMap/Dea Test/Move Prop", false, 100)]
+        public static void Init()
+        {
+            //DeaTest window = (DeaTest)EditorWindow.GetWindow(typeof(DeaTest), false, "Dea Test");
+            //window.Show();
+            //window.minSize = new Vector2(375, 140);
+            //window.maxSize = new Vector2(375, 140);
+            MoveProps();
+        }
+    #endif
 
     public static void MoveProps()
     {

@@ -1,5 +1,5 @@
-using System.Collections;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+
 public class LibrarySorterWindow : EditorWindow
 {
     public static string currentDirectory = Directory.GetCurrentDirectory().Replace("\\","/");
@@ -557,8 +558,8 @@ public class LibrarySorterWindow : EditorWindow
     {
         Vector3 returnedVector = new Vector3( 0, -90, 0 );
 
-        PrefabOffset offset = list.Find(o => o.ModelName == searchTerm);
-        if (offset != null)
+        PrefabOffset offset = list.Find( o => o.ModelName == searchTerm );
+        if ( offset != null )
         {
             returnedVector = offset.Rotation;
             ReMapConsole.Log($"[Library Sorter] Angle override found for {searchTerm}, setting angles to: {returnedVector}", ReMapConsole.LogType.Info);
@@ -802,10 +803,15 @@ public class JsonWindow : EditorWindow
     static string currentDirectory = LibrarySorterWindow.currentDirectory;
     static string relativeJsonOffset = LibrarySorterWindow.relativeJsonOffset;
 
-    Vector2 scrollPos = Vector2.zero;
+    static Vector2 scrollPos = Vector2.zero;
     string json = System.IO.File.ReadAllText( $"{currentDirectory}/{relativeJsonOffset}" );
     static PrefabOffsetList offsetlist;
+    static PrefabOffsetList newOffsetlist;
     static List<PrefabOffset> offsets;
+
+    static GameObject prefabToAdd = null;
+    static string search = "";
+    static bool searchEnable = false;
 
     public static Dictionary<string, Vector3> dictionary = new Dictionary<string, Vector3>();
 
@@ -815,10 +821,16 @@ public class JsonWindow : EditorWindow
         public static void Init()
         {
             JsonWindow window = (JsonWindow)GetWindow(typeof(JsonWindow), false, "Offset Prefab");
-            window.minSize = new Vector2(650, 600);
+            window.minSize = new Vector2( 888, 700 );
+            window.maxSize = new Vector2( 888, 700 );
             window.Show(); RefreshPage();
         }
     #endif
+
+    void OnEnable()
+    {
+        RefreshPage();
+    }
 
     void OnGUI()
     {
@@ -827,24 +839,94 @@ public class JsonWindow : EditorWindow
 
         EditorGUILayout.Space( 2 );
 
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        searchEnable = false;
 
-        //if ( GUILayout.Button( "Reload Json" ) )
-        foreach ( KeyValuePair<string, Vector3> pair in dictionary )
+        EditorGUILayout.BeginHorizontal();
+            search = EditorGUILayout.TextField("Search", search, GUILayout.Width( 660 ));
+            if ( search.Length >= 3 ) searchEnable = true;
+            if ( GUILayout.Button( "Refresh Page", GUILayout.Width( 200 ) ) ) RefreshPage();
+        EditorGUILayout.EndHorizontal();
+
+        scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
+
+        foreach ( PrefabOffset offset in offsets )
         {
+            if ( searchEnable && !offset.ModelName.Contains( search ) ) continue;
+
             EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField( $"{pair.Key}: ", labelStyle, GUILayout.Width( 480 ));
-                EditorGUILayout.Vector3Field( "", pair.Value );
+                EditorGUILayout.LabelField( $"{offset.ModelName}", labelStyle, GUILayout.Width( 480 ) );
+                offset.Rotation = EditorGUILayout.Vector3Field( "", offset.Rotation, GUILayout.Width( 280 ) );
+                if ( GUILayout.Button( "Remove", GUILayout.Width( 100 ) ) )
+                {
+                    RemoveOffsetFromList( offset );
+                    EditorGUILayout.EndHorizontal();
+                    GUILayout.EndScrollView();
+                    return;
+                }
             EditorGUILayout.EndHorizontal();
+
+            if ( Input.GetKeyDown( KeyCode.Return ) || Input.GetKeyDown( KeyCode.Tab ) || Event.current.type == EventType.MouseDown )
+            {
+                GUI.FocusControl( "" ); // remove focus from current control
+            }
         }
 
         GUILayout.EndScrollView();
 
-        if ( GUILayout.Button( "Save Json" ) )
+        EditorGUILayout.BeginHorizontal();
+            prefabToAdd = EditorGUILayout.ObjectField( prefabToAdd, typeof( UnityEngine.Object ), true, GUILayout.Width( 760 ) ) as GameObject;
+            if ( GUILayout.Button( "Add Prefab", GUILayout.Width( 100 ) ) && prefabToAdd != null ) AddPrefabToList( prefabToAdd );
+        EditorGUILayout.EndHorizontal();
+
+        if ( GUILayout.Button( "Save Json" ) ) SaveJson();
+
+        //GUILayout.Button( scrollPos.x + " " + scrollPos.y );
+    }
+
+    public static void AddPrefabToList( GameObject prefabToAdd )
+    {
+        string rpakPath = prefabToAdd.name.Replace( '#', '/' ) + ".rmdl";
+        if ( PrefabOffsetExist( rpakPath ) ) return;
+
+        PrefabOffset newOffset = new PrefabOffset();
+        newOffset.ModelName = rpakPath;
+        newOffset.Rotation = Vector3.zero;
+        offsets.Add( newOffset );
+
+        SaveJson();
+        RefreshPage();
+        FindObjectAndSetScroll( rpakPath );
+    }
+
+    public static void RemoveOffsetFromList( PrefabOffset offset )
+    {
+        offsets.Remove( offset );
+        SaveJson();
+        RefreshPage();
+    }
+
+    public static void SaveJson()
+    {
+        newOffsetlist = new PrefabOffsetList();
+        newOffsetlist.List = new List<PrefabOffset>();
+
+        foreach ( PrefabOffset offset in offsets )
         {
-            json = JsonUtility.ToJson( offsetlist );
-            System.IO.File.WriteAllText( $"{currentDirectory}/{relativeJsonOffset}", json );
+            PrefabOffset newOffset = new PrefabOffset();
+            newOffset.ModelName = offset.ModelName;
+            newOffset.Rotation = offset.Rotation;
+            newOffsetlist.List.Add( newOffset );
         }
+
+        string json = JsonUtility.ToJson( newOffsetlist );
+        System.IO.File.WriteAllText( $"{currentDirectory}/{relativeJsonOffset}", json );
+    }
+
+    public static void FindObjectAndSetScroll( string objectName )
+    {
+        int index = offsets.FindIndex( o => o.ModelName == objectName );
+
+        if ( index != -1 ) scrollPos = new Vector2( 0, index * EditorGUIUtility.singleLineHeight );
     }
 
     public static void RefreshPage()
@@ -854,10 +936,13 @@ public class JsonWindow : EditorWindow
         offsets = offsetlist.List;
 
         ImportExportJson.SortListByKey(offsets, x => x.ModelName);
+    }
 
-        foreach ( PrefabOffset offset in offsets )
-        {
-            dictionary.Add( offset.ModelName, offset.Rotation );
-        }
+    public static bool PrefabOffsetExist( string name )
+    {
+        PrefabOffset prefab = offsets.Find( o => o.ModelName == name );
+        if ( prefab != null ) return true;
+
+        return false;
     }
 }

@@ -72,7 +72,10 @@ public class DrawVerticalZipline : MonoBehaviour
             arm.transform.localEulerAngles = new Vector3(0, 90, 0);
             rope_start.SetParent(arm.transform);
             rope_start.localPosition = new Vector3(55, -12, 4);
-            rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0);
+
+            Quaternion targetRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+            rope_start.rotation = Quaternion.Euler(targetRotation.x, anglesOffset, targetRotation.z);
+            //rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0); // old angle system
 
             if(armOffset < 46) armOffset = 46;
             if(armOffset > 300) armOffset = 300;

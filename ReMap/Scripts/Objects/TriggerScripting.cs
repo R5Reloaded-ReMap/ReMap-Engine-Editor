@@ -23,13 +23,13 @@ public class TriggerScripting : MonoBehaviour
         {
             EnterCallback =   "";
 
-            EnterCallback +=  "if (IsValid(ent)) // ensure the entity is valid\n";
-            EnterCallback +=  "{\n";
-            EnterCallback +=  "    if (ent.IsPlayer() && ent.GetPhysics() != MOVETYPE_NOCLIP) // Noclip players are not affected by the trigger\n";
+            EnterCallback +=  "    if (IsValid(ent)) // ensure the entity is valid\n";
             EnterCallback +=  "    {\n";
-            EnterCallback += $"         ent.SetOrigin({BuildOrigin( playerTeleportationInfo.gameObject )}) // change tp location\n";
+            EnterCallback +=  "        if (ent.IsPlayer() && ent.GetPhysics() != MOVETYPE_NOCLIP) // Noclip players are not affected by the trigger\n";
+            EnterCallback +=  "        {\n";
+            EnterCallback += $"             ent.SetOrigin({BuildOrigin( playerTeleportationInfo.gameObject )}) // change tp location\n";
+            EnterCallback +=  "        }\n";
             EnterCallback +=  "    }\n";
-            EnterCallback +=  "}\n";
         }
     }
 

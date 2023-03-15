@@ -557,13 +557,11 @@ public class LibrarySorterWindow : EditorWindow
     {
         Vector3 returnedVector = new Vector3( 0, -90, 0 );
 
-        foreach ( PrefabOffset offset in list )
+        PrefabOffset offset = list.Find(o => o.ModelName == searchTerm);
+        if (offset != null)
         {
-            if ( offset.ModelName == searchTerm )
-            {
-                returnedVector = offset.Rotation;
-                ReMapConsole.Log($"[Library Sorter] Angle override found for {searchTerm}, setting angles to: {returnedVector}", ReMapConsole.LogType.Info);
-            }
+            returnedVector = offset.Rotation;
+            ReMapConsole.Log($"[Library Sorter] Angle override found for {searchTerm}, setting angles to: {returnedVector}", ReMapConsole.LogType.Info);
         }
 
         return returnedVector;

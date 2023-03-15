@@ -97,9 +97,13 @@ public class ModelSwap : EditorWindow
 
         GameObject chosenObject = null;
 
-        if ( ArrayIsNull() ) return;
+        if ( ArrayIsNull( prefabs ) ) return;
 
-        while ( chosenObject == null ) chosenObject = prefabs[ UnityEngine.Random.Range( 0, prefabs.Length ) ];
+        while ( chosenObject == null )
+        {
+            chosenObject = prefabs[ UnityEngine.Random.Range( 0, prefabs.Length ) ];
+            if ( chosenObject.name == selection.name ) chosenObject = null;
+        }
 
         UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets( chosenObject.name )[0] ), typeof( UnityEngine.Object ) ) as GameObject;
         if ( loadedPrefabResource == null ) return;
@@ -154,11 +158,11 @@ public class ModelSwap : EditorWindow
         return null;
     }
 
-    bool ArrayIsNull()
+    bool ArrayIsNull( GameObject[] arrays )
     {
-        foreach ( GameObject prefab in prefabs )
+        foreach ( GameObject array in arrays )
         {
-            if ( prefab != null ) return false;
+            if ( array != null ) return false;
         }
         return true;
     }

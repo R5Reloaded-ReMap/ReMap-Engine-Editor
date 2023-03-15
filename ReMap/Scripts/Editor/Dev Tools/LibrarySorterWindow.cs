@@ -257,7 +257,8 @@ public class LibrarySorterWindow : EditorWindow
 
         foreach (string prefab in prefabs)
         {
-            string file = AssetDatabase.GUIDToAssetPath(prefab);
+            string file = AssetDatabase.GUIDToAssetPath( prefab );
+            string rpakName = Path.GetFileNameWithoutExtension( file ).Replace( '#', '/' ) + ".rmdl";
 
             UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath(file, typeof(UnityEngine.Object)) as GameObject;
             if (loadedPrefabResource == null)
@@ -268,14 +269,14 @@ public class LibrarySorterWindow : EditorWindow
 
             Transform child = loadedPrefabResource.GetComponentsInChildren<Transform>()[1];
 
-            if (child.transform.eulerAngles == FindAnglesOffset( file, offsets ))
+            if (child.transform.eulerAngles == FindAnglesOffset( rpakName, offsets ))
                 continue;
 
             CheckBoxColliderComponent( loadedPrefabResource );
 
             loadedPrefabResource.transform.position = Vector3.zero;
             loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-            child.transform.eulerAngles = FindAnglesOffset( file, offsets );
+            child.transform.eulerAngles = FindAnglesOffset( rpakName, offsets );
             child.transform.position = Vector3.zero;
 
             PrefabUtility.SavePrefabAsset(loadedPrefabResource);
@@ -821,8 +822,8 @@ public class JsonWindow : EditorWindow
         public static void Init()
         {
             JsonWindow window = (JsonWindow)GetWindow(typeof(JsonWindow), false, "Offset Prefab");
-            window.minSize = new Vector2( 888, 700 );
-            window.maxSize = new Vector2( 888, 700 );
+            window.minSize = new Vector2( 300, 700 ); // new Vector2( 888, 700 );
+            //window.maxSize = new Vector2( 888, 700 );
             window.Show(); RefreshPage();
         }
     #endif
@@ -842,7 +843,7 @@ public class JsonWindow : EditorWindow
         searchEnable = false;
 
         EditorGUILayout.BeginHorizontal();
-            search = EditorGUILayout.TextField("Search", search, GUILayout.Width( 660 ));
+            search = EditorGUILayout.TextField( "Search", search, GUILayout.Width( 660 ) );
             if ( search.Length >= 3 ) searchEnable = true;
             if ( GUILayout.Button( "Refresh Page", GUILayout.Width( 200 ) ) ) RefreshPage();
         EditorGUILayout.EndHorizontal();

@@ -2,25 +2,24 @@
 using UnityEngine;
 using UnityEditor;
 
-public class DeaTest
+public class Sandbox
 {
-    #if DeaTest
-        [MenuItem("ReMap/Dea Test/Move Prop", false, 100)]
-        public static void Init()
-        {
-            //DeaTest window = (DeaTest)EditorWindow.GetWindow(typeof(DeaTest), false, "Dea Test");
-            //window.Show();
-            //window.minSize = new Vector2(375, 140);
-            //window.maxSize = new Vector2(375, 140);
-            MoveProps();
-        }
-    #endif
+    [MenuItem("ReMap/Sandbox/Move Prop", false, 100)]
+    public static void MovePropInit()
+    {
+        //DeaTest window = (DeaTest)EditorWindow.GetWindow(typeof(DeaTest), false, "Dea Test");
+        //window.Show();
+        //window.minSize = new Vector2(375, 140);
+        //window.maxSize = new Vector2(375, 140);
+        MoveProps();
+    }
 
     public static void MoveProps()
     {
         GameObject[] array = Selection.gameObjects;
         float offsetX = 0;
         float offsetY = 0;
+        float offsetY_Temp = 0;
 
         for ( int i = 0 ; i < array.Length ; i++ )
         {
@@ -31,10 +30,12 @@ public class DeaTest
 
             offsetX = offsetX + coll.size.x + 200;
 
+            if ( offsetY_Temp < coll.size.y ) offsetY_Temp = coll.size.y + 200;
+
             if ( offsetX > 6000 )
             {
                 offsetX = 0;
-                offsetY += 1000;
+                offsetY += offsetY_Temp;
             }
         }
     }

@@ -26,7 +26,6 @@ public class CodeViews : EditorWindow
     bool UseStartingOffsetLocPair_temp = false;
 
     // Gen Settings
-    bool GeneratePrecaches = true;
     bool GenerateProps = true;
     bool GenerateButtons = true;
     bool GenerateJumppads = true;
@@ -213,12 +212,6 @@ public class CodeViews : EditorWindow
             {
                 GUILayout.BeginVertical("box");
                 GUILayout.BeginHorizontal();
-                Helper.GeneratePrecache = EditorGUILayout.Toggle("Build Precaches", Helper.GeneratePrecache);
-                if(Helper.GeneratePrecache != GeneratePrecaches) {
-                    GeneratePrecaches = Helper.GeneratePrecache;
-                    GenerateMap(OnlyExportMap, false);
-                }
-
                 Helper.GenerateProps = EditorGUILayout.Toggle("Build Props", Helper.GenerateProps);
                 if(Helper.GenerateProps != GenerateProps) {
                     GenerateProps = Helper.GenerateProps;
@@ -420,7 +413,7 @@ public class CodeViews : EditorWindow
             mapcode = Helper.ShouldAddStartingOrg(1);
 
         //Build Map Code
-        mapcode += Helper.BuildMapCode(Helper.GeneratePrecache, Helper.GenerateButtons, Helper.GenerateJumppads, Helper.GenerateBubbleShields, Helper.GenerateWeaponRacks, Helper.GenerateLootBins, Helper.GenerateZipLines, Helper.GenerateDoors, Helper.GenerateProps, Helper.GenerateTriggers);
+        mapcode += Helper.BuildMapCode(Helper.GenerateButtons, Helper.GenerateJumppads, Helper.GenerateBubbleShields, Helper.GenerateWeaponRacks, Helper.GenerateLootBins, Helper.GenerateZipLines, Helper.GenerateDoors, Helper.GenerateProps, Helper.GenerateTriggers);
 
         if(!onlyMapCode)
             mapcode += "}";

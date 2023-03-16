@@ -13,7 +13,6 @@ public class Helper
     public static bool DisableStartingOffsetString = false;
 
     // Gen Settings
-    public static bool GeneratePrecache = true;
     public static bool GenerateProps = true;
     public static bool GenerateButtons = true;
     public static bool GenerateJumppads = true;
@@ -271,10 +270,9 @@ public class Helper
     /// Builds Map Code
     /// </summary>
     /// <returns>built map code string</returns>
-    public static string BuildMapCode(bool precaches = true, bool buttons = true, bool jumppads = true, bool bubbleshields = true, bool weaponracks = true, bool lootbins = true, bool ziplines = true, bool doors = true, bool props = true, bool triggers = true)
+    public static string BuildMapCode(bool buttons = true, bool jumppads = true, bool bubbleshields = true, bool weaponracks = true, bool lootbins = true, bool ziplines = true, bool doors = true, bool props = true, bool triggers = true)
     {
         string code = "";
-        if(precaches) code += Build.Props(Build.BuildType.Precache);
         if(buttons) code += Build.Buttons();
         if(jumppads) code += Build.Jumpads();
         if(bubbleshields) code += Build.BubbleShields();

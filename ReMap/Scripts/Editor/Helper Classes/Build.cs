@@ -479,8 +479,6 @@ public class Build
             }
         }
 
-        if ( type == BuildType.Precache ) code += "\n";
-
         if(type == BuildType.Map && PlayerClips.Count > 0)
         {
             code += "\n";

@@ -95,7 +95,11 @@ public class MapExport
         if (type == Helper.ExportType.MapOnlyOffset || type == Helper.ExportType.WholeScriptOffset)
             Helper.Is_Using_Starting_Offset = true;
 
-        string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" + Helper.ShouldAddStartingOrg(1);
+        string funcName = SceneManager.GetActiveScene().name.Replace(" ", "_");
+
+        string mapcode = Helper.Credits + "\n";
+        mapcode += $"void function {funcName}_Init()" + "\n{\n" + $"{Build.Props(Build.BuildType.Precache)}" + "\n" + $"    {funcName}()" + "\n" + "\n}\n\n";
+        mapcode += $"void function {funcName}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(1);
 
         if (type == Helper.ExportType.MapOnly || type == Helper.ExportType.MapOnlyOffset)
             mapcode = Helper.ShouldAddStartingOrg(1);

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -241,6 +240,7 @@ public class LibrarySorterWindow : EditorWindow
 
     public static void FixPrefab(string prefabname)
     {
+        prefabname = UnityInfo.GetUnityModelName( prefabname );
         string[] prefabs = AssetDatabase.FindAssets(prefabname, new [] {"Assets/Prefabs"});
 
         string json = System.IO.File.ReadAllText( $"{currentDirectory}/{relativeJsonOffset}" );
@@ -782,7 +782,7 @@ public class JsonWindow : EditorWindow
         public static void Init()
         {
             JsonWindow window = (JsonWindow)GetWindow(typeof(JsonWindow), false, "Prefab Offset Manager");
-            window.minSize = new Vector2( 300, 700 ); // new Vector2( 888, 700 );
+            window.minSize = new Vector2( 800, 400 ); // new Vector2( 888, 700 );
             //window.maxSize = new Vector2( 888, 700 );
             window.Show(); RefreshPage();
         }
@@ -824,6 +824,7 @@ public class JsonWindow : EditorWindow
                     GUILayout.EndScrollView();
                     return;
                 }
+                if ( GUILayout.Button( "Fix Prefab", GUILayout.Width( 100 ) ) ) LibrarySorterWindow.FixPrefab( offset.ModelName );
             EditorGUILayout.EndHorizontal();
 
             if ( Input.GetKeyDown( KeyCode.Return ) || Input.GetKeyDown( KeyCode.Tab ) || Event.current.type == EventType.MouseDown )

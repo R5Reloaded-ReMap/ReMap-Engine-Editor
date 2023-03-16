@@ -248,6 +248,37 @@ public class UnityInfo
         return fileNames.ToArray();
     }
 
+    /// <summary>
+    /// Returns the model name as a prefab
+    /// </summary>
+    /// <returns></returns>
+    public static string GetUnityModelName( string modelName, bool extension = false )
+    {
+        string ext = extension ? ".prefab" : "";
+        modelName = modelName.Replace( '#', '/' ).Replace( ".rmdl", "" ).Replace( ".prefab", "" );
+        return modelName.Substring( modelName.IndexOf( "mdl/" ) ).Replace( '/', '#' ) + ext;
+    }
+
+    /// <summary>
+    /// Returns the model name as a Apex path
+    /// </summary>
+    /// <returns></returns>
+    public static string GetApexModelName( string modelName, bool extension = false )
+    {
+        string ext = extension ? ".rmdl" : "";
+        modelName = modelName.Replace( '#', '/' ).Replace( ".rmdl", "" ).Replace( ".prefab", "" );
+        return modelName.Substring( modelName.IndexOf( "mdl/" ) ) + ext;
+    }
+
+    /// <summary>
+    /// Printt a string in editor console
+    /// </summary>
+    /// <returns></returns>
+    public static void Printt( string str )
+    {
+        UnityEngine.Debug.Log( str );
+    }
+
     private static bool IsNotExcludedFile( string filePath, bool includeAllModelFile )
     {
         string fileName = Path.GetFileName(filePath);

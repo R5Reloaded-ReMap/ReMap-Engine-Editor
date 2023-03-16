@@ -14,7 +14,7 @@ public class RpakInfo : EditorWindow
 
     Vector2 scrollPosition;
 
-    [MenuItem("ReMap/Tools/Rpak Info", false, 100)]
+    //[MenuItem("ReMap/Tools/Rpak Info", false, 100)]
     public static void Init()
     {
         RpakInfo window = (RpakInfo)EditorWindow.GetWindow(typeof(RpakInfo), false, "Rpak Info");

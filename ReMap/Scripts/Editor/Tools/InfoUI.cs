@@ -7,8 +7,8 @@ public class InfoUI : EditorWindow
     static void Init()
     {
         InfoUI window = (InfoUI)EditorWindow.GetWindow(typeof(InfoUI), false, "ReMap Info");
-        window.minSize = new Vector2(300, 360);
-        window.maxSize = new Vector2(300, 360);
+        window.minSize = new Vector2(300, 378);
+        window.maxSize = new Vector2(300, 378);
         window.Show();
     }
 
@@ -19,7 +19,7 @@ public class InfoUI : EditorWindow
         GUILayout.Label("Credits:", EditorStyles.boldLabel);
         GUILayout.Label("Unity Scripts/Export Code/Custom Prefabs:", EditorStyles.boldLabel);
         GUILayout.Label("  AyeZee#6969 \n");
-        GUILayout.Label("Importing All Models/Scripting Help:", EditorStyles.boldLabel);
+        GUILayout.Label("Unity Scripts/Export Code/Importing Models:", EditorStyles.boldLabel);
         GUILayout.Label("  Julefox#0050");
         GUILayout.EndVertical();
 
@@ -34,10 +34,12 @@ public class InfoUI : EditorWindow
         GUILayout.Label("Discord:", EditorStyles.boldLabel);
         if (GUILayout.Button("discord.gg/snsyDVa2fn"))
             Application.OpenURL("https://discord.gg/snsyDVa2fn");
-        GUILayout.Label("Ko-fi:", EditorStyles.boldLabel);
+        GUILayout.Label("Donate:", EditorStyles.boldLabel);
         GUILayout.Label("If you would like to donate to show support\nfor the project. :)");
         if (GUILayout.Button("ko-fi.com/ayezee"))
             Application.OpenURL("https://ko-fi.com/ayezee");
+        if (GUILayout.Button("paypal.me/Julefx"))
+            Application.OpenURL("https://www.paypal.com/paypalme/Julefx");
         GUILayout.EndVertical();
 
         GUILayout.BeginVertical("box");

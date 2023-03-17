@@ -5,6 +5,7 @@ using System.IO;
 
 public class Build
 {
+    public static int entityIdx = 0;
     public enum BuildType {
         Map, 
         Ent, 
@@ -410,6 +411,8 @@ public class Build
 
         List<String> precacheList = new List<String>();
 
+        entityIdx = 0;
+
         string code = "";
 
         switch(type) {
@@ -473,8 +476,23 @@ public class Build
                         PlayerNoClimbs.Add(go);
                         continue;
                     }
+
+                    string idx = "";
+                    if ( script.parameters.Count != 0 )
+                    {
+                        idx = $"prop{CreateEntityIxd()}";
+                        code += $"    entity {idx} = ";
+                    } else code += $"    ";
                     
-                    code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
+                    code += $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
+
+                    if ( script.parameters.Count != 0 )
+                    {
+                        foreach ( PropScriptParameters param in script.parameters )
+                        {
+                            code += GetPropScriptParamValue( idx, param );
+                        }
+                    }
                     continue;
             }
         }
@@ -726,6 +744,26 @@ public class Build
         buildent += "}\n";
         
         return buildent;
+    }
+
+    public static string CreateEntityIxd()
+    {
+        return $"{entityIdx++.ToString( "000" )}";
+    }
+
+    public static string GetPropScriptParamValue( string name, PropScriptParameters param )
+    {
+        string paramStr = $"    {name}";
+
+        switch ( param )
+        {
+            case PropScriptParameters.MakeInvisible: paramStr += ".MakeInvisible()" + "\n"; break;
+            case PropScriptParameters.KvSolid3:      paramStr += ".kv.solid = 3" + "\n"; break;
+
+            default: paramStr = ""; break;
+        }
+
+        return paramStr;
     }
 
     public static string BuildNewLocPairItem(GameObject go, bool isexport)

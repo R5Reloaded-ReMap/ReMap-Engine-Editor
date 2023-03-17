@@ -16,6 +16,7 @@ public class TriggerScripting : MonoBehaviour
     public string LeaveCallback = "";
 
     public Transform playerTeleportationInfo;
+    public bool AddStartingOrg = true;
 
     void OnDrawGizmos()
     {
@@ -27,7 +28,8 @@ public class TriggerScripting : MonoBehaviour
             EnterCallback +=  "    {\n";
             EnterCallback +=  "        if (ent.IsPlayer() && ent.GetPhysics() != MOVETYPE_NOCLIP) // Noclip players are not affected by the trigger\n";
             EnterCallback +=  "        {\n";
-            EnterCallback += $"             ent.SetOrigin({BuildOrigin( playerTeleportationInfo.gameObject )}) // change tp location\n";
+            EnterCallback += $"             ent.SetOrigin({BuildOrigin( playerTeleportationInfo.gameObject ) + ShouldAddStartingOrg( AddStartingOrg ) }) // change tp location\n";
+            EnterCallback +=  "             ent.SetVelocity( < 0, 0, 0 > )\n";
             EnterCallback +=  "        }\n";
             EnterCallback +=  "    }\n";
         }
@@ -45,5 +47,12 @@ public class TriggerScripting : MonoBehaviour
         if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
 
         return $"< {x}, {y}, {z} >";
+    }
+
+    public static string ShouldAddStartingOrg(bool should)
+    {
+        if( should ) return " + startingorg";
+
+        return "";
     }
 }

@@ -525,12 +525,15 @@ public class Build
             string ReplacedEnterCallback = script.EnterCallback;
             string ReplacedLeaveCallback = script.LeaveCallback;
 
-            ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#TPORIGIN", Helper.BuildOrigin( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
-            ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#TPANGLES", Helper.BuildAngles( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
-            ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#OFFSET", "+ startingorg", "", script.playerTeleportationInfo.gameObject );
-            ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#TPORIGIN", Helper.BuildOrigin( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
-            ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#TPANGLES", Helper.BuildAngles( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
-            ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#OFFSET", "+ startingorg", "", script.playerTeleportationInfo.gameObject );
+            if ( script.playerTeleportationInfo.gameObject != null )
+            {
+                ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#TPORIGIN", Helper.BuildOrigin( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
+                ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#TPANGLES", Helper.BuildAngles( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
+                ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#OFFSET", "+ startingorg", "", script.playerTeleportationInfo.gameObject );
+                ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#TPORIGIN", Helper.BuildOrigin( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
+                ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#TPANGLES", Helper.BuildAngles( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
+                ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#OFFSET", "+ startingorg", "", script.playerTeleportationInfo.gameObject );
+            }
 
             if (ReplacedEnterCallback != "")
                 code += $"    trigger{triggerid}.SetEnterCallback( void function(entity trigger , entity ent)" + "{\n" + ReplacedEnterCallback + "\n    })" + "\n";
@@ -541,6 +544,7 @@ public class Build
             code += $"    DispatchSpawn( trigger{triggerid} )" + "\n";
             triggerid++;
         }
+        code += "\n";
 
         return code;
     }

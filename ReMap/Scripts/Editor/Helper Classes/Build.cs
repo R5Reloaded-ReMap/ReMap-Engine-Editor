@@ -576,7 +576,7 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing ButtonScripting on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            code += $"    MapEditor_CreatePanelTextForAll( \"{script.title}\", \"{script.description}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.showPIN}, {script.scale})" + "\n";
+            code += $"    MapEditor_CreateTextInfoPanel( \"{script.title}\", \"{script.description}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.showPIN.ToString().ToLower()}, {script.scale})" + "\n";
         }
 
         code += "\n";

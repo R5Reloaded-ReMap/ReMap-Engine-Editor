@@ -620,11 +620,21 @@ public class Build
             TriggerScripting script = go.GetComponent<TriggerScripting>();
             code += $"    entity trigger" + triggerid + $" = MapEditor_CreateTrigger( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, {go.transform.localScale.y.ToString().Replace(",", ".")}, {script.Debug.ToString().ToLower()} )" + "\n";
 
-            if (script.EnterCallback != "")
-                code += $"    trigger{triggerid}.SetEnterCallback( void function(entity trigger , entity ent)" + "{\n" + script.EnterCallback + "\n    })" + "\n";
+            string ReplacedEnterCallback = script.EnterCallback;
+            string ReplacedLeaveCallback = script.LeaveCallback;
 
-            if (script.LeaveCallback != "")
-                code += $"    trigger{triggerid}.SetLeaveCallback( void function(entity trigger , entity ent)" + "{\n" + script.LeaveCallback + "\n    })" + "\n";
+            ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#TPORIGIN", Helper.BuildOrigin( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
+            ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#TPANGLES", Helper.BuildAngles( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
+            ReplacedEnterCallback = ChangeTriggerLocalization( ReplacedEnterCallback, "#OFFSET", "+ startingorg", "", script.playerTeleportationInfo.gameObject );
+            ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#TPORIGIN", Helper.BuildOrigin( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
+            ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#TPANGLES", Helper.BuildAngles( script.playerTeleportationInfo.gameObject ), "< 0, 0, 0 >", script.playerTeleportationInfo.gameObject );
+            ReplacedLeaveCallback = ChangeTriggerLocalization( ReplacedLeaveCallback, "#OFFSET", "+ startingorg", "", script.playerTeleportationInfo.gameObject );
+
+            if (ReplacedEnterCallback != "")
+                code += $"    trigger{triggerid}.SetEnterCallback( void function(entity trigger , entity ent)" + "{\n" + ReplacedEnterCallback + "\n    })" + "\n";
+
+            if (ReplacedLeaveCallback != "")
+                code += $"    trigger{triggerid}.SetLeaveCallback( void function(entity trigger , entity ent)" + "{\n" + ReplacedLeaveCallback + "\n    })" + "\n";
 
             code += $"    DispatchSpawn( trigger{triggerid} )" + "\n";
             triggerid++;
@@ -773,5 +783,16 @@ public class Build
         buildCode += $"    NewLocPair({Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)})\n";
         
         return buildCode;
+    }
+
+    private static string ChangeTriggerLocalization( string callback, string searchTerm, string replacedString, string ifInvalidInfo, GameObject infoObject )
+    {
+        int index = callback.IndexOf(searchTerm);
+        while (index >= 0)
+        {
+            callback = callback.Substring(0, index) + replacedString + callback.Substring(index + searchTerm.Length);
+            index = callback.IndexOf(searchTerm, index + replacedString.Length);
+        }
+        return callback;
     }
 }

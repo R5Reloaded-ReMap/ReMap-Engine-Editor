@@ -102,7 +102,12 @@ public class ModelSwap : EditorWindow
         while ( chosenObject == null )
         {
             chosenObject = prefabs[ UnityEngine.Random.Range( 0, prefabs.Length ) ];
-            if ( chosenObject.name == selection.name ) chosenObject = null;
+            if ( chosenObject.name == selection.name )
+            {
+                chosenObject = null;
+
+                if ( prefabs.Length == 1 ) return;
+            }
         }
 
         UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets( chosenObject.name )[0] ), typeof( UnityEngine.Object ) ) as GameObject;

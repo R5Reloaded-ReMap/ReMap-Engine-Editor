@@ -208,6 +208,16 @@ public class UnityInfo
     }
 
     /// <summary>
+    /// Gets Total Count of all text info panels in scene
+    /// </summary>
+    /// <returns></returns>
+    public static int GetTextInfoPanelCount()
+    {
+        GameObject[] TextInfoPanelObjects = GameObject.FindGameObjectsWithTag("TextInfoPanel");
+        return TextInfoPanelObjects.Length;
+    }
+
+    /// <summary>
     /// Get all the models name in the active scene
     /// </summary>
     /// <returns></returns>

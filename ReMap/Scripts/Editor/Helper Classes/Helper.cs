@@ -23,6 +23,7 @@ public class Helper
     public static bool GenerateZipLines = true;
     public static bool GenerateWeaponRacks = true;
     public static bool GenerateTriggers = true;
+    public static bool GenerateTextInfoPanel = true;
 
     public static Dictionary<string, string> ObjectToTag = new Dictionary<string, string>
     {
@@ -42,7 +43,8 @@ public class Helper
         {"mdl", "Prop"},
         {"mdl#fx#bb_shield", "BubbleShield"},
         {"custom_sound", "Sound"},
-        {"info_spawnpoint_human", "SpawnPoint"}
+        {"info_spawnpoint_human", "SpawnPoint"},
+        {"custom_TextInfoPanel", "TextInfoPanel"}
     };
 
     public enum ExportType
@@ -271,7 +273,7 @@ public class Helper
     /// Builds Map Code
     /// </summary>
     /// <returns>built map code string</returns>
-    public static string BuildMapCode(bool buttons = true, bool jumppads = true, bool bubbleshields = true, bool weaponracks = true, bool lootbins = true, bool ziplines = true, bool doors = true, bool props = true, bool triggers = true)
+    public static string BuildMapCode(bool buttons = true, bool jumppads = true, bool bubbleshields = true, bool weaponracks = true, bool lootbins = true, bool ziplines = true, bool doors = true, bool props = true, bool triggers = true, bool infopanel = true)
     {
         string code = "";
         if(buttons) code += Build.Buttons();
@@ -289,6 +291,7 @@ public class Helper
         if(doors) code += Build.HorizontalDoors();
         if(props) code += Build.Props(Build.BuildType.Map);
         if(triggers) code += Build.Triggers();
+        if(infopanel) code += Build.TextInfoPanel();
         return code;
     }
 

@@ -46,7 +46,7 @@
             mapcode = Helper.ShouldAddStartingOrg(1);
 
         //Build Map Code
-        mapcode += Helper.BuildMapCode(Helper.GenerateButtons, Helper.GenerateJumppads, Helper.GenerateBubbleShields, Helper.GenerateWeaponRacks, Helper.GenerateLootBins, Helper.GenerateZipLines, Helper.GenerateDoors, Helper.GenerateProps, Helper.GenerateTriggers);
+        mapcode += Helper.BuildMapCode(Helper.GenerateButtons, Helper.GenerateJumppads, Helper.GenerateBubbleShields, Helper.GenerateWeaponRacks, Helper.GenerateLootBins, Helper.GenerateZipLines, Helper.GenerateDoors, Helper.GenerateProps, Helper.GenerateTriggers, Helper.GenerateTextInfoPanel);
 
         if(!onlyMapCode)
             mapcode += "}";

@@ -35,6 +35,7 @@ public class CodeViews : EditorWindow
     bool GenerateZipLines = true;
     bool GenerateWeaponRacks = true;
     bool GenerateTriggers = true;
+    bool GenerateTextInfoPanel = true;
 
     //Counts
     int mapcodecount = 0;
@@ -268,6 +269,13 @@ public class CodeViews : EditorWindow
                     GenerateMap(OnlyExportMap, false);
                 }
                 GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                Helper.GenerateTextInfoPanel = EditorGUILayout.Toggle("Build TextInfoPanel", Helper.GenerateTextInfoPanel);
+                if(Helper.GenerateTextInfoPanel != GenerateTextInfoPanel) {
+                    GenerateTextInfoPanel = Helper.GenerateTextInfoPanel;
+                    GenerateMap(OnlyExportMap, false);
+                }
+                GUILayout.EndHorizontal();
                 GUILayout.EndVertical();
             }
 
@@ -413,7 +421,7 @@ public class CodeViews : EditorWindow
             mapcode = Helper.ShouldAddStartingOrg(1);
 
         //Build Map Code
-        mapcode += Helper.BuildMapCode(Helper.GenerateButtons, Helper.GenerateJumppads, Helper.GenerateBubbleShields, Helper.GenerateWeaponRacks, Helper.GenerateLootBins, Helper.GenerateZipLines, Helper.GenerateDoors, Helper.GenerateProps, Helper.GenerateTriggers);
+        mapcode += Helper.BuildMapCode(Helper.GenerateButtons, Helper.GenerateJumppads, Helper.GenerateBubbleShields, Helper.GenerateWeaponRacks, Helper.GenerateLootBins, Helper.GenerateZipLines, Helper.GenerateDoors, Helper.GenerateProps, Helper.GenerateTriggers, Helper.GenerateTextInfoPanel);
 
         if(!onlyMapCode)
             mapcode += "}";

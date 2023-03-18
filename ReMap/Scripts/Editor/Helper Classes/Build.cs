@@ -561,6 +561,29 @@ public class Build
         return code;
     }
 
+    public static string TextInfoPanel()
+    {
+        GameObject[] TextInfoPanelObjects = GameObject.FindGameObjectsWithTag("TextInfoPanel");
+        if (TextInfoPanelObjects.Length < 1)
+            return "";
+        
+        string code = "    //TextInfoPanels \n";
+
+        foreach (GameObject go in TextInfoPanelObjects)
+        {
+            TextInfoPanelScript script = go.GetComponent<TextInfoPanelScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Map Export] Missing ButtonScripting on: " + go.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+            code += $"    MapEditor_CreatePanelTextForAll( \"{script.title}\", \"{script.description}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.showPIN}, {script.scale})" + "\n";
+        }
+
+        code += "\n";
+
+        return code;
+    }
+
     public static string BuildDataTableItem(GameObject go, bool isexport)
     {
         string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";

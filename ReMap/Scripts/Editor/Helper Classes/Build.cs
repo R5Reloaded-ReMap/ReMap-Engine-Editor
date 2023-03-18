@@ -427,10 +427,6 @@ public class Build
                 //break;
         }
 
-        List<GameObject> PlayerClips = new List<GameObject>();
-	    List<GameObject> PlayerNoCollisions = new List<GameObject>();
-	    List<GameObject> PlayerNoClimbs = new List<GameObject>();
-
         foreach (GameObject go in PropObjects)
         {
             string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
@@ -459,26 +455,8 @@ public class Build
                     if (isexport)
                         ReMapConsole.Log("[Map Export] Exporting: " + model, ReMapConsole.LogType.Info);
 
-                    if(script.playerClip)
-                    {
-                        PlayerClips.Add(go);
-                        continue;
-                    }
-		    
-		            if(script.playerNoCollision)
-                    {
-                        PlayerNoCollisions.Add(go);
-                        continue;
-                    }
-
-		            if(script.playerNoClimb)
-                    {
-                        PlayerNoClimbs.Add(go);
-                        continue;
-                    }
-
                     string idx = "";
-                    if ( script.parameters.Count != 0 )
+                    if ( script.parameters.Count != 0 || script.customParameters.Count != 0 )
                     {
                         idx = $"prop{CreateEntityIxd()}";
                         code += $"    entity {idx} = ";
@@ -486,96 +464,20 @@ public class Build
                     
                     code += $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
 
-                    if ( script.parameters.Count != 0 )
+                    if ( script.parameters.Count != 0 || script.customParameters.Count != 0 )
                     {
                         foreach ( PropScriptParameters param in script.parameters )
                         {
                             code += GetPropScriptParamValue( idx, param );
                         }
+
+                        foreach ( string param in script.customParameters )
+                        {
+                            code += SetPropScriptParamValue( idx, param );
+                        }
                     }
                     continue;
             }
-        }
-
-        if(type == BuildType.Map && PlayerClips.Count > 0)
-        {
-            code += "\n";
-            code += "    //PlayerClips \n";
-            code += "    array<entity> playerClips \n";
-            
-            foreach( GameObject go in PlayerClips )
-            {
-                string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
-                PropScript script = go.GetComponent<PropScript>();
-
-                if (script == null) {
-                    ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
-                    continue;
-                }
-
-                code += $"    playerClips.append( MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
-            }
-
-            code += "\n";
-            code += "    foreach( entity clip in playerClips ) {\n";
-            code += "        clip.MakeInvisible()\n";
-            code += "        clip.kv.solid = SOLID_VPHYSICS\n";
-            code += "        clip.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
-            code += "        clip.kv.contents = CONTENTS_PLAYERCLIP\n";
-            code += "    }\n";
-            code += "\n";   
-        }
-	
-	    if(type == BuildType.Map && PlayerNoCollisions.Count > 0)
-        {
-            code += "\n";
-            code += "    //PlayerNoCollisions \n";
-            code += "    array<entity> PlayerNoCollisions \n";
-            
-            foreach( GameObject go in PlayerNoCollisions )
-            {
-                string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
-                PropScript script = go.GetComponent<PropScript>();
-
-                if (script == null) {
-                    ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
-                    continue;
-                }
-
-                code += $"    PlayerNoCollisions.append( MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
-            }
-
-            code += "\n";
-            code += "    foreach( entity nocollision in PlayerNoCollisions ) {\n";
-            code += "        nocollision.kv.solid = 0\n";
-            code += "    }\n";
-            code += "\n";   
-        }
-	
-	    if(type == BuildType.Map && PlayerNoClimbs.Count > 0)
-        {
-            code += "\n";
-            code += "    //PlayerNoClimbs \n";
-            code += "    array<entity> PlayerNoClimbs \n";
-            
-            foreach( GameObject go in PlayerNoClimbs )
-            {
-                string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
-                PropScript script = go.GetComponent<PropScript>();
-
-                if (script == null) {
-                    ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
-                    continue;
-                }
-
-                code += $"    PlayerNoClimbs.append( MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
-            }
-
-            code += "\n";
-            code += "    foreach( entity noclimb in PlayerNoClimbs ) {\n";
-            code += "        noclimb.kv.solid = 3\n";
-            code += "    }\n";
-            code += "\n";   
         }
 
         switch(type) {
@@ -763,17 +665,37 @@ public class Build
 
     public static string GetPropScriptParamValue( string name, PropScriptParameters param )
     {
-        string paramStr = $"    {name}";
+        string paramStr = "";
 
         switch ( param )
         {
-            case PropScriptParameters.MakeInvisible: paramStr += ".MakeInvisible()" + "\n"; break;
-            case PropScriptParameters.KvSolid3:      paramStr += ".kv.solid = 3" + "\n"; break;
+            case PropScriptParameters.PlayerClip:
+                paramStr += $"    {name}.MakeInvisible()" + "\n";
+                paramStr += $"    {name}.kv.solid = 6" + "\n";
+                paramStr += $"    {name}.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER" + "\n";
+                paramStr += $"    {name}.kv.contents = CONTENTS_PLAYERCLIP" + "\n";
+                break;
+            case PropScriptParameters.PlayerNoClimb:       paramStr += $"    {name}.kv.solid = 3" + "\n"; break;
+            case PropScriptParameters.MakeInvisible:       paramStr += $"    {name}.MakeInvisible()" + "\n"; break;
 
-            default: paramStr = ""; break;
+            case PropScriptParameters.KvSolidNoCollision:  paramStr += $"    {name}.kv.solid = 0" + "\n"; break;
+            case PropScriptParameters.KvSolidBoundingBox:  paramStr += $"    {name}.kv.solid = 2" + "\n"; break;
+            case PropScriptParameters.KvSolidNoFriction:   paramStr += $"    {name}.kv.solid = 3" + "\n"; break;
+            case PropScriptParameters.KvSolidUseVPhysics:  paramStr += $"    {name}.kv.solid = 6" + "\n"; break;
+            case PropScriptParameters.KvSolidHitboxOnly:   paramStr += $"    {name}.kv.solid = 8" + "\n"; break;
+
+            case PropScriptParameters.KvContentsNOGRAPPLE: paramStr += $"    {name}.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" + "\n"; break;
+
+
+            default: break;
         }
 
         return paramStr;
+    }
+
+    public static string SetPropScriptParamValue( string name, string param )
+    {
+        return $"    {name}{param}" + "\n";
     }
 
     public static string BuildNewLocPairItem(GameObject go, bool isexport)

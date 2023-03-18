@@ -214,6 +214,8 @@ public class SerializeTool : EditorWindow
             scriptInstance.fadeDistance = script.fadeDistance;
             scriptInstance.allowMantle = script.allowMantle;
             scriptInstance.realmID = script.realmID;
+            scriptInstance.parameters = script.parameters;
+            scriptInstance.customParameters = script.customParameters;
 
             obj.transform.SetParent(go.transform.parent);
 

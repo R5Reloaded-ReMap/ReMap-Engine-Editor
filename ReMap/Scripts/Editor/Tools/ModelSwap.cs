@@ -123,9 +123,8 @@ public class ModelSwap : EditorWindow
         compToAdd.allowMantle = script.allowMantle;
         compToAdd.fadeDistance = script.fadeDistance;
         compToAdd.realmID = script.realmID;
-        compToAdd.playerClip = script.playerClip;
-        compToAdd.playerNoClimb = script.playerNoClimb;
-        compToAdd.playerNoCollision = script.playerNoCollision;
+        compToAdd.parameters = script.parameters;
+        compToAdd.customParameters = script.customParameters;
 
         GameObject.DestroyImmediate( selection );
 

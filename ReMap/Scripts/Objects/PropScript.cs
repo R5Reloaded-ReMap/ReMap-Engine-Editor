@@ -3,8 +3,20 @@ using UnityEngine;
 
 public enum PropScriptParameters
 {
-    MakeInvisible,
-    KvSolid3
+    PlayerClip, // ent is a invisible wall
+    PlayerNoClimb, // Player can't climb
+    MakeInvisible, // ent is invisible
+
+    // KV File
+    // KV solid
+    KvSolidNoCollision, // ent have no collision
+    KvSolidBoundingBox, // ent use bounding box
+    KvSolidNoFriction, // ent have no friction
+    KvSolidUseVPhysics, // ent use vPhysics
+    KvSolidHitboxOnly, // ent use hitbox only
+
+    // KV contents
+    KvContentsNOGRAPPLE
 }
 
 public class PropScript : MonoBehaviour
@@ -13,8 +25,6 @@ public class PropScript : MonoBehaviour
     public bool allowMantle = true;
     public float fadeDistance = 50000;
     public int realmID = -1;
-    public bool playerClip = false;
     public List<PropScriptParameters> parameters = new List<PropScriptParameters>();
-    public bool playerNoClimb = false;
-    public bool playerNoCollision = false;
+    public List<string> customParameters = new List<string>();
 }

@@ -27,6 +27,8 @@ public class PropScriptClass
     public bool AllowMantle;
     public float FadeDistance;
     public int RealmID;
+    public List<PropScriptParameters> Parameters;
+    public List<string> CustomParameters;
 }
 
 [Serializable]

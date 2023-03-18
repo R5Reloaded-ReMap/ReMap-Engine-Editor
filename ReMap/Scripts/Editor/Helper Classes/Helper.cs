@@ -1,8 +1,9 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
-using UnityEngine;
+using System.IO;
+using System.Reflection;
 using UnityEditor;
+using UnityEngine;
 
 public class Helper
 {
@@ -290,6 +291,32 @@ public class Helper
         if(triggers) code += Build.Triggers();
         return code;
     }
+
+    public static void ApplyComponentScriptData<T>(T target, T source) where T : Component
+    {
+        Type type = typeof(T);
+        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            object value = field.GetValue(source);
+            field.SetValue(target, value);
+        }
+    }
+
+    /*
+    public static void ApplyComponentScriptDataFromJson<T>(T target, T source) where T : Component
+    {
+        Type type = typeof(T);
+        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (FieldInfo field in fields)
+        {
+            object value = field.GetValue(source);
+            field.SetValue(target, value);
+        }
+    }
+    */
 
     public static string GetRandomGUIDForEnt()
     {

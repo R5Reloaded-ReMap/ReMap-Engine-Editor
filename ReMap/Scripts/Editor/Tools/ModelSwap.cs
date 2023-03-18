@@ -1,8 +1,8 @@
-using UnityEngine;
-using UnityEditor;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 /// <summary>
 /// Swap an existing model to an other
@@ -120,11 +120,7 @@ public class ModelSwap : EditorWindow
         obj.name = chosenObject.name;
 
         PropScript compToAdd = obj.GetComponent<PropScript>();
-        compToAdd.allowMantle = script.allowMantle;
-        compToAdd.fadeDistance = script.fadeDistance;
-        compToAdd.realmID = script.realmID;
-        compToAdd.parameters = script.parameters;
-        compToAdd.customParameters = script.customParameters;
+        Helper.ApplyComponentScriptData<PropScript>( compToAdd, script );
 
         GameObject.DestroyImmediate( selection );
 

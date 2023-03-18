@@ -211,11 +211,7 @@ public class SerializeTool : EditorWindow
             obj.gameObject.transform.localScale = go.transform.lossyScale;
 
             PropScript scriptInstance = obj.GetComponent<PropScript>();
-            scriptInstance.fadeDistance = script.fadeDistance;
-            scriptInstance.allowMantle = script.allowMantle;
-            scriptInstance.realmID = script.realmID;
-            scriptInstance.parameters = script.parameters;
-            scriptInstance.customParameters = script.customParameters;
+            Helper.ApplyComponentScriptData<PropScript>( scriptInstance, script );
 
             obj.transform.SetParent(go.transform.parent);
 

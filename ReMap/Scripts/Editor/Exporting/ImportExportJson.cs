@@ -94,6 +94,8 @@ public class ImportExportJson
             script.fadeDistance = propScript.FadeDistance;
             script.allowMantle = propScript.AllowMantle;
             script.realmID = propScript.RealmID;
+            script.parameters = propScript.Parameters;
+            script.customParameters = propScript.CustomParameters;
 
             if ( prop.PathString != "" )
             obj.gameObject.transform.parent = CreatePath( prop.Path );
@@ -818,6 +820,8 @@ public class ImportExportJson
             propScript.AllowMantle = script.allowMantle;
             propScript.FadeDistance = script.fadeDistance;
             propScript.RealmID = script.realmID;
+            propScript.Parameters = script.parameters;
+            propScript.CustomParameters = script.customParameters;
             jumpPad.script = propScript;
 
             jumpPad.Path = FindPath( obj );

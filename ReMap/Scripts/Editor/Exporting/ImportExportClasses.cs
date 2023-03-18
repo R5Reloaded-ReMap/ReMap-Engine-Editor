@@ -19,6 +19,7 @@ public class SaveJson
     public List<DoorsClass> Doors;
     public List<TriggersClass> Triggers;
     public List<SoundClass> Sounds;
+    public List<TextInfoPanelClass> TextInfoPanels;
 }
 
 [Serializable]
@@ -225,6 +226,19 @@ public class SoundClass
     public bool Enable;
     public string SoundName;
     public List<Vector3> PolylineSegments;
+    public string PathString;
+    public List<PathClass> Path;
+}
+
+[Serializable]
+public class TextInfoPanelClass
+{
+    public Vector3 Position;
+    public Vector3 Rotation;
+    public string Title;
+    public string Description;
+    public bool ShowPIN;
+    public float Scale;
     public string PathString;
     public List<PathClass> Path;
 }

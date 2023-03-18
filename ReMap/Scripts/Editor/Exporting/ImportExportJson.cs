@@ -41,6 +41,7 @@ public class ImportExportJson
         SortListByKey(myObject.Doors, x => x.PathString);
         SortListByKey(myObject.Triggers, x => x.PathString);
         SortListByKey(myObject.Sounds, x => x.PathString);
+        SortListByKey(myObject.TextInfoPanels, x => x.PathString);
 
         await ImportProps(myObject.Props);
         await ImportJumppads(myObject.JumpPads);
@@ -52,6 +53,7 @@ public class ImportExportJson
         await ImportDoors(myObject.Doors);
         await ImportTriggers(myObject.Triggers);
         await ImportSounds(myObject.Sounds);
+        await ImportTextInfoPanels(myObject.TextInfoPanels);
 
         ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
 
@@ -706,6 +708,50 @@ public class ImportExportJson
             i++; j++;
         }
     }
+    
+    private static async Task ImportTextInfoPanels(List<TextInfoPanelClass> TextInfoPanel)
+    {
+        int i = 0;
+        int j = 1;
+        int textInfoPanelCount = TextInfoPanel.Count;
+        foreach(TextInfoPanelClass textInfoPanel in TextInfoPanel)
+        {
+            
+            string importing = "";
+
+            if ( string.IsNullOrEmpty( textInfoPanel.PathString ) )
+            {
+                importing = "custom_TextInfoPanel";
+            } else importing = $"{textInfoPanel.PathString}/custom_TextInfoPanel";
+
+            ReMapConsole.Log("[Json Import] Importing: Sound", ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar($"Importing Sounds {j}/{textInfoPanelCount}", $"Importing: {importing}", (i + 1) / (float)textInfoPanelCount);
+
+            string Model = "custom_TextInfoPanel";
+            UnityEngine.Object loadedPrefabResource = FindPrefabFromName(Model);
+            if (loadedPrefabResource == null)
+            {
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {Model}" , ReMapConsole.LogType.Error);
+                continue;
+            }
+
+            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+            obj.transform.position = textInfoPanel.Position;
+            obj.transform.eulerAngles = textInfoPanel.Rotation;
+
+            TextInfoPanelScript script = obj.GetComponent<TextInfoPanelScript>();
+            script.title = textInfoPanel.Title;
+            script.description = textInfoPanel.Description;
+            script.showPIN = textInfoPanel.ShowPIN;
+            script.scale = textInfoPanel.Scale;
+
+            if ( textInfoPanel.Path.Count != 0 )
+            obj.gameObject.transform.parent = CreatePath( textInfoPanel.Path );
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++; j++;
+        }
+    }
 
     [MenuItem("ReMap/Export/Json", false, 51)]
     public static async void ExportJson()
@@ -729,6 +775,7 @@ public class ImportExportJson
         await ExportDoors();
         await ExportTriggers();
         await ExportSounds();
+        await ExportTextInfoPanels();
 
         ReMapConsole.Log("[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
         string json = JsonUtility.ToJson(save);
@@ -1458,6 +1505,49 @@ public class ImportExportJson
         }
     }
 
+    private static async Task ExportTextInfoPanels()
+    {
+        int i = 0;
+        int j = 1;
+        GameObject[] TextInfoPanelsObjects = GameObject.FindGameObjectsWithTag("TextInfoPanel");
+        int textInfoPanelsCount = TextInfoPanelsObjects.Length;
+        foreach (GameObject obj in TextInfoPanelsObjects)
+        {
+            TextInfoPanelScript script = obj.GetComponent<TextInfoPanelScript>();
+            if (script == null) {
+                ReMapConsole.Log("[Json Export] Missing TextInfoPanelsScript on: " + obj.name, ReMapConsole.LogType.Error);
+                continue;
+            }
+            
+            string exporting = "";
+            string path = FindPathString( obj );
+
+            if ( string.IsNullOrEmpty( path ) )
+            {
+                exporting = obj.name;
+            } else exporting = $"{path}/{obj.name}";
+
+            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar($"Exporting TextInfoPanels {j}/{textInfoPanelsCount}", $"Exporting: {exporting}", (i + 1) / (float)textInfoPanelsCount);
+
+            TextInfoPanelClass textInfoPanel = new TextInfoPanelClass();
+            textInfoPanel.Position = obj.transform.position;
+            textInfoPanel.Rotation = obj.transform.eulerAngles;
+            textInfoPanel.Title = script.title;
+            textInfoPanel.Description = script.description;
+            textInfoPanel.ShowPIN = script.showPIN;
+            textInfoPanel.Scale = script.scale;
+
+            textInfoPanel.Path = FindPath( obj );
+            textInfoPanel.PathString = path;
+
+            save.TextInfoPanels.Add( textInfoPanel );
+
+            await Task.Delay(TimeSpan.FromSeconds(0.001));
+            i++; j++;
+        }
+    }
+
 
     [MenuItem("ReMap/Map Fix/ReImport Map", false, 51)]
     public static async void ReImportJson()
@@ -1595,6 +1685,7 @@ public class ImportExportJson
         save.Doors = new List<DoorsClass>();
         save.Triggers = new List<TriggersClass>();
         save.Sounds = new List<SoundClass>();
+        save.TextInfoPanels = new List<TextInfoPanelClass>();
     }
 
     public static UnityEngine.Object FindPrefabFromName(string name)

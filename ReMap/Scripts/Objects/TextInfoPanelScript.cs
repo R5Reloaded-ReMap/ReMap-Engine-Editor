@@ -11,9 +11,11 @@ public class TextInfoPanelScript : MonoBehaviour
     public bool showPIN = false;
     public float scale = 1;
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         textMeshTitle.text = title;
         textMeshDescription.text = description;
+
+        this.transform.localScale = new Vector3( scale, scale, scale );
     }
 }

@@ -347,7 +347,7 @@ public class Helper
 
     public static string GetObjTagNameWithEnum( ObjectType objectType )
     {
-        return GetEnumString( objectType, StringType.Name );
+        return GetEnumString( objectType, StringType.TagName );
     }
 
     public static string GetObjNameWithEnum( ObjectType objectType )

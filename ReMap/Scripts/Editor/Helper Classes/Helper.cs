@@ -5,6 +5,34 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
+public enum StringType
+{
+    TagName = 0,
+    Name = 1
+}
+
+public enum ObjectType
+{
+    LootBin,
+    ZipLine,
+    VerticalZipLine,
+    NonVerticalZipLine,
+    LinkedZipline,
+    Jumppad,
+    SingleDoor,
+    DoubleDoor,
+    VerticalDoor,
+    HorzDoor,
+    WeaponRack,
+    Button,
+    Trigger,
+    Prop,
+    BubbleShield,
+    Sound,
+    SpawnPoint,
+    TextInfoPanel
+}
+
 public class Helper
 {
     public static int maxBuildLength = 75000;
@@ -27,24 +55,24 @@ public class Helper
 
     public static Dictionary<string, string> ObjectToTag = new Dictionary<string, string>
     {
-        {"custom_lootbin", "LootBin"},
-        {"custom_zipline", "ZipLine"},
-        {"_vertical_zipline", "VerticalZipLine"},
-        {"_non_vertical_zipline", "NonVerticalZipLine"},
-        {"custom_jumppad", "Jumppad"},
-        {"custom_linked_zipline", "LinkedZipline"},
-        {"custom_single_door", "SingleDoor"},
-        {"custom_double_door", "DoubleDoor"},
-        {"custom_vertical_door", "VerticalDoor"},
-        {"custom_sliding_door", "HorzDoor"},
-        {"custom_weaponrack", "WeaponRack"},
-        {"custom_button", "Button"},
-        {"trigger_cylinder", "Trigger"},
-        {"mdl", "Prop"},
-        {"mdl#fx#bb_shield", "BubbleShield"},
-        {"custom_sound", "Sound"},
-        {"info_spawnpoint_human", "SpawnPoint"},
-        {"custom_TextInfoPanel", "TextInfoPanel"}
+        {"custom_lootbin", GetObjTagNameWithEnum( ObjectType.LootBin )},
+        {"custom_zipline", GetObjTagNameWithEnum( ObjectType.ZipLine )},
+        {"_vertical_zipline", GetObjTagNameWithEnum( ObjectType.VerticalZipLine )},
+        {"_non_vertical_zipline", GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine )},
+        {"custom_jumppad", GetObjTagNameWithEnum( ObjectType.Jumppad )},
+        {"custom_linked_zipline", GetObjTagNameWithEnum( ObjectType.LinkedZipline )},
+        {"custom_single_door", GetObjTagNameWithEnum( ObjectType.SingleDoor )},
+        {"custom_double_door", GetObjTagNameWithEnum( ObjectType.DoubleDoor )},
+        {"custom_vertical_door", GetObjTagNameWithEnum( ObjectType.VerticalDoor )},
+        {"custom_sliding_door", GetObjTagNameWithEnum( ObjectType.HorzDoor )},
+        {"custom_weaponrack", GetObjTagNameWithEnum( ObjectType.WeaponRack )},
+        {"custom_button", GetObjTagNameWithEnum( ObjectType.Button )},
+        {"trigger_cylinder", GetObjTagNameWithEnum( ObjectType.Trigger )},
+        {"mdl", GetObjTagNameWithEnum( ObjectType.Prop )},
+        {"mdl#fx#bb_shield", GetObjTagNameWithEnum( ObjectType.BubbleShield )},
+        {"custom_sound", GetObjTagNameWithEnum( ObjectType.Sound )},
+        {"info_spawnpoint_human", GetObjTagNameWithEnum( ObjectType.SpawnPoint )},
+        {"custom_TextInfoPanel", GetObjTagNameWithEnum( ObjectType.TextInfoPanel )}
     };
 
     public enum ExportType
@@ -289,7 +317,7 @@ public class Helper
         if(doors) code += Build.DoubleDoors();
         if(doors) code += Build.VertDoors();
         if(doors) code += Build.HorizontalDoors();
-        if(props) code += Build.Props(Build.BuildType.Map);
+        if(props) code += Build.Props( null, Build.BuildType.Map );
         if(triggers) code += Build.Triggers();
         if(infopanel) code += Build.TextInfoPanel();
         return code;
@@ -324,6 +352,50 @@ public class Helper
     public static string GetRandomGUIDForEnt()
     {
         return Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
+    }
+
+    public static GameObject[] GetObjArrayWithEnum( ObjectType objectType )
+    {
+        return GameObject.FindGameObjectsWithTag( GetObjTagNameWithEnum( objectType ) );
+    }
+
+    public static string GetObjTagNameWithEnum( ObjectType objectType )
+    {
+        return GetEnumString( objectType, StringType.Name );
+    }
+
+    public static string GetObjNameWithEnum( ObjectType objectType )
+    {
+        return GetEnumString( objectType, StringType.Name );
+    }
+
+    public static string GetEnumString(ObjectType objectType, StringType stringType)
+    {
+        int i = (int)stringType;
+
+        switch (objectType)
+        {
+            case ObjectType.LootBin:            return new string[] { "LootBin",            "Loot Bin" }[i];
+            case ObjectType.ZipLine:            return new string[] { "ZipLine",            "ZipLine" }[i];
+            case ObjectType.VerticalZipLine:    return new string[] { "VerticalZipLine",    "Vertical ZipLine" }[i];
+            case ObjectType.NonVerticalZipLine: return new string[] { "NonVerticalZipLine", "Non Vertical ZipLine" }[i];
+            case ObjectType.LinkedZipline:      return new string[] { "LinkedZipline",      "Linked Zipline" }[i];
+            case ObjectType.Jumppad:            return new string[] { "Jumppad",            "Jump Pad" }[i];
+            case ObjectType.SingleDoor:         return new string[] { "SingleDoor",         "Single Door" }[i];
+            case ObjectType.DoubleDoor:         return new string[] { "DoubleDoor",         "Double Door" }[i];
+            case ObjectType.VerticalDoor:       return new string[] { "VerticalDoor",       "Vertical Door" }[i];
+            case ObjectType.HorzDoor:           return new string[] { "HorzDoor",           "Horizontal Door" }[i];
+            case ObjectType.WeaponRack:         return new string[] { "WeaponRack",         "Weapon Rack" }[i];
+            case ObjectType.Button:             return new string[] { "Button",             "Button" }[i];
+            case ObjectType.Trigger:            return new string[] { "Trigger",            "Trigger" }[i];
+            case ObjectType.Prop:               return new string[] { "Prop",               "Prop" }[i];
+            case ObjectType.BubbleShield:       return new string[] { "BubbleShield",       "Bubble Shield" }[i];
+            case ObjectType.Sound:              return new string[] { "Sound",              "Sound" }[i];
+            case ObjectType.SpawnPoint:         return new string[] { "SpawnPoint",         "Spawn Point" }[i];
+            case ObjectType.TextInfoPanel:      return new string[] { "TextInfoPanel",      "Text Info Panel" }[i];
+ 
+            default: throw new ArgumentOutOfRangeException(nameof(objectType), objectType, null);
+        }
     }
 
     public static string Credits = @"

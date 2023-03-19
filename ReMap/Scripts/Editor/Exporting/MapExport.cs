@@ -46,7 +46,7 @@ public class MapExport
         EditorSceneManager.SaveOpenScenes();
 
         Helper.Is_Using_Starting_Offset = true;
-        string entCode = Build.Props(Build.BuildType.Ent);
+        string entCode = Build.Props( null, Build.BuildType.Ent );
 
         ReMapConsole.Log("[Script.ent Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
         System.IO.File.WriteAllText(path, entCode + "\u0000");
@@ -98,7 +98,7 @@ public class MapExport
         string funcName = SceneManager.GetActiveScene().name.Replace(" ", "_");
 
         string mapcode = Helper.Credits + "\n";
-        mapcode += $"void function {funcName}_Init()" + "\n{\n" + $"{Build.Props(Build.BuildType.Precache)}" + "\n" + $"    {funcName}()" + "\n" + "\n}\n\n";
+        mapcode += $"void function {funcName}_Init()" + "\n{\n" + $"{Build.Props( null, Build.BuildType.Precache)}" + "\n" + $"    {funcName}()" + "\n" + "\n}\n\n";
         mapcode += $"void function {funcName}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(1);
 
         if (type == Helper.ExportType.MapOnly || type == Helper.ExportType.MapOnlyOffset)

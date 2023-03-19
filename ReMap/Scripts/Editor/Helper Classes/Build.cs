@@ -403,11 +403,11 @@ public class Build
         return code;
     }
 
-    public static string Props(BuildType type = BuildType.Map, bool isexport = false)
+    public static string Props( GameObject[] ObjectsArray = null, BuildType type = BuildType.Map, bool isexport = false )
     {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Prop");
-        if (PropObjects.Length < 1)
-            return "";
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.Prop );
+
+        if ( ObjectsArray.Length < 1 ) return "";
 
         List<String> precacheList = new List<String>();
 
@@ -415,7 +415,8 @@ public class Build
 
         string code = "";
 
-        switch(type) {
+        switch(type)
+        {
             case BuildType.Map:
                 code += "    //Props \n";
                 break;
@@ -423,11 +424,11 @@ public class Build
                 code += "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" + "\n";
                 break;
             //case BuildType.Ent:
-                //code += $"ENTITIES02 num_models={PropObjects.Length}\n";
+                //code += $"ENTITIES02 num_models={ObjectsArray.Length}\n";
                 //break;
         }
 
-        foreach (GameObject go in PropObjects)
+        foreach (GameObject go in ObjectsArray)
         {
             string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
             PropScript script = go.GetComponent<PropScript>();
@@ -495,13 +496,13 @@ public class Build
 
     public static string Sounds(bool isexport = false)
     {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("Sound");
-        if (PropObjects.Length < 1)
+        GameObject[] ObjectsArray = GameObject.FindGameObjectsWithTag("Sound");
+        if (ObjectsArray.Length < 1)
             return "";
 
-        string code = ""; //= $"ENTITIES02 num_models={PropObjects.Length}\n";
+        string code = ""; //= $"ENTITIES02 num_models={ObjectsArray.Length}\n";
 
-        foreach (GameObject go in PropObjects)
+        foreach (GameObject go in ObjectsArray)
             code += BuildSoundEntItem(go, isexport);
 
         return code;
@@ -553,15 +554,15 @@ public class Build
 
     public static string NewLocPair(bool isexport = false)
     {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        if (PropObjects.Length < 1)
+        GameObject[] ObjectsArray = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        if (ObjectsArray.Length < 1)
             return "";
 
         string code = "    // NewLocPair\n\n";
 
         code += Helper.ShouldAddStartingOrg(1);
 
-        foreach (GameObject go in PropObjects)
+        foreach (GameObject go in ObjectsArray)
             code += BuildNewLocPairItem(go, isexport);
 
         return code;

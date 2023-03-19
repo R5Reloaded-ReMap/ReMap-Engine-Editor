@@ -443,7 +443,7 @@ public class CodeViews : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string tableCode = Build.Props(Build.BuildType.DataTable);
+        string tableCode = Build.Props( null, Build.BuildType.DataTable );
 
         if (copycode_text) {
             GUIUtility.systemCopyBuffer = tableCode;
@@ -462,7 +462,7 @@ public class CodeViews : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string precacheCode = Build.Props(Build.BuildType.Precache);
+        string precacheCode = Build.Props( null, Build.BuildType.Precache );
      
         if(copycode_text) {
             GUIUtility.systemCopyBuffer = precacheCode;
@@ -481,7 +481,7 @@ public class CodeViews : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string entCode = Build.Props(Build.BuildType.Ent);
+        string entCode = Build.Props( null, Build.BuildType.Ent );
 
         if(copycode_text) {
             GUIUtility.systemCopyBuffer = entCode;

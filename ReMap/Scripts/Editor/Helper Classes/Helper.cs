@@ -7,8 +7,9 @@ using UnityEngine;
 
 public enum StringType
 {
-    TagName = 0,
-    Name = 1
+    ObjectRef = 0,
+    TagName = 1,
+    Name = 2
 }
 
 public enum ObjectType
@@ -53,27 +54,7 @@ public class Helper
     public static bool GenerateTriggers = true;
     public static bool GenerateTextInfoPanel = true;
 
-    public static Dictionary<string, string> ObjectToTag = new Dictionary<string, string>
-    {
-        {"custom_lootbin", GetObjTagNameWithEnum( ObjectType.LootBin )},
-        {"custom_zipline", GetObjTagNameWithEnum( ObjectType.ZipLine )},
-        {"_vertical_zipline", GetObjTagNameWithEnum( ObjectType.VerticalZipLine )},
-        {"_non_vertical_zipline", GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine )},
-        {"custom_jumppad", GetObjTagNameWithEnum( ObjectType.Jumppad )},
-        {"custom_linked_zipline", GetObjTagNameWithEnum( ObjectType.LinkedZipline )},
-        {"custom_single_door", GetObjTagNameWithEnum( ObjectType.SingleDoor )},
-        {"custom_double_door", GetObjTagNameWithEnum( ObjectType.DoubleDoor )},
-        {"custom_vertical_door", GetObjTagNameWithEnum( ObjectType.VerticalDoor )},
-        {"custom_sliding_door", GetObjTagNameWithEnum( ObjectType.HorzDoor )},
-        {"custom_weaponrack", GetObjTagNameWithEnum( ObjectType.WeaponRack )},
-        {"custom_button", GetObjTagNameWithEnum( ObjectType.Button )},
-        {"trigger_cylinder", GetObjTagNameWithEnum( ObjectType.Trigger )},
-        {"mdl", GetObjTagNameWithEnum( ObjectType.Prop )},
-        {"mdl#fx#bb_shield", GetObjTagNameWithEnum( ObjectType.BubbleShield )},
-        {"custom_sound", GetObjTagNameWithEnum( ObjectType.Sound )},
-        {"info_spawnpoint_human", GetObjTagNameWithEnum( ObjectType.SpawnPoint )},
-        {"custom_TextInfoPanel", GetObjTagNameWithEnum( ObjectType.TextInfoPanel )}
-    };
+    public static Dictionary<string, string> ObjectToTag = ObjectToTagDictionaryInit();
 
     public enum ExportType
     {
@@ -359,6 +340,11 @@ public class Helper
         return GameObject.FindGameObjectsWithTag( GetObjTagNameWithEnum( objectType ) );
     }
 
+    public static string GetObjRefWithEnum( ObjectType objectType )
+    {
+        return GetEnumString( objectType, StringType.ObjectRef );
+    }
+
     public static string GetObjTagNameWithEnum( ObjectType objectType )
     {
         return GetEnumString( objectType, StringType.Name );
@@ -375,27 +361,39 @@ public class Helper
 
         switch (objectType)
         {
-            case ObjectType.LootBin:            return new string[] { "LootBin",            "Loot Bin" }[i];
-            case ObjectType.ZipLine:            return new string[] { "ZipLine",            "ZipLine" }[i];
-            case ObjectType.VerticalZipLine:    return new string[] { "VerticalZipLine",    "Vertical ZipLine" }[i];
-            case ObjectType.NonVerticalZipLine: return new string[] { "NonVerticalZipLine", "Non Vertical ZipLine" }[i];
-            case ObjectType.LinkedZipline:      return new string[] { "LinkedZipline",      "Linked Zipline" }[i];
-            case ObjectType.Jumppad:            return new string[] { "Jumppad",            "Jump Pad" }[i];
-            case ObjectType.SingleDoor:         return new string[] { "SingleDoor",         "Single Door" }[i];
-            case ObjectType.DoubleDoor:         return new string[] { "DoubleDoor",         "Double Door" }[i];
-            case ObjectType.VerticalDoor:       return new string[] { "VerticalDoor",       "Vertical Door" }[i];
-            case ObjectType.HorzDoor:           return new string[] { "HorzDoor",           "Horizontal Door" }[i];
-            case ObjectType.WeaponRack:         return new string[] { "WeaponRack",         "Weapon Rack" }[i];
-            case ObjectType.Button:             return new string[] { "Button",             "Button" }[i];
-            case ObjectType.Trigger:            return new string[] { "Trigger",            "Trigger" }[i];
-            case ObjectType.Prop:               return new string[] { "Prop",               "Prop" }[i];
-            case ObjectType.BubbleShield:       return new string[] { "BubbleShield",       "Bubble Shield" }[i];
-            case ObjectType.Sound:              return new string[] { "Sound",              "Sound" }[i];
-            case ObjectType.SpawnPoint:         return new string[] { "SpawnPoint",         "Spawn Point" }[i];
-            case ObjectType.TextInfoPanel:      return new string[] { "TextInfoPanel",      "Text Info Panel" }[i];
+            case ObjectType.LootBin:            return new string[] { "custom_lootbin",        "LootBin",            "Loot Bin"             }[i];
+            case ObjectType.ZipLine:            return new string[] { "custom_zipline",        "ZipLine",            "ZipLine"              }[i];
+            case ObjectType.VerticalZipLine:    return new string[] { "_vertical_zipline",     "VerticalZipLine",    "Vertical ZipLine"     }[i];
+            case ObjectType.NonVerticalZipLine: return new string[] { "_non_vertical_zipline", "NonVerticalZipLine", "Non Vertical ZipLine" }[i];
+            case ObjectType.LinkedZipline:      return new string[] { "custom_jumppad",        "LinkedZipline",      "Linked Zipline"       }[i];
+            case ObjectType.Jumppad:            return new string[] { "custom_linked_zipline", "Jumppad",            "Jump Pad"             }[i];
+            case ObjectType.SingleDoor:         return new string[] { "custom_single_door",    "SingleDoor",         "Single Door"          }[i];
+            case ObjectType.DoubleDoor:         return new string[] { "custom_double_door",    "DoubleDoor",         "Double Door"          }[i];
+            case ObjectType.VerticalDoor:       return new string[] { "custom_vertical_door",  "VerticalDoor",       "Vertical Door"        }[i];
+            case ObjectType.HorzDoor:           return new string[] { "custom_sliding_door",   "HorzDoor",           "Horizontal Door"      }[i];
+            case ObjectType.WeaponRack:         return new string[] { "custom_weaponrack",     "WeaponRack",         "Weapon Rack"          }[i];
+            case ObjectType.Button:             return new string[] { "custom_button",         "Button",             "Button"               }[i];
+            case ObjectType.Trigger:            return new string[] { "trigger_cylinder",      "Trigger",            "Trigger"              }[i];
+            case ObjectType.Prop:               return new string[] { "mdl",                   "Prop",               "Prop"                 }[i];
+            case ObjectType.BubbleShield:       return new string[] { "mdl#fx#bb_shield",      "BubbleShield",       "Bubble Shield"        }[i];
+            case ObjectType.Sound:              return new string[] { "custom_sound",          "Sound",              "Sound"                }[i];
+            case ObjectType.SpawnPoint:         return new string[] { "info_spawnpoint_human", "SpawnPoint",         "Spawn Point"          }[i];
+            case ObjectType.TextInfoPanel:      return new string[] { "custom_TextInfoPanel",  "TextInfoPanel",      "Text Info Panel"      }[i];
  
             default: throw new ArgumentOutOfRangeException(nameof(objectType), objectType, null);
         }
+    }
+
+    private static Dictionary<string, string> ObjectToTagDictionaryInit()
+    {
+        Dictionary<string, string> dictionary = new Dictionary<string, string>();
+
+        foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+        {
+            dictionary.Add( GetObjRefWithEnum( objectType ), GetObjTagNameWithEnum( objectType ) );
+        }
+
+        return dictionary;
     }
 
     public static string Credits = @"

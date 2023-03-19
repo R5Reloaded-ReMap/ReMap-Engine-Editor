@@ -13,15 +13,15 @@ public class Build
         DataTable
     };
 
-    public static string Buttons()
+    public static string Buttons( GameObject[] ObjectsArray = null )
     {
-        GameObject[] ButtonObjects = GameObject.FindGameObjectsWithTag("Button");
-        if (ButtonObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.Button );
+        if ( ObjectsArray.Length < 1 )
             return "";
         
         string code = "    //Buttons \n";
 
-        foreach (GameObject go in ButtonObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             ButtonScripting script = go.GetComponent<ButtonScripting>();
             if (script == null) {
@@ -36,15 +36,15 @@ public class Build
         return code;
     }
 
-    public static string Jumpads()
+    public static string Jumpads( GameObject[] ObjectsArray = null )
     {
-        GameObject[] JumppadObjects = GameObject.FindGameObjectsWithTag("Jumppad");
-        if (JumppadObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.Jumppad );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //Jumppads \n";
 
-        foreach (GameObject go in JumppadObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             PropScript script = go.GetComponent<PropScript>();
             if (script == null) {
@@ -59,15 +59,15 @@ public class Build
         return code;
     }
 
-    public static string BubbleShields()
+    public static string BubbleShields( GameObject[] ObjectsArray = null )
     {
-        GameObject[] BubbleShieldObjects = GameObject.FindGameObjectsWithTag("BubbleShield");
-        if (BubbleShieldObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.BubbleShield );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //BubbleShields \n";
 
-        foreach (GameObject go in BubbleShieldObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
             BubbleScript script = go.GetComponent<BubbleScript>();
@@ -85,15 +85,15 @@ public class Build
         return code;
     }
 
-    public static string WeaponRacks()
+    public static string WeaponRacks( GameObject[] ObjectsArray = null )
     {
-        GameObject[] WeaponRackObjects = GameObject.FindGameObjectsWithTag("WeaponRack");
-        if (WeaponRackObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.WeaponRack );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //Weapon Racks \n";
 
-        foreach (GameObject go in WeaponRackObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             WeaponRackScript script = go.GetComponent<WeaponRackScript>();
             if (script == null) {
@@ -108,15 +108,15 @@ public class Build
         return code;
     }
 
-    public static string LootBins()
+    public static string LootBins( GameObject[] ObjectsArray = null )
     {
-        GameObject[] LootBinObjects = GameObject.FindGameObjectsWithTag("LootBin");
-        if (LootBinObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.LootBin );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //LootBins \n";
 
-        foreach (GameObject go in LootBinObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             LootBinScript script = go.GetComponent<LootBinScript>();
             if (script == null) {
@@ -131,15 +131,15 @@ public class Build
         return code;
     }
 
-    public static string ZipLines()
+    public static string ZipLines( GameObject[] ObjectsArray = null )
     {
-        GameObject[] ZipLineObjects = GameObject.FindGameObjectsWithTag("ZipLine");
-        if (ZipLineObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.ZipLine );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //ZipLines \n";
 
-        foreach (GameObject go in ZipLineObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             string ziplinestart = "";
             string ziplineend = "";
@@ -160,16 +160,16 @@ public class Build
         return code;
     }
 
-    public static string LinkedZipLines()
+    public static string LinkedZipLines( GameObject[] ObjectsArray = null )
     {
-        GameObject[] LinkedZipLineObjects = GameObject.FindGameObjectsWithTag("LinkedZipline");
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.LinkedZipline );
         
-        if(LinkedZipLineObjects.Length < 1)
+        if( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //LinkedZipLines \n";
 
-        foreach (GameObject go in LinkedZipLineObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             bool first = true;
             string nodes = "[ ";
@@ -209,16 +209,16 @@ public class Build
         return code;
     }
 
-    public static string VerticalZipLines()
+    public static string VerticalZipLines( GameObject[] ObjectsArray = null )
     {
-        GameObject[] VerticalZipLineObjects = GameObject.FindGameObjectsWithTag("VerticalZipLine");
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.VerticalZipLine );
 
-        if (VerticalZipLineObjects.Length < 1)
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //VerticalZipLines \n";
 
-        foreach (GameObject go in VerticalZipLineObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             DrawVerticalZipline ziplineScript = go.GetComponent<DrawVerticalZipline>();
             if (ziplineScript == null) {
@@ -267,16 +267,16 @@ public class Build
         return code;
     }
 
-    public static string NonVerticalZipLines()
+    public static string NonVerticalZipLines( GameObject[] ObjectsArray = null )
     {
-        GameObject[] NonVerticalZipLineObjects = GameObject.FindGameObjectsWithTag("NonVerticalZipLine");
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.NonVerticalZipLine );
 
-        if (NonVerticalZipLineObjects.Length < 1)
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //NonVerticalZipLines \n";
 
-        foreach (GameObject go in NonVerticalZipLineObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             DrawNonVerticalZipline ziplineScript = go.GetComponent<DrawNonVerticalZipline>();
             if (ziplineScript == null) {
@@ -325,15 +325,15 @@ public class Build
         return code;
     }
 
-    public static string SingleDoors()
+    public static string SingleDoors( GameObject[] ObjectsArray = null )
     {
-        GameObject[] SingleDoorObjects = GameObject.FindGameObjectsWithTag("SingleDoor");
-        if (SingleDoorObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.SingleDoor );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //Single Doors \n";
 
-        foreach (GameObject go in SingleDoorObjects) {
+        foreach ( GameObject go in ObjectsArray ) {
             DoorScript script = go.GetComponent<DoorScript>();
 
             if (script == null) {
@@ -349,15 +349,15 @@ public class Build
         return code;
     }
 
-    public static string DoubleDoors()
+    public static string DoubleDoors( GameObject[] ObjectsArray = null )
     {
-        GameObject[] DoubleDoorObjects = GameObject.FindGameObjectsWithTag("DoubleDoor");
-        if (DoubleDoorObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.DoubleDoor );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //Double Doors \n";
 
-        foreach (GameObject go in DoubleDoorObjects) {
+        foreach ( GameObject go in ObjectsArray ) {
             DoorScript script = go.GetComponent<DoorScript>();
             if (script == null) {
                 ReMapConsole.Log("[Map Export] Missing DoorScript on: " + go.name, ReMapConsole.LogType.Error);
@@ -371,15 +371,15 @@ public class Build
         return code;
     }
 
-    public static string VertDoors()
+    public static string VertDoors( GameObject[] ObjectsArray = null )
     {
-        GameObject[] VertDoorObjects = GameObject.FindGameObjectsWithTag("VerticalDoor");
-        if (VertDoorObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.VerticalDoor );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //Vertical Doors \n";
 
-        foreach (GameObject go in VertDoorObjects)
+        foreach ( GameObject go in ObjectsArray )
             code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Vertical )" + "\n";
 
         code += "\n";
@@ -387,15 +387,15 @@ public class Build
         return code;
     }
 
-    public static string HorizontalDoors()
+    public static string HorizontalDoors( GameObject[] ObjectsArray = null )
     {
-        GameObject[] HorzDoorObjects = GameObject.FindGameObjectsWithTag("HorzDoor");
-        if (HorzDoorObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.HorzDoor );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //Horizontal Doors \n";
 
-        foreach (GameObject go in HorzDoorObjects)
+        foreach ( GameObject go in ObjectsArray )
             code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Horizontal )" + "\n";
 
         code += "\n";
@@ -428,7 +428,7 @@ public class Build
                 //break;
         }
 
-        foreach (GameObject go in ObjectsArray)
+        foreach ( GameObject go in ObjectsArray )
         {
             string model = go.name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl";
             PropScript script = go.GetComponent<PropScript>();
@@ -494,31 +494,31 @@ public class Build
     }
 
 
-    public static string Sounds(bool isexport = false)
+    public static string Sounds( GameObject[] ObjectsArray = null, bool isexport = false)
     {
-        GameObject[] ObjectsArray = GameObject.FindGameObjectsWithTag("Sound");
-        if (ObjectsArray.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.Sound );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = ""; //= $"ENTITIES02 num_models={ObjectsArray.Length}\n";
 
-        foreach (GameObject go in ObjectsArray)
+        foreach ( GameObject go in ObjectsArray )
             code += BuildSoundEntItem(go, isexport);
 
         return code;
     }
 
 
-    public static string Triggers()
+    public static string Triggers( GameObject[] ObjectsArray = null )
     {
-        GameObject[] TriggerObjects = GameObject.FindGameObjectsWithTag("Trigger");
-        if (TriggerObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.Trigger );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    //Triggers \n";
 
         int triggerid = 0;
-        foreach (GameObject go in TriggerObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             TriggerScripting script = go.GetComponent<TriggerScripting>();
             code += $"    entity trigger" + triggerid + $" = MapEditor_CreateTrigger( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, {go.transform.localScale.y.ToString().Replace(",", ".")}, {script.Debug.ToString().ToLower()} )" + "\n";
@@ -552,31 +552,31 @@ public class Build
         return code;
     }
 
-    public static string NewLocPair(bool isexport = false)
+    public static string NewLocPair( GameObject[] ObjectsArray = null , bool isexport = false)
     {
-        GameObject[] ObjectsArray = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        if (ObjectsArray.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.SpawnPoint );
+        if ( ObjectsArray.Length < 1 )
             return "";
 
         string code = "    // NewLocPair\n\n";
 
         code += Helper.ShouldAddStartingOrg(1);
 
-        foreach (GameObject go in ObjectsArray)
+        foreach ( GameObject go in ObjectsArray )
             code += BuildNewLocPairItem(go, isexport);
 
         return code;
     }
 
-    public static string TextInfoPanel()
+    public static string TextInfoPanel( GameObject[] ObjectsArray = null )
     {
-        GameObject[] TextInfoPanelObjects = GameObject.FindGameObjectsWithTag("TextInfoPanel");
-        if (TextInfoPanelObjects.Length < 1)
+        if ( ObjectsArray == null ) ObjectsArray = Helper.GetObjArrayWithEnum( ObjectType.TextInfoPanel );
+        if ( ObjectsArray.Length < 1 )
             return "";
         
         string code = "    //TextInfoPanels \n";
 
-        foreach (GameObject go in TextInfoPanelObjects)
+        foreach ( GameObject go in ObjectsArray )
         {
             TextInfoPanelScript script = go.GetComponent<TextInfoPanelScript>();
             if (script == null) {

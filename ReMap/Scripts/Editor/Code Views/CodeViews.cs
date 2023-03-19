@@ -1,8 +1,10 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
 using UnityEngine.UIElements;
 
 public class CodeViews : EditorWindow
@@ -26,16 +28,8 @@ public class CodeViews : EditorWindow
     bool UseStartingOffsetLocPair_temp = false;
 
     // Gen Settings
-    bool GenerateProps = true;
-    bool GenerateButtons = true;
-    bool GenerateJumppads = true;
-    bool GenerateBubbleShields = true;
-    bool GenerateDoors = true;
-    bool GenerateLootBins = true;
-    bool GenerateZipLines = true;
-    bool GenerateWeaponRacks = true;
-    bool GenerateTriggers = true;
-    bool GenerateTextInfoPanel = true;
+    public static Dictionary< string, bool > GenerateObjects = Helper.ObjectGenerateDictionaryInit();
+    public static Dictionary< string, bool > GenerateObjects_temp = new Dictionary< string, bool >( GenerateObjects );
 
     //Counts
     int mapcodecount = 0;
@@ -49,7 +43,7 @@ public class CodeViews : EditorWindow
         TagHelper.CheckAndCreateTags();
 
         CodeViews window = (CodeViews)GetWindow(typeof(CodeViews), false, "Code Views");
-        window.minSize = new Vector2(1000, 500);
+        window.minSize = new Vector2(1100, 500);
         window.Show();
     }
 
@@ -212,71 +206,36 @@ public class CodeViews : EditorWindow
             if (ShowAdvanced)
             {
                 GUILayout.BeginVertical("box");
-                GUILayout.BeginHorizontal();
-                Helper.GenerateProps = EditorGUILayout.Toggle("Build Props", Helper.GenerateProps);
-                if(Helper.GenerateProps != GenerateProps) {
-                    GenerateProps = Helper.GenerateProps;
-                    GenerateMap(OnlyExportMap, false);
-                }
 
-                Helper.GenerateButtons = EditorGUILayout.Toggle("Build Buttons", Helper.GenerateButtons);
-                if(Helper.GenerateButtons != GenerateButtons) {
-                    GenerateButtons = Helper.GenerateButtons;
-                    GenerateMap(OnlyExportMap, false);
-                }
+                    int idx = 0;
+                    GUILayout.BeginHorizontal();
+                        foreach ( string key in GenerateObjects.Keys )
+                        {
+                            if ( IsIgnored( key ) ) continue;
 
-                Helper.GenerateTriggers = EditorGUILayout.Toggle("Build Triggers", Helper.GenerateTriggers);
-                if(Helper.GenerateTriggers != GenerateTriggers) {
-                    GenerateTriggers = Helper.GenerateTriggers;
-                    GenerateMap(OnlyExportMap, false);
-                }
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                Helper.GenerateDoors = EditorGUILayout.Toggle("Build Doors", Helper.GenerateDoors);
-                if(Helper.GenerateDoors != GenerateDoors) {
-                    GenerateDoors = Helper.GenerateDoors;
-                    GenerateMap(OnlyExportMap, false);
-                }
+                            Helper.GenerateObjects[key] = EditorGUILayout.Toggle( $"Build {key}", Helper.GenerateObjects[key] );
 
-                Helper.GenerateJumppads = EditorGUILayout.Toggle("Build Jumppads", Helper.GenerateJumppads);
-                if(Helper.GenerateJumppads != GenerateJumppads) {
-                    GenerateJumppads = Helper.GenerateJumppads;
-                    GenerateMap(OnlyExportMap, false);
-                }
+                            if ( Helper.GenerateObjects[key] != GenerateObjects_temp[key] )
+                            {
+                                GenerateObjects_temp[key] = Helper.GenerateObjects[key];
+                                GenerateMap(OnlyExportMap, false);
+                            }
+                            
+                            if ( idx == 5 )
+                            {
+                                GUILayout.EndHorizontal();
+                                GUILayout.BeginHorizontal();
+                                idx = 0;
+                            } else idx++;
+                        }
+                    GUILayout.EndHorizontal();
 
-                Helper.GenerateBubbleShields = EditorGUILayout.Toggle("Build BubbleShields", Helper.GenerateBubbleShields);
-                if(Helper.GenerateBubbleShields != GenerateBubbleShields) {
-                    GenerateBubbleShields = Helper.GenerateBubbleShields;
-                    GenerateMap(OnlyExportMap, false);
-                }
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                Helper.GenerateZipLines = EditorGUILayout.Toggle("Build ZipLines", Helper.GenerateZipLines);
-                if(Helper.GenerateZipLines != GenerateZipLines) {
-                    GenerateZipLines = Helper.GenerateZipLines;
-                    GenerateMap(OnlyExportMap, false);
-                }
-
-                Helper.GenerateWeaponRacks = EditorGUILayout.Toggle("Build WeaponRacks", Helper.GenerateWeaponRacks);
-                if(Helper.GenerateWeaponRacks != GenerateWeaponRacks) {
-                    GenerateWeaponRacks = Helper.GenerateWeaponRacks;
-                    GenerateMap(OnlyExportMap, false);
-                }
-
-                Helper.GenerateLootBins = EditorGUILayout.Toggle("Build LootBins", Helper.GenerateLootBins);
-                if(Helper.GenerateLootBins != GenerateLootBins) {
-                    GenerateLootBins = Helper.GenerateLootBins;
-                    GenerateMap(OnlyExportMap, false);
-                }
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                Helper.GenerateTextInfoPanel = EditorGUILayout.Toggle("Build TextInfoPanel", Helper.GenerateTextInfoPanel);
-                if(Helper.GenerateTextInfoPanel != GenerateTextInfoPanel) {
-                    GenerateTextInfoPanel = Helper.GenerateTextInfoPanel;
-                    GenerateMap(OnlyExportMap, false);
-                }
-                GUILayout.EndHorizontal();
                 GUILayout.EndVertical();
+
+                foreach (string key in GenerateObjects_temp.Keys)
+                {
+                    GenerateObjects[key] = GenerateObjects_temp[key];
+                }
             }
 
         GUILayout.BeginVertical("box");
@@ -421,7 +380,12 @@ public class CodeViews : EditorWindow
             mapcode = Helper.ShouldAddStartingOrg(1);
 
         //Build Map Code
-        mapcode += Helper.BuildMapCode(Helper.GenerateButtons, Helper.GenerateJumppads, Helper.GenerateBubbleShields, Helper.GenerateWeaponRacks, Helper.GenerateLootBins, Helper.GenerateZipLines, Helper.GenerateDoors, Helper.GenerateProps, Helper.GenerateTriggers, Helper.GenerateTextInfoPanel);
+        mapcode += Helper.BuildMapCode(
+            Helper.GetBoolFromGenerateObjects( ObjectType.Prop ), Helper.GetBoolFromGenerateObjects( ObjectType.ZipLine ), Helper.GetBoolFromGenerateObjects( ObjectType.LinkedZipline ), Helper.GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ), Helper.GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ),
+            Helper.GetBoolFromGenerateObjects( ObjectType.SingleDoor ), Helper.GetBoolFromGenerateObjects( ObjectType.DoubleDoor ), Helper.GetBoolFromGenerateObjects( ObjectType.HorzDoor ), Helper.GetBoolFromGenerateObjects( ObjectType.VerticalDoor ), Helper.GetBoolFromGenerateObjects( ObjectType.Button ),
+            Helper.GetBoolFromGenerateObjects( ObjectType.Jumppad ), Helper.GetBoolFromGenerateObjects( ObjectType.LootBin ), Helper.GetBoolFromGenerateObjects( ObjectType.WeaponRack ), Helper.GetBoolFromGenerateObjects( ObjectType.Trigger ), Helper.GetBoolFromGenerateObjects( ObjectType.BubbleShield ),
+            Helper.GetBoolFromGenerateObjects( ObjectType.SpawnPoint ), Helper.GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ), Helper.GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ), Helper.GetBoolFromGenerateObjects( ObjectType.Sound )
+        );
 
         if(!onlyMapCode)
             mapcode += "}";
@@ -531,5 +495,15 @@ public class CodeViews : EditorWindow
         entCode = "";
 
         ReMapConsole.Log("[Code Views] NewLocPair Code Generated", ReMapConsole.LogType.Success);
+    }
+
+    private static bool IsIgnored( string key )
+    {
+        foreach ( string ignoredObj in Helper.GenerateIgnore )
+        {
+            if ( ignoredObj == key ) return true;
+        }
+
+        return false;
     }
 }

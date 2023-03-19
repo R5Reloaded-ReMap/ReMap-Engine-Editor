@@ -16,7 +16,7 @@ public class UnityInfo
     /// <returns></returns>
     public static GameObject[] GetAllGameObjectInScene()
     {
-        return UnityEngine.Object.FindObjectsOfType<GameObject>();
+        return UnityEngine.Object.FindObjectsOfType< GameObject >();
     }
 
     /// <summary>
@@ -27,11 +27,18 @@ public class UnityInfo
     {
         int objectCount = 0;
 
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
-        foreach (GameObject go in allObjects) {
-            foreach (string key in Helper.ObjectToTag.Keys)
-                if (go.name.Contains(key))
-                    objectCount++;
+        foreach (GameObject go in GetAllGameObjectInScene())
+        {
+            foreach ( string key in Helper.ObjectToTag.Keys )
+            {
+                if ( go.name.Contains( key ) )
+                {
+                    if ( key == Helper.GetObjRefWithEnum( ObjectType.ZipLine ) || key == Helper.GetObjRefWithEnum( ObjectType.LinkedZipline ) || key == Helper.GetObjRefWithEnum( ObjectType.VerticalZipLine ) || key == Helper.GetObjRefWithEnum( ObjectType.NonVerticalZipLine ) )
+                    {
+                        objectCount += 2;
+                    } else objectCount++;
+                }
+            }
         }
 
         return objectCount;

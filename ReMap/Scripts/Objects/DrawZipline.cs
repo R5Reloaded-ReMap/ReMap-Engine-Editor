@@ -8,17 +8,17 @@ public class DrawZipline : MonoBehaviour
     public Transform zipline_end;
 
     [Header("Settings:")]
-    public bool ShowZipline = true;
-    public float ShowZiplineDistance = 8000;
+    public bool showZipline = true;
+    public float showZiplineDistance = 8000;
 
     void OnDrawGizmos()
     {
-        if(!ShowZipline)
+        if(!showZipline)
             return;
 
         float dist = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, zipline_start.position);
         float dist2 = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, zipline_end.position);
-        if(dist < ShowZiplineDistance || dist2 < ShowZiplineDistance)
+        if(dist < showZiplineDistance || dist2 < showZiplineDistance)
         {
             if (zipline_start != null && zipline_end != null)
             {

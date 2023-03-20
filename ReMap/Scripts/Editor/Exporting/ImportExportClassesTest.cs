@@ -7,8 +7,12 @@ using UnityEngine;
 public class JsonData
 {
     public List<PropClassData> Props;
+    public List<ZipLineClassData> Ziplines;
 }
 
+/// <summary>
+/// Use this to create derivative classes
+/// </summary>
 [Serializable]
 public class GlobalClassData
 {
@@ -17,18 +21,6 @@ public class GlobalClassData
     public List<PathClass> Path;
     
 }
-
-[Serializable]
-public class PropClassData : GlobalClassData
-{
-    public string name;
-    public bool allowMantle;
-    public float fadeDistance;
-    public int realmID;
-    public List<PropScriptParameters> parameters;
-    public List<string> customParameters;    
-}
-
 
 /// <summary>
 /// TransformData is used to determine the position / angles of a prefab
@@ -40,3 +32,24 @@ public class TransformData
     public Vector3 eulerAngles;
     public Vector3 localScale;
 }
+
+[Serializable]
+public class PropClassData : GlobalClassData
+{
+    public string name;
+    public bool allowMantle;
+    public float fadeDistance;
+    public int realmID;
+    public List<PropScriptParameters> parameters;
+    public List<string> customParameters;
+}
+
+[Serializable]
+public class ZipLineClassData : GlobalClassData
+{
+    public bool showZipline;
+    public float showZiplineDistance;
+    public Vector3 zipline_start;
+    public Vector3 zipline_end;
+}
+

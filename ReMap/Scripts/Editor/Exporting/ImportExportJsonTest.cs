@@ -39,8 +39,10 @@ public class ImportExportJsonTest
 
         // Sort by alphabetical name
         ImportExportJson.SortListByKey( jsonData.Props, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.Ziplines, x => x.PathString );
 
         await ImportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
+        await ImportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
 
         ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
 
@@ -54,7 +56,7 @@ public class ImportExportJsonTest
         int objectsCount = listType.Count;
         string objType = Helper.GetObjNameWithEnum( objectType );
 
-        T classData = Activator.CreateInstance( typeof( T ) ) as T;
+        T classData = Activator.CreateInstance( typeof( T ) ) as T; GameObject obj;
 
         foreach( T objData in listType )
         {
@@ -63,10 +65,21 @@ public class ImportExportJsonTest
                 case PropClassData data: // Props
                     data = ( PropClassData )( object ) objData;
 
-                    GameObject obj = TryInstantiatePrefab( data.name, data.PathString, objType, i, j, objectsCount );
+                    obj = TryInstantiatePrefab( data.name, data.PathString, objType, i, j, objectsCount );
                     if ( obj == null ) continue;
 
-                    GetSetTransformData( obj, data.TransformData, GetSetData.Set );
+                    GetSetTransformData( obj, data.TransformData );
+                    GetSetScriptData( obj, data, objectType, GetSetData.Set );
+                    CreatePath( data.Path, data.PathString, obj );
+                    break;
+
+                case ZipLineClassData data: // Ziplines
+                    data = ( ZipLineClassData )( object ) objData;
+
+                    obj = TryInstantiatePrefab( "custom_zipline", data.PathString, objType, i, j, objectsCount );
+                    if ( obj == null ) continue;
+
+                    GetSetTransformData( obj, data.TransformData );
                     GetSetScriptData( obj, data, objectType, GetSetData.Set );
                     CreatePath( data.Path, data.PathString, obj );
                     break;
@@ -99,6 +112,7 @@ public class ImportExportJsonTest
 
         ResetJsonData();
         await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
+        await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
 
         ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
         string json = JsonUtility.ToJson( jsonData );
@@ -147,7 +161,14 @@ public class ImportExportJsonTest
                 case PropClassData data: // Props
                     data.PathString = objPath;
                     data.Path = FindPath( obj );
-                    GetSetTransformData( obj, data.TransformData, GetSetData.Get );
+                    data.TransformData = GetSetTransformData( obj, data.TransformData );
+                    GetSetScriptData( obj, data, objectType, GetSetData.Get );
+                    break;
+
+                case ZipLineClassData data: // Ziplines
+                    data.PathString = objPath;
+                    data.Path = FindPath( obj );
+                    data.TransformData = GetSetTransformData( obj, data.TransformData );
                     GetSetScriptData( obj, data, objectType, GetSetData.Get );
                     break;
 
@@ -172,25 +193,31 @@ public class ImportExportJsonTest
     {
         jsonData = new JsonData();
         jsonData.Props = new List<PropClassData>();
+        jsonData.Ziplines = new List<ZipLineClassData>();
     }
 
-    private static void GetSetTransformData( GameObject obj, TransformData data, GetSetData getSet )
+    private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
     {
-        if ( getSet == GetSetData.Get ) // if data is null, get the transformation data
+        if ( data == null ) // if data is null, get the transformation data
         {
+            data = new TransformData();
             data.position = obj.transform.position;
             data.eulerAngles = obj.transform.eulerAngles;
             data.localScale = obj.transform.localScale;
+
+            return data;
         }
         else // otherwise, define the transformation data provided
         {
             obj.transform.position = data.position;
             obj.transform.eulerAngles = data.eulerAngles;
             obj.transform.localScale = data.localScale;
+
+            return null;
         }
     }
 
-    private static void GetSetScriptData<T>( GameObject obj, T scriptData, ObjectType dataType, GetSetData getSet ) where T : class
+    private static void GetSetScriptData< T >( GameObject obj, T scriptData, ObjectType dataType, GetSetData getSet ) where T : class
     {
         T classData = Activator.CreateInstance( typeof( T ) ) as T;
 
@@ -200,13 +227,22 @@ public class ImportExportJsonTest
             {
                 case PropClassData data: // Props
                     data = ( PropClassData )( object ) scriptData;
-                    PropScript component = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
+                    PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
                     data.name = GetObjName( obj );
-                    data.allowMantle = component.allowMantle;
-                    data.fadeDistance = component.fadeDistance;
-                    data.realmID = component.realmID;
-                    data.parameters = component.parameters;
-                    data.customParameters = component.customParameters;
+                    data.allowMantle = propScript.allowMantle;
+                    data.fadeDistance = propScript.fadeDistance;
+                    data.realmID = propScript.realmID;
+                    data.parameters = propScript.parameters;
+                    data.customParameters = propScript.customParameters;
+                    break;
+
+                case ZipLineClassData data: // Ziplines
+                    data = ( ZipLineClassData )( object ) scriptData;
+                    DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
+                    data.showZipline = drawZipline.showZipline;
+                    data.showZiplineDistance = drawZipline.showZiplineDistance;
+                    data.zipline_start = drawZipline.zipline_start.position;
+                    data.zipline_end = drawZipline.zipline_end.position;
                     break;
 
                 default: break;
@@ -218,18 +254,49 @@ public class ImportExportJsonTest
             {
                 case PropClassData data: // Props
                     data = ( PropClassData )( object ) scriptData;
-                    PropScript component = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
-                    component.allowMantle = data.allowMantle;
-                    component.fadeDistance = data.fadeDistance;
-                    component.realmID = data.realmID;
-                    component.parameters = data.parameters;
-                    component.customParameters = data.customParameters;
+                    PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
+                    propScript.allowMantle = data.allowMantle;
+                    propScript.fadeDistance = data.fadeDistance;
+                    propScript.realmID = data.realmID;
+                    propScript.parameters = data.parameters;
+                    propScript.customParameters = data.customParameters;
+                    break;
+
+                case ZipLineClassData data: // Ziplines
+                    data = ( ZipLineClassData )( object ) scriptData;
+                    DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
+                    drawZipline.showZipline = data.showZipline;
+                    drawZipline.showZiplineDistance = data.showZiplineDistance;
+                    drawZipline.zipline_start.position = data.zipline_start;
+                    drawZipline.zipline_end.position = data.zipline_end;
                     break;
 
                 default: break;
             }
         }
     }
+
+    /*
+    Todo:
+
+    LinkedZipline
+    VerticalZipLine
+    NonVerticalZipLine
+    SingleDoor
+    DoubleDoor
+    HorzDoor
+    VerticalDoor
+    Button
+    Jumppad
+    LootBin
+    WeaponRack
+    Trigger
+    BubbleShield
+    SpawnPoint
+    TextInfoPanel
+    FuncWindowHint
+    Sound
+    */
 
     private static List< PathClass > FindPath( GameObject obj )
     {

@@ -41,37 +41,39 @@ public class ImportExportJsonTest
         EditorUtility.ClearProgressBar();
     }
     #endif
-    private static async Task ImportProps( List<PropScriptClassData> propScriptClassData )
+    private static async Task ImportProps( List<PropScriptClassData> classData )
     {
         int i = 0; int j = 1;
 
-        int propScriptClassDataCount = propScriptClassData.Count;
+        int classDataCount = classData.Count;
+        string objType = Helper.GetObjNameWithEnum( ObjectType.Prop );
+        string objName = objData.Name;
 
-        foreach( PropScriptClassData propData in propScriptClassData )
+        foreach( PropScriptClassData objData in classData )
         {
             string importing = "";
 
-            if ( string.IsNullOrEmpty( propData.PathString ) )
+            if ( string.IsNullOrEmpty( objData.PathString ) )
             {
-                importing = propData.Name;
-            } else importing = $"{propData.PathString}/{propData.Name}";
+                importing = objName;
+            } else importing = $"{objData.PathString}/{objName}";
 
-            EditorUtility.DisplayProgressBar( $"Importing propScriptClassData {j}/{propScriptClassDataCount}", $"Importing: {importing}", (i + 1) / (float)propScriptClassDataCount );
-            ReMapConsole.Log("[Json Import] Importing: " + propData.Name, ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar( $"Importing {objType} {j}/{classDataCount}", $"Importing: {importing}", (i + 1) / (float)classDataCount );
+            ReMapConsole.Log("[Json Import] Importing: " + objName, ReMapConsole.LogType.Info);
 
-            UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName( propData.Name );
+            UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName( objName );
             if ( loadedPrefabResource == null )
             {
-                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {propData.Name}" , ReMapConsole.LogType.Error);
+                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {objName}" , ReMapConsole.LogType.Error);
                 continue;
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            GetSetTransformData( obj, propData.Transform );
-            GetSetPropScriptData( obj.GetComponent<PropScript>(), propData.PropScript );
+            GetSetTransformData( obj, objData.TransformData );
+            GetSetPropScriptData( obj.GetComponent<PropScript>(), objData.ComponentData );
 
-            if ( propData.PathString != "" )
-            obj.transform.parent = CreatePath( propData.Path );
+            if ( objData.PathString != "" )
+            obj.transform.parent = CreatePath( objData.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001)); i++; j++;
         }
@@ -116,14 +118,17 @@ public class ImportExportJsonTest
         GameObject[] objectsData = Helper.GetObjArrayWithEnum( ObjectType.Prop );
 
         int objectsCount = objectsData.Length;
+        string objType = Helper.GetObjNameWithEnum( ObjectType.Prop );
+        string objName;
 
         foreach( GameObject obj in objectsData )
         {
             PropScript component = obj.GetComponent<PropScript>();
+            objName = obj.name;
 
             if ( component == null )
             {
-                ReMapConsole.Log( $"[Json Export] Missing {component.GetType().Name} on: " + obj.name, ReMapConsole.LogType.Error );
+                ReMapConsole.Log( $"[Json Export] Missing PropScript on: " + objName, ReMapConsole.LogType.Error );
                 continue;
             }
 
@@ -131,20 +136,20 @@ public class ImportExportJsonTest
 
             if ( string.IsNullOrEmpty( objPath ) )
             {
-                exporting = obj.name;
-            } else exporting = $"{objPath}/{obj.name}";
+                exporting = objName;
+            } else exporting = $"{objPath}/{objName}";
 
-            ReMapConsole.Log("[Json Export] Exporting: " + obj.name, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar($"Exporting propScriptClassData {j}/{objectsCount}", $"Exporting: {exporting}", (i + 1) / (float)objectsCount);
+            ReMapConsole.Log("[Json Export] Exporting: " + objName, ReMapConsole.LogType.Info);
+            EditorUtility.DisplayProgressBar( $"Exporting {objType} {j}/{objectsCount}", $"Exporting: {exporting}", (i + 1) / (float)objectsCount );
 
-            PropScriptClassData propScriptClassData = new PropScriptClassData();
-            propScriptClassData.Name = obj.name.Split(char.Parse(" "))[0];
-            propScriptClassData.Transform = GetSetTransformData( obj );
-            propScriptClassData.PropScript = GetSetPropScriptData( component, propScriptClassData.PropScript );
-            propScriptClassData.PathString = objPath;
-            propScriptClassData.Path = FindPath( obj );
+            PropScriptClassData classData = new PropScriptClassData();
+            classData.Name = GetObjName( obj );
+            classData.TransformData = GetSetTransformData( obj );
+            classData.ComponentData = GetSetPropScriptData( component, classData.ComponentData );
+            classData.PathString = objPath;
+            classData.Path = FindPath( obj );
 
-            if ( IsValidPath( objPath ) ) jsonData.Props.Add( propScriptClassData );
+            if ( IsValidPath( objPath ) ) jsonData.Props.Add( classData );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001)); i++; j++;
         }
@@ -301,5 +306,10 @@ public class ImportExportJsonTest
         }
 
         return true;
+    }
+
+    private static string GetObjName( GameObject obj )
+    {
+        return obj.name.Split(char.Parse(" "))[0];
     }
 }

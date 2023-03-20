@@ -14,8 +14,8 @@ public class JsonData
 public class PropScriptClassData
 {
     public string Name;
-    public TransformData Transform;
-    public PropScriptData PropScript;
+    public TransformData TransformData;
+    public PropScriptData ComponentData;
     public string PathString;
     public List<PathClass> Path;
     
@@ -34,17 +34,17 @@ public class PropScriptData
 [Serializable]
 public class DrawZiplineClassData
 {
-    public Vector3 start_position;
-    public Vector3 end_position;
-    public DrawZiplineSettingsData Settings;
+    public DrawZiplineData DrawZipline;
     public string PathString;
     public List<PathClass> Path;
     
 }
 
 [Serializable]
-public class DrawZiplineSettingsData
+public class DrawZiplineData
 {
+    public Vector3 start_position;
+    public Vector3 end_position;
     public bool ShowZipline;
     public float ShowZiplineDistance;
 }

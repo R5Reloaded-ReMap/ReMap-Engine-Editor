@@ -40,9 +40,11 @@ public class ImportExportJsonTest
         // Sort by alphabetical name
         ImportExportJson.SortListByKey( jsonData.Props, x => x.PathString );
         ImportExportJson.SortListByKey( jsonData.Ziplines, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.LinkedZiplines, x => x.PathString );
 
         await ImportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
         await ImportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
+        await ImportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
 
         ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
 
@@ -84,6 +86,17 @@ public class ImportExportJsonTest
                     CreatePath( data.Path, data.PathString, obj );
                     break;
 
+                case LinkedZipLinesClassData data: // Ziplines
+                    data = ( LinkedZipLinesClassData )( object ) objData;
+
+                    obj = TryInstantiatePrefab( "custom_linked_zipline", data.PathString, objType, i, j, objectsCount );
+                    if ( obj == null ) continue;
+
+                    GetSetTransformData( obj, data.TransformData );
+                    GetSetScriptData( obj, data, objectType, GetSetData.Set );
+                    CreatePath( data.Path, data.PathString, obj );
+                    break;
+
                 default: break;
             }
 
@@ -113,6 +126,8 @@ public class ImportExportJsonTest
         ResetJsonData();
         await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
         await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
+        await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
+        await ExportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
 
         ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
         string json = JsonUtility.ToJson( jsonData );
@@ -172,6 +187,13 @@ public class ImportExportJsonTest
                     GetSetScriptData( obj, data, objectType, GetSetData.Get );
                     break;
 
+                case LinkedZipLinesClassData data: // Linked Ziplines
+                    data.PathString = objPath;
+                    data.Path = FindPath( obj );
+                    data.TransformData = GetSetTransformData( obj, data.TransformData );
+                    GetSetScriptData( obj, data, objectType, GetSetData.Get );
+                    break;
+
                 default: break;
             }
 
@@ -194,6 +216,7 @@ public class ImportExportJsonTest
         jsonData = new JsonData();
         jsonData.Props = new List<PropClassData>();
         jsonData.Ziplines = new List<ZipLineClassData>();
+        jsonData.LinkedZiplines = new List<LinkedZipLinesClassData>();
     }
 
     private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
@@ -245,6 +268,16 @@ public class ImportExportJsonTest
                     data.zipline_end = drawZipline.zipline_end.position;
                     break;
 
+                case LinkedZipLinesClassData data: // Linked Ziplines
+                    data = ( LinkedZipLinesClassData )( object ) scriptData;
+                    LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
+                    data.enableSmoothing = linkedZiplineScript.enableSmoothing;
+                    data.smoothAmount = linkedZiplineScript.smoothAmount;
+                    data.smoothType = linkedZiplineScript.smoothType;
+                    data.nodes = new List<Vector3>();
+                    foreach ( Transform nodes in obj.transform ) data.nodes.Add( nodes.gameObject.transform.position );
+                    break;
+
                 default: break;
             }
         }
@@ -271,6 +304,22 @@ public class ImportExportJsonTest
                     drawZipline.zipline_end.position = data.zipline_end;
                     break;
 
+                case LinkedZipLinesClassData data: // Linked Ziplines
+                    data = ( LinkedZipLinesClassData )( object ) scriptData;
+                    obj.AddComponent<DrawLinkedZipline>();
+                    obj.AddComponent<LinkedZiplineScript>();
+                    LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
+                    linkedZiplineScript.enableSmoothing = data.enableSmoothing;
+                    linkedZiplineScript.smoothAmount = data.smoothAmount;
+                    linkedZiplineScript.smoothType = data.smoothType;
+                    foreach ( Vector3 nodesPos in data.nodes )
+                    {
+                        GameObject nodes = new GameObject("zipline_node");
+                        nodes.transform.position = nodesPos;
+                        nodes.transform.parent = obj.transform;
+                    }
+                    break;
+
                 default: break;
             }
         }
@@ -279,7 +328,6 @@ public class ImportExportJsonTest
     /*
     Todo:
 
-    LinkedZipline
     VerticalZipLine
     NonVerticalZipLine
     SingleDoor
@@ -413,6 +461,8 @@ public class ImportExportJsonTest
 
         EditorUtility.DisplayProgressBar( $"Importing {objType} {j}/{objectsCount}", $"Importing: {importing}", (i + 1) / (float)objectsCount );
         ReMapConsole.Log("[Json Import] Importing: " + objName, ReMapConsole.LogType.Info);
+
+        if ( objName == "custom_linked_zipline" ) return new GameObject( "custom_linked_zipline" );
 
         UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName( objName );
         if ( loadedPrefabResource == null )

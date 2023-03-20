@@ -369,8 +369,8 @@ public class Helper
             case ObjectType.DoubleDoor:         return new string[] { "custom_double_door",           "DoubleDoor",         "Double Door"          }[i];
             case ObjectType.FuncWindowHint:     return new string[] { "custom_window_hint",           "FuncWindowHint",     "Window Hint"          }[i];
             case ObjectType.HorzDoor:           return new string[] { "custom_sliding_door",          "HorzDoor",           "Horizontal Door"      }[i];
-            case ObjectType.Jumppad:            return new string[] { "custom_linked_zipline",        "Jumppad",            "Jump Pad"             }[i];
-            case ObjectType.LinkedZipline:      return new string[] { "custom_jumppad",               "LinkedZipline",      "Linked Zipline"       }[i];
+            case ObjectType.Jumppad:            return new string[] { "custom_jumppad",               "Jumppad",            "Jump Pad"             }[i];
+            case ObjectType.LinkedZipline:      return new string[] { "custom_linked_zipline",        "LinkedZipline",      "Linked Zipline"       }[i];
             case ObjectType.LootBin:            return new string[] { "custom_lootbin",               "LootBin",            "Loot Bin"             }[i];
             case ObjectType.NonVerticalZipLine: return new string[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine" }[i];
             case ObjectType.Prop:               return new string[] { "mdl",                          "Prop",               "Prop"                 }[i];

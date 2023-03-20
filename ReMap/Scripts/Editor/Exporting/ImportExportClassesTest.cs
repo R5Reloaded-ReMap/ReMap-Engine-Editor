@@ -8,6 +8,7 @@ public class JsonData
 {
     public List<PropClassData> Props;
     public List<ZipLineClassData> Ziplines;
+    public List<LinkedZipLinesClassData> LinkedZiplines;
 }
 
 /// <summary>
@@ -53,3 +54,11 @@ public class ZipLineClassData : GlobalClassData
     public Vector3 zipline_end;
 }
 
+[Serializable]
+public class LinkedZipLinesClassData : GlobalClassData
+{
+    public bool enableSmoothing;
+    public int smoothAmount;
+    public bool smoothType;
+    public List<Vector3> nodes;
+}

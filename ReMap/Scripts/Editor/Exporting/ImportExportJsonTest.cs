@@ -17,7 +17,7 @@ public class ImportExportJsonTest
     //  ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██╔══██╗   ██║   
     //  ██║██║ ╚═╝ ██║██║     ╚██████╔╝██║  ██║   ██║   
     //  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
-
+    #if ReMapDev
     [ MenuItem( "ReMap Dev Tools/Import/Json", false, 51 ) ]
     public static async void ImportJson()
     {
@@ -40,7 +40,7 @@ public class ImportExportJsonTest
 
         EditorUtility.ClearProgressBar();
     }
-
+    #endif
     private static async Task ImportProps( List<PropScriptClassData> propScriptClassData )
     {
         int i = 0; int j = 1;
@@ -84,7 +84,7 @@ public class ImportExportJsonTest
     //  ██╔══╝   ██╔██╗ ██╔═══╝ ██║   ██║██╔══██╗   ██║   
     //  ███████╗██╔╝ ██╗██║     ╚██████╔╝██║  ██║   ██║   
     //  ╚══════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
-
+    #if ReMapDev
     [ MenuItem( "ReMap Dev Tools/Export/Json", false, 51 ) ]
     public static async void ExportJson()
     {
@@ -107,7 +107,7 @@ public class ImportExportJsonTest
 
         EditorUtility.ClearProgressBar();
     }
-
+    #endif
 
     private static async Task ExportProps()
     {

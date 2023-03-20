@@ -40,46 +40,39 @@ public class ImportExportJsonTest
         // Sort by alphabetical name
         ImportExportJson.SortListByKey( jsonData.Props, x => x.PathString );
 
-        await ImportProps( jsonData.Props );
+        await ImportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
 
         ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
 
         EditorUtility.ClearProgressBar();
     }
     #endif
-    private static async Task ImportProps( List<PropClassData> classData )
+    private static async Task ImportObjectsWithEnum<T>( ObjectType objectType, List<T> listType ) where T : class
     {
         int i = 0; int j = 1;
 
-        int classDataCount = classData.Count;
-        string objType = Helper.GetObjNameWithEnum( ObjectType.Prop );
-        string objName;
+        int objectsCount = listType.Count;
+        string objType = Helper.GetObjNameWithEnum( objectType );
 
-        foreach( PropClassData objData in classData )
+        T classData = Activator.CreateInstance( typeof( T ) ) as T;
+
+        foreach( T objData in listType )
         {
-            string importing = ""; objName = objData.name;
-
-            if ( string.IsNullOrEmpty( objData.PathString ) )
+            switch ( classData )
             {
-                importing = objName;
-            } else importing = $"{objData.PathString}/{objName}";
+                case PropClassData data: // Props
+                    data = ( PropClassData )( object ) objData;
 
-            EditorUtility.DisplayProgressBar( $"Importing {objType} {j}/{classDataCount}", $"Importing: {importing}", (i + 1) / (float)classDataCount );
-            ReMapConsole.Log("[Json Import] Importing: " + objName, ReMapConsole.LogType.Info);
+                    GameObject obj = TryInstantiatePrefab( data.name, data.PathString, objType, i, j, objectsCount );
+                    if ( obj == null ) continue;
 
-            UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName( objName );
-            if ( loadedPrefabResource == null )
-            {
-                ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {objName}" , ReMapConsole.LogType.Error);
-                continue;
+                    GetSetTransformData( obj, data.TransformData, GetSetData.Set );
+                    GetSetScriptData( obj, data, objectType, GetSetData.Set );
+                    CreatePath( data.Path, data.PathString, obj );
+                    break;
+
+                default: break;
             }
-
-            GameObject obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            //GetSetTransformData( obj, objData.TransformData );
-            //GetSetPropScriptData( obj.GetComponent<PropScript>(), objData.ComponentData );
-
-            if ( objData.PathString != "" )
-            obj.transform.parent = CreatePath( objData.Path );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001)); i++; j++;
         }
@@ -152,10 +145,10 @@ public class ImportExportJsonTest
             switch ( classData )
             {
                 case PropClassData data: // Props
-                    data.TransformData = GetSetTransformData( obj );
                     data.PathString = objPath;
                     data.Path = FindPath( obj );
-                    GetSetPropScriptData( obj, data, GetSetData.Get );
+                    GetSetTransformData( obj, data.TransformData, GetSetData.Get );
+                    GetSetScriptData( obj, data, objectType, GetSetData.Get );
                     break;
 
                 default: break;
@@ -181,11 +174,10 @@ public class ImportExportJsonTest
         jsonData.Props = new List<PropClassData>();
     }
 
-    private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
+    private static void GetSetTransformData( GameObject obj, TransformData data, GetSetData getSet )
     {
-        if ( data == null ) // if data is null, get the transformation data
+        if ( getSet == GetSetData.Get ) // if data is null, get the transformation data
         {
-            data = new TransformData();
             data.position = obj.transform.position;
             data.eulerAngles = obj.transform.eulerAngles;
             data.localScale = obj.transform.localScale;
@@ -196,30 +188,46 @@ public class ImportExportJsonTest
             obj.transform.eulerAngles = data.eulerAngles;
             obj.transform.localScale = data.localScale;
         }
-    
-        return data;
     }
 
-    private static void GetSetPropScriptData( GameObject obj, PropClassData data, GetSetData getSet )
+    private static void GetSetScriptData<T>( GameObject obj, T scriptData, ObjectType dataType, GetSetData getSet ) where T : class
     {
-        PropScript component = obj.GetComponent<PropScript>();
+        T classData = Activator.CreateInstance( typeof( T ) ) as T;
 
         if ( getSet == GetSetData.Get )
         {
-            data.name = GetObjName( obj );
-            data.allowMantle = component.allowMantle;
-            data.fadeDistance = component.fadeDistance;
-            data.realmID = component.realmID;
-            data.parameters = component.parameters;
-            data.customParameters = component.customParameters;
+            switch ( classData )
+            {
+                case PropClassData data: // Props
+                    data = ( PropClassData )( object ) scriptData;
+                    PropScript component = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
+                    data.name = GetObjName( obj );
+                    data.allowMantle = component.allowMantle;
+                    data.fadeDistance = component.fadeDistance;
+                    data.realmID = component.realmID;
+                    data.parameters = component.parameters;
+                    data.customParameters = component.customParameters;
+                    break;
+
+                default: break;
+            }
         }
         else
         {
-            component.allowMantle = data.allowMantle;
-            component.fadeDistance = data.fadeDistance;
-            component.realmID = data.realmID;
-            component.parameters = data.parameters;
-            component.customParameters = data.customParameters;
+            switch ( classData )
+            {
+                case PropClassData data: // Props
+                    data = ( PropClassData )( object ) scriptData;
+                    PropScript component = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
+                    component.allowMantle = data.allowMantle;
+                    component.fadeDistance = data.fadeDistance;
+                    component.realmID = data.realmID;
+                    component.parameters = data.parameters;
+                    component.customParameters = data.customParameters;
+                    break;
+
+                default: break;
+            }
         }
     }
 
@@ -282,8 +290,10 @@ public class ImportExportJsonTest
         return path;
     }
 
-    private static Transform CreatePath( List<PathClass> pathList )
+    private static void CreatePath( List<PathClass> pathList, string pathString, GameObject obj )
     {
+        if ( string.IsNullOrEmpty( pathString ) ) return;
+
         GameObject folder = null; string path = "";
 
         foreach ( PathClass pathClass in pathList )
@@ -306,7 +316,7 @@ public class ImportExportJsonTest
             folder = newFolder;
         }
 
-        return folder.transform;
+        if ( folder != null ) obj.transform.parent = folder.transform;
     }
 
     private static bool IsValidPath( string path )
@@ -323,5 +333,27 @@ public class ImportExportJsonTest
     private static string GetObjName( GameObject obj )
     {
         return obj.name.Split(char.Parse(" "))[0];
+    }
+
+    private static GameObject TryInstantiatePrefab( string objName, string objPath, string objType, int i, int j, int objectsCount )
+    {
+        string importing = "";
+
+        if ( string.IsNullOrEmpty( objPath ) )
+        {
+            importing = objName;
+        } else importing = $"{objPath}/{objName}";
+
+        EditorUtility.DisplayProgressBar( $"Importing {objType} {j}/{objectsCount}", $"Importing: {importing}", (i + 1) / (float)objectsCount );
+        ReMapConsole.Log("[Json Import] Importing: " + objName, ReMapConsole.LogType.Info);
+
+        UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName( objName );
+        if ( loadedPrefabResource == null )
+        {
+            ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {objName}" , ReMapConsole.LogType.Error);
+            return null;
+        }
+
+        return PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
     }
 }

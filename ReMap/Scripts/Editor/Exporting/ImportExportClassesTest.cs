@@ -6,47 +6,27 @@ using UnityEngine;
 [Serializable]
 public class JsonData
 {
-    public List<PropScriptClassData> Props;
-    public List<DrawZiplineClassData> ZipLines;
+    public List<PropClassData> Props;
 }
 
 [Serializable]
-public class PropScriptClassData
+public class GlobalClassData
 {
-    public string Name;
     public TransformData TransformData;
-    public PropScriptData ComponentData;
     public string PathString;
     public List<PathClass> Path;
     
 }
 
 [Serializable]
-public class PropScriptData
+public class PropClassData : GlobalClassData
 {
+    public string name;
     public bool allowMantle;
     public float fadeDistance;
     public int realmID;
     public List<PropScriptParameters> parameters;
-    public List<string> customParameters;
-}
-
-[Serializable]
-public class DrawZiplineClassData
-{
-    public DrawZiplineData DrawZipline;
-    public string PathString;
-    public List<PathClass> Path;
-    
-}
-
-[Serializable]
-public class DrawZiplineData
-{
-    public Vector3 start_position;
-    public Vector3 end_position;
-    public bool ShowZipline;
-    public float ShowZiplineDistance;
+    public List<string> customParameters;    
 }
 
 

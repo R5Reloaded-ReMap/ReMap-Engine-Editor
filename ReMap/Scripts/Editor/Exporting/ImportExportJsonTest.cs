@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
+public enum GetSetData
+{
+    Get = 0,
+    Set = 1
+}
+
 public class ImportExportJsonTest
 {
     static JsonData jsonData = new JsonData();
@@ -41,7 +47,7 @@ public class ImportExportJsonTest
         EditorUtility.ClearProgressBar();
     }
     #endif
-    private static async Task ImportProps( List<PropScriptClassData> classData )
+    private static async Task ImportProps( List<PropClassData> classData )
     {
         int i = 0; int j = 1;
 
@@ -49,9 +55,9 @@ public class ImportExportJsonTest
         string objType = Helper.GetObjNameWithEnum( ObjectType.Prop );
         string objName;
 
-        foreach( PropScriptClassData objData in classData )
+        foreach( PropClassData objData in classData )
         {
-            string importing = ""; objName = objData.Name;
+            string importing = ""; objName = objData.name;
 
             if ( string.IsNullOrEmpty( objData.PathString ) )
             {
@@ -69,8 +75,8 @@ public class ImportExportJsonTest
             }
 
             GameObject obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            GetSetTransformData( obj, objData.TransformData );
-            GetSetPropScriptData( obj.GetComponent<PropScript>(), objData.ComponentData );
+            //GetSetTransformData( obj, objData.TransformData );
+            //GetSetPropScriptData( obj.GetComponent<PropScript>(), objData.ComponentData );
 
             if ( objData.PathString != "" )
             obj.transform.parent = CreatePath( objData.Path );
@@ -99,7 +105,7 @@ public class ImportExportJsonTest
         EditorUtility.DisplayProgressBar( "Starting Export", "" , 0 );
 
         ResetJsonData();
-        await ExportProps();
+        await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
 
         ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
         string json = JsonUtility.ToJson( jsonData );
@@ -111,24 +117,23 @@ public class ImportExportJsonTest
     }
     #endif
 
-    private static async Task ExportProps()
+    private static async Task ExportObjectsWithEnum<T>( ObjectType objectType, List<T> listType ) where T : class
     {
         int i = 0; int j = 1;
 
-        GameObject[] objectsData = Helper.GetObjArrayWithEnum( ObjectType.Prop );
+        GameObject[] objectsData = Helper.GetObjArrayWithEnum( objectType );
 
         int objectsCount = objectsData.Length;
-        string objType = Helper.GetObjNameWithEnum( ObjectType.Prop );
+        string objType = Helper.GetObjNameWithEnum( objectType );
         string objName;
 
         foreach( GameObject obj in objectsData )
         {
-            PropScript component = obj.GetComponent<PropScript>();
             objName = obj.name;
 
-            if ( component == null )
+            if ( Helper.GetComponentByEnum( obj, objectType ) == null )
             {
-                ReMapConsole.Log( $"[Json Export] Missing PropScript on: " + objName, ReMapConsole.LogType.Error );
+                ReMapConsole.Log( $"[Json Export] Missing Component on: " + objName, ReMapConsole.LogType.Error );
                 continue;
             }
 
@@ -142,14 +147,21 @@ public class ImportExportJsonTest
             ReMapConsole.Log("[Json Export] Exporting: " + objName, ReMapConsole.LogType.Info);
             EditorUtility.DisplayProgressBar( $"Exporting {objType} {j}/{objectsCount}", $"Exporting: {exporting}", (i + 1) / (float)objectsCount );
 
-            PropScriptClassData classData = new PropScriptClassData();
-            classData.Name = GetObjName( obj );
-            classData.TransformData = GetSetTransformData( obj );
-            classData.ComponentData = GetSetPropScriptData( component, classData.ComponentData );
-            classData.PathString = objPath;
-            classData.Path = FindPath( obj );
+            T classData = Activator.CreateInstance( typeof( T ) ) as T;
 
-            if ( IsValidPath( objPath ) ) jsonData.Props.Add( classData );
+            switch ( classData )
+            {
+                case PropClassData data: // Props
+                    data.TransformData = GetSetTransformData( obj );
+                    data.PathString = objPath;
+                    data.Path = FindPath( obj );
+                    GetSetPropScriptData( obj, data, GetSetData.Get );
+                    break;
+
+                default: break;
+            }
+
+            if ( IsValidPath( objPath ) ) listType.Add( classData );
 
             await Task.Delay(TimeSpan.FromSeconds(0.001)); i++; j++;
         }
@@ -166,7 +178,7 @@ public class ImportExportJsonTest
     private static void ResetJsonData()
     {
         jsonData = new JsonData();
-        jsonData.Props = new List<PropScriptClassData>();
+        jsonData.Props = new List<PropClassData>();
     }
 
     private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
@@ -188,18 +200,20 @@ public class ImportExportJsonTest
         return data;
     }
 
-    private static PropScriptData GetSetPropScriptData( PropScript component, PropScriptData data = null )
+    private static void GetSetPropScriptData( GameObject obj, PropClassData data, GetSetData getSet )
     {
-        if ( data == null ) // if data is null, get the propscript data
+        PropScript component = obj.GetComponent<PropScript>();
+
+        if ( getSet == GetSetData.Get )
         {
-            data = new PropScriptData();
+            data.name = GetObjName( obj );
             data.allowMantle = component.allowMantle;
             data.fadeDistance = component.fadeDistance;
             data.realmID = component.realmID;
             data.parameters = component.parameters;
             data.customParameters = component.customParameters;
         }
-        else // otherwise, define the propscript data provided
+        else
         {
             component.allowMantle = data.allowMantle;
             component.fadeDistance = data.fadeDistance;
@@ -207,8 +221,6 @@ public class ImportExportJsonTest
             component.parameters = data.parameters;
             component.customParameters = data.customParameters;
         }
-
-        return data;
     }
 
     private static List< PathClass > FindPath( GameObject obj )

@@ -357,11 +357,11 @@ public class Helper
         return GetEnumString( objectType, StringType.Name );
     }
 
-    public static string GetEnumString(ObjectType objectType, StringType stringType)
+    public static string GetEnumString( ObjectType objectType, StringType stringType )
     {
         int i = (int)stringType;
 
-        switch (objectType)
+        switch ( objectType )
         {
             // Alphabetical order
             case ObjectType.BubbleShield:       return new string[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"        }[i];
@@ -386,6 +386,34 @@ public class Helper
  
             default: throw new ArgumentOutOfRangeException( nameof( objectType ), objectType, "This ObjectType don't exist." );
         }
+    }
+
+    public static Component GetComponentByEnum( GameObject obj, ObjectType objectType )
+    {
+        switch ( objectType )
+        {
+            case ObjectType.BubbleShield:       return obj.GetComponent<BubbleScript>();
+            case ObjectType.Button:             return obj.GetComponent<ButtonScripting>();
+            case ObjectType.DoubleDoor:         return obj.GetComponent<DoorScript>();
+            case ObjectType.FuncWindowHint:     return obj.GetComponent<WindowHintScript>();
+            case ObjectType.HorzDoor:           return obj.GetComponent<HorzDoorScript>();
+            case ObjectType.Jumppad:            return obj.GetComponent<PropScript>();
+            case ObjectType.LinkedZipline:      return obj.GetComponent<LinkedZiplineScript>();
+            case ObjectType.LootBin:            return obj.GetComponent<LootBinScript>();
+            case ObjectType.NonVerticalZipLine: return obj.GetComponent<DrawNonVerticalZipline>();
+            case ObjectType.Prop:               return obj.GetComponent<PropScript>();
+            case ObjectType.SingleDoor:         return obj.GetComponent<DoorScript>();
+            case ObjectType.Sound:              return obj.GetComponent<SoundScript>();
+            case ObjectType.SpawnPoint:         return obj.GetComponent<SpawnPointScript>();
+            case ObjectType.TextInfoPanel:      return obj.GetComponent<TextInfoPanelScript>();
+            case ObjectType.Trigger:            return obj.GetComponent<TriggerScripting>();
+            case ObjectType.VerticalDoor:       return obj.GetComponent<VerticalDoorScript>();
+            case ObjectType.VerticalZipLine:    return obj.GetComponent<DrawVerticalZipline>();
+            case ObjectType.WeaponRack:         return obj.GetComponent<WeaponRackScript>();
+            case ObjectType.ZipLine:            return obj.GetComponent<DrawZipline>();
+        }
+
+        return null;
     }
 
     private static Dictionary< string, string > ObjectToTagDictionaryInit()

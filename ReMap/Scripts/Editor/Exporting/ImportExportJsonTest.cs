@@ -47,11 +47,11 @@ public class ImportExportJsonTest
 
         int classDataCount = classData.Count;
         string objType = Helper.GetObjNameWithEnum( ObjectType.Prop );
-        string objName = objData.Name;
+        string objName;
 
         foreach( PropScriptClassData objData in classData )
         {
-            string importing = "";
+            string importing = ""; objName = objData.Name;
 
             if ( string.IsNullOrEmpty( objData.PathString ) )
             {

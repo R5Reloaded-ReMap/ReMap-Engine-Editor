@@ -113,9 +113,11 @@ public class DrawVerticalZipline : MonoBehaviour
 
         foreach ( GameObject go in panels)
         {
-            if(go.name.Contains("mdl#"))
+            if ( go == null ) continue;
+
+            if ( go.name.Contains( "mdl#" ) )
             {
-                go.name = go.name.Split(char.Parse(" "))[0].Replace("mdl#", "");
+                go.name = go.name.Split( char.Parse( " " ) )[0].Replace( "mdl#", "" );
             }
         }
 

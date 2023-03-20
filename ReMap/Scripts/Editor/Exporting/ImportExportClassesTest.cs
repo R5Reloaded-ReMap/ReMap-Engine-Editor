@@ -6,9 +6,10 @@ using UnityEngine;
 [Serializable]
 public class JsonData
 {
-    public List<PropClassData> Props;
-    public List<ZipLineClassData> Ziplines;
-    public List<LinkedZipLinesClassData> LinkedZiplines;
+    public List< PropClassData > Props;
+    public List< ZipLineClassData > Ziplines;
+    public List< LinkedZipLinesClassData > LinkedZiplines;
+    public List< VerticalZipLineClassData > VerticalZipLines;
 }
 
 /// <summary>
@@ -61,4 +62,41 @@ public class LinkedZipLinesClassData : GlobalClassData
     public int smoothAmount;
     public bool smoothType;
     public List<Vector3> nodes;
+}
+
+[Serializable]
+public class VerticalZipLineClassData : GlobalClassData
+{
+    public bool ShowZipline;
+    public float ShowZiplineDistance;
+    public bool ShowAutoDetachDistance;
+    public bool EnableAutoOffsetDistance;
+    public string ZiplineType;
+    public float ArmOffset;
+    public float HeightOffset;
+    public float AnglesOffset;
+    public float FadeDistance;
+    public float Scale;
+    public float Width;
+    public float SpeedScale;
+    public float LengthScale;
+    public bool PreserveVelocity;
+    public bool DropToBottom;
+    public float AutoDetachStart;
+    public float AutoDetachEnd;
+    public bool RestPoint;
+    public bool PushOffInDirectionX;
+    public bool IsMoving;
+    public bool DetachEndOnSpawn;
+    public bool DetachEndOnUse;
+    public List<VCPanelsClassData> Panels;
+    public float PanelTimerMin;
+    public float PanelTimerMax;
+    public int PanelMaxUse;
+}
+
+[Serializable]
+public class VCPanelsClassData : GlobalClassData
+{
+    public string Model;
 }

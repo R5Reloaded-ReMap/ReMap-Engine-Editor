@@ -41,10 +41,12 @@ public class ImportExportJsonTest
         ImportExportJson.SortListByKey( jsonData.Props, x => x.PathString );
         ImportExportJson.SortListByKey( jsonData.Ziplines, x => x.PathString );
         ImportExportJson.SortListByKey( jsonData.LinkedZiplines, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.VerticalZipLines, x => x.PathString );
 
         await ImportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
         await ImportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
         await ImportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
+        await ImportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines );
 
         ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
 
@@ -97,10 +99,21 @@ public class ImportExportJsonTest
                     CreatePath( data.Path, data.PathString, obj );
                     break;
 
+                case VerticalZipLineClassData data: // Vertical Ziplines
+                    data = ( VerticalZipLineClassData )( object ) objData;
+
+                    obj = TryInstantiatePrefab( data.ZiplineType, data.PathString, objType, i, j, objectsCount );
+                    if ( obj == null ) continue;
+
+                    GetSetTransformData( obj, data.TransformData );
+                    GetSetScriptData( obj, data, objectType, GetSetData.Set );
+                    CreatePath( data.Path, data.PathString, obj );
+                    break;
+
                 default: break;
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(0.001)); i++; j++;
+            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) ); i++; j++;
         }
     }
 
@@ -126,8 +139,8 @@ public class ImportExportJsonTest
         ResetJsonData();
         await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
         await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
-        await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
         await ExportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
+        await ExportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines );
 
         ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
         string json = JsonUtility.ToJson( jsonData );
@@ -193,13 +206,20 @@ public class ImportExportJsonTest
                     data.TransformData = GetSetTransformData( obj, data.TransformData );
                     GetSetScriptData( obj, data, objectType, GetSetData.Get );
                     break;
+                    
+                case VerticalZipLineClassData data: // Vertical Ziplines
+                    data.PathString = objPath;
+                    data.Path = FindPath( obj );
+                    data.TransformData = GetSetTransformData( obj, data.TransformData );
+                    GetSetScriptData( obj, data, objectType, GetSetData.Get );
+                    break;
 
                 default: break;
             }
 
             if ( IsValidPath( objPath ) ) listType.Add( classData );
 
-            await Task.Delay(TimeSpan.FromSeconds(0.001)); i++; j++;
+            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) ); i++; j++;
         }
     }
 
@@ -214,9 +234,10 @@ public class ImportExportJsonTest
     private static void ResetJsonData()
     {
         jsonData = new JsonData();
-        jsonData.Props = new List<PropClassData>();
-        jsonData.Ziplines = new List<ZipLineClassData>();
-        jsonData.LinkedZiplines = new List<LinkedZipLinesClassData>();
+        jsonData.Props = new List< PropClassData >();
+        jsonData.Ziplines = new List< ZipLineClassData >();
+        jsonData.LinkedZiplines = new List< LinkedZipLinesClassData >();
+        jsonData.VerticalZipLines = new List< VerticalZipLineClassData >();
     }
 
     private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
@@ -278,6 +299,48 @@ public class ImportExportJsonTest
                     foreach ( Transform nodes in obj.transform ) data.nodes.Add( nodes.gameObject.transform.position );
                     break;
 
+                case VerticalZipLineClassData data: // Vertical Ziplines
+                    data = ( VerticalZipLineClassData )( object ) scriptData;
+                    DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
+                    data.ShowZipline = drawVerticalZipline.ShowZipline;
+                    data.ShowZiplineDistance = drawVerticalZipline.ShowZiplineDistance;
+                    data.ShowAutoDetachDistance = drawVerticalZipline.ShowAutoDetachDistance;
+                    data.EnableAutoOffsetDistance = drawVerticalZipline.EnableAutoOffsetDistance;
+                    data.ZiplineType = GetObjName( obj );
+                    data.ArmOffset = drawVerticalZipline.armOffset;
+                    data.HeightOffset = drawVerticalZipline.heightOffset;
+                    data.AnglesOffset = drawVerticalZipline.anglesOffset;
+                    data.FadeDistance = drawVerticalZipline.fadeDistance;
+                    data.Scale = drawVerticalZipline.scale;
+                    data.Width = drawVerticalZipline.width;
+                    data.SpeedScale = drawVerticalZipline.speedScale;
+                    data.LengthScale = drawVerticalZipline.lengthScale;
+                    data.PreserveVelocity = drawVerticalZipline.preserveVelocity;
+                    data.DropToBottom = drawVerticalZipline.dropToBottom;
+                    data.AutoDetachStart = drawVerticalZipline.autoDetachStart;
+                    data.AutoDetachEnd = drawVerticalZipline.autoDetachEnd;
+                    data.RestPoint = drawVerticalZipline.restPoint;
+                    data.PushOffInDirectionX = drawVerticalZipline.pushOffInDirectionX;
+                    data.IsMoving = drawVerticalZipline.isMoving;
+                    data.DetachEndOnSpawn = drawVerticalZipline.detachEndOnSpawn;
+                    data.DetachEndOnUse = drawVerticalZipline.detachEndOnUse;
+                    data.Panels = new List< VCPanelsClassData >();
+
+                    foreach ( GameObject panel in drawVerticalZipline.panels )
+                    {
+                        VCPanelsClassData panelClass = new VCPanelsClassData();
+                        panelClass.Model = panel.name;
+                        panelClass.TransformData = GetSetTransformData( panel, panelClass.TransformData );
+                        panelClass.Path = FindPath( panel );
+                        panelClass.PathString = FindPathString( panel );
+                        data.Panels.Add( panelClass );
+                    }
+                    
+                    data.PanelTimerMin = drawVerticalZipline.panelTimerMin;
+                    data.PanelTimerMax = drawVerticalZipline.panelTimerMin;
+                    data.PanelMaxUse = drawVerticalZipline.panelMaxUse;
+                    break;
+
                 default: break;
             }
         }
@@ -318,6 +381,53 @@ public class ImportExportJsonTest
                         nodes.transform.position = nodesPos;
                         nodes.transform.parent = obj.transform;
                     }
+                    break;
+
+                case VerticalZipLineClassData data: // Vertical Ziplines
+                    data = ( VerticalZipLineClassData )( object ) scriptData;
+                    DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
+                    drawVerticalZipline.ShowZipline = data.ShowZipline;
+                    drawVerticalZipline.ShowZiplineDistance = data.ShowZiplineDistance;
+                    drawVerticalZipline.ShowAutoDetachDistance = data.ShowAutoDetachDistance;
+                    drawVerticalZipline.EnableAutoOffsetDistance = data.EnableAutoOffsetDistance;
+                    drawVerticalZipline.armOffset = data.ArmOffset;
+                    drawVerticalZipline.heightOffset = data.HeightOffset;
+                    drawVerticalZipline.anglesOffset = data.AnglesOffset;
+                    drawVerticalZipline.fadeDistance = data.FadeDistance;
+                    drawVerticalZipline.scale = data.Scale;
+                    drawVerticalZipline.width = data.Width;
+                    drawVerticalZipline.speedScale = data.SpeedScale;
+                    drawVerticalZipline.lengthScale = data.LengthScale;
+                    drawVerticalZipline.preserveVelocity = data.PreserveVelocity;
+                    drawVerticalZipline.dropToBottom = data.DropToBottom;
+                    drawVerticalZipline.autoDetachStart = data.AutoDetachStart;
+                    drawVerticalZipline.autoDetachEnd = data.AutoDetachEnd;
+                    drawVerticalZipline.restPoint = data.RestPoint;
+                    drawVerticalZipline.pushOffInDirectionX = data.PushOffInDirectionX;
+                    drawVerticalZipline.isMoving = data.IsMoving;
+                    drawVerticalZipline.detachEndOnSpawn = data.DetachEndOnSpawn;
+                    drawVerticalZipline.detachEndOnUse = data.DetachEndOnUse;
+
+                    foreach ( VCPanelsClassData panelData in data.Panels )
+                    {
+                        UnityEngine.Object loadedPrefabResourcePanel = ImportExportJson.FindPrefabFromName( "mdl#" + panelData.Model );
+                        if (loadedPrefabResourcePanel == null)
+                        {
+                            ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {panelData.Model}" , ReMapConsole.LogType.Error);
+                            continue;
+                        }
+
+                        GameObject panel = PrefabUtility.InstantiatePrefab( loadedPrefabResourcePanel as GameObject ) as GameObject;
+                        GetSetTransformData( panel, panelData.TransformData );
+                        CreatePath( panelData.Path, panelData.PathString, panel );
+
+                        Array.Resize( ref drawVerticalZipline.panels, drawVerticalZipline.panels.Length + 1 );
+                        drawVerticalZipline.panels[ drawVerticalZipline.panels.Length - 1 ] = panel;
+                    }
+                    
+                    drawVerticalZipline.panelTimerMin = data.PanelTimerMin;
+                    drawVerticalZipline.panelTimerMin = data.PanelTimerMax;
+                    drawVerticalZipline.panelMaxUse = data.PanelMaxUse;
                     break;
 
                 default: break;

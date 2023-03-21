@@ -51,7 +51,7 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            code += $"    JumpPad_CreatedCallback( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
+            code += $"    JumpPad_CreatedCallback( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
         }
 
         code += "\n";
@@ -75,9 +75,9 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing BubbleScript on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            string shieldColor = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
+            string ShieldColor = script.ShieldColor.r + " " + script.ShieldColor.g + " " + script.ShieldColor.b;
                 
-            code += $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, \"{shieldColor}\", $\"{model}\" )" + "\n";
+            code += $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {go.transform.localScale.x.ToString().Replace(",", ".")}, \"{ShieldColor}\", $\"{model}\" )" + "\n";
         }
 
         code += "\n";
@@ -259,7 +259,7 @@ public class Build
             panelAngles += " ]";
             panelModel += " ]";
 
-            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {panelTimerMin}, {panelTimerMax}, {panelMaxUse} )" + "\n";
+            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.FadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {panelTimerMin}, {panelTimerMax}, {panelMaxUse} )" + "\n";
         }
 
         code += "\n";
@@ -317,7 +317,7 @@ public class Build
             panelAngles += " ]";
             panelModel += " ]";
 
-            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, false, {ziplineScript.fadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {panelTimerMin}, {panelTimerMax}, {panelMaxUse} )" + "\n";
+            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, false, {ziplineScript.FadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {panelTimerMin}, {panelTimerMax}, {panelMaxUse} )" + "\n";
         }
 
         code += "\n";
@@ -341,7 +341,7 @@ public class Build
                 continue;
             }
 
-            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Single, {script.goldDoor.ToString().ToLower()} )" + "\n";
+            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Single, {script.GoldDoor.ToString().ToLower()} )" + "\n";
         }
 
         code += "\n";
@@ -363,7 +363,7 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing DoorScript on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Double, {script.goldDoor.ToString().ToLower()} )" + "\n";
+            code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, eMapEditorDoorType.Double, {script.GoldDoor.ToString().ToLower()} )" + "\n";
         }
 
         code += "\n";
@@ -463,7 +463,7 @@ public class Build
                         code += $"    entity {idx} = ";
                     } else code += $"    ";
                     
-                    code += $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.fadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
+                    code += $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
 
                     if ( script.parameters.Count != 0 || script.customParameters.Count != 0 )
                     {
@@ -603,7 +603,7 @@ public class Build
         string origin = "\"" + Helper.BuildOrigin(go).Replace(" ", "") + "\",";
         string angles = "\"" + Helper.BuildAngles(go).Replace(" ", "") + "\",";
         string scale = go.transform.localScale.x.ToString().Replace(",", ".") + ",";
-        string fade = script.fadeDistance.ToString() + ",";
+        string fade = script.FadeDistance.ToString() + ",";
         string mantle = script.allowMantle.ToString().ToLower() + ",";
         string visible = "true,";
         string mdl = "\"" + model + "\",";
@@ -628,7 +628,7 @@ public class Build
         string buildent = "{\n";
         buildent += "\"StartDisabled\" \"0\"\n";
         buildent += "\"spawnflags\" \"0\"\n";
-        buildent += $"\"fadedist\" \"{script.fadeDistance}\"\n";
+        buildent += $"\"fadedist\" \"{script.FadeDistance}\"\n";
         buildent += $"\"collide_titan\" \"1\"\n";
         buildent += $"\"collide_ai\" \"1\"\n";
         buildent += $"\"scale\" \"{go.transform.localScale.x.ToString().Replace(",", ".")}\"\n";

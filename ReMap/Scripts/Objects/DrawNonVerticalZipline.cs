@@ -22,9 +22,9 @@ public class DrawNonVerticalZipline : MonoBehaviour
     [ConditionalHide("ShowZipline", true)] public bool ShowAutoDetachDistance = true;
 
     [Header("Zipline Parameters:")]
-    [ConditionalHide("ShowArmOffsetStart", true)] public float armOffsetStart = 160;
-    [ConditionalHide("ShowArmOffsetEnd", true)] public float armOffsetEnd = 160;
-    public float fadeDistance = -1;
+    [ConditionalHide("ShowArmOffsetStart", true)] public float ArmOffsetStart = 160;
+    [ConditionalHide("ShowArmOffsetEnd", true)] public float ArmOffsetEnd = 160;
+    public float FadeDistance = -1;
     public float scale = 1;
     public float width = 2;
     public float speedScale = 1;
@@ -68,13 +68,13 @@ public class DrawNonVerticalZipline : MonoBehaviour
             fence_post_start.transform.localPosition = new Vector3(0, 0, 0);
             fence_post_start.transform.localEulerAngles = new Vector3(0, 0, 0);
             arm_start.transform.SetParent(support_start.transform);
-            arm_start.transform.localPosition = new Vector3((float)0.8, armOffsetStart, 1);
+            arm_start.transform.localPosition = new Vector3((float)0.8, ArmOffsetStart, 1);
             arm_start.transform.localEulerAngles = new Vector3(0, 90, 0);
             rope_start.SetParent(arm_start.transform);
             rope_start.localPosition = new Vector3(55, -12, 4);
 
-            if(armOffsetStart < 46) armOffsetStart = 46;
-            if(armOffsetStart > 300) armOffsetStart = 300;
+            if(ArmOffsetStart < 46) ArmOffsetStart = 46;
+            if(ArmOffsetStart > 300) ArmOffsetStart = 300;
         }
 
         if( fence_post_start == null && arm_start != null )
@@ -84,14 +84,14 @@ public class DrawNonVerticalZipline : MonoBehaviour
             arm_start.transform.localEulerAngles = new Vector3(0, 90, 0);
             rope_start.SetParent(arm_start.transform);
             rope_start.localPosition = new Vector3(55, -12, 4);
-            armOffsetStart = 0;
+            ArmOffsetStart = 0;
 }
 
         if( arm_start == null )
         {
             rope_start.SetParent(support_start.transform);
             rope_start.localPosition = new Vector3(0, 0, 0);
-            armOffsetStart = 0;
+            ArmOffsetStart = 0;
         }
 
         // End
@@ -103,13 +103,13 @@ public class DrawNonVerticalZipline : MonoBehaviour
             fence_post_end.transform.localPosition = new Vector3(0, 0, 0);
             fence_post_end.transform.localEulerAngles = new Vector3(0, 0, 0);
             arm_end.transform.SetParent(support_end.transform);
-            arm_end.transform.localPosition = new Vector3((float)0.8, armOffsetEnd, 1);
+            arm_end.transform.localPosition = new Vector3((float)0.8, ArmOffsetEnd, 1);
             arm_end.transform.localEulerAngles = new Vector3(0, 90, 0);
             rope_end.SetParent(arm_end.transform);
             rope_end.localPosition = new Vector3(55, -12, 4);
 
-            if(armOffsetEnd < 46) armOffsetEnd = 46;
-            if(armOffsetEnd > 300) armOffsetEnd = 300;
+            if(ArmOffsetEnd < 46) ArmOffsetEnd = 46;
+            if(ArmOffsetEnd > 300) ArmOffsetEnd = 300;
         }
 
         if( fence_post_end == null && arm_end != null )
@@ -119,14 +119,14 @@ public class DrawNonVerticalZipline : MonoBehaviour
             arm_end.transform.localEulerAngles = new Vector3(0, 90, 0);
             rope_end.SetParent(arm_end.transform);
             rope_end.localPosition = new Vector3(55, -12, 4);
-            armOffsetEnd = 0;
+            ArmOffsetEnd = 0;
         }
 
         if( arm_end == null )
         {
             rope_end.SetParent(support_end.transform);
             rope_end.localPosition = new Vector3(0, 0, 0);
-            armOffsetEnd = 0;
+            ArmOffsetEnd = 0;
         }
 
         foreach (GameObject go in panels)

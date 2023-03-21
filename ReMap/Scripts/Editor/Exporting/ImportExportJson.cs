@@ -93,7 +93,7 @@ public class ImportExportJson
 
             PropScript script = obj.GetComponent<PropScript>();
             PropScriptClass propScript = prop.script;
-            script.fadeDistance = propScript.FadeDistance;
+            script.FadeDistance = propScript.FadeDistance;
             script.allowMantle = propScript.AllowMantle;
             script.realmID = propScript.RealmID;
             script.parameters = propScript.Parameters;
@@ -139,7 +139,7 @@ public class ImportExportJson
 
             PropScript script = obj.GetComponent<PropScript>();
             PropScriptClass propScript = jumppad.script;
-            propScript.FadeDistance = script.fadeDistance;
+            propScript.FadeDistance = script.FadeDistance;
             propScript.AllowMantle = script.allowMantle;
             propScript.RealmID = script.realmID;
             propScript.Parameters = script.parameters;
@@ -227,9 +227,9 @@ public class ImportExportJson
 
             BubbleScript script = obj.GetComponent<BubbleScript>();
             string[] split = sheild.Color.Split(" ");
-            script.shieldColor.r = byte.Parse(split[0].Replace("\"", ""));
-            script.shieldColor.g = byte.Parse(split[1].Replace("\"", ""));
-            script.shieldColor.b = byte.Parse(split[2].Replace("\"", ""));
+            script.ShieldColor.r = byte.Parse(split[0].Replace("\"", ""));
+            script.ShieldColor.g = byte.Parse(split[1].Replace("\"", ""));
+            script.ShieldColor.b = byte.Parse(split[2].Replace("\"", ""));
 
             if ( sheild.Path.Count != 0 )
             obj.gameObject.transform.parent = CreatePath( sheild.Path );
@@ -434,7 +434,7 @@ public class ImportExportJson
             script.armOffset = zipline.ArmOffset;
             script.heightOffset = zipline.HeightOffset;
             script.anglesOffset = zipline.AnglesOffset;
-            script.fadeDistance = zipline.FadeDistance;
+            script.FadeDistance = zipline.FadeDistance;
             script.scale = zipline.Scale;
             script.width = zipline.Width;
             script.speedScale = zipline.SpeedScale;
@@ -506,9 +506,9 @@ public class ImportExportJson
             obj.transform.eulerAngles = zipline.ZiplineStartAngles;
             script.zipline.transform.Find("support_end").position = zipline.ZiplineEndPosition;
             script.zipline.transform.Find("support_end").eulerAngles = zipline.ZiplineEndAngles;
-            script.armOffsetStart = zipline.ArmStartOffset;
-            script.armOffsetEnd = zipline.ArmEndOffset;
-            script.fadeDistance = zipline.FadeDistance;
+            script.ArmOffsetStart = zipline.ArmStartOffset;
+            script.ArmOffsetEnd = zipline.ArmEndOffset;
+            script.FadeDistance = zipline.FadeDistance;
             script.scale = zipline.Scale;
             script.width = zipline.Width;
             script.speedScale = zipline.SpeedScale;
@@ -604,7 +604,7 @@ public class ImportExportJson
             if(IsSingleOrDouble)
             {
                 DoorScript script = obj.GetComponent<DoorScript>();
-                script.goldDoor = door.Gold;
+                script.GoldDoor = door.Gold;
             }
 
             if ( door.Path.Count != 0 )
@@ -818,7 +818,7 @@ public class ImportExportJson
             prop.Rotation = obj.transform.rotation.eulerAngles;
             prop.Scale = obj.transform.localScale;
             propScript.AllowMantle = script.allowMantle;
-            propScript.FadeDistance = script.fadeDistance;
+            propScript.FadeDistance = script.FadeDistance;
             propScript.RealmID = script.realmID;
             propScript.Parameters = script.parameters;
             propScript.CustomParameters = script.customParameters;
@@ -865,7 +865,7 @@ public class ImportExportJson
             jumpPad.Rotation = obj.transform.rotation.eulerAngles;
             jumpPad.Scale = obj.transform.localScale;
             propScript.AllowMantle = script.allowMantle;
-            propScript.FadeDistance = script.fadeDistance;
+            propScript.FadeDistance = script.FadeDistance;
             propScript.RealmID = script.realmID;
             propScript.Parameters = script.parameters;
             propScript.CustomParameters = script.customParameters;
@@ -951,7 +951,7 @@ public class ImportExportJson
             bubbleShield.Position = obj.transform.position;
             bubbleShield.Rotation = obj.transform.rotation.eulerAngles;
             bubbleShield.Scale = obj.transform.localScale;
-            bubbleShield.Color = script.shieldColor.r + " " + script.shieldColor.g + " " + script.shieldColor.b;
+            bubbleShield.Color = script.ShieldColor.r + " " + script.ShieldColor.g + " " + script.ShieldColor.b;
             bubbleShield.Model = obj.name.Split(char.Parse(" "))[0];
 
             bubbleShield.Path = FindPath( obj );
@@ -1156,7 +1156,7 @@ public class ImportExportJson
             verticalZipLine.ArmOffset = script.armOffset;
             verticalZipLine.HeightOffset = script.heightOffset;
             verticalZipLine.AnglesOffset = script.anglesOffset;
-            verticalZipLine.FadeDistance = script.fadeDistance;
+            verticalZipLine.FadeDistance = script.FadeDistance;
             verticalZipLine.Scale = script.scale;
             verticalZipLine.Width = script.width;
             verticalZipLine.SpeedScale = script.speedScale;
@@ -1227,9 +1227,9 @@ public class ImportExportJson
             nonVerticalZipLine.ZiplineStartAngles = script.zipline.transform.Find("support_start").eulerAngles;
             nonVerticalZipLine.ZiplineEndPosition = script.zipline.transform.Find("support_end").position;
             nonVerticalZipLine.ZiplineEndAngles = script.zipline.transform.Find("support_end").eulerAngles;
-            nonVerticalZipLine.ArmStartOffset = script.armOffsetStart;
-            nonVerticalZipLine.ArmEndOffset = script.armOffsetEnd;
-            nonVerticalZipLine.FadeDistance = script.fadeDistance;
+            nonVerticalZipLine.ArmStartOffset = script.ArmOffsetStart;
+            nonVerticalZipLine.ArmEndOffset = script.ArmOffsetEnd;
+            nonVerticalZipLine.FadeDistance = script.FadeDistance;
             nonVerticalZipLine.Scale = script.scale;
             nonVerticalZipLine.Width = script.width;
             nonVerticalZipLine.SpeedScale = script.speedScale;
@@ -1301,7 +1301,7 @@ public class ImportExportJson
             singleDoor.Position = obj.transform.position;
             singleDoor.Rotation = obj.transform.rotation.eulerAngles;
             singleDoor.Type = "eMapEditorDoorType.Single";
-            singleDoor.Gold = script.goldDoor;
+            singleDoor.Gold = script.GoldDoor;
 
             singleDoor.Path = FindPath( obj );
             singleDoor.PathString = path;
@@ -1338,7 +1338,7 @@ public class ImportExportJson
             doubleDoor.Position = obj.transform.position;
             doubleDoor.Rotation = obj.transform.rotation.eulerAngles;
             doubleDoor.Type = "eMapEditorDoorType.Double";
-            doubleDoor.Gold = script.goldDoor;
+            doubleDoor.Gold = script.GoldDoor;
 
             doubleDoor.Path = FindPath( obj );
             doubleDoor.PathString = path;

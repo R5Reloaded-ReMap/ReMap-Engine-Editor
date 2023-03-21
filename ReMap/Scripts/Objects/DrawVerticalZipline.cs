@@ -23,7 +23,7 @@ public class DrawVerticalZipline : MonoBehaviour
     public float heightOffset = 0;
     [ConditionalHide("EnableAutoOffsetDistance", true)] public float GroundOffset = 0;
     [ConditionalHide("pushOffInDirectionX", true)] public float anglesOffset = 0;
-    public float fadeDistance = -1;
+    public float FadeDistance = -1;
     public float scale = 1;
     public float width = 2;
     public float speedScale = 1;

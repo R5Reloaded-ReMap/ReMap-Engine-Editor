@@ -86,7 +86,7 @@ public class Helper
         public Vector3 Origin;
         public Vector3 Angles;
         public float Scale;
-        public string fadeDistance;
+        public string FadeDistance;
         public string canMantle;
         public string isVisible;
         public string Model;
@@ -242,7 +242,7 @@ public class Helper
         dt.Origin = new Vector3(float.Parse(items[2]), float.Parse(items[3].Replace(">", "")), -(float.Parse(items[1].Replace("<", ""))));
         dt.Angles = new Vector3(-(float.Parse(items[4].Replace("<", ""))), -(float.Parse(items[5])), float.Parse(items[6].Replace(">", "")));
         dt.Scale = float.Parse(items[7]);
-        dt.fadeDistance = items[8];
+        dt.FadeDistance = items[8];
         dt.canMantle = items[9];
         dt.isVisible = items[10];
         dt.Model = items[11].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "");
@@ -261,7 +261,7 @@ public class Helper
         obj.SetActive(dt.isVisible == "true");
 
         PropScript script = obj.GetComponent<PropScript>();
-        script.fadeDistance = float.Parse(dt.fadeDistance);
+        script.FadeDistance = float.Parse(dt.FadeDistance);
         script.allowMantle = dt.canMantle == "true";
 
         if (dt.Collection == "")

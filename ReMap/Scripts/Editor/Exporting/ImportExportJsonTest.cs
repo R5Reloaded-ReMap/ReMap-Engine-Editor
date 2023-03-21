@@ -60,7 +60,6 @@ public class ImportExportJsonTest
         int i = 0; int j = 1;
 
         int objectsCount = listType.Count;
-        string objType = Helper.GetObjNameWithEnum( objectType );
 
         T classData = Activator.CreateInstance( typeof( T ) ) as T; GameObject obj;
 
@@ -69,47 +68,19 @@ public class ImportExportJsonTest
             switch ( classData )
             {
                 case PropClassData data: // Props
-                    data = ( PropClassData )( object ) objData;
-
-                    obj = TryInstantiatePrefab( data.name, data.PathString, objType, i, j, objectsCount );
-                    if ( obj == null ) continue;
-
-                    GetSetTransformData( obj, data.TransformData );
-                    GetSetScriptData( obj, data, objectType, GetSetData.Set );
-                    CreatePath( data.Path, data.PathString, obj );
+                    obj = InstantiateAndConfigureObject((PropClassData)(object)objData, data.name, objectType, i, j, objectsCount);
                     break;
 
                 case ZipLineClassData data: // Ziplines
-                    data = ( ZipLineClassData )( object ) objData;
-
-                    obj = TryInstantiatePrefab( "custom_zipline", data.PathString, objType, i, j, objectsCount );
-                    if ( obj == null ) continue;
-
-                    GetSetTransformData( obj, data.TransformData );
-                    GetSetScriptData( obj, data, objectType, GetSetData.Set );
-                    CreatePath( data.Path, data.PathString, obj );
+                    obj = InstantiateAndConfigureObject((ZipLineClassData)(object)objData, "custom_zipline", objectType, i, j, objectsCount);
                     break;
 
-                case LinkedZipLinesClassData data: // Ziplines
-                    data = ( LinkedZipLinesClassData )( object ) objData;
-
-                    obj = TryInstantiatePrefab( "custom_linked_zipline", data.PathString, objType, i, j, objectsCount );
-                    if ( obj == null ) continue;
-
-                    GetSetTransformData( obj, data.TransformData );
-                    GetSetScriptData( obj, data, objectType, GetSetData.Set );
-                    CreatePath( data.Path, data.PathString, obj );
+                case LinkedZipLinesClassData data: // Linked Ziplines
+                    obj = InstantiateAndConfigureObject((LinkedZipLinesClassData)(object)objData, "custom_linked_zipline", objectType, i, j, objectsCount);
                     break;
 
                 case VerticalZipLineClassData data: // Vertical Ziplines
-                    data = ( VerticalZipLineClassData )( object ) objData;
-
-                    obj = TryInstantiatePrefab( data.ZiplineType, data.PathString, objType, i, j, objectsCount );
-                    if ( obj == null ) continue;
-
-                    GetSetTransformData( obj, data.TransformData );
-                    GetSetScriptData( obj, data, objectType, GetSetData.Set );
-                    CreatePath( data.Path, data.PathString, obj );
+                    obj = InstantiateAndConfigureObject((VerticalZipLineClassData)(object)objData, data.ZiplineType, objectType, i, j, objectsCount);
                     break;
 
                 default: break;
@@ -189,32 +160,17 @@ public class ImportExportJsonTest
             switch ( classData )
             {
                 case PropClassData data: // Props
-                    data.PathString = objPath;
-                    data.Path = FindPath( obj );
-                    data.TransformData = GetSetTransformData( obj, data.TransformData );
-                    GetSetScriptData( obj, data, objectType, GetSetData.Get );
+                    ProcessExportClassData( data, obj, objPath, objectType );
                     break;
-
                 case ZipLineClassData data: // Ziplines
-                    data.PathString = objPath;
-                    data.Path = FindPath( obj );
-                    data.TransformData = GetSetTransformData( obj, data.TransformData );
-                    GetSetScriptData( obj, data, objectType, GetSetData.Get );
+                    ProcessExportClassData( data, obj, objPath, objectType );
                     break;
-
                 case LinkedZipLinesClassData data: // Linked Ziplines
-                    data.PathString = objPath;
-                    data.Path = FindPath( obj );
-                    data.TransformData = GetSetTransformData( obj, data.TransformData );
-                    GetSetScriptData( obj, data, objectType, GetSetData.Get );
+                    ProcessExportClassData( data, obj, objPath, objectType );
                     break;
-                    
                 case VerticalZipLineClassData data: // Vertical Ziplines
-                    data.PathString = objPath;
-                    data.Path = FindPath( obj );
-                    data.TransformData = GetSetTransformData( obj, data.TransformData );
-                    GetSetScriptData( obj, data, objectType, GetSetData.Get );
-                    break;
+                    ProcessExportClassData( data, obj, objPath, objectType );
+                break;
 
                 default: break;
             }
@@ -321,18 +277,13 @@ public class ImportExportJsonTest
                 case PropClassData data: // Props
                     data = ( PropClassData )( object ) scriptData;
                     PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
-                    propScript.allowMantle = data.allowMantle;
-                    propScript.fadeDistance = data.fadeDistance;
-                    propScript.realmID = data.realmID;
-                    propScript.parameters = data.parameters;
-                    propScript.customParameters = data.customParameters;
+                    TransferDataToClass( data, propScript );
                     break;
 
                 case ZipLineClassData data: // Ziplines
                     data = ( ZipLineClassData )( object ) scriptData;
                     DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    drawZipline.showZipline = data.showZipline;
-                    drawZipline.showZiplineDistance = data.showZiplineDistance;
+                    TransferDataToClass( data, drawZipline, new List< string > { "zipline_start", "zipline_end" } );
                     drawZipline.zipline_start.position = data.zipline_start;
                     drawZipline.zipline_end.position = data.zipline_end;
                     break;
@@ -342,9 +293,7 @@ public class ImportExportJsonTest
                     obj.AddComponent<DrawLinkedZipline>( );
                     obj.AddComponent<LinkedZiplineScript>( );
                     LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
-                    linkedZiplineScript.enableSmoothing = data.enableSmoothing;
-                    linkedZiplineScript.smoothAmount = data.smoothAmount;
-                    linkedZiplineScript.smoothType = data.smoothType;
+                    TransferDataToClass( linkedZiplineScript, data, new List< string > { "zipline_start", "zipline_end" } );
                     foreach ( Vector3 nodesPos in data.nodes )
                     {
                         GameObject nodes = new GameObject( "zipline_node" );
@@ -356,27 +305,7 @@ public class ImportExportJsonTest
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) scriptData;
                     DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    drawVerticalZipline.ShowZipline = data.ShowZipline;
-                    drawVerticalZipline.ShowZiplineDistance = data.ShowZiplineDistance;
-                    drawVerticalZipline.ShowAutoDetachDistance = data.ShowAutoDetachDistance;
-                    drawVerticalZipline.EnableAutoOffsetDistance = data.EnableAutoOffsetDistance;
-                    drawVerticalZipline.armOffset = data.ArmOffset;
-                    drawVerticalZipline.heightOffset = data.HeightOffset;
-                    drawVerticalZipline.anglesOffset = data.AnglesOffset;
-                    drawVerticalZipline.fadeDistance = data.FadeDistance;
-                    drawVerticalZipline.scale = data.Scale;
-                    drawVerticalZipline.width = data.Width;
-                    drawVerticalZipline.speedScale = data.SpeedScale;
-                    drawVerticalZipline.lengthScale = data.LengthScale;
-                    drawVerticalZipline.preserveVelocity = data.PreserveVelocity;
-                    drawVerticalZipline.dropToBottom = data.DropToBottom;
-                    drawVerticalZipline.autoDetachStart = data.AutoDetachStart;
-                    drawVerticalZipline.autoDetachEnd = data.AutoDetachEnd;
-                    drawVerticalZipline.restPoint = data.RestPoint;
-                    drawVerticalZipline.pushOffInDirectionX = data.PushOffInDirectionX;
-                    drawVerticalZipline.isMoving = data.IsMoving;
-                    drawVerticalZipline.detachEndOnSpawn = data.DetachEndOnSpawn;
-                    drawVerticalZipline.detachEndOnUse = data.DetachEndOnUse;
+                    TransferDataToClass( data, drawVerticalZipline, new List< string > { "Panels" } );
 
                     foreach ( VCPanelsClassData panelData in data.Panels )
                     {
@@ -394,10 +323,6 @@ public class ImportExportJsonTest
                         Array.Resize( ref drawVerticalZipline.panels, drawVerticalZipline.panels.Length + 1 );
                         drawVerticalZipline.panels[ drawVerticalZipline.panels.Length - 1 ] = panel;
                     }
-                    
-                    drawVerticalZipline.panelTimerMin = data.PanelTimerMin;
-                    drawVerticalZipline.panelTimerMin = data.PanelTimerMax;
-                    drawVerticalZipline.panelMaxUse = data.PanelMaxUse;
                     break;
 
                 default: break;
@@ -552,6 +477,26 @@ public class ImportExportJsonTest
         }
 
         return PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
+    }
+
+    private static void ProcessExportClassData<T>( T classData, GameObject obj, string objPath, ObjectType objectType ) where T : GlobalClassData
+    {
+        classData.PathString = objPath;
+        classData.Path = FindPath( obj );
+        classData.TransformData = GetSetTransformData( obj, classData.TransformData );
+        GetSetScriptData( obj, classData, objectType, GetSetData.Get );
+    }
+
+    private static GameObject InstantiateAndConfigureObject<T>(T objData, string prefabName, ObjectType objectType, int i, int j, int objectsCount) where T : GlobalClassData
+    {
+        GameObject obj = TryInstantiatePrefab(prefabName, objData.PathString, Helper.GetObjNameWithEnum( objectType ), i, j, objectsCount);
+        if (obj == null) return null;
+
+        GetSetTransformData(obj, objData.TransformData);
+        GetSetScriptData(obj, objData, objectType, GetSetData.Set);
+        CreatePath(objData.Path, objData.PathString, obj);
+
+        return obj;
     }
 
     public static void TransferDataToClass< TSource, TDestination >( TSource source, TDestination destination, List< string > propertiesToRemove = null )

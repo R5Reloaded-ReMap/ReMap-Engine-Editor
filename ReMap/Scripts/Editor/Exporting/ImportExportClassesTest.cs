@@ -40,7 +40,7 @@ public class PropClassData : GlobalClassData
 {
     public string name;
     public bool allowMantle;
-    public float fadeDistance;
+    public float FadeDistance;
     public int realmID;
     public List<PropScriptParameters> parameters;
     public List<string> customParameters;

@@ -147,7 +147,7 @@ public class CodeImport : EditorWindow
             obj.gameObject.transform.localScale = new Vector3(float.Parse(split[10]), float.Parse(split[10]), float.Parse(split[10]));
 
             PropScript script = obj.GetComponent<PropScript>();
-            script.fadeDistance = int.Parse(split[8]);
+            script.FadeDistance = int.Parse(split[8]);
             script.allowMantle = bool.Parse(split[7]);
             script.realmID = int.Parse(split[9]);
 
@@ -255,9 +255,9 @@ public class CodeImport : EditorWindow
 
             string[] colorsplit = split[7].Split(char.Parse(" "));
             BubbleScript script = obj.GetComponent<BubbleScript>();
-            script.shieldColor.r = byte.Parse(colorsplit[1].Replace("\"", ""));
-            script.shieldColor.g = byte.Parse(colorsplit[2].Replace("\"", ""));
-            script.shieldColor.b = byte.Parse(colorsplit[3].Replace("\"", ""));
+            script.ShieldColor.r = byte.Parse(colorsplit[1].Replace("\"", ""));
+            script.ShieldColor.g = byte.Parse(colorsplit[2].Replace("\"", ""));
+            script.ShieldColor.b = byte.Parse(colorsplit[3].Replace("\"", ""));
 
             GameObject parent = GameObject.Find("BubbleSheilds");
             if (parent != null)
@@ -310,7 +310,7 @@ public class CodeImport : EditorWindow
             obj.gameObject.transform.localScale = new Vector3(float.Parse(split[10]), float.Parse(split[10]), float.Parse(split[10]));
 
             PropScript script = obj.GetComponent<PropScript>();
-            script.fadeDistance = int.Parse(split[8]);
+            script.FadeDistance = int.Parse(split[8]);
             script.allowMantle = bool.Parse(split[7]);
             script.realmID = int.Parse(split[9]);
 
@@ -602,7 +602,7 @@ public class CodeImport : EditorWindow
             if(IsSingleOrDouble)
             {
                 DoorScript script = obj.GetComponent<DoorScript>();
-                script.goldDoor = bool.Parse(split[7]);
+                script.GoldDoor = bool.Parse(split[7]);
             }
 
             GameObject parent = GameObject.Find("Doors");

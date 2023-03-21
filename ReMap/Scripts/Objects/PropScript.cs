@@ -23,7 +23,7 @@ public class PropScript : MonoBehaviour
 {
     [Header("Settings:")]
     public bool allowMantle = true;
-    public float fadeDistance = 50000;
+    public float FadeDistance = 50000;
     public int realmID = -1;
     public List<PropScriptParameters> parameters = new List<PropScriptParameters>();
     public List<string> customParameters = new List<string>();

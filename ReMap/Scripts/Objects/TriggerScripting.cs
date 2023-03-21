@@ -15,5 +15,5 @@ public class TriggerScripting : MonoBehaviour
     [TextArea(15,20)]
     public string LeaveCallback = "";
 
-    public Transform playerTeleportationInfo;
+    public Transform PlayerTeleportationInfo;
 }

@@ -38,21 +38,21 @@ public class TransformData
 [Serializable]
 public class PropClassData : GlobalClassData
 {
-    public string name;
-    public bool allowMantle;
+    public string Name;
+    public bool AllowMantle;
     public float FadeDistance;
-    public int realmID;
-    public List<PropScriptParameters> parameters;
-    public List<string> customParameters;
+    public int RealmID;
+    public List<PropScriptParameters> Parameters;
+    public List<string> CustomParameters;
 }
 
 [Serializable]
 public class ZipLineClassData : GlobalClassData
 {
-    public bool showZipline;
-    public float showZiplineDistance;
-    public Vector3 zipline_start;
-    public Vector3 zipline_end;
+    public bool ShowZipline;
+    public float ShowZiplineDistance;
+    public Vector3 Zipline_start;
+    public Vector3 Zipline_end;
 }
 
 [Serializable]
@@ -61,7 +61,7 @@ public class LinkedZipLinesClassData : GlobalClassData
     public bool EnableSmoothing;
     public int SmoothAmount;
     public bool SmoothType;
-    public List<Vector3> nodes;
+    public List<Vector3> Nodes;
 }
 
 [Serializable]

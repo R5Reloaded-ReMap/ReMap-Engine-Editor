@@ -148,8 +148,8 @@ public class CodeImport : EditorWindow
 
             PropScript script = obj.GetComponent<PropScript>();
             script.FadeDistance = int.Parse(split[8]);
-            script.allowMantle = bool.Parse(split[7]);
-            script.realmID = int.Parse(split[9]);
+            script.AllowMantle = bool.Parse(split[7]);
+            script.RealmID = int.Parse(split[9]);
 
             GameObject parent = GameObject.Find("Props");
             if (parent != null)
@@ -311,8 +311,8 @@ public class CodeImport : EditorWindow
 
             PropScript script = obj.GetComponent<PropScript>();
             script.FadeDistance = int.Parse(split[8]);
-            script.allowMantle = bool.Parse(split[7]);
-            script.realmID = int.Parse(split[9]);
+            script.AllowMantle = bool.Parse(split[7]);
+            script.RealmID = int.Parse(split[9]);
 
             GameObject parent = GameObject.Find("JumpPads");
             if (parent != null)
@@ -416,7 +416,7 @@ public class CodeImport : EditorWindow
             obj.name = Model;
 
             WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
-            script.respawnTime = int.Parse(split[7]);
+            script.RespawnTime = int.Parse(split[7]);
 
             GameObject parent = GameObject.Find("WeaponRacks");
             if (parent != null)

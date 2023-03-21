@@ -262,7 +262,7 @@ public class Helper
 
         PropScript script = obj.GetComponent<PropScript>();
         script.FadeDistance = float.Parse(dt.FadeDistance);
-        script.allowMantle = dt.canMantle == "true";
+        script.AllowMantle = dt.canMantle == "true";
 
         if (dt.Collection == "")
             return;

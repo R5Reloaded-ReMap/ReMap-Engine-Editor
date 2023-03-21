@@ -94,10 +94,10 @@ public class ImportExportJson
             PropScript script = obj.GetComponent<PropScript>();
             PropScriptClass propScript = prop.script;
             script.FadeDistance = propScript.FadeDistance;
-            script.allowMantle = propScript.AllowMantle;
-            script.realmID = propScript.RealmID;
-            script.parameters = propScript.Parameters;
-            script.customParameters = propScript.CustomParameters;
+            script.AllowMantle = propScript.AllowMantle;
+            script.RealmID = propScript.RealmID;
+            script.Parameters = propScript.Parameters;
+            script.CustomParameters = propScript.CustomParameters;
 
             if ( prop.PathString != "" )
             obj.gameObject.transform.parent = CreatePath( prop.Path );
@@ -140,10 +140,10 @@ public class ImportExportJson
             PropScript script = obj.GetComponent<PropScript>();
             PropScriptClass propScript = jumppad.script;
             propScript.FadeDistance = script.FadeDistance;
-            propScript.AllowMantle = script.allowMantle;
-            propScript.RealmID = script.realmID;
-            propScript.Parameters = script.parameters;
-            propScript.CustomParameters = script.customParameters;
+            propScript.AllowMantle = script.AllowMantle;
+            propScript.RealmID = script.RealmID;
+            propScript.Parameters = script.Parameters;
+            propScript.CustomParameters = script.CustomParameters;
 
             if ( jumppad.Path.Count != 0 )
             obj.gameObject.transform.parent = CreatePath( jumppad.Path );
@@ -269,7 +269,7 @@ public class ImportExportJson
             obj.name = weaponrack.Weapon;
 
             WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
-            script.respawnTime = weaponrack.RespawnTime;
+            script.RespawnTime = weaponrack.RespawnTime;
 
             if ( weaponrack.Path.Count != 0 )
             obj.gameObject.transform.parent = CreatePath( weaponrack.Path );
@@ -740,8 +740,8 @@ public class ImportExportJson
             obj.transform.eulerAngles = textInfoPanel.Rotation;
 
             TextInfoPanelScript script = obj.GetComponent<TextInfoPanelScript>();
-            script.title = textInfoPanel.Title;
-            script.description = textInfoPanel.Description;
+            script.Title = textInfoPanel.Title;
+            script.Description = textInfoPanel.Description;
             script.showPIN = textInfoPanel.ShowPIN;
             script.Scale = textInfoPanel.Scale;
 
@@ -817,11 +817,11 @@ public class ImportExportJson
             prop.Position = obj.transform.position;
             prop.Rotation = obj.transform.rotation.eulerAngles;
             prop.Scale = obj.transform.localScale;
-            propScript.AllowMantle = script.allowMantle;
+            propScript.AllowMantle = script.AllowMantle;
             propScript.FadeDistance = script.FadeDistance;
-            propScript.RealmID = script.realmID;
-            propScript.Parameters = script.parameters;
-            propScript.CustomParameters = script.customParameters;
+            propScript.RealmID = script.RealmID;
+            propScript.Parameters = script.Parameters;
+            propScript.CustomParameters = script.CustomParameters;
             prop.script = propScript;
 
             prop.Path = FindPath( obj );
@@ -864,11 +864,11 @@ public class ImportExportJson
             jumpPad.Position = obj.transform.position;
             jumpPad.Rotation = obj.transform.rotation.eulerAngles;
             jumpPad.Scale = obj.transform.localScale;
-            propScript.AllowMantle = script.allowMantle;
+            propScript.AllowMantle = script.AllowMantle;
             propScript.FadeDistance = script.FadeDistance;
-            propScript.RealmID = script.realmID;
-            propScript.Parameters = script.parameters;
-            propScript.CustomParameters = script.customParameters;
+            propScript.RealmID = script.RealmID;
+            propScript.Parameters = script.Parameters;
+            propScript.CustomParameters = script.CustomParameters;
             jumpPad.script = propScript;
 
             jumpPad.Path = FindPath( obj );
@@ -993,7 +993,7 @@ public class ImportExportJson
             weaponRack.Position = obj.transform.position;
             weaponRack.Rotation = obj.transform.rotation.eulerAngles;
             weaponRack.Weapon = obj.name.Split(char.Parse(" "))[0];
-            weaponRack.RespawnTime = script.respawnTime;
+            weaponRack.RespawnTime = script.RespawnTime;
 
             weaponRack.Path = FindPath( obj );
             weaponRack.PathString = path;
@@ -1533,8 +1533,8 @@ public class ImportExportJson
             TextInfoPanelClass textInfoPanel = new TextInfoPanelClass();
             textInfoPanel.Position = obj.transform.position;
             textInfoPanel.Rotation = obj.transform.eulerAngles;
-            textInfoPanel.Title = script.title;
-            textInfoPanel.Description = script.description;
+            textInfoPanel.Title = script.Title;
+            textInfoPanel.Description = script.Description;
             textInfoPanel.ShowPIN = script.showPIN;
             textInfoPanel.Scale = script.Scale;
 

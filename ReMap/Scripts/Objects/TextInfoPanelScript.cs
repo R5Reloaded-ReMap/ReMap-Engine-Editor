@@ -4,17 +4,17 @@ using UnityEngine;
 public class TextInfoPanelScript : MonoBehaviour
 {
     [Header("Settings:")]
-    [HideInInspector] public TextMeshProUGUI textMeshTitle;
-    [HideInInspector] public TextMeshProUGUI textMeshDescription;
-    [SerializeField] public string title;
-    [SerializeField] public string description;
+    [HideInInspector] public TextMeshProUGUI TextMeshTitle;
+    [HideInInspector] public TextMeshProUGUI TextMeshDescription;
+    [SerializeField] public string Title;
+    [SerializeField] public string Description;
     public bool showPIN = false;
     public float Scale = 1;
 
     void OnDrawGizmos()
     {
-        textMeshTitle.text = title;
-        textMeshDescription.text = description;
+        TextMeshTitle.text = Title;
+        TextMeshDescription.text = Description;
 
         this.transform.localScale = new Vector3( Scale, Scale, Scale );
     }

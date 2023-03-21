@@ -68,18 +68,22 @@ public class ImportExportJsonTest
             switch ( classData )
             {
                 case PropClassData data: // Props
-                    obj = InstantiateAndConfigureObject((PropClassData)(object)objData, data.name, objectType, i, j, objectsCount);
+                    data = (PropClassData)(object) objData;
+                    obj = InstantiateAndConfigureObject( data, data.Name, objectType, i, j, objectsCount);
                     break;
 
                 case ZipLineClassData data: // Ziplines
+                    data = (ZipLineClassData)(object) objData;
                     obj = InstantiateAndConfigureObject((ZipLineClassData)(object)objData, "custom_zipline", objectType, i, j, objectsCount);
                     break;
 
                 case LinkedZipLinesClassData data: // Linked Ziplines
+                    data = (LinkedZipLinesClassData)(object) objData;
                     obj = InstantiateAndConfigureObject((LinkedZipLinesClassData)(object)objData, "custom_linked_zipline", objectType, i, j, objectsCount);
                     break;
 
                 case VerticalZipLineClassData data: // Vertical Ziplines
+                    data = (VerticalZipLineClassData)(object) objData;
                     obj = InstantiateAndConfigureObject((VerticalZipLineClassData)(object)objData, data.ZiplineType, objectType, i, j, objectsCount);
                     break;
 
@@ -231,29 +235,29 @@ public class ImportExportJsonTest
                     data = ( PropClassData )( object ) scriptData;
                     PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
                     TransferDataToClass( propScript, data );
-                    data.name = GetObjName( obj );
+                    data.Name = GetObjName( obj );
                     break;
 
                 case ZipLineClassData data: // Ziplines
                     data = ( ZipLineClassData )( object ) scriptData;
                     DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
                     TransferDataToClass( drawZipline, data, new List< string > { "zipline_start", "zipline_end" } );
-                    data.zipline_start = drawZipline.zipline_start.position;
-                    data.zipline_end = drawZipline.zipline_end.position;
+                    data.Zipline_start = drawZipline.zipline_start.position;
+                    data.Zipline_end = drawZipline.zipline_end.position;
                     break;
 
                 case LinkedZipLinesClassData data: // Linked Ziplines
                     data = ( LinkedZipLinesClassData )( object ) scriptData;
                     LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
                     TransferDataToClass( linkedZiplineScript, data );
-                    data.nodes = new List<Vector3>( );
-                    foreach ( Transform nodes in obj.transform ) data.nodes.Add( nodes.gameObject.transform.position );
+                    data.Nodes = new List<Vector3>( );
+                    foreach ( Transform nodes in obj.transform ) data.Nodes.Add( nodes.gameObject.transform.position );
                     break;
 
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) scriptData;
                     DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( drawVerticalZipline, data, new List< string > { "Panels" } );
+                    TransferDataToClass( drawVerticalZipline, data, new List< string > { "ZiplineType", "Panels" } );
                     data.ZiplineType = GetObjName( obj );
                     data.Panels = new List< VCPanelsClassData >( );
                     foreach ( GameObject panel in drawVerticalZipline.Panels )
@@ -284,8 +288,8 @@ public class ImportExportJsonTest
                     data = ( ZipLineClassData )( object ) scriptData;
                     DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
                     TransferDataToClass( data, drawZipline, new List< string > { "zipline_start", "zipline_end" } );
-                    drawZipline.zipline_start.position = data.zipline_start;
-                    drawZipline.zipline_end.position = data.zipline_end;
+                    drawZipline.zipline_start.position = data.Zipline_start;
+                    drawZipline.zipline_end.position = data.Zipline_end;
                     break;
 
                 case LinkedZipLinesClassData data: // Linked Ziplines
@@ -294,7 +298,7 @@ public class ImportExportJsonTest
                     obj.AddComponent<LinkedZiplineScript>( );
                     LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
                     TransferDataToClass( linkedZiplineScript, data, new List< string > { "zipline_start", "zipline_end" } );
-                    foreach ( Vector3 nodesPos in data.nodes )
+                    foreach ( Vector3 nodesPos in data.Nodes )
                     {
                         GameObject nodes = new GameObject( "zipline_node" );
                         nodes.transform.position = nodesPos;
@@ -368,7 +372,7 @@ public class ImportExportJsonTest
 
         foreach ( GameObject parent in parents )
         {
-            PathClass path = new PathClass( );
+            PathClass path = new PathClass();
             path.FolderName = parent.name;
             path.Position = parent.transform.position;
             path.Rotation = parent.transform.eulerAngles;
@@ -527,8 +531,6 @@ public class ImportExportJsonTest
             {
                 object value = sourceField.GetValue( source );
                 destinationField.SetValue( destination, value );
-
-                UnityInfo.Printt( sourceField.Name + " " + sourceField.GetValue( source ) + " " + destinationField.GetValue( destination ) );
             }
         }
     }

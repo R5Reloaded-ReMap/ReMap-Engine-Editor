@@ -22,9 +22,9 @@ public enum PropScriptParameters
 public class PropScript : MonoBehaviour
 {
     [Header("Settings:")]
-    public bool allowMantle = true;
+    public bool AllowMantle = true;
     public float FadeDistance = 50000;
-    public int realmID = -1;
-    public List<PropScriptParameters> parameters = new List<PropScriptParameters>();
-    public List<string> customParameters = new List<string>();
+    public int RealmID = -1;
+    public List<PropScriptParameters> Parameters = new List<PropScriptParameters>();
+    public List<string> CustomParameters = new List<string>();
 }

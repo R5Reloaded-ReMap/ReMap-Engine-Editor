@@ -51,7 +51,7 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing PropScript on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            code += $"    JumpPad_CreatedCallback( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
+            code += $"    JumpPad_CreatedCallback( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.AllowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.RealmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} ) )" + "\n";
         }
 
         code += "\n";
@@ -100,7 +100,7 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing WeaponRackScript on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            code += $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, \"{go.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {script.respawnTime} )" + "\n";
+            code += $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, \"{go.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {script.RespawnTime} )" + "\n";
         }
 
         code += "\n";
@@ -457,22 +457,22 @@ public class Build
                         ReMapConsole.Log("[Map Export] Exporting: " + model, ReMapConsole.LogType.Info);
 
                     string idx = "";
-                    if ( script.parameters.Count != 0 || script.customParameters.Count != 0 )
+                    if ( script.Parameters.Count != 0 || script.CustomParameters.Count != 0 )
                     {
                         idx = $"prop{CreateEntityIxd()}";
                         code += $"    entity {idx} = ";
                     } else code += $"    ";
                     
-                    code += $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.allowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.realmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
+                    code += $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.AllowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.RealmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
 
-                    if ( script.parameters.Count != 0 || script.customParameters.Count != 0 )
+                    if ( script.Parameters.Count != 0 || script.CustomParameters.Count != 0 )
                     {
-                        foreach ( PropScriptParameters param in script.parameters )
+                        foreach ( PropScriptParameters param in script.Parameters )
                         {
                             code += GetPropScriptParamValue( idx, param );
                         }
 
-                        foreach ( string param in script.customParameters )
+                        foreach ( string param in script.CustomParameters )
                         {
                             code += SetPropScriptParamValue( idx, param );
                         }
@@ -526,7 +526,7 @@ public class Build
             string ReplacedEnterCallback = script.EnterCallback;
             string ReplacedLeaveCallback = script.LeaveCallback;
 
-            Transform teleportationInfo = script.playerTeleportationInfo;
+            Transform teleportationInfo = script.PlayerTeleportationInfo;
 
             if ( teleportationInfo != null )
             {
@@ -583,7 +583,7 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing ButtonScripting on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            code += $"    MapEditor_CreateTextInfoPanel( \"{script.title}\", \"{script.description}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.showPIN.ToString().ToLower()}, {script.Scale})" + "\n";
+            code += $"    MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.showPIN.ToString().ToLower()}, {script.Scale})" + "\n";
         }
 
         code += "\n";
@@ -604,7 +604,7 @@ public class Build
         string angles = "\"" + Helper.BuildAngles(go).Replace(" ", "") + "\",";
         string scale = go.transform.localScale.x.ToString().Replace(",", ".") + ",";
         string fade = script.FadeDistance.ToString() + ",";
-        string mantle = script.allowMantle.ToString().ToLower() + ",";
+        string mantle = script.AllowMantle.ToString().ToLower() + ",";
         string visible = "true,";
         string mdl = "\"" + model + "\",";
         string collection = "\"\"";

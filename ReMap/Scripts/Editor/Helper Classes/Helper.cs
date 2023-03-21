@@ -44,6 +44,29 @@ public class Helper
     public static bool Is_Using_Starting_Offset = false;
     public static bool DisableStartingOffsetString = false;
 
+    private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new Dictionary< ObjectType, ObjectTypeData >
+    {
+        { ObjectType.BubbleShield,       new ObjectTypeData( new string[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"        }, typeof( BubbleScript ) ) },
+        { ObjectType.Button,             new ObjectTypeData( new string[] { "custom_button",                "Button",             "Button"               }, typeof( ButtonScripting ) ) },
+        { ObjectType.DoubleDoor,         new ObjectTypeData( new string[] { "custom_double_door",           "DoubleDoor",         "Double Door"          }, typeof( DoorScript ) ) },
+        { ObjectType.FuncWindowHint,     new ObjectTypeData( new string[] { "custom_window_hint",           "FuncWindowHint",     "Window Hint"          }, typeof( WindowHintScript ) ) },
+        { ObjectType.HorzDoor,           new ObjectTypeData( new string[] { "custom_sliding_door",          "HorzDoor",           "Horizontal Door"      }, typeof( HorzDoorScript ) ) },
+        { ObjectType.Jumppad,            new ObjectTypeData( new string[] { "custom_jumppad",               "Jumppad",            "Jump Pad"             }, typeof( PropScript ) ) },
+        { ObjectType.LinkedZipline,      new ObjectTypeData( new string[] { "custom_linked_zipline",        "LinkedZipline",      "Linked Zipline"       }, typeof( LinkedZiplineScript ) ) },
+        { ObjectType.LootBin,            new ObjectTypeData( new string[] { "custom_lootbin",               "LootBin",            "Loot Bin"             }, typeof( LootBinScript ) ) },
+        { ObjectType.NonVerticalZipLine, new ObjectTypeData( new string[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine" }, typeof( DrawNonVerticalZipline ) ) },
+        { ObjectType.Prop,               new ObjectTypeData( new string[] { "mdl",                          "Prop",               "Prop"                 }, typeof( PropScript ) ) },
+        { ObjectType.SingleDoor,         new ObjectTypeData( new string[] { "custom_single_door",           "SingleDoor",         "Single Door"          }, typeof( DoorScript ) ) },
+        { ObjectType.Sound,              new ObjectTypeData( new string[] { "custom_sound",                 "Sound",              "Sound"                }, typeof( SoundScript ) ) },
+        { ObjectType.SpawnPoint,         new ObjectTypeData( new string[] { "custom_info_spawnpoint_human", "SpawnPoint",         "Spawn Point"          }, typeof( SpawnPointScript ) ) },
+        { ObjectType.TextInfoPanel,      new ObjectTypeData( new string[] { "custom_text_info_panel",       "TextInfoPanel",      "Text Info Panel"      }, typeof( TextInfoPanelScript ) ) },
+        { ObjectType.Trigger,            new ObjectTypeData( new string[] { "trigger_cylinder",             "Trigger",            "Trigger"              }, typeof( TriggerScripting ) ) },
+        { ObjectType.VerticalDoor,       new ObjectTypeData( new string[] { "custom_vertical_door",         "VerticalDoor",       "Vertical Door"        }, typeof( VerticalDoorScript ) ) },
+        { ObjectType.VerticalZipLine,    new ObjectTypeData( new string[] { "_vertical_zipline",            "VerticalZipLine",    "Vertical ZipLine"     }, typeof( DrawVerticalZipline ) ) },
+        { ObjectType.WeaponRack,         new ObjectTypeData( new string[] { "custom_weaponrack",            "WeaponRack",         "Weapon Rack"          }, typeof( WeaponRackScript ) ) },
+        { ObjectType.ZipLine,            new ObjectTypeData( new string[] { "custom_zipline",               "ZipLine",            "ZipLine"              }, typeof( DrawZipline ) ) }
+    };
+
     public static Dictionary<string, string> ObjectToTag = ObjectToTagDictionaryInit();
 
     // Gen Settings
@@ -344,76 +367,49 @@ public class Helper
 
     public static string GetObjRefWithEnum( ObjectType objectType )
     {
-        return GetEnumString( objectType, StringType.ObjectRef );
+        return Internal_GetStringByEnum( objectType, StringType.ObjectRef );
     }
 
     public static string GetObjTagNameWithEnum( ObjectType objectType )
     {
-        return GetEnumString( objectType, StringType.TagName );
+        return Internal_GetStringByEnum( objectType, StringType.TagName );
     }
 
     public static string GetObjNameWithEnum( ObjectType objectType )
     {
-        return GetEnumString( objectType, StringType.Name );
+        return Internal_GetStringByEnum( objectType, StringType.Name );
     }
 
-    public static string GetEnumString( ObjectType objectType, StringType stringType )
+    private static string Internal_GetStringByEnum( ObjectType objectType, StringType stringType )
     {
-        int i = (int)stringType;
-
-        switch ( objectType )
+        if ( _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && objectTypeData != null )
         {
-            // Alphabetical order
-            case ObjectType.BubbleShield:       return new string[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"        }[i];
-            case ObjectType.Button:             return new string[] { "custom_button",                "Button",             "Button"               }[i];
-            case ObjectType.DoubleDoor:         return new string[] { "custom_double_door",           "DoubleDoor",         "Double Door"          }[i];
-            case ObjectType.FuncWindowHint:     return new string[] { "custom_window_hint",           "FuncWindowHint",     "Window Hint"          }[i];
-            case ObjectType.HorzDoor:           return new string[] { "custom_sliding_door",          "HorzDoor",           "Horizontal Door"      }[i];
-            case ObjectType.Jumppad:            return new string[] { "custom_jumppad",               "Jumppad",            "Jump Pad"             }[i];
-            case ObjectType.LinkedZipline:      return new string[] { "custom_linked_zipline",        "LinkedZipline",      "Linked Zipline"       }[i];
-            case ObjectType.LootBin:            return new string[] { "custom_lootbin",               "LootBin",            "Loot Bin"             }[i];
-            case ObjectType.NonVerticalZipLine: return new string[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine" }[i];
-            case ObjectType.Prop:               return new string[] { "mdl",                          "Prop",               "Prop"                 }[i];
-            case ObjectType.SingleDoor:         return new string[] { "custom_single_door",           "SingleDoor",         "Single Door"          }[i];
-            case ObjectType.Sound:              return new string[] { "custom_sound",                 "Sound",              "Sound"                }[i];
-            case ObjectType.SpawnPoint:         return new string[] { "custom_info_spawnpoint_human", "SpawnPoint",         "Spawn Point"          }[i];
-            case ObjectType.TextInfoPanel:      return new string[] { "custom_text_info_panel",       "TextInfoPanel",      "Text Info Panel"      }[i];
-            case ObjectType.Trigger:            return new string[] { "trigger_cylinder",             "Trigger",            "Trigger"              }[i];
-            case ObjectType.VerticalDoor:       return new string[] { "custom_vertical_door",         "VerticalDoor",       "Vertical Door"        }[i];
-            case ObjectType.VerticalZipLine:    return new string[] { "_vertical_zipline",            "VerticalZipLine",    "Vertical ZipLine"     }[i];
-            case ObjectType.WeaponRack:         return new string[] { "custom_weaponrack",            "WeaponRack",         "Weapon Rack"          }[i];
-            case ObjectType.ZipLine:            return new string[] { "custom_zipline",               "ZipLine",            "ZipLine"              }[i];
- 
-            default: throw new ArgumentOutOfRangeException( nameof( objectType ), objectType, "This ObjectType don't exist." );
+            return objectTypeData.StringData[ ( int ) stringType ];
         }
+
+        throw new ArgumentOutOfRangeException( nameof( objectType ), objectType, "This ObjectType does not exist." );
     }
 
     public static Component GetComponentByEnum( GameObject obj, ObjectType objectType )
     {
-        switch ( objectType )
+        if ( _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && objectTypeData != null )
         {
-            case ObjectType.BubbleShield:       return obj.GetComponent< BubbleScript >();
-            case ObjectType.Button:             return obj.GetComponent< ButtonScripting >();
-            case ObjectType.DoubleDoor:         return obj.GetComponent< DoorScript >();
-            case ObjectType.FuncWindowHint:     return obj.GetComponent< WindowHintScript >();
-            case ObjectType.HorzDoor:           return obj.GetComponent< HorzDoorScript >();
-            case ObjectType.Jumppad:            return obj.GetComponent< PropScript >();
-            case ObjectType.LinkedZipline:      return obj.GetComponent< LinkedZiplineScript >();
-            case ObjectType.LootBin:            return obj.GetComponent< LootBinScript >();
-            case ObjectType.NonVerticalZipLine: return obj.GetComponent< DrawNonVerticalZipline >();
-            case ObjectType.Prop:               return obj.GetComponent< PropScript >();
-            case ObjectType.SingleDoor:         return obj.GetComponent< DoorScript >();
-            case ObjectType.Sound:              return obj.GetComponent< SoundScript >();
-            case ObjectType.SpawnPoint:         return obj.GetComponent< SpawnPointScript >();
-            case ObjectType.TextInfoPanel:      return obj.GetComponent< TextInfoPanelScript >();
-            case ObjectType.Trigger:            return obj.GetComponent< TriggerScripting >();
-            case ObjectType.VerticalDoor:       return obj.GetComponent< VerticalDoorScript >();
-            case ObjectType.VerticalZipLine:    return obj.GetComponent< DrawVerticalZipline >();
-            case ObjectType.WeaponRack:         return obj.GetComponent< WeaponRackScript >();
-            case ObjectType.ZipLine:            return obj.GetComponent< DrawZipline >();
+            return obj.GetComponent( objectTypeData.ComponentType );
         }
 
         return null;
+    }
+
+    private class ObjectTypeData
+    {
+        public string[] StringData { get; }
+        public System.Type ComponentType { get; }
+
+        public ObjectTypeData( string[] stringData, System.Type componentType )
+        {
+            StringData = stringData;
+            ComponentType = componentType;
+        }
     }
 
     private static Dictionary< string, string > ObjectToTagDictionaryInit()

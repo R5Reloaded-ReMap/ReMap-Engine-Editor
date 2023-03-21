@@ -71,7 +71,7 @@ public class VerticalZipLineClassData : GlobalClassData
     public float ShowZiplineDistance;
     public bool ShowAutoDetachDistance;
     public bool EnableAutoOffsetDistance;
-    public string ZiplineType;
+    public string Name;
     public float ArmOffset;
     public float HeightOffset;
     public float AnglesOffset;
@@ -96,7 +96,97 @@ public class VerticalZipLineClassData : GlobalClassData
 }
 
 [Serializable]
+public class NonVerticalZipLineClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
 public class VCPanelsClassData : GlobalClassData
 {
     public string Model;
+}
+
+[Serializable]
+public class SingleDoorClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class DoubleDoorClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class HorzDoorClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class VerticalDoorClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class ButtonClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class JumppadClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class LootBinClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class WeaponRackClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class TriggerClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class BubbleShieldClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class SpawnPointClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class TextInfoPanelClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class FuncWindowHintClassData : GlobalClassData
+{
+    
+}
+
+[Serializable]
+public class SoundClassData : GlobalClassData
+{
+    
 }

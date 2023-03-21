@@ -13,12 +13,11 @@ public class SoundScript : MonoBehaviour
     [ConditionalHide("ShowPolylineSegments", true)] public float ShowPolylineSegmentsDistance = 8000;
 
     [Header("Sound Parameters:")]
-    public float radius = 0;
-    public bool isWaveAmbient = false;
-    public bool enable = true;
-    public string soundName = "";
-    public Vector3[] polylineSegment;
-    [HideInInspector] public Vector3[] polylineSegmentTransformed;
+    public float Radius = 0;
+    public bool IsWaveAmbient = false;
+    public bool Enable = true;
+    public string SoundName = "";
+    public Vector3[] PolylineSegment;
 
 
     void OnDrawGizmos()
@@ -37,11 +36,11 @@ public class SoundScript : MonoBehaviour
         if (go.name.Contains("mdl#")) go.name = go.name.Split(char.Parse(" "))[0].Replace("mdl#", "");
 
         // Transforms the vectors to follow the entity
-        polylineSegmentTransformed = new Vector3[polylineSegment.Length];
+        Vector3[] polylineSegmentTransformed = new Vector3[PolylineSegment.Length];
 
-        for (int i = 0; i < polylineSegment.Length; i++)
+        for (int i = 0; i < PolylineSegment.Length; i++)
         {
-            polylineSegmentTransformed[i] = transform.TransformPoint(polylineSegment[i]);
+            polylineSegmentTransformed[i] = transform.TransformPoint(PolylineSegment[i]);
         }
 
         if (!ShowPolylineSegments)
@@ -52,7 +51,7 @@ public class SoundScript : MonoBehaviour
         if(dist < ShowPolylineSegmentsDistance || dist2 < ShowPolylineSegmentsDistance)
         {
             // Draw all polyline segments
-            for ( int i = 0 ; i < polylineSegment.Length ; i++ )
+            for ( int i = 0 ; i < PolylineSegment.Length ; i++ )
             {
                 if ( i == 0 )
                 {

@@ -58,9 +58,9 @@ public class ZipLineClassData : GlobalClassData
 [Serializable]
 public class LinkedZipLinesClassData : GlobalClassData
 {
-    public bool enableSmoothing;
-    public int smoothAmount;
-    public bool smoothType;
+    public bool EnableSmoothing;
+    public int SmoothAmount;
+    public bool SmoothType;
     public List<Vector3> nodes;
 }
 

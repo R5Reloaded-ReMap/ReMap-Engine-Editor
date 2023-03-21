@@ -253,10 +253,10 @@ public class ImportExportJsonTest
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) scriptData;
                     DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( drawVerticalZipline, data, new List< string > { "panels" } );
+                    TransferDataToClass( drawVerticalZipline, data, new List< string > { "Panels" } );
                     data.ZiplineType = GetObjName( obj );
                     data.Panels = new List< VCPanelsClassData >( );
-                    foreach ( GameObject panel in drawVerticalZipline.panels )
+                    foreach ( GameObject panel in drawVerticalZipline.Panels )
                     {
                         VCPanelsClassData panelClass = new VCPanelsClassData( );
                         panelClass.Model = panel.name;
@@ -305,7 +305,7 @@ public class ImportExportJsonTest
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) scriptData;
                     DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( data, drawVerticalZipline, new List< string > { "Panels" } );
+                    TransferDataToClass( data, drawVerticalZipline, new List< string > { "Panels", "zipline", "fence_post", "arm", "rope_start", "rope_end", "helperPlacement" } );
 
                     foreach ( VCPanelsClassData panelData in data.Panels )
                     {
@@ -320,8 +320,8 @@ public class ImportExportJsonTest
                         GetSetTransformData( panel, panelData.TransformData );
                         CreatePath( panelData.Path, panelData.PathString, panel );
 
-                        Array.Resize( ref drawVerticalZipline.panels, drawVerticalZipline.panels.Length + 1 );
-                        drawVerticalZipline.panels[ drawVerticalZipline.panels.Length - 1 ] = panel;
+                        Array.Resize( ref drawVerticalZipline.Panels, drawVerticalZipline.Panels.Length + 1 );
+                        drawVerticalZipline.Panels[ drawVerticalZipline.Panels.Length - 1 ] = panel;
                     }
                     break;
 

@@ -9,13 +9,13 @@ public class TextInfoPanelScript : MonoBehaviour
     [SerializeField] public string title;
     [SerializeField] public string description;
     public bool showPIN = false;
-    public float scale = 1;
+    public float Scale = 1;
 
     void OnDrawGizmos()
     {
         textMeshTitle.text = title;
         textMeshDescription.text = description;
 
-        this.transform.localScale = new Vector3( scale, scale, scale );
+        this.transform.localScale = new Vector3( Scale, Scale, Scale );
     }
 }

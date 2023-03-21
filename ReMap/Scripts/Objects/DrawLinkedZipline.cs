@@ -47,15 +47,15 @@ public class DrawLinkedZipline : MonoBehaviour
             i++;
         }
 
-        if(!script.enableSmoothing)
+        if(!script.EnableSmoothing)
             return;
 
         Vector3[] drawpoints;
 
-        if(script.smoothType)
-            drawpoints = GetAllPointsOnBezier(points.ToArray(), script.smoothAmount);
+        if(script.SmoothType)
+            drawpoints = GetAllPointsOnBezier(points.ToArray(), script.SmoothAmount);
         else
-            GetBezierOfPath(points.ToArray(), script.smoothAmount);
+            GetBezierOfPath(points.ToArray(), script.SmoothAmount);
     }
 
     Vector3[] GetAllPointsOnBezier( Vector3[] points, int numSegments, bool draw = true )

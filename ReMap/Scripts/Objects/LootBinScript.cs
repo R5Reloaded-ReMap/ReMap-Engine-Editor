@@ -7,5 +7,5 @@ public class LootBinScript : MonoBehaviour
     [Header("1 - blue")]
     [Header("2 - gold")]
     [Header("3 - yellow")]
-    public int lootbinSkin = 0;
+    public int LootbinSkin = 0;
 }

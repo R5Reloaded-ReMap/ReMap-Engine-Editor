@@ -310,7 +310,7 @@ public class ImportExportJson
             obj.name = Model;
 
             LootBinScript script = obj.GetComponent<LootBinScript>();
-            script.lootbinSkin = lootbin.Skin;
+            script.LootbinSkin = lootbin.Skin;
 
             if ( lootbin.Path.Count != 0 )
             obj.gameObject.transform.parent = CreatePath( lootbin.Path );
@@ -392,9 +392,9 @@ public class ImportExportJson
             }
 
             LinkedZiplineScript script = obj.GetComponent<LinkedZiplineScript>();
-            script.enableSmoothing = zipline.IsSmoothed;
-            script.smoothType = zipline.SmoothType;
-            script.smoothAmount = zipline.SmoothAmount;
+            script.EnableSmoothing = zipline.IsSmoothed;
+            script.SmoothType = zipline.SmoothType;
+            script.SmoothAmount = zipline.SmoothAmount;
 
             if ( zipline.Path.Count != 0 )
             obj.gameObject.transform.parent = CreatePath( zipline.Path );
@@ -435,19 +435,19 @@ public class ImportExportJson
             script.heightOffset = zipline.HeightOffset;
             script.anglesOffset = zipline.AnglesOffset;
             script.FadeDistance = zipline.FadeDistance;
-            script.scale = zipline.Scale;
-            script.width = zipline.Width;
-            script.speedScale = zipline.SpeedScale;
-            script.lengthScale = zipline.LengthScale;
-            script.preserveVelocity = zipline.PreserveVelocity;
-            script.dropToBottom = zipline.DropToBottom;
-            script.autoDetachStart = zipline.AutoDetachStart;
-            script.autoDetachEnd = zipline.AutoDetachEnd;
-            script.restPoint = zipline.RestPoint;
-            script.pushOffInDirectionX = zipline.PushOffInDirectionX;
-            script.isMoving = zipline.IsMoving;
-            script.detachEndOnSpawn = zipline.DetachEndOnSpawn;
-            script.detachEndOnUse = zipline.DetachEndOnUse;
+            script.Scale = zipline.Scale;
+            script.Width = zipline.Width;
+            script.SpeedScale = zipline.SpeedScale;
+            script.LengthScale = zipline.LengthScale;
+            script.PreserveVelocity  = zipline.PreserveVelocity;
+            script.DropToBottom = zipline.DropToBottom;
+            script.AutoDetachStart = zipline.AutoDetachStart;
+            script.AutoDetachEnd = zipline.AutoDetachEnd;
+            script.RestPoint = zipline.RestPoint;
+            script.PushOffInDirectionX = zipline.PushOffInDirectionX;
+            script.IsMoving = zipline.IsMoving;
+            script.DetachEndOnSpawn = zipline.DetachEndOnSpawn;
+            script.DetachEndOnUse = zipline.DetachEndOnUse;
 
             foreach( VCPanelsClass panelInfo in zipline.Panels )
             {
@@ -462,13 +462,13 @@ public class ImportExportJson
                 panel.transform.position = panelInfo.Position;
                 panel.transform.eulerAngles = panelInfo.Angles;
                 panel.transform.parent = CreatePath( panelInfo.Path );
-                Array.Resize( ref script.panels, script.panels.Length + 1 );
-                script.panels[script.panels.Length - 1] = panel;
+                Array.Resize( ref script.Panels, script.Panels.Length + 1 );
+                script.Panels[script.Panels.Length - 1] = panel;
             }
 
-            script.panelTimerMin = zipline.PanelTimerMin;
-            script.panelTimerMax = zipline.PanelTimerMax;
-            script.panelMaxUse = zipline.PanelMaxUse;
+            script.PanelTimerMin = zipline.PanelTimerMin;
+            script.PanelTimerMax = zipline.PanelTimerMax;
+            script.PanelMaxUse = zipline.PanelMaxUse;
 
             if ( zipline.Path.Count != 0 )
             obj.gameObject.transform.parent = CreatePath( zipline.Path );
@@ -509,19 +509,19 @@ public class ImportExportJson
             script.ArmOffsetStart = zipline.ArmStartOffset;
             script.ArmOffsetEnd = zipline.ArmEndOffset;
             script.FadeDistance = zipline.FadeDistance;
-            script.scale = zipline.Scale;
-            script.width = zipline.Width;
-            script.speedScale = zipline.SpeedScale;
-            script.lengthScale = zipline.LengthScale;
-            script.preserveVelocity = zipline.PreserveVelocity;
-            script.dropToBottom = zipline.DropToBottom;
-            script.autoDetachStart = zipline.AutoDetachStart;
-            script.autoDetachEnd = zipline.AutoDetachEnd;
-            script.restPoint = zipline.RestPoint;
-            script.pushOffInDirectionX = zipline.PushOffInDirectionX;
-            script.isMoving = zipline.IsMoving;
-            script.detachEndOnSpawn = zipline.DetachEndOnSpawn;
-            script.detachEndOnUse = zipline.DetachEndOnUse;
+            script.Scale = zipline.Scale;
+            script.Width = zipline.Width;
+            script.SpeedScale = zipline.SpeedScale;
+            script.LengthScale = zipline.LengthScale;
+            script.PreserveVelocity  = zipline.PreserveVelocity;
+            script.DropToBottom = zipline.DropToBottom;
+            script.AutoDetachStart = zipline.AutoDetachStart;
+            script.AutoDetachEnd = zipline.AutoDetachEnd;
+            script.RestPoint = zipline.RestPoint;
+            script.PushOffInDirectionX = zipline.PushOffInDirectionX;
+            script.IsMoving = zipline.IsMoving;
+            script.DetachEndOnSpawn = zipline.DetachEndOnSpawn;
+            script.DetachEndOnUse = zipline.DetachEndOnUse;
 
             foreach( VCPanelsClass panelInfo in zipline.Panels )
             {
@@ -536,13 +536,13 @@ public class ImportExportJson
                 panel.transform.position = panelInfo.Position;
                 panel.transform.eulerAngles = panelInfo.Angles;
                 panel.transform.parent = CreatePath( panelInfo.Path );
-                Array.Resize( ref script.panels, script.panels.Length + 1 );
-                script.panels[script.panels.Length - 1] = panel;
+                Array.Resize( ref script.Panels, script.Panels.Length + 1 );
+                script.Panels[script.Panels.Length - 1] = panel;
             }
 
-            script.panelTimerMin = zipline.PanelTimerMin;
-            script.panelTimerMax = zipline.PanelTimerMax;
-            script.panelMaxUse = zipline.PanelMaxUse;
+            script.PanelTimerMin = zipline.PanelTimerMin;
+            script.PanelTimerMax = zipline.PanelTimerMax;
+            script.PanelMaxUse = zipline.PanelMaxUse;
 
             if ( zipline.Path.Count != 0 )
             obj.gameObject.transform.parent = CreatePath( zipline.Path );
@@ -689,16 +689,16 @@ public class ImportExportJson
             obj.transform.position = sound.Position;
 
             SoundScript script = obj.GetComponent<SoundScript>();
-            script.radius = sound.Radius;
-            script.isWaveAmbient = sound.IsWaveAmbient;
-            script.enable = sound.Enable;
-            script.soundName = sound.SoundName;
+            script.Radius = sound.Radius;
+            script.IsWaveAmbient = sound.IsWaveAmbient;
+            script.Enable = sound.Enable;
+            script.SoundName = sound.SoundName;
 
             int k = 0;
             foreach ( Vector3 polylineSegments in sound.PolylineSegments )
             {
-                Array.Resize( ref script.polylineSegment, script.polylineSegment.Length + 1 );
-                script.polylineSegment[k++] = polylineSegments;
+                Array.Resize( ref script.PolylineSegment, script.PolylineSegment.Length + 1 );
+                script.PolylineSegment[k++] = polylineSegments;
             }
 
             if ( sound.Path.Count != 0 )
@@ -743,7 +743,7 @@ public class ImportExportJson
             script.title = textInfoPanel.Title;
             script.description = textInfoPanel.Description;
             script.showPIN = textInfoPanel.ShowPIN;
-            script.scale = textInfoPanel.Scale;
+            script.Scale = textInfoPanel.Scale;
 
             if ( textInfoPanel.Path.Count != 0 )
             obj.gameObject.transform.parent = CreatePath( textInfoPanel.Path );
@@ -1033,7 +1033,7 @@ public class ImportExportJson
             LootBinsClass lootBin = new LootBinsClass();
             lootBin.Position = obj.transform.position;
             lootBin.Rotation = obj.transform.rotation.eulerAngles;
-            lootBin.Skin = script.lootbinSkin;
+            lootBin.Skin = script.LootbinSkin;
 
             lootBin.Path = FindPath( obj );
             lootBin.PathString = path;
@@ -1113,9 +1113,9 @@ public class ImportExportJson
                 nodes.Add(child.gameObject.transform.position);
 
             linkedZipLine.Nodes = nodes;
-            linkedZipLine.IsSmoothed = script.enableSmoothing;
-            linkedZipLine.SmoothType = script.smoothType;
-            linkedZipLine.SmoothAmount = script.smoothAmount;
+            linkedZipLine.IsSmoothed = script.EnableSmoothing;
+            linkedZipLine.SmoothType = script.SmoothType;
+            linkedZipLine.SmoothAmount = script.SmoothAmount;
 
             linkedZipLine.Path = FindPath( obj );
             linkedZipLine.PathString = path;
@@ -1157,22 +1157,22 @@ public class ImportExportJson
             verticalZipLine.HeightOffset = script.heightOffset;
             verticalZipLine.AnglesOffset = script.anglesOffset;
             verticalZipLine.FadeDistance = script.FadeDistance;
-            verticalZipLine.Scale = script.scale;
-            verticalZipLine.Width = script.width;
-            verticalZipLine.SpeedScale = script.speedScale;
-            verticalZipLine.LengthScale = script.lengthScale;
-            verticalZipLine.PreserveVelocity = script.preserveVelocity;
-            verticalZipLine.DropToBottom = script.dropToBottom;
-            verticalZipLine.AutoDetachStart = script.autoDetachStart;
-            verticalZipLine.AutoDetachEnd = script.autoDetachEnd;
-            verticalZipLine.RestPoint = script.restPoint;
-            verticalZipLine.PushOffInDirectionX = script.pushOffInDirectionX;
-            verticalZipLine.IsMoving = script.isMoving;
-            verticalZipLine.DetachEndOnSpawn = script.detachEndOnSpawn;
-            verticalZipLine.DetachEndOnUse = script.detachEndOnUse;
+            verticalZipLine.Scale = script.Scale;
+            verticalZipLine.Width = script.Width;
+            verticalZipLine.SpeedScale = script.SpeedScale;
+            verticalZipLine.LengthScale = script.LengthScale;
+            verticalZipLine.PreserveVelocity = script.PreserveVelocity ;
+            verticalZipLine.DropToBottom = script.DropToBottom;
+            verticalZipLine.AutoDetachStart = script.AutoDetachStart;
+            verticalZipLine.AutoDetachEnd = script.AutoDetachEnd;
+            verticalZipLine.RestPoint = script.RestPoint;
+            verticalZipLine.PushOffInDirectionX = script.PushOffInDirectionX;
+            verticalZipLine.IsMoving = script.IsMoving;
+            verticalZipLine.DetachEndOnSpawn = script.DetachEndOnSpawn;
+            verticalZipLine.DetachEndOnUse = script.DetachEndOnUse;
 
             List<VCPanelsClass> panels = new List<VCPanelsClass>();
-            foreach (GameObject panel in script.panels)
+            foreach (GameObject panel in script.Panels)
             {
                 VCPanelsClass panelClass = new VCPanelsClass();
                 panelClass.Model = panel.name;
@@ -1185,9 +1185,9 @@ public class ImportExportJson
 
             verticalZipLine.Panels = panels.ToArray();
 
-            verticalZipLine.PanelTimerMin = script.panelTimerMin;
-            verticalZipLine.PanelTimerMax = script.panelTimerMax;
-            verticalZipLine.PanelMaxUse = script.panelMaxUse;
+            verticalZipLine.PanelTimerMin = script.PanelTimerMin;
+            verticalZipLine.PanelTimerMax = script.PanelTimerMax;
+            verticalZipLine.PanelMaxUse = script.PanelMaxUse;
 
             verticalZipLine.Path = FindPath( obj );
             verticalZipLine.PathString = path;
@@ -1230,22 +1230,22 @@ public class ImportExportJson
             nonVerticalZipLine.ArmStartOffset = script.ArmOffsetStart;
             nonVerticalZipLine.ArmEndOffset = script.ArmOffsetEnd;
             nonVerticalZipLine.FadeDistance = script.FadeDistance;
-            nonVerticalZipLine.Scale = script.scale;
-            nonVerticalZipLine.Width = script.width;
-            nonVerticalZipLine.SpeedScale = script.speedScale;
-            nonVerticalZipLine.LengthScale = script.lengthScale;
-            nonVerticalZipLine.PreserveVelocity = script.preserveVelocity;
-            nonVerticalZipLine.DropToBottom = script.dropToBottom;
-            nonVerticalZipLine.AutoDetachStart = script.autoDetachStart;
-            nonVerticalZipLine.AutoDetachEnd = script.autoDetachEnd;
-            nonVerticalZipLine.RestPoint = script.restPoint;
-            nonVerticalZipLine.PushOffInDirectionX = script.pushOffInDirectionX;
-            nonVerticalZipLine.IsMoving = script.isMoving;
-            nonVerticalZipLine.DetachEndOnSpawn = script.detachEndOnSpawn;
-            nonVerticalZipLine.DetachEndOnUse = script.detachEndOnUse;
+            nonVerticalZipLine.Scale = script.Scale;
+            nonVerticalZipLine.Width = script.Width;
+            nonVerticalZipLine.SpeedScale = script.SpeedScale;
+            nonVerticalZipLine.LengthScale = script.LengthScale;
+            nonVerticalZipLine.PreserveVelocity = script.PreserveVelocity ;
+            nonVerticalZipLine.DropToBottom = script.DropToBottom;
+            nonVerticalZipLine.AutoDetachStart = script.AutoDetachStart;
+            nonVerticalZipLine.AutoDetachEnd = script.AutoDetachEnd;
+            nonVerticalZipLine.RestPoint = script.RestPoint;
+            nonVerticalZipLine.PushOffInDirectionX = script.PushOffInDirectionX;
+            nonVerticalZipLine.IsMoving = script.IsMoving;
+            nonVerticalZipLine.DetachEndOnSpawn = script.DetachEndOnSpawn;
+            nonVerticalZipLine.DetachEndOnUse = script.DetachEndOnUse;
 
             List<VCPanelsClass> panels = new List<VCPanelsClass>();
-            foreach (GameObject panel in script.panels)
+            foreach (GameObject panel in script.Panels)
             {
                 VCPanelsClass panelClass = new VCPanelsClass();
                 panelClass.Model = panel.name;
@@ -1258,9 +1258,9 @@ public class ImportExportJson
 
             nonVerticalZipLine.Panels = panels.ToArray();
 
-            nonVerticalZipLine.PanelTimerMin = script.panelTimerMin;
-            nonVerticalZipLine.PanelTimerMax = script.panelTimerMax;
-            nonVerticalZipLine.PanelMaxUse = script.panelMaxUse;
+            nonVerticalZipLine.PanelTimerMin = script.PanelTimerMin;
+            nonVerticalZipLine.PanelTimerMax = script.PanelTimerMax;
+            nonVerticalZipLine.PanelMaxUse = script.PanelMaxUse;
 
             nonVerticalZipLine.Path = FindPath( obj );
             nonVerticalZipLine.PathString = path;
@@ -1483,17 +1483,17 @@ public class ImportExportJson
 
             SoundClass sound = new SoundClass();
             sound.Position = script.soundModel.transform.position;
-            sound.Radius = script.radius;
-            sound.IsWaveAmbient = script.isWaveAmbient;
-            sound.Enable = script.enable;
-            sound.SoundName = script.soundName;
+            sound.Radius = script.Radius;
+            sound.IsWaveAmbient = script.IsWaveAmbient;
+            sound.Enable = script.Enable;
+            sound.SoundName = script.SoundName;
 
-            List<Vector3> polylineSegment = new List<Vector3>();
-            foreach ( Vector3 polylineSegments in script.polylineSegment )
+            List<Vector3> PolylineSegment = new List<Vector3>();
+            foreach ( Vector3 polylineSegments in script.PolylineSegment )
             {
-                polylineSegment.Add( polylineSegments );
+                PolylineSegment.Add( polylineSegments );
             }
-            sound.PolylineSegments = polylineSegment;
+            sound.PolylineSegments = PolylineSegment;
 
             sound.Path = FindPath( obj );
             sound.PathString = path;
@@ -1536,7 +1536,7 @@ public class ImportExportJson
             textInfoPanel.Title = script.title;
             textInfoPanel.Description = script.description;
             textInfoPanel.ShowPIN = script.showPIN;
-            textInfoPanel.Scale = script.scale;
+            textInfoPanel.Scale = script.Scale;
 
             textInfoPanel.Path = FindPath( obj );
             textInfoPanel.PathString = path;

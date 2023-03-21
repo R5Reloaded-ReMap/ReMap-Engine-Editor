@@ -364,7 +364,7 @@ public class CodeImport : EditorWindow
             obj.name = Model;
 
             LootBinScript script = obj.GetComponent<LootBinScript>();
-            script.lootbinSkin = int.Parse(split[6]);
+            script.LootbinSkin = int.Parse(split[6]);
 
             GameObject parent = GameObject.Find("LootBins");
             if (parent != null)
@@ -489,7 +489,7 @@ public class CodeImport : EditorWindow
             {
                 bool isSmoothed = false;
                 bool smoothingType = false;
-                int smoothAmount = 0;
+                int SmoothAmount = 0;
 
                 if(zip.Contains("GetAllPointsOnBezier"))
                 {
@@ -519,7 +519,7 @@ public class CodeImport : EditorWindow
                     string[] split2 = s.Split(char.Parse(","));
 
                     if (i == split.Length - 1 && isSmoothed)
-                        smoothAmount = int.Parse(split2[3]);
+                        SmoothAmount = int.Parse(split2[3]);
 
                     GameObject child = new GameObject("zipline_node");
                     child.transform.position = new Vector3(float.Parse(split2[1]), float.Parse(split2[2].Replace(">", "")), -(float.Parse(split2[0].Replace("<", ""))));
@@ -529,9 +529,9 @@ public class CodeImport : EditorWindow
                 }
 
                 LinkedZiplineScript script = obj.GetComponent<LinkedZiplineScript>();
-                script.enableSmoothing = isSmoothed;
-                script.smoothType = smoothingType;
-                script.smoothAmount = smoothAmount;
+                script.EnableSmoothing = isSmoothed;
+                script.SmoothType = smoothingType;
+                script.SmoothAmount = SmoothAmount;
 
                 GameObject parent = GameObject.Find("Ziplines");
                 if (parent != null)

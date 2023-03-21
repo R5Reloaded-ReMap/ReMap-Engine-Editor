@@ -25,25 +25,25 @@ public class DrawNonVerticalZipline : MonoBehaviour
     [ConditionalHide("ShowArmOffsetStart", true)] public float ArmOffsetStart = 160;
     [ConditionalHide("ShowArmOffsetEnd", true)] public float ArmOffsetEnd = 160;
     public float FadeDistance = -1;
-    public float scale = 1;
-    public float width = 2;
-    public float speedScale = 1;
-    public float lengthScale = 1;
-    public bool preserveVelocity = false;
-    public bool dropToBottom = false;
-    public float autoDetachStart = 150;
-    public float autoDetachEnd = 150;
-    public bool restPoint = false;
-    public bool pushOffInDirectionX = false;
-    public bool isMoving = false;
-    public bool detachEndOnSpawn = false;
-    public bool detachEndOnUse = false;
+    public float Scale = 1;
+    public float Width = 2;
+    public float SpeedScale = 1;
+    public float LengthScale = 1;
+    public bool PreserveVelocity  = false;
+    public bool DropToBottom = false;
+    public float AutoDetachStart = 150;
+    public float AutoDetachEnd = 150;
+    public bool RestPoint = false;
+    public bool PushOffInDirectionX = false;
+    public bool IsMoving = false;
+    public bool DetachEndOnSpawn = false;
+    public bool DetachEndOnUse = false;
 
     [Header("Panels:")]
-    public GameObject[] panels;
-    public float panelTimerMin = 32;
-    public float panelTimerMax = 60;
-    public int panelMaxUse = 0;
+    public GameObject[] Panels;
+    public float PanelTimerMin = 32;
+    public float PanelTimerMax = 60;
+    public int PanelMaxUse = 0;
 
     // If true show the param
     [HideInInspector] public bool ShowArmOffsetStart = false;
@@ -129,7 +129,7 @@ public class DrawNonVerticalZipline : MonoBehaviour
             ArmOffsetEnd = 0;
         }
 
-        foreach (GameObject go in panels)
+        foreach (GameObject go in Panels)
         {
             if ( go == null ) continue;
 
@@ -149,7 +149,7 @@ public class DrawNonVerticalZipline : MonoBehaviour
             var startPos = rope_start.position;
             var endPos = rope_end.position;
             var thickness = 3;
-            float autoDetachLenght = autoDetachStart + autoDetachEnd;
+            float autoDetachLenght = AutoDetachStart + AutoDetachEnd;
 
             if (rope_start != null && rope_end != null && Vector3.Distance(startPos, endPos) > 10)
             {
@@ -162,17 +162,17 @@ public class DrawNonVerticalZipline : MonoBehaviour
                     var startDir = rope_end.position - rope_start.position;
                     var startDistance = startDir.magnitude;
                     var startDirection = startDir / startDistance;
-                    if(autoDetachStart < 0) autoDetachStart = 0;
+                    if(AutoDetachStart < 0) AutoDetachStart = 0;
 
-                    if(autoDetachStart != 0) Handles.DrawBezier(startPos, startPos + startDirection * autoDetachStart, startPos, startPos + startDirection * autoDetachStart, Color.red, null, thickness);
+                    if(AutoDetachStart != 0) Handles.DrawBezier(startPos, startPos + startDirection * AutoDetachStart, startPos, startPos + startDirection * AutoDetachStart, Color.red, null, thickness);
 
                     // Draw End Auto Detach
                     var endDir = rope_start.position - rope_end.position;
                     var endDistance = endDir.magnitude;
                     var endDirection = endDir / endDistance;
-                    if(autoDetachEnd < 0) autoDetachEnd = 0;
+                    if(AutoDetachEnd < 0) AutoDetachEnd = 0;
 
-                    if(autoDetachEnd != 0) Handles.DrawBezier(endPos, endPos + endDirection * autoDetachEnd, endPos, endPos + endDirection * autoDetachEnd, Color.red, null, thickness);
+                    if(AutoDetachEnd != 0) Handles.DrawBezier(endPos, endPos + endDirection * AutoDetachEnd, endPos, endPos + endDirection * AutoDetachEnd, Color.red, null, thickness);
                 }
             }
         }

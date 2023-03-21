@@ -123,7 +123,7 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing LootBinScript on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            code += $"    MapEditor_CreateLootBin( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.lootbinSkin} )" + "\n";
+            code += $"    MapEditor_CreateLootBin( {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.LootbinSkin} )" + "\n";
         }
 
         code += "\n";
@@ -191,16 +191,16 @@ public class Build
                 first = false;
             }
 
-            string smoothType = script.smoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
+            string SmoothType = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
 
             nodes += " ]";
 
             code += @"    MapEditor_CreateLinkedZipline( ";
-            if (script.enableSmoothing) code += $"{smoothType}( ";
+            if (script.EnableSmoothing) code += $"{SmoothType}( ";
             code += nodes;
-            if (script.enableSmoothing) code += $", {script.smoothAmount}";
+            if (script.EnableSmoothing) code += $", {script.SmoothAmount}";
             code += " )";
-            if (script.enableSmoothing) code += " )";
+            if (script.EnableSmoothing) code += " )";
             code += "\n";
         }
 
@@ -226,28 +226,28 @@ public class Build
                 continue;
             }
 
-            int preservevelocity = ziplineScript.preserveVelocity ? 1 : 0;
-            int dropToBottom = ziplineScript.dropToBottom ? 1 : 0;
-            string restpoint = ziplineScript.restPoint.ToString().ToLower();
-            int pushoffindirectionx = ziplineScript.pushOffInDirectionX ? 1 : 0;
-            string ismoving = ziplineScript.isMoving.ToString().ToLower();
-            int detachEndOnSpawn = ziplineScript.detachEndOnSpawn ? 1 : 0;
-            int detachEndOnUse = ziplineScript.detachEndOnUse ? 1 : 0;
-            float panelTimerMin = ziplineScript.panelTimerMin;
-            float panelTimerMax = ziplineScript.panelTimerMax;
-            int panelMaxUse = ziplineScript.panelMaxUse;
+            int preservevelocity = ziplineScript.PreserveVelocity  ? 1 : 0;
+            int DropToBottom = ziplineScript.DropToBottom ? 1 : 0;
+            string restpoint = ziplineScript.RestPoint.ToString().ToLower();
+            int pushoffindirectionx = ziplineScript.PushOffInDirectionX ? 1 : 0;
+            string ismoving = ziplineScript.IsMoving.ToString().ToLower();
+            int DetachEndOnSpawn = ziplineScript.DetachEndOnSpawn ? 1 : 0;
+            int DetachEndOnUse = ziplineScript.DetachEndOnUse ? 1 : 0;
+            float PanelTimerMin = ziplineScript.PanelTimerMin;
+            float PanelTimerMax = ziplineScript.PanelTimerMax;
+            int PanelMaxUse = ziplineScript.PanelMaxUse;
 
             string panelOrigin = "[";
             string panelAngles = "[";
             string panelModel = "[";
 
-            for(int i = 0; i < ziplineScript.panels.Length; i++ )
+            for(int i = 0; i < ziplineScript.Panels.Length; i++ )
             {
-                panelOrigin += " " + Helper.BuildOrigin(ziplineScript.panels[i]) + Helper.ShouldAddStartingOrg();
-                panelAngles += " " + Helper.BuildAngles(ziplineScript.panels[i]);
-                panelModel += " $\"mdl/" + ziplineScript.panels[i].name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl\"";
+                panelOrigin += " " + Helper.BuildOrigin(ziplineScript.Panels[i]) + Helper.ShouldAddStartingOrg();
+                panelAngles += " " + Helper.BuildAngles(ziplineScript.Panels[i]);
+                panelModel += " $\"mdl/" + ziplineScript.Panels[i].name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl\"";
 
-                if (i != ziplineScript.panels.Length - 1)
+                if (i != ziplineScript.Panels.Length - 1)
                 {
                     panelOrigin += ",";
                     panelAngles += ",";
@@ -259,7 +259,7 @@ public class Build
             panelAngles += " ]";
             panelModel += " ]";
 
-            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.FadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {panelTimerMin}, {panelTimerMax}, {panelMaxUse} )" + "\n";
+            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, true, {ziplineScript.FadeDistance.ToString().Replace(",", ".")}, {ziplineScript.Scale.ToString().Replace(",", ".")}, {ziplineScript.Width.ToString().Replace(",", ".")}, {ziplineScript.SpeedScale.ToString().Replace(",", ".")}, {ziplineScript.LengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {DropToBottom}, {ziplineScript.AutoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.AutoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {DetachEndOnSpawn}, {DetachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )" + "\n";
         }
 
         code += "\n";
@@ -284,28 +284,28 @@ public class Build
                 continue;
             }
 
-            int preservevelocity = ziplineScript.preserveVelocity ? 1 : 0;
-            int dropToBottom = ziplineScript.dropToBottom ? 1 : 0;
-            string restpoint = ziplineScript.restPoint.ToString().ToLower();
-            int pushoffindirectionx = ziplineScript.pushOffInDirectionX ? 1 : 0;
-            string ismoving = ziplineScript.isMoving.ToString().ToLower();
-            int detachEndOnSpawn = ziplineScript.detachEndOnSpawn ? 1 : 0;
-            int detachEndOnUse = ziplineScript.detachEndOnUse ? 1 : 0;
-            float panelTimerMin = ziplineScript.panelTimerMin;
-            float panelTimerMax = ziplineScript.panelTimerMax;
-            int panelMaxUse = ziplineScript.panelMaxUse;
+            int preservevelocity = ziplineScript.PreserveVelocity  ? 1 : 0;
+            int DropToBottom = ziplineScript.DropToBottom ? 1 : 0;
+            string restpoint = ziplineScript.RestPoint.ToString().ToLower();
+            int pushoffindirectionx = ziplineScript.PushOffInDirectionX ? 1 : 0;
+            string ismoving = ziplineScript.IsMoving.ToString().ToLower();
+            int DetachEndOnSpawn = ziplineScript.DetachEndOnSpawn ? 1 : 0;
+            int DetachEndOnUse = ziplineScript.DetachEndOnUse ? 1 : 0;
+            float PanelTimerMin = ziplineScript.PanelTimerMin;
+            float PanelTimerMax = ziplineScript.PanelTimerMax;
+            int PanelMaxUse = ziplineScript.PanelMaxUse;
 
             string panelOrigin = "[";
             string panelAngles = "[";
             string panelModel = "[";
 
-            for (int i = 0; i < ziplineScript.panels.Length; i++)
+            for (int i = 0; i < ziplineScript.Panels.Length; i++)
             {
-                panelOrigin += " " + Helper.BuildOrigin(ziplineScript.panels[i]) + Helper.ShouldAddStartingOrg();
-                panelAngles += " " + Helper.BuildAngles(ziplineScript.panels[i]);
-                panelModel += " $\"mdl/" + ziplineScript.panels[i].name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl\"";
+                panelOrigin += " " + Helper.BuildOrigin(ziplineScript.Panels[i]) + Helper.ShouldAddStartingOrg();
+                panelAngles += " " + Helper.BuildAngles(ziplineScript.Panels[i]);
+                panelModel += " $\"mdl/" + ziplineScript.Panels[i].name.Split(char.Parse(" "))[0].Replace("#", "/") + ".rmdl\"";
 
-                if (i != ziplineScript.panels.Length - 1)
+                if (i != ziplineScript.Panels.Length - 1)
                 {
                     panelOrigin += ",";
                     panelAngles += ",";
@@ -317,7 +317,7 @@ public class Build
             panelAngles += " ]";
             panelModel += " ]";
 
-            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, false, {ziplineScript.FadeDistance.ToString().Replace(",", ".")}, {ziplineScript.scale.ToString().Replace(",", ".")}, {ziplineScript.width.ToString().Replace(",", ".")}, {ziplineScript.speedScale.ToString().Replace(",", ".")}, {ziplineScript.lengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {dropToBottom}, {ziplineScript.autoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.autoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {detachEndOnSpawn}, {detachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {panelTimerMin}, {panelTimerMax}, {panelMaxUse} )" + "\n";
+            code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(ziplineScript.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, {Helper.BuildOrigin(ziplineScript.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(ziplineScript.rope_start.gameObject)}, false, {ziplineScript.FadeDistance.ToString().Replace(",", ".")}, {ziplineScript.Scale.ToString().Replace(",", ".")}, {ziplineScript.Width.ToString().Replace(",", ".")}, {ziplineScript.SpeedScale.ToString().Replace(",", ".")}, {ziplineScript.LengthScale.ToString().Replace(",", ".")}, {preservevelocity}, {DropToBottom}, {ziplineScript.AutoDetachStart.ToString().Replace(",", ".")}, {ziplineScript.AutoDetachEnd.ToString().Replace(",", ".")}, {restpoint}, {pushoffindirectionx}, {ismoving}, {DetachEndOnSpawn}, {DetachEndOnUse}, {panelOrigin}, {panelAngles}, {panelModel}, {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )" + "\n";
         }
 
         code += "\n";
@@ -583,7 +583,7 @@ public class Build
                 ReMapConsole.Log("[Map Export] Missing ButtonScripting on: " + go.name, ReMapConsole.LogType.Error);
                 continue;
             }
-            code += $"    MapEditor_CreateTextInfoPanel( \"{script.title}\", \"{script.description}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.showPIN.ToString().ToLower()}, {script.scale})" + "\n";
+            code += $"    MapEditor_CreateTextInfoPanel( \"{script.title}\", \"{script.description}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.showPIN.ToString().ToLower()}, {script.Scale})" + "\n";
         }
 
         code += "\n";
@@ -648,25 +648,25 @@ public class Build
     {
         SoundScript script = go.GetComponent<SoundScript>();
 
-        int isWaveAmbient = script.isWaveAmbient ? 1 : 0;
-        int enable = script.enable ? 1 : 0;
+        int IsWaveAmbient = script.IsWaveAmbient ? 1 : 0;
+        int Enable = script.Enable ? 1 : 0;
         string origin = Helper.BuildOrigin(go, true).Replace(",", "");
 
         if (isexport)
-            ReMapConsole.Log("[Sound.ent Export] Exporting: " + script.soundName, ReMapConsole.LogType.Info);
+            ReMapConsole.Log("[Sound.ent Export] Exporting: " + script.SoundName, ReMapConsole.LogType.Info);
 
         string buildent = "";
 
         buildent += "{\n";
 
         // Polyline segments
-        for ( int i = script.polylineSegment.Length - 1 ; i > -1 ; i-- )
+        for ( int i = script.PolylineSegment.Length - 1 ; i > -1 ; i-- )
         {
-            string polylineSegmentEnd = Helper.BuildOriginVector( script.polylineSegment[i], true ).ToString().Replace(",", "");
+            string polylineSegmentEnd = Helper.BuildOriginVector( script.PolylineSegment[i], true ).ToString().Replace(",", "");
 
             if ( i != 0 )
             {
-                string polylineSegmentStart = Helper.BuildOriginVector( script.polylineSegment[i-1], true ).ToString().Replace(",", "");
+                string polylineSegmentStart = Helper.BuildOriginVector( script.PolylineSegment[i-1], true ).ToString().Replace(",", "");
 
                 buildent += $"\"polyline_segment_{i}\" \"{polylineSegmentStart} {polylineSegmentEnd}\"\n";
             }
@@ -676,12 +676,12 @@ public class Build
             }
         }
 
-        buildent += $"\"radius\" \"{script.radius}\"\n";
+        buildent += $"\"radius\" \"{script.Radius}\"\n";
         buildent += $"\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n"; // don't change this
-        buildent += $"\"isWaveAmbient\" \"{isWaveAmbient}\"\n";
-        buildent += $"\"enabled\" \"{enable}\"\n";
+        buildent += $"\"isWaveAmbient\" \"{IsWaveAmbient}\"\n";
+        buildent += $"\"enabled\" \"{Enable}\"\n";
         buildent += $"\"origin\" \"{origin}\"\n";
-        buildent += $"\"soundName\" \"{script.soundName}\"\n";
+        buildent += $"\"soundName\" \"{script.SoundName}\"\n";
         buildent += $"\"classname\" \"" + "ambient_generic" + "\"\n"; // don't change this
         buildent += "}\n";
         

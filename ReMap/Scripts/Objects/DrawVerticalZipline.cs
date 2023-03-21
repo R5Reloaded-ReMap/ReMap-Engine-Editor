@@ -22,27 +22,27 @@ public class DrawVerticalZipline : MonoBehaviour
     [ConditionalHide("ShowArmOffset", true)] public float armOffset = 180;
     public float heightOffset = 0;
     [ConditionalHide("EnableAutoOffsetDistance", true)] public float GroundOffset = 0;
-    [ConditionalHide("pushOffInDirectionX", true)] public float anglesOffset = 0;
+    [ConditionalHide("PushOffInDirectionX", true)] public float anglesOffset = 0;
     public float FadeDistance = -1;
-    public float scale = 1;
-    public float width = 2;
-    public float speedScale = 1;
-    public float lengthScale = 1;
-    public bool preserveVelocity = false;
-    public bool dropToBottom = true;
-    public float autoDetachStart = 50;
-    public float autoDetachEnd = 25;
-    public bool restPoint = false;
-    public bool pushOffInDirectionX = true;
-    public bool isMoving = false;
-    public bool detachEndOnSpawn = false;
-    public bool detachEndOnUse = false;
+    public float Scale = 1;
+    public float Width = 2;
+    public float SpeedScale = 1;
+    public float LengthScale = 1;
+    public bool PreserveVelocity  = false;
+    public bool DropToBottom = true;
+    public float AutoDetachStart = 50;
+    public float AutoDetachEnd = 25;
+    public bool RestPoint = false;
+    public bool PushOffInDirectionX = true;
+    public bool IsMoving = false;
+    public bool DetachEndOnSpawn = false;
+    public bool DetachEndOnUse = false;
 
     [Header("Panels:")]
-    public GameObject[] panels;
-    public float panelTimerMin = 32;
-    public float panelTimerMax = 60;
-    public int panelMaxUse = 0;
+    public GameObject[] Panels;
+    public float PanelTimerMin = 32;
+    public float PanelTimerMax = 60;
+    public int PanelMaxUse = 0;
 
     // If true show the param
     [HideInInspector] public bool ShowArmOffset = false;
@@ -109,9 +109,9 @@ public class DrawVerticalZipline : MonoBehaviour
         // Show / Hide: Arrow
         GameObject arrow = rope_start.transform.Find("arrow").gameObject;
         arrow.SetActive(true);
-        if(!pushOffInDirectionX) arrow.SetActive(false);
+        if(!PushOffInDirectionX) arrow.SetActive(false);
 
-        foreach ( GameObject go in panels)
+        foreach ( GameObject go in Panels)
         {
             if ( go == null ) continue;
 
@@ -140,7 +140,7 @@ public class DrawVerticalZipline : MonoBehaviour
             var startPos = rope_start.position;
             var endPos = rope_end.position;
             var thickness = 3;
-            float autoDetachLenght = autoDetachStart + autoDetachEnd;
+            float autoDetachLenght = AutoDetachStart + AutoDetachEnd;
 
             if (rope_start != null && rope_end != null && Vector3.Distance(startPos, endPos) > 10)
             {
@@ -153,17 +153,17 @@ public class DrawVerticalZipline : MonoBehaviour
                     var startDir = rope_end.position - rope_start.position;
                     var startDistance = startDir.magnitude;
                     var startDirection = startDir / startDistance;
-                    if(autoDetachStart < 0) autoDetachStart = 0;
+                    if(AutoDetachStart < 0) AutoDetachStart = 0;
 
-                    if(autoDetachStart != 0) Handles.DrawBezier(startPos, startPos + startDirection * autoDetachStart, startPos, startPos + startDirection * autoDetachStart, Color.red, null, thickness);
+                    if(AutoDetachStart != 0) Handles.DrawBezier(startPos, startPos + startDirection * AutoDetachStart, startPos, startPos + startDirection * AutoDetachStart, Color.red, null, thickness);
 
                     // Draw End Auto Detach
                     var endDir = rope_start.position - rope_end.position;
                     var endDistance = endDir.magnitude;
                     var endDirection = endDir / endDistance;
-                    if(autoDetachEnd < 0) autoDetachEnd = 0;
+                    if(AutoDetachEnd < 0) AutoDetachEnd = 0;
 
-                    if(autoDetachEnd != 0) Handles.DrawBezier(endPos, endPos + endDirection * autoDetachEnd, endPos, endPos + endDirection * autoDetachEnd, Color.red, null, thickness);
+                    if(AutoDetachEnd != 0) Handles.DrawBezier(endPos, endPos + endDirection * AutoDetachEnd, endPos, endPos + endDirection * AutoDetachEnd, Color.red, null, thickness);
                 }
             }
         }

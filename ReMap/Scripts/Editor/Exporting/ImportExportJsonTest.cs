@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -13,7 +15,7 @@ public enum GetSetData
 
 public class ImportExportJsonTest
 {
-    static JsonData jsonData = new JsonData();
+    static JsonData jsonData = new JsonData( );
 
     static string[] protectedModels = { "_vertical_zipline", "_non_vertical_zipline" };
 
@@ -25,11 +27,11 @@ public class ImportExportJsonTest
     //  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
     #if ReMapDev
     [ MenuItem( "ReMap Dev Tools/Import/Json", false, 51 ) ]
-    public static async void ImportJson()
+    public static async void ImportJson( )
     {
-        var path = EditorUtility.OpenFilePanel("Json Import", "", "json");
+        var path = EditorUtility.OpenFilePanel( "Json Import", "", "json" );
 
-        if (path.Length == 0) return;
+        if ( path.Length == 0 ) return;
 
         EditorUtility.DisplayProgressBar( "Starting Import", "Reading File..." , 0 );
         ReMapConsole.Log( "[Json Import] Reading file: " + path, ReMapConsole.LogType.Warning );
@@ -48,9 +50,9 @@ public class ImportExportJsonTest
         await ImportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
         await ImportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines );
 
-        ReMapConsole.Log("[Json Import] Finished", ReMapConsole.LogType.Success);
+        ReMapConsole.Log( "[Json Import] Finished", ReMapConsole.LogType.Success );
 
-        EditorUtility.ClearProgressBar();
+        EditorUtility.ClearProgressBar( );
     }
     #endif
     private static async Task ImportObjectsWithEnum<T>( ObjectType objectType, List<T> listType ) where T : class
@@ -126,17 +128,17 @@ public class ImportExportJsonTest
     //  ╚══════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
     #if ReMapDev
     [ MenuItem( "ReMap Dev Tools/Export/Json", false, 51 ) ]
-    public static async void ExportJson()
+    public static async void ExportJson( )
     {
-        Helper.FixPropTags();
+        Helper.FixPropTags( );
 
         var path = EditorUtility.SaveFilePanel( "Json Export", "", "mapexport.json", "json" );
 
-        if (path.Length == 0) return;
+        if ( path.Length == 0 ) return;
 
         EditorUtility.DisplayProgressBar( "Starting Export", "" , 0 );
 
-        ResetJsonData();
+        ResetJsonData( );
         await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
         await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
         await ExportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
@@ -148,7 +150,7 @@ public class ImportExportJsonTest
 
         ReMapConsole.Log( "[Json Export] Finished.", ReMapConsole.LogType.Success );
 
-        EditorUtility.ClearProgressBar();
+        EditorUtility.ClearProgressBar( );
     }
     #endif
 
@@ -179,8 +181,8 @@ public class ImportExportJsonTest
                 exporting = objName;
             } else exporting = $"{objPath}/{objName}";
 
-            ReMapConsole.Log("[Json Export] Exporting: " + objName, ReMapConsole.LogType.Info);
-            EditorUtility.DisplayProgressBar( $"Exporting {objType} {j}/{objectsCount}", $"Exporting: {exporting}", (i + 1) / (float)objectsCount );
+            ReMapConsole.Log( "[Json Export] Exporting: " + objName, ReMapConsole.LogType.Info );
+            EditorUtility.DisplayProgressBar( $"Exporting {objType} {j}/{objectsCount}", $"Exporting: {exporting}", ( i + 1 ) / ( float )objectsCount );
 
             T classData = Activator.CreateInstance( typeof( T ) ) as T;
 
@@ -231,20 +233,20 @@ public class ImportExportJsonTest
     //  ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
     //   ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
 
-    private static void ResetJsonData()
+    private static void ResetJsonData( )
     {
-        jsonData = new JsonData();
-        jsonData.Props = new List< PropClassData >();
-        jsonData.Ziplines = new List< ZipLineClassData >();
-        jsonData.LinkedZiplines = new List< LinkedZipLinesClassData >();
-        jsonData.VerticalZipLines = new List< VerticalZipLineClassData >();
+        jsonData = new JsonData( );
+        jsonData.Props = new List< PropClassData >( );
+        jsonData.Ziplines = new List< ZipLineClassData >( );
+        jsonData.LinkedZiplines = new List< LinkedZipLinesClassData >( );
+        jsonData.VerticalZipLines = new List< VerticalZipLineClassData >( );
     }
 
     private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
     {
         if ( data == null ) // if data is null, get the transformation data
         {
-            data = new TransformData();
+            data = new TransformData( );
             data.position = obj.transform.position;
             data.eulerAngles = obj.transform.eulerAngles;
             data.localScale = obj.transform.localScale;
@@ -272,19 +274,14 @@ public class ImportExportJsonTest
                 case PropClassData data: // Props
                     data = ( PropClassData )( object ) scriptData;
                     PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( propScript, data );
                     data.name = GetObjName( obj );
-                    data.allowMantle = propScript.allowMantle;
-                    data.fadeDistance = propScript.fadeDistance;
-                    data.realmID = propScript.realmID;
-                    data.parameters = propScript.parameters;
-                    data.customParameters = propScript.customParameters;
                     break;
 
                 case ZipLineClassData data: // Ziplines
                     data = ( ZipLineClassData )( object ) scriptData;
                     DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    data.showZipline = drawZipline.showZipline;
-                    data.showZiplineDistance = drawZipline.showZiplineDistance;
+                    TransferDataToClass( drawZipline, data, new List< string > { "zipline_start", "zipline_end" } );
                     data.zipline_start = drawZipline.zipline_start.position;
                     data.zipline_end = drawZipline.zipline_end.position;
                     break;
@@ -292,53 +289,26 @@ public class ImportExportJsonTest
                 case LinkedZipLinesClassData data: // Linked Ziplines
                     data = ( LinkedZipLinesClassData )( object ) scriptData;
                     LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
-                    data.enableSmoothing = linkedZiplineScript.enableSmoothing;
-                    data.smoothAmount = linkedZiplineScript.smoothAmount;
-                    data.smoothType = linkedZiplineScript.smoothType;
-                    data.nodes = new List<Vector3>();
+                    TransferDataToClass( linkedZiplineScript, data );
+                    data.nodes = new List<Vector3>( );
                     foreach ( Transform nodes in obj.transform ) data.nodes.Add( nodes.gameObject.transform.position );
                     break;
 
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) scriptData;
                     DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    data.ShowZipline = drawVerticalZipline.ShowZipline;
-                    data.ShowZiplineDistance = drawVerticalZipline.ShowZiplineDistance;
-                    data.ShowAutoDetachDistance = drawVerticalZipline.ShowAutoDetachDistance;
-                    data.EnableAutoOffsetDistance = drawVerticalZipline.EnableAutoOffsetDistance;
+                    TransferDataToClass( drawVerticalZipline, data, new List< string > { "panels" } );
                     data.ZiplineType = GetObjName( obj );
-                    data.ArmOffset = drawVerticalZipline.armOffset;
-                    data.HeightOffset = drawVerticalZipline.heightOffset;
-                    data.AnglesOffset = drawVerticalZipline.anglesOffset;
-                    data.FadeDistance = drawVerticalZipline.fadeDistance;
-                    data.Scale = drawVerticalZipline.scale;
-                    data.Width = drawVerticalZipline.width;
-                    data.SpeedScale = drawVerticalZipline.speedScale;
-                    data.LengthScale = drawVerticalZipline.lengthScale;
-                    data.PreserveVelocity = drawVerticalZipline.preserveVelocity;
-                    data.DropToBottom = drawVerticalZipline.dropToBottom;
-                    data.AutoDetachStart = drawVerticalZipline.autoDetachStart;
-                    data.AutoDetachEnd = drawVerticalZipline.autoDetachEnd;
-                    data.RestPoint = drawVerticalZipline.restPoint;
-                    data.PushOffInDirectionX = drawVerticalZipline.pushOffInDirectionX;
-                    data.IsMoving = drawVerticalZipline.isMoving;
-                    data.DetachEndOnSpawn = drawVerticalZipline.detachEndOnSpawn;
-                    data.DetachEndOnUse = drawVerticalZipline.detachEndOnUse;
-                    data.Panels = new List< VCPanelsClassData >();
-
+                    data.Panels = new List< VCPanelsClassData >( );
                     foreach ( GameObject panel in drawVerticalZipline.panels )
                     {
-                        VCPanelsClassData panelClass = new VCPanelsClassData();
+                        VCPanelsClassData panelClass = new VCPanelsClassData( );
                         panelClass.Model = panel.name;
                         panelClass.TransformData = GetSetTransformData( panel, panelClass.TransformData );
                         panelClass.Path = FindPath( panel );
                         panelClass.PathString = FindPathString( panel );
                         data.Panels.Add( panelClass );
                     }
-                    
-                    data.PanelTimerMin = drawVerticalZipline.panelTimerMin;
-                    data.PanelTimerMax = drawVerticalZipline.panelTimerMin;
-                    data.PanelMaxUse = drawVerticalZipline.panelMaxUse;
                     break;
 
                 default: break;
@@ -369,15 +339,15 @@ public class ImportExportJsonTest
 
                 case LinkedZipLinesClassData data: // Linked Ziplines
                     data = ( LinkedZipLinesClassData )( object ) scriptData;
-                    obj.AddComponent<DrawLinkedZipline>();
-                    obj.AddComponent<LinkedZiplineScript>();
+                    obj.AddComponent<DrawLinkedZipline>( );
+                    obj.AddComponent<LinkedZiplineScript>( );
                     LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
                     linkedZiplineScript.enableSmoothing = data.enableSmoothing;
                     linkedZiplineScript.smoothAmount = data.smoothAmount;
                     linkedZiplineScript.smoothType = data.smoothType;
                     foreach ( Vector3 nodesPos in data.nodes )
                     {
-                        GameObject nodes = new GameObject("zipline_node");
+                        GameObject nodes = new GameObject( "zipline_node" );
                         nodes.transform.position = nodesPos;
                         nodes.transform.parent = obj.transform;
                     }
@@ -411,9 +381,9 @@ public class ImportExportJsonTest
                     foreach ( VCPanelsClassData panelData in data.Panels )
                     {
                         UnityEngine.Object loadedPrefabResourcePanel = ImportExportJson.FindPrefabFromName( "mdl#" + panelData.Model );
-                        if (loadedPrefabResourcePanel == null)
+                        if ( loadedPrefabResourcePanel == null )
                         {
-                            ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {panelData.Model}" , ReMapConsole.LogType.Error);
+                            ReMapConsole.Log( $"[Json Import] Couldnt find prefab with name of: {panelData.Model}" , ReMapConsole.LogType.Error );
                             continue;
                         }
 
@@ -458,8 +428,8 @@ public class ImportExportJsonTest
 
     private static List< PathClass > FindPath( GameObject obj )
     {
-        List< GameObject > parents = new List< GameObject >();
-        List< PathClass > pathList = new List< PathClass >();
+        List< GameObject > parents = new List< GameObject >( );
+        List< PathClass > pathList = new List< PathClass >( );
         GameObject currentParent = obj;
 
         // find all parented game objects
@@ -469,11 +439,11 @@ public class ImportExportJsonTest
             currentParent = currentParent.transform.parent.gameObject;
         }
 
-        if ( currentParent != obj ) parents.Add(currentParent);
+        if ( currentParent != obj ) parents.Add( currentParent );
 
         foreach ( GameObject parent in parents )
         {
-            PathClass path = new PathClass();
+            PathClass path = new PathClass( );
             path.FolderName = parent.name;
             path.Position = parent.transform.position;
             path.Rotation = parent.transform.eulerAngles;
@@ -481,29 +451,29 @@ public class ImportExportJsonTest
             pathList.Add( path );
         }
 
-        pathList.Reverse();
+        pathList.Reverse( );
 
         return pathList;
     }
 
     private static string FindPathString( GameObject obj )
     {
-        List< GameObject > parents = new List< GameObject >();
+        List< GameObject > parents = new List< GameObject >( );
         string path = "";
         GameObject currentParent = obj;
 
         // find all parented game objects
-        while (currentParent.transform.parent != null)
+        while ( currentParent.transform.parent != null )
         {
-            if ( currentParent != obj ) parents.Add(currentParent);
+            if ( currentParent != obj ) parents.Add( currentParent );
             currentParent = currentParent.transform.parent.gameObject;
         }
 
-        if ( currentParent != obj ) parents.Add(currentParent);
+        if ( currentParent != obj ) parents.Add( currentParent );
 
-        parents.Reverse();
+        parents.Reverse( );
 
-        foreach (GameObject parent in parents)
+        foreach ( GameObject parent in parents )
         {
             if ( string.IsNullOrEmpty( path ) )
             {
@@ -536,7 +506,7 @@ public class ImportExportJsonTest
             newFolder.transform.position = pathClass.Position;
             newFolder.transform.eulerAngles = pathClass.Rotation;
 
-            if ( folder != null ) newFolder.transform.SetParent(folder.transform);
+            if ( folder != null ) newFolder.transform.SetParent( folder.transform );
 
             folder = newFolder;
         }
@@ -557,7 +527,7 @@ public class ImportExportJsonTest
 
     private static string GetObjName( GameObject obj )
     {
-        return obj.name.Split(char.Parse(" "))[0];
+        return obj.name.Split( char.Parse( " " ) )[0];
     }
 
     private static GameObject TryInstantiatePrefab( string objName, string objPath, string objType, int i, int j, int objectsCount )
@@ -569,18 +539,52 @@ public class ImportExportJsonTest
             importing = objName;
         } else importing = $"{objPath}/{objName}";
 
-        EditorUtility.DisplayProgressBar( $"Importing {objType} {j}/{objectsCount}", $"Importing: {importing}", (i + 1) / (float)objectsCount );
-        ReMapConsole.Log("[Json Import] Importing: " + objName, ReMapConsole.LogType.Info);
+        EditorUtility.DisplayProgressBar( $"Importing {objType} {j}/{objectsCount}", $"Importing: {importing}", ( i + 1 ) / ( float )objectsCount );
+        ReMapConsole.Log( "[Json Import] Importing: " + objName, ReMapConsole.LogType.Info );
 
         if ( objName == "custom_linked_zipline" ) return new GameObject( "custom_linked_zipline" );
 
         UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName( objName );
         if ( loadedPrefabResource == null )
         {
-            ReMapConsole.Log($"[Json Import] Couldnt find prefab with name of: {objName}" , ReMapConsole.LogType.Error);
+            ReMapConsole.Log( $"[Json Import] Couldnt find prefab with name of: {objName}" , ReMapConsole.LogType.Error );
             return null;
         }
 
         return PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
+    }
+
+    public static void TransferDataToClass< TSource, TDestination >( TSource source, TDestination destination, List< string > propertiesToRemove = null )
+    {
+        if ( source == null || destination == null )
+        {
+            throw new ArgumentNullException( "Source or destination object cannot be null." );
+        }
+
+        Type sourceType = typeof( TSource );
+        Type destinationType = typeof( TDestination );
+
+        FieldInfo[] sourceFields = sourceType.GetFields( BindingFlags.Public | BindingFlags.Instance );
+        FieldInfo[] destinationFields = destinationType.GetFields( BindingFlags.Public | BindingFlags.Instance );
+
+        foreach ( FieldInfo sourceField in sourceFields )
+        {
+            // Ignore properties that are in the propertiesToRemove list
+            if ( propertiesToRemove != null && propertiesToRemove.Contains( sourceField.Name, StringComparer.OrdinalIgnoreCase ) )
+            {
+                continue;
+            }
+
+            FieldInfo destinationField = Array.Find( destinationFields, field => field.Name.Equals( sourceField.Name, StringComparison.OrdinalIgnoreCase ) );
+
+            // Check if the destination field exists and has the same field type as the source field
+            if ( destinationField != null && destinationField.FieldType == sourceField.FieldType )
+            {
+                object value = sourceField.GetValue( source );
+                destinationField.SetValue( destination, value );
+
+                UnityInfo.Printt( sourceField.Name + " " + sourceField.GetValue( source ) + " " + destinationField.GetValue( destination ) );
+            }
+        }
     }
 }

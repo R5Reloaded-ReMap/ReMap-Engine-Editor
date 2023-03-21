@@ -431,8 +431,8 @@ public class ImportExportJson
             obj.transform.position = zipline.ZiplinePosition;
             obj.transform.eulerAngles = zipline.ZiplineAngles;
 
-            script.armOffset = zipline.ArmOffset;
-            script.heightOffset = zipline.HeightOffset;
+            script.ArmOffset = zipline.ArmOffset;
+            script.HeightOffset = zipline.HeightOffset;
             script.anglesOffset = zipline.AnglesOffset;
             script.FadeDistance = zipline.FadeDistance;
             script.Scale = zipline.Scale;
@@ -1153,8 +1153,8 @@ public class ImportExportJson
             verticalZipLine.ZiplineType = obj.name;
             verticalZipLine.ZiplinePosition = script.zipline.position;
             verticalZipLine.ZiplineAngles = script.zipline.eulerAngles;
-            verticalZipLine.ArmOffset = script.armOffset;
-            verticalZipLine.HeightOffset = script.heightOffset;
+            verticalZipLine.ArmOffset = script.ArmOffset;
+            verticalZipLine.HeightOffset = script.HeightOffset;
             verticalZipLine.AnglesOffset = script.anglesOffset;
             verticalZipLine.FadeDistance = script.FadeDistance;
             verticalZipLine.Scale = script.Scale;

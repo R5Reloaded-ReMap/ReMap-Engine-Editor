@@ -337,7 +337,6 @@ public class ImportExportJsonTest
     /*
     Todo:
 
-    VerticalZipLine
     NonVerticalZipLine
     SingleDoor
     DoubleDoor

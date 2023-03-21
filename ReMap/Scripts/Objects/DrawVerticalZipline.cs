@@ -19,8 +19,8 @@ public class DrawVerticalZipline : MonoBehaviour
     public bool EnableAutoOffsetDistance = false;
 
     [Header("Zipline Parameters:")]
-    [ConditionalHide("ShowArmOffset", true)] public float armOffset = 180;
-    public float heightOffset = 0;
+    [ConditionalHide("ShowArmOffset", true)] public float ArmOffset = 180;
+    public float HeightOffset = 0;
     [ConditionalHide("EnableAutoOffsetDistance", true)] public float GroundOffset = 0;
     [ConditionalHide("PushOffInDirectionX", true)] public float anglesOffset = 0;
     public float FadeDistance = -1;
@@ -68,7 +68,7 @@ public class DrawVerticalZipline : MonoBehaviour
             fence_post.transform.localPosition = new Vector3(0, 0, 0);
             fence_post.transform.localEulerAngles = new Vector3(0, 0, 0);
             arm.transform.SetParent(support_start.transform);
-            arm.transform.localPosition = new Vector3((float)0.8, armOffset, 1);
+            arm.transform.localPosition = new Vector3((float)0.8, ArmOffset, 1);
             arm.transform.localEulerAngles = new Vector3(0, 90, 0);
             rope_start.SetParent(arm.transform);
             rope_start.localPosition = new Vector3(55, -12, 4);
@@ -77,8 +77,8 @@ public class DrawVerticalZipline : MonoBehaviour
             rope_start.rotation = Quaternion.Euler(targetRotation.x, anglesOffset, targetRotation.z);
             //rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0); // old angle system
 
-            if(armOffset < 46) armOffset = 46;
-            if(armOffset > 300) armOffset = 300;
+            if(ArmOffset < 46) ArmOffset = 46;
+            if(ArmOffset > 300) ArmOffset = 300;
         }
 
         if( fence_post == null && arm != null )
@@ -89,7 +89,7 @@ public class DrawVerticalZipline : MonoBehaviour
             rope_start.SetParent(arm.transform);
             rope_start.localPosition = new Vector3(55, -12, 4);
             rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0);
-            armOffset = 0;
+            ArmOffset = 0;
         }
 
         if( arm == null )
@@ -97,11 +97,11 @@ public class DrawVerticalZipline : MonoBehaviour
             rope_start.SetParent(support_start.transform);
             rope_start.localPosition = new Vector3(0, 0, 0);
             rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0);
-            armOffset = 0;
+            ArmOffset = 0;
         }
 
         // End
-        support_end.transform.position = new Vector3( rope_start.position.x, rope_start.position.y + heightOffset, rope_start.position.z );
+        support_end.transform.position = new Vector3( rope_start.position.x, rope_start.position.y + HeightOffset, rope_start.position.z );
         support_end.transform.eulerAngles = rope_start.eulerAngles;
 
         anglesOffset = anglesOffset % 360;
@@ -126,7 +126,7 @@ public class DrawVerticalZipline : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(rope_start.transform.position - new Vector3(0, 1, 0), Vector3.down, out hit, 20000))
             {
-                heightOffset = -(hit.distance - GroundOffset);
+                HeightOffset = -(hit.distance - GroundOffset);
             }
         }
 

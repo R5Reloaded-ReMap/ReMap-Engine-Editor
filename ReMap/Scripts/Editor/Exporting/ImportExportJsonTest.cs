@@ -65,6 +65,21 @@ public class ImportExportJsonTest
         await ImportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
         await ImportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
         await ImportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines );
+        await ImportObjectsWithEnum( ObjectType.NonVerticalZipLine, jsonData.NonVerticalZipLines );
+        await ImportObjectsWithEnum( ObjectType.SingleDoor, jsonData.SingleDoors );
+        await ImportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors );
+        await ImportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors );
+        await ImportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors );
+        await ImportObjectsWithEnum( ObjectType.Button, jsonData.Buttons );
+        await ImportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads );
+        await ImportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins );
+        await ImportObjectsWithEnum( ObjectType.WeaponRack, jsonData.WeaponRacks );
+        await ImportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers );
+        await ImportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields );
+        await ImportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints );
+        await ImportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
+        await ImportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
+        await ImportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
 
         ReMapConsole.Log( "[Json Import] Finished", ReMapConsole.LogType.Success );
 
@@ -100,7 +115,7 @@ public class ImportExportJsonTest
 
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( VerticalZipLineClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( ( VerticalZipLineClassData )( object )objData, data.Name, objectType, i, j, objectsCount );
                     break;
 
                 case NonVerticalZipLineClassData data: // Non Vertical ZipLines
@@ -209,6 +224,21 @@ public class ImportExportJsonTest
         await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
         await ExportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
         await ExportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines );
+        await ExportObjectsWithEnum( ObjectType.NonVerticalZipLine, jsonData.NonVerticalZipLines );
+        await ExportObjectsWithEnum( ObjectType.SingleDoor, jsonData.SingleDoors );
+        await ExportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors );
+        await ExportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors );
+        await ExportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors );
+        await ExportObjectsWithEnum( ObjectType.Button, jsonData.Buttons );
+        await ExportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads );
+        await ExportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins );
+        await ExportObjectsWithEnum( ObjectType.WeaponRack, jsonData.WeaponRacks );
+        await ExportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers );
+        await ExportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields );
+        await ExportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints );
+        await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
+        await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
+        await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
 
         ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
         string json = JsonUtility.ToJson( jsonData );
@@ -352,6 +382,24 @@ public class ImportExportJsonTest
         jsonData.FuncWindowHints = new List< FuncWindowHintClassData >();
         jsonData.Sounds = new List< SoundClassData >();
     }
+
+    /* Todo objects left:
+    NonVerticalZipLine,
+    SingleDoor,
+    DoubleDoor,
+    HorzDoor,
+    VerticalDoor,
+    Button,
+    Jumppad,
+    LootBin,
+    WeaponRack,
+    Trigger,
+    BubbleShield,
+    SpawnPoint,
+    TextInfoPanel,
+    FuncWindowHint,
+    Sound
+    */
 
     private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
     {

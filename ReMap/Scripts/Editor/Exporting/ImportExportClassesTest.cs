@@ -10,6 +10,21 @@ public class JsonData
     public List< ZipLineClassData > Ziplines;
     public List< LinkedZipLinesClassData > LinkedZiplines;
     public List< VerticalZipLineClassData > VerticalZipLines;
+    public List< NonVerticalZipLineClassData > NonVerticalZipLines;
+    public List< SingleDoorClassData > SingleDoors;
+    public List< DoubleDoorClassData > DoubleDoors;
+    public List< HorzDoorClassData > HorzDoors;
+    public List< VerticalDoorClassData > VerticalDoors;
+    public List< ButtonClassData > Buttons;
+    public List< JumppadClassData > Jumppads;
+    public List< LootBinClassData > LootBins;
+    public List< WeaponRackClassData > WeaponRacks;
+    public List< TriggerClassData > Triggers;
+    public List< BubbleShieldClassData > BubbleShields;
+    public List< SpawnPointClassData > SpawnPoints;
+    public List< TextInfoPanelClassData > TextInfoPanels;
+    public List< FuncWindowHintClassData > FuncWindowHints;
+    public List< SoundClassData > Sounds;
 }
 
 /// <summary>

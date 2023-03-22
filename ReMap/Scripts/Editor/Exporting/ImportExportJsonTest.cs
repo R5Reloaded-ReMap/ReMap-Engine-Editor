@@ -44,6 +44,22 @@ public class ImportExportJsonTest
         ImportExportJson.SortListByKey( jsonData.Ziplines, x => x.PathString );
         ImportExportJson.SortListByKey( jsonData.LinkedZiplines, x => x.PathString );
         ImportExportJson.SortListByKey( jsonData.VerticalZipLines, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.NonVerticalZipLines, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.SingleDoors, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.DoubleDoors, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.HorzDoors, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.VerticalDoors, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.Buttons, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.Jumppads, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.LootBins, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.WeaponRacks, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.Triggers, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.BubbleShields, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.SpawnPoints, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.TextInfoPanels, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.FuncWindowHints, x => x.PathString );
+        ImportExportJson.SortListByKey( jsonData.Sounds, x => x.PathString );
+
 
         await ImportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
         await ImportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );

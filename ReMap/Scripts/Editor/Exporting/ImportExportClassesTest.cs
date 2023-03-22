@@ -108,6 +108,7 @@ public class VerticalZipLineClassData : GlobalClassData
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;
+    public bool ShowArmOffset;
 }
 
 [Serializable]

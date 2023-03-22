@@ -35,7 +35,7 @@ public class GlobalClassData
 {
     public TransformData TransformData;
     public string PathString;
-    public List<PathClass> Path;
+    public List< PathClass > Path;
     
 }
 
@@ -53,12 +53,13 @@ public class TransformData
 [Serializable]
 public class PropClassData : GlobalClassData
 {
+    // If any changes are made here, do the same for JumppadClassData ( except string Name )
     public string Name;
     public bool AllowMantle;
     public float FadeDistance;
     public int RealmID;
-    public List<PropScriptParameters> Parameters;
-    public List<string> CustomParameters;
+    public List< PropScriptParameters > Parameters;
+    public List< string > CustomParameters;
 }
 
 [Serializable]
@@ -76,7 +77,7 @@ public class LinkedZipLinesClassData : GlobalClassData
     public bool EnableSmoothing;
     public int SmoothAmount;
     public bool SmoothType;
-    public List<Vector3> Nodes;
+    public List< Vector3 > Nodes;
 }
 
 [Serializable]
@@ -104,7 +105,7 @@ public class VerticalZipLineClassData : GlobalClassData
     public bool IsMoving;
     public bool DetachEndOnSpawn;
     public bool DetachEndOnUse;
-    public List<VCPanelsClassData> Panels;
+    public List< VCPanelsClassData > Panels;
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;
@@ -136,7 +137,7 @@ public class NonVerticalZipLineClassData : GlobalClassData
     public bool IsMoving;
     public bool DetachEndOnSpawn;
     public bool DetachEndOnUse;
-    public List<VCPanelsClassData> Panels;
+    public List< VCPanelsClassData > Panels;
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;
@@ -165,25 +166,31 @@ public class DoubleDoorClassData : GlobalClassData
 [Serializable]
 public class HorzDoorClassData : GlobalClassData
 {
-    
+    // Stub script
 }
 
 [Serializable]
 public class VerticalDoorClassData : GlobalClassData
 {
-    
+    // Stub script
 }
 
 [Serializable]
 public class ButtonClassData : GlobalClassData
 {
-    
+    public string UseText;
+    public string OnUseCallback;
 }
 
 [Serializable]
 public class JumppadClassData : GlobalClassData
 {
-    
+    // Uses the same classes as PropClassData ( except string Name )
+    public bool AllowMantle;
+    public float FadeDistance;
+    public int RealmID;
+    public List< PropScriptParameters > Parameters;
+    public List< string > CustomParameters;
 }
 
 [Serializable]

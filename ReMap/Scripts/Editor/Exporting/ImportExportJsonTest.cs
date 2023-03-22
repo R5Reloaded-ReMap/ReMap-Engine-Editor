@@ -13,6 +13,9 @@ public enum GetSetData
     Set = 1
 }
 
+/// <summary>
+/// Class used for import/export using json file
+/// </summary>
 public class ImportExportJsonTest
 {
     static JsonData jsonData = new JsonData();
@@ -384,10 +387,6 @@ public class ImportExportJsonTest
     }
 
     /* Todo objects left:
-    SingleDoor,
-    DoubleDoor,
-    HorzDoor,
-    VerticalDoor,
     Button,
     Jumppad,
     LootBin,
@@ -515,51 +514,61 @@ public class ImportExportJsonTest
                 case ButtonClassData data: // Bouttons
                     data = ( ButtonClassData )( object ) scriptData;
                     ButtonScripting buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( buttonScripting, data );
                     break;
 
                 case JumppadClassData data: // Jumppads
                     data = ( JumppadClassData )( object ) scriptData;
                     PropScript propScriptJumppad = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( propScriptJumppad, data );
                     break;
 
                 case LootBinClassData data: // Loot Bins
                     data = ( LootBinClassData )( object ) scriptData;
                     LootBinScript lootBinScript = ( LootBinScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( lootBinScript, data );
                     break;
 
                 case WeaponRackClassData data: // Weapon Racks
                     data = ( WeaponRackClassData )( object ) scriptData;
                     WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( weaponRackScript, data );
                     break;
 
                 case TriggerClassData data: // Triggers
                     data = ( TriggerClassData )( object ) scriptData;
                     TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( triggerScripting, data );
                     break;
 
                 case BubbleShieldClassData data: // Bubbles Shield
                     data = ( BubbleShieldClassData )( object ) scriptData;
                     BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( bubbleScript, data );
                     break;
 
                 case SpawnPointClassData data: // Spawn Points
                     data = ( SpawnPointClassData )( object ) scriptData;
                     SpawnPointScript spawnPointScript = ( SpawnPointScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( spawnPointScript, data );
                     break;
 
                 case TextInfoPanelClassData data: // Text Info Panels
                     data = ( TextInfoPanelClassData )( object ) scriptData;
                     TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( textInfoPanelScript, data );
                     break;
 
                 case FuncWindowHintClassData data: // Window Hints
                     data = ( FuncWindowHintClassData )( object ) scriptData;
                     WindowHintScript windowHintScript = ( WindowHintScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( windowHintScript, data );
                     break;
 
                 case SoundClassData data: // Sounds
                     data = (SoundClassData  )( object ) scriptData;
                     SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( soundScript, data );
                     break;
 
                 default: break;
@@ -672,51 +681,61 @@ public class ImportExportJsonTest
                 case ButtonClassData data: // Bouttons
                     data = ( ButtonClassData )( object ) scriptData;
                     ButtonScripting buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, buttonScripting );
                     break;
 
                 case JumppadClassData data: // Jumppads
                     data = ( JumppadClassData )( object ) scriptData;
                     PropScript propScriptJumppad = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, propScriptJumppad );
                     break;
 
                 case LootBinClassData data: // Loot Bins
                     data = ( LootBinClassData )( object ) scriptData;
                     LootBinScript lootBinScript = ( LootBinScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, lootBinScript );
                     break;
 
                 case WeaponRackClassData data: // Weapon Racks
                     data = ( WeaponRackClassData )( object ) scriptData;
                     WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, weaponRackScript );
                     break;
 
                 case TriggerClassData data: // Triggers
                     data = ( TriggerClassData )( object ) scriptData;
                     TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, triggerScripting );
                     break;
 
                 case BubbleShieldClassData data: // Bubbles Shield
                     data = ( BubbleShieldClassData )( object ) scriptData;
                     BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, bubbleScript );
                     break;
 
                 case SpawnPointClassData data: // Spawn Points
                     data = ( SpawnPointClassData )( object ) scriptData;
                     SpawnPointScript spawnPointScript = ( SpawnPointScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, spawnPointScript );
                     break;
 
                 case TextInfoPanelClassData data: // Text Info Panels
                     data = ( TextInfoPanelClassData )( object ) scriptData;
                     TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, textInfoPanelScript );
                     break;
 
                 case FuncWindowHintClassData data: // Window Hints
                     data = ( FuncWindowHintClassData )( object ) scriptData;
                     WindowHintScript windowHintScript = ( WindowHintScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, windowHintScript );
                     break;
 
                 case SoundClassData data: // Sounds
                     data = (SoundClassData  )( object ) scriptData;
                     SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, soundScript );
                     break;
 
                 default: break;
@@ -743,9 +762,7 @@ public class ImportExportJsonTest
         {
             PathClass path = new PathClass();
             path.FolderName = parent.name;
-            path.Position = parent.transform.position;
-            path.Rotation = parent.transform.eulerAngles;
-
+            path.TransformData = GetSetTransformData( parent );
             pathList.Add( path );
         }
 
@@ -801,8 +818,10 @@ public class ImportExportJsonTest
 
             if ( newFolder == null ) newFolder = new GameObject( pathClass.FolderName );
 
-            newFolder.transform.position = pathClass.Position;
-            newFolder.transform.eulerAngles = pathClass.Rotation;
+            TransformData transformData = pathClass.TransformData;
+            newFolder.transform.position = transformData.position;
+            newFolder.transform.eulerAngles = transformData.eulerAngles;
+            newFolder.transform.localScale = transformData.localScale;
 
             if ( folder != null ) newFolder.transform.SetParent( folder.transform );
 

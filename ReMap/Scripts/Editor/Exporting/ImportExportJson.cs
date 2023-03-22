@@ -1723,8 +1723,7 @@ public class ImportExportJson
         {
             PathClass path = new PathClass();
             path.FolderName = parent.name;
-            path.Position = parent.transform.position;
-            path.Rotation = parent.transform.eulerAngles;
+            //path.TransformData = GetSetTransformData( parent );
 
             pathList.Add( path );
         }
@@ -1779,8 +1778,10 @@ public class ImportExportJson
 
             if ( newFolder == null ) newFolder = new GameObject( pathClass.FolderName );
 
-            newFolder.transform.position = pathClass.Position;
-            newFolder.transform.eulerAngles = pathClass.Rotation;
+            TransformData transformData = pathClass.TransformData;
+            newFolder.transform.position = transformData.position;
+            newFolder.transform.eulerAngles = transformData.eulerAngles;
+            newFolder.transform.localScale = transformData.localScale;
 
             if ( folder != null ) newFolder.transform.SetParent(folder.transform);
 
@@ -1788,6 +1789,27 @@ public class ImportExportJson
         }
 
         return folder.transform;
+    }
+
+    private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
+    {
+        if ( data == null ) // if data is null, get the transformation data
+        {
+            data = new TransformData();
+            data.position = obj.transform.position;
+            data.eulerAngles = obj.transform.eulerAngles;
+            data.localScale = obj.transform.localScale;
+
+            return data;
+        }
+        else // otherwise, define the transformation data provided
+        {
+            obj.transform.position = data.position;
+            obj.transform.eulerAngles = data.eulerAngles;
+            obj.transform.localScale = data.localScale;
+
+            return null;
+        }
     }
 
     private static bool IsValidPath( string path )

@@ -247,8 +247,7 @@ public class TextInfoPanelClass
 public class PathClass
 {
     public string FolderName;
-    public Vector3 Position;
-    public Vector3 Rotation;
+    public TransformData TransformData;
 }
 
 //  ██████╗ ██████╗ ███████╗███████╗ █████╗ ██████╗  ██████╗ ███████╗███████╗███████╗███████╗████████╗

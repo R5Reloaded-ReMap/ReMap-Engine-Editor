@@ -433,7 +433,7 @@ public class ImportExportJsonTest
                 case PropClassData data: // Props
                     data = ( PropClassData )( object ) scriptData;
                     PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( propScript, data, new[] { "Name" }.ToList() );
+                    TransferDataToClass( propScript, data );
                     data.Name = GetObjName( obj );
                     break;
 
@@ -448,7 +448,7 @@ public class ImportExportJsonTest
                 case LinkedZipLinesClassData data: // Linked Ziplines
                     data = ( LinkedZipLinesClassData )( object ) scriptData;
                     LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( linkedZiplineScript, data, new[] { "Name", "Panels", "Nodes" }.ToList() );
+                    TransferDataToClass( linkedZiplineScript, data );
                     data.Nodes = new List< Vector3 >();
                     foreach ( Transform nodes in obj.transform ) data.Nodes.Add( nodes.gameObject.transform.position );
                     break;
@@ -456,7 +456,7 @@ public class ImportExportJsonTest
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) scriptData;
                     DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( drawVerticalZipline, data, new[] { "Name", "Panels" }.ToList() );
+                    TransferDataToClass( drawVerticalZipline, data, new[] { "Panels" }.ToList() );
                     data.Name = GetObjName( obj );
                     data.Panels = new List< VCPanelsClassData >();
                     foreach ( GameObject panel in drawVerticalZipline.Panels )
@@ -469,35 +469,81 @@ public class ImportExportJsonTest
                         data.Panels.Add( panelClass );
                     }
                     break;
+
                 case NonVerticalZipLineClassData data: // Non Vertical ZipLines
+                    data = ( NonVerticalZipLineClassData )( object ) scriptData;
+                    DrawNonVerticalZipline drawNonVerticalZipline = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
+                    //TransferDataToClass( drawNonVerticalZipline, data, new[] { "" }.ToList() );
                     break;
+
                 case SingleDoorClassData data: // Single Doors
+                    data = ( SingleDoorClassData )( object ) scriptData;
+                    DoorScript doorScriptSingle = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case DoubleDoorClassData data: // Double Doors
+                    data = ( DoubleDoorClassData )( object ) scriptData;
+                    DoorScript doorScriptDouble = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case HorzDoorClassData data: // Horizontal Doors
+                    data = ( HorzDoorClassData )( object ) scriptData;
+                    HorzDoorScript horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case VerticalDoorClassData data: // Vertical Doors
+                    data = ( VerticalDoorClassData )( object ) scriptData;
+                    VerticalDoorScript verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case ButtonClassData data: // Bouttons
+                    data = ( ButtonClassData )( object ) scriptData;
+                    ButtonScripting buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case JumppadClassData data: // Jumppads
+                    data = ( JumppadClassData )( object ) scriptData;
+                    PropScript propScriptJumppad = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case LootBinClassData data: // Loot Bins
+                    data = ( LootBinClassData )( object ) scriptData;
+                    LootBinScript lootBinScript = ( LootBinScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case WeaponRackClassData data: // Weapon Racks
+                    data = ( WeaponRackClassData )( object ) scriptData;
+                    WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case TriggerClassData data: // Triggers
+                    data = ( TriggerClassData )( object ) scriptData;
+                    TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case BubbleShieldClassData data: // Bubbles Shield
+                    data = ( BubbleShieldClassData )( object ) scriptData;
+                    BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case SpawnPointClassData data: // Spawn Points
+                    data = ( SpawnPointClassData )( object ) scriptData;
+                    SpawnPointScript spawnPointScript = ( SpawnPointScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case TextInfoPanelClassData data: // Text Info Panels
+                    data = ( TextInfoPanelClassData )( object ) scriptData;
+                    TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case FuncWindowHintClassData data: // Window Hints
+                    data = ( FuncWindowHintClassData )( object ) scriptData;
+                    WindowHintScript windowHintScript = ( WindowHintScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case SoundClassData data: // Sounds
+                    data = (SoundClassData  )( object ) scriptData;
+                    SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
 
                 default: break;
@@ -516,7 +562,7 @@ public class ImportExportJsonTest
                 case ZipLineClassData data: // Ziplines
                     data = ( ZipLineClassData )( object ) scriptData;
                     DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( data, drawZipline, new[] { "zipline_start", "zipline_end" }.ToList() );
+                    TransferDataToClass( data, drawZipline, new[] { "Zipline_start", "Zipline_end" }.ToList() );
                     drawZipline.zipline_start.position = data.Zipline_start;
                     drawZipline.zipline_end.position = data.Zipline_end;
                     break;
@@ -526,7 +572,7 @@ public class ImportExportJsonTest
                     obj.AddComponent< DrawLinkedZipline >();
                     obj.AddComponent< LinkedZiplineScript >();
                     LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( linkedZiplineScript, data, new[] { "zipline_start", "zipline_end" }.ToList() );
+                    TransferDataToClass( data, linkedZiplineScript, new[] { "zipline_start", "zipline_end" }.ToList() );
                     foreach ( Vector3 nodesPos in data.Nodes )
                     {
                         GameObject nodes = new GameObject( "zipline_node" );
@@ -557,35 +603,81 @@ public class ImportExportJsonTest
                         drawVerticalZipline.Panels[ drawVerticalZipline.Panels.Length - 1 ] = panel;
                     }
                     break;
+
                 case NonVerticalZipLineClassData data: // Non Vertical ZipLines
+                    data = ( NonVerticalZipLineClassData )( object ) scriptData;
+                    DrawNonVerticalZipline drawNonVerticalZipline = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
+                    //TransferDataToClass( data, drawNonVerticalZipline, new[] { "" }.ToList() );
                     break;
+
                 case SingleDoorClassData data: // Single Doors
+                    data = ( SingleDoorClassData )( object ) scriptData;
+                    DoorScript doorScriptSingle = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case DoubleDoorClassData data: // Double Doors
+                    data = ( DoubleDoorClassData )( object ) scriptData;
+                    DoorScript doorScriptDouble = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case HorzDoorClassData data: // Horizontal Doors
+                    data = ( HorzDoorClassData )( object ) scriptData;
+                    HorzDoorScript horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case VerticalDoorClassData data: // Vertical Doors
+                    data = ( VerticalDoorClassData )( object ) scriptData;
+                    VerticalDoorScript verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case ButtonClassData data: // Bouttons
+                    data = ( ButtonClassData )( object ) scriptData;
+                    ButtonScripting buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case JumppadClassData data: // Jumppads
+                    data = ( JumppadClassData )( object ) scriptData;
+                    PropScript propScriptJumppad = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case LootBinClassData data: // Loot Bins
+                    data = ( LootBinClassData )( object ) scriptData;
+                    LootBinScript lootBinScript = ( LootBinScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case WeaponRackClassData data: // Weapon Racks
+                    data = ( WeaponRackClassData )( object ) scriptData;
+                    WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case TriggerClassData data: // Triggers
+                    data = ( TriggerClassData )( object ) scriptData;
+                    TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case BubbleShieldClassData data: // Bubbles Shield
+                    data = ( BubbleShieldClassData )( object ) scriptData;
+                    BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case SpawnPointClassData data: // Spawn Points
+                    data = ( SpawnPointClassData )( object ) scriptData;
+                    SpawnPointScript spawnPointScript = ( SpawnPointScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case TextInfoPanelClassData data: // Text Info Panels
+                    data = ( TextInfoPanelClassData )( object ) scriptData;
+                    TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case FuncWindowHintClassData data: // Window Hints
+                    data = ( FuncWindowHintClassData )( object ) scriptData;
+                    WindowHintScript windowHintScript = ( WindowHintScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
+
                 case SoundClassData data: // Sounds
+                    data = (SoundClassData  )( object ) scriptData;
+                    SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
                     break;
 
                 default: break;

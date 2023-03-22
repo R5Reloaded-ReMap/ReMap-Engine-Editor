@@ -114,7 +114,34 @@ public class VerticalZipLineClassData : GlobalClassData
 [Serializable]
 public class NonVerticalZipLineClassData : GlobalClassData
 {
-    
+    public bool ShowZipline;
+    public float ShowZiplineDistance;
+    public bool ShowAutoDetachDistance;
+    public string Name;
+    public TransformData ZiplineStart;
+    public TransformData ZiplineEnd;
+    public float ArmOffsetStart;
+    public float ArmOffsetEnd;
+    public float FadeDistance;
+    public float Scale;
+    public float Width;
+    public float SpeedScale;
+    public float LengthScale;
+    public bool PreserveVelocity;
+    public bool DropToBottom;
+    public float AutoDetachStart;
+    public float AutoDetachEnd;
+    public bool RestPoint;
+    public bool PushOffInDirectionX;
+    public bool IsMoving;
+    public bool DetachEndOnSpawn;
+    public bool DetachEndOnUse;
+    public List<VCPanelsClassData> Panels;
+    public float PanelTimerMin;
+    public float PanelTimerMax;
+    public int PanelMaxUse;
+    public bool ShowArmOffsetStart;
+    public bool ShowArmOffsetEnd;
 }
 
 [Serializable]
@@ -126,13 +153,13 @@ public class VCPanelsClassData : GlobalClassData
 [Serializable]
 public class SingleDoorClassData : GlobalClassData
 {
-    
+    public bool GoldDoor;
 }
 
 [Serializable]
 public class DoubleDoorClassData : GlobalClassData
 {
-    
+    public bool GoldDoor;
 }
 
 [Serializable]

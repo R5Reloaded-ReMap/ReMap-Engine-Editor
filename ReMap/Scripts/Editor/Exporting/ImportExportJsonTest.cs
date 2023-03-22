@@ -105,92 +105,92 @@ public class ImportExportJsonTest
 
                 case ZipLineClassData data: // Ziplines
                     data = ( ZipLineClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( ZipLineClassData )( object )objData, "custom_zipline", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_zipline", objectType, i, j, objectsCount );
                     break;
 
                 case LinkedZipLinesClassData data: // Linked Ziplines
                     data = ( LinkedZipLinesClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( LinkedZipLinesClassData )( object )objData, "custom_linked_zipline", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_linked_zipline", objectType, i, j, objectsCount );
                     break;
 
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( VerticalZipLineClassData )( object )objData, data.Name, objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
                     break;
 
                 case NonVerticalZipLineClassData data: // Non Vertical ZipLines
                     data = ( NonVerticalZipLineClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( NonVerticalZipLineClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
                     break;
 
                 case SingleDoorClassData data: // Single Doors
                     data = ( SingleDoorClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( SingleDoorClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_single_door", objectType, i, j, objectsCount );
                     break;
 
                 case DoubleDoorClassData data: // Double Doors
                     data = ( DoubleDoorClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( DoubleDoorClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_double_door", objectType, i, j, objectsCount );
                     break;
 
                 case HorzDoorClassData data: // Horizontal Doors
                     data = ( HorzDoorClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( HorzDoorClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_sliding_door", objectType, i, j, objectsCount );
                     break;
 
                 case VerticalDoorClassData data: // Vertical Doors
                     data = ( VerticalDoorClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( VerticalDoorClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_vertical_door", objectType, i, j, objectsCount );
                     break;
 
                 case ButtonClassData data: // Bouttons
                     data = ( ButtonClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( ButtonClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_button", objectType, i, j, objectsCount );
                     break;
 
                 case JumppadClassData data: // Jumppads
                     data = ( JumppadClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( JumppadClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_jumppad", objectType, i, j, objectsCount );
                     break;
 
                 case LootBinClassData data: // Loot Bins
                     data = ( LootBinClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( LootBinClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_lootbin", objectType, i, j, objectsCount );
                     break;
 
                 case WeaponRackClassData data: // Weapon Racks
                     data = ( WeaponRackClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( WeaponRackClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
                     break;
 
                 case TriggerClassData data: // Triggers
                     data = ( TriggerClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( TriggerClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
                     break;
 
                 case BubbleShieldClassData data: // Bubbles Shield
                     data = ( BubbleShieldClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( BubbleShieldClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
                     break;
 
                 case SpawnPointClassData data: // Spawn Points
                     data = ( SpawnPointClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( SpawnPointClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
                     break;
 
                 case TextInfoPanelClassData data: // Text Info Panels
                     data = ( TextInfoPanelClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( TextInfoPanelClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
                     break;
 
                 case FuncWindowHintClassData data: // Window Hints
                     data = ( FuncWindowHintClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( FuncWindowHintClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
                     break;
 
                 case SoundClassData data: // Sounds
                     data = ( SoundClassData )( object ) objData;
-                    obj = ProcessImportClassData( ( SoundClassData )( object )objData, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
                     break;
 
                 default: break;
@@ -384,7 +384,6 @@ public class ImportExportJsonTest
     }
 
     /* Todo objects left:
-    NonVerticalZipLine,
     SingleDoor,
     DoubleDoor,
     HorzDoor,
@@ -456,7 +455,7 @@ public class ImportExportJsonTest
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) scriptData;
                     DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( drawVerticalZipline, data, new[] { "Panels" }.ToList() );
+                    TransferDataToClass( drawVerticalZipline, data, new[] { "Panels", "Name" }.ToList() );
                     data.Name = GetObjName( obj );
                     data.Panels = new List< VCPanelsClassData >();
                     foreach ( GameObject panel in drawVerticalZipline.Panels )
@@ -473,27 +472,44 @@ public class ImportExportJsonTest
                 case NonVerticalZipLineClassData data: // Non Vertical ZipLines
                     data = ( NonVerticalZipLineClassData )( object ) scriptData;
                     DrawNonVerticalZipline drawNonVerticalZipline = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    //TransferDataToClass( drawNonVerticalZipline, data, new[] { "" }.ToList() );
+                    TransferDataToClass( drawNonVerticalZipline, data, new[] { "Panels", "Name", "ZiplineStart", "ZiplineEnd" }.ToList() );
+                    data.Name = GetObjName( obj );
+                    data.ZiplineStart = GetSetTransformData( obj.transform.Find( "support_start" ).gameObject, data.ZiplineStart );
+                    data.ZiplineEnd = GetSetTransformData( obj.transform.Find( "support_end" ).gameObject, data.ZiplineEnd );
+                    data.Panels = new List< VCPanelsClassData >();
+                    foreach ( GameObject panel in drawNonVerticalZipline.Panels )
+                    {
+                        VCPanelsClassData panelClass = new VCPanelsClassData();
+                        panelClass.Model = panel.name;
+                        panelClass.TransformData = GetSetTransformData( panel, panelClass.TransformData );
+                        panelClass.Path = FindPath( panel );
+                        panelClass.PathString = FindPathString( panel );
+                        data.Panels.Add( panelClass );
+                    }
                     break;
 
                 case SingleDoorClassData data: // Single Doors
                     data = ( SingleDoorClassData )( object ) scriptData;
                     DoorScript doorScriptSingle = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( doorScriptSingle, data );
                     break;
 
                 case DoubleDoorClassData data: // Double Doors
                     data = ( DoubleDoorClassData )( object ) scriptData;
                     DoorScript doorScriptDouble = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( doorScriptDouble, data );
                     break;
 
                 case HorzDoorClassData data: // Horizontal Doors
                     data = ( HorzDoorClassData )( object ) scriptData;
                     HorzDoorScript horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( horzDoorScript, data );
                     break;
 
                 case VerticalDoorClassData data: // Vertical Doors
                     data = ( VerticalDoorClassData )( object ) scriptData;
                     VerticalDoorScript verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( verticalDoorScript, data );
                     break;
 
                 case ButtonClassData data: // Bouttons
@@ -584,7 +600,7 @@ public class ImportExportJsonTest
                 case VerticalZipLineClassData data: // Vertical Ziplines
                     data = ( VerticalZipLineClassData )( object ) scriptData;
                     DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( data, drawVerticalZipline, new[] { "Panels", "zipline", "fence_post", "arm", "rope_start", "rope_end", "helperPlacement" }.ToList() );
+                    TransferDataToClass( data, drawVerticalZipline, new[] { "Panels", "ShowDevelopersOptions", "zipline", "fence_post", "arm", "rope_start", "rope_end", "helperPlacement" }.ToList() );
 
                     foreach ( VCPanelsClassData panelData in data.Panels )
                     {
@@ -607,27 +623,50 @@ public class ImportExportJsonTest
                 case NonVerticalZipLineClassData data: // Non Vertical ZipLines
                     data = ( NonVerticalZipLineClassData )( object ) scriptData;
                     DrawNonVerticalZipline drawNonVerticalZipline = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                    //TransferDataToClass( data, drawNonVerticalZipline, new[] { "" }.ToList() );
+                    TransferDataToClass( data, drawNonVerticalZipline, new[] { "Panels", "ShowDevelopersOptions", "zipline", "fence_post_start", "arm_start", "fence_post_end", "arm_end", "rope_start", "rope_end", "helperPlacement_start", "helperPlacement_end" }.ToList() );
+                    GetSetTransformData( obj.transform.Find( "support_start" ).gameObject, data.ZiplineStart );
+                    GetSetTransformData( obj.transform.Find( "support_end" ).gameObject, data.ZiplineEnd );
+
+                    foreach ( VCPanelsClassData panelData in data.Panels )
+                    {
+                        UnityEngine.Object loadedPrefabResourcePanel = ImportExportJson.FindPrefabFromName( "mdl#" + panelData.Model );
+                        if ( loadedPrefabResourcePanel == null )
+                        {
+                            ReMapConsole.Log( $"[Json Import] Couldnt find prefab with name of: {panelData.Model}" , ReMapConsole.LogType.Error );
+                            continue;
+                        }
+
+                        GameObject panel = PrefabUtility.InstantiatePrefab( loadedPrefabResourcePanel as GameObject ) as GameObject;
+                        GetSetTransformData( panel, panelData.TransformData );
+                        CreatePath( panelData.Path, panelData.PathString, panel );
+
+                        Array.Resize( ref drawNonVerticalZipline.Panels, drawNonVerticalZipline.Panels.Length + 1 );
+                        drawNonVerticalZipline.Panels[ drawNonVerticalZipline.Panels.Length - 1 ] = panel;
+                    }
                     break;
 
                 case SingleDoorClassData data: // Single Doors
                     data = ( SingleDoorClassData )( object ) scriptData;
                     DoorScript doorScriptSingle = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, doorScriptSingle );
                     break;
 
                 case DoubleDoorClassData data: // Double Doors
                     data = ( DoubleDoorClassData )( object ) scriptData;
                     DoorScript doorScriptDouble = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, doorScriptDouble );
                     break;
 
                 case HorzDoorClassData data: // Horizontal Doors
                     data = ( HorzDoorClassData )( object ) scriptData;
                     HorzDoorScript horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, horzDoorScript );
                     break;
 
                 case VerticalDoorClassData data: // Vertical Doors
                     data = ( VerticalDoorClassData )( object ) scriptData;
                     VerticalDoorScript verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, dataType );
+                    TransferDataToClass( data, verticalDoorScript );
                     break;
 
                 case ButtonClassData data: // Bouttons

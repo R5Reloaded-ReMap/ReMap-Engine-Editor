@@ -196,7 +196,7 @@ public class JumppadClassData : GlobalClassData
 [Serializable]
 public class LootBinClassData : GlobalClassData
 {
-    
+    public int LootbinSkin;
 }
 
 [Serializable]
@@ -232,7 +232,7 @@ public class TextInfoPanelClassData : GlobalClassData
 [Serializable]
 public class FuncWindowHintClassData : GlobalClassData
 {
-    
+    // Stub script
 }
 
 [Serializable]

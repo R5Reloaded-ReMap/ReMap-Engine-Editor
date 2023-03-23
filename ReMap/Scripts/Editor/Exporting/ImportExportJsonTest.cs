@@ -173,7 +173,7 @@ public class ImportExportJsonTest
 
                 case BubbleShieldClassData data: // Bubbles Shield
                     data = ( BubbleShieldClassData )( object ) objData;
-                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
                     break;
 
                 case SpawnPointClassData data: // Spawn Points
@@ -545,7 +545,8 @@ public class ImportExportJsonTest
                 case BubbleShieldClassData data: // Bubbles Shield
                     data = ( BubbleShieldClassData )( object ) scriptData;
                     BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( bubbleScript, data );
+                    TransferDataToClass( bubbleScript, data, new[] { "Name" }.ToList() );
+                    data.Name = GetObjName( obj );
                     break;
 
                 case SpawnPointClassData data: // Spawn Points
@@ -712,7 +713,7 @@ public class ImportExportJsonTest
                 case BubbleShieldClassData data: // Bubbles Shield
                     data = ( BubbleShieldClassData )( object ) scriptData;
                     BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( data, bubbleScript );
+                    TransferDataToClass( data, bubbleScript, new[] { "Name" }.ToList() );
                     break;
 
                 case SpawnPointClassData data: // Spawn Points

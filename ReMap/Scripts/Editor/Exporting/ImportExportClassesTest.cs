@@ -217,7 +217,8 @@ public class TriggerClassData : GlobalClassData
 [Serializable]
 public class BubbleShieldClassData : GlobalClassData
 {
-    
+    public string Name;
+    public Color32 ShieldColor;
 }
 
 [Serializable]

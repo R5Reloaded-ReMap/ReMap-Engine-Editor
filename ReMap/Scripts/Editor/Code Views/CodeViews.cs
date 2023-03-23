@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
+using Build;
+using static Build.Build;
+
 public class CodeViews : EditorWindow
 {
     static string code_text = "";
@@ -407,7 +410,7 @@ public class CodeViews : EditorWindow
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        string tableCode = Build_.Props( null, Build_.BuildType.DataTable );
+        string tableCode = BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable );
 
         if (copycode_text) {
             GUIUtility.systemCopyBuffer = tableCode;

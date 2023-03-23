@@ -163,7 +163,7 @@ public class ImportExportJsonTest
 
                 case WeaponRackClassData data: // Weapon Racks
                     data = ( WeaponRackClassData )( object ) objData;
-                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
                     break;
 
                 case TriggerClassData data: // Triggers
@@ -532,7 +532,8 @@ public class ImportExportJsonTest
                 case WeaponRackClassData data: // Weapon Racks
                     data = ( WeaponRackClassData )( object ) scriptData;
                     WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( weaponRackScript, data );
+                    TransferDataToClass( weaponRackScript, data, new[] { "Name" }.ToList() );
+                    data.Name = GetObjName( obj );
                     break;
 
                 case TriggerClassData data: // Triggers
@@ -699,7 +700,7 @@ public class ImportExportJsonTest
                 case WeaponRackClassData data: // Weapon Racks
                     data = ( WeaponRackClassData )( object ) scriptData;
                     WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( data, weaponRackScript );
+                    TransferDataToClass( data, weaponRackScript, new[] { "Name" }.ToList() );
                     break;
 
                 case TriggerClassData data: // Triggers

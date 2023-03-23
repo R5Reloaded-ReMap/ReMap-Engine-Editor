@@ -202,13 +202,16 @@ public class LootBinClassData : GlobalClassData
 [Serializable]
 public class WeaponRackClassData : GlobalClassData
 {
-    
+    public string Name;
+    public float RespawnTime;
 }
 
 [Serializable]
 public class TriggerClassData : GlobalClassData
 {
-    
+    public bool Debug;
+    public string EnterCallback;
+    public string LeaveCallback;
 }
 
 [Serializable]

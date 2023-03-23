@@ -8,6 +8,8 @@ using UnityEngine;
 
 using ImportExport.Shared;
 using static ImportExport.Shared.SharedFunction;
+using Build;
+using static Build.Build;
 
 public enum StringType
 {
@@ -121,16 +123,12 @@ public class Helper
     /// </summary>
     /// <param name="go">Prop Object</param>
     /// <returns></returns>
-    public static string BuildAngles(GameObject go, bool isEntFile = false)
+    public static string BuildAngles( GameObject go, bool isEntFile = false )
     {
-        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4").Replace(",", ".");
-        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4").Replace(",", ".");
-        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4").Replace(",", ".");
+        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
 
-        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
-        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
-        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
-                    
         string angles = $"< {x}, {y}, {z} >";
 
         if( isEntFile )
@@ -144,10 +142,11 @@ public class Helper
     /// </summary>
     /// <param name="angle">Angle to wrap</param>
     /// <returns></returns>
-    public static float WrapAngle(float angle)
+    public static float WrapAngle( float angle )
     {
-        angle%=360;
-        if(angle >180)
+        angle %= 360;
+
+        if( angle > 180 )
             return angle - 360;
  
         return angle;
@@ -171,13 +170,9 @@ public class Helper
             zOffset = CodeViews.OriginOffset.z;
         }
 
-        string x = (-go.transform.position.z + zOffset).ToString("F4").Replace(",", ".");
-        string y = (go.transform.position.x + xOffset).ToString("F4").Replace(",", ".");
-        string z = (go.transform.position.y + yOffset).ToString("F4").Replace(",", ".");
-
-        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
-        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
-        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
+        string x = (-go.transform.position.z + zOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string y = (go.transform.position.x + xOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string z = (go.transform.position.y + yOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
 
         string origin = $"< {x}, {y}, {z} >";
 
@@ -310,7 +305,7 @@ public class Helper
     {
         // Order of importance
         string code = "";
-        if( Prop )                code += Build_.Props( null, Build_.BuildType.Map );
+        if( Prop )                code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Script ); //Build_.Props( null, Build_.BuildType.Map );
         if( ZipLine )             code += Build_.ZipLines();
         if( LinkedZipline )       code += Build_.LinkedZipLines();
         if( VerticalZipLine )     code += Build_.VerticalZipLines();

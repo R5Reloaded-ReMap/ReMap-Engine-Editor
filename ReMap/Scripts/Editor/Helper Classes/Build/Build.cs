@@ -8,8 +8,8 @@ namespace Build
 {
     public enum BuildType
     {
-        Map,
-        Ent,
+        Script,
+        EntFile,
         Precache,
         DataTable
     }
@@ -25,64 +25,66 @@ namespace Build
             if ( selection ) objectData = Helper.GetSelectedObjectWithEnum( objectType );
             else objectData = Helper.GetObjArrayWithEnum( objectType );
 
+            if ( objectData.Length == 0 ) return "";
+
             switch ( objectType )
             {
                 case ObjectType.BubbleShield:
-                    //code +=  BuildBubbleShieldObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildBubbleShieldObjects( objectData, buildType );
                     break;
                 case ObjectType.Button:
-                    //code +=  BuildButtonObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildButtonObjects( objectData, buildType );
                     break;
                 case ObjectType.DoubleDoor:
-                    //code +=  BuildDoubleDoorObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildDoubleDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.FuncWindowHint:
-                    //code +=  BuildFuncWindowHintObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildFuncWindowHintObjects( objectData, buildType );
                     break;
                 case ObjectType.HorzDoor:
-                    //code +=  BuildHorzDoorObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildHorzDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.Jumppad:
-                    //code +=  BuildJumppadObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildJumppadObjects( objectData, buildType );
                     break;
                 case ObjectType.LinkedZipline:
-                    //code +=  BuildLinkedZiplineObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildLinkedZiplineObjects( objectData, buildType );
                     break;
                 case ObjectType.LootBin:
-                    //code +=  BuildLootBinObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildLootBinObjects( objectData, buildType );
                     break;
                 case ObjectType.NonVerticalZipLine:
-                    //code +=  BuildNonVerticalZipLineObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildNonVerticalZipLineObjects( objectData, buildType );
                     break;
                 case ObjectType.Prop:
-                    //code +=  BuildPropObjectsWithEnum( objectData, buildType );
+                    code +=  BuildProp.BuildPropObjects( objectData, buildType );
                     break;
                 case ObjectType.SingleDoor:
-                    //code +=  BuildSingleDoorObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildSingleDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.Sound:
-                    //code +=  BuildSoundObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildSoundObjects( objectData, buildType );
                     break;
                 case ObjectType.SpawnPoint:
-                    //code +=  BuildSpawnPointObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildSpawnPointObjects( objectData, buildType );
                     break;
                 case ObjectType.TextInfoPanel:
-                    //code +=  BuildTextInfoPanelObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildTextInfoPanelObjects( objectData, buildType );
                     break;
                 case ObjectType.Trigger:
-                    //code +=  BuildTriggerObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildTriggerObjects( objectData, buildType );
                     break;
                 case ObjectType.VerticalDoor:
-                    //code +=  BuildVerticalDoorObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildVerticalDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.VerticalZipLine:
-                    //code +=  BuildVerticalZipLineObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildVerticalZipLineObjects( objectData, buildType );
                     break;
                 case ObjectType.WeaponRack:
-                    //code +=  BuildWeaponRackObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildWeaponRackObjects( objectData, buildType );
                     break;
                 case ObjectType.ZipLine:
-                    //code +=  BuildZipLineObjectsWithEnum( objectData, buildType );
+                    //code +=  BuildZipLineObjects( objectData, buildType );
                 break;
             }
 

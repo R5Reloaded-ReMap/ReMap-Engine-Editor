@@ -74,7 +74,7 @@ namespace ImportExport.Shared
             foreach ( GameObject parent in parents )
             {
                 PathClass path = new PathClass();
-                path.FolderName = parent.name;
+                path.FolderName = parent.name.Replace( "/", "|" );
                 path.TransformData = GetSetTransformData( parent );
                 pathList.Add( path );
             }

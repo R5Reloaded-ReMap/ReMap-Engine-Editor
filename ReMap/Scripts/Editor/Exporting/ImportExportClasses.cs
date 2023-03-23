@@ -3,128 +3,108 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+//  ██╗███╗   ███╗██████╗  ██████╗ ██████╗ ████████╗    ███████╗██╗  ██╗██████╗  ██████╗ ██████╗ ████████╗         ██╗███████╗ ██████╗ ███╗   ██╗    
+//  ██║████╗ ████║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝    ██╔════╝╚██╗██╔╝██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝         ██║██╔════╝██╔═══██╗████╗  ██║    
+//  ██║██╔████╔██║██████╔╝██║   ██║██████╔╝   ██║       █████╗   ╚███╔╝ ██████╔╝██║   ██║██████╔╝   ██║            ██║███████╗██║   ██║██╔██╗ ██║    
+//  ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██╔══██╗   ██║       ██╔══╝   ██╔██╗ ██╔═══╝ ██║   ██║██╔══██╗   ██║       ██   ██║╚════██║██║   ██║██║╚██╗██║    
+//  ██║██║ ╚═╝ ██║██║     ╚██████╔╝██║  ██║   ██║       ███████╗██╔╝ ██╗██║     ╚██████╔╝██║  ██║   ██║       ╚█████╔╝███████║╚██████╔╝██║ ╚████║    
+//  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝       ╚══════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝        ╚════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝    
+
 [Serializable]
-public class SaveJson
+public class JsonData
 {
-    public List<PropsClass> Props;
-    public List<JumpPadsClass> JumpPads;
-    public List<ButtonsClass> Buttons;
-    public List<BubbleShieldsClass> BubbleShields;
-    public List<WeaponRacksClass> WeaponRacks;
-    public List<LootBinsClass> LootBins;
-    public List<ZipLinesClass> ZipLines;
-    public List<LinkedZipLinesClass> LinkedZipLines;
-    public List<VerticalZipLinesClass> VerticalZipLines;
-    public List<NonVerticalZipLinesClass> NonVerticalZipLines;
-    public List<DoorsClass> Doors;
-    public List<TriggersClass> Triggers;
-    public List<SoundClass> Sounds;
-    public List<TextInfoPanelClass> TextInfoPanels;
+    public List< PropClassData > Props;
+    public List< ZipLineClassData > Ziplines;
+    public List< LinkedZipLinesClassData > LinkedZiplines;
+    public List< VerticalZipLineClassData > VerticalZipLines;
+    public List< NonVerticalZipLineClassData > NonVerticalZipLines;
+    public List< SingleDoorClassData > SingleDoors;
+    public List< DoubleDoorClassData > DoubleDoors;
+    public List< HorzDoorClassData > HorzDoors;
+    public List< VerticalDoorClassData > VerticalDoors;
+    public List< ButtonClassData > Buttons;
+    public List< JumppadClassData > Jumppads;
+    public List< LootBinClassData > LootBins;
+    public List< WeaponRackClassData > WeaponRacks;
+    public List< TriggerClassData > Triggers;
+    public List< BubbleShieldClassData > BubbleShields;
+    public List< SpawnPointClassData > SpawnPoints;
+    public List< TextInfoPanelClassData > TextInfoPanels;
+    public List< FuncWindowHintClassData > FuncWindowHints;
+    public List< SoundClassData > Sounds;
+}
+
+/// <summary>
+/// Use this to create derivative classes
+/// </summary>
+[Serializable]
+public class GlobalClassData
+{
+    public TransformData TransformData;
+    public string PathString;
+    public List< PathClass > Path;
+    
+}
+
+/// <summary>
+/// TransformData is used to determine the position / angles of a prefab
+/// </summary>
+[Serializable]
+public class TransformData
+{
+    public Vector3 position;
+    public Vector3 eulerAngles;
+    public Vector3 localScale;
+}
+
+/// <summary>
+/// Save the part of a path for the creation of a prefab
+/// </summary>
+[Serializable]
+public class PathClass
+{
+    public string FolderName;
+    public TransformData TransformData;
 }
 
 [Serializable]
-public class PropScriptClass
+public class PropClassData : GlobalClassData
 {
+    // If any changes are made here, do the same for JumppadClassData ( except string Name )
+    public string Name;
     public bool AllowMantle;
     public float FadeDistance;
     public int RealmID;
-    public List<PropScriptParameters> Parameters;
-    public List<string> CustomParameters;
+    public List< PropScriptParameters > Parameters;
+    public List< string > CustomParameters;
 }
 
 [Serializable]
-public class PropsClass
+public class ZipLineClassData : GlobalClassData
 {
-    public string Name;
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public Vector3 Scale;
-    public PropScriptClass script;
-    public string PathString;
-    public List<PathClass> Path;
+    public bool ShowZipline;
+    public float ShowZiplineDistance;
+    public Vector3 Zipline_start;
+    public Vector3 Zipline_end;
 }
 
 [Serializable]
-public class JumpPadsClass
+public class LinkedZipLinesClassData : GlobalClassData
 {
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public Vector3 Scale;
-    public PropScriptClass script;
-    public string PathString;
-    public List<PathClass> Path;
-}
-
-[Serializable]
-public class ButtonsClass
-{
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public string UseText;
-    public string OnUseCallback;
-    public string PathString;
-    public List<PathClass> Path;
-}
-
-[Serializable]
-public class BubbleShieldsClass
-{
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public Vector3 Scale;
-    public string Color;
-    public string Model;
-    public string PathString;
-    public List<PathClass> Path;
-}
-
-[Serializable]
-public class WeaponRacksClass
-{
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public string Weapon;
-    public float RespawnTime;
-    public string PathString;
-    public List<PathClass> Path;
-}
-
-[Serializable]
-public class LootBinsClass
-{
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public int Skin;
-    public string PathString;
-    public List<PathClass> Path;
-}
-
-[Serializable]
-public class ZipLinesClass
-{
-    public Vector3 Start;
-    public Vector3 End;
-    public string PathString;
-    public List<PathClass> Path;
-}
-
-[Serializable]
-public class LinkedZipLinesClass
-{
-    public bool IsSmoothed;
-    public bool SmoothType;
+    public bool EnableSmoothing;
     public int SmoothAmount;
-    public List<Vector3> Nodes;
-    public string PathString;
-    public List<PathClass> Path;
+    public bool SmoothType;
+    public List< Vector3 > Nodes;
 }
 
 [Serializable]
-public class VerticalZipLinesClass
+public class VerticalZipLineClassData : GlobalClassData
 {
-    public string ZiplineType;
-    public Vector3 ZiplinePosition;
-    public Vector3 ZiplineAngles;
+    public bool ShowZipline;
+    public float ShowZiplineDistance;
+    public bool ShowAutoDetachDistance;
+    public bool EnableAutoOffsetDistance;
+    public string Name;
     public float ArmOffset;
     public float HeightOffset;
     public float AnglesOffset;
@@ -142,24 +122,24 @@ public class VerticalZipLinesClass
     public bool IsMoving;
     public bool DetachEndOnSpawn;
     public bool DetachEndOnUse;
-    public VCPanelsClass[] Panels;
+    public List< VCPanelsClassData > Panels;
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;
-    public string PathString;
-    public List<PathClass> Path;
+    public bool ShowArmOffset;
 }
 
 [Serializable]
-public class NonVerticalZipLinesClass
+public class NonVerticalZipLineClassData : GlobalClassData
 {
-    public string ZiplineType;
-    public Vector3 ZiplineStartPosition;
-    public Vector3 ZiplineStartAngles;
-    public Vector3 ZiplineEndPosition;
-    public Vector3 ZiplineEndAngles;
-    public float ArmStartOffset;
-    public float ArmEndOffset;
+    public bool ShowZipline;
+    public float ShowZiplineDistance;
+    public bool ShowAutoDetachDistance;
+    public string Name;
+    public TransformData ZiplineStart;
+    public TransformData ZiplineEnd;
+    public float ArmOffsetStart;
+    public float ArmOffsetEnd;
     public float FadeDistance;
     public float Scale;
     public float Width;
@@ -174,88 +154,130 @@ public class NonVerticalZipLinesClass
     public bool IsMoving;
     public bool DetachEndOnSpawn;
     public bool DetachEndOnUse;
-    public VCPanelsClass[] Panels;
+    public List< VCPanelsClassData > Panels;
     public float PanelTimerMin;
     public float PanelTimerMax;
     public int PanelMaxUse;
-    public string PathString;
-    public List<PathClass> Path;
+    public bool ShowArmOffsetStart;
+    public bool ShowArmOffsetEnd;
 }
 
 [Serializable]
-public class VCPanelsClass
+public class VCPanelsClassData : GlobalClassData
 {
     public string Model;
-    public Vector3 Position;
-    public Vector3 Angles;
-    public string PathString;
-    public List<PathClass> Path;
 }
 
 [Serializable]
-public class DoorsClass
+public class SingleDoorClassData : GlobalClassData
 {
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public string Type;
-    public bool Gold;
-    public string PathString;
-    public List<PathClass> Path;
+    public bool GoldDoor;
 }
 
 [Serializable]
-public class TriggersClass
+public class DoubleDoorClassData : GlobalClassData
 {
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public string EnterCallback;
-    public string ExitCallback;
-    public float Radius;
-    public float Height;
+    public bool GoldDoor;
+}
+
+[Serializable]
+public class HorzDoorClassData : GlobalClassData
+{
+    // Stub script
+}
+
+[Serializable]
+public class VerticalDoorClassData : GlobalClassData
+{
+    // Stub script
+}
+
+[Serializable]
+public class ButtonClassData : GlobalClassData
+{
+    public string UseText;
+    public string OnUseCallback;
+}
+
+[Serializable]
+public class JumppadClassData : GlobalClassData
+{
+    // Uses the same classes as PropClassData ( except string Name )
+    public bool AllowMantle;
+    public float FadeDistance;
+    public int RealmID;
+    public List< PropScriptParameters > Parameters;
+    public List< string > CustomParameters;
+}
+
+[Serializable]
+public class LootBinClassData : GlobalClassData
+{
+    public int LootbinSkin;
+}
+
+[Serializable]
+public class WeaponRackClassData : GlobalClassData
+{
+    public string Name;
+    public float RespawnTime;
+}
+
+[Serializable]
+public class TriggerClassData : GlobalClassData
+{
     public bool Debug;
-    public string PathString;
-    public List<PathClass> Path;
+    public string EnterCallback;
+    public string LeaveCallback;
 }
 
 [Serializable]
-public class SoundClass
+public class BubbleShieldClassData : GlobalClassData
 {
-    public Vector3 Position;
+    public string Name;
+    public Color32 ShieldColor;
+}
+
+[Serializable]
+public class SpawnPointClassData : GlobalClassData
+{
+    // Stub script
+}
+
+[Serializable]
+public class TextInfoPanelClassData : GlobalClassData
+{
+    public string Title;
+    public string Description;
+    public bool showPIN;
+    public float Scale;
+}
+
+[Serializable]
+public class FuncWindowHintClassData : GlobalClassData
+{
+    // Stub script
+}
+
+[Serializable]
+public class SoundClassData : GlobalClassData
+{
+    public bool ShowPolylineSegments;
+    public float ShowPolylineSegmentsDistance;
     public float Radius;
     public bool IsWaveAmbient;
     public bool Enable;
     public string SoundName;
-    public List<Vector3> PolylineSegments;
-    public string PathString;
-    public List<PathClass> Path;
+    public Vector3[] PolylineSegment;
 }
 
-[Serializable]
-public class TextInfoPanelClass
-{
-    public Vector3 Position;
-    public Vector3 Rotation;
-    public string Title;
-    public string Description;
-    public bool ShowPIN;
-    public float Scale;
-    public string PathString;
-    public List<PathClass> Path;
-}
 
-[Serializable]
-public class PathClass
-{
-    public string FolderName;
-    public TransformData TransformData;
-}
-
-//  ██████╗ ██████╗ ███████╗███████╗ █████╗ ██████╗  ██████╗ ███████╗███████╗███████╗███████╗████████╗
-//  ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔════╝██╔════╝██╔════╝██╔════╝╚══██╔══╝
-//  ██████╔╝██████╔╝█████╗  █████╗  ███████║██████╔╝██║   ██║█████╗  █████╗  ███████╗█████╗     ██║   
-//  ██╔═══╝ ██╔══██╗██╔══╝  ██╔══╝  ██╔══██║██╔══██╗██║   ██║██╔══╝  ██╔══╝  ╚════██║██╔══╝     ██║   
-//  ██║     ██║  ██║███████╗██║     ██║  ██║██████╔╝╚██████╔╝██║     ██║     ███████║███████╗   ██║   
-//  ╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝     ╚═╝     ╚══════╝╚══════╝   ╚═╝   
+//  ██████╗ ██████╗ ███████╗███████╗ █████╗ ██████╗      ██████╗ ███████╗███████╗███████╗███████╗████████╗
+//  ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗██╔══██╗    ██╔═══██╗██╔════╝██╔════╝██╔════╝██╔════╝╚══██╔══╝
+//  ██████╔╝██████╔╝█████╗  █████╗  ███████║██████╔╝    ██║   ██║█████╗  █████╗  ███████╗█████╗     ██║   
+//  ██╔═══╝ ██╔══██╗██╔══╝  ██╔══╝  ██╔══██║██╔══██╗    ██║   ██║██╔══╝  ██╔══╝  ╚════██║██╔══╝     ██║   
+//  ██║     ██║  ██║███████╗██║     ██║  ██║██████╔╝    ╚██████╔╝██║     ██║     ███████║███████╗   ██║   
+//  ╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═════╝      ╚═════╝ ╚═╝     ╚═╝     ╚══════╝╚══════╝   ╚═╝   
 
 [Serializable]
 public class PrefabOffsetList
@@ -270,12 +292,13 @@ public class PrefabOffset
     public Vector3 Rotation;
 }
 
-//  ██████╗ ██████╗  █████╗ ██╗  ██╗ ██████╗ ██████╗ ███╗   ██╗████████╗███████╗███╗   ██╗████████╗
-//  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔════╝████╗  ██║╚══██╔══╝
-//  ██████╔╝██████╔╝███████║█████╔╝ ██║     ██║   ██║██╔██╗ ██║   ██║   █████╗  ██╔██╗ ██║   ██║   
-//  ██╔══██╗██╔═══╝ ██╔══██║██╔═██╗ ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══╝  ██║╚██╗██║   ██║   
-//  ██║  ██║██║     ██║  ██║██║  ██╗╚██████╗╚██████╔╝██║ ╚████║   ██║   ███████╗██║ ╚████║   ██║   
-//  ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═══╝   ╚═╝   
+
+//  ██████╗ ██████╗  █████╗ ██╗  ██╗     ██████╗ ██████╗ ███╗   ██╗████████╗███████╗███╗   ██╗████████╗
+//  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝    ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔════╝████╗  ██║╚══██╔══╝
+//  ██████╔╝██████╔╝███████║█████╔╝     ██║     ██║   ██║██╔██╗ ██║   ██║   █████╗  ██╔██╗ ██║   ██║   
+//  ██╔══██╗██╔═══╝ ██╔══██║██╔═██╗     ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══╝  ██║╚██╗██║   ██║   
+//  ██║  ██║██║     ██║  ██║██║  ██╗    ╚██████╗╚██████╔╝██║ ╚████║   ██║   ███████╗██║ ╚████║   ██║   
+//  ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═══╝   ╚═╝   
 
 [Serializable]
 public class RpakContentJson
@@ -289,6 +312,7 @@ public class RpakContentClass
     public string modelName;
     public string[] location;
 }
+
 
 //  ████████╗██╗███╗   ███╗███████╗███████╗████████╗ █████╗ ███╗   ███╗██████╗ 
 //  ╚══██╔══╝██║████╗ ████║██╔════╝██╔════╝╚══██╔══╝██╔══██╗████╗ ████║██╔══██╗

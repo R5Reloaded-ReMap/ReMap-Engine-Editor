@@ -15,6 +15,12 @@ using static ImportExport.Json.JsonShared;
 
 namespace ImportExport.Json
 {
+    public enum ExportType
+    {
+        All = 0,
+        Selection = 1,
+    }
+
     public class JsonExport
     {
         internal static JsonData jsonData = new JsonData();
@@ -60,9 +66,8 @@ namespace ImportExport.Json
             EditorUtility.ClearProgressBar();
         }
 
-        /*
         [ MenuItem( "ReMap/Export Selection/Json", false, 51 ) ]
-        public static async void ExportJson()
+        public static async void ExportSelectionJson()
         {
             Helper.FixPropTags();
 
@@ -73,25 +78,25 @@ namespace ImportExport.Json
             EditorUtility.DisplayProgressBar( "Starting Export", "" , 0 );
 
             ResetJsonData();
-            await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
-            await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
-            await ExportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
-            await ExportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines );
-            await ExportObjectsWithEnum( ObjectType.NonVerticalZipLine, jsonData.NonVerticalZipLines );
-            await ExportObjectsWithEnum( ObjectType.SingleDoor, jsonData.SingleDoors );
-            await ExportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors );
-            await ExportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors );
-            await ExportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors );
-            await ExportObjectsWithEnum( ObjectType.Button, jsonData.Buttons );
-            await ExportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads );
-            await ExportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins );
-            await ExportObjectsWithEnum( ObjectType.WeaponRack, jsonData.WeaponRacks );
-            await ExportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers );
-            await ExportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields );
-            await ExportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints );
-            await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
-            await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
-            await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
+            await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.NonVerticalZipLine, jsonData.NonVerticalZipLines, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.SingleDoor, jsonData.SingleDoors, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.Button, jsonData.Buttons, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.WeaponRack, jsonData.WeaponRacks, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds, ExportType.Selection );
 
             ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
             string json = JsonUtility.ToJson( jsonData );
@@ -101,14 +106,19 @@ namespace ImportExport.Json
 
             EditorUtility.ClearProgressBar();
         }
-        */
 
-        private static async Task ExportObjectsWithEnum< T >( ObjectType objectType, List< T > listType, GameObject[] objectsData = null ) where T : class
+
+        private static async Task ExportObjectsWithEnum< T >( ObjectType objectType, List< T > listType, ExportType exportType = ExportType.All ) where T : class
         {
-            int i = 0; int j = 1;
+            int i = 0; int j = 1; GameObject[] objectsData;
 
-            if ( objectsData == null )
-                objectsData = Helper.GetObjArrayWithEnum( objectType );
+            switch ( exportType )
+            {
+                case ExportType.All: objectsData = Helper.GetObjArrayWithEnum( objectType ); break;
+                case ExportType.Selection: objectsData = Selection.gameObjects.Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) ).ToArray(); break;
+
+                default: return;
+            }
 
             int objectsCount = objectsData.Length;
             string objType = Helper.GetObjNameWithEnum( objectType );

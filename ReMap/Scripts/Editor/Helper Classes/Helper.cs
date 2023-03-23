@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -309,25 +310,25 @@ public class Helper
     {
         // Order of importance
         string code = "";
-        if( Prop )                code += Build.Props( null, Build.BuildType.Map );
-        if( ZipLine )             code += Build.ZipLines();
-        if( LinkedZipline )       code += Build.LinkedZipLines();
-        if( VerticalZipLine )     code += Build.VerticalZipLines();
-        if( NonVerticalZipLine )  code += Build.NonVerticalZipLines();
-        if( SingleDoor )          code += Build.SingleDoors();
-        if( DoubleDoor )          code += Build.DoubleDoors();
-        if( HorzDoor )            code += Build.HorizontalDoors();
-        if( VerticalDoor )        code += Build.VertDoors();
-        if( Button )              code += Build.Buttons();
-        if( Jumppad )             code += Build.Jumpads();
-        if( LootBin )             code += Build.LootBins();
-        if( WeaponRack )          code += Build.WeaponRacks();
-        if( Trigger )             code += Build.Triggers();
-        if( BubbleShield )        code += Build.BubbleShields();
-        //if( SpawnPoint )          code += Build.;
-        if( TextInfoPanel )       code += Build.TextInfoPanel();
-        //if( FuncWindowHint )      code += Build.;
-        //if( Sound )               code += Build.;
+        if( Prop )                code += Build_.Props( null, Build_.BuildType.Map );
+        if( ZipLine )             code += Build_.ZipLines();
+        if( LinkedZipline )       code += Build_.LinkedZipLines();
+        if( VerticalZipLine )     code += Build_.VerticalZipLines();
+        if( NonVerticalZipLine )  code += Build_.NonVerticalZipLines();
+        if( SingleDoor )          code += Build_.SingleDoors();
+        if( DoubleDoor )          code += Build_.DoubleDoors();
+        if( HorzDoor )            code += Build_.HorizontalDoors();
+        if( VerticalDoor )        code += Build_.VertDoors();
+        if( Button )              code += Build_.Buttons();
+        if( Jumppad )             code += Build_.Jumpads();
+        if( LootBin )             code += Build_.LootBins();
+        if( WeaponRack )          code += Build_.WeaponRacks();
+        if( Trigger )             code += Build_.Triggers();
+        if( BubbleShield )        code += Build_.BubbleShields();
+        //if( SpawnPoint )          code += Build_.;
+        if( TextInfoPanel )       code += Build_.TextInfoPanel();
+        //if( FuncWindowHint )      code += Build_.;
+        //if( Sound )               code += Build_.;
 
         return code;
     }
@@ -454,6 +455,23 @@ public class Helper
     public static bool GetBoolFromGenerateObjects( ObjectType objectType )
     {
         return GenerateObjects[ GetObjNameWithEnum( objectType ) ];
+    }
+
+    public static GameObject[] GetSelectedObjectWithEnum( ObjectType objectType )
+    {
+        GameObject[] SelectedObject =
+        Selection.gameObjects.Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+        .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
+        .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+        .Select( child => child.gameObject )
+        .Concat( Selection.gameObjects.Where( obj => obj.transform.childCount > 0 )
+        .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
+        .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+        .Select( child => child.gameObject ) )
+        .Distinct()
+        .ToArray();
+
+        return SelectedObject;
     }
 
     public static string Credits = @"

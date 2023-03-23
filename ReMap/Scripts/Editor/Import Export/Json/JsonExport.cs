@@ -115,18 +115,7 @@ namespace ImportExport.Json
             switch ( exportType )
             {
                 case ExportType.All: objectsData = Helper.GetObjArrayWithEnum( objectType ); break;
-                case ExportType.Selection:
-                    objectsData = Selection.gameObjects.Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-                    .SelectMany( obj => obj.GetComponentsInChildren<Transform>(true) )
-                    .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-                    .Select( child => child.gameObject )
-                    .Concat( Selection.gameObjects.Where( obj => obj.transform.childCount > 0 )
-                    .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
-                    .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-                    .Select( child => child.gameObject ) )
-                    .Distinct()
-                    .ToArray();
-                break;
+                case ExportType.Selection: objectsData = Helper.GetSelectedObjectWithEnum( objectType ); break;
 
                 default: return;
             }

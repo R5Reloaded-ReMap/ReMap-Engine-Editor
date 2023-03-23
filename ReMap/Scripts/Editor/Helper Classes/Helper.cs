@@ -5,7 +5,8 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-using ImportExport.Classes;
+using ImportExport.Shared;
+using static ImportExport.Shared.SharedFunction;
 
 public enum StringType
 {

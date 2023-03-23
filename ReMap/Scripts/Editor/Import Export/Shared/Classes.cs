@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ImportExport.Classes
+namespace ImportExport.Shared
 {
     [Serializable]
     public class JsonData

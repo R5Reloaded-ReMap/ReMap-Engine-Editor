@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-// public
-using ImportExport.Classes;
-
 namespace ImportExport.Shared
 {
     public enum GetSetData

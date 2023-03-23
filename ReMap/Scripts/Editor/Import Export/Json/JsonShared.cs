@@ -9,11 +9,10 @@ using UnityEditor;
 using UnityEngine;
 
 // Internal
-using ImportExport.Classes;
 using ImportExport.Shared;
 using static ImportExport.Shared.SharedFunction;
 
-namespace ImportExport.Json.Shared
+namespace ImportExport.Json
 {
     public class JsonShared
     {

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using ThemesPlugin;
 using AssetLibraryManager;
+using ImportExport.Json.Import;
+using ImportExport.Json.Export;
 
 public class QuickMenu : EditorWindow
 {
@@ -47,7 +49,7 @@ public class QuickMenu : EditorWindow
             if (GUILayout.Button("Datatable", GUILayout.ExpandWidth(true)))
                 ImportExportDataTable.ImportDataTable();
             if (GUILayout.Button("Json", GUILayout.ExpandWidth(true)))
-                ImportExportJson.ImportJson();
+                JsonImport.ImportJson();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();
@@ -80,7 +82,7 @@ public class QuickMenu : EditorWindow
             if (GUILayout.Button("Datatable", GUILayout.ExpandWidth(true)))
                 ImportExportDataTable.ExportDataTable();
             if (GUILayout.Button("Json", GUILayout.ExpandWidth(true)))
-                ImportExportJson.ExportJson();
+                JsonExport.ExportJson();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();

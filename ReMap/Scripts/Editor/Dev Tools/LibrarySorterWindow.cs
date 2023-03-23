@@ -3,9 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+
+[Serializable]
+public class PrefabOffsetList
+{
+    public List<PrefabOffset> List;
+}
+
+[Serializable]
+public class PrefabOffset
+{
+    public string ModelName;
+    public Vector3 Rotation;
+}
 
 public class LibrarySorterWindow : EditorWindow
 {
@@ -897,7 +911,7 @@ public class JsonWindow : EditorWindow
         offsetlist = JsonUtility.FromJson<PrefabOffsetList>( json );
         offsets = offsetlist.List;
 
-        ImportExportJson.SortListByKey(offsets, x => x.ModelName);
+        UnityInfo.SortListByKey(offsets, x => x.ModelName);
     }
 
     public static bool PrefabOffsetExist( string name )

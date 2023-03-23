@@ -1,10 +1,24 @@
-//using System.Diagnostics;
-using System.ComponentModel;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using UnityEditor;
 using UnityEngine;
+
+[Serializable]
+public class RpakContentJson
+{
+    public List<RpakContentClass> List;
+}
+
+[Serializable]
+public class RpakContentClass
+{
+    public string modelName;
+    public string[] location;
+}
 
 public class RpakInfo : EditorWindow
 {

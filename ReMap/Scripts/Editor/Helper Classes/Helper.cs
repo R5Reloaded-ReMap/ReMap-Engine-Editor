@@ -5,6 +5,8 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
+using ImportExport.Classes;
+
 public enum StringType
 {
     ObjectRef = 0,

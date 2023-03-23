@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class UnityInfo
@@ -294,6 +295,32 @@ public class UnityInfo
     public static void Printt( string str )
     {
         UnityEngine.Debug.Log( str );
+    }
+
+    public static string GetObjName( GameObject obj )
+    {
+        return obj.name.Split( char.Parse( " " ) )[0];
+    }
+
+    public static void SortListByKey<T, TKey>(List<T> list, Func<T, TKey> keySelector) where TKey : IComparable
+    {
+        list.Sort((x, y) => keySelector(x).CompareTo(keySelector(y)));
+    }
+
+    public static UnityEngine.Object FindPrefabFromName(string name)
+    {
+        // Hack so that the models named at the end with "(number)" still work
+        if(name.Contains(" "))
+            name = name.Split(" ")[0];
+
+        //Find Model GUID in Assets
+        string[] results = AssetDatabase.FindAssets(name);
+        if (results.Length == 0)
+            return null;
+
+        //Get model path from guid and load it
+        UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(results[0]), typeof(UnityEngine.Object)) as GameObject;
+        return loadedPrefabResource;
     }
 
     private static bool IsNotExcludedFile( string filePath, bool includeAllModelFile )

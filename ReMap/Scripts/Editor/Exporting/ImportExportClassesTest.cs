@@ -224,13 +224,16 @@ public class BubbleShieldClassData : GlobalClassData
 [Serializable]
 public class SpawnPointClassData : GlobalClassData
 {
-    
+    // Stub script
 }
 
 [Serializable]
 public class TextInfoPanelClassData : GlobalClassData
 {
-    
+    public string Title;
+    public string Description;
+    public bool showPIN;
+    public float Scale;
 }
 
 [Serializable]
@@ -242,5 +245,11 @@ public class FuncWindowHintClassData : GlobalClassData
 [Serializable]
 public class SoundClassData : GlobalClassData
 {
-    
+    public bool ShowPolylineSegments;
+    public float ShowPolylineSegmentsDistance;
+    public float Radius;
+    public bool IsWaveAmbient;
+    public bool Enable;
+    public string SoundName;
+    public Vector3[] PolylineSegment;
 }

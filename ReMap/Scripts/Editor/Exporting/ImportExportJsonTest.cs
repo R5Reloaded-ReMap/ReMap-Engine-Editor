@@ -178,12 +178,12 @@ public class ImportExportJsonTest
 
                 case SpawnPointClassData data: // Spawn Points
                     data = ( SpawnPointClassData )( object ) objData;
-                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_info_spawnpoint_human", objectType, i, j, objectsCount );
                     break;
 
                 case TextInfoPanelClassData data: // Text Info Panels
                     data = ( TextInfoPanelClassData )( object ) objData;
-                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_text_info_panel", objectType, i, j, objectsCount );
                     break;
 
                 case FuncWindowHintClassData data: // Window Hints
@@ -193,7 +193,7 @@ public class ImportExportJsonTest
 
                 case SoundClassData data: // Sounds
                     data = ( SoundClassData )( object ) objData;
-                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "custom_sound", objectType, i, j, objectsCount );
                     break;
 
                 default: break;
@@ -385,20 +385,7 @@ public class ImportExportJsonTest
         jsonData.FuncWindowHints = new List< FuncWindowHintClassData >();
         jsonData.Sounds = new List< SoundClassData >();
     }
-
-    /* Todo objects left:
-    Button,
-    Jumppad,
-    LootBin,
-    WeaponRack,
-    Trigger,
-    BubbleShield,
-    SpawnPoint,
-    TextInfoPanel,
-    FuncWindowHint,
-    Sound
-    */
-
+    
     private static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
     {
         if ( data == null ) // if data is null, get the transformation data
@@ -558,7 +545,7 @@ public class ImportExportJsonTest
                 case TextInfoPanelClassData data: // Text Info Panels
                     data = ( TextInfoPanelClassData )( object ) scriptData;
                     TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( textInfoPanelScript, data );
+                    TransferDataToClass( textInfoPanelScript, data, new[] { "TextMeshTitle", "TextMeshDescription" }.ToList() );
                     break;
 
                 case FuncWindowHintClassData data: // Window Hints
@@ -570,7 +557,7 @@ public class ImportExportJsonTest
                 case SoundClassData data: // Sounds
                     data = (SoundClassData  )( object ) scriptData;
                     SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( soundScript, data );
+                    TransferDataToClass( soundScript, data, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
                     break;
 
                 default: break;
@@ -725,7 +712,7 @@ public class ImportExportJsonTest
                 case TextInfoPanelClassData data: // Text Info Panels
                     data = ( TextInfoPanelClassData )( object ) scriptData;
                     TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( data, textInfoPanelScript );
+                    TransferDataToClass( data, textInfoPanelScript, new[] { "TextMeshTitle", "TextMeshDescription" }.ToList() );
                     break;
 
                 case FuncWindowHintClassData data: // Window Hints
@@ -737,7 +724,7 @@ public class ImportExportJsonTest
                 case SoundClassData data: // Sounds
                     data = (SoundClassData  )( object ) scriptData;
                     SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
-                    TransferDataToClass( data, soundScript );
+                    TransferDataToClass( data, soundScript, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
                     break;
 
                 default: break;

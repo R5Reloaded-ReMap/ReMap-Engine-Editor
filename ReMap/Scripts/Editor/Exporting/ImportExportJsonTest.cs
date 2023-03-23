@@ -168,7 +168,7 @@ public class ImportExportJsonTest
 
                 case TriggerClassData data: // Triggers
                     data = ( TriggerClassData )( object ) objData;
-                    obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
+                    obj = ProcessImportClassData( data, "trigger_cylinder", objectType, i, j, objectsCount );
                     break;
 
                 case BubbleShieldClassData data: // Bubbles Shield

@@ -298,10 +298,10 @@ public class Helper
     /// </summary>
     /// <returns>built map code string</returns>
     public static string BuildMapCode(
-    bool Prop = true,       bool ZipLine = true,       bool LinkedZipline = true,  bool VerticalZipLine = true, bool NonVerticalZipLine = true,
-    bool SingleDoor = true, bool DoubleDoor = true,    bool HorzDoor = true,       bool VerticalDoor = true,    bool Button = true,
-    bool Jumppad = true,    bool LootBin = true,       bool WeaponRack = true,     bool Trigger = true,         bool BubbleShield = true,
-    bool SpawnPoint = true, bool TextInfoPanel = true, bool FuncWindowHint = true, bool Sound = true )
+    BuildType buildType = BuildType.Script, bool Prop = true,            bool ZipLine = true,       bool LinkedZipline = true,  bool VerticalZipLine = true,
+    bool NonVerticalZipLine = true,         bool SingleDoor = true,      bool DoubleDoor = true,    bool HorzDoor = true,       bool VerticalDoor = true,
+    bool Button = true,                     bool Jumppad = true,         bool LootBin = true,       bool WeaponRack = true,     bool Trigger = true,
+    bool BubbleShield = true,               bool SpawnPoint = true,      bool TextInfoPanel = true, bool FuncWindowHint = true, bool Sound = true )
     {
         // Order of importance
         string code = "";

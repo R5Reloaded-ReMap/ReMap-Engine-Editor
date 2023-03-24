@@ -79,7 +79,7 @@ public class ImportExportDataTable
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        Helper.Is_Using_Starting_Offset = true;
+        Helper.UseStartingOffset = true;
 
         string tableCode = Build_.Props( null, Build_.BuildType.DataTable, true );
         ReMapConsole.Log("[Datatable Export] Writing to file: " + path, ReMapConsole.LogType.Warning);

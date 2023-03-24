@@ -45,7 +45,7 @@ public class MapExport
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        Helper.Is_Using_Starting_Offset = true;
+        Helper.UseStartingOffset = true;
         string entCode = Build_.Props( null, Build_.BuildType.Ent );
 
         ReMapConsole.Log("[Script.ent Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
@@ -91,18 +91,18 @@ public class MapExport
         Helper.FixPropTags();
         EditorSceneManager.SaveOpenScenes();
 
-        Helper.Is_Using_Starting_Offset = false;
+        Helper.UseStartingOffset = false;
         if (type == Helper.ExportType.MapOnlyOffset || type == Helper.ExportType.WholeScriptOffset)
-            Helper.Is_Using_Starting_Offset = true;
+            Helper.UseStartingOffset = true;
 
         string funcName = SceneManager.GetActiveScene().name.Replace(" ", "_");
 
-        string mapcode = Helper.Credits + "\n";
+        string mapcode = Helper.ReMapCredit() + "\n";
         mapcode += $"void function {funcName}_Init()" + "\n{\n" + $"{Build_.Props( null, Build_.BuildType.Precache)}" + "\n" + $"    {funcName}()" + "\n" + "\n}\n\n";
-        mapcode += $"void function {funcName}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(1);
+        mapcode += $"void function {funcName}()" + "\n{\n" +  Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction );
 
         if (type == Helper.ExportType.MapOnly || type == Helper.ExportType.MapOnlyOffset)
-            mapcode = Helper.ShouldAddStartingOrg(1);
+            mapcode = Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction );
 
         //Build Map Code
         mapcode += Helper.BuildMapCode();

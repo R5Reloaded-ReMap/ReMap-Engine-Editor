@@ -40,12 +40,12 @@
     {
         Helper.FixPropTags();
 
-        Helper.Is_Using_Starting_Offset = false;
-        Helper.DisableStartingOffsetString = false;
+        Helper.UseStartingOffset = false;
+        Helper.ShowStartingOffset = false;
 
         string mapcode = "";
         if(onlyMapCode)
-            mapcode = Helper.ShouldAddStartingOrg(1);
+            mapcode = Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction );
 
         //Build Map Code
         mapcode += Helper.BuildMapCode( BuildType.Script,

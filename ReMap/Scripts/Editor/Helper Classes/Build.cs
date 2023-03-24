@@ -560,7 +560,7 @@ public class Build_
 
         string code = "    // NewLocPair\n\n";
 
-        code += Helper.ShouldAddStartingOrg(1);
+        code += Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction );
 
         foreach ( GameObject go in ObjectsArray )
             code += BuildNewLocPairItem(go, isexport);

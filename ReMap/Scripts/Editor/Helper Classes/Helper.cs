@@ -5,11 +5,19 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using ImportExport.Shared;
 using static ImportExport.Shared.SharedFunction;
 using Build;
 using static Build.Build;
+using static CodeViewsWindow.CodeViewsWindow;
+
+public enum StartingOriginType
+{
+    SquirrelFunction = 0,
+    Function = 1
+}
 
 public enum StringType
 {
@@ -45,10 +53,10 @@ public enum ObjectType
 public class Helper
 {
     public static int maxBuildLength = 75000;
-    public static int greenPropCount = 1500;
-    public static int yellowPropCount = 3000;
-    public static bool Is_Using_Starting_Offset = false;
-    public static bool DisableStartingOffsetString = false;
+    public static bool UseStartingOffset = false;
+    public static bool UseStartingOffsetTemp = false;
+    public static bool ShowStartingOffset = true;
+    public static bool ShowStartingOffsetTemp = true;
 
     private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new Dictionary< ObjectType, ObjectTypeData >
     {
@@ -75,10 +83,6 @@ public class Helper
 
     public static Dictionary<string, string> ObjectToTag = ObjectToTagDictionaryInit();
 
-    // Gen Settings
-    public static Dictionary<string, bool> GenerateObjects = ObjectGenerateDictionaryInit();
-    public static string[] GenerateIgnore = new string[] { GetObjNameWithEnum( ObjectType.SpawnPoint ), GetObjNameWithEnum( ObjectType.FuncWindowHint ), GetObjNameWithEnum( ObjectType.Sound ) };
-
     public enum ExportType
     {
         WholeScriptOffset,
@@ -104,18 +108,17 @@ public class Helper
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string ShouldAddStartingOrg(int type = 0)
+    public static string ShouldAddStartingOrg( StartingOriginType type = StartingOriginType.Function, float x = 0, float y = 0, float z = 0 )
     {
-        if(!Is_Using_Starting_Offset)
+        if( !UseStartingOffset || !ShowStartingOffset )
             return "";
 
-        if(type == 0)
+        if( type == StartingOriginType.Function )
             return " + startingorg";
 
-        if(DisableStartingOffsetString)
-            return "";
+        string vector = $"< {x.ToString().Replace( ",", "." )}, {y.ToString().Replace( ",", "." )}, {z.ToString().Replace( ",", "." )} >";
 
-        return "    //Starting Origin, Change this to a origin in a map \n    vector startingorg = <0,0,0>" + "\n\n";
+        return $"    //Starting Origin, Change this to a origin in a map \n    vector startingorg = {vector}" + "\n\n";
     }
 
     /// <summary>
@@ -479,8 +482,17 @@ public class Helper
         return SelectedObject;
     }
 
-    public static string Credits = @"
-//Made with Unity Map Editor
-//By AyeZee#6969 & Julefox#0050
-";
+    public static string GetSquirrelSceneNameFunction()
+    {
+        return $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()";
+    }
+
+    public static string ReMapCredit()
+    {
+        string credit = "";
+        credit += "    // Made with Unity ReMap Editor\n";
+        credit += "    // By AyeZee#6969 & Julefox#0050\n";
+        PageBreak( ref credit );
+        return credit;
+    }
 }

@@ -23,9 +23,9 @@ public class CodeViews : EditorWindow
     bool OnlyExportMap = true;
     bool OnlyExportMap_temp = true;
     bool UseStartingOffset = false;
-    bool UseStartingOffset_temp = false;
-    static bool DisableStartingOffsetString = false;
-    static bool DisableStartingOffsetString_temp = false;
+    bool UseStartingOffsetTemp = false;
+    static bool ShowStartingOffset = false;
+    static bool ShowStartingOffset_temp = false;
     bool ShowAdvanced = false;
     public static bool UseOriginOffset = false;
     public static Vector3 OriginOffset;
@@ -161,9 +161,9 @@ public class CodeViews : EditorWindow
 
     void SetCorrectColor(int count)
     {
-        if(count < Helper.greenPropCount)
+        if(count < CodeViewsWindow.CodeViewsWindow.greenPropCount)
             GUI.contentColor = Color.green;
-        else if((count < Helper.yellowPropCount)) 
+        else if((count < CodeViewsWindow.CodeViewsWindow.yellowPropCount))
             GUI.contentColor = Color.yellow;
         else
             GUI.contentColor = Color.red;
@@ -171,9 +171,9 @@ public class CodeViews : EditorWindow
 
     void SetCorrectEntityLabel(int count)
     {
-        if(count < Helper.greenPropCount)
+        if(count < CodeViewsWindow.CodeViewsWindow.greenPropCount)
             GUILayout.Label("Status: Safe");
-        else if((count < Helper.yellowPropCount)) 
+        else if((count < CodeViewsWindow.CodeViewsWindow.yellowPropCount))
             GUILayout.Label("Status: Safe");
         else
             GUILayout.Label("Status: Warning! Game could crash!");
@@ -188,8 +188,6 @@ public class CodeViews : EditorWindow
         GUILayout.EndVertical();
 
         GetEditorWindowSize();
-
-        GUI.contentColor = Color.white;
         
         GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
@@ -199,13 +197,13 @@ public class CodeViews : EditorWindow
                 GenerateMap(OnlyExportMap, false);
             }
             UseStartingOffset = EditorGUILayout.Toggle("Use Map Origin Offset", UseStartingOffset);
-            if(UseStartingOffset != UseStartingOffset_temp) {
-                UseStartingOffset_temp = UseStartingOffset;
+            if(UseStartingOffset != UseStartingOffsetTemp) {
+                UseStartingOffsetTemp = UseStartingOffset;
                 GenerateMap(OnlyExportMap, false);
             }
-            DisableStartingOffsetString = EditorGUILayout.Toggle("Hide Starting Vector", DisableStartingOffsetString);
-            if(DisableStartingOffsetString != DisableStartingOffsetString_temp) {
-                DisableStartingOffsetString_temp = DisableStartingOffsetString;
+            ShowStartingOffset = EditorGUILayout.Toggle("Hide Starting Vector", ShowStartingOffset);
+            if(ShowStartingOffset != ShowStartingOffset_temp) {
+                ShowStartingOffset_temp = ShowStartingOffset;
                 GenerateMap(OnlyExportMap, false);
             }
             ShowAdvanced = EditorGUILayout.Toggle("Show Advanced Options", ShowAdvanced);
@@ -224,11 +222,11 @@ public class CodeViews : EditorWindow
                             ObjectType? type = Helper.GetObjectTypeByObjName( key );
                             if ( type != null && UnityInfo.GetSpecificObjectCount( ( ObjectType ) type ) == 0 ) continue;
 
-                            Helper.GenerateObjects[key] = EditorGUILayout.Toggle( $"Build {key}", Helper.GenerateObjects[key], GUILayout.Width( windowSize.x / subDivToggle ) );
+                            CodeViewsWindow.CodeViewsWindow.GenerateObjects[key] = EditorGUILayout.Toggle( $"Build {key}", CodeViewsWindow.CodeViewsWindow.GenerateObjects[key], GUILayout.Width( windowSize.x / subDivToggle ) );
 
-                            if ( Helper.GenerateObjects[key] != GenerateObjects_temp[key] )
+                            if ( CodeViewsWindow.CodeViewsWindow.GenerateObjects[key] != GenerateObjects_temp[key] )
                             {
-                                GenerateObjects_temp[key] = Helper.GenerateObjects[key];
+                                GenerateObjects_temp[key] = CodeViewsWindow.CodeViewsWindow.GenerateObjects[key];
                                 GenerateMap(OnlyExportMap, false);
                             }
                             
@@ -349,7 +347,7 @@ public class CodeViews : EditorWindow
 
     void NewLocPairGUI()
     {
-        Helper.Is_Using_Starting_Offset = UseStartingOffsetLocPair;
+        Helper.UseStartingOffset = UseStartingOffsetLocPair;
 
         GUI.contentColor = Color.white;
 
@@ -383,12 +381,12 @@ public class CodeViews : EditorWindow
     {
         Helper.FixPropTags();
 
-        Helper.Is_Using_Starting_Offset = UseStartingOffset;
-        Helper.DisableStartingOffsetString = DisableStartingOffsetString;
+        Helper.UseStartingOffset = UseStartingOffset;
+        Helper.ShowStartingOffset = ShowStartingOffset;
 
-        string mapcode = Helper.Credits + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg(1);
+        string mapcode = Helper.ReMapCredit() + "\n" + $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()" + "\n{\n" +  Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction );
         if(onlyMapCode)
-            mapcode = Helper.ShouldAddStartingOrg(1);
+            mapcode = Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction );
 
         //Build Map Code
         mapcode += Helper.BuildMapCode( BuildType.Script,
@@ -510,7 +508,7 @@ public class CodeViews : EditorWindow
 
     private static bool IsIgnored( string key )
     {
-        foreach ( string ignoredObj in Helper.GenerateIgnore )
+        foreach ( string ignoredObj in CodeViewsWindow.CodeViewsWindow.GenerateIgnore )
         {
             if ( ignoredObj == key ) return true;
         }

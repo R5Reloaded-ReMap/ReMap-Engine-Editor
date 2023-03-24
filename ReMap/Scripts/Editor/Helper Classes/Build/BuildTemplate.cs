@@ -18,6 +18,8 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
+                    code += "    // Template";
+                    PageBreak( ref code );
                     break;
                 case BuildType.EntFile:
                     break;
@@ -50,6 +52,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
+                    PageBreak( ref code );
                     break;
                 case BuildType.EntFile:
                     break;

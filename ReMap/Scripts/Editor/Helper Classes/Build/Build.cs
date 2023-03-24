@@ -48,7 +48,7 @@ namespace Build
                     //code += BuildJumppadObjects( objectData, buildType );
                     break;
                 case ObjectType.LinkedZipline:
-                    //code += BuildLinkedZiplineObjects( objectData, buildType );
+                    code += BuildLinkedZipline.BuildLinkedZiplineObjects( objectData, buildType );
                     break;
                 case ObjectType.LootBin:
                     //code += BuildLootBinObjects( objectData, buildType );
@@ -78,7 +78,7 @@ namespace Build
                     //code += BuildVerticalDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.VerticalZipLine:
-                    //code += BuildVerticalZipLineObjects( objectData, buildType );
+                    code += BuildVerticalZipline.BuildVerticalZipLineObjects( objectData, buildType );
                     break;
                 case ObjectType.WeaponRack:
                     //code += BuildWeaponRackObjects( objectData, buildType );
@@ -89,6 +89,11 @@ namespace Build
             }
 
             return code;
+        }
+
+        internal static void PageBreak( ref string code )
+        {
+            code += Environment.NewLine;
         }
     }
 }

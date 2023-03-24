@@ -20,8 +20,8 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    //Props";
-                    code += "\n";
+                    code += "    // Props";
+                    PageBreak( ref code );
                     break;
                 case BuildType.EntFile:
                     // Empty
@@ -31,7 +31,7 @@ namespace Build
                     break;
                 case BuildType.DataTable:
                     code += "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"";
-                    code += "\n";
+                    PageBreak( ref code );
                 break;
             }
 
@@ -48,7 +48,7 @@ namespace Build
                 {
                     case BuildType.Script:
                         code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {script.AllowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.RealmID}, {scale} )";
-                        code += "\n";
+                        PageBreak( ref code );
                         break;
                     case BuildType.EntFile:
                         code +=  "{\n";
@@ -71,11 +71,12 @@ namespace Build
                         if ( precacheList.Contains( model ) )
                             continue;
                         precacheList.Add( model );
-                        code += $"    PrecacheModel( $\"{model}\" )" + "\n";
+                        code += $"    PrecacheModel( $\"{model}\" )";
+                        PageBreak( ref code );
                         break;
                     case BuildType.DataTable:
                         code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj )}\",\"{Helper.BuildAngles( obj )}\",{scale},{script.FadeDistance},{script.AllowMantle.ToString().ToLower()},true,\"{UnityInfo.GetApexModelName( model )}\",\"{FindPathString( obj )}\"";
-                        code += "\n";
+                        PageBreak( ref code );
                     break;
                 }
             }
@@ -84,7 +85,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "\n";
+                    PageBreak( ref code );
                     break;
                 case BuildType.EntFile:
                     // Empty

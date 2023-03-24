@@ -5,65 +5,55 @@ using System.IO;
 using UnityEngine;
 
 using static Build.Build;
-using static ImportExport.Shared.SharedFunction;
 
 namespace Build
 {
-    public class BuildZipline
+    public class BuildLinkedZipline
     {
-        public static string BuildZiplineObjects( GameObject[] objectData, BuildType buildType )
+        public static string BuildLinkedZiplineObjects( GameObject[] objectData, BuildType buildType )
         {
             string code = "";
-            List< String > precacheList = new List< String >();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Ziplines";
-                    code += "\n";
+                    code += "    // Linked Ziplines";
+                    PageBreak( ref code );
                     break;
                 case BuildType.EntFile:
-                    // Empty
                     break;
                 case BuildType.Precache:
-                    // Empty
                     break;
                 case BuildType.DataTable:
-                    // Empty
                 break;
             }
 
             // Build the code
             foreach ( GameObject obj in objectData )
             {
-                DrawZipline script = ( DrawZipline ) Helper.GetComponentByEnum( obj, ObjectType.ZipLine );
+                LinkedZiplineScript script = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, ObjectType.LinkedZipline );
                 if ( script == null ) continue;
-
-                //string model = "custom_zipline";
-                string ziplinestart = "";
-                string ziplineend = "";
-
-                foreach ( Transform child in obj.transform )
-                {
-                    if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject );
-                    if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject );
-                }
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )";
-                        code += "\n";
+                        
+                        string function = "";
+                        string smoothType = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
+                        string nodes = MakeLinkedZiplineNodeArray( obj );
+
+                        if ( script.EnableSmoothing ) function = $"{smoothType}( {nodes}, {script.SmoothAmount} )";
+                        else function = $"{nodes}";
+
+                        code += $"    MapEditor_CreateLinkedZipline( {function} )";
+                        PageBreak( ref code );
                         break;
                     case BuildType.EntFile:
-                        // Empty
                         break;
                     case BuildType.Precache:
-                        // Empty
                         break;
                     case BuildType.DataTable:
-                        // Empty
                     break;
                 }
             }
@@ -72,20 +62,36 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "\n";
+                    PageBreak( ref code );
                     break;
                 case BuildType.EntFile:
-                    // Empty
                     break;
                 case BuildType.Precache:
-                    // Empty
                     break;
                 case BuildType.DataTable:
-                    // Empty
                 break;
             }
 
             return code;
+        }
+
+        private static string MakeLinkedZiplineNodeArray( GameObject obj )
+        {
+            bool first = true;
+
+            string nodes = "[ ";
+            foreach ( Transform child in obj.transform )
+            {
+                if (!first)
+                    nodes += ", ";
+
+                nodes += Helper.BuildOrigin( child.gameObject );
+
+                    first = false;
+            }
+            nodes += " ]";
+
+            return nodes;
         }
     }
 }

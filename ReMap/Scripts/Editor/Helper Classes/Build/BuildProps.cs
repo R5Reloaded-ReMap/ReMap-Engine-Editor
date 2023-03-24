@@ -44,7 +44,7 @@ namespace Build
                 PropScript script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
                 if ( script == null ) continue;
 
-                string model = UnityInfo.GetObjName( obj );
+                string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
                 string scale = obj.transform.localScale.x.ToString().Replace(",", ".");
 
                 switch ( buildType )

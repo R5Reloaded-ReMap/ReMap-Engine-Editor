@@ -30,61 +30,61 @@ namespace Build
             switch ( objectType )
             {
                 case ObjectType.BubbleShield:
-                    //code +=  BuildBubbleShieldObjects( objectData, buildType );
+                    //code += BuildBubbleShieldObjects( objectData, buildType );
                     break;
                 case ObjectType.Button:
-                    //code +=  BuildButtonObjects( objectData, buildType );
+                    //code += BuildButtonObjects( objectData, buildType );
                     break;
                 case ObjectType.DoubleDoor:
-                    //code +=  BuildDoubleDoorObjects( objectData, buildType );
+                    //code += BuildDoubleDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.FuncWindowHint:
-                    //code +=  BuildFuncWindowHintObjects( objectData, buildType );
+                    //code += BuildFuncWindowHintObjects( objectData, buildType );
                     break;
                 case ObjectType.HorzDoor:
-                    //code +=  BuildHorzDoorObjects( objectData, buildType );
+                    //code += BuildHorzDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.Jumppad:
-                    //code +=  BuildJumppadObjects( objectData, buildType );
+                    //code += BuildJumppadObjects( objectData, buildType );
                     break;
                 case ObjectType.LinkedZipline:
-                    //code +=  BuildLinkedZiplineObjects( objectData, buildType );
+                    //code += BuildLinkedZiplineObjects( objectData, buildType );
                     break;
                 case ObjectType.LootBin:
-                    //code +=  BuildLootBinObjects( objectData, buildType );
+                    //code += BuildLootBinObjects( objectData, buildType );
                     break;
                 case ObjectType.NonVerticalZipLine:
-                    //code +=  BuildNonVerticalZipLineObjects( objectData, buildType );
+                    //code += BuildNonVerticalZipLineObjects( objectData, buildType );
                     break;
                 case ObjectType.Prop:
-                    code +=  BuildProp.BuildPropObjects( objectData, buildType );
+                    code += BuildProp.BuildPropObjects( objectData, buildType );
                     break;
                 case ObjectType.SingleDoor:
-                    //code +=  BuildSingleDoorObjects( objectData, buildType );
+                    //code += BuildSingleDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.Sound:
-                    //code +=  BuildSoundObjects( objectData, buildType );
+                    //code += BuildSoundObjects( objectData, buildType );
                     break;
                 case ObjectType.SpawnPoint:
-                    //code +=  BuildSpawnPointObjects( objectData, buildType );
+                    //code += BuildSpawnPointObjects( objectData, buildType );
                     break;
                 case ObjectType.TextInfoPanel:
-                    //code +=  BuildTextInfoPanelObjects( objectData, buildType );
+                    //code += BuildTextInfoPanelObjects( objectData, buildType );
                     break;
                 case ObjectType.Trigger:
-                    //code +=  BuildTriggerObjects( objectData, buildType );
+                    //code += BuildTriggerObjects( objectData, buildType );
                     break;
                 case ObjectType.VerticalDoor:
-                    //code +=  BuildVerticalDoorObjects( objectData, buildType );
+                    //code += BuildVerticalDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.VerticalZipLine:
-                    //code +=  BuildVerticalZipLineObjects( objectData, buildType );
+                    //code += BuildVerticalZipLineObjects( objectData, buildType );
                     break;
                 case ObjectType.WeaponRack:
-                    //code +=  BuildWeaponRackObjects( objectData, buildType );
+                    //code += BuildWeaponRackObjects( objectData, buildType );
                     break;
                 case ObjectType.ZipLine:
-                    //code +=  BuildZipLineObjects( objectData, buildType );
+                    code += BuildZipline.BuildZiplineObjects( objectData, buildType );
                 break;
             }
 

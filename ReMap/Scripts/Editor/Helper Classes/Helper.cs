@@ -305,8 +305,8 @@ public class Helper
     {
         // Order of importance
         string code = "";
-        if( Prop )                code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Script ); //Build_.Props( null, Build_.BuildType.Map );
-        if( ZipLine )             code += Build_.ZipLines();
+        if( Prop )                code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Script );
+        if( ZipLine )             code += BuildObjectsWithEnum( ObjectType.ZipLine, BuildType.Script );
         if( LinkedZipline )       code += Build_.LinkedZipLines();
         if( VerticalZipLine )     code += Build_.VerticalZipLines();
         if( NonVerticalZipLine )  code += Build_.NonVerticalZipLines();

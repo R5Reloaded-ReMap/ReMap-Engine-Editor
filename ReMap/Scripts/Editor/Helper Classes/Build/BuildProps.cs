@@ -23,12 +23,15 @@ namespace Build
                     code += "    // Props";
                     PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     // Empty
                     break;
+
                 case BuildType.Precache:
                     // Empty
                     break;
+
                 case BuildType.DataTable:
                     code += "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"";
                     PageBreak( ref code );
@@ -50,6 +53,7 @@ namespace Build
                         code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {script.AllowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.RealmID}, {scale} )";
                         PageBreak( ref code );
                         break;
+
                     case BuildType.EntFile:
                         code +=  "{\n";
                         code +=  "\"StartDisabled\" \"0\"\n";
@@ -67,6 +71,7 @@ namespace Build
                         code +=  "\"classname\" \"prop_dynamic\"\n";
                         code +=  "}\n";
                         break;
+
                     case BuildType.Precache:
                         if ( precacheList.Contains( model ) )
                             continue;
@@ -74,6 +79,7 @@ namespace Build
                         code += $"    PrecacheModel( $\"{model}\" )";
                         PageBreak( ref code );
                         break;
+
                     case BuildType.DataTable:
                         code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj )}\",\"{Helper.BuildAngles( obj )}\",{scale},{script.FadeDistance},{script.AllowMantle.ToString().ToLower()},true,\"{UnityInfo.GetApexModelName( model )}\",\"{FindPathString( obj )}\"";
                         PageBreak( ref code );
@@ -87,12 +93,15 @@ namespace Build
                 case BuildType.Script:
                     PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     // Empty
                     break;
+
                 case BuildType.Precache:
                     // Empty
                     break;
+                    
                 case BuildType.DataTable:
                     code += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
                 break;

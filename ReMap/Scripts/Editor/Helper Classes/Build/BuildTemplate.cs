@@ -21,10 +21,13 @@ namespace Build
                     code += "    // Template";
                     PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     break;
+
                 case BuildType.Precache:
                     break;
+
                 case BuildType.DataTable:
                 break;
             }
@@ -39,10 +42,13 @@ namespace Build
                 {
                     case BuildType.Script:
                         break;
+
                     case BuildType.EntFile:
                         break;
+
                     case BuildType.Precache:
                         break;
+
                     case BuildType.DataTable:
                     break;
                 }
@@ -54,10 +60,13 @@ namespace Build
                 case BuildType.Script:
                     PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     break;
+
                 case BuildType.Precache:
                     break;
+                    
                 case BuildType.DataTable:
                 break;
             }

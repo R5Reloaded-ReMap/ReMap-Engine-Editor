@@ -21,14 +21,17 @@ namespace Build
             {
                 case BuildType.Script:
                     code += "    // Ziplines";
-                    code += "\n";
+                    PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     // Empty
                     break;
+
                 case BuildType.Precache:
                     // Empty
                     break;
+
                 case BuildType.DataTable:
                     // Empty
                 break;
@@ -54,14 +57,17 @@ namespace Build
                 {
                     case BuildType.Script:
                         code += $"    CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )";
-                        code += "\n";
+                        PageBreak( ref code );
                         break;
+
                     case BuildType.EntFile:
                         // Empty
                         break;
+
                     case BuildType.Precache:
                         // Empty
                         break;
+
                     case BuildType.DataTable:
                         // Empty
                     break;
@@ -72,14 +78,17 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "\n";
+                    PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     // Empty
                     break;
+
                 case BuildType.Precache:
                     // Empty
                     break;
+
                 case BuildType.DataTable:
                     // Empty
                 break;

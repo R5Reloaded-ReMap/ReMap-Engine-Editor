@@ -21,10 +21,13 @@ namespace Build
                     code += "    // VerticalZipLines";
                     PageBreak( ref code );
                     break;
+                    
                 case BuildType.EntFile:
                     break;
+
                 case BuildType.Precache:
                     break;
+
                 case BuildType.DataTable:
                 break;
             }
@@ -55,10 +58,13 @@ namespace Build
                     case BuildType.Script:
                         code += PanelModels;
                         break;
+
                     case BuildType.EntFile:
                         break;
+
                     case BuildType.Precache:
                         break;
+
                     case BuildType.DataTable:
                     break;
                 }
@@ -70,10 +76,13 @@ namespace Build
                 case BuildType.Script:
                     PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     break;
+
                 case BuildType.Precache:
                     break;
+
                 case BuildType.DataTable:
                 break;
             }

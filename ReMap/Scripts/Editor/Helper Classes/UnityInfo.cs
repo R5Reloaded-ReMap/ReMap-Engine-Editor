@@ -51,7 +51,7 @@ public class UnityInfo
     /// <returns></returns>
     public static int GetSpecificObjectCount( ObjectType objectType )
     {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag( Helper.GetObjNameWithEnum( objectType ) );
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( objectType ) );
         return PropObjects.Length;
     }
 

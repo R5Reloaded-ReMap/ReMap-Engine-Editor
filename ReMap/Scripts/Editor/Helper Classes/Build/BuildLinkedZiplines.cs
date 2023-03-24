@@ -21,10 +21,13 @@ namespace Build
                     code += "    // Linked Ziplines";
                     PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     break;
+
                 case BuildType.Precache:
                     break;
+
                 case BuildType.DataTable:
                 break;
             }
@@ -49,10 +52,13 @@ namespace Build
                         code += $"    MapEditor_CreateLinkedZipline( {function} )";
                         PageBreak( ref code );
                         break;
+
                     case BuildType.EntFile:
                         break;
+
                     case BuildType.Precache:
                         break;
+
                     case BuildType.DataTable:
                     break;
                 }
@@ -64,10 +70,13 @@ namespace Build
                 case BuildType.Script:
                     PageBreak( ref code );
                     break;
+
                 case BuildType.EntFile:
                     break;
+
                 case BuildType.Precache:
                     break;
+                    
                 case BuildType.DataTable:
                 break;
             }

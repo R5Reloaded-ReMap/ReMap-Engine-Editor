@@ -409,6 +409,16 @@ public class Helper
         return null;
     }
 
+    public static ObjectType? GetObjectTypeByObjName( string searchTerm )
+    {
+        foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+        {
+            if ( Helper.GetObjNameWithEnum( objectType ) == searchTerm ) return objectType;
+        }
+
+        return null;
+    }
+
     private class ObjectTypeData
     {
         public string[] StringData { get; }

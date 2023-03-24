@@ -12,8 +12,11 @@ using static Build.Build;
 
 public class CodeViews : EditorWindow
 {
+    static CodeViews windowInstance;
     static string code_text = "";
     static Vector2 scroll;
+    static Vector2 windowSize;
+    static int subDivToggle = 5;
     int tab = 0;
     int tab_temp = 0;
 
@@ -45,9 +48,10 @@ public class CodeViews : EditorWindow
     {
         TagHelper.CheckAndCreateTags();
 
-        CodeViews window = (CodeViews)GetWindow(typeof(CodeViews), false, "Code Views");
-        window.minSize = new Vector2(1100, 500);
+        CodeViews window = ( CodeViews )GetWindow( typeof( CodeViews ), false, "Code Views" );
+        window.minSize = new Vector2( 1100, 500 );
         window.Show();
+        windowInstance = window;
     }
 
     void OnEnable()
@@ -183,6 +187,8 @@ public class CodeViews : EditorWindow
         SetCorrectEntityLabel(mapcodecount);
         GUILayout.EndVertical();
 
+        GetEditorWindowSize();
+
         GUI.contentColor = Color.white;
         
         GUILayout.BeginVertical("box");
@@ -215,8 +221,10 @@ public class CodeViews : EditorWindow
                         foreach ( string key in GenerateObjects.Keys )
                         {
                             if ( IsIgnored( key ) ) continue;
+                            ObjectType? type = Helper.GetObjectTypeByObjName( key );
+                            if ( type != null && UnityInfo.GetSpecificObjectCount( ( ObjectType ) type ) == 0 ) continue;
 
-                            Helper.GenerateObjects[key] = EditorGUILayout.Toggle( $"Build {key}", Helper.GenerateObjects[key] );
+                            Helper.GenerateObjects[key] = EditorGUILayout.Toggle( $"Build {key}", Helper.GenerateObjects[key], GUILayout.Width( windowSize.x / subDivToggle ) );
 
                             if ( Helper.GenerateObjects[key] != GenerateObjects_temp[key] )
                             {
@@ -224,7 +232,7 @@ public class CodeViews : EditorWindow
                                 GenerateMap(OnlyExportMap, false);
                             }
                             
-                            if ( idx == 5 )
+                            if ( idx == subDivToggle )
                             {
                                 GUILayout.EndHorizontal();
                                 GUILayout.BeginHorizontal();
@@ -508,5 +516,14 @@ public class CodeViews : EditorWindow
         }
 
         return false;
+    }
+
+    private static void GetEditorWindowSize()
+    {
+        EditorWindow editorWindow = windowInstance;
+        if ( editorWindow != null )
+        {
+            windowSize = new Vector2( editorWindow.position.width, editorWindow.position.height );
+        }
     }
 }

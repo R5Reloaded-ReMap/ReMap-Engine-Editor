@@ -305,25 +305,25 @@ public class Helper
     {
         // Order of importance
         string code = "";
-        if( Prop )                code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Script );
-        if( ZipLine )             code += BuildObjectsWithEnum( ObjectType.ZipLine, BuildType.Script );
-        if( LinkedZipline )       code += BuildObjectsWithEnum( ObjectType.LinkedZipline, BuildType.Script );
-        if( VerticalZipLine )     code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, BuildType.Script );
-        if( NonVerticalZipLine )  code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, BuildType.Script );
-        if( SingleDoor )          code += BuildObjectsWithEnum( ObjectType.SingleDoor, BuildType.Script );
-        if( DoubleDoor )          code += BuildObjectsWithEnum( ObjectType.DoubleDoor, BuildType.Script );
-        if( HorzDoor )            code += BuildObjectsWithEnum( ObjectType.HorzDoor, BuildType.Script );
-        if( VerticalDoor )        code += BuildObjectsWithEnum( ObjectType.VerticalDoor, BuildType.Script );
-        if( Button )              code += BuildObjectsWithEnum( ObjectType.Button, BuildType.Script );
-        if( Jumppad )             code += BuildObjectsWithEnum( ObjectType.Jumppad, BuildType.Script );
-        if( LootBin )             code += BuildObjectsWithEnum( ObjectType.LootBin, BuildType.Script );
-        if( WeaponRack )          code += BuildObjectsWithEnum( ObjectType.WeaponRack, BuildType.Script );
-        if( Trigger )             code += BuildObjectsWithEnum( ObjectType.Trigger, BuildType.Script );
-        if( BubbleShield )        code += BuildObjectsWithEnum( ObjectType.BubbleShield, BuildType.Script );
-        if( SpawnPoint )          code += BuildObjectsWithEnum( ObjectType.SpawnPoint, BuildType.Script );
-        if( TextInfoPanel )       code += BuildObjectsWithEnum( ObjectType.TextInfoPanel, BuildType.Script );
-        if( FuncWindowHint )      code += BuildObjectsWithEnum( ObjectType.FuncWindowHint, BuildType.Script );
-        if( Sound )               code += BuildObjectsWithEnum( ObjectType.Sound, BuildType.Script );
+        if( Prop )                code += BuildObjectsWithEnum( ObjectType.Prop, buildType );
+        if( ZipLine )             code += BuildObjectsWithEnum( ObjectType.ZipLine, buildType );
+        if( LinkedZipline )       code += BuildObjectsWithEnum( ObjectType.LinkedZipline, buildType );
+        if( VerticalZipLine )     code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, buildType );
+        if( NonVerticalZipLine )  code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, buildType );
+        if( SingleDoor )          code += BuildObjectsWithEnum( ObjectType.SingleDoor, buildType );
+        if( DoubleDoor )          code += BuildObjectsWithEnum( ObjectType.DoubleDoor, buildType );
+        if( HorzDoor )            code += BuildObjectsWithEnum( ObjectType.HorzDoor, buildType );
+        if( VerticalDoor )        code += BuildObjectsWithEnum( ObjectType.VerticalDoor, buildType );
+        if( Button )              code += BuildObjectsWithEnum( ObjectType.Button, buildType );
+        if( Jumppad )             code += BuildObjectsWithEnum( ObjectType.Jumppad, buildType );
+        if( LootBin )             code += BuildObjectsWithEnum( ObjectType.LootBin, buildType );
+        if( WeaponRack )          code += BuildObjectsWithEnum( ObjectType.WeaponRack, buildType );
+        if( Trigger )             code += BuildObjectsWithEnum( ObjectType.Trigger, buildType );
+        if( BubbleShield )        code += BuildObjectsWithEnum( ObjectType.BubbleShield, buildType );
+        if( SpawnPoint )          code += BuildObjectsWithEnum( ObjectType.SpawnPoint, buildType );
+        if( TextInfoPanel )       code += BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType );
+        if( FuncWindowHint )      code += BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType );
+        if( Sound )               code += BuildObjectsWithEnum( ObjectType.Sound, buildType );
 
         return code;
     }

@@ -8,9 +8,9 @@ using static Build.Build;
 
 namespace Build
 {
-    public class BuildVerticalZipline
+    public class BuildNonVerticalZipline
     {
-        public static string BuildVerticalZipLineObjects( GameObject[] objectData, BuildType buildType )
+        public static string BuildNonVerticalZipLineObjects( GameObject[] objectData, BuildType buildType )
         {
             string code = "";
 
@@ -18,7 +18,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // VerticalZipLines";
+                    code += "    // NonVerticalZipLines";
                     PageBreak( ref code );
                     break;
                     
@@ -35,7 +35,7 @@ namespace Build
             // Build the code
             foreach ( GameObject obj in objectData )
             {
-                DrawVerticalZipline script = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, ObjectType.VerticalZipLine );
+                DrawNonVerticalZipline script = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, ObjectType.NonVerticalZipLine );
                 if ( script == null ) continue;
 
                 int PreserveVelocity = script.PreserveVelocity  ? 1 : 0;
@@ -58,7 +58,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(script.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildOrigin(script.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, true, {script.FadeDistance.ToString().Replace(",", ".")}, {script.Scale.ToString().Replace(",", ".")}, {script.Width.ToString().Replace(",", ".")}, {script.SpeedScale.ToString().Replace(",", ".")}, {script.LengthScale.ToString().Replace(",", ".")}, {PreserveVelocity}, {DropToBottom}, {script.AutoDetachStart.ToString().Replace(",", ".")}, {script.AutoDetachEnd.ToString().Replace(",", ".")}, {RestPoint}, {PushOffInDirectionX}, {IsMoving}, {DetachEndOnSpawn}, {DetachEndOnUse}, {PanelOrigin}, {PanelAngles}, {PanelModels}, {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )";
+                        code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(script.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildOrigin(script.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, false, {script.FadeDistance.ToString().Replace(",", ".")}, {script.Scale.ToString().Replace(",", ".")}, {script.Width.ToString().Replace(",", ".")}, {script.SpeedScale.ToString().Replace(",", ".")}, {script.LengthScale.ToString().Replace(",", ".")}, {PreserveVelocity}, {DropToBottom}, {script.AutoDetachStart.ToString().Replace(",", ".")}, {script.AutoDetachEnd.ToString().Replace(",", ".")}, {RestPoint}, {PushOffInDirectionX}, {IsMoving}, {DetachEndOnSpawn}, {DetachEndOnUse}, {PanelOrigin}, {PanelAngles}, {PanelModels}, {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )" + "\n";
                         PageBreak( ref code );
                         break;
 
@@ -94,7 +94,7 @@ namespace Build
                         code += $"\"origin\" \"{Helper.BuildOrigin( script.rope_start.gameObject, true )}\""; PageBreak( ref code );
                         code += $"\"link_to_guid_0\" \"{LinkGuidTo0}\""; PageBreak( ref code );
                         code += $"\"link_guid\" \"{LinkGuid}\""; PageBreak( ref code );
-                        code += $"\"ZiplineVertical\" \"1\""; PageBreak( ref code );
+                        code += $"\"ZiplineVertical\" \"0\""; PageBreak( ref code );
                         code += $"\"ZiplineVersion\" \"3\""; PageBreak( ref code );
                         code += $"\"ZiplineSpeedScale\" \"{script.SpeedScale}\""; PageBreak( ref code );
                         code += $"\"ZiplinePushOffInDirectionX\" \"{PushOffInDirectionX}\""; PageBreak( ref code );

@@ -54,7 +54,7 @@ namespace Build
                     //code += BuildLootBinObjects( objectData, buildType );
                     break;
                 case ObjectType.NonVerticalZipLine:
-                    //code += BuildNonVerticalZipLineObjects( objectData, buildType );
+                    code += BuildNonVerticalZipline.BuildNonVerticalZipLineObjects( objectData, buildType );
                     break;
                 case ObjectType.Prop:
                     code += BuildProp.BuildPropObjects( objectData, buildType );

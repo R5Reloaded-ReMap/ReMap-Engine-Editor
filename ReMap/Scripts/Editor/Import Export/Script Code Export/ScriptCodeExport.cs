@@ -152,6 +152,64 @@ namespace CodeViewsWindow
             SetCodeViewsWindowValue();
         }
 
+        [ MenuItem( "ReMap/Export/DataTable", false, 25 ) ]
+        public static async void ExportDataTable()
+        {
+            TagHelper.CheckAndCreateTags();
+
+            GetCodeViewsWindowValue();
+
+            CodeViewsWindow.tab = 1;
+            CodeViewsWindow.tab_temp = 1;
+            CodeViewsWindow.tabEnt = 0;
+            CodeViewsWindow.tabEnt_temp = 0;
+            CodeViewsWindow.StartingOffset = Vector3.zero;
+            CodeViewsWindow.ShowAdvancedMenu = false;
+            CodeViewsWindow.ShowAdvancedMenuTemp = false;
+            CodeViewsWindow.ShowFunction = false;
+            CodeViewsWindow.ShowFunctionTemp = false;
+            CodeViewsWindow.ShowEntFunction = false;
+            CodeViewsWindow.ShowEntFunctionTemp = false;
+            Helper.UseStartingOffset = false;
+
+            CodeViewsWindow.Refresh();
+
+            CodeViewsWindow.ExportFunction();
+
+            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
+
+            SetCodeViewsWindowValue();
+        }
+
+        [ MenuItem( "ReMap/Export/Precache Model", false, 25 ) ]
+        public static async void Export()
+        {
+            TagHelper.CheckAndCreateTags();
+
+            GetCodeViewsWindowValue();
+
+            CodeViewsWindow.tab = 2;
+            CodeViewsWindow.tab_temp = 2;
+            CodeViewsWindow.tabEnt = 0;
+            CodeViewsWindow.tabEnt_temp = 0;
+            CodeViewsWindow.StartingOffset = Vector3.zero;
+            CodeViewsWindow.ShowAdvancedMenu = false;
+            CodeViewsWindow.ShowAdvancedMenuTemp = false;
+            CodeViewsWindow.ShowFunction = true;
+            CodeViewsWindow.ShowFunctionTemp = true;
+            CodeViewsWindow.ShowEntFunction = false;
+            CodeViewsWindow.ShowEntFunctionTemp = false;
+            Helper.UseStartingOffset = false;
+
+            CodeViewsWindow.Refresh();
+
+            CodeViewsWindow.ExportFunction();
+
+            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
+
+            SetCodeViewsWindowValue();
+        }
+
         [ MenuItem( "ReMap/Export/Ent File/Script", false, 25 ) ]
         public static async void ExportEntFileScript()
         {

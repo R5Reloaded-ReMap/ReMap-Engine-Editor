@@ -82,7 +82,7 @@ namespace Build
                         break;
 
                     case BuildType.DataTable:
-                        code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{script.FadeDistance},{script.AllowMantle.ToString().ToLower()},true,\"{model}\",\"{FindPathString( obj )}\"";
+                        code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"";
                         PageBreak( ref code );
                     break;
                 }

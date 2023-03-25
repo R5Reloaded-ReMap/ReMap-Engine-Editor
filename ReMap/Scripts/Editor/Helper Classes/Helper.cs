@@ -488,8 +488,8 @@ public class Helper
     public static string ReMapCredit()
     {
         string credit = "";
-        credit += "    // Made with Unity ReMap Editor\n";
-        credit += "    // By AyeZee#6969 & Julefox#0050\n";
+        credit += $"    // Generated with Unity ReMap Editor {UnityInfo.ReMapVersion}\n";
+        credit += $"    // Made with love by AyeZee#6969 & Julefox#0050 :)\n";
         PageBreak( ref credit );
         return credit;
     }

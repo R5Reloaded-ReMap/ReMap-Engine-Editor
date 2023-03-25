@@ -43,7 +43,7 @@ public class InfoUI : EditorWindow
         GUILayout.EndVertical();
 
         GUILayout.BeginVertical("box");
-        GUILayout.Label("Version: 1.0");
+        GUILayout.Label($"{UnityInfo.ReMapVersion}");
         GUILayout.EndVertical();
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class UnityInfo
 {
+    public static string ReMapVersion = "Version 0.1";
     public static string currentDirectory = LibrarySorterWindow.currentDirectory;
     public static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
 

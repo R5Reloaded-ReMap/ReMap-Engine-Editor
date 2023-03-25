@@ -31,13 +31,15 @@ namespace CodeViewsWindow
         private static bool ShowFunctionTemp;
         private static bool ShowEntFunction;
         private static bool ShowEntFunctionTemp;
+        internal static bool EnableSelection;
+        internal static bool EnableSelectionTemp;
         private static int EntFileID;
 
         private static bool HelperUseStartingOffset;
 
 
         [ MenuItem( "ReMap/Export/Script/Function And Map Offset", false, 25 ) ]
-        public static async void ExportFunctionAndMapOffset()
+        public static void ExportFunctionAndMapOffset()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -54,19 +56,19 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             Helper.UseStartingOffset = true;
 
             CodeViewsWindow.Refresh();
 
             CodeViewsWindow.ExportFunction();
-
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
 
             SetCodeViewsWindowValue();
         }
 
         [ MenuItem( "ReMap/Export/Script/Function", false, 25 ) ]
-        public static async void ExportFunction()
+        public static void ExportFunction()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -83,19 +85,19 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             Helper.UseStartingOffset = false;
 
             CodeViewsWindow.Refresh();
 
             CodeViewsWindow.ExportFunction();
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
-
             SetCodeViewsWindowValue();
         }
 
         [ MenuItem( "ReMap/Export/Script/Code And Map Offset", false, 25 ) ]
-        public static async void ExportCodeAndMapOffset()
+        public static void ExportCodeAndMapOffset()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -112,19 +114,19 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             Helper.UseStartingOffset = true;
 
             CodeViewsWindow.Refresh();
 
             CodeViewsWindow.ExportFunction();
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
-
             SetCodeViewsWindowValue();
         }
 
         [ MenuItem( "ReMap/Export/Script/Code", false, 25 ) ]
-        public static async void ExportCode()
+        public static void ExportCode()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -141,19 +143,19 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             Helper.UseStartingOffset = false;
 
             CodeViewsWindow.Refresh();
 
             CodeViewsWindow.ExportFunction();
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
-
             SetCodeViewsWindowValue();
         }
 
         [ MenuItem( "ReMap/Export/DataTable", false, 25 ) ]
-        public static async void ExportDataTable()
+        public static void ExportDataTable()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -170,19 +172,19 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             Helper.UseStartingOffset = false;
 
             CodeViewsWindow.Refresh();
 
             CodeViewsWindow.ExportFunction();
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
-
             SetCodeViewsWindowValue();
         }
 
         [ MenuItem( "ReMap/Export/Precache Model", false, 25 ) ]
-        public static async void Export()
+        public static void Export()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -199,19 +201,19 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             Helper.UseStartingOffset = false;
 
             CodeViewsWindow.Refresh();
 
             CodeViewsWindow.ExportFunction();
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
-
             SetCodeViewsWindowValue();
         }
 
         [ MenuItem( "ReMap/Export/Ent File/Script", false, 25 ) ]
-        public static async void ExportEntFileScript()
+        public static void ExportEntFileScript()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -228,6 +230,8 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.ShowEntFunctionTemp = true;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
 
@@ -235,13 +239,11 @@ namespace CodeViewsWindow
 
             CodeViewsWindow.ExportFunction();
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
-
             SetCodeViewsWindowValue();
         }
 
         [ MenuItem( "ReMap/Export/Ent File/Sound", false, 25 ) ]
-        public static async void ExportEntFileSound()
+        public static void ExportEntFileSound()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -258,6 +260,8 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.ShowEntFunctionTemp = true;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
 
@@ -265,13 +269,11 @@ namespace CodeViewsWindow
 
             CodeViewsWindow.ExportFunction();
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
-
             SetCodeViewsWindowValue();
         }
 
         [ MenuItem( "ReMap/Export/Ent File/Spawn", false, 25 ) ]
-        public static async void ExportEntFileSpawn()
+        public static void ExportEntFileSpawn()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -288,6 +290,8 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.ShowEntFunctionTemp = true;
+            CodeViewsWindow.EnableSelection = false;
+            CodeViewsWindow.EnableSelectionTemp = false;
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
 
@@ -295,14 +299,12 @@ namespace CodeViewsWindow
 
             CodeViewsWindow.ExportFunction();
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
-
             SetCodeViewsWindowValue();
         }
 
         /*
         [ MenuItem( "ReMap/Export/", false, 25 ) ]
-        public static async void Export()
+        public static void Export()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -319,14 +321,14 @@ namespace CodeViewsWindow
             //CodeViewsWindow.ShowFunctionTemp = 
             //CodeViewsWindow.ShowEntFunction = 
             //CodeViewsWindow.ShowEntFunctionTemp = 
+            //CodeViewsWindow.EnableSelection = false;
+            //CodeViewsWindow.EnableSelectionTemp = false;
             //CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = 
 
             CodeViewsWindow.Refresh();
 
             CodeViewsWindow.ExportFunction();
-
-            await Task.Delay( TimeSpan.FromSeconds( 0.01 ) );
 
             SetCodeViewsWindowValue();
         }
@@ -347,6 +349,8 @@ namespace CodeViewsWindow
             ShowFunctionTemp = CodeViewsWindow.ShowFunctionTemp;
             ShowEntFunction = CodeViewsWindow.ShowEntFunction;
             ShowEntFunctionTemp = CodeViewsWindow.ShowEntFunctionTemp;
+            EnableSelection = CodeViewsWindow.EnableSelection;
+            EnableSelectionTemp = CodeViewsWindow.EnableSelectionTemp;
             EntFileID = CodeViewsWindow.EntFileID;
             HelperUseStartingOffset = Helper.UseStartingOffset;
         }
@@ -366,6 +370,8 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunctionTemp = ShowFunctionTemp;
             CodeViewsWindow.ShowEntFunction = ShowEntFunction;
             CodeViewsWindow.ShowEntFunctionTemp = ShowEntFunctionTemp;
+            CodeViewsWindow.EnableSelection = EnableSelection;
+            CodeViewsWindow.EnableSelectionTemp = EnableSelectionTemp;
             CodeViewsWindow.EntFileID = EntFileID;
             Helper.UseStartingOffset = HelperUseStartingOffset;
 

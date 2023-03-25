@@ -91,7 +91,7 @@ namespace Build
                         code += $"\"DetachEndOnSpawn\" \"{DetachEndOnSpawn}\""; PageBreak( ref code );
                         code += $"\"scale\" \"{script.Scale}\""; PageBreak( ref code );
                         code += $"\"angles\" \"{Helper.BuildAngles( script.rope_start.gameObject, true )}\""; PageBreak( ref code );
-                        code += $"\"origin\" \"{Helper.BuildOrigin( script.rope_start.gameObject, true )}\""; PageBreak( ref code );
+                        code += $"\"origin\" \"{Helper.BuildOrigin( script.rope_start.gameObject, true, true )}\""; PageBreak( ref code );
                         code += $"\"link_to_guid_0\" \"{LinkGuidTo0}\""; PageBreak( ref code );
                         code += $"\"link_guid\" \"{LinkGuid}\""; PageBreak( ref code );
                         code += $"\"ZiplineVertical\" \"0\""; PageBreak( ref code );

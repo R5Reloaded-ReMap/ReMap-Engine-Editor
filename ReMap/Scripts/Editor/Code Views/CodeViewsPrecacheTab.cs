@@ -17,32 +17,24 @@ namespace CodeViewsWindow
         internal static void OnGUIPrecacheTab()
         {
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal( "box" );
-
-                    CodeViewsWindow.ObjectCount();
-
-                GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal( "box" );
-
-                        CodeViewsWindow.ShowFunction = EditorGUILayout.Toggle( "Show Squirrel Function", CodeViewsWindow.ShowFunction, GUILayout.MaxWidth( 180 ) );
-                        if( CodeViewsWindow.ShowFunction != CodeViewsWindow.ShowFunctionTemp )
-                        {
-                            CodeViewsWindow.ShowFunctionTemp = CodeViewsWindow.ShowFunction;
-                            CodeViewsWindow.GenerateCorrectCode();
-                        }
-
+                        CodeViewsWindow.ObjectCount();
                         GUILayout.FlexibleSpace();
+                        CodeViewsWindow.ExportButton();
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal( "box" );
+
+                    CodeViewsWindow.ShowSquirrelFunction();
+
+                    if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
+
+                    GUILayout.FlexibleSpace();
 
                 GUILayout.EndHorizontal();
 
-                GUILayout.BeginVertical( "box" );
-
-                    CodeViewsWindow.scroll = EditorGUILayout.BeginScrollView( CodeViewsWindow.scroll );
-                        GUILayout.TextArea( CodeViewsWindow.code, GUILayout.ExpandHeight( true ) );
-                    EditorGUILayout.EndScrollView();
-
-                GUILayout.EndVertical();
+                CodeViewsWindow.CodeOutput();
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical( "box" );
@@ -58,7 +50,7 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunction )
             {
-                code += $"{Helper.GetSquirrelSceneNameFunction( false )}_Precache()"; PageBreak( ref code );
+                code += $"void function {CodeViewsWindow.functionName}()"; PageBreak( ref code );
                 code += "{"; PageBreak( ref code );
                 code += Helper.ReMapCredit();
             }

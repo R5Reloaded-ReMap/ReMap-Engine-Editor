@@ -119,6 +119,7 @@ public class UnityInfo
     {
         string ext = extension ? ".rmdl" : "";
         modelName = modelName.Replace( '#', '/' ).Replace( ".rmdl", "" ).Replace( ".prefab", "" );
+        if ( modelName.IndexOf( "mdl/" ) == -1 ) modelName = "mdl/" + modelName;
         return modelName.Substring( modelName.IndexOf( "mdl/" ) ) + ext;
     }
 

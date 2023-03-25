@@ -64,7 +64,7 @@ namespace Build
                         code += $"\"collide_ai\" \"1\"\n";
                         code += $"\"scale\" \"{scale}\"\n";
                         code += $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"\n";
-                        code += $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"\n";
+                        code += $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n";
                         code +=  "\"targetname\" \"ReMapEditorProp\"\n";
                         code +=  "\"solid\" \"6\"\n";
                         code += $"\"model\" \"{model}\"\n";
@@ -82,7 +82,7 @@ namespace Build
                         break;
 
                     case BuildType.DataTable:
-                        code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj )}\",\"{Helper.BuildAngles( obj )}\",{scale},{script.FadeDistance},{script.AllowMantle.ToString().ToLower()},true,\"{model}\",\"{FindPathString( obj )}\"";
+                        code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{script.FadeDistance},{script.AllowMantle.ToString().ToLower()},true,\"{model}\",\"{FindPathString( obj )}\"";
                         PageBreak( ref code );
                     break;
                 }

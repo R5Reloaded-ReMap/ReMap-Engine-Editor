@@ -160,22 +160,15 @@ public class Helper
     /// </summary>
     /// <param name="go">Prop Object</param>
     /// <returns></returns>
-    public static string BuildOrigin(GameObject go, bool isEntFile = false)
+    public static string BuildOrigin( GameObject go, bool isEntFile = false, bool returnWithOffset = false )
     {
-        float xOffset = 0;
-        float yOffset = 0;
-        float zOffset = 0;
+        float xOffset = UseStartingOffset && returnWithOffset ? StartingOffset.x : 0;
+        float yOffset = UseStartingOffset && returnWithOffset ? StartingOffset.y : 0;
+        float zOffset = UseStartingOffset && returnWithOffset ? StartingOffset.z : 0;
 
-        if (CodeViews.UseOriginOffset)
-        {
-            xOffset = CodeViews.OriginOffset.x;
-            yOffset = CodeViews.OriginOffset.y;
-            zOffset = CodeViews.OriginOffset.z;
-        }
-
-        string x = (-go.transform.position.z + zOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
-        string y = (go.transform.position.x + xOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
-        string z = (go.transform.position.y + yOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string x = (-go.transform.position.z + xOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string y = (go.transform.position.x + yOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string z = (go.transform.position.y + zOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
 
         string origin = $"< {x}, {y}, {z} >";
 
@@ -190,31 +183,20 @@ public class Helper
     /// </summary>
     /// <param name="go">Prop Object</param>
     /// <returns></returns>
-    public static string BuildOriginVector(Vector3 vec, bool isEntFile = false)
+    public static string BuildOriginVector( Vector3 vec, bool isEntFile = false, bool returnWithOffset = false )
     {
-        float xOffset = 0;
-        float yOffset = 0;
-        float zOffset = 0;
+        float xOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.x;
+        float yOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.y;
+        float zOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.z;
 
-        if (CodeViews.UseOriginOffset)
-        {
-            xOffset = CodeViews.OriginOffset.x;
-            yOffset = CodeViews.OriginOffset.y;
-            zOffset = CodeViews.OriginOffset.z;
-        }
-
-        string x = (-vec.z + zOffset).ToString("F4").Replace(",", ".");
-        string y = (vec.x + xOffset).ToString("F4").Replace(",", ".");
-        string z = (vec.y + yOffset).ToString("F4").Replace(",", ".");
-
-        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
-        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
-        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
+        string x = (-vec.z + xOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string y = (vec.x + yOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string z = (vec.y + zOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
 
         string origin = $"< {x}, {y}, {z} >";
 
         if( isEntFile )
-            origin = $"( {x} {y} {z} )";
+            origin = $"{x} {y} {z}";
 
         return origin;
     }
@@ -486,6 +468,11 @@ public class Helper
     {
         string extention = ext ? "()" : "";
         return $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}{extention}";
+    }
+
+    public static string GetSceneName()
+    {
+        return $"{SceneManager.GetActiveScene().name.Replace(" ", "_")}";
     }
 
     public static string ReMapCredit()

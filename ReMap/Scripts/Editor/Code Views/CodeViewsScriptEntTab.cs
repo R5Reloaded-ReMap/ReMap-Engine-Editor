@@ -17,24 +17,21 @@ namespace CodeViewsWindow
         internal static void OnGUIScriptEntTab()
         {
             GUILayout.BeginHorizontal( "box" );
-
-                CodeViewsWindow.ObjectCount();
-
-                GUILayout.FlexibleSpace();
-
-                CodeViewsWindow.ShowAdvanced = EditorGUILayout.Toggle( "Show Advanced Options", CodeViewsWindow.ShowAdvanced, GUILayout.MaxWidth( 180 ) );
-
+                    CodeViewsWindow.ObjectCount();
+                    GUILayout.FlexibleSpace();
+                    CodeViewsWindow.ExportButton();
             GUILayout.EndHorizontal();
 
-            if ( CodeViewsWindow.ShowAdvanced ) CodeViewsWindow.OptionalOption();
+            GUILayout.BeginHorizontal( "box" );
+                CodeViewsWindow.OptionalUseOffset();
+                if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+                GUILayout.FlexibleSpace();
+                CodeViewsWindow.OptionalAdvancedOption();
+            GUILayout.EndHorizontal();
 
-            GUILayout.BeginVertical( "box" );
-                CodeViewsWindow.scroll = EditorGUILayout.BeginScrollView( CodeViewsWindow.scroll );
+            if ( CodeViewsWindow.ShowAdvancedMenu ) CodeViewsWindow.AdvancedOptionMenu();
 
-                    GUILayout.TextArea( CodeViewsWindow.code, GUILayout.ExpandHeight( true ) );
-
-                EditorGUILayout.EndScrollView();
-            GUILayout.EndVertical();
+            CodeViewsWindow.CodeOutput();
 
             GUILayout.BeginVertical( "box" );
         

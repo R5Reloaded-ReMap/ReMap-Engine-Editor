@@ -26,7 +26,7 @@ public class CodeViews : EditorWindow
     bool UseStartingOffsetTemp = false;
     static bool ShowStartingOffset = false;
     static bool ShowStartingOffset_temp = false;
-    bool ShowAdvanced = false;
+    bool ShowAdvancedMenu = false;
     public static bool UseOriginOffset = false;
     public static Vector3 OriginOffset;
 
@@ -208,11 +208,11 @@ public class CodeViews : EditorWindow
                 ShowStartingOffset_temp = ShowStartingOffset;
                 GenerateMap(OnlyExportMap, false);
             }
-            ShowAdvanced = EditorGUILayout.Toggle("Show Advanced Options", ShowAdvanced);
+            ShowAdvancedMenu = EditorGUILayout.Toggle("Show Advanced Options", ShowAdvancedMenu);
             GUILayout.EndHorizontal();
         GUILayout.EndVertical();
 
-            if (ShowAdvanced)
+            if (ShowAdvancedMenu)
             {
                 GUILayout.BeginVertical("box");
 

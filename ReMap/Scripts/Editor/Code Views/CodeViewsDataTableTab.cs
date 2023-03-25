@@ -17,18 +17,21 @@ namespace CodeViewsWindow
 
         internal static void OnGUIDataTableTab()
         {
-            GUILayout.BeginHorizontal( "box" );
-
-                CodeViewsWindow.ObjectCount();
-
-            GUILayout.EndHorizontal();
-
             GUILayout.BeginVertical( "box" );
-                CodeViewsWindow.scroll = EditorGUILayout.BeginScrollView( CodeViewsWindow.scroll );
+                GUILayout.BeginHorizontal( "box" );
+                        CodeViewsWindow.ObjectCount();
+                        GUILayout.FlexibleSpace();
+                        CodeViewsWindow.ExportButton();
+                GUILayout.EndHorizontal();
 
-                    GUILayout.TextArea( CodeViewsWindow.code, GUILayout.ExpandHeight( true ) );
+                GUILayout.BeginHorizontal( "box" );
+                    CodeViewsWindow.OptionalUseOffset();
+                    if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+                    GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
 
-                EditorGUILayout.EndScrollView();
+                CodeViewsWindow.CodeOutput();
+
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical( "box" );

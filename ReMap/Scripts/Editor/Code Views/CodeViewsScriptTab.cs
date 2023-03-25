@@ -14,36 +14,27 @@ namespace CodeViewsWindow
 {
     public class ScriptTab
     {
-        internal static void OnGUIScriptTab()
+        internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal( "box" );
+                GUILayout.BeginHorizontal();
                     CodeViewsWindow.ShowSquirrelFunction();
                     if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
-                    GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal( "box" );
+                GUILayout.Box("", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ));
+
+                GUILayout.BeginHorizontal();
                     CodeViewsWindow.OptionalUseOffset();
                     if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalShowOffset();
                     if ( Helper.UseStartingOffset && Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
-                    GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal( "box" );
+                    GUILayout.Box("", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ));
+
+                GUILayout.BeginHorizontal();
                     CodeViewsWindow.OptionalAdvancedOption();
-                    GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-
-                if ( CodeViewsWindow.ShowAdvancedMenu ) CodeViewsWindow.AdvancedOptionMenu();
-
-            GUILayout.BeginVertical( "box" );
-
-                CodeViewsWindow.CodeOutput();
-        
-                if (GUILayout.Button( "Copy To Clipboard" ) ) GenerateCode( true );
-
             GUILayout.EndVertical();
         }
 

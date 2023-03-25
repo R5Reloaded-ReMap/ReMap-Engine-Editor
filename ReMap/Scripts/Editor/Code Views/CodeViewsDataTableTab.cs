@@ -15,7 +15,7 @@ namespace CodeViewsWindow
     public class DataTableTab
     {
 
-        internal static void OnGUIDataTableTab()
+        internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
                 GUILayout.BeginHorizontal( "box" );
@@ -23,15 +23,6 @@ namespace CodeViewsWindow
                     if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
                     GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
-
-                CodeViewsWindow.CodeOutput();
-
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical( "box" );
-        
-                if (GUILayout.Button( "Copy To Clipboard" ) ) GenerateCode( true );
-
             GUILayout.EndVertical();
         }
 

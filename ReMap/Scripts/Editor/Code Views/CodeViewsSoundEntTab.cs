@@ -14,20 +14,14 @@ namespace CodeViewsWindow
 {
     public class SoundEntTab
     {
-        internal static void OnGUIScriptEntTab()
+        internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
-                CodeViewsWindow.scroll = EditorGUILayout.BeginScrollView( CodeViewsWindow.scroll );
-
-                    GUILayout.TextArea( CodeViewsWindow.code, GUILayout.ExpandHeight( true ) );
-
-                EditorGUILayout.EndScrollView();
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical( "box" );
-        
-                if (GUILayout.Button( "Copy To Clipboard" ) ) GenerateCode( true );
-
+                GUILayout.BeginHorizontal( "box" );
+                    CodeViewsWindow.OptionalUseOffset();
+                    if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+                    GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 

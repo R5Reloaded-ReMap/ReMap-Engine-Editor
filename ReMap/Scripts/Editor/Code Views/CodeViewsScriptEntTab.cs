@@ -14,7 +14,7 @@ namespace CodeViewsWindow
 {
     public class ScriptEntTab
     {
-        internal static void OnGUIScriptEntTab()
+        internal static void OnGUITab()
         {
             GUILayout.BeginHorizontal( "box" );
                 CodeViewsWindow.OptionalUseOffset();
@@ -23,24 +23,20 @@ namespace CodeViewsWindow
                 CodeViewsWindow.OptionalAdvancedOption();
             GUILayout.EndHorizontal();
 
-            if ( CodeViewsWindow.ShowAdvancedMenu ) CodeViewsWindow.AdvancedOptionMenu();
-
-            CodeViewsWindow.CodeOutput();
-
-            GUILayout.BeginVertical( "box" );
-        
-                if (GUILayout.Button( "Copy To Clipboard" ) ) GenerateCode( true );
-
-            GUILayout.EndVertical();
+            //if ( CodeViewsWindow.ShowAdvancedMenu ) CodeViewsWindow.AdvancedOptionMenu();
         }
 
         internal static string GenerateCode( bool copy )
         {
             string code = "";
 
+            if ( CodeViewsWindow.ShowEntFunction ) code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}";
+
             if ( Helper.GetBoolFromGenerateObjects( ObjectType.Prop ) ) code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.EntFile );
             if ( Helper.GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, BuildType.EntFile );
             if ( Helper.GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, BuildType.EntFile );
+
+            if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 
             return code;
         }

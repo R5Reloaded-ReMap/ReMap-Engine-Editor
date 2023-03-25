@@ -35,9 +35,13 @@ namespace CodeViewsWindow
         internal static int GUILayoutLabelSize = 40;
 
         internal static bool ShowAdvancedMenu = false;
+        internal static bool ShowAdvancedMenuTemp = false;
         internal static bool ShowFunction = false;
         internal static bool ShowFunctionTemp = false;
+        internal static bool ShowEntFunction = false;
+        internal static bool ShowEntFunctionTemp = false;
         internal static int EntityCount = 0;
+        internal static int EntFileID = 0;
 
         // Gen Settings
         public static Dictionary< string, bool > GenerateObjects = Helper.ObjectGenerateDictionaryInit();
@@ -64,20 +68,17 @@ namespace CodeViewsWindow
             EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
             EditorSceneManager.sceneSaved += EditorSceneManager_sceneSaved;
 
-            GetLatestCounts();
-            GenerateCorrectCode();
+            Refresh();
         }
 
         private void EditorSceneManager_sceneSaved( UnityEngine.SceneManagement.Scene arg0 )
         {
-            GetLatestCounts();
-            GenerateCorrectCode();
+            Refresh();
         }
 
         private void EditorSceneManager_sceneOpened( UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode )
         {
-            GetLatestCounts();
-            GenerateCorrectCode();
+            Refresh();
         }
 
         private static void GetLatestCounts()
@@ -118,24 +119,24 @@ namespace CodeViewsWindow
             }
         }
 
-        internal static void GenerateCorrectCode()
+        internal static void GenerateCorrectCode( bool copy )
         {
             code = "";
 
             switch ( tab )
             {
                 case 0: // Squirrel Code
-                    code += ScriptTab.GenerateCode( false );
+                    code += ScriptTab.GenerateCode( copy );
                     functionName = Helper.GetSceneName();
                     break;
 
                 case 1: // DataTable Code
-                    code += DataTableTab.GenerateCode( false );
+                    code += DataTableTab.GenerateCode( copy );
                     functionName = $"remap_datatable";
                     break;
 
                 case 2: // Precache Code
-                    code += PrecacheTab.GenerateCode( false );
+                    code += PrecacheTab.GenerateCode( copy );
                     functionName = $"{Helper.GetSceneName()}_Precache";
                     break;
 
@@ -143,12 +144,12 @@ namespace CodeViewsWindow
                     switch ( tabEnt )
                     {
                         case 0: // Script Code
-                            code += ScriptEntTab.GenerateCode( false );
+                            code += ScriptEntTab.GenerateCode( copy );
                             functionName = $"mp_rr_remap_script";
                             break;
 
                         case 1: // Sound Code
-                            code += SoundEntTab.GenerateCode( false );
+                            code += SoundEntTab.GenerateCode( copy );
                             functionName = $"mp_rr_remap_snd";
                             break;
                         case 2:  // Spawn Code
@@ -158,6 +159,8 @@ namespace CodeViewsWindow
                     }
                 break;
             }
+
+            if( copy ) GUIUtility.systemCopyBuffer = code;
         }
 
         void OnGUI()
@@ -176,32 +179,40 @@ namespace CodeViewsWindow
             switch ( tab )
             {
                 case 0: // Squirrel Code
-                    ScriptTab.OnGUIScriptTab();
+                    ScriptTab.OnGUITab();
                     break;
 
                 case 1: // DataTable Code
-                    DataTableTab.OnGUIDataTableTab();
+                    DataTableTab.OnGUITab();
                     break;
 
                 case 2: // Precache Code
-                    PrecacheTab.OnGUIPrecacheTab();
+                    PrecacheTab.OnGUITab();
                     break;
 
                 case 3: // Ent Code
                     switch ( tabEnt )
                     {
                         case 0: // Script Code
-                            ScriptEntTab.OnGUIScriptEntTab();
+                            ScriptEntTab.OnGUITab();
                             break;
 
                         case 1: // Sound Code
+                            SoundEntTab.OnGUITab();
                             break;
 
                         case 2: // Spawn Code
+                            SpawnEntTab.OnGUITab();
                         break;
                     }
                 break;
             }
+
+            GUILayout.BeginVertical( "box" );
+                    CodeViewsWindow.CodeOutput();
+        
+                    if ( GUILayout.Button( "Copy To Clipboard" ) ) GenerateCorrectCode( true );
+            GUILayout.EndVertical();
         }
 
         private static bool IsIgnored( string key )
@@ -224,9 +235,9 @@ namespace CodeViewsWindow
 
                 if ( tab == 3 )
                 {
-                        GUILayout.BeginHorizontal( "box" );
-                            tabEnt = GUILayout.Toolbar ( tabEnt, toolbarSubTabEntCode );
-                        GUILayout.EndHorizontal();           
+                    GUILayout.BeginHorizontal( "box" );
+                        tabEnt = GUILayout.Toolbar ( tabEnt, toolbarSubTabEntCode );
+                    GUILayout.EndHorizontal();           
                 }
 
                 GUILayout.BeginHorizontal( "box" );
@@ -243,7 +254,7 @@ namespace CodeViewsWindow
             if( Helper.UseStartingOffset != Helper.UseStartingOffsetTemp )
             {
                 Helper.UseStartingOffsetTemp = Helper.UseStartingOffset;
-                CodeViewsWindow.GenerateCorrectCode();
+                Refresh();
             }
         }
 
@@ -253,7 +264,7 @@ namespace CodeViewsWindow
             if( Helper.ShowStartingOffset != Helper.ShowStartingOffsetTemp )
             {
                 Helper.ShowStartingOffsetTemp = Helper.ShowStartingOffset;
-                GenerateCorrectCode();
+                Refresh();
             }
         }
 
@@ -269,7 +280,17 @@ namespace CodeViewsWindow
             if( ShowFunction != ShowFunctionTemp )
             {
                 ShowFunctionTemp = ShowFunction;
-                GenerateCorrectCode();
+                Refresh();
+            }
+        }
+
+        internal static void ShowSquirrelEntFunction( string text = "Show Squirrel Function" )
+        {
+            ShowEntFunction = EditorGUILayout.Toggle( text, ShowEntFunction, GUILayout.MaxWidth( GUILayoutToggleSize ) );
+            if( ShowEntFunction != ShowEntFunctionTemp )
+            {
+                ShowEntFunctionTemp = ShowEntFunction;
+                Refresh();
             }
         }
 
@@ -287,12 +308,21 @@ namespace CodeViewsWindow
 
         internal static void OptionalAdvancedOption( string text = "Show Advanced Options" )
         {
-            ShowAdvancedMenu = EditorGUILayout.Toggle( text, ShowAdvancedMenu, GUILayout.MaxWidth( GUILayoutToggleSize ) );
-        }
+            GUILayout.BeginVertical();
 
-        internal static void AdvancedOptionMenu()
-        {
-            GUILayout.BeginVertical("box");
+                ShowAdvancedMenu = EditorGUILayout.Toggle( text, ShowAdvancedMenu, GUILayout.MaxWidth( GUILayoutToggleSize ) );
+
+                if( ShowAdvancedMenu != ShowAdvancedMenuTemp )
+                {
+                    ShowAdvancedMenuTemp = ShowAdvancedMenu;
+                    Refresh();
+                }
+
+                if ( !ShowAdvancedMenu )
+                {
+                    GUILayout.EndVertical();
+                    return;
+                }
 
                 int idx = 0;
                 GUILayout.BeginHorizontal();
@@ -313,7 +343,7 @@ namespace CodeViewsWindow
                         if ( GenerateObjects[key] != GenerateObjectsFunctionTemp[key] )
                         {
                             GenerateObjectsFunctionTemp[key] = GenerateObjects[key];
-                            CodeViewsWindow.GenerateCorrectCode();
+                            Refresh();
                         }
 
                         if ( idx == Mathf.FloorToInt( windowSize.x / paramToggleSize ) - 1 )
@@ -324,7 +354,6 @@ namespace CodeViewsWindow
                         } else idx++;
                     }
                 GUILayout.EndHorizontal();
-
             GUILayout.EndVertical();
 
             foreach ( string key in GenerateObjectsFunctionTemp.Keys )
@@ -335,7 +364,7 @@ namespace CodeViewsWindow
 
         internal static void OptionalFunctionName()
         {
-            EditorGUILayout.LabelField( "Name", GUILayout.MaxWidth( GUILayoutLabelSize ) );
+            EditorGUILayout.LabelField( "Function Name", GUILayout.Width( 92 ) );
             functionName = EditorGUILayout.TextField( "", functionName, GUILayout.Width( GUILayoutFunctionFieldSize ) );
         }
 
@@ -394,16 +423,14 @@ namespace CodeViewsWindow
 
         internal static void CodeOutput()
         {
-            GUILayout.BeginVertical( "box" );
-                scroll = EditorGUILayout.BeginScrollView( scroll );
-                    GUILayout.TextArea( code, GUILayout.ExpandHeight( true ) );
-                EditorGUILayout.EndScrollView();
-            GUILayout.EndVertical();
+            scroll = EditorGUILayout.BeginScrollView( scroll );
+                GUILayout.TextArea( code, GUILayout.ExpandHeight( true ) );
+            EditorGUILayout.EndScrollView();
         }
 
         internal static void Refresh()
         {
-            GenerateCorrectCode(); GetLatestCounts();
+            GenerateCorrectCode( false ); GetLatestCounts();
         }
 
         private static void SetCorrectColor( int count )

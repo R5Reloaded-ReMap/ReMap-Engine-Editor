@@ -12,19 +12,15 @@ using static Build.Build;
 
 namespace CodeViewsWindow
 {
-    public class PrecacheTab
+    public class SpawnEntTab
     {
         internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
                 GUILayout.BeginHorizontal( "box" );
-
-                    CodeViewsWindow.ShowSquirrelFunction();
-
-                    if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
-
+                    CodeViewsWindow.OptionalUseOffset();
+                    if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
                     GUILayout.FlexibleSpace();
-
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
@@ -33,16 +29,7 @@ namespace CodeViewsWindow
         {
             string code = "";
 
-            if ( CodeViewsWindow.ShowFunction )
-            {
-                code += $"void function {CodeViewsWindow.functionName}()"; PageBreak( ref code );
-                code += "{"; PageBreak( ref code );
-                code += Helper.ReMapCredit();
-            }
-
-            code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache );
-
-            if ( CodeViewsWindow.ShowFunction ) code += "}";
+            code += code += BuildObjectsWithEnum( ObjectType.SpawnPoint, BuildType.EntFile );
 
             return code;
         }

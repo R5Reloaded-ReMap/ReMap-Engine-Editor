@@ -41,6 +41,8 @@ namespace CodeViewsWindow
         internal static bool ShowFunctionTemp = false;
         internal static bool ShowEntFunction = false;
         internal static bool ShowEntFunctionTemp = false;
+        internal static bool EnableSelection = false;
+        internal static bool EnableSelectionTemp = false;
         internal static int EntityCount = 0;
         internal static int EntFileID = 27;
 
@@ -80,44 +82,6 @@ namespace CodeViewsWindow
         private void EditorSceneManager_sceneOpened( UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode )
         {
             Refresh();
-        }
-
-        private static void GetLatestCounts()
-        {
-            switch ( tab )
-            {
-                case 0: // Squirrel Code
-                    EntityCount = UnityInfo.GetAllCount();
-                    break;
-
-                case 1: // DataTable Code
-                    EntityCount = UnityInfo.GetSpecificObjectCount( ObjectType.Prop );
-                    break;
-
-                case 2: // Precache Code
-                    EntityCount = BuildProp.PrecacheList.Count;
-                    break;
-
-                case 3: // Ent Code
-                    switch ( tabEnt )
-                    {
-                        case 0: // Script Code
-                            EntityCount =
-                            UnityInfo.GetSpecificObjectCount( ObjectType.Prop ) +
-                            UnityInfo.GetSpecificObjectCount( ObjectType.VerticalZipLine ) +
-                            UnityInfo.GetSpecificObjectCount( ObjectType.NonVerticalZipLine ) +
-                            UnityInfo.GetSpecificObjectCount( ObjectType.Trigger );
-                            break;
-
-                        case 1: // Sound Code
-                            EntityCount = UnityInfo.GetSpecificObjectCount( ObjectType.Sound );
-                            break;
-                        case 2:  // Spawn Code
-                            EntityCount = UnityInfo.GetSpecificObjectCount( ObjectType.SpawnPoint );
-                        break;
-                    }
-                break;
-            }
         }
 
         internal static void GenerateCorrectCode( bool copy )
@@ -385,6 +349,16 @@ namespace CodeViewsWindow
             functionName = EditorGUILayout.TextField( "", functionName, GUILayout.Width( GUILayoutFunctionFieldSize ) );
         }
 
+        internal static void OptionalSelection( string text = "Build Selection Only" )
+        {
+            EnableSelection = EditorGUILayout.Toggle( text, EnableSelection, GUILayout.MaxWidth( GUILayoutToggleSize ) );
+            if( EnableSelection != EnableSelectionTemp )
+            {
+                EnableSelectionTemp = EnableSelection;
+                Refresh();
+            }
+        }
+
         internal static void ExportButton( string text = "Export Code" )
         {
             if ( GUILayout.Button( text, GUILayout.Width( 100 ) ) ) ExportFunction();
@@ -449,7 +423,7 @@ namespace CodeViewsWindow
 
         internal static void Refresh()
         {
-            GenerateCorrectCode( false ); GetLatestCounts();
+            EntityCount = 0; GenerateCorrectCode( false );
         }
 
         private static void SetCorrectColor( int count )

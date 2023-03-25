@@ -14,7 +14,6 @@ namespace CodeViewsWindow
 {
     public class DataTableTab
     {
-
         internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
@@ -23,6 +22,12 @@ namespace CodeViewsWindow
                     if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
                     GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
+
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
+                    CodeViewsWindow.OptionalSelection();
+                GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 
@@ -30,7 +35,7 @@ namespace CodeViewsWindow
         {
             string code = "";
 
-            code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable );
+            code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.EnableSelection );
 
             return code;
         }

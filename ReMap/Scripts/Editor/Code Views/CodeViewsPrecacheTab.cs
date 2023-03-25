@@ -21,6 +21,12 @@ namespace CodeViewsWindow
                     CodeViewsWindow.ShowSquirrelFunction();
                     if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
                 GUILayout.EndHorizontal();
+
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
+                    CodeViewsWindow.OptionalSelection();
+                GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 
@@ -35,7 +41,7 @@ namespace CodeViewsWindow
                 code += Helper.ReMapCredit();
             }
 
-            code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache );
+            code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 

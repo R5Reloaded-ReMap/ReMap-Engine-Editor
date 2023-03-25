@@ -28,6 +28,12 @@ namespace CodeViewsWindow
                     if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
                     GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
+
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
+                    CodeViewsWindow.OptionalSelection();
+                GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 

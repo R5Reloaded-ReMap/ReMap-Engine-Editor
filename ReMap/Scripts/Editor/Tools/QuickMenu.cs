@@ -83,7 +83,7 @@ public class QuickMenu : EditorWindow
             if (GUILayout.Button("Spawn.ent", GUILayout.ExpandWidth(true)))
                 CodeViewsExport.ExportEntFileSpawn();
             if (GUILayout.Button("Datatable", GUILayout.ExpandWidth(true)))
-                ImportExportDataTable.ExportDataTable();
+                CodeViewsExport.ExportDataTable();
             if (GUILayout.Button("Json", GUILayout.ExpandWidth(true)))
                 JsonExport.ExportJson();
         }

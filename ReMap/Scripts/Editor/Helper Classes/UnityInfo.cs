@@ -33,13 +33,7 @@ public class UnityInfo
         {
             foreach ( string key in Helper.ObjectToTag.Keys )
             {
-                if ( go.name.Contains( key ) )
-                {
-                    if ( key == Helper.GetObjRefWithEnum( ObjectType.ZipLine ) || key == Helper.GetObjRefWithEnum( ObjectType.LinkedZipline ) || key == Helper.GetObjRefWithEnum( ObjectType.VerticalZipLine ) || key == Helper.GetObjRefWithEnum( ObjectType.NonVerticalZipLine ) )
-                    {
-                        objectCount += 2;
-                    } else objectCount++;
-                }
+                if ( go.name.Contains( key ) ) objectCount++;
             }
         }
 

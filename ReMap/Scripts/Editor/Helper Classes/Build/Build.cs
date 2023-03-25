@@ -25,7 +25,15 @@ namespace Build
             if ( selection ) objectData = Helper.GetSelectedObjectWithEnum( objectType );
             else objectData = Helper.GetObjArrayWithEnum( objectType );
 
-            if ( objectData.Length == 0 ) return "";
+            int objectDataLength = objectData.Length;
+
+            if ( objectDataLength == 0 ) return "";
+            
+            if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine )
+            {
+                CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength * 2;
+            } else CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength;
+            
 
             switch ( objectType )
             {

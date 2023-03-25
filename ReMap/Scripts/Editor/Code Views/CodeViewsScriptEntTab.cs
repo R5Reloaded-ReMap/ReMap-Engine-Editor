@@ -32,6 +32,12 @@ namespace CodeViewsWindow
                 GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
                 GUILayout.BeginHorizontal();
+                    CodeViewsWindow.OptionalSelection();
+                GUILayout.EndHorizontal();
+
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
                     CodeViewsWindow.OptionalAdvancedOption();
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -47,9 +53,9 @@ namespace CodeViewsWindow
                 PageBreak( ref code );
             }
 
-            if ( Helper.GetBoolFromGenerateObjects( ObjectType.Prop ) ) code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.EntFile );
-            if ( Helper.GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, BuildType.EntFile );
-            if ( Helper.GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, BuildType.EntFile );
+            if ( Helper.GetBoolFromGenerateObjects( ObjectType.Prop ) ) code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.EntFile, CodeViewsWindow.EnableSelection );
+            if ( Helper.GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, BuildType.EntFile, CodeViewsWindow.EnableSelection );
+            if ( Helper.GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, BuildType.EntFile, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 

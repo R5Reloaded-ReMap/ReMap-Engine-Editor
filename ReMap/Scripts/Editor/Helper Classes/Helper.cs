@@ -283,32 +283,32 @@ public class Helper
     /// </summary>
     /// <returns>built map code string</returns>
     public static string BuildMapCode(
-    BuildType buildType = BuildType.Script, bool Prop = true,            bool ZipLine = true,       bool LinkedZipline = true,  bool VerticalZipLine = true,
-    bool NonVerticalZipLine = true,         bool SingleDoor = true,      bool DoubleDoor = true,    bool HorzDoor = true,       bool VerticalDoor = true,
-    bool Button = true,                     bool Jumppad = true,         bool LootBin = true,       bool WeaponRack = true,     bool Trigger = true,
-    bool BubbleShield = true,               bool SpawnPoint = true,      bool TextInfoPanel = true, bool FuncWindowHint = true, bool Sound = true )
+    BuildType buildType = BuildType.Script, bool Selection = false,         bool Prop = true,       bool ZipLine = true,       bool LinkedZipline = true,
+    bool VerticalZipLine = true,            bool NonVerticalZipLine = true, bool SingleDoor = true, bool DoubleDoor = true,    bool HorzDoor = true,
+    bool VerticalDoor = true,               bool Button = true,             bool Jumppad = true,    bool LootBin = true,       bool WeaponRack = true,
+    bool Trigger = true,                    bool BubbleShield = true,       bool SpawnPoint = true, bool TextInfoPanel = true, bool FuncWindowHint = true, bool Sound = true )
     {
         // Order of importance
         string code = "";
-        if( Prop )                code += BuildObjectsWithEnum( ObjectType.Prop, buildType );
-        if( ZipLine )             code += BuildObjectsWithEnum( ObjectType.ZipLine, buildType );
-        if( LinkedZipline )       code += BuildObjectsWithEnum( ObjectType.LinkedZipline, buildType );
-        if( VerticalZipLine )     code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, buildType );
-        if( NonVerticalZipLine )  code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, buildType );
-        if( SingleDoor )          code += BuildObjectsWithEnum( ObjectType.SingleDoor, buildType );
-        if( DoubleDoor )          code += BuildObjectsWithEnum( ObjectType.DoubleDoor, buildType );
-        if( HorzDoor )            code += BuildObjectsWithEnum( ObjectType.HorzDoor, buildType );
-        if( VerticalDoor )        code += BuildObjectsWithEnum( ObjectType.VerticalDoor, buildType );
-        if( Button )              code += BuildObjectsWithEnum( ObjectType.Button, buildType );
-        if( Jumppad )             code += BuildObjectsWithEnum( ObjectType.Jumppad, buildType );
-        if( LootBin )             code += BuildObjectsWithEnum( ObjectType.LootBin, buildType );
-        if( WeaponRack )          code += BuildObjectsWithEnum( ObjectType.WeaponRack, buildType );
-        if( Trigger )             code += BuildObjectsWithEnum( ObjectType.Trigger, buildType );
-        if( BubbleShield )        code += BuildObjectsWithEnum( ObjectType.BubbleShield, buildType );
-        if( SpawnPoint )          code += BuildObjectsWithEnum( ObjectType.SpawnPoint, buildType );
-        if( TextInfoPanel )       code += BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType );
-        if( FuncWindowHint )      code += BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType );
-        if( Sound )               code += BuildObjectsWithEnum( ObjectType.Sound, buildType );
+        if( Prop )                code += BuildObjectsWithEnum( ObjectType.Prop, buildType, Selection );
+        if( ZipLine )             code += BuildObjectsWithEnum( ObjectType.ZipLine, buildType, Selection );
+        if( LinkedZipline )       code += BuildObjectsWithEnum( ObjectType.LinkedZipline, buildType, Selection );
+        if( VerticalZipLine )     code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, buildType, Selection );
+        if( NonVerticalZipLine )  code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, buildType, Selection );
+        if( SingleDoor )          code += BuildObjectsWithEnum( ObjectType.SingleDoor, buildType, Selection );
+        if( DoubleDoor )          code += BuildObjectsWithEnum( ObjectType.DoubleDoor, buildType, Selection );
+        if( HorzDoor )            code += BuildObjectsWithEnum( ObjectType.HorzDoor, buildType, Selection );
+        if( VerticalDoor )        code += BuildObjectsWithEnum( ObjectType.VerticalDoor, buildType, Selection );
+        if( Button )              code += BuildObjectsWithEnum( ObjectType.Button, buildType, Selection );
+        if( Jumppad )             code += BuildObjectsWithEnum( ObjectType.Jumppad, buildType, Selection );
+        if( LootBin )             code += BuildObjectsWithEnum( ObjectType.LootBin, buildType, Selection );
+        if( WeaponRack )          code += BuildObjectsWithEnum( ObjectType.WeaponRack, buildType, Selection );
+        if( Trigger )             code += BuildObjectsWithEnum( ObjectType.Trigger, buildType, Selection );
+        if( BubbleShield )        code += BuildObjectsWithEnum( ObjectType.BubbleShield, buildType, Selection );
+        if( SpawnPoint )          code += BuildObjectsWithEnum( ObjectType.SpawnPoint, buildType, Selection );
+        if( TextInfoPanel )       code += BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType, Selection );
+        if( FuncWindowHint )      code += BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection );
+        if( Sound )               code += BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection );
 
         return code;
     }

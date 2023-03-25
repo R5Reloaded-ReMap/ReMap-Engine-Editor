@@ -17,7 +17,13 @@ namespace CodeViewsWindow
         internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal( "box" );
+                GUILayout.BeginHorizontal();
+                    CodeViewsWindow.ShowSquirrelEntFunction();
+                GUILayout.EndHorizontal();
+                
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
                     CodeViewsWindow.OptionalUseOffset();
                     if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
                     GUILayout.FlexibleSpace();
@@ -29,7 +35,15 @@ namespace CodeViewsWindow
         {
             string code = "";
 
+            if ( CodeViewsWindow.ShowEntFunction )
+            {
+                code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}";
+                PageBreak( ref code );
+            }
+
             code += code += BuildObjectsWithEnum( ObjectType.SpawnPoint, BuildType.EntFile );
+
+            if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 
             return code;
         }

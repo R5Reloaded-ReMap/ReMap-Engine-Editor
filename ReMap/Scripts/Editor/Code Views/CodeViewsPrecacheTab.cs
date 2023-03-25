@@ -17,14 +17,9 @@ namespace CodeViewsWindow
         internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal( "box" );
-
+                GUILayout.BeginHorizontal();
                     CodeViewsWindow.ShowSquirrelFunction();
-
                     if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
-
-                    GUILayout.FlexibleSpace();
-
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }

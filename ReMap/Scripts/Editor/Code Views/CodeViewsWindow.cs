@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -41,7 +42,7 @@ namespace CodeViewsWindow
         internal static bool ShowEntFunction = false;
         internal static bool ShowEntFunctionTemp = false;
         internal static int EntityCount = 0;
-        internal static int EntFileID = 0;
+        internal static int EntFileID = 27;
 
         // Gen Settings
         public static Dictionary< string, bool > GenerateObjects = Helper.ObjectGenerateDictionaryInit();
@@ -53,7 +54,7 @@ namespace CodeViewsWindow
         public static int yellowPropCount = 3000;
 
 
-        [MenuItem("ReMap/Dev Test/Code Views", false, 25)]
+        [ MenuItem( "ReMap/Code Views", false, 25 ) ]
         public static void Init()
         {
             TagHelper.CheckAndCreateTags();
@@ -228,19 +229,21 @@ namespace CodeViewsWindow
         internal static void MainTab()
         {
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal( "box" );
+                GUILayout.BeginHorizontal();
                     tab = GUILayout.Toolbar ( tab, toolbarTab );
                     if ( GUILayout.Button("Refresh", GUILayout.Width( 100 ) ) ) Refresh();
                 GUILayout.EndHorizontal();
 
                 if ( tab == 3 )
                 {
-                    GUILayout.BeginHorizontal( "box" );
+                    GUILayout.BeginHorizontal();
                         tabEnt = GUILayout.Toolbar ( tabEnt, toolbarSubTabEntCode );
                     GUILayout.EndHorizontal();           
                 }
 
-                GUILayout.BeginHorizontal( "box" );
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
                         CodeViewsWindow.ObjectCount();
                         GUILayout.FlexibleSpace();
                         CodeViewsWindow.ExportButton();
@@ -284,13 +287,27 @@ namespace CodeViewsWindow
             }
         }
 
-        internal static void ShowSquirrelEntFunction( string text = "Show Squirrel Function" )
+        internal static void ShowSquirrelEntFunction( string text = "Show Full File" )
         {
             ShowEntFunction = EditorGUILayout.Toggle( text, ShowEntFunction, GUILayout.MaxWidth( GUILayoutToggleSize ) );
             if( ShowEntFunction != ShowEntFunctionTemp )
             {
                 ShowEntFunctionTemp = ShowEntFunction;
                 Refresh();
+            }
+
+            if ( ShowEntFunction )
+            {
+                EditorGUILayout.LabelField( "Ent ID", GUILayout.MaxWidth( GUILayoutLabelSize ) );
+
+                string userInput = EditorGUILayout.TextField( EntFileID.ToString(), GUILayout.MaxWidth( GUILayoutLabelSize ) );
+
+                userInput = Regex.Replace( userInput, "[^0-9]", "" );
+
+                if ( int.TryParse( userInput, out EntFileID ) )
+                {
+                    EntFileID = int.Parse( userInput );
+                }
             }
         }
 
@@ -467,7 +484,7 @@ namespace CodeViewsWindow
         private static bool IsValidScriptEntParam( string type )
         {
             if ( tab == 3 && tabEnt == 0 ) // Ent Code/Script Code
-                return ( type != Helper.GetObjTagNameWithEnum( ObjectType.Prop ) && type != Helper.GetObjTagNameWithEnum( ObjectType.VerticalZipLine ) && type != Helper.GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine ) );
+                return ( type == Helper.GetObjTagNameWithEnum( ObjectType.Prop ) || type == Helper.GetObjTagNameWithEnum( ObjectType.VerticalZipLine ) || type == Helper.GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine ) );
 
             return true;
         }

@@ -22,7 +22,7 @@ namespace CodeViewsWindow
                     if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
                 GUILayout.EndHorizontal();
 
-                GUILayout.Box("", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ));
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
                 GUILayout.BeginHorizontal();
                     CodeViewsWindow.OptionalUseOffset();
@@ -30,7 +30,7 @@ namespace CodeViewsWindow
                     if ( Helper.UseStartingOffset && Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
                 GUILayout.EndHorizontal();
 
-                    GUILayout.Box("", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ));
+                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
                 GUILayout.BeginHorizontal();
                     CodeViewsWindow.OptionalAdvancedOption();

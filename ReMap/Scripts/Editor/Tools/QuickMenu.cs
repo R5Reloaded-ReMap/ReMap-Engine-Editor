@@ -34,7 +34,7 @@ public class QuickMenu : EditorWindow
         if (utilfold)
         {
             if (GUILayout.Button("Code Views", GUILayout.ExpandWidth(true)))
-                CodeViews.Init();
+                CodeViewsWindow.CodeViewsWindow.Init();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();

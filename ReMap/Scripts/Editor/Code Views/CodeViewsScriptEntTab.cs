@@ -16,21 +16,36 @@ namespace CodeViewsWindow
     {
         internal static void OnGUITab()
         {
-            GUILayout.BeginHorizontal( "box" );
-                CodeViewsWindow.OptionalUseOffset();
-                if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
-                GUILayout.FlexibleSpace();
-                CodeViewsWindow.OptionalAdvancedOption();
-            GUILayout.EndHorizontal();
+            GUILayout.BeginVertical( "box" );
+                GUILayout.BeginHorizontal();
+                    CodeViewsWindow.ShowSquirrelEntFunction();
+                GUILayout.EndHorizontal();
 
-            //if ( CodeViewsWindow.ShowAdvancedMenu ) CodeViewsWindow.AdvancedOptionMenu();
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
+                    CodeViewsWindow.OptionalUseOffset();
+                    if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+                    GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
+                    CodeViewsWindow.OptionalAdvancedOption();
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
 
         internal static string GenerateCode( bool copy )
         {
             string code = "";
 
-            if ( CodeViewsWindow.ShowEntFunction ) code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}";
+            if ( CodeViewsWindow.ShowEntFunction )
+            {
+                code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}";
+                PageBreak( ref code );
+            }
 
             if ( Helper.GetBoolFromGenerateObjects( ObjectType.Prop ) ) code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.EntFile );
             if ( Helper.GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, BuildType.EntFile );

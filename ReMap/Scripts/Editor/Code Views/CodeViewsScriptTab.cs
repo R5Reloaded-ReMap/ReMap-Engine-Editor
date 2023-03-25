@@ -24,7 +24,7 @@ namespace CodeViewsWindow
         {
             GUILayout.BeginVertical( "box" );
 
-                CodeViewsWindow.ObjectCount(); GUI.contentColor = Color.white;
+                CodeViewsWindow.ObjectCount();
 
                 GUILayout.BeginHorizontal( "box" );
                     CodeViewsWindow.ShowFunction = EditorGUILayout.Toggle( "Show Squirrel Function", CodeViewsWindow.ShowFunction, GUILayout.MaxWidth( GUILayoutToggleSize ) );

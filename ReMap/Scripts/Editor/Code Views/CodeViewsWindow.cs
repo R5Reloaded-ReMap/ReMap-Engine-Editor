@@ -113,12 +113,11 @@ namespace CodeViewsWindow
         internal static void GenerateCorrectCode()
         {
             code = "";
-            PageBreak( ref code );
 
             switch ( tab )
             {
                 case 0: // Squirrel Code
-                    code = ScriptTab.GenerateCode( false, CodeViewsWindow.ShowFunction );
+                    code += ScriptTab.GenerateCode( false, CodeViewsWindow.ShowFunction );
                     break;
 
                 case 1: // DataTable Code
@@ -133,6 +132,7 @@ namespace CodeViewsWindow
                     switch ( tabEnt )
                     {
                         case 0: // Script Code
+                            code += ScriptEntTab.GenerateCode( false );
                             //str = ;
                             break;
 
@@ -170,7 +170,12 @@ namespace CodeViewsWindow
 
             GetEditorWindowSize();
 
-            if( tab != tab_temp ) GetLatestCounts();
+            if( tab != tab_temp )
+            {
+                GetLatestCounts();
+                GenerateCorrectCode();
+                tab_temp = tab;
+            }
 
             switch ( tab )
             {
@@ -188,6 +193,7 @@ namespace CodeViewsWindow
                     switch ( tabEnt )
                     {
                         case 0: // Script Code
+                            ScriptEntTab.OnGUIScriptEntTab();
                             break;
 
                         case 1: // Sound Code

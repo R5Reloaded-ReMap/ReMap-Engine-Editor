@@ -119,6 +119,8 @@ public class CodeViews : EditorWindow
         if(tab != tab_temp)
             GetLatestCounts();
 
+        GUI.contentColor = Color.white;
+
         switch (tab) {
             case 0: //Map Code
                 MapCodeGUI();

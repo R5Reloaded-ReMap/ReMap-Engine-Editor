@@ -19,12 +19,6 @@ namespace CodeViewsWindow
         {
             GUILayout.BeginVertical( "box" );
                 GUILayout.BeginHorizontal( "box" );
-                        CodeViewsWindow.ObjectCount();
-                        GUILayout.FlexibleSpace();
-                        CodeViewsWindow.ExportButton();
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal( "box" );
                     CodeViewsWindow.OptionalUseOffset();
                     if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
                     GUILayout.FlexibleSpace();

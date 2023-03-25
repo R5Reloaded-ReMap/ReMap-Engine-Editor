@@ -46,12 +46,12 @@ namespace Build
                 if ( script == null ) continue;
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
-                string scale = obj.transform.localScale.x.ToString().Replace(",", ".");
+                string scale = Helper.ReplaceComma( obj.transform.localScale.x );
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {script.AllowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.RealmID}, {scale} )";
+                        code += $"    MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} )";
                         PageBreak( ref code );
                         break;
 
@@ -59,7 +59,7 @@ namespace Build
                         code +=  "{\n";
                         code +=  "\"StartDisabled\" \"0\"\n";
                         code +=  "\"spawnflags\" \"0\"\n";
-                        code += $"\"fadedist\" \"{script.FadeDistance}\"\n";
+                        code += $"\"fadedist\" \"{Helper.ReplaceComma( script.FadeDistance )}\"\n";
                         code += $"\"collide_titan\" \"1\"\n";
                         code += $"\"collide_ai\" \"1\"\n";
                         code += $"\"scale\" \"{scale}\"\n";

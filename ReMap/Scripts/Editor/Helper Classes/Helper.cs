@@ -464,6 +464,16 @@ public class Helper
         return SelectedObject;
     }
 
+    public static string ReplaceComma( float value )
+    {
+        return value.ToString().Replace( ",", "." );
+    }
+
+    public static string BoolToLower( bool value )
+    {
+        return value.ToString().ToLower();
+    }
+
     public static string GetSquirrelSceneNameFunction( bool ext = true )
     {
         string extention = ext ? "()" : "";

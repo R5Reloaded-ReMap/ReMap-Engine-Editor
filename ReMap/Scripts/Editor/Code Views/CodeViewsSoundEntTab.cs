@@ -16,12 +16,6 @@ namespace CodeViewsWindow
     {
         internal static void OnGUIScriptEntTab()
         {
-            GUILayout.BeginHorizontal( "box" );
-
-                CodeViewsWindow.ObjectCount();
-
-            GUILayout.EndHorizontal();
-
             GUILayout.BeginVertical( "box" );
                 CodeViewsWindow.scroll = EditorGUILayout.BeginScrollView( CodeViewsWindow.scroll );
 

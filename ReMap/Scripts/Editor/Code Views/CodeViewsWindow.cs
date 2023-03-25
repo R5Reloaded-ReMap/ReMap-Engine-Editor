@@ -166,11 +166,11 @@ namespace CodeViewsWindow
 
             GetEditorWindowSize();
 
-            if( tab != tab_temp )
+            if( tab != tab_temp || tabEnt != tabEnt_temp )
             {
-                GetLatestCounts();
-                GenerateCorrectCode();
+                Refresh();
                 tab_temp = tab;
+                tabEnt_temp = tabEnt;
             }
 
             switch ( tab )
@@ -221,16 +221,20 @@ namespace CodeViewsWindow
                     tab = GUILayout.Toolbar ( tab, toolbarTab );
                     if ( GUILayout.Button("Refresh", GUILayout.Width( 100 ) ) ) Refresh();
                 GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
 
-            if ( tab == 3 )
-            {
-                GUILayout.BeginVertical( "box" );
-                    GUILayout.BeginHorizontal( "box" );
-                        tabEnt = GUILayout.Toolbar ( tabEnt, toolbarSubTabEntCode );
-                    GUILayout.EndHorizontal();
-                GUILayout.EndVertical();
-            }
+                if ( tab == 3 )
+                {
+                        GUILayout.BeginHorizontal( "box" );
+                            tabEnt = GUILayout.Toolbar ( tabEnt, toolbarSubTabEntCode );
+                        GUILayout.EndHorizontal();           
+                }
+
+                GUILayout.BeginHorizontal( "box" );
+                        CodeViewsWindow.ObjectCount();
+                        GUILayout.FlexibleSpace();
+                        CodeViewsWindow.ExportButton();
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
 
         internal static void OptionalUseOffset( string text = "Use Origin Offset" )

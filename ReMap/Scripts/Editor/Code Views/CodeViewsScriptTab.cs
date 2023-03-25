@@ -17,36 +17,30 @@ namespace CodeViewsWindow
         internal static void OnGUIScriptTab()
         {
             GUILayout.BeginVertical( "box" );
-
-                GUILayout.BeginHorizontal( "box" );
-                    CodeViewsWindow.ObjectCount();
-                    GUILayout.FlexibleSpace();
-                    CodeViewsWindow.ExportButton();
-                GUILayout.EndHorizontal();
-
                 GUILayout.BeginHorizontal( "box" );
                     CodeViewsWindow.ShowSquirrelFunction();
-
-                    CodeViewsWindow.OptionalUseOffset();
-
-                    if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalShowOffset();
-                    if ( Helper.UseStartingOffset && Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
-                    
+                    if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
                     GUILayout.FlexibleSpace();
-
-                    CodeViewsWindow.OptionalAdvancedOption();
                 GUILayout.EndHorizontal();
 
-                if ( CodeViewsWindow.ShowFunction )
-                {
-                    GUILayout.BeginHorizontal( "box" );
-                        CodeViewsWindow.OptionalFunctionName();
-                    GUILayout.EndHorizontal();
-                }
+                GUILayout.BeginHorizontal( "box" );
+                    CodeViewsWindow.OptionalUseOffset();
+                    if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalShowOffset();
+                    if ( Helper.UseStartingOffset && Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+                    GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
 
-            if ( CodeViewsWindow.ShowAdvancedMenu ) CodeViewsWindow.AdvancedOptionMenu();
+                GUILayout.BeginHorizontal( "box" );
+                    CodeViewsWindow.OptionalAdvancedOption();
+                    GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
 
-            CodeViewsWindow.CodeOutput();
+                if ( CodeViewsWindow.ShowAdvancedMenu ) CodeViewsWindow.AdvancedOptionMenu();
+
+            GUILayout.BeginVertical( "box" );
+
+                CodeViewsWindow.CodeOutput();
         
                 if (GUILayout.Button( "Copy To Clipboard" ) ) GenerateCode( true );
 

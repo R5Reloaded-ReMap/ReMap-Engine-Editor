@@ -17,13 +17,6 @@ namespace CodeViewsWindow
         internal static void OnGUIPrecacheTab()
         {
             GUILayout.BeginVertical( "box" );
-
-                GUILayout.BeginHorizontal( "box" );
-                        CodeViewsWindow.ObjectCount();
-                        GUILayout.FlexibleSpace();
-                        CodeViewsWindow.ExportButton();
-                GUILayout.EndHorizontal();
-
                 GUILayout.BeginHorizontal( "box" );
 
                     CodeViewsWindow.ShowSquirrelFunction();

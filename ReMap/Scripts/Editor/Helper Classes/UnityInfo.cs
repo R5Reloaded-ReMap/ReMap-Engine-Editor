@@ -52,6 +52,10 @@ public class UnityInfo
     public static int GetSpecificObjectCount( ObjectType objectType )
     {
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( objectType ) );
+
+        if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine )
+            return PropObjects.Length * 2;
+
         return PropObjects.Length;
     }
 

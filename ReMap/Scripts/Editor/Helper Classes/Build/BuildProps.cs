@@ -11,10 +11,11 @@ namespace Build
 {
     public class BuildProp
     {
+        public static List< String > PrecacheList = new List< String >();
+
         public static string BuildPropObjects( GameObject[] objectData, BuildType buildType )
         {
             string code = "";
-            List< String > precacheList = new List< String >();
 
             // Add something at the start of the text
             switch ( buildType )
@@ -73,15 +74,15 @@ namespace Build
                         break;
 
                     case BuildType.Precache:
-                        if ( precacheList.Contains( model ) )
+                        if ( PrecacheList.Contains( model ) )
                             continue;
-                        precacheList.Add( model );
+                        PrecacheList.Add( model );
                         code += $"    PrecacheModel( $\"{model}\" )";
                         PageBreak( ref code );
                         break;
 
                     case BuildType.DataTable:
-                        code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj )}\",\"{Helper.BuildAngles( obj )}\",{scale},{script.FadeDistance},{script.AllowMantle.ToString().ToLower()},true,\"{UnityInfo.GetApexModelName( model )}\",\"{FindPathString( obj )}\"";
+                        code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj )}\",\"{Helper.BuildAngles( obj )}\",{scale},{script.FadeDistance},{script.AllowMantle.ToString().ToLower()},true,\"{model}\",\"{FindPathString( obj )}\"";
                         PageBreak( ref code );
                     break;
                 }

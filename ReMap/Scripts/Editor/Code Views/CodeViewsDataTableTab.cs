@@ -12,21 +12,16 @@ using static Build.Build;
 
 namespace CodeViewsWindow
 {
-    public class ScriptEntTab
+    public class DataTableTab
     {
-        internal static void OnGUIScriptEntTab()
+
+        internal static void OnGUIDataTableTab()
         {
             GUILayout.BeginHorizontal( "box" );
 
                 CodeViewsWindow.ObjectCount();
 
-                GUILayout.FlexibleSpace();
-
-                CodeViewsWindow.ShowAdvanced = EditorGUILayout.Toggle( "Show Advanced Options", CodeViewsWindow.ShowAdvanced, GUILayout.MaxWidth( 180 ) );
-
             GUILayout.EndHorizontal();
-
-            if ( CodeViewsWindow.ShowAdvanced ) CodeViewsWindow.OptionalOption();
 
             GUILayout.BeginVertical( "box" );
                 CodeViewsWindow.scroll = EditorGUILayout.BeginScrollView( CodeViewsWindow.scroll );
@@ -47,9 +42,7 @@ namespace CodeViewsWindow
         {
             string code = "";
 
-            if ( Helper.GetBoolFromGenerateObjects( ObjectType.Prop ) ) code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.EntFile );
-            if ( Helper.GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, BuildType.EntFile );
-            if ( Helper.GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, BuildType.EntFile );
+            code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable );
 
             return code;
         }

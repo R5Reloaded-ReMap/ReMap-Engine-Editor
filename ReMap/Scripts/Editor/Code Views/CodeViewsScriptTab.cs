@@ -74,16 +74,16 @@ namespace CodeViewsWindow
 
             GUILayout.BeginVertical( "box" );
         
-                if (GUILayout.Button( "Copy To Clipboard" ) ) GenerateCode( true, CodeViewsWindow.ShowFunction );
+                if (GUILayout.Button( "Copy To Clipboard" ) ) GenerateCode( true );
 
             GUILayout.EndVertical();
         }
 
-        internal static string GenerateCode( bool copy, bool ShowFunction )
+        internal static string GenerateCode( bool copy )
         {
-            string code = ""; PageBreak( ref code );
+            string code = "";
 
-            if ( ShowFunction )
+            if ( CodeViewsWindow.ShowFunction )
             {
                 code += Helper.GetSquirrelSceneNameFunction(); PageBreak( ref code );
                 code += "{"; PageBreak( ref code );
@@ -98,7 +98,7 @@ namespace CodeViewsWindow
             Helper.GetBoolFromGenerateObjects( ObjectType.Jumppad ), Helper.GetBoolFromGenerateObjects( ObjectType.LootBin ), Helper.GetBoolFromGenerateObjects( ObjectType.WeaponRack ), Helper.GetBoolFromGenerateObjects( ObjectType.Trigger ), Helper.GetBoolFromGenerateObjects( ObjectType.BubbleShield ),
             Helper.GetBoolFromGenerateObjects( ObjectType.SpawnPoint ), Helper.GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ), Helper.GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ), Helper.GetBoolFromGenerateObjects( ObjectType.Sound ) );
 
-            if ( ShowFunction ) code += "}";
+            if ( CodeViewsWindow.ShowFunction ) code += "}";
 
             return code;
         }

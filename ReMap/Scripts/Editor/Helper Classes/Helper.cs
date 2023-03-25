@@ -482,9 +482,10 @@ public class Helper
         return SelectedObject;
     }
 
-    public static string GetSquirrelSceneNameFunction()
+    public static string GetSquirrelSceneNameFunction( bool ext = true )
     {
-        return $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}()";
+        string extention = ext ? "()" : "";
+        return $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}{extention}";
     }
 
     public static string ReMapCredit()

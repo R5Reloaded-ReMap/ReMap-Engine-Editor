@@ -85,7 +85,7 @@ namespace CodeViewsWindow
                     break;
 
                 case 2: // Precache Code
-                    EntityCount = 0;
+                    EntityCount = BuildProp.PrecacheList.Count;
                     break;
 
                 case 3: // Ent Code
@@ -117,15 +117,15 @@ namespace CodeViewsWindow
             switch ( tab )
             {
                 case 0: // Squirrel Code
-                    code += ScriptTab.GenerateCode( false, CodeViewsWindow.ShowFunction );
+                    code += ScriptTab.GenerateCode( false );
                     break;
 
                 case 1: // DataTable Code
-                    //str = ;
+                    code += DataTableTab.GenerateCode( false );
                     break;
 
                 case 2: // Precache Code
-                    //str = ;
+                    code += PrecacheTab.GenerateCode( false );
                     break;
 
                 case 3: // Ent Code
@@ -133,14 +133,13 @@ namespace CodeViewsWindow
                     {
                         case 0: // Script Code
                             code += ScriptEntTab.GenerateCode( false );
-                            //str = ;
                             break;
 
                         case 1: // Sound Code
-                            //str = ;
+                            code += SoundEntTab.GenerateCode( false );
                             break;
                         case 2:  // Spawn Code
-                            //str = ;
+                            //code += ;
                         break;
                     }
                 break;
@@ -184,9 +183,11 @@ namespace CodeViewsWindow
                     break;
 
                 case 1: // DataTable Code
+                    DataTableTab.OnGUIDataTableTab();
                     break;
 
                 case 2: // Precache Code
+                    PrecacheTab.OnGUIPrecacheTab();
                     break;
 
                 case 3: // Ent Code
@@ -238,7 +239,12 @@ namespace CodeViewsWindow
                         if ( IsIgnored( key ) ) continue;
 
                         ObjectType? type = Helper.GetObjectTypeByObjName( key );
-                        if ( type != null && UnityInfo.GetSpecificObjectCount( ( ObjectType ) type ) == 0 ) continue;
+                        ObjectType typed = ( ObjectType ) type;
+                        if ( UnityInfo.GetSpecificObjectCount( typed ) == 0 ) continue;
+                        
+                        string typedTag = Helper.GetObjTagNameWithEnum( typed );
+
+                        if ( IsValidScriptEntParam( typedTag ) ) continue; // Ent Code/Script Code
 
                         GenerateObjects[key] = EditorGUILayout.Toggle( $"Build {key}", GenerateObjects[key], GUILayout.Width( paramToggleSize ) );
 
@@ -294,6 +300,11 @@ namespace CodeViewsWindow
             {
                 windowSize = new Vector2( editorWindow.position.width, editorWindow.position.height );
             }
+        }
+
+        private static bool IsValidScriptEntParam( string type )
+        {
+            return ( type != Helper.GetObjTagNameWithEnum( ObjectType.Prop ) && type != Helper.GetObjTagNameWithEnum( ObjectType.VerticalZipLine ) && type != Helper.GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine ) );
         }
     }
 }

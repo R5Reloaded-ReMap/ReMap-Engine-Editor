@@ -44,7 +44,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj )}, {script.HalfHeight}, {script.HalfWidth}, {Helper.BuildAnglesVector( script.Right )} )";
+                        code += $"    MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj )}, {Helper.ReplaceComma( script.HalfHeight )}, {Helper.ReplaceComma( script.HalfWidth )}, {Helper.BuildRightVector( script.Right )} )";
                         PageBreak( ref code );
                         break;
 
@@ -52,7 +52,7 @@ namespace Build
                         code +=  "{\n";
                         code += $"\"halfheight\" \"{script.HalfHeight}\"\n";
                         code += $"\"halfwidth\" \"\"{script.HalfWidth}\n";
-                        code += $"\"right\" \"{Helper.BuildAnglesVector( script.Right, true )}\"\n";
+                        code += $"\"right\" \"{Helper.BuildRightVector( script.Right, true )}\"\n";
                         code += $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"\n";
                         code +=  "\"classname\" \"func_window_hint\"\n";
                         code +=  "}\n";

@@ -154,6 +154,20 @@ public class Helper
         return angles;
     }
 
+    public static string BuildRightVector( Vector3 vec, bool isEntFile = false )
+    {
+        string x = (WrapAngle(vec.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (WrapAngle(vec.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (-WrapAngle(vec.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+
+        string angles = $"< {x}, {y}, {z} >";
+
+        if( isEntFile )
+            angles = $"{x} {y} {z}";
+
+        return angles;
+    }
+
     /// <summary>
     /// Wraps Angles that are above 180
     /// </summary>

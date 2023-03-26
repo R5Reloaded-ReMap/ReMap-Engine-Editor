@@ -50,7 +50,7 @@ namespace Build
                     //code += BuildFuncWindowHintObjects( objectData, buildType );
                     break;
                 case ObjectType.HorzDoor:
-                    //code += BuildHorzDoorObjects( objectData, buildType );
+                    code += BuildHorzDoor.BuildHorzDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.Jumppad:
                     //code += BuildJumppadObjects( objectData, buildType );
@@ -83,7 +83,7 @@ namespace Build
                     //code += BuildTriggerObjects( objectData, buildType );
                     break;
                 case ObjectType.VerticalDoor:
-                    //code += BuildVerticalDoorObjects( objectData, buildType );
+                    code += BuildVerticalDoor.BuildVerticalDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.VerticalZipLine:
                     code += BuildVerticalZipline.BuildVerticalZipLineObjects( objectData, buildType );

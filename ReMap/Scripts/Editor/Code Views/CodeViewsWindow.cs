@@ -467,7 +467,7 @@ namespace CodeViewsWindow
         private static bool IsValidScriptEntParam( string type )
         {
             if ( tab == 3 && tabEnt == 0 ) // Ent Code/Script Code
-                return ( type == Helper.GetObjTagNameWithEnum( ObjectType.Prop ) || type == Helper.GetObjTagNameWithEnum( ObjectType.VerticalZipLine ) || type == Helper.GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine ) || type == Helper.GetObjTagNameWithEnum( ObjectType.SingleDoor ) || type == Helper.GetObjTagNameWithEnum( ObjectType.DoubleDoor ) );
+                return ( type == Helper.GetObjTagNameWithEnum( ObjectType.Prop ) || type == Helper.GetObjTagNameWithEnum( ObjectType.VerticalZipLine ) || type == Helper.GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine ) || type == Helper.GetObjTagNameWithEnum( ObjectType.SingleDoor ) || type == Helper.GetObjTagNameWithEnum( ObjectType.DoubleDoor ) || type == Helper.GetObjTagNameWithEnum( ObjectType.HorzDoor ) || type == Helper.GetObjTagNameWithEnum( ObjectType.VerticalDoor ) );
 
             return true;
         }

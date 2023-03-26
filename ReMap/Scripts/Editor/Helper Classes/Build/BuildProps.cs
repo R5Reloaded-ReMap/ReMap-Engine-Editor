@@ -11,11 +11,11 @@ namespace Build
 {
     public class BuildProp
     {
-        public static List< String > PrecacheList = new List< String >();
+        public static List< String > PrecacheList;
 
         public static string BuildPropObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            string code = ""; PrecacheList = new List< String >();
 
             // Add something at the start of the text
             switch ( buildType )

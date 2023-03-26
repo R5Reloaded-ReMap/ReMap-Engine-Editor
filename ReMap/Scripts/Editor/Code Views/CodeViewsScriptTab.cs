@@ -57,6 +57,8 @@ namespace CodeViewsWindow
 
             code += Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z );
 
+            Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
+            
             code += Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";

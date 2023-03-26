@@ -47,7 +47,9 @@ namespace CodeViewsWindow
                 PageBreak( ref code );
             }
 
-            code += BuildObjectsWithEnum( ObjectType.Sound, BuildType.EntFile );
+            Helper.ForceHideBoolToGenerateObjects( new ObjectType[] { ObjectType.Sound }, true );
+
+            code += Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 

@@ -35,6 +35,8 @@ namespace CodeViewsWindow
         {
             string code = "";
 
+            Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
+
             code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.EnableSelection );
 
             return code;

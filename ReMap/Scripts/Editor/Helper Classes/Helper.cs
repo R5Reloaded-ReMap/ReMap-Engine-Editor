@@ -457,11 +457,27 @@ public class Helper
         return GenerateObjects[ GetObjNameWithEnum( objectType ) ];
     }
 
-    public static void SetBoolToGenerateObjects( ObjectType objectType, bool value )
+    public static void ForceSetBoolToGenerateObjects( ObjectType[] array, bool value )
     {
-        GenerateObjects[ GetObjNameWithEnum( objectType ) ] = value;
-        //GenerateObjectsFunction[ GetObjNameWithEnum( objectType ) ] = value;
-        GenerateObjectsFunctionTemp[ GetObjNameWithEnum( objectType ) ] = value;
+        foreach ( ObjectType objectType in array )
+        {
+            GenerateObjects[ GetObjNameWithEnum( objectType ) ] = value;
+            GenerateObjectsFunctionTemp[ GetObjNameWithEnum( objectType ) ] = value;
+        }
+    }
+
+    public static void ForceHideBoolToGenerateObjects( ObjectType[] array, bool forceShow = false )
+    {
+        List< ObjectType > objectTypeArray = new List< ObjectType >();
+        if ( forceShow )
+        {
+            foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+            {
+                if ( !array.Contains( objectType ) ) objectTypeArray.Add( objectType );
+            }
+        } else objectTypeArray = array.ToList();
+
+        CodeViewsWindow.CodeViewsWindow.GenerateIgnore = objectTypeArray.ToArray();
     }
 
     public static GameObject[] GetSelectedObjectWithEnum( ObjectType objectType )

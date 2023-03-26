@@ -53,7 +53,20 @@ namespace CodeViewsWindow
                 PageBreak( ref code );
             }
 
-            Helper.SetBoolToGenerateObjects( ObjectType.Sound, false );
+            ObjectType[] showOnly = new ObjectType[]
+            {
+                ObjectType.Prop,
+                ObjectType.VerticalZipLine,
+                ObjectType.NonVerticalZipLine,
+                ObjectType.SingleDoor,
+                ObjectType.DoubleDoor,
+                ObjectType.HorzDoor,
+                ObjectType.VerticalDoor,
+                ObjectType.LootBin,
+                ObjectType.FuncWindowHint
+            };
+
+            Helper.ForceHideBoolToGenerateObjects( showOnly, true );
 
             code += Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.EnableSelection );
 

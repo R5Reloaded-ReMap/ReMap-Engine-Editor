@@ -50,7 +50,7 @@ namespace CodeViewsWindow
         public static Dictionary< string, bool > GenerateObjects = Helper.ObjectGenerateDictionaryInit();
         public static Dictionary< string, bool > GenerateObjectsFunction = new Dictionary< string, bool >( GenerateObjects );
         public static Dictionary< string, bool > GenerateObjectsFunctionTemp = new Dictionary< string, bool >( GenerateObjects );
-        public static string[] GenerateIgnore = new string[0];
+        public static ObjectType[] GenerateIgnore = new ObjectType[0];
 
         public static int greenPropCount = 1500;
         public static int yellowPropCount = 3000;
@@ -180,16 +180,6 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        private static bool IsIgnored( string key )
-        {
-            foreach ( string ignoredObj in GenerateIgnore )
-            {
-                if ( ignoredObj == key ) return true;
-            }
-
-            return false;
-        }
-
         internal static void MainTab()
         {
             GUILayout.BeginVertical( "box" );
@@ -316,12 +306,12 @@ namespace CodeViewsWindow
                 GUILayout.BeginHorizontal();
                     foreach ( string key in GenerateObjectsFunction.Keys )
                     {
-                        if ( IsIgnored( key ) ) continue;
-
                         ObjectType? type = Helper.GetObjectTypeByObjName( key );
                         ObjectType typed = ( ObjectType ) type;
 
-                        if ( !IsValidScriptEntParam( typed ) ) continue;
+                        if ( IsHided( typed ) ) continue;
+
+                        //if ( !IsValidScriptEntParam( typed ) ) continue;
 
                         GenerateObjectsFunctionTemp[key] = EditorGUILayout.Toggle( $"Build {key}", GenerateObjectsFunctionTemp[key], GUILayout.Width( paramToggleSize ) );
 
@@ -436,6 +426,25 @@ namespace CodeViewsWindow
             else GUI.contentColor = Color.red;
         }
 
+        public static bool IsHided( ObjectType objectType )
+        {
+            // Ensure the objectData is not empty
+            GameObject[] objectData;
+            if ( EnableSelection )
+                objectData = Helper.GetSelectedObjectWithEnum( objectType );
+            else objectData = Helper.GetObjArrayWithEnum( objectType );
+
+            if ( objectData.Length == 0 ) return true;
+
+            // Check if objectType is declared hiden or not
+            foreach ( ObjectType hidedObjectType in GenerateIgnore )
+            {
+                if ( hidedObjectType == objectType ) return true;
+            }
+
+            return false;
+        }
+
         private static string SetCorrectEntityLabel( int count )
         {
             if( count < greenPropCount )
@@ -454,33 +463,6 @@ namespace CodeViewsWindow
             {
                 windowSize = new Vector2( editorWindow.position.width, editorWindow.position.height );
             }
-        }
-
-        private static bool IsValidScriptEntParam( ObjectType objectType )
-        {
-            GameObject[] objectData;
-
-            // Ensure the objectData is not empty
-            if ( EnableSelection ) objectData = Helper.GetSelectedObjectWithEnum( objectType );
-            else objectData = Helper.GetObjArrayWithEnum( objectType );
-
-            if ( objectData.Length == 0 ) return false;
-
-            if ( tab == 3 && tabEnt == 0 ) // Ent Code/Script Code
-                return
-                (
-                    objectType == ObjectType.Prop ||
-                    objectType == ObjectType.VerticalZipLine ||
-                    objectType == ObjectType.NonVerticalZipLine ||
-                    objectType == ObjectType.SingleDoor ||
-                    objectType == ObjectType.DoubleDoor ||
-                    objectType == ObjectType.HorzDoor ||
-                    objectType == ObjectType.VerticalDoor ||
-                    objectType == ObjectType.LootBin ||
-                    objectType == ObjectType.FuncWindowHint
-                );
-
-            return true;
         }
     }
 }

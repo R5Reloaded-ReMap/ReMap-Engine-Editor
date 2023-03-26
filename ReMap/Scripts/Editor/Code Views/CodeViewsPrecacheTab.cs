@@ -41,6 +41,8 @@ namespace CodeViewsWindow
                 code += Helper.ReMapCredit();
             }
 
+            Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
+
             code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";

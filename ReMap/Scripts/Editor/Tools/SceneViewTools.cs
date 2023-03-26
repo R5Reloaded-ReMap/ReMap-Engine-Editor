@@ -47,6 +47,8 @@
         if(onlyMapCode)
             mapcode = Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction );
 
+        Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
+
         //Build Map Code
         mapcode += Helper.BuildMapCode( BuildType.Script, true );
 

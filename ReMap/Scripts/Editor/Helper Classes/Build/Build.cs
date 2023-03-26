@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+using static CodeViewsWindow.CodeViewsWindow;
+
 namespace Build
 {
     public enum BuildType
@@ -27,7 +29,7 @@ namespace Build
 
             int objectDataLength = objectData.Length;
 
-            if ( objectDataLength == 0 ) return "";
+            if ( objectDataLength == 0 || IsHided( objectType ) ) return "";
             
             if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine || objectType == ObjectType.DoubleDoor )
             {
@@ -84,7 +86,7 @@ namespace Build
                     code += BuildSingleDoor.BuildSingleDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.Sound:
-                    //code += BuildSoundObjects( objectData, buildType );
+                    code += BuildSound.BuildSoundObjects( objectData, buildType );
                     break;
                 case ObjectType.SpawnPoint:
                     //code += BuildSpawnPointObjects( objectData, buildType );

@@ -48,7 +48,7 @@ namespace CodeViewsWindow
 
         // Gen Settings
         public static Dictionary< string, bool > GenerateObjects = Helper.ObjectGenerateDictionaryInit();
-        public static Dictionary< string, bool > GenerateObjectsFunction = Helper.ObjectGenerateDictionaryInit();
+        public static Dictionary< string, bool > GenerateObjectsFunction = new Dictionary< string, bool >( GenerateObjects );
         public static Dictionary< string, bool > GenerateObjectsFunctionTemp = new Dictionary< string, bool >( GenerateObjects );
         public static string[] GenerateIgnore = new string[0];
 
@@ -312,7 +312,7 @@ namespace CodeViewsWindow
                     return;
                 }
 
-                int idx = 0;
+                int idx = 0; //List< string > keysToModify = new List< string >();
                 GUILayout.BeginHorizontal();
                     foreach ( string key in GenerateObjectsFunction.Keys )
                     {
@@ -320,17 +320,14 @@ namespace CodeViewsWindow
 
                         ObjectType? type = Helper.GetObjectTypeByObjName( key );
                         ObjectType typed = ( ObjectType ) type;
-                        if ( UnityInfo.GetSpecificObjectCount( typed ) == 0 ) continue;
-                        
-                        string typedTag = Helper.GetObjTagNameWithEnum( typed );
 
-                        if ( !IsValidScriptEntParam( typedTag ) ) continue;
+                        if ( !IsValidScriptEntParam( typed ) ) continue;
 
-                        GenerateObjects[key] = EditorGUILayout.Toggle( $"Build {key}", GenerateObjects[key], GUILayout.Width( paramToggleSize ) );
+                        GenerateObjectsFunctionTemp[key] = EditorGUILayout.Toggle( $"Build {key}", GenerateObjectsFunctionTemp[key], GUILayout.Width( paramToggleSize ) );
 
                         if ( GenerateObjects[key] != GenerateObjectsFunctionTemp[key] )
                         {
-                            GenerateObjectsFunctionTemp[key] = GenerateObjects[key];
+                            GenerateObjects[key] = GenerateObjectsFunctionTemp[key];
                             Refresh();
                         }
 
@@ -343,16 +340,11 @@ namespace CodeViewsWindow
                     }
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
-
-            foreach ( string key in GenerateObjectsFunctionTemp.Keys )
-            {
-                GenerateObjectsFunction[key] = GenerateObjectsFunctionTemp[key];
-            }
         }
 
-        internal static void OptionalFunctionName()
+        internal static void OptionalFunctionName( string text = "Function Name" )
         {
-            EditorGUILayout.LabelField( "Function Name", GUILayout.Width( 92 ) );
+            EditorGUILayout.LabelField( text, GUILayout.Width( 92 ) );
             functionName = EditorGUILayout.TextField( "", functionName, GUILayout.Width( GUILayoutFunctionFieldSize ) );
         }
 
@@ -464,19 +456,29 @@ namespace CodeViewsWindow
             }
         }
 
-        private static bool IsValidScriptEntParam( string type )
+        private static bool IsValidScriptEntParam( ObjectType objectType )
         {
+            GameObject[] objectData;
+
+            // Ensure the objectData is not empty
+            if ( EnableSelection ) objectData = Helper.GetSelectedObjectWithEnum( objectType );
+            else objectData = Helper.GetObjArrayWithEnum( objectType );
+
+            if ( objectData.Length == 0 ) return false;
+
             if ( tab == 3 && tabEnt == 0 ) // Ent Code/Script Code
-                return (
-                type == Helper.GetObjTagNameWithEnum( ObjectType.Prop ) ||
-                type == Helper.GetObjTagNameWithEnum( ObjectType.VerticalZipLine ) ||
-                type == Helper.GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine ) ||
-                type == Helper.GetObjTagNameWithEnum( ObjectType.SingleDoor ) ||
-                type == Helper.GetObjTagNameWithEnum( ObjectType.DoubleDoor ) ||
-                type == Helper.GetObjTagNameWithEnum( ObjectType.HorzDoor ) ||
-                type == Helper.GetObjTagNameWithEnum( ObjectType.VerticalDoor ) ||
-                type == Helper.GetObjTagNameWithEnum( ObjectType.LootBin ) ||
-                type == Helper.GetObjTagNameWithEnum( ObjectType.FuncWindowHint ) );
+                return
+                (
+                    objectType == ObjectType.Prop ||
+                    objectType == ObjectType.VerticalZipLine ||
+                    objectType == ObjectType.NonVerticalZipLine ||
+                    objectType == ObjectType.SingleDoor ||
+                    objectType == ObjectType.DoubleDoor ||
+                    objectType == ObjectType.HorzDoor ||
+                    objectType == ObjectType.VerticalDoor ||
+                    objectType == ObjectType.LootBin ||
+                    objectType == ObjectType.FuncWindowHint
+                );
 
             return true;
         }

@@ -460,7 +460,7 @@ public class Helper
     public static void SetBoolToGenerateObjects( ObjectType objectType, bool value )
     {
         GenerateObjects[ GetObjNameWithEnum( objectType ) ] = value;
-        GenerateObjectsFunction[ GetObjNameWithEnum( objectType ) ] = value;
+        //GenerateObjectsFunction[ GetObjNameWithEnum( objectType ) ] = value;
         GenerateObjectsFunctionTemp[ GetObjNameWithEnum( objectType ) ] = value;
     }
 

@@ -29,10 +29,23 @@ namespace Build
 
             if ( objectDataLength == 0 ) return "";
             
-            if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine )
+            if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine || objectType == ObjectType.DoubleDoor )
             {
                 CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength * 2;
-            } else CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength;
+            }
+            else if ( buildType == BuildType.Precache )
+            {
+                List< String > PrecacheList = new List< String >();
+                foreach ( GameObject obj in objectData )
+                {
+                    string model = UnityInfo.GetObjName( obj );
+                    if ( PrecacheList.Contains( model ) )
+                        continue;
+                    PrecacheList.Add( model );
+                }
+                CodeViewsWindow.CodeViewsWindow.EntityCount += PrecacheList.Count;
+            }
+            else CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength;
             
 
             switch ( objectType )

@@ -456,18 +456,18 @@ public class Build_
                     if (isexport)
                         ReMapConsole.Log("[Map Export] Exporting: " + model, ReMapConsole.LogType.Info);
 
-                    string idx = "";
-                    if ( script.Parameters.Count != 0 || script.CustomParameters.Count != 0 )
+                    //string idx = "";
+                    /* if ( script.Parameters.Count != 0 || script.CustomParameters.Count != 0 )
                     {
                         idx = $"prop{CreateEntityIxd()}";
                         code += $"    entity {idx} = ";
-                    } else code += $"    ";
+                    } else code += $"    "; */
                     
                     code += $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(go) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(go)}, {script.AllowMantle.ToString().ToLower()}, {script.FadeDistance}, {script.RealmID}, {go.transform.localScale.x.ToString().Replace(",", ".")} )" + "\n";
 
-                    if ( script.Parameters.Count != 0 || script.CustomParameters.Count != 0 )
+                    /* if ( script.Parameters.Count != 0 || script.CustomParameters.Count != 0 )
                     {
-                        foreach ( PropScriptParameters param in script.Parameters )
+                        foreach ( PropScriptOptions param in script.Parameters )
                         {
                             code += GetPropScriptParamValue( idx, param );
                         }
@@ -476,7 +476,7 @@ public class Build_
                         {
                             code += SetPropScriptParamValue( idx, param );
                         }
-                    }
+                    } */
                     continue;
             }
         }
@@ -693,28 +693,28 @@ public class Build_
         return $"{entityIdx++.ToString( "000" )}";
     }
 
-    public static string GetPropScriptParamValue( string name, PropScriptParameters param )
+    public static string GetPropScriptParamValue( string name, PropScriptOptions param )
     {
         string paramStr = "";
 
         switch ( param )
         {
-            case PropScriptParameters.PlayerClip:
+            case PropScriptOptions.PlayerClip:
                 paramStr += $"    {name}.MakeInvisible()" + "\n";
                 paramStr += $"    {name}.kv.solid = 6" + "\n";
                 paramStr += $"    {name}.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER" + "\n";
                 paramStr += $"    {name}.kv.contents = CONTENTS_PLAYERCLIP" + "\n";
                 break;
-            case PropScriptParameters.PlayerNoClimb:       paramStr += $"    {name}.kv.solid = 3" + "\n"; break;
-            case PropScriptParameters.MakeInvisible:       paramStr += $"    {name}.MakeInvisible()" + "\n"; break;
+            case PropScriptOptions.PlayerNoClimb:       paramStr += $"    {name}.kv.solid = 3" + "\n"; break;
+            case PropScriptOptions.MakeInvisible:       paramStr += $"    {name}.MakeInvisible()" + "\n"; break;
 
-            case PropScriptParameters.KvSolidNoCollision:  paramStr += $"    {name}.kv.solid = 0" + "\n"; break;
-            case PropScriptParameters.KvSolidBoundingBox:  paramStr += $"    {name}.kv.solid = 2" + "\n"; break;
-            case PropScriptParameters.KvSolidNoFriction:   paramStr += $"    {name}.kv.solid = 3" + "\n"; break;
-            case PropScriptParameters.KvSolidUseVPhysics:  paramStr += $"    {name}.kv.solid = 6" + "\n"; break;
-            case PropScriptParameters.KvSolidHitboxOnly:   paramStr += $"    {name}.kv.solid = 8" + "\n"; break;
+            //case PropScriptOptions.KvSolidNoCollision:  paramStr += $"    {name}.kv.solid = 0" + "\n"; break;
+            //case PropScriptOptions.KvSolidBoundingBox:  paramStr += $"    {name}.kv.solid = 2" + "\n"; break;
+            //case PropScriptOptions.KvSolidNoFriction:   paramStr += $"    {name}.kv.solid = 3" + "\n"; break;
+            //case PropScriptOptions.KvSolidUseVPhysics:  paramStr += $"    {name}.kv.solid = 6" + "\n"; break;
+            //case PropScriptOptions.KvSolidHitboxOnly:   paramStr += $"    {name}.kv.solid = 8" + "\n"; break;
 
-            case PropScriptParameters.KvContentsNOGRAPPLE: paramStr += $"    {name}.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" + "\n"; break;
+            case PropScriptOptions.KvContentsNOGRAPPLE: paramStr += $"    {name}.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" + "\n"; break;
 
 
             default: break;

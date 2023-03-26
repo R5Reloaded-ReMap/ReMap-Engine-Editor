@@ -1,22 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PropScriptParameters
+public enum PropScriptOptions
 {
+    NoOption, // null
     PlayerClip, // ent is a invisible wall
-    PlayerNoClimb, // Player can't climb
+    PlayerNoClimb, // player can't climb this ent
     MakeInvisible, // ent is invisible
-
-    // KV File
-    // KV solid
-    KvSolidNoCollision, // ent have no collision
-    KvSolidBoundingBox, // ent use bounding box
-    KvSolidNoFriction, // ent have no friction
-    KvSolidUseVPhysics, // ent use vPhysics
-    KvSolidHitboxOnly, // ent use hitbox only
-
-    // KV contents
-    KvContentsNOGRAPPLE
+    KvContentsNOGRAPPLE // player can't grapple this ent
 }
 
 public class PropScript : MonoBehaviour
@@ -25,6 +16,5 @@ public class PropScript : MonoBehaviour
     public bool AllowMantle = true;
     public float FadeDistance = 50000;
     public int RealmID = -1;
-    public List<PropScriptParameters> Parameters = new List<PropScriptParameters>();
-    public List<string> CustomParameters = new List<string>();
+    public PropScriptOptions Option = PropScriptOptions.NoOption;
 }

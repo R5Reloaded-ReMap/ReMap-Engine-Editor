@@ -71,8 +71,7 @@ namespace ImportExport.Shared
         public bool AllowMantle;
         public float FadeDistance;
         public int RealmID;
-        public List< PropScriptParameters > Parameters;
-        public List< string > CustomParameters;
+        public PropScriptOptions Option;
     }
 
     [Serializable]
@@ -202,8 +201,7 @@ namespace ImportExport.Shared
         public bool AllowMantle;
         public float FadeDistance;
         public int RealmID;
-        public List< PropScriptParameters > Parameters;
-        public List< string > CustomParameters;
+        public PropScriptOptions Option;
     }
 
     [Serializable]

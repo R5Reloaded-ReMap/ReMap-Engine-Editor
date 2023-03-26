@@ -61,9 +61,11 @@ namespace Build
                             {
                                 string polylineSegmentStart = Helper.BuildOriginVector( script.PolylineSegment[i-1], true ).ToString().Replace(",", "");
 
-                                code += $"\"polyline_segment_{i}\" \"({polylineSegmentStart}) ({polylineSegmentEnd})\"\n";
+                                code += $"\"polyline_segment_{i}\" \"({polylineSegmentStart}) ({polylineSegmentEnd})\"";
                             }
-                            else code += $"\"polyline_segment_{i}\" \"(0 0 0) ({polylineSegmentEnd})\"\n";
+                            else code += $"\"polyline_segment_{i}\" \"(0 0 0) ({polylineSegmentEnd})\"";
+
+                            PageBreak( ref code );
                         }
 
                         code +=  "\"radius\" \"0\"\n";

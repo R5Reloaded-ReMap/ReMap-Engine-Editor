@@ -35,6 +35,7 @@ namespace CodeViewsWindow
         internal static int GUILayoutFunctionFieldSize = 210;
         internal static int GUILayoutLabelSize = 40;
 
+        internal static bool ShowOptions = false;
         internal static bool ShowAdvancedMenu = false;
         internal static bool ShowAdvancedMenuTemp = false;
         internal static bool ShowFunction = false;

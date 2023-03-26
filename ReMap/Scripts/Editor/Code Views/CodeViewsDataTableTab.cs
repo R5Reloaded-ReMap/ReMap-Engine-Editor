@@ -17,17 +17,22 @@ namespace CodeViewsWindow
         internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal();
-                    CodeViewsWindow.OptionalUseOffset();
-                    if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
-                    GUILayout.FlexibleSpace();
-                GUILayout.EndHorizontal();
+                CodeViewsWindow.ShowOptions = EditorGUILayout.Foldout( CodeViewsWindow.ShowOptions, "Options", true );
 
-                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+                if ( CodeViewsWindow.ShowOptions )
+                {
+                    GUILayout.BeginHorizontal();
+                        CodeViewsWindow.OptionalUseOffset();
+                        if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+                        GUILayout.FlexibleSpace();
+                    GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal();
-                    CodeViewsWindow.OptionalSelection();
-                GUILayout.EndHorizontal();
+                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                    GUILayout.BeginHorizontal();
+                        CodeViewsWindow.OptionalSelection();
+                    GUILayout.EndHorizontal();
+                }
             GUILayout.EndVertical();
         }
 

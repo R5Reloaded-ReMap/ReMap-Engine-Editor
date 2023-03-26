@@ -17,16 +17,21 @@ namespace CodeViewsWindow
         internal static void OnGUITab()
         {
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal();
-                    CodeViewsWindow.ShowSquirrelFunction();
-                    if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
-                GUILayout.EndHorizontal();
+                CodeViewsWindow.ShowOptions = EditorGUILayout.Foldout( CodeViewsWindow.ShowOptions, "Options", true );
 
-                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+                if ( CodeViewsWindow.ShowOptions )
+                {
+                    GUILayout.BeginHorizontal();
+                        CodeViewsWindow.ShowSquirrelFunction();
+                        if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
+                    GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal();
-                    CodeViewsWindow.OptionalSelection();
-                GUILayout.EndHorizontal();
+                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                    GUILayout.BeginHorizontal();
+                        CodeViewsWindow.OptionalSelection();
+                    GUILayout.EndHorizontal();
+                }
             GUILayout.EndVertical();
         }
 

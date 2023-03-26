@@ -16,7 +16,12 @@ namespace CodeViewsWindow
     {
         internal static void OnGUITab()
         {
+            
             GUILayout.BeginVertical( "box" );
+            CodeViewsWindow.ShowOptions = EditorGUILayout.Foldout( CodeViewsWindow.ShowOptions, "Options", true );
+
+            if ( CodeViewsWindow.ShowOptions )
+            {
                 GUILayout.BeginHorizontal();
                     CodeViewsWindow.ShowSquirrelFunction();
                     if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
@@ -41,6 +46,7 @@ namespace CodeViewsWindow
                 GUILayout.BeginHorizontal();
                     CodeViewsWindow.OptionalAdvancedOption();
                 GUILayout.EndHorizontal();
+            }
             GUILayout.EndVertical();
         }
 

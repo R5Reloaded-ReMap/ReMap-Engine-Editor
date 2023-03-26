@@ -176,7 +176,7 @@ namespace ImportExport.Json
 
                     case FuncWindowHintClassData data: // Window Hints
                         data = ( FuncWindowHintClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, "custom_window_hint", objectType, i, j, objectsCount );
                         break;
 
                     case SoundClassData data: // Sounds

@@ -116,7 +116,7 @@ public class Helper
         if( type == StartingOriginType.Function )
             return " + startingorg";
 
-        string vector = $"< {x.ToString().Replace( ",", "." )}, {y.ToString().Replace( ",", "." )}, {z.ToString().Replace( ",", "." )} >";
+        string vector = $"< {ReplaceComma( x )}, {ReplaceComma( y )}, {ReplaceComma( z )} >";
 
         return $"    //Starting Origin, Change this to a origin in a map \n    vector startingorg = {vector}" + "\n\n";
     }
@@ -128,9 +128,23 @@ public class Helper
     /// <returns></returns>
     public static string BuildAngles( GameObject go, bool isEntFile = false )
     {
-        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
-        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
-        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+
+        string angles = $"< {x}, {y}, {z} >";
+
+        if( isEntFile )
+            angles = $"{x} {y} {z}";
+
+        return angles;
+    }
+
+    public static string BuildAnglesVector( Vector3 vec, bool isEntFile = false )
+    {
+        string x = (-WrapAngle(vec.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (-WrapAngle(vec.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (WrapAngle(vec.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
         string angles = $"< {x}, {y}, {z} >";
 
@@ -166,9 +180,9 @@ public class Helper
         float yOffset = UseStartingOffset && returnWithOffset ? StartingOffset.y : 0;
         float zOffset = UseStartingOffset && returnWithOffset ? StartingOffset.z : 0;
 
-        string x = (-go.transform.position.z + xOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
-        string y = (go.transform.position.x + yOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
-        string z = (go.transform.position.y + zOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string x = (-go.transform.position.z + xOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (go.transform.position.x + yOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (go.transform.position.y + zOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
         string origin = $"< {x}, {y}, {z} >";
 
@@ -189,9 +203,9 @@ public class Helper
         float yOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.y;
         float zOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.z;
 
-        string x = (-vec.z + xOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
-        string y = (vec.x + yOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
-        string z = (vec.y + zOffset).ToString("F4").Replace(",", ".").Replace( ".0000", "" );
+        string x = (-vec.z + xOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (vec.x + yOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (vec.y + zOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
         string origin = $"< {x}, {y}, {z} >";
 

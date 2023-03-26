@@ -252,7 +252,9 @@ namespace ImportExport.Shared
     [Serializable]
     public class FuncWindowHintClassData : GlobalClassData
     {
-        // Stub script
+        public float HalfHeight;
+        public float HalfWidth;
+        public Vector3 Right;
     }
 
     [Serializable]

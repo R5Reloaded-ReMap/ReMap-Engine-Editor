@@ -47,7 +47,7 @@ namespace Build
                     code += BuildDoubleDoor.BuildDoubleDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.FuncWindowHint:
-                    //code += BuildFuncWindowHintObjects( objectData, buildType );
+                    code += BuildFuncWindowHint.BuildFuncWindowHintObjects( objectData, buildType );
                     break;
                 case ObjectType.HorzDoor:
                     code += BuildHorzDoor.BuildHorzDoorObjects( objectData, buildType );

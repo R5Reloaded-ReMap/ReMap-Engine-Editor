@@ -91,7 +91,7 @@ namespace Build
                             code += $"\"AnimateInStaticShadow\" \"0\"\n";
                             code += $"\"scale\" \"1\"\n";
                             code += $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"\n";
-                            code += $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"\n";
+                            code += $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n";
                             code += $"\"script_name\" \"survival_door_plain\"\n";
                             code += $"\"model\" \"mdl/door/door_256x256x8_elevatorstyle02_animated.rmdl\"\n";
                             code += $"\"classname\" \"prop_dynamic\"\n";

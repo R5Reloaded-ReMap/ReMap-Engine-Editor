@@ -51,7 +51,7 @@ namespace Build
                     case BuildType.EntFile:
                         code +=  "{\n";
                         code += $"\"halfheight\" \"{script.HalfHeight}\"\n";
-                        code += $"\"halfwidth\" \"\"{script.HalfWidth}\n";
+                        code += $"\"halfwidth\" \"{script.HalfWidth}\"\n";
                         code += $"\"right\" \"{Helper.BuildRightVector( script.Right, true )}\"\n";
                         code += $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"\n";
                         code +=  "\"classname\" \"func_window_hint\"\n";

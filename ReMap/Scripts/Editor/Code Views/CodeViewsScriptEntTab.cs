@@ -55,8 +55,14 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowEntFunction )
             {
-                code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}";
-                PageBreak( ref code );
+                code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n";
+                code +=  "{\n";
+                code +=  "\"spawnflags\" \"0\"\n";
+                code +=  "\"scale\" \"1\"\n";
+                code +=  "\"angles\" \"0 0 0\"\n";
+                code +=  "\"origin\" \"0 0 0\"\n";
+                code +=  "\"classname\" \"info_player_start\"\n";
+                code +=  "}\n";
             }
 
             ObjectType[] showOnly = new ObjectType[]

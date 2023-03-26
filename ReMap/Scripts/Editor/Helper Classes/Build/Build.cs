@@ -44,7 +44,7 @@ namespace Build
                     //code += BuildButtonObjects( objectData, buildType );
                     break;
                 case ObjectType.DoubleDoor:
-                    //code += BuildDoubleDoorObjects( objectData, buildType );
+                    code += BuildDoubleDoor.BuildDoubleDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.FuncWindowHint:
                     //code += BuildFuncWindowHintObjects( objectData, buildType );
@@ -68,7 +68,7 @@ namespace Build
                     code += BuildProp.BuildPropObjects( objectData, buildType );
                     break;
                 case ObjectType.SingleDoor:
-                    //code += BuildSingleDoorObjects( objectData, buildType );
+                    code += BuildSingleDoor.BuildSingleDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.Sound:
                     //code += BuildSoundObjects( objectData, buildType );

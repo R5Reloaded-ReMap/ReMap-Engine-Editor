@@ -23,12 +23,15 @@ namespace Build
                     break;
                     
                 case BuildType.EntFile:
+                    // Empty
                     break;
 
                 case BuildType.Precache:
+                    // Empty
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
                 break;
             }
 
@@ -49,9 +52,9 @@ namespace Build
                 float PanelTimerMax = script.PanelTimerMax;
                 int PanelMaxUse = script.PanelMaxUse;
 
-                string PanelOrigin = BuildPanelOriginArray( script.Panels );
-                string PanelAngles = BuildPanelAnglesArray( script.Panels );
-                string PanelModels = BuildPanelModelsArray( script.Panels );
+                string PanelOrigin = BuildVerticalZipline.BuildPanelOriginArray( script.Panels );
+                string PanelAngles = BuildVerticalZipline.BuildPanelAnglesArray( script.Panels );
+                string PanelModels = BuildVerticalZipline.BuildPanelModelsArray( script.Panels );
                 string LinkGuid = Helper.GetRandomGUIDForEnt();
                 string LinkGuidTo0 = Helper.GetRandomGUIDForEnt();
 
@@ -106,9 +109,11 @@ namespace Build
                         break;
 
                     case BuildType.Precache:
+                        // Empty
                         break;
 
                     case BuildType.DataTable:
+                        // Empty
                     break;
                 }
             }
@@ -121,58 +126,19 @@ namespace Build
                     break;
 
                 case BuildType.EntFile:
+                    // Empty
                     break;
 
                 case BuildType.Precache:
+                    // Empty
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
                 break;
             }
 
             return code;
-        }
-
-        private static string BuildPanelOriginArray( GameObject[] objArray )
-        {
-            string array = "[ ";
-            for( int i = 0 ; i < objArray.Length ; i++ )
-            {
-                array += $" {Helper.BuildOrigin( objArray[i] )}{Helper.ShouldAddStartingOrg()}";
-
-                if ( i != objArray.Length - 1 ) array += ", ";
-            }
-            array += " ]";
-
-            return array;
-        }
-
-        private static string BuildPanelAnglesArray( GameObject[] objArray )
-        {
-            string array = "[ ";
-            for( int i = 0 ; i < objArray.Length ; i++ )
-            {
-                array += $"{ Helper.BuildAngles( objArray[i] )}";
-
-                if ( i != objArray.Length - 1 ) array += ", ";
-            }
-            array += " ]";
-
-            return array;
-        }
-
-        private static string BuildPanelModelsArray( GameObject[] objArray )
-        {
-            string array = "[ ";
-            for( int i = 0 ; i < objArray.Length ; i++ )
-            {
-                array += $"$\"{UnityInfo.GetApexModelName( "mdl/" + objArray[i].name, true )}\"";
-
-                if ( i != objArray.Length - 1 ) array += ", ";
-            }
-            array += " ]";
-
-            return array;
         }
     }
 }

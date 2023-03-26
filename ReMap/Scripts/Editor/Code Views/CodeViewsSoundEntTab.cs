@@ -47,7 +47,7 @@ namespace CodeViewsWindow
                 PageBreak( ref code );
             }
 
-            code += code += BuildObjectsWithEnum( ObjectType.Sound, BuildType.EntFile );
+            code += BuildObjectsWithEnum( ObjectType.Sound, BuildType.EntFile );
 
             if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 

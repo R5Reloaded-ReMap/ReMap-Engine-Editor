@@ -118,7 +118,7 @@ namespace CodeViewsWindow
                             functionName = $"mp_rr_remap_snd";
                             break;
                         case 2:  // Spawn Code
-                            //code += ;
+                            code += SpawnEntTab.GenerateCode( copy );
                             functionName = $"mp_rr_remap_spawn";
                         break;
                     }
@@ -132,7 +132,7 @@ namespace CodeViewsWindow
         {
             MainTab();
 
-            GetEditorWindowSize();
+            GetEditorWindowSize(); ShortCut();
 
             if( tab != tab_temp || tabEnt != tabEnt_temp )
             {
@@ -214,6 +214,13 @@ namespace CodeViewsWindow
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
+
+        internal static void ShortCut()
+        {
+            Event currentEvent = Event.current;
+
+            if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
+        } 
 
         internal static void OptionalUseOffset( string text = "Use Origin Offset" )
         {
@@ -460,7 +467,7 @@ namespace CodeViewsWindow
         private static bool IsValidScriptEntParam( string type )
         {
             if ( tab == 3 && tabEnt == 0 ) // Ent Code/Script Code
-                return ( type == Helper.GetObjTagNameWithEnum( ObjectType.Prop ) || type == Helper.GetObjTagNameWithEnum( ObjectType.VerticalZipLine ) || type == Helper.GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine ) );
+                return ( type == Helper.GetObjTagNameWithEnum( ObjectType.Prop ) || type == Helper.GetObjTagNameWithEnum( ObjectType.VerticalZipLine ) || type == Helper.GetObjTagNameWithEnum( ObjectType.NonVerticalZipLine ) || type == Helper.GetObjTagNameWithEnum( ObjectType.SingleDoor ) || type == Helper.GetObjTagNameWithEnum( ObjectType.DoubleDoor ) );
 
             return true;
         }

@@ -313,35 +313,21 @@ public class Helper
         return code;
     }
 
-    public static void ApplyComponentScriptData<T>(T target, T source) where T : Component
+    public static void ApplyComponentScriptData< T >( T target, T source ) where T : Component
     {
-        Type type = typeof(T);
-        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+        Type type = typeof( T );
+        FieldInfo[] fields = type.GetFields( BindingFlags.Public | BindingFlags.Instance );
 
-        foreach (FieldInfo field in fields)
+        foreach ( FieldInfo field in fields )
         {
-            object value = field.GetValue(source);
-            field.SetValue(target, value);
+            object value = field.GetValue( source );
+            field.SetValue( target, value );
         }
     }
-
-    /*
-    public static void ApplyComponentScriptDataFromJson<T>(T target, T source) where T : Component
-    {
-        Type type = typeof(T);
-        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
-
-        foreach (FieldInfo field in fields)
-        {
-            object value = field.GetValue(source);
-            field.SetValue(target, value);
-        }
-    }
-    */
 
     public static string GetRandomGUIDForEnt()
     {
-        return Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
+        return Guid.NewGuid().ToString().Replace( "-", "" ).Substring( 0, 16 );
     }
 
     public static GameObject[] GetObjArrayWithEnum( ObjectType objectType )

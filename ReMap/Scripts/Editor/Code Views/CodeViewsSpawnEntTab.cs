@@ -47,7 +47,7 @@ namespace CodeViewsWindow
                 PageBreak( ref code );
             }
 
-            code += code += BuildObjectsWithEnum( ObjectType.SpawnPoint, BuildType.EntFile );
+            code += BuildObjectsWithEnum( ObjectType.SpawnPoint, BuildType.EntFile );
 
             if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 

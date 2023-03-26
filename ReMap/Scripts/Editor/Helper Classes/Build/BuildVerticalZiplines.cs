@@ -23,12 +23,15 @@ namespace Build
                     break;
                     
                 case BuildType.EntFile:
+                    // Empty
                     break;
 
                 case BuildType.Precache:
+                    // Empty
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
                 break;
             }
 
@@ -106,9 +109,11 @@ namespace Build
                         break;
 
                     case BuildType.Precache:
+                        // Empty
                         break;
 
                     case BuildType.DataTable:
+                        // Empty
                     break;
                 }
             }
@@ -121,19 +126,22 @@ namespace Build
                     break;
 
                 case BuildType.EntFile:
+                    // Empty
                     break;
 
                 case BuildType.Precache:
+                    // Empty
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
                 break;
             }
 
             return code;
         }
 
-        private static string BuildPanelOriginArray( GameObject[] objArray )
+        internal static string BuildPanelOriginArray( GameObject[] objArray )
         {
             string array = "[ ";
             for( int i = 0 ; i < objArray.Length ; i++ )
@@ -147,7 +155,7 @@ namespace Build
             return array;
         }
 
-        private static string BuildPanelAnglesArray( GameObject[] objArray )
+        internal static string BuildPanelAnglesArray( GameObject[] objArray )
         {
             string array = "[ ";
             for( int i = 0 ; i < objArray.Length ; i++ )
@@ -161,7 +169,7 @@ namespace Build
             return array;
         }
 
-        private static string BuildPanelModelsArray( GameObject[] objArray )
+        internal static string BuildPanelModelsArray( GameObject[] objArray )
         {
             string array = "[ ";
             for( int i = 0 ; i < objArray.Length ; i++ )

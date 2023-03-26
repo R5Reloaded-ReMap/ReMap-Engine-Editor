@@ -56,6 +56,8 @@ namespace CodeViewsWindow
             if ( Helper.GetBoolFromGenerateObjects( ObjectType.Prop ) ) code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.EntFile, CodeViewsWindow.EnableSelection );
             if ( Helper.GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, BuildType.EntFile, CodeViewsWindow.EnableSelection );
             if ( Helper.GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, BuildType.EntFile, CodeViewsWindow.EnableSelection );
+            if ( Helper.GetBoolFromGenerateObjects( ObjectType.SingleDoor ) ) code += BuildObjectsWithEnum( ObjectType.SingleDoor, BuildType.EntFile, CodeViewsWindow.EnableSelection );
+            if ( Helper.GetBoolFromGenerateObjects( ObjectType.DoubleDoor ) ) code += BuildObjectsWithEnum( ObjectType.DoubleDoor, BuildType.EntFile, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 

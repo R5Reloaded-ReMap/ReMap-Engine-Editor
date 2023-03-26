@@ -8,9 +8,9 @@ using static Build.Build;
 
 namespace Build
 {
-    public class BuildLinkedZipline
+    public class BuildSingleDoor
     {
-        public static string BuildLinkedZiplineObjects( GameObject[] objectData, BuildType buildType )
+        public static string BuildSingleDoorObjects( GameObject[] objectData, BuildType buildType )
         {
             string code = "";
 
@@ -18,7 +18,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Linked Ziplines";
+                    code += "    // Single Doors";
                     PageBreak( ref code );
                     break;
 
@@ -38,26 +38,28 @@ namespace Build
             // Build the code
             foreach ( GameObject obj in objectData )
             {
-                LinkedZiplineScript script = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, ObjectType.LinkedZipline );
+                DoorScript script = ( DoorScript ) Helper.GetComponentByEnum( obj, ObjectType.SingleDoor );
                 if ( script == null ) continue;
+
+                if ( script.DoorLeft == null ) continue;
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        
-                        string function = "";
-                        string smoothType = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
-                        string nodes = MakeLinkedZiplineNodeArray( obj );
-
-                        if ( script.EnableSmoothing ) function = $"{smoothType}( {nodes}, {script.SmoothAmount} )";
-                        else function = $"{nodes}";
-
-                        code += $"    MapEditor_CreateLinkedZipline( {function} )";
+                        code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Single, { Helper.BoolToLower( script.GoldDoor )} )";
                         PageBreak( ref code );
                         break;
 
                     case BuildType.EntFile:
-                        // Empty
+                        code +=  "{\n";
+                        code += $"\"only_spawn_in_freelance\" \"0\"\n";
+                        code += $"\"disableshadows\" \"0\"\n";
+                        code += $"\"scale\" \"1\"\n";
+                        code += $"\"angles\" \"{Helper.BuildAngles( script.DoorLeft.gameObject, true )}\"\n";
+                        code += $"\"origin\" \"{Helper.BuildOrigin( script.DoorLeft.gameObject, true )}\"\n";
+                        code += $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"\n";
+                        code += $"\"classname\" \"prop_door\"\n";
+                        code +=  "}\n";
                         break;
 
                     case BuildType.Precache:
@@ -91,25 +93,6 @@ namespace Build
             }
 
             return code;
-        }
-
-        private static string MakeLinkedZiplineNodeArray( GameObject obj )
-        {
-            bool first = true;
-
-            string nodes = "[ ";
-            foreach ( Transform child in obj.transform )
-            {
-                if (!first)
-                    nodes += ", ";
-
-                nodes += Helper.BuildOrigin( child.gameObject );
-
-                    first = false;
-            }
-            nodes += " ]";
-
-            return nodes;
         }
     }
 }

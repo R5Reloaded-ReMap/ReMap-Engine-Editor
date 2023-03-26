@@ -23,12 +23,15 @@ namespace Build
                     break;
 
                 case BuildType.EntFile:
+                    // Empty
                     break;
 
                 case BuildType.Precache:
+                    // Empty
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
                 break;
             }
 
@@ -41,15 +44,19 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
+                        // Empty
                         break;
 
                     case BuildType.EntFile:
+                        // Empty
                         break;
 
                     case BuildType.Precache:
+                        // Empty
                         break;
 
                     case BuildType.DataTable:
+                        // Empty
                     break;
                 }
             }
@@ -62,12 +69,15 @@ namespace Build
                     break;
 
                 case BuildType.EntFile:
+                    // Empty
                     break;
 
                 case BuildType.Precache:
+                    // Empty
                     break;
                     
                 case BuildType.DataTable:
+                    // Empty
                 break;
             }
 

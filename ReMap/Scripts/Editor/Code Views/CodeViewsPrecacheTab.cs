@@ -14,12 +14,12 @@ namespace CodeViewsWindow
 {
     public class PrecacheTab
     {
-        internal static void OnGUITab()
+        internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical( "box" );
-                CodeViewsWindow.ShowOptions = EditorGUILayout.Foldout( CodeViewsWindow.ShowOptions, "Options", true );
+                CodeViewsWindow.ShowSettings = EditorGUILayout.Foldout( CodeViewsWindow.ShowSettings, "Options", true );
 
-                if ( CodeViewsWindow.ShowOptions )
+                if ( CodeViewsWindow.ShowSettings )
                 {
                     GUILayout.BeginHorizontal();
                         CodeViewsWindow.ShowSquirrelFunction();

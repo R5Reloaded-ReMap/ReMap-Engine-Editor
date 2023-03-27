@@ -14,13 +14,9 @@ namespace CodeViewsWindow
 {
     public class DataTableTab
     {
-        internal static void OnGUITab()
+        internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical( "box" );
-                CodeViewsWindow.ShowOptions = EditorGUILayout.Foldout( CodeViewsWindow.ShowOptions, "Options", true );
-
-                if ( CodeViewsWindow.ShowOptions )
-                {
                     GUILayout.BeginHorizontal();
                         CodeViewsWindow.OptionalUseOffset();
                         if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
@@ -32,7 +28,6 @@ namespace CodeViewsWindow
                     GUILayout.BeginHorizontal();
                         CodeViewsWindow.OptionalSelection();
                     GUILayout.EndHorizontal();
-                }
             GUILayout.EndVertical();
         }
 

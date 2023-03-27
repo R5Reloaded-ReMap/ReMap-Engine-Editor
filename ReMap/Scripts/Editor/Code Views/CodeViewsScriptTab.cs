@@ -14,39 +14,56 @@ namespace CodeViewsWindow
 {
     public class ScriptTab
     {
-        internal static void OnGUITab()
+        static bool toggleState;
+        static GUIContent buttonContent; // test
+        internal static void OnGUISettingsTab()
         {
-            
             GUILayout.BeginVertical( "box" );
-            CodeViewsWindow.ShowOptions = EditorGUILayout.Foldout( CodeViewsWindow.ShowOptions, "Options", true );
 
-            if ( CodeViewsWindow.ShowOptions )
+            CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
+
+            GUIStyle toggleStyle = new GUIStyle( EditorStyles.toggle );
+            toggleStyle.padding.left = 24;
+            toggleStyle.margin.left = 0;
+            toggleStyle.fixedWidth = 240;
+
+            toggleState = EditorGUILayout.Toggle( "Custom Toggle", toggleState );
+            CodeViewsWindow.ShowSquirrelFunction();
+            if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
+
+            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+            CodeViewsWindow.OptionalUseOffset();
+            if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalShowOffset();
+            if ( Helper.UseStartingOffset && Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+
+            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+            CodeViewsWindow.OptionalSelection();
+
+            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+            CodeViewsWindow.OptionalAdvancedOption();
+
+            
+            // test
+            if (toggleState)
             {
-                GUILayout.BeginHorizontal();
-                    CodeViewsWindow.ShowSquirrelFunction();
-                    if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
-                GUILayout.EndHorizontal();
-
-                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
-
-                GUILayout.BeginHorizontal();
-                    CodeViewsWindow.OptionalUseOffset();
-                    if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalShowOffset();
-                    if ( Helper.UseStartingOffset && Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
-                GUILayout.EndHorizontal();
-
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
-
-                GUILayout.BeginHorizontal();
-                    CodeViewsWindow.OptionalSelection();
-                GUILayout.EndHorizontal();
-
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
-
-                GUILayout.BeginHorizontal();
-                    CodeViewsWindow.OptionalAdvancedOption();
-                GUILayout.EndHorizontal();
+                buttonContent = EditorGUIUtility.IconContent("console.infoicon.sml");
             }
+            else
+            {
+                buttonContent = EditorGUIUtility.IconContent("console.warnicon.sml");
+            }
+
+            if (GUILayout.Button(buttonContent, GUILayout.Width(40), GUILayout.Height(20)))
+            {
+                toggleState = !toggleState; // Change l'état de la condition lorsque le bouton est cliqué
+            }
+            // test
+
+            GUILayout.EndScrollView();
+
             GUILayout.EndVertical();
         }
 

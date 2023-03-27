@@ -23,6 +23,7 @@ namespace CodeViewsWindow
         internal static string[] toolbarTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code" };
         internal static string[] toolbarSubTabEntCode = new[] { "script.ent", "snd.ent", "spawn.ent" };
         internal static Vector2 scroll;
+        internal static Vector2 scrollSettings;
         internal static Vector2 windowSize;
         internal static int paramToggleSize = 190;
         internal static int tab = 0;
@@ -35,7 +36,7 @@ namespace CodeViewsWindow
         internal static int GUILayoutFunctionFieldSize = 210;
         internal static int GUILayoutLabelSize = 40;
 
-        internal static bool ShowOptions = false;
+        internal static bool ShowSettings = false;
         internal static bool ShowAdvancedMenu = false;
         internal static bool ShowAdvancedMenuTemp = false;
         internal static bool ShowFunction = false;
@@ -63,7 +64,7 @@ namespace CodeViewsWindow
             TagHelper.CheckAndCreateTags(); tab = 0; tabEnt = 0;
 
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
-            windowInstance.minSize = new Vector2( 1100, 500 );
+            windowInstance.minSize = new Vector2( 1420, 500 );
             windowInstance.Show();
         }
 
@@ -142,42 +143,21 @@ namespace CodeViewsWindow
                 tabEnt_temp = tabEnt;
             }
 
-            switch ( tab )
-            {
-                case 0: // Squirrel Code
-                    ScriptTab.OnGUITab();
-                    break;
-
-                case 1: // DataTable Code
-                    DataTableTab.OnGUITab();
-                    break;
-
-                case 2: // Precache Code
-                    PrecacheTab.OnGUITab();
-                    break;
-
-                case 3: // Ent Code
-                    switch ( tabEnt )
-                    {
-                        case 0: // Script Code
-                            ScriptEntTab.OnGUITab();
-                            break;
-
-                        case 1: // Sound Code
-                            SoundEntTab.OnGUITab();
-                            break;
-
-                        case 2: // Spawn Code
-                            SpawnEntTab.OnGUITab();
-                        break;
-                    }
-                break;
-            }
-
             GUILayout.BeginVertical( "box" );
-                    CodeViewsWindow.CodeOutput();
+                GUILayout.BeginHorizontal();
+
+                    CodeOutput();
+                    
+                    if ( ShowSettings )
+                    {
+                        GUILayout.BeginVertical( "box", GUILayout.Width( 340 ) );
+                            SettingsMenu();
+                        GUILayout.EndVertical();
+                    }
+
+                GUILayout.EndHorizontal();
         
-                    if ( GUILayout.Button( "Copy To Clipboard" ) ) GenerateCorrectCode( true );
+                if ( GUILayout.Button( "Copy To Clipboard" ) ) GenerateCorrectCode( true );
             GUILayout.EndVertical();
         }
 
@@ -199,9 +179,10 @@ namespace CodeViewsWindow
                 GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
                 GUILayout.BeginHorizontal();
-                        CodeViewsWindow.ObjectCount();
+                        ObjectCount();
                         GUILayout.FlexibleSpace();
-                        CodeViewsWindow.ExportButton();
+                        ExportButton();
+                        SettingsMenuButton();
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
@@ -352,6 +333,49 @@ namespace CodeViewsWindow
         internal static void ExportButton( string text = "Export Code" )
         {
             if ( GUILayout.Button( text, GUILayout.Width( 100 ) ) ) ExportFunction();
+        }
+
+        internal static void SettingsMenuButton( string text = "Settings" )
+        {
+            if ( GUILayout.Button( text, GUILayout.Width( 100 ) ) )
+            {
+                ShowSettings = ShowSettings ? false : true;
+            }
+        }
+
+        internal static void SettingsMenu()
+        {
+            switch ( tab )
+            {
+                case 0: // Squirrel Code
+                    ScriptTab.OnGUISettingsTab();
+                    break;
+
+                case 1: // DataTable Code
+                    DataTableTab.OnGUISettingsTab();
+                    break;
+
+                case 2: // Precache Code
+                    PrecacheTab.OnGUISettingsTab();
+                    break;
+
+                case 3: // Ent Code
+                    switch ( tabEnt )
+                    {
+                        case 0: // Script Code
+                            ScriptEntTab.OnGUISettingsTab();
+                            break;
+
+                        case 1: // Sound Code
+                            SoundEntTab.OnGUISettingsTab();
+                            break;
+
+                        case 2: // Spawn Code
+                            SpawnEntTab.OnGUISettingsTab();
+                        break;
+                    }
+                break;
+            }
         }
 
         internal static void ExportFunction()

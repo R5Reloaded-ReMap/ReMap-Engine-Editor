@@ -16,9 +16,37 @@ namespace CodeViewsWindow
     {
         static bool toggleState;
         static GUIContent buttonContent; // test
+        static bool buttonCondition = false;
         internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical( "box" );
+
+            EditorGUILayout.BeginHorizontal();
+            toggleState = EditorGUILayout.Toggle("Toggle:", toggleState);
+
+            GUIContent buttonContent;
+
+            if (toggleState)
+            {
+                buttonContent = EditorGUIUtility.IconContent("console.infoicon.sml");
+            }
+            else
+            {
+                buttonContent = EditorGUIUtility.IconContent("console.warnicon.sml");
+            }
+
+            buttonContent.text = " My Text";
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+            //buttonStyle.alignment = TextAnchor.MiddleLeft;
+            buttonStyle.contentOffset = new Vector2( -60, 0 );
+            buttonStyle.padding.left = 20;
+
+            if (GUILayout.Button(buttonContent, buttonStyle, GUILayout.Width(200), GUILayout.Height(30)))
+            {
+                buttonCondition = !buttonCondition;
+            }
+            EditorGUILayout.EndHorizontal();
+
 
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
@@ -56,10 +84,10 @@ namespace CodeViewsWindow
                 buttonContent = EditorGUIUtility.IconContent("console.warnicon.sml");
             }
 
-            if (GUILayout.Button(buttonContent, GUILayout.Width(40), GUILayout.Height(20)))
-            {
-                toggleState = !toggleState; // Change l'état de la condition lorsque le bouton est cliqué
-            }
+            //if (GUILayout.Button(buttonContent, GUILayout.Width(40), GUILayout.Height(20)))
+            //{
+            //    toggleState = !toggleState;
+            //}
             // test
 
             GUILayout.EndScrollView();

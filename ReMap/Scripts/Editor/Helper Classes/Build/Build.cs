@@ -56,7 +56,7 @@ namespace Build
                     code += BuildBubbleShield.BuildBubbleShieldObjects( objectData, buildType );
                     break;
                 case ObjectType.Button:
-                    //code += BuildButton.BuildButtonObjects( objectData, buildType );
+                    code += BuildButton.BuildButtonObjects( objectData, buildType );
                     break;
                 case ObjectType.DoubleDoor:
                     code += BuildDoubleDoor.BuildDoubleDoorObjects( objectData, buildType );

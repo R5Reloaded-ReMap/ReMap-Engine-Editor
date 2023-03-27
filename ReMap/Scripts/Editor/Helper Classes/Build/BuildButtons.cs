@@ -1,5 +1,4 @@
 
-using System.ComponentModel.Design;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +8,9 @@ using static Build.Build;
 
 namespace Build
 {
-    public class BuildBubbleShield
+    public class BuildButton
     {
-        public static string BuildBubbleShieldObjects( GameObject[] objectData, BuildType buildType )
+        public static string BuildButtonObjects( GameObject[] objectData, BuildType buildType )
         {
             string code = "";
 
@@ -19,7 +18,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Bubbles Shield";
+                    code += "    // Buttons";
                     PageBreak( ref code );
                     break;
 
@@ -39,18 +38,13 @@ namespace Build
             // Build the code
             foreach ( GameObject obj in objectData )
             {
-                BubbleScript script = ( BubbleScript ) Helper.GetComponentByEnum( obj, ObjectType.BubbleShield );
+                ButtonScripting script = ( ButtonScripting ) Helper.GetComponentByEnum( obj, ObjectType.Button );
                 if ( script == null ) continue;
-
-                string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
-                string scale = Helper.ReplaceComma( obj.transform.localScale.x );
-
-                string ShieldColor = script.ShieldColor.r + " " + script.ShieldColor.g + " " + script.ShieldColor.b;
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\" )";
+                        code += $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n";
                         PageBreak( ref code );
                         break;
 

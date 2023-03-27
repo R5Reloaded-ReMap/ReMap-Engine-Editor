@@ -92,7 +92,7 @@ namespace Build
                     //code += BuildSpawnPoint.BuildSpawnPointObjects( objectData, buildType );
                     break;
                 case ObjectType.TextInfoPanel:
-                    //code += BuildTextInfoPanel.BuildTextInfoPanelObjects( objectData, buildType );
+                    code += BuildTextInfoPanel.BuildTextInfoPanelObjects( objectData, buildType );
                     break;
                 case ObjectType.Trigger:
                     //code += BuildTrigger.BuildTriggerObjects( objectData, buildType );

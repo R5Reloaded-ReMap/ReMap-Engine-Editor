@@ -119,24 +119,27 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
-
-                    if ( PlayerClipArrayBool )
+                
+                    if ( PlayerClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool)
                     {
-                        code += "    foreach ( entity ent in PlayerClipArray )\n";
-                        code += "    {\n";
-                        code += "        ent.MakeInvisible()\n";
-                        code += "        ent.kv.solid = 6\n";
-                        code += "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
-                        code += "        ent.kv.contents = CONTENTS_PLAYERCLIP\n";
-                        code += "    }\n";
+                        PageBreak( ref code );
+                        if ( PlayerClipArrayBool )
+                        {
+                            code += "    foreach ( entity ent in PlayerClipArray )\n";
+                            code += "    {\n";
+                            code += "        ent.MakeInvisible()\n";
+                            code += "        ent.kv.solid = 6\n";
+                            code += "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
+                            code += "        ent.kv.contents = CONTENTS_PLAYERCLIP\n";
+                            code += "    }\n";
+                        }
+
+                        if ( NoClimbArrayBool ) code += "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3\n";
+
+                        if ( InvisibleArrayBool ) code += "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()\n";
+
+                        if ( NoGrappleArrayBool ) code += "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n";
                     }
-
-                    if ( NoClimbArrayBool ) code += "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3\n";
-
-                    if ( InvisibleArrayBool ) code += "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()\n";
-
-                    if ( NoGrappleArrayBool ) code += "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n";
 
                     PageBreak( ref code );
                     break;

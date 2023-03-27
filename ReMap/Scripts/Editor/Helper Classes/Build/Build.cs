@@ -68,7 +68,7 @@ namespace Build
                     code += BuildHorzDoor.BuildHorzDoorObjects( objectData, buildType );
                     break;
                 case ObjectType.Jumppad:
-                    //code += BuildJumppad.BuildJumppadObjects( objectData, buildType );
+                    code += BuildJumppad.BuildJumppadObjects( objectData, buildType );
                     break;
                 case ObjectType.LinkedZipline:
                     code += BuildLinkedZipline.BuildLinkedZiplineObjects( objectData, buildType );

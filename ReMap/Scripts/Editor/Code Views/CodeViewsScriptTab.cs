@@ -22,29 +22,27 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowSquirrelFunction();
             if ( CodeViewsWindow.ShowFunction )
             {
-                GUILayout.Space( 6 );
+                CodeViewsWindow.Space( 4 );
                 CodeViewsWindow.OptionalFunctionName();
 
+                CodeViewsWindow.Space( 6 );
                 CodeViewsWindow.Separator();
-            }
-
-                GUILayout.Space( 10 );
+            } else CodeViewsWindow.Space( 10 );
 
             CodeViewsWindow.OptionalUseOffset();
             if ( Helper.UseStartingOffset )
             {
-                GUILayout.Space( 6 );
+                CodeViewsWindow.Space( 4 );
                 CodeViewsWindow.OptionalShowOffset();
                 if ( Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
 
+                CodeViewsWindow.Space( 6 );
                 CodeViewsWindow.Separator();
-            } 
-
-            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
+            } else CodeViewsWindow.Space( 10 );
 
             CodeViewsWindow.OptionalSelection();
 
-            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
+            CodeViewsWindow.Space( 10 );
 
             CodeViewsWindow.OptionalAdvancedOption();
 

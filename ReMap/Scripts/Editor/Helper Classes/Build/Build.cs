@@ -53,7 +53,7 @@ namespace Build
             switch ( objectType )
             {
                 case ObjectType.BubbleShield:
-                    //code += BuildBubbleShield.BuildBubbleShieldObjects( objectData, buildType );
+                    code += BuildBubbleShield.BuildBubbleShieldObjects( objectData, buildType );
                     break;
                 case ObjectType.Button:
                     //code += BuildButton.BuildButtonObjects( objectData, buildType );

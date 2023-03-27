@@ -104,7 +104,7 @@ namespace Build
                     code += BuildVerticalZipline.BuildVerticalZipLineObjects( objectData, buildType );
                     break;
                 case ObjectType.WeaponRack:
-                    //code += BuildWeaponRack.BuildWeaponRackObjects( objectData, buildType );
+                    code += BuildWeaponRack.BuildWeaponRackObjects( objectData, buildType );
                     break;
                 case ObjectType.ZipLine:
                     code += BuildZipline.BuildZiplineObjects( objectData, buildType );

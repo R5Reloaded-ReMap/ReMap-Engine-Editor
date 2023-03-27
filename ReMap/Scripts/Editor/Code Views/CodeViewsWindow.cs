@@ -65,6 +65,7 @@ namespace CodeViewsWindow
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
             windowInstance.minSize = new Vector2( 1420, 500 );
             windowInstance.Show();
+            GetFunctionName();
         }
 
         void OnEnable()

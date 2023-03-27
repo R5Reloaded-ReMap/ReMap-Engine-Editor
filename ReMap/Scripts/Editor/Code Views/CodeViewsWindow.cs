@@ -31,9 +31,10 @@ namespace CodeViewsWindow
         internal static int tabEnt = 0;
         internal static int tabEnt_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
+        internal static int GUILayoutButtonSize = 320;
         internal static int GUILayoutToggleSize = 180;
         internal static int GUILayoutVector3FieldSize = 210;
-        internal static int GUILayoutFunctionFieldSize = 210;
+        internal static int GUILayoutFunctionFieldSize = 220;
         internal static int GUILayoutLabelSize = 40;
 
         internal static bool ShowSettings = false;
@@ -47,6 +48,8 @@ namespace CodeViewsWindow
         internal static bool EnableSelectionTemp = false;
         internal static int EntityCount = 0;
         internal static int EntFileID = 27;
+
+        internal static Color SettingsColor = new Color(0.5f, 0.2f, 0.8f);
 
         // Gen Settings
         public static Dictionary< string, bool > GenerateObjects = Helper.ObjectGenerateDictionaryInit();
@@ -194,12 +197,17 @@ namespace CodeViewsWindow
             if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
         } 
 
-        internal static void OptionalUseOffset( string text = "Use Origin Offset" )
+        internal static void OptionalUseOffset( string trueText = "Disable Origin Offset", string falseText = "Enable Squirrel Function" )
         {
-            Helper.UseStartingOffset = EditorGUILayout.Toggle( text, Helper.UseStartingOffset, GUILayout.MaxWidth( CodeViewsWindow.GUILayoutToggleSize ) );
-            if( Helper.UseStartingOffset != Helper.UseStartingOffsetTemp )
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
+            buttonStyle.imagePosition = ImagePosition.ImageLeft;
+
+            GUIContent buttonContent = new GUIContent( Helper.UseStartingOffset ? trueText : falseText );
+
+            if ( GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
             {
-                Helper.UseStartingOffsetTemp = Helper.UseStartingOffset;
+                Helper.UseStartingOffset = !Helper.UseStartingOffset;
                 Refresh();
             }
         }
@@ -220,12 +228,17 @@ namespace CodeViewsWindow
             StartingOffset = EditorGUILayout.Vector3Field( "", StartingOffset, GUILayout.MaxWidth( GUILayoutVector3FieldSize ) );
         }
 
-        internal static void ShowSquirrelFunction( string text = "Show Squirrel Function" )
+        internal static void ShowSquirrelFunction( string trueText = "Hide Squirrel Function", string falseText = "Show Squirrel Function" )
         {
-            ShowFunction = EditorGUILayout.Toggle( text, ShowFunction, GUILayout.MaxWidth( GUILayoutToggleSize ) );
-            if( ShowFunction != ShowFunctionTemp )
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
+            buttonStyle.imagePosition = ImagePosition.ImageLeft;
+
+            GUIContent buttonContent = new GUIContent( ShowFunction ? trueText : falseText );
+        
+            if ( GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
             {
-                ShowFunctionTemp = ShowFunction;
+                ShowFunction = !ShowFunction;
                 Refresh();
             }
         }
@@ -316,8 +329,10 @@ namespace CodeViewsWindow
 
         internal static void OptionalFunctionName( string text = "Function Name" )
         {
-            EditorGUILayout.LabelField( text, GUILayout.Width( 92 ) );
-            functionName = EditorGUILayout.TextField( "", functionName, GUILayout.Width( GUILayoutFunctionFieldSize ) );
+            GUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField( text, GUILayout.Width( 96 ) );
+                functionName = EditorGUILayout.TextField( "", functionName, GUILayout.Width( GUILayoutFunctionFieldSize ) );
+            GUILayout.EndHorizontal();
         }
 
         internal static void OptionalSelection( string text = "Build Selection Only" )
@@ -376,6 +391,13 @@ namespace CodeViewsWindow
                     }
                 break;
             }
+        }
+
+        internal static void Separator()
+        {
+            GUI.backgroundColor = CodeViewsWindow.SettingsColor;
+            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
+            GUI.backgroundColor = Color.white;
         }
 
         internal static void ExportFunction()

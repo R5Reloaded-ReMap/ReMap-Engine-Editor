@@ -17,39 +17,38 @@ namespace CodeViewsWindow
         internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical( "box" );
-
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
-            buttonStyle.imagePosition = ImagePosition.ImageLeft;
-
-            GUIContent buttonContent = new GUIContent(" Your Text", CodeViewsWindow.ShowFunction ? "console.infoicon.sml" : "console.warnicon.sml");
-        
-            if (GUILayout.Button(buttonContent, buttonStyle, GUILayout.Height(20), GUILayout.Width(340)))
-            {
-                CodeViewsWindow.ShowFunction = !CodeViewsWindow.ShowFunction;
-            }
-
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
             CodeViewsWindow.ShowSquirrelFunction();
-            if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
+            if ( CodeViewsWindow.ShowFunction )
+            {
+                GUILayout.Space( 6 );
+                CodeViewsWindow.OptionalFunctionName();
 
-            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+                CodeViewsWindow.Separator();
+            }
+
+                GUILayout.Space( 10 );
 
             CodeViewsWindow.OptionalUseOffset();
-            if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalShowOffset();
-            if ( Helper.UseStartingOffset && Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+            if ( Helper.UseStartingOffset )
+            {
+                GUILayout.Space( 6 );
+                CodeViewsWindow.OptionalShowOffset();
+                if ( Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
 
-            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+                CodeViewsWindow.Separator();
+            } 
+
+            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
 
             CodeViewsWindow.OptionalSelection();
 
-            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
 
             CodeViewsWindow.OptionalAdvancedOption();
 
             GUILayout.EndScrollView();
-
             GUILayout.EndVertical();
         }
 

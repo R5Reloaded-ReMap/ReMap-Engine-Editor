@@ -16,22 +16,22 @@ namespace CodeViewsWindow
     {
         internal static void OnGUISettingsTab()
         {
-            GUILayout.BeginVertical( "box" );
-                CodeViewsWindow.ShowSettings = EditorGUILayout.Foldout( CodeViewsWindow.ShowSettings, "Options", true );
+            GUILayout.BeginVertical();
+            CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-                if ( CodeViewsWindow.ShowSettings )
-                {
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.ShowSquirrelFunction();
-                        if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
-                    GUILayout.EndHorizontal();
+            CodeViewsWindow.ShowSquirrelFunction();
+            if ( CodeViewsWindow.ShowFunction )
+            {
+                CodeViewsWindow.Space( 4 );
+                CodeViewsWindow.OptionalFunctionName();
 
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+                CodeViewsWindow.Space( 6 );
+                CodeViewsWindow.Separator();
+            } else CodeViewsWindow.Space( 10 );
 
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.OptionalSelection();
-                    GUILayout.EndHorizontal();
-                }
+            CodeViewsWindow.OptionalSelection();
+
+            GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
 

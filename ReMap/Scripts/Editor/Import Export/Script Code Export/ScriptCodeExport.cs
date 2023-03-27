@@ -26,9 +26,7 @@ namespace CodeViewsWindow
         private static int tabEnt_temp;
         private static Vector3 StartingOffset;
         private static bool ShowAdvancedMenu;
-        private static bool ShowAdvancedMenuTemp;
         private static bool ShowFunction;
-        private static bool ShowFunctionTemp;
         private static bool ShowEntFunction;
         private static bool ShowEntFunctionTemp;
         internal static bool EnableSelection;
@@ -50,9 +48,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 0;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = true;
-            CodeViewsWindow.ShowFunctionTemp = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
@@ -78,9 +74,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 0;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = true;
-            CodeViewsWindow.ShowFunctionTemp = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
@@ -106,9 +100,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 0;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = false;
-            CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
@@ -134,9 +126,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 0;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = false;
-            CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
@@ -162,9 +152,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 0;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = false;
-            CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
@@ -190,9 +178,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 0;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = true;
-            CodeViewsWindow.ShowFunctionTemp = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
@@ -218,9 +204,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 0;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = false;
-            CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.ShowEntFunctionTemp = true;
             CodeViewsWindow.EnableSelection = false;
@@ -247,9 +231,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 1;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = false;
-            CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.ShowEntFunctionTemp = true;
             CodeViewsWindow.EnableSelection = false;
@@ -276,9 +258,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = 2;
             CodeViewsWindow.StartingOffset = Vector3.zero;
             CodeViewsWindow.ShowAdvancedMenu = false;
-            CodeViewsWindow.ShowAdvancedMenuTemp = false;
             CodeViewsWindow.ShowFunction = false;
-            CodeViewsWindow.ShowFunctionTemp = false;
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.ShowEntFunctionTemp = true;
             CodeViewsWindow.EnableSelection = false;
@@ -306,9 +286,7 @@ namespace CodeViewsWindow
             //CodeViewsWindow.tabEnt_temp = 
             //CodeViewsWindow.StartingOffset = Vector3.zero;
             //CodeViewsWindow.ShowAdvancedMenu = false;
-            //CodeViewsWindow.ShowAdvancedMenuTemp = false;
             //CodeViewsWindow.ShowFunction = 
-            //CodeViewsWindow.ShowFunctionTemp = 
             //CodeViewsWindow.ShowEntFunction = 
             //CodeViewsWindow.ShowEntFunctionTemp = 
             //CodeViewsWindow.EnableSelection = false;
@@ -333,9 +311,7 @@ namespace CodeViewsWindow
             tabEnt_temp = CodeViewsWindow.tabEnt_temp;
             StartingOffset = CodeViewsWindow.StartingOffset;
             ShowAdvancedMenu = CodeViewsWindow.ShowAdvancedMenu;
-            ShowAdvancedMenuTemp = CodeViewsWindow.ShowAdvancedMenuTemp;
             ShowFunction = CodeViewsWindow.ShowFunction;
-            ShowFunctionTemp = CodeViewsWindow.ShowFunctionTemp;
             ShowEntFunction = CodeViewsWindow.ShowEntFunction;
             ShowEntFunctionTemp = CodeViewsWindow.ShowEntFunctionTemp;
             EnableSelection = CodeViewsWindow.EnableSelection;
@@ -353,9 +329,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.tabEnt_temp = tabEnt_temp;
             CodeViewsWindow.StartingOffset = StartingOffset;
             CodeViewsWindow.ShowAdvancedMenu = ShowAdvancedMenu;
-            CodeViewsWindow.ShowAdvancedMenuTemp = ShowAdvancedMenuTemp;
             CodeViewsWindow.ShowFunction = ShowFunction;
-            CodeViewsWindow.ShowFunctionTemp = ShowFunctionTemp;
             CodeViewsWindow.ShowEntFunction = ShowEntFunction;
             CodeViewsWindow.ShowEntFunctionTemp = ShowEntFunctionTemp;
             CodeViewsWindow.EnableSelection = EnableSelection;

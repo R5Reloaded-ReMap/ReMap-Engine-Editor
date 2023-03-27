@@ -16,30 +16,30 @@ namespace CodeViewsWindow
     {
         internal static void OnGUISettingsTab()
         {
-            GUILayout.BeginVertical( "box" );
+            GUILayout.BeginVertical();
+            CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-                CodeViewsWindow.ShowSettings = EditorGUILayout.Foldout( CodeViewsWindow.ShowSettings, "Options", true );
+            CodeViewsWindow.ShowSquirrelEntFunction();
+            if ( CodeViewsWindow.ShowEntFunction )
+            {
+                CodeViewsWindow.Space( 4 );
+                CodeViewsWindow.OptionalMapID();
+                CodeViewsWindow.Space( 6 );
+                CodeViewsWindow.Separator();
+            } else CodeViewsWindow.Space( 10 );
 
-                if ( CodeViewsWindow.ShowSettings )
-                {
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.ShowSquirrelEntFunction();
-                    GUILayout.EndHorizontal();
+            CodeViewsWindow.OptionalUseOffset();
+            if ( Helper.UseStartingOffset )
+            {
+                CodeViewsWindow.Space( 4 );
+                CodeViewsWindow.OptionalOffsetField();
+                CodeViewsWindow.Space( 6 );
+                CodeViewsWindow.Separator();
+            } else CodeViewsWindow.Space( 10 );
 
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+            CodeViewsWindow.OptionalSelection();
 
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.OptionalUseOffset();
-                        if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
-                        GUILayout.FlexibleSpace();
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
-
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.OptionalSelection();
-                    GUILayout.EndHorizontal();
-                }
+            GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
 

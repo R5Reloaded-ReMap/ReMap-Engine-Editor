@@ -16,18 +16,21 @@ namespace CodeViewsWindow
     {
         internal static void OnGUISettingsTab()
         {
-            GUILayout.BeginVertical( "box" );
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.OptionalUseOffset();
-                        if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
-                        GUILayout.FlexibleSpace();
-                    GUILayout.EndHorizontal();
+            GUILayout.BeginVertical();
+            CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+            CodeViewsWindow.OptionalUseOffset();
+            if ( Helper.UseStartingOffset ) 
+            {
+                CodeViewsWindow.Space( 4 );
+                CodeViewsWindow.OptionalOffsetField();
+                CodeViewsWindow.Space( 6 );
+                CodeViewsWindow.Separator();
+            } else CodeViewsWindow.Space( 10 );
 
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.OptionalSelection();
-                    GUILayout.EndHorizontal();
+            CodeViewsWindow.OptionalSelection();
+
+            GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
 

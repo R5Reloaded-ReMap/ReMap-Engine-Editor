@@ -16,36 +16,36 @@ namespace CodeViewsWindow
     {
         internal static void OnGUISettingsTab()
         {
-            GUILayout.BeginVertical( "box" );
+            GUILayout.BeginVertical();
+            CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-                CodeViewsWindow.ShowSettings = EditorGUILayout.Foldout( CodeViewsWindow.ShowSettings, "Options", true );
+            CodeViewsWindow.ShowSquirrelEntFunction();
+            if ( CodeViewsWindow.ShowEntFunction )
+            {
+                CodeViewsWindow.Space( 4 );
+                CodeViewsWindow.OptionalMapID();
+                CodeViewsWindow.Space( 4 );
+                CodeViewsWindow.OptionalInfoPlayerStart();
+                CodeViewsWindow.Space( 6 );
+                CodeViewsWindow.Separator();
+            } else CodeViewsWindow.Space( 10 );
 
-                if ( CodeViewsWindow.ShowSettings )
-                {
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.ShowSquirrelEntFunction();
-                    GUILayout.EndHorizontal();
+            CodeViewsWindow.OptionalUseOffset();
+            if ( Helper.UseStartingOffset )
+            {
+                CodeViewsWindow.Space( 4 );
+                CodeViewsWindow.OptionalOffsetField();
+                CodeViewsWindow.Space( 6 );
+                CodeViewsWindow.Separator();
+            } else CodeViewsWindow.Space( 10 );
 
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+            CodeViewsWindow.OptionalSelection();
 
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.OptionalUseOffset();
-                        if ( Helper.UseStartingOffset ) CodeViewsWindow.OptionalOffsetField();
-                        GUILayout.FlexibleSpace();
-                    GUILayout.EndHorizontal();
+            CodeViewsWindow.Space( 10 );
 
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+            CodeViewsWindow.OptionalAdvancedOption();
 
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.OptionalSelection();
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
-
-                    GUILayout.BeginHorizontal();
-                        CodeViewsWindow.OptionalAdvancedOption();
-                    GUILayout.EndHorizontal();
-                }
+            GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
 
@@ -53,14 +53,17 @@ namespace CodeViewsWindow
         {
             string code = "";
 
+            Vector3 IPSAngles = CodeViewsWindow.InfoPlayerStartAngles;
+            Vector3 IPSOrigin = CodeViewsWindow.InfoPlayerStartOrigin;
+
             if ( CodeViewsWindow.ShowEntFunction )
             {
                 code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n";
                 code +=  "{\n";
                 code +=  "\"spawnflags\" \"0\"\n";
                 code +=  "\"scale\" \"1\"\n";
-                code +=  "\"angles\" \"0 0 0\"\n";
-                code +=  "\"origin\" \"0 0 0\"\n";
+                code += $"\"angles\" \"{Helper.ReplaceComma( IPSAngles.x )} {Helper.ReplaceComma( IPSAngles.y )} {Helper.ReplaceComma( IPSAngles.z )}\"\n";
+                code += $"\"origin\" \"{Helper.ReplaceComma( IPSOrigin.x )} {Helper.ReplaceComma( IPSOrigin.y )} {Helper.ReplaceComma( IPSOrigin.z )}\"\n";
                 code +=  "\"classname\" \"info_player_start\"\n";
                 code +=  "}\n";
             }

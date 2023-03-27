@@ -16,7 +16,7 @@ namespace CodeViewsWindow
     {
         internal static void OnGUISettingsTab()
         {
-            GUILayout.BeginVertical( "box" );
+            GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
             CodeViewsWindow.ShowSquirrelFunction();
@@ -34,7 +34,11 @@ namespace CodeViewsWindow
             {
                 CodeViewsWindow.Space( 4 );
                 CodeViewsWindow.OptionalShowOffset();
-                if ( Helper.ShowStartingOffset ) CodeViewsWindow.OptionalOffsetField();
+                if ( Helper.ShowStartingOffset )
+                {
+                    CodeViewsWindow.Space( 4 );
+                    CodeViewsWindow.OptionalOffsetField();
+                }
 
                 CodeViewsWindow.Space( 6 );
                 CodeViewsWindow.Separator();

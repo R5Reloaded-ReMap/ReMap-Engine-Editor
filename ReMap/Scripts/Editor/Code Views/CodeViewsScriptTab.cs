@@ -14,48 +14,23 @@ namespace CodeViewsWindow
 {
     public class ScriptTab
     {
-        static bool toggleState;
-        static GUIContent buttonContent; // test
-        static bool buttonCondition = false;
         internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical( "box" );
 
-            EditorGUILayout.BeginHorizontal();
-            toggleState = EditorGUILayout.Toggle("Toggle:", toggleState);
-
-            GUIContent buttonContent;
-
-            if (toggleState)
-            {
-                buttonContent = EditorGUIUtility.IconContent("console.infoicon.sml");
-            }
-            else
-            {
-                buttonContent = EditorGUIUtility.IconContent("console.warnicon.sml");
-            }
-
-            buttonContent.text = " My Text";
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-            //buttonStyle.alignment = TextAnchor.MiddleLeft;
-            buttonStyle.contentOffset = new Vector2( -60, 0 );
-            buttonStyle.padding.left = 20;
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
+            buttonStyle.imagePosition = ImagePosition.ImageLeft;
 
-            if (GUILayout.Button(buttonContent, buttonStyle, GUILayout.Width(200), GUILayout.Height(30)))
+            GUIContent buttonContent = new GUIContent(" Your Text", CodeViewsWindow.ShowFunction ? "console.infoicon.sml" : "console.warnicon.sml");
+        
+            if (GUILayout.Button(buttonContent, buttonStyle, GUILayout.Height(40), GUILayout.Width(200)))
             {
-                buttonCondition = !buttonCondition;
+                CodeViewsWindow.ShowFunction = !CodeViewsWindow.ShowFunction;
             }
-            EditorGUILayout.EndHorizontal();
-
 
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            GUIStyle toggleStyle = new GUIStyle( EditorStyles.toggle );
-            toggleStyle.padding.left = 24;
-            toggleStyle.margin.left = 0;
-            toggleStyle.fixedWidth = 240;
-
-            toggleState = EditorGUILayout.Toggle( "Custom Toggle", toggleState );
             CodeViewsWindow.ShowSquirrelFunction();
             if ( CodeViewsWindow.ShowFunction ) CodeViewsWindow.OptionalFunctionName();
 
@@ -72,23 +47,6 @@ namespace CodeViewsWindow
             GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
             CodeViewsWindow.OptionalAdvancedOption();
-
-            
-            // test
-            if (toggleState)
-            {
-                buttonContent = EditorGUIUtility.IconContent("console.infoicon.sml");
-            }
-            else
-            {
-                buttonContent = EditorGUIUtility.IconContent("console.warnicon.sml");
-            }
-
-            //if (GUILayout.Button(buttonContent, GUILayout.Width(40), GUILayout.Height(20)))
-            //{
-            //    toggleState = !toggleState;
-            //}
-            // test
 
             GUILayout.EndScrollView();
 

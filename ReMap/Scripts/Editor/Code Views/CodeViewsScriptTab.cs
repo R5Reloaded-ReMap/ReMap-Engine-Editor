@@ -24,7 +24,7 @@ namespace CodeViewsWindow
 
             GUIContent buttonContent = new GUIContent(" Your Text", CodeViewsWindow.ShowFunction ? "console.infoicon.sml" : "console.warnicon.sml");
         
-            if (GUILayout.Button(buttonContent, buttonStyle, GUILayout.Height(40), GUILayout.Width(200)))
+            if (GUILayout.Button(buttonContent, buttonStyle, GUILayout.Height(20), GUILayout.Width(340)))
             {
                 CodeViewsWindow.ShowFunction = !CodeViewsWindow.ShowFunction;
             }

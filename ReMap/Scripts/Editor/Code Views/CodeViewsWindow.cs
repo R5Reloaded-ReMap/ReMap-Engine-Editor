@@ -96,17 +96,14 @@ namespace CodeViewsWindow
             {
                 case 0: // Squirrel Code
                     code += ScriptTab.GenerateCode( copy );
-                    functionName = Helper.GetSceneName();
                     break;
 
                 case 1: // DataTable Code
                     code += DataTableTab.GenerateCode( copy );
-                    functionName = $"remap_datatable";
                     break;
 
                 case 2: // Precache Code
                     code += PrecacheTab.GenerateCode( copy );
-                    functionName = $"{Helper.GetSceneName()}_Precache";
                     break;
 
                 case 3: // Ent Code
@@ -114,16 +111,13 @@ namespace CodeViewsWindow
                     {
                         case 0: // Script Code
                             code += ScriptEntTab.GenerateCode( copy );
-                            functionName = $"mp_rr_remap_script";
                             break;
 
                         case 1: // Sound Code
                             code += SoundEntTab.GenerateCode( copy );
-                            functionName = $"mp_rr_remap_snd";
                             break;
                         case 2:  // Spawn Code
                             code += SpawnEntTab.GenerateCode( copy );
-                            functionName = $"mp_rr_remap_spawn";
                         break;
                     }
                 break;
@@ -140,6 +134,7 @@ namespace CodeViewsWindow
 
             if( tab != tab_temp || tabEnt != tabEnt_temp )
             {
+                GetFunctionName();
                 Refresh();
                 tab_temp = tab;
                 tabEnt_temp = tabEnt;
@@ -505,6 +500,40 @@ namespace CodeViewsWindow
         internal static void Refresh()
         {
             EntityCount = 0; GenerateCorrectCode( false );
+        }
+
+        private static void GetFunctionName()
+        {
+            switch ( tab )
+            {
+                case 0: // Squirrel Code
+                    functionName = Helper.GetSceneName();
+                    break;
+
+                case 1: // DataTable Code
+                    functionName = $"remap_datatable";
+                    break;
+
+                case 2: // Precache Code
+                    functionName = $"{Helper.GetSceneName()}_Precache";
+                    break;
+
+                case 3: // Ent Code
+                    switch ( tabEnt )
+                    {
+                        case 0: // Script Code
+                            functionName = $"mp_rr_remap_script";
+                            break;
+
+                        case 1: // Sound Code
+                            functionName = $"mp_rr_remap_snd";
+                            break;
+                        case 2:  // Spawn Code
+                            functionName = $"mp_rr_remap_spawn";
+                        break;
+                    }
+                break;
+            }
         }
 
         private static void SetCorrectColor( int count )

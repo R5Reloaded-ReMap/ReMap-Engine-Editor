@@ -25,18 +25,26 @@ namespace Build
         {
             string code = ""; PrecacheList = new List< String >();
 
+            bool PlayerClipArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClip );
+            bool NoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoClimb );
+            bool InvisibleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.MakeInvisible );
+            bool NoGrappleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.KvContentsNOGRAPPLE );
+
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Props Array";
-                    PageBreak( ref code );
-                    code += "    ";
-                    foreach ( string arrayType in ArrayName.Values )
+                    if ( PlayerClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool)
                     {
-                        code += $"array < entity > {arrayType}; ";
+                        code += "    // Props Array"; PageBreak( ref code );
+                        code += "    ";
+                        if ( PlayerClipArrayBool ) code += $"array < entity > PlayerClipArray; ";
+                        if ( NoClimbArrayBool ) code += $"array < entity > PlayerNoClimb; ";
+                        if ( InvisibleArrayBool ) code += $"array < entity > MakeInvisible; ";
+                        if ( NoGrappleArrayBool ) code += $"array < entity > KvContentsNOGRAPPLE; ";
+                        PageBreak( ref code ); PageBreak( ref code );
                     }
-                    PageBreak( ref code ); PageBreak( ref code );
+
                     code += "    // Props";
                     PageBreak( ref code );
                     break;
@@ -113,19 +121,22 @@ namespace Build
                 case BuildType.Script:
                     PageBreak( ref code );
 
-                    code += "    foreach ( entity ent in PlayerClipArray )\n";
-                    code += "    {\n";
-                    code += "        ent.MakeInvisible()\n";
-                    code += "        ent.kv.solid = 6\n";
-                    code += "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
-                    code += "        ent.kv.contents = CONTENTS_PLAYERCLIP\n";
-                    code += "    }\n";
+                    if ( PlayerClipArrayBool )
+                    {
+                        code += "    foreach ( entity ent in PlayerClipArray )\n";
+                        code += "    {\n";
+                        code += "        ent.MakeInvisible()\n";
+                        code += "        ent.kv.solid = 6\n";
+                        code += "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
+                        code += "        ent.kv.contents = CONTENTS_PLAYERCLIP\n";
+                        code += "    }\n";
+                    }
 
-                    code += "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3\n";
+                    if ( NoClimbArrayBool ) code += "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3\n";
 
-                    code += "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()\n";
+                    if ( InvisibleArrayBool ) code += "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()\n";
 
-                    code += "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n";
+                    if ( NoGrappleArrayBool ) code += "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n";
 
                     PageBreak( ref code );
                     break;
@@ -144,6 +155,19 @@ namespace Build
             }
 
             return code;
+        }
+
+        private static bool ObjHavePropScriptOptions( GameObject[] objectData, PropScriptOptions option )
+        {
+            foreach ( GameObject obj in objectData )
+            {
+                PropScript script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
+                if ( script == null ) continue;
+
+                if ( script.Option == option ) return true;
+            }
+
+            return false;
         }
     }
 }

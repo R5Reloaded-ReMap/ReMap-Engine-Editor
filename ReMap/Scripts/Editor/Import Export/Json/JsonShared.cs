@@ -140,7 +140,8 @@ namespace ImportExport.Json
                     case TriggerClassData data: // Triggers
                         data = ( TriggerClassData )( object ) scriptData;
                         TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( triggerScripting, data );
+                        TransferDataToClass( triggerScripting, data, new[] { "HelperData" }.ToList() );
+                        data.HelperData = GetSetTransformData( triggerScripting.Helper.gameObject, data.HelperData );
                         break;
 
                     case BubbleShieldClassData data: // Bubbles Shield
@@ -308,7 +309,8 @@ namespace ImportExport.Json
                     case TriggerClassData data: // Triggers
                         data = ( TriggerClassData )( object ) scriptData;
                         TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, triggerScripting );
+                        TransferDataToClass( data, triggerScripting, new[] { "HelperData" }.ToList() );
+                        GetSetTransformData( triggerScripting.Helper.gameObject, data.HelperData );
                         break;
 
                     case BubbleShieldClassData data: // Bubbles Shield

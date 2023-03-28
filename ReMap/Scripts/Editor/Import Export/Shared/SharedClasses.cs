@@ -222,8 +222,12 @@ namespace ImportExport.Shared
     public class TriggerClassData : GlobalClassData
     {
         public bool Debug;
+        public float Height;
+        public float Width;
+        public bool UseHelperForTP;
         public string EnterCallback;
         public string LeaveCallback;
+        public TransformData HelperData;
     }
 
     [Serializable]

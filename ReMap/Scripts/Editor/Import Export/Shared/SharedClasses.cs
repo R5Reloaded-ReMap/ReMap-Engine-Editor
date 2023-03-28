@@ -25,6 +25,7 @@ namespace ImportExport.Shared
         public List< TriggerClassData > Triggers;
         public List< BubbleShieldClassData > BubbleShields;
         public List< SpawnPointClassData > SpawnPoints;
+        public List< NewLocPairClassData > NewLocPairs;
         public List< TextInfoPanelClassData > TextInfoPanels;
         public List< FuncWindowHintClassData > FuncWindowHints;
         public List< SoundClassData > Sounds;
@@ -178,13 +179,13 @@ namespace ImportExport.Shared
     [Serializable]
     public class HorzDoorClassData : GlobalClassData
     {
-        // Stub script
+        // Stub class
     }
 
     [Serializable]
     public class VerticalDoorClassData : GlobalClassData
     {
-        // Stub script
+        // Stub class
     }
 
     [Serializable]
@@ -235,7 +236,7 @@ namespace ImportExport.Shared
     [Serializable]
     public class SpawnPointClassData : GlobalClassData
     {
-        // Stub script
+        // Stub class
     }
 
     [Serializable]
@@ -265,5 +266,11 @@ namespace ImportExport.Shared
         public bool Enable;
         public string SoundName;
         public Vector3[] PolylineSegment;
+    }
+
+    [Serializable]
+    public class NewLocPairClassData : GlobalClassData
+    {
+        // Stub script
     }
 }

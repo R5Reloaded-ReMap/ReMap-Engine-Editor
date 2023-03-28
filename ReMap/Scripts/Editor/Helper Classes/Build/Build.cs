@@ -88,6 +88,9 @@ namespace Build
                 case ObjectType.Sound:
                     code += BuildSound.BuildSoundObjects( objectData, buildType );
                     break;
+                case ObjectType.NewLocPair:
+                    code += BuildNewLocPair.BuildNewLocPairObjects( objectData, buildType );
+                    break;
                 case ObjectType.SpawnPoint:
                     //code += BuildSpawnPoint.BuildSpawnPointObjects( objectData, buildType );
                     break;

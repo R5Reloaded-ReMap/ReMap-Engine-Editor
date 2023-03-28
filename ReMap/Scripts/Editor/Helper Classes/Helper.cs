@@ -44,6 +44,7 @@ public enum ObjectType
     WeaponRack,
     Trigger,
     BubbleShield,
+    NewLocPair,
     SpawnPoint,
     TextInfoPanel,
     FuncWindowHint,
@@ -60,6 +61,7 @@ public class Helper
 
     private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new Dictionary< ObjectType, ObjectTypeData >
     {
+        { ObjectType.Prop,               new ObjectTypeData( new string[] { "mdl",                          "Prop",               "Prop"                 }, typeof( PropScript ),             typeof( PropClassData ) ) },
         { ObjectType.BubbleShield,       new ObjectTypeData( new string[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"        }, typeof( BubbleScript ),           typeof( BubbleShieldClassData ) ) },
         { ObjectType.Button,             new ObjectTypeData( new string[] { "custom_button",                "Button",             "Button"               }, typeof( ButtonScripting ),        typeof( ButtonClassData ) ) },
         { ObjectType.DoubleDoor,         new ObjectTypeData( new string[] { "custom_double_door",           "DoubleDoor",         "Double Door"          }, typeof( DoorScript ),             typeof( DoubleDoorClassData ) ) },
@@ -68,9 +70,9 @@ public class Helper
         { ObjectType.Jumppad,            new ObjectTypeData( new string[] { "custom_jumppad",               "Jumppad",            "Jump Pad"             }, typeof( PropScript ),             typeof( JumppadClassData ) ) },
         { ObjectType.LinkedZipline,      new ObjectTypeData( new string[] { "custom_linked_zipline",        "LinkedZipline",      "Linked Zipline"       }, typeof( LinkedZiplineScript ),    typeof( LinkedZipLinesClassData ) ) },
         { ObjectType.LootBin,            new ObjectTypeData( new string[] { "custom_lootbin",               "LootBin",            "Loot Bin"             }, typeof( LootBinScript ),          typeof( LootBinClassData ) ) },
-        { ObjectType.Prop,               new ObjectTypeData( new string[] { "mdl",                          "Prop",               "Prop"                 }, typeof( PropScript ),             typeof( PropClassData ) ) },
         { ObjectType.SingleDoor,         new ObjectTypeData( new string[] { "custom_single_door",           "SingleDoor",         "Single Door"          }, typeof( DoorScript ),             typeof( SingleDoorClassData ) ) },
         { ObjectType.Sound,              new ObjectTypeData( new string[] { "custom_sound",                 "Sound",              "Sound"                }, typeof( SoundScript ),            typeof( SoundClassData ) ) },
+        { ObjectType.NewLocPair,         new ObjectTypeData( new string[] { "custom_new_loc_pair",          "NewLocPair",         "New Loc Pair"         }, typeof( NewLocPairScript ),       typeof( NewLocPairClassData ) ) },
         { ObjectType.SpawnPoint,         new ObjectTypeData( new string[] { "custom_info_spawnpoint_human", "SpawnPoint",         "Spawn Point"          }, typeof( SpawnPointScript ),       typeof( SpawnPointClassData ) ) },
         { ObjectType.TextInfoPanel,      new ObjectTypeData( new string[] { "custom_text_info_panel",       "TextInfoPanel",      "Text Info Panel"      }, typeof( TextInfoPanelScript ),    typeof( TextInfoPanelClassData ) ) },
         { ObjectType.Trigger,            new ObjectTypeData( new string[] { "trigger_cylinder",             "Trigger",            "Trigger"              }, typeof( TriggerScripting ),       typeof( TriggerClassData ) ) },
@@ -330,6 +332,7 @@ public class Helper
         if( GetBoolFromGenerateObjects( ObjectType.Trigger ) )            code += BuildObjectsWithEnum( ObjectType.Trigger, buildType, Selection );
         if( GetBoolFromGenerateObjects( ObjectType.BubbleShield ) )       code += BuildObjectsWithEnum( ObjectType.BubbleShield, buildType, Selection );
         if( GetBoolFromGenerateObjects( ObjectType.SpawnPoint ) )         code += BuildObjectsWithEnum( ObjectType.SpawnPoint, buildType, Selection );
+        if( GetBoolFromGenerateObjects( ObjectType.NewLocPair ) )         code += BuildObjectsWithEnum( ObjectType.NewLocPair, buildType, Selection );
         if( GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ) )      code += BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType, Selection );
         if( GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ) )     code += BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection );
         if( GetBoolFromGenerateObjects( ObjectType.Sound ) )              code += BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection );

@@ -47,6 +47,7 @@ namespace ImportExport.Json
             UnityInfo.SortListByKey( jsonData.Triggers, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.BubbleShields, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.SpawnPoints, x => x.PathString );
+            UnityInfo.SortListByKey( jsonData.NewLocPairs, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.TextInfoPanels, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.FuncWindowHints, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.Sounds, x => x.PathString );
@@ -68,6 +69,7 @@ namespace ImportExport.Json
             await ImportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers );
             await ImportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields );
             await ImportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints );
+            await ImportObjectsWithEnum( ObjectType.NewLocPair, jsonData.NewLocPairs );
             await ImportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
             await ImportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
             await ImportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
@@ -167,6 +169,11 @@ namespace ImportExport.Json
                     case SpawnPointClassData data: // Spawn Points
                         data = ( SpawnPointClassData )( object ) objData;
                         obj = ProcessImportClassData( data, "custom_info_spawnpoint_human", objectType, i, j, objectsCount );
+                        break;
+
+                    case NewLocPairClassData data: // New Loc Pair
+                        data = ( NewLocPairClassData )( object ) objData;
+                        obj = ProcessImportClassData( data, "custom_new_loc_pair", objectType, i, j, objectsCount );
                         break;
 
                     case TextInfoPanelClassData data: // Text Info Panels

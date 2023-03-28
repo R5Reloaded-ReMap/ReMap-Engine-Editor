@@ -63,7 +63,7 @@ namespace CodeViewsWindow
             TagHelper.CheckAndCreateTags(); tab = 0; tabEnt = 0;
 
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
-            windowInstance.minSize = new Vector2( 1420, 500 );
+            windowInstance.minSize = new Vector2( 1100, 500 );
             windowInstance.Show();
             GetFunctionName();
         }

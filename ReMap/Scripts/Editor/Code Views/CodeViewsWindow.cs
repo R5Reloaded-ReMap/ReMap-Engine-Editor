@@ -173,7 +173,7 @@ namespace CodeViewsWindow
                     break;
 
                 case 3: // Ent Code
-                    fileInfo = new[] { "Precache Code Export", "", "", "ent" };
+                    fileInfo = new[] { "Ent Code Export", "", "", "ent" };
                     switch ( tabEnt )
                     {
                         case 0: // Script Code
@@ -357,9 +357,27 @@ namespace CodeViewsWindow
                 }
             GUILayout.EndHorizontal();
 
+            Space( 4 );
+
             if ( !ShowAdvancedMenu ) return;
 
             GUILayout.BeginVertical();
+                GUILayout.BeginHorizontal();
+                    if ( GUILayout.Button( "Check All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize / 2 + 10 )))
+                    {
+                        Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), true );
+                        Refresh();
+                    }
+
+                    Space( 1 );
+
+                    if ( GUILayout.Button( "Uncheck All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize / 2 + 10 )))
+                    {
+                        Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), false );
+                        Refresh();
+                    }
+                GUILayout.EndHorizontal();
+
                 foreach ( string key in GenerateObjectsFunction.Keys )
                 {
                     ObjectType? type = Helper.GetObjectTypeByObjName( key );
@@ -451,6 +469,20 @@ namespace CodeViewsWindow
 
         private static void SettingsMenu()
         {
+            //  FYI // ESTETICS MENU
+            //  
+            //  BUTTON SETTINGS MENU 1
+            //  SPACE 4
+            //  SETTING
+            //  SPACE 4
+            //  SETTING
+            //  SPACE 6                     // IF MENU IS OPEN
+            //  END LINE OF SETTINGS MENU 1 // IF MENU IS OPEN
+            //  SPACE 10                    // IF MENU IS CLOSED
+            //  
+            //  BUTTON SETTINGS MENU 2 ...
+            //
+
             switch ( tab )
             {
                 case 0: // Squirrel Code
@@ -544,29 +576,29 @@ namespace CodeViewsWindow
             switch ( tab )
             {
                 case 0: // Squirrel Code
-                    code += ScriptTab.GenerateCode( copy );
+                    code += ScriptTab.GenerateCode();
                     break;
 
                 case 1: // DataTable Code
-                    code += DataTableTab.GenerateCode( copy );
+                    code += DataTableTab.GenerateCode();
                     break;
 
                 case 2: // Precache Code
-                    code += PrecacheTab.GenerateCode( copy );
+                    code += PrecacheTab.GenerateCode();
                     break;
 
                 case 3: // Ent Code
                     switch ( tabEnt )
                     {
                         case 0: // Script Code
-                            code += ScriptEntTab.GenerateCode( copy );
+                            code += ScriptEntTab.GenerateCode();
                             break;
 
                         case 1: // Sound Code
-                            code += SoundEntTab.GenerateCode( copy );
+                            code += SoundEntTab.GenerateCode();
                             break;
                         case 2:  // Spawn Code
-                            code += SpawnEntTab.GenerateCode( copy );
+                            code += SpawnEntTab.GenerateCode();
                         break;
                     }
                 break;

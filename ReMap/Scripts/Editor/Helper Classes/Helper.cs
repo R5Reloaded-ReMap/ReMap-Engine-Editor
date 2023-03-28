@@ -455,6 +455,18 @@ public class Helper
         return dictionary;
     }
 
+    public static ObjectType[] GetAllObjectTypeInArray()
+    {
+        List< ObjectType > list = new List< ObjectType >();
+
+        foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+        {
+            list.Add( objectType );
+        }
+
+        return list.ToArray();
+    }
+
     public static bool GetBoolFromGenerateObjects( ObjectType objectType )
     {
         return GenerateObjects[ GetObjNameWithEnum( objectType ) ];

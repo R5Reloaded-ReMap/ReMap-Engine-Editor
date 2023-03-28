@@ -108,8 +108,7 @@ public class DrawVerticalZipline : MonoBehaviour
 
         // Show / Hide: Arrow
         GameObject arrow = rope_start.transform.Find("arrow").gameObject;
-        arrow.SetActive(true);
-        if(!PushOffInDirectionX) arrow.SetActive(false);
+        arrow.SetActive( PushOffInDirectionX );
 
         foreach ( GameObject go in Panels)
         {

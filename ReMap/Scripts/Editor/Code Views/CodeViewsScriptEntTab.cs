@@ -23,6 +23,8 @@ namespace CodeViewsWindow
             if ( CodeViewsWindow.ShowEntFunction )
             {
                 CodeViewsWindow.Space( 4 );
+                CodeViewsWindow.OptionalFunctionName( "File Name", "Change the name of the file" );
+                CodeViewsWindow.Space( 4 );
                 CodeViewsWindow.OptionalMapID();
                 CodeViewsWindow.Space( 4 );
                 CodeViewsWindow.OptionalInfoPlayerStart();
@@ -49,7 +51,7 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        internal static string GenerateCode( bool copy )
+        internal static string GenerateCode()
         {
             string code = "";
 

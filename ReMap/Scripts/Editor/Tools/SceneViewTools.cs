@@ -1,6 +1,8 @@
  using UnityEditor;
  using UnityEngine;
 
+ using Build;
+
 [InitializeOnLoad]
  public class SceneViewTools : Editor
  {
@@ -38,20 +40,17 @@
     {
         Helper.FixPropTags();
 
-        Helper.Is_Using_Starting_Offset = false;
-        Helper.DisableStartingOffsetString = false;
+        Helper.UseStartingOffset = false;
+        Helper.ShowStartingOffset = false;
 
         string mapcode = "";
         if(onlyMapCode)
-            mapcode = Helper.ShouldAddStartingOrg(1);
+            mapcode = Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction );
+
+        Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
 
         //Build Map Code
-        mapcode += Helper.BuildMapCode(
-            Helper.GetBoolFromGenerateObjects( ObjectType.Prop ), Helper.GetBoolFromGenerateObjects( ObjectType.ZipLine ), Helper.GetBoolFromGenerateObjects( ObjectType.LinkedZipline ), Helper.GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ), Helper.GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ),
-            Helper.GetBoolFromGenerateObjects( ObjectType.SingleDoor ), Helper.GetBoolFromGenerateObjects( ObjectType.DoubleDoor ), Helper.GetBoolFromGenerateObjects( ObjectType.HorzDoor ), Helper.GetBoolFromGenerateObjects( ObjectType.VerticalDoor ), Helper.GetBoolFromGenerateObjects( ObjectType.Button ),
-            Helper.GetBoolFromGenerateObjects( ObjectType.Jumppad ), Helper.GetBoolFromGenerateObjects( ObjectType.LootBin ), Helper.GetBoolFromGenerateObjects( ObjectType.WeaponRack ), Helper.GetBoolFromGenerateObjects( ObjectType.Trigger ), Helper.GetBoolFromGenerateObjects( ObjectType.BubbleShield ),
-            Helper.GetBoolFromGenerateObjects( ObjectType.SpawnPoint ), Helper.GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ), Helper.GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ), Helper.GetBoolFromGenerateObjects( ObjectType.Sound )
-        );
+        mapcode += Helper.BuildMapCode( BuildType.Script, true );
 
         if(!onlyMapCode)
             mapcode += "}";

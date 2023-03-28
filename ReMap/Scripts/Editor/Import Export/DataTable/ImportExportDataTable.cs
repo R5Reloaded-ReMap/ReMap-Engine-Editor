@@ -66,26 +66,4 @@ public class ImportExportDataTable
         ReMapConsole.Log("[Datatable Import] Finished", ReMapConsole.LogType.Success);
         EditorUtility.ClearProgressBar();
     }
-
-    [MenuItem("ReMap/Export/DataTable", false, 51)]
-    public static void ExportDataTable()
-    {
-        var path = EditorUtility.SaveFilePanel("Datatable Export", "", "mapexport.csv", "csv");
-        if (path.Length == 0)
-            return;
-
-        ReMapConsole.Log("[Datatable Export] Starting Export", ReMapConsole.LogType.Warning);
-
-        Helper.FixPropTags();
-        EditorSceneManager.SaveOpenScenes();
-
-        Helper.Is_Using_Starting_Offset = true;
-
-        string tableCode = Build.Props( null, Build.BuildType.DataTable, true );
-        ReMapConsole.Log("[Datatable Export] Writing to file: " + path, ReMapConsole.LogType.Warning);
-
-        System.IO.File.WriteAllText(path, tableCode);
-
-        ReMapConsole.Log("[Datatable Export] Finished", ReMapConsole.LogType.Success);
-    }
 }

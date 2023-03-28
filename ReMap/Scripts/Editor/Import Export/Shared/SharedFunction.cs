@@ -74,7 +74,7 @@ namespace ImportExport.Shared
             foreach ( GameObject parent in parents )
             {
                 PathClass path = new PathClass();
-                path.FolderName = parent.name.Replace( "/", "|" );
+                path.FolderName = ReplaceBadCharacters( parent.name );
                 path.TransformData = GetSetTransformData( parent );
                 pathList.Add( path );
             }
@@ -108,12 +108,17 @@ namespace ImportExport.Shared
             {
                 if ( string.IsNullOrEmpty( path ) )
                 {
-                    path = $"{parent.name}";
+                    path = $"{ReplaceBadCharacters( parent.name )}";
                 }
-                else path = $"{path}/{parent.name}";
+                else path = $"{path}/{ReplaceBadCharacters( parent.name )}";
             }
 
             return path;
+        }
+
+        private static string ReplaceBadCharacters( string name )
+        {
+            return name.Replace( "/", "|" ).Replace( "\r", "" ).Replace( "\n", "" );
         }
 
         /// <summary>

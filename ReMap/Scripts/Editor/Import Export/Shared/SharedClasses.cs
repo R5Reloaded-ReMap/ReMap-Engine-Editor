@@ -25,6 +25,7 @@ namespace ImportExport.Shared
         public List< TriggerClassData > Triggers;
         public List< BubbleShieldClassData > BubbleShields;
         public List< SpawnPointClassData > SpawnPoints;
+        public List< NewLocPairClassData > NewLocPairs;
         public List< TextInfoPanelClassData > TextInfoPanels;
         public List< FuncWindowHintClassData > FuncWindowHints;
         public List< SoundClassData > Sounds;
@@ -71,8 +72,7 @@ namespace ImportExport.Shared
         public bool AllowMantle;
         public float FadeDistance;
         public int RealmID;
-        public List< PropScriptParameters > Parameters;
-        public List< string > CustomParameters;
+        public PropScriptOptions Option;
     }
 
     [Serializable]
@@ -179,13 +179,13 @@ namespace ImportExport.Shared
     [Serializable]
     public class HorzDoorClassData : GlobalClassData
     {
-        // Stub script
+        // Stub class
     }
 
     [Serializable]
     public class VerticalDoorClassData : GlobalClassData
     {
-        // Stub script
+        // Stub class
     }
 
     [Serializable]
@@ -202,8 +202,7 @@ namespace ImportExport.Shared
         public bool AllowMantle;
         public float FadeDistance;
         public int RealmID;
-        public List< PropScriptParameters > Parameters;
-        public List< string > CustomParameters;
+        public PropScriptOptions Option;
     }
 
     [Serializable]
@@ -223,8 +222,12 @@ namespace ImportExport.Shared
     public class TriggerClassData : GlobalClassData
     {
         public bool Debug;
+        public float Height;
+        public float Width;
+        public bool UseHelperForTP;
         public string EnterCallback;
         public string LeaveCallback;
+        public TransformData HelperData;
     }
 
     [Serializable]
@@ -237,7 +240,7 @@ namespace ImportExport.Shared
     [Serializable]
     public class SpawnPointClassData : GlobalClassData
     {
-        // Stub script
+        // Stub class
     }
 
     [Serializable]
@@ -252,7 +255,9 @@ namespace ImportExport.Shared
     [Serializable]
     public class FuncWindowHintClassData : GlobalClassData
     {
-        // Stub script
+        public float HalfHeight;
+        public float HalfWidth;
+        public Vector3 Right;
     }
 
     [Serializable]
@@ -265,5 +270,11 @@ namespace ImportExport.Shared
         public bool Enable;
         public string SoundName;
         public Vector3[] PolylineSegment;
+    }
+
+    [Serializable]
+    public class NewLocPairClassData : GlobalClassData
+    {
+        // Stub script
     }
 }

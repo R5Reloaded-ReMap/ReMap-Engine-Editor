@@ -53,6 +53,7 @@ namespace ImportExport.Json
             await ExportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers );
             await ExportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields );
             await ExportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints );
+            await ExportObjectsWithEnum( ObjectType.NewLocPair, jsonData.NewLocPairs );
             await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
             await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
             await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
@@ -94,6 +95,7 @@ namespace ImportExport.Json
             await ExportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.NewLocPair, jsonData.NewLocPairs, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds, ExportType.Selection );
@@ -115,18 +117,7 @@ namespace ImportExport.Json
             switch ( exportType )
             {
                 case ExportType.All: objectsData = Helper.GetObjArrayWithEnum( objectType ); break;
-                case ExportType.Selection:
-                    objectsData = Selection.gameObjects.Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-                    .SelectMany( obj => obj.GetComponentsInChildren<Transform>(true) )
-                    .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-                    .Select( child => child.gameObject )
-                    .Concat( Selection.gameObjects.Where( obj => obj.transform.childCount > 0 )
-                    .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
-                    .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-                    .Select( child => child.gameObject ) )
-                    .Distinct()
-                    .ToArray();
-                break;
+                case ExportType.Selection: objectsData = Helper.GetSelectedObjectWithEnum( objectType ); break;
 
                 default: return;
             }
@@ -207,6 +198,9 @@ namespace ImportExport.Json
                     case SpawnPointClassData data: // Spawn Points
                         ProcessExportClassData( data, obj, objPath, objectType );
                         break;
+                    case NewLocPairClassData data: // New Loc Pairs
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
                     case TextInfoPanelClassData data: // Text Info Panels
                         ProcessExportClassData( data, obj, objPath, objectType );
                         break;
@@ -256,6 +250,7 @@ namespace ImportExport.Json
             jsonData.Triggers = new List< TriggerClassData >();
             jsonData.BubbleShields = new List< BubbleShieldClassData >();
             jsonData.SpawnPoints = new List< SpawnPointClassData >();
+            jsonData.NewLocPairs = new List< NewLocPairClassData >();
             jsonData.TextInfoPanels = new List< TextInfoPanelClassData >();
             jsonData.FuncWindowHints = new List< FuncWindowHintClassData >();
             jsonData.Sounds = new List< SoundClassData >();

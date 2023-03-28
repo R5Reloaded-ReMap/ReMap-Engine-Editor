@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class UnityInfo
 {
+    public static string ReMapVersion = "Version 0.1";
     public static string currentDirectory = LibrarySorterWindow.currentDirectory;
     public static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
 
@@ -32,13 +33,7 @@ public class UnityInfo
         {
             foreach ( string key in Helper.ObjectToTag.Keys )
             {
-                if ( go.name.Contains( key ) )
-                {
-                    if ( key == Helper.GetObjRefWithEnum( ObjectType.ZipLine ) || key == Helper.GetObjRefWithEnum( ObjectType.LinkedZipline ) || key == Helper.GetObjRefWithEnum( ObjectType.VerticalZipLine ) || key == Helper.GetObjRefWithEnum( ObjectType.NonVerticalZipLine ) )
-                    {
-                        objectCount += 2;
-                    } else objectCount++;
-                }
+                if ( go.name.Contains( key ) ) objectCount++;
             }
         }
 
@@ -51,7 +46,11 @@ public class UnityInfo
     /// <returns></returns>
     public static int GetSpecificObjectCount( ObjectType objectType )
     {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag( Helper.GetObjNameWithEnum( objectType ) );
+        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( objectType ) );
+
+        if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine )
+            return PropObjects.Length * 2;
+
         return PropObjects.Length;
     }
 
@@ -115,6 +114,7 @@ public class UnityInfo
     {
         string ext = extension ? ".rmdl" : "";
         modelName = modelName.Replace( '#', '/' ).Replace( ".rmdl", "" ).Replace( ".prefab", "" );
+        if ( modelName.IndexOf( "mdl/" ) == -1 ) modelName = "mdl/" + modelName;
         return modelName.Substring( modelName.IndexOf( "mdl/" ) ) + ext;
     }
 

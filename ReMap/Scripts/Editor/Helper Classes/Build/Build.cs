@@ -29,8 +29,10 @@ namespace Build
 
             int objectDataLength = objectData.Length;
 
-            if ( objectDataLength == 0 || IsHided( objectType ) ) return "";
+            // Does not generate if the type of object are flaged hide
+            if ( IsHided( objectType ) ) return "";
             
+            // Dynamic Counter
             if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine || objectType == ObjectType.DoubleDoor )
             {
                 CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength * 2;

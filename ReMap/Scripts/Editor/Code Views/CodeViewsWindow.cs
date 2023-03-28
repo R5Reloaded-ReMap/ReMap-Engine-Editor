@@ -79,54 +79,6 @@ namespace CodeViewsWindow
             Refresh();
         }
 
-        private void EditorSceneManager_sceneSaved( UnityEngine.SceneManagement.Scene arg0 )
-        {
-            Refresh();
-        }
-
-        private void EditorSceneManager_sceneOpened( UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode )
-        {
-            Refresh();
-        }
-
-        internal static void GenerateCorrectCode( bool copy )
-        {
-            code = "";
-
-            switch ( tab )
-            {
-                case 0: // Squirrel Code
-                    code += ScriptTab.GenerateCode( copy );
-                    break;
-
-                case 1: // DataTable Code
-                    code += DataTableTab.GenerateCode( copy );
-                    break;
-
-                case 2: // Precache Code
-                    code += PrecacheTab.GenerateCode( copy );
-                    break;
-
-                case 3: // Ent Code
-                    switch ( tabEnt )
-                    {
-                        case 0: // Script Code
-                            code += ScriptEntTab.GenerateCode( copy );
-                            break;
-
-                        case 1: // Sound Code
-                            code += SoundEntTab.GenerateCode( copy );
-                            break;
-                        case 2:  // Spawn Code
-                            code += SpawnEntTab.GenerateCode( copy );
-                        break;
-                    }
-                break;
-            }
-
-            if( copy ) GUIUtility.systemCopyBuffer = code;
-        }
-
         void OnGUI()
         {
             MainTab();
@@ -159,38 +111,76 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        internal static void MainTab()
+        public static bool IsHided( ObjectType objectType )
         {
-            GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal();
-                    tab = GUILayout.Toolbar ( tab, toolbarTab );
-                    if ( GUILayout.Button( new GUIContent( "Refresh", "Refresh Window" ), GUILayout.Width( 100 ) ) ) Refresh();
-                GUILayout.EndHorizontal();
+            // Ensure the objectData is not empty
+            GameObject[] objectData;
+            if ( EnableSelection )
+                objectData = Helper.GetSelectedObjectWithEnum( objectType );
+            else objectData = Helper.GetObjArrayWithEnum( objectType );
 
-                if ( tab == 3 )
-                {
-                    GUILayout.BeginHorizontal();
-                        tabEnt = GUILayout.Toolbar ( tabEnt, toolbarSubTabEntCode );
-                    GUILayout.EndHorizontal();           
-                }
+            if ( objectData.Length == 0 ) return true;
 
-                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+            // Check if objectType are flaged hide
+            foreach ( ObjectType hidedObjectType in GenerateIgnore )
+            {
+                if ( hidedObjectType == objectType ) return true;
+            }
 
-                GUILayout.BeginHorizontal();
-                        ObjectCount();
-                        GUILayout.FlexibleSpace();
-                        ExportButton();
-                        SettingsMenuButton();
-                GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
+            return false;
         }
 
-        internal static void ShortCut()
-        {
-            Event currentEvent = Event.current;
+        //  ██╗███╗   ██╗████████╗███████╗██████╗ ███╗   ██╗ █████╗ ██╗         ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+        //  ██║████╗  ██║╚══██╔══╝██╔════╝██╔══██╗████╗  ██║██╔══██╗██║         ██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+        //  ██║██╔██╗ ██║   ██║   █████╗  ██████╔╝██╔██╗ ██║███████║██║         █████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
+        //  ██║██║╚██╗██║   ██║   ██╔══╝  ██╔══██╗██║╚██╗██║██╔══██║██║         ██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
+        //  ██║██║ ╚████║   ██║   ███████╗██║  ██║██║ ╚████║██║  ██║███████╗    ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
+        //  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝    ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 
-            if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
-        } 
+        //  ██╗   ██╗██╗    ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗   ██╗
+        //  ██║   ██║██║    ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝╚██╗ ██╔╝
+        //  ██║   ██║██║    ██║   ██║   ██║   ██║██║     ██║   ██║    ╚████╔╝ 
+        //  ██║   ██║██║    ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝  
+        //  ╚██████╔╝██║    ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
+        //   ╚═════╝ ╚═╝     ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
+        internal static void Refresh()
+        {
+            EntityCount = 0; GenerateCorrectCode( false );
+        }
+
+
+        //   ██████╗ ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗ █████╗ ██╗         ██╗   ██╗██╗
+        //  ██╔═══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔══██╗██║         ██║   ██║██║
+        //  ██║   ██║██████╔╝   ██║   ██║██║   ██║██╔██╗ ██║███████║██║         ██║   ██║██║
+        //  ██║   ██║██╔═══╝    ██║   ██║██║   ██║██║╚██╗██║██╔══██║██║         ██║   ██║██║
+        //  ╚██████╔╝██║        ██║   ██║╚██████╔╝██║ ╚████║██║  ██║███████╗    ╚██████╔╝██║
+        //   ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝
+
+        internal static void ShowSquirrelFunction( string trueText = "Hide Squirrel Function", string falseText = "Show Squirrel Function", string tooltip = "If true, display the code as a function" )
+        {
+            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
+
+            GUIContent buttonContent = new GUIContent( ShowFunction ? trueText : falseText, tooltip );
+
+            GUIContent buttonContentInfo = new GUIContent( ShowFunction ? enableLogo : disableLogo, tooltip );
+        
+            GUILayout.BeginHorizontal();
+                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
+                {
+                    ShowFunction = !ShowFunction;
+                    Refresh();
+                }
+            GUILayout.EndHorizontal();
+        }
+
+        internal static void OptionalFunctionName( string text = "Function Name", string tooltip = "Change the name of the function" )
+        {
+            GUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( 96 ) );
+                functionName = EditorGUILayout.TextField( new GUIContent( "", tooltip ), functionName, GUILayout.Width( 220 ) );
+            GUILayout.EndHorizontal();
+        }
 
         internal static void OptionalUseOffset( string trueText = "Disable Origin Offset", string falseText = "Enable Origin Offset", string tooltip = "If true, add a position offset to objects" )
         {
@@ -236,19 +226,19 @@ namespace CodeViewsWindow
             GUILayout.EndHorizontal();
         }
 
-        internal static void ShowSquirrelFunction( string trueText = "Hide Squirrel Function", string falseText = "Show Squirrel Function", string tooltip = "If true, display the code as a function" )
+        internal static void OptionalSelection( string trueText = "Disable Selection Only", string falseText = "Enable Selection Only", string tooltip = "If true, generates the code of the selection only" )
         {
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            GUIContent buttonContent = new GUIContent( ShowFunction ? trueText : falseText, tooltip );
+            GUIContent buttonContent = new GUIContent( EnableSelection ? trueText : falseText, tooltip );
 
-            GUIContent buttonContentInfo = new GUIContent( ShowFunction ? enableLogo : disableLogo, tooltip );
-        
+            GUIContent buttonContentInfo = new GUIContent( EnableSelection ? enableLogo : disableLogo, tooltip );
+
             GUILayout.BeginHorizontal();
                 if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
                 {
-                    ShowFunction = !ShowFunction;
+                    EnableSelection = !EnableSelection;
                     Refresh();
                 }
             GUILayout.EndHorizontal();
@@ -300,18 +290,6 @@ namespace CodeViewsWindow
             GUILayout.EndHorizontal();
         }
 
-        internal static void ObjectCount()
-        {
-            string info = tab == 2 ? "Models Precached Count" : "Entity Count";
-            GUILayout.BeginHorizontal();
-
-                SetCorrectColor( EntityCount );
-                GUILayout.Label( $" // {info}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
-                GUI.contentColor = Color.white;
-
-            GUILayout.EndHorizontal();
-        }
-
         internal static void OptionalAdvancedOption( string trueText = "Hide Advanced Options", string falseText = "Show Advanced Options", string tooltip = "Choose the objects you want to\ngenerate or not" )
         {
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
@@ -357,43 +335,71 @@ namespace CodeViewsWindow
             Separator();
         }
 
-        internal static void OptionalFunctionName( string text = "Function Name", string tooltip = "Change the name of the function" )
+        internal static void Space( float value )
         {
-            GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( 96 ) );
-                functionName = EditorGUILayout.TextField( new GUIContent( "", tooltip ), functionName, GUILayout.Width( 220 ) );
-            GUILayout.EndHorizontal();
+            GUILayout.Space( value );
         }
 
-        internal static void OptionalSelection( string trueText = "Disable Selection Only", string falseText = "Enable Selection Only", string tooltip = "If true, generates the code of the selection only" )
+        internal static void Separator()
         {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
+            Space( 2 );
+            GUI.backgroundColor = SettingsColor;
+            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
+            GUI.backgroundColor = Color.white;
+        }
 
-            GUIContent buttonContent = new GUIContent( EnableSelection ? trueText : falseText, tooltip );
 
-            GUIContent buttonContentInfo = new GUIContent( EnableSelection ? enableLogo : disableLogo, tooltip );
+        //  ██████╗ ██████╗ ██╗██╗   ██╗ █████╗ ████████╗███████╗    ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+        //  ██╔══██╗██╔══██╗██║██║   ██║██╔══██╗╚══██╔══╝██╔════╝    ██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+        //  ██████╔╝██████╔╝██║██║   ██║███████║   ██║   █████╗      █████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
+        //  ██╔═══╝ ██╔══██╗██║╚██╗ ██╔╝██╔══██║   ██║   ██╔══╝      ██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
+        //  ██║     ██║  ██║██║ ╚████╔╝ ██║  ██║   ██║   ███████╗    ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
+        //  ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 
-            GUILayout.BeginHorizontal();
-                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
+        private void EditorSceneManager_sceneSaved( UnityEngine.SceneManagement.Scene arg0 )
+        {
+            Refresh();
+        }
+
+        private void EditorSceneManager_sceneOpened( UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode )
+        {
+            Refresh();
+        }
+
+
+        //  ███╗   ███╗ █████╗ ██╗███╗   ██╗    ██╗   ██╗██╗
+        //  ████╗ ████║██╔══██╗██║████╗  ██║    ██║   ██║██║
+        //  ██╔████╔██║███████║██║██╔██╗ ██║    ██║   ██║██║
+        //  ██║╚██╔╝██║██╔══██║██║██║╚██╗██║    ██║   ██║██║
+        //  ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║    ╚██████╔╝██║
+        //  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝     ╚═════╝ ╚═╝
+        private static void MainTab()
+        {
+            GUILayout.BeginVertical( "box" );
+                GUILayout.BeginHorizontal();
+                    tab = GUILayout.Toolbar ( tab, toolbarTab );
+                    if ( GUILayout.Button( new GUIContent( "Refresh", "Refresh Window" ), GUILayout.Width( 100 ) ) ) Refresh();
+                GUILayout.EndHorizontal();
+
+                if ( tab == 3 )
                 {
-                    EnableSelection = !EnableSelection;
-                    Refresh();
+                    GUILayout.BeginHorizontal();
+                        tabEnt = GUILayout.Toolbar ( tabEnt, toolbarSubTabEntCode );
+                    GUILayout.EndHorizontal();           
                 }
-            GUILayout.EndHorizontal();
+
+                GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+                GUILayout.BeginHorizontal();
+                        ObjectCount();
+                        GUILayout.FlexibleSpace();
+                        ExportButton();
+                        SettingsMenuButton();
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
 
-        internal static void ExportButton( string text = "Export Code", string tooltip = "Export current code" )
-        {
-            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 100 ) ) ) ExportFunction();
-        }
-
-        internal static void SettingsMenuButton( string text = "Settings", string tooltip = "Show settings" )
-        {
-            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 100 ) ) ) ShowSettings = !ShowSettings;
-        }
-
-        internal static void SettingsMenu()
+        private static void SettingsMenu()
         {
             switch ( tab )
             {
@@ -428,20 +434,154 @@ namespace CodeViewsWindow
             }
         }
 
-        internal static void Separator()
+        private static void ObjectCount()
         {
-            GUILayout.Space( 2 );
-            GUI.backgroundColor = CodeViewsWindow.SettingsColor;
-            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
-            GUI.backgroundColor = Color.white;
+            string info = tab == 2 ? "Models Precached Count" : "Entity Count";
+            GUILayout.BeginHorizontal();
+
+                SetCorrectColor( EntityCount );
+                GUILayout.Label( $" // {info}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
+                GUI.contentColor = Color.white;
+
+            GUILayout.EndHorizontal();
         }
 
-        internal static void Space( float value )
+        private static void ExportButton( string text = "Export Code", string tooltip = "Export current code" )
         {
-            GUILayout.Space( value );
+            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 100 ) ) ) ExportFunction();
         }
 
-        internal static void ExportFunction()
+        private static void SettingsMenuButton( string text = "Settings", string tooltip = "Show settings" )
+        {
+            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 100 ) ) ) ShowSettings = !ShowSettings;
+        }
+
+        private static void CodeOutput()
+        {
+            scroll = EditorGUILayout.BeginScrollView( scroll );
+                GUILayout.TextArea( code, GUILayout.ExpandHeight( true ) );
+            EditorGUILayout.EndScrollView();
+        }
+
+
+        //  ██╗   ██╗██╗     ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗   ██╗
+        //  ██║   ██║██║     ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝╚██╗ ██╔╝
+        //  ██║   ██║██║     ██║   ██║   ██║   ██║██║     ██║   ██║    ╚████╔╝ 
+        //  ██║   ██║██║     ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝  
+        //  ╚██████╔╝██║     ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
+        //   ╚═════╝ ╚═╝      ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
+
+        private static void ShortCut()
+        {
+            Event currentEvent = Event.current;
+
+            if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
+        } 
+
+        private static void GetEditorWindowSize()
+        {
+            EditorWindow editorWindow = windowInstance;
+            if ( editorWindow != null )
+            {
+                windowSize = new Vector2( editorWindow.position.width, editorWindow.position.height );
+            }
+        }
+
+        private static void GenerateCorrectCode( bool copy )
+        {
+            code = "";
+
+            switch ( tab )
+            {
+                case 0: // Squirrel Code
+                    code += ScriptTab.GenerateCode( copy );
+                    break;
+
+                case 1: // DataTable Code
+                    code += DataTableTab.GenerateCode( copy );
+                    break;
+
+                case 2: // Precache Code
+                    code += PrecacheTab.GenerateCode( copy );
+                    break;
+
+                case 3: // Ent Code
+                    switch ( tabEnt )
+                    {
+                        case 0: // Script Code
+                            code += ScriptEntTab.GenerateCode( copy );
+                            break;
+
+                        case 1: // Sound Code
+                            code += SoundEntTab.GenerateCode( copy );
+                            break;
+                        case 2:  // Spawn Code
+                            code += SpawnEntTab.GenerateCode( copy );
+                        break;
+                    }
+                break;
+            }
+
+            if( copy ) GUIUtility.systemCopyBuffer = code;
+        }
+
+        private static void GetFunctionName()
+        {
+            switch ( tab )
+            {
+                case 0: // Squirrel Code
+                    functionName = Helper.GetSceneName();
+                    break;
+
+                case 1: // DataTable Code
+                    functionName = $"remap_datatable";
+                    break;
+
+                case 2: // Precache Code
+                    functionName = $"{Helper.GetSceneName()}_Precache";
+                    break;
+
+                case 3: // Ent Code
+                    switch ( tabEnt )
+                    {
+                        case 0: // Script Code
+                            functionName = $"mp_rr_remap_script";
+                            break;
+
+                        case 1: // Sound Code
+                            functionName = $"mp_rr_remap_snd";
+                            break;
+                        case 2:  // Spawn Code
+                            functionName = $"mp_rr_remap_spawn";
+                        break;
+                    }
+                break;
+            }
+        }
+
+        private static string SetCorrectEntityLabel( int count )
+        {
+            if( count < greenPropCount )
+                return "Status: Safe";
+
+            else if( ( count < yellowPropCount ) ) 
+                return "Status: Safe";
+
+            else return "Status: Warning! Game could crash!";
+        }
+
+        private static void SetCorrectColor( int count )
+        {
+            if( count < greenPropCount )
+                GUI.contentColor = Color.green;
+
+            else if( ( count < yellowPropCount ) ) 
+                GUI.contentColor = Color.yellow;
+
+            else GUI.contentColor = Color.red;
+        }
+
+        private static void ExportFunction()
         {
             Helper.FixPropTags();
 
@@ -489,102 +629,6 @@ namespace CodeViewsWindow
             if ( path.Length == 0 ) return;
 
             File.WriteAllText( path, code );
-        }
-
-        internal static void CodeOutput()
-        {
-            scroll = EditorGUILayout.BeginScrollView( scroll );
-                GUILayout.TextArea( code, GUILayout.ExpandHeight( true ) );
-            EditorGUILayout.EndScrollView();
-        }
-
-        internal static void Refresh()
-        {
-            EntityCount = 0; GenerateCorrectCode( false );
-        }
-
-        private static void GetFunctionName()
-        {
-            switch ( tab )
-            {
-                case 0: // Squirrel Code
-                    functionName = Helper.GetSceneName();
-                    break;
-
-                case 1: // DataTable Code
-                    functionName = $"remap_datatable";
-                    break;
-
-                case 2: // Precache Code
-                    functionName = $"{Helper.GetSceneName()}_Precache";
-                    break;
-
-                case 3: // Ent Code
-                    switch ( tabEnt )
-                    {
-                        case 0: // Script Code
-                            functionName = $"mp_rr_remap_script";
-                            break;
-
-                        case 1: // Sound Code
-                            functionName = $"mp_rr_remap_snd";
-                            break;
-                        case 2:  // Spawn Code
-                            functionName = $"mp_rr_remap_spawn";
-                        break;
-                    }
-                break;
-            }
-        }
-
-        private static void SetCorrectColor( int count )
-        {
-            if( count < greenPropCount )
-                GUI.contentColor = Color.green;
-
-            else if( ( count < yellowPropCount ) ) 
-                GUI.contentColor = Color.yellow;
-
-            else GUI.contentColor = Color.red;
-        }
-
-        public static bool IsHided( ObjectType objectType )
-        {
-            // Ensure the objectData is not empty
-            GameObject[] objectData;
-            if ( EnableSelection )
-                objectData = Helper.GetSelectedObjectWithEnum( objectType );
-            else objectData = Helper.GetObjArrayWithEnum( objectType );
-
-            if ( objectData.Length == 0 ) return true;
-
-            // Check if objectType is declared hiden or not
-            foreach ( ObjectType hidedObjectType in GenerateIgnore )
-            {
-                if ( hidedObjectType == objectType ) return true;
-            }
-
-            return false;
-        }
-
-        private static string SetCorrectEntityLabel( int count )
-        {
-            if( count < greenPropCount )
-                return "Status: Safe";
-
-            else if( ( count < yellowPropCount ) ) 
-                return "Status: Safe";
-
-            else return "Status: Warning! Game could crash!";
-        }
-
-        private static void GetEditorWindowSize()
-        {
-            EditorWindow editorWindow = windowInstance;
-            if ( editorWindow != null )
-            {
-                windowSize = new Vector2( editorWindow.position.width, editorWindow.position.height );
-            }
         }
     }
 }

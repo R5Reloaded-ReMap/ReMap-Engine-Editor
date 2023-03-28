@@ -309,9 +309,9 @@ public class Helper
     }
 
     /// <summary>
-    /// Builds Map Code
+    /// Build Map Code
     /// </summary>
-    /// <returns>built map code string</returns>
+    /// <returns>Map Code as string</returns>
     public static string BuildMapCode( BuildType buildType = BuildType.Script, bool Selection = false )
     {
         // Order of importance
@@ -469,6 +469,9 @@ public class Helper
         }
     }
 
+    /// <summary>
+    /// Forces objects not to appear in code, if forceShow is true, this return the opposite of the array specifier
+    /// </summary>
     public static void ForceHideBoolToGenerateObjects( ObjectType[] array, bool forceShow = false )
     {
         List< ObjectType > objectTypeArray = new List< ObjectType >();

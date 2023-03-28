@@ -54,7 +54,7 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        internal static string GenerateCode( bool copy )
+        internal static string  GenerateCode( bool copy )
         {
             string code = "";
 

@@ -98,7 +98,7 @@ namespace Build
                     code += BuildTextInfoPanel.BuildTextInfoPanelObjects( objectData, buildType );
                     break;
                 case ObjectType.Trigger:
-                    //code += BuildTrigger.BuildTriggerObjects( objectData, buildType );
+                    code += BuildTrigger.BuildTriggerObjects( objectData, buildType );
                     break;
                 case ObjectType.VerticalDoor:
                     code += BuildVerticalDoor.BuildVerticalDoorObjects( objectData, buildType );

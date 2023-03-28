@@ -6,8 +6,14 @@ using UnityEditor;
 
 public class TriggerScripting : MonoBehaviour
 {
+    [ HideInInspector ] public Transform Trigger;
+    [ HideInInspector ] public Transform Helper;
+
     [Header("Settings:")]
     public bool Debug = false;
+    public float Height = 50;
+    public float Width = 200;
+    public bool UseHelperForTP = false;
 
     [TextArea(15,20)]
     public string EnterCallback = "";
@@ -15,5 +21,17 @@ public class TriggerScripting : MonoBehaviour
     [TextArea(15,20)]
     public string LeaveCallback = "";
 
-    public Transform PlayerTeleportationInfo;
+    void OnDrawGizmos()
+    {
+        if ( Trigger != null )
+        {
+            Trigger.localScale = new Vector3( Width, Height, Width );
+        }
+
+        if ( Helper != null )
+        {
+            Helper.gameObject.SetActive( UseHelperForTP );
+        }
+    }
+
 }

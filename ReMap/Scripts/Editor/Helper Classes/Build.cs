@@ -526,7 +526,7 @@ public class Build_
             string ReplacedEnterCallback = script.EnterCallback;
             string ReplacedLeaveCallback = script.LeaveCallback;
 
-            Transform teleportationInfo = script.PlayerTeleportationInfo;
+            /* Transform teleportationInfo = script.PlayerTeleportationInfo;
 
             if ( teleportationInfo != null )
             {
@@ -545,7 +545,7 @@ public class Build_
                 code += $"    trigger{triggerid}.SetLeaveCallback( void function(entity trigger , entity ent)" + "{\n" + ReplacedLeaveCallback + "\n    })" + "\n";
 
             code += $"    DispatchSpawn( trigger{triggerid} )" + "\n";
-            triggerid++;
+            triggerid++; */
         }
         code += "\n";
 

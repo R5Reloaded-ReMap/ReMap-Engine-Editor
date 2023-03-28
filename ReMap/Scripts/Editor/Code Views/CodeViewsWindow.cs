@@ -148,6 +148,56 @@ namespace CodeViewsWindow
             EntityCount = 0; GenerateCorrectCode( false );
         }
 
+        internal static void ExportFunction()
+        {
+            Helper.FixPropTags();
+
+            EditorSceneManager.SaveOpenScenes();
+
+            Refresh();
+
+            string[] fileInfo = new string[4];
+
+            switch ( tab )
+            {
+                case 0: // Squirrel Code
+                    fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
+                    break;
+
+                case 1: // DataTable Code
+                    fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
+                    break;
+
+                case 2: // Precache Code
+                    fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
+                    break;
+
+                case 3: // Ent Code
+                    fileInfo = new[] { "Precache Code Export", "", "", "ent" };
+                    switch ( tabEnt )
+                    {
+                        case 0: // Script Code
+                            fileInfo[2] = $"{functionName}.ent";
+                            break;
+
+                        case 1: // Sound Code
+                            fileInfo[2] = $"{functionName}.ent";
+                            break;
+
+                        case 2: // Spawn Code
+                            fileInfo[2] = $"{functionName}.ent";
+                        break;
+                    }
+                break;
+            }
+
+            var path = EditorUtility.SaveFilePanel( fileInfo[0], fileInfo[1], fileInfo[2], fileInfo[3] );
+
+            if ( path.Length == 0 ) return;
+
+            File.WriteAllText( path, code );
+        }
+
 
         //   ██████╗ ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗ █████╗ ██╗         ██╗   ██╗██╗
         //  ██╔═══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔══██╗██║         ██║   ██║██║
@@ -579,56 +629,6 @@ namespace CodeViewsWindow
                 GUI.contentColor = Color.yellow;
 
             else GUI.contentColor = Color.red;
-        }
-
-        private static void ExportFunction()
-        {
-            Helper.FixPropTags();
-
-            EditorSceneManager.SaveOpenScenes();
-
-            Refresh();
-
-            string[] fileInfo = new string[4];
-
-            switch ( tab )
-            {
-                case 0: // Squirrel Code
-                    fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
-                    break;
-
-                case 1: // DataTable Code
-                    fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
-                    break;
-
-                case 2: // Precache Code
-                    fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
-                    break;
-
-                case 3: // Ent Code
-                    fileInfo = new[] { "Precache Code Export", "", "", "ent" };
-                    switch ( tabEnt )
-                    {
-                        case 0: // Script Code
-                            fileInfo[2] = $"{functionName}.ent";
-                            break;
-
-                        case 1: // Sound Code
-                            fileInfo[2] = $"{functionName}.ent";
-                            break;
-
-                        case 2: // Spawn Code
-                            fileInfo[2] = $"{functionName}.ent";
-                        break;
-                    }
-                break;
-            }
-
-            var path = EditorUtility.SaveFilePanel( fileInfo[0], fileInfo[1], fileInfo[2], fileInfo[3] );
-
-            if ( path.Length == 0 ) return;
-
-            File.WriteAllText( path, code );
         }
     }
 }

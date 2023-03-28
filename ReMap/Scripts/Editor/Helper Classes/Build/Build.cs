@@ -92,7 +92,7 @@ namespace Build
                     code += BuildNewLocPair.BuildNewLocPairObjects( objectData, buildType );
                     break;
                 case ObjectType.SpawnPoint:
-                    //code += BuildSpawnPoint.BuildSpawnPointObjects( objectData, buildType );
+                    code += BuildSpawnPoint.BuildSpawnPointObjects( objectData, buildType );
                     break;
                 case ObjectType.TextInfoPanel:
                     code += BuildTextInfoPanel.BuildTextInfoPanelObjects( objectData, buildType );

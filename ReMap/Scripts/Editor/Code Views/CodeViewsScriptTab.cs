@@ -54,7 +54,7 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        internal static string GenerateCode()
+        internal static async Task< string > GenerateCode()
         {
             string code = "";
 
@@ -69,7 +69,7 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
             
-            code += Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.EnableSelection );
+            code += await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 

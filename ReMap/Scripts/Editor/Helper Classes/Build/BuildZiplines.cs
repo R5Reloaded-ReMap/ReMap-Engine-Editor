@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 using static Build.Build;
@@ -12,7 +13,7 @@ namespace Build
 {
     public class BuildZipline
     {
-        public static StringBuilder BuildZiplineObjects( GameObject[] objectData, BuildType buildType )
+        public static async Task< StringBuilder > BuildZiplineObjects( GameObject[] objectData, BuildType buildType )
         {
             StringBuilder code = new StringBuilder();
             List< String > precacheList = new List< String >();
@@ -73,6 +74,8 @@ namespace Build
                         // Empty
                     break;
                 }
+                
+                await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
             }
 
             // Add something at the end of the text

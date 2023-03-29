@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 using static Build.Build;
@@ -24,7 +25,7 @@ namespace Build
             { PropScriptOptions.NoCollision, "NoCollisionArray" }
         };
 
-        public static StringBuilder BuildPropObjects( GameObject[] objectData, BuildType buildType )
+        public static async Task< StringBuilder > BuildPropObjects( GameObject[] objectData, BuildType buildType )
         {
             StringBuilder code = new StringBuilder(); PrecacheList = new List< String >();
 
@@ -120,6 +121,8 @@ namespace Build
                         PageBreak( ref code );
                     break;
                 }
+
+                await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
             }
 
             // Add something at the end of the text

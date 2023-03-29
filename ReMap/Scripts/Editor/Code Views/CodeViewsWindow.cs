@@ -589,36 +589,36 @@ namespace CodeViewsWindow
             }
         }
 
-        private static void GenerateCorrectCode( bool copy )
+        private static async void GenerateCorrectCode( bool copy )
         {
             code = "";
 
             switch ( tab )
             {
                 case 0: // Squirrel Code
-                    code += ScriptTab.GenerateCode();
+                    code += await ScriptTab.GenerateCode();
                     break;
 
                 case 1: // DataTable Code
-                    code += DataTableTab.GenerateCode();
+                    code += await DataTableTab.GenerateCode();
                     break;
 
                 case 2: // Precache Code
-                    code += PrecacheTab.GenerateCode();
+                    code += await PrecacheTab.GenerateCode();
                     break;
 
                 case 3: // Ent Code
                     switch ( tabEnt )
                     {
                         case 0: // Script Code
-                            code += ScriptEntTab.GenerateCode();
+                            code += await ScriptEntTab.GenerateCode();
                             break;
 
                         case 1: // Sound Code
-                            code += SoundEntTab.GenerateCode();
+                            code += await SoundEntTab.GenerateCode();
                             break;
                         case 2:  // Spawn Code
-                            code += SpawnEntTab.GenerateCode();
+                            code += await SpawnEntTab.GenerateCode();
                         break;
                     }
                 break;

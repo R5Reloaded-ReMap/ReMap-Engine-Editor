@@ -34,13 +34,13 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        internal static string GenerateCode()
+        internal static async Task< string > GenerateCode()
         {
             string code = "";
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
 
-            code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.EnableSelection );
+            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.EnableSelection );
 
             return code;
         }

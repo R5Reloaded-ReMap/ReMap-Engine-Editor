@@ -515,6 +515,11 @@ public class Helper
         return SelectedObject;
     }
 
+    public static void OverideWindowSize( float x, float y, float size )
+    {
+        GUILayout.Button( $"{x} x {y}", GUILayout.Width( size ) );
+    }
+
     public static string ReplaceComma( float value )
     {
         return value.ToString().Replace( ",", "." );

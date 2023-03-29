@@ -461,6 +461,11 @@ namespace CodeViewsWindow
                 GUILayout.BeginHorizontal();
                         ObjectCount();
                         GUILayout.FlexibleSpace();
+
+                        #if ReMapDev
+                            Helper.OverideWindowSize( windowSize.x, windowSize.y, 100 );
+                        #endif
+
                         ExportButton();
                         SettingsMenuButton();
                 GUILayout.EndHorizontal();

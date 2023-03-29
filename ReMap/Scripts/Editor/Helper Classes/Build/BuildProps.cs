@@ -43,8 +43,8 @@ namespace Build
                         code += "    // Props Array"; PageBreak( ref code );
                         code += "    ";
                         if ( ClipArrayBool ) code += $"array < entity > ClipArray; ";
-                        if ( NoClimbArrayBool ) code += $"array < entity > PlayerNoClimb; ";
-                        if ( InvisibleArrayBool ) code += $"array < entity > MakeInvisible; ";
+                        if ( NoClimbArrayBool ) code += $"array < entity > NoClimbArray; ";
+                        if ( InvisibleArrayBool ) code += $"array < entity > InvisibleArray; ";
                         if ( NoGrappleArrayBool ) code += $"array < entity > NoGrappleArray; ";
                         if ( NoGrappleNoClimbArrayBool ) code += $"array < entity > NoGrappleNoClimbArray; ";
                         if ( NoCollisionArrayBool ) code += $"array < entity > NoCollisionArray; ";

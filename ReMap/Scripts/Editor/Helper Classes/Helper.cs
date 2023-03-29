@@ -115,10 +115,10 @@ public class Helper
     /// <returns></returns>
     public static string ShouldAddStartingOrg( StartingOriginType type = StartingOriginType.Function, float x = 0, float y = 0, float z = 0 )
     {
-        if( !UseStartingOffset || !ShowStartingOffset )
+        if( !ShowStartingOffset && type == StartingOriginType.SquirrelFunction )
             return "";
 
-        if( type == StartingOriginType.Function )
+        if( UseStartingOffset && type == StartingOriginType.Function )
             return " + startingorg";
 
         string vector = $"< {ReplaceComma( x )}, {ReplaceComma( y )}, {ReplaceComma( z )} >";

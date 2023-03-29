@@ -540,8 +540,11 @@ namespace CodeViewsWindow
 
         private static void CodeOutput()
         {
+            GUIStyle style = new GUIStyle(GUI.skin.textArea);
+            style.wordWrap = false;
+
             scroll = EditorGUILayout.BeginScrollView( scroll );
-                GUILayout.TextArea( code, GUILayout.ExpandHeight( true ) );
+                GUILayout.TextArea( code, style, GUILayout.ExpandHeight( true ) );
             EditorGUILayout.EndScrollView();
         }
 

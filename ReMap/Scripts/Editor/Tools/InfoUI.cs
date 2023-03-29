@@ -36,8 +36,8 @@ public class InfoUI : EditorWindow
             Application.OpenURL("https://discord.gg/snsyDVa2fn");
         GUILayout.Label("Donate:", EditorStyles.boldLabel);
         GUILayout.Label("If you would like to donate to show support\nfor the project. :)");
-        if (GUILayout.Button("ko-fi.com/ayezee"))
-            Application.OpenURL("https://ko-fi.com/ayezee");
+        if (GUILayout.Button("paypal.me/AyeZeeBB"))
+            Application.OpenURL("https://www.paypal.com/paypalme/AyeZeeBB");
         if (GUILayout.Button("paypal.me/Julefx"))
             Application.OpenURL("https://www.paypal.com/paypalme/Julefx");
         GUILayout.EndVertical();

@@ -1,8 +1,10 @@
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -315,29 +317,29 @@ public class Helper
     public static string BuildMapCode( BuildType buildType = BuildType.Script, bool Selection = false )
     {
         // Order of importance
-        string code = "";
-        if( GetBoolFromGenerateObjects( ObjectType.Prop ) )               code += BuildObjectsWithEnum( ObjectType.Prop, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.ZipLine ) )            code += BuildObjectsWithEnum( ObjectType.ZipLine, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.LinkedZipline ) )      code += BuildObjectsWithEnum( ObjectType.LinkedZipline, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) )    code += BuildObjectsWithEnum( ObjectType.VerticalZipLine, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code += BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.SingleDoor ) )         code += BuildObjectsWithEnum( ObjectType.SingleDoor, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.DoubleDoor ) )         code += BuildObjectsWithEnum( ObjectType.DoubleDoor, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.HorzDoor ) )           code += BuildObjectsWithEnum( ObjectType.HorzDoor, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.VerticalDoor ) )       code += BuildObjectsWithEnum( ObjectType.VerticalDoor, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.Button ) )             code += BuildObjectsWithEnum( ObjectType.Button, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.Jumppad ) )            code += BuildObjectsWithEnum( ObjectType.Jumppad, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.LootBin ) )            code += BuildObjectsWithEnum( ObjectType.LootBin, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.WeaponRack ) )         code += BuildObjectsWithEnum( ObjectType.WeaponRack, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.Trigger ) )            code += BuildObjectsWithEnum( ObjectType.Trigger, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.BubbleShield ) )       code += BuildObjectsWithEnum( ObjectType.BubbleShield, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.SpawnPoint ) )         code += BuildObjectsWithEnum( ObjectType.SpawnPoint, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.NewLocPair ) )         code += BuildObjectsWithEnum( ObjectType.NewLocPair, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ) )      code += BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ) )     code += BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection );
-        if( GetBoolFromGenerateObjects( ObjectType.Sound ) )              code += BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection );
+        StringBuilder code = new StringBuilder();
+        if( GetBoolFromGenerateObjects( ObjectType.Prop ) )               code.Append( BuildObjectsWithEnum( ObjectType.Prop, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.ZipLine ) )            code.Append( BuildObjectsWithEnum( ObjectType.ZipLine, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.LinkedZipline ) )      code.Append( BuildObjectsWithEnum( ObjectType.LinkedZipline, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) )    code.Append( BuildObjectsWithEnum( ObjectType.VerticalZipLine, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code.Append( BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.SingleDoor ) )         code.Append( BuildObjectsWithEnum( ObjectType.SingleDoor, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.DoubleDoor ) )         code.Append( BuildObjectsWithEnum( ObjectType.DoubleDoor, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.HorzDoor ) )           code.Append( BuildObjectsWithEnum( ObjectType.HorzDoor, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.VerticalDoor ) )       code.Append( BuildObjectsWithEnum( ObjectType.VerticalDoor, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.Button ) )             code.Append( BuildObjectsWithEnum( ObjectType.Button, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.Jumppad ) )            code.Append( BuildObjectsWithEnum( ObjectType.Jumppad, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.LootBin ) )            code.Append( BuildObjectsWithEnum( ObjectType.LootBin, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.WeaponRack ) )         code.Append( BuildObjectsWithEnum( ObjectType.WeaponRack, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.Trigger ) )            code.Append( BuildObjectsWithEnum( ObjectType.Trigger, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.BubbleShield ) )       code.Append( BuildObjectsWithEnum( ObjectType.BubbleShield, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.SpawnPoint ) )         code.Append( BuildObjectsWithEnum( ObjectType.SpawnPoint, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.NewLocPair ) )         code.Append( BuildObjectsWithEnum( ObjectType.NewLocPair, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ) )      code.Append( BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ) )     code.Append( BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.Sound ) )              code.Append( BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection ) );
 
-        return code;
+        return code.ToString();
     }
 
     public static void ApplyComponentScriptData< T >( T target, T source ) where T : Component
@@ -555,8 +557,7 @@ public class Helper
     {
         string credit = "";
         credit += $"    // Generated with Unity ReMap Editor {UnityInfo.ReMapVersion}\n";
-        credit += $"    // Made with love by AyeZee#6969 & Julefox#0050 :)\n";
-        PageBreak( ref credit );
+        credit += $"    // Made with love by AyeZee#6969 & Julefox#0050 :)\n\n";
         return credit;
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -10,15 +11,15 @@ namespace Build
 {
     public class BuildFuncWindowHint
     {
-        public static string BuildFuncWindowHintObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildFuncWindowHintObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Func Window Hints";
+                    code.Append( "    // Func Window Hints" );
                     PageBreak( ref code );
                     break;
 
@@ -44,18 +45,18 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj )}, {Helper.ReplaceComma( script.HalfHeight )}, {Helper.ReplaceComma( script.HalfWidth )}, {Helper.BuildRightVector( script.Right )} )";
+                        code.Append( $"    MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj )}, {Helper.ReplaceComma( script.HalfHeight )}, {Helper.ReplaceComma( script.HalfWidth )}, {Helper.BuildRightVector( script.Right )} )" );
                         PageBreak( ref code );
                         break;
 
                     case BuildType.EntFile:
-                        code +=  "{\n";
-                        code += $"\"halfheight\" \"{script.HalfHeight}\"\n";
-                        code += $"\"halfwidth\" \"{script.HalfWidth}\"\n";
-                        code += $"\"right\" \"{Helper.BuildRightVector( script.Right, true )}\"\n";
-                        code += $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"\n";
-                        code +=  "\"classname\" \"func_window_hint\"\n";
-                        code +=  "}\n";
+                        code.Append(  "{\n" );
+                        code.Append( $"\"halfheight\" \"{script.HalfHeight}\"\n" );
+                        code.Append( $"\"halfwidth\" \"{script.HalfWidth}\"\n" );
+                        code.Append( $"\"right\" \"{Helper.BuildRightVector( script.Right, true )}\"\n" );
+                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"\n" );
+                        code.Append(  "\"classname\" \"func_window_hint\"\n" );
+                        code.Append(  "}\n" );
                         break;
 
                     case BuildType.Precache:

@@ -41,8 +41,8 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunction )
             {
-                code += $"void function {CodeViewsWindow.functionName}()"; PageBreak( ref code );
-                code += "{"; PageBreak( ref code );
+                code += $"void function {CodeViewsWindow.functionName}()\n";
+                code += "{\n";
                 code += Helper.ReMapCredit();
             }
 

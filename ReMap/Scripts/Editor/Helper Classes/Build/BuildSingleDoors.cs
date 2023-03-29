@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -10,15 +11,15 @@ namespace Build
 {
     public class BuildSingleDoor
     {
-        public static string BuildSingleDoorObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildSingleDoorObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Single Doors";
+                    code.Append( "    // Single Doors" );
                     PageBreak( ref code );
                     break;
 
@@ -46,20 +47,20 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Single, { Helper.BoolToLower( script.GoldDoor )} )";
+                        code.Append( $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Single, { Helper.BoolToLower( script.GoldDoor )} )" );
                         PageBreak( ref code );
                         break;
 
                     case BuildType.EntFile:
-                        code +=  "{\n";
-                        code += $"\"only_spawn_in_freelance\" \"0\"\n";
-                        code += $"\"disableshadows\" \"0\"\n";
-                        code += $"\"scale\" \"1\"\n";
-                        code += $"\"angles\" \"{Helper.BuildAngles( script.DoorLeft.gameObject, true )}\"\n";
-                        code += $"\"origin\" \"{Helper.BuildOrigin( script.DoorLeft.gameObject, true )}\"\n";
-                        code += $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"\n";
-                        code += $"\"classname\" \"prop_door\"\n";
-                        code +=  "}\n";
+                        code.Append(  "{\n" );
+                        code.Append( $"\"only_spawn_in_freelance\" \"0\"\n" );
+                        code.Append( $"\"disableshadows\" \"0\"\n" );
+                        code.Append( $"\"scale\" \"1\"\n" );
+                        code.Append( $"\"angles\" \"{Helper.BuildAngles( script.DoorLeft.gameObject, true )}\"\n" );
+                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( script.DoorLeft.gameObject, true )}\"\n" );
+                        code.Append( $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"\n" );
+                        code.Append( $"\"classname\" \"prop_door\"\n" );
+                        code.Append(  "}\n" );
                         break;
 
                     case BuildType.Precache:

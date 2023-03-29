@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -10,15 +11,15 @@ namespace Build
 {
     public class BuildWeaponRack
     {
-        public static string BuildWeaponRackObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildWeaponRackObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Weapon Racks";
+                    code.Append( "    // Weapon Racks" );
                     PageBreak( ref code );
                     break;
 
@@ -44,7 +45,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )} )";
+                        code.Append( $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )} )" );
                         PageBreak( ref code );
                         break;
 

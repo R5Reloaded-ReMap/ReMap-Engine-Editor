@@ -51,8 +51,7 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowEntFunction )
             {
-                code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}";
-                PageBreak( ref code );
+                code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n";
             }
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[] { ObjectType.Sound }, true );

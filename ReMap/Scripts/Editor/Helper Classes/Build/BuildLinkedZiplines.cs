@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -10,15 +11,15 @@ namespace Build
 {
     public class BuildLinkedZipline
     {
-        public static string BuildLinkedZiplineObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildLinkedZiplineObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Linked Ziplines";
+                    code.Append( "    // Linked Ziplines" );
                     PageBreak( ref code );
                     break;
 
@@ -52,7 +53,7 @@ namespace Build
                         if ( script.EnableSmoothing ) function = $"{smoothType}( {nodes}, {script.SmoothAmount} )";
                         else function = $"{nodes}";
 
-                        code += $"    MapEditor_CreateLinkedZipline( {function} )";
+                        code.Append( $"    MapEditor_CreateLinkedZipline( {function} )" );
                         PageBreak( ref code );
                         break;
 

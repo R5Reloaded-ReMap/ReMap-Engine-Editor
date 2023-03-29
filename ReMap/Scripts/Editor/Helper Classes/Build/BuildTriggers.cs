@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -18,15 +19,15 @@ namespace Build
             Offset
         }
 
-        public static string BuildTriggerObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildTriggerObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = ""; int idx = 0;
+            StringBuilder code = new StringBuilder(); int idx = 0;
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Triggers";
+                    code.Append( "    // Triggers" );
                     PageBreak( ref code );
                     break;
 
@@ -56,7 +57,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    entity trigger_{idx} = MapEditor_CreateTrigger( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.Height )}, {Helper.BoolToLower( script.Debug )} )";
+                        code.Append( $"    entity trigger_{idx} = MapEditor_CreateTrigger( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.Height )}, {Helper.BoolToLower( script.Debug )} )" );
                         PageBreak( ref code );
 
                         GameObject helper = script.Helper.gameObject;
@@ -66,10 +67,10 @@ namespace Build
                             ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Origin );
                             ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Angles );
                             ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Offset );
-                            code += $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)\n";
-                            code +=  "    {\n";
-                            code += $"    {TEnterCallback}\n";
-                            code +=  "    })\n";
+                            code.Append( $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)\n" );
+                            code.Append(  "    {\n" );
+                            code.Append( $"    {TEnterCallback}\n" );
+                            code.Append(  "    })\n" );
                         }
 
                         if ( TLeaveCallback != "" )
@@ -77,12 +78,12 @@ namespace Build
                             ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Origin );
                             ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Angles );
                             ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Offset );
-                            code += $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)\n";
-                            code +=  "    {\n";
-                            code += $"    {TLeaveCallback}\n";
-                            code +=  "    })\n";
+                            code.Append( $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)\n" );
+                            code.Append(  "    {\n" );
+                            code.Append( $"    {TLeaveCallback}\n" );
+                            code.Append(  "    })\n" );
                         }
-                        code += $"    DispatchSpawn( trigger_{idx} )\n";
+                        code.Append( $"    DispatchSpawn( trigger_{idx} )\n" );
                         break;
 
                     case BuildType.EntFile:

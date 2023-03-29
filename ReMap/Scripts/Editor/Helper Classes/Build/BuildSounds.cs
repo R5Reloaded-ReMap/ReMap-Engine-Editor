@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -10,9 +11,9 @@ namespace Build
 {
     public class BuildSound
     {
-        public static string BuildSoundObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildSoundObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
@@ -50,7 +51,7 @@ namespace Build
                         break;
 
                     case BuildType.EntFile:
-                        code +=  "{\n";
+                        code.Append(  "{\n" );
 
                         // Polyline segments
                         for ( int i = script.PolylineSegment.Length - 1 ; i > -1 ; i-- )
@@ -61,21 +62,21 @@ namespace Build
                             {
                                 string polylineSegmentStart = Helper.BuildOriginVector( script.PolylineSegment[i-1], true ).ToString().Replace(",", "");
 
-                                code += $"\"polyline_segment_{i}\" \"({polylineSegmentStart}) ({polylineSegmentEnd})\"";
+                                code.Append( $"\"polyline_segment_{i}\" \"({polylineSegmentStart}) ({polylineSegmentEnd})\"" );
                             }
-                            else code += $"\"polyline_segment_{i}\" \"(0 0 0) ({polylineSegmentEnd})\"";
+                            else code.Append( $"\"polyline_segment_{i}\" \"(0 0 0) ({polylineSegmentEnd})\"" );
 
                             PageBreak( ref code );
                         }
 
-                        code +=  "\"radius\" \"0\"\n";
-                        code +=  "\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n";
-                        code += $"\"isWaveAmbient\" \"{isWaveAmbient}\"\n";
-                        code += $"\"enabled\" \"{enabled}\"\n";
-                        code += $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n";
-                        code += $"\"soundName\" \"{script.SoundName}\"\n";
-                        code +=  "\"classname\" \"ambient_generic\"\n";
-                        code +=  "}\n";
+                        code.Append(  "\"radius\" \"0\"\n" );
+                        code.Append(  "\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n" );
+                        code.Append( $"\"isWaveAmbient\" \"{isWaveAmbient}\"\n" );
+                        code.Append( $"\"enabled\" \"{enabled}\"\n" );
+                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n" );
+                        code.Append( $"\"soundName\" \"{script.SoundName}\"\n" );
+                        code.Append(  "\"classname\" \"ambient_generic\"\n" );
+                        code.Append(  "}\n" );
                         break;
 
                     case BuildType.Precache:

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -10,15 +11,15 @@ namespace Build
 {
     public class BuildVerticalZipline
     {
-        public static string BuildVerticalZipLineObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildVerticalZipLineObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // VerticalZipLines";
+                    code.Append( "    // VerticalZipLines" );
                     PageBreak( ref code );
                     break;
                     
@@ -61,51 +62,51 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(script.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildOrigin(script.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, true, {Helper.ReplaceComma( script.FadeDistance )}, {Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )}, {PreserveVelocity}, {DropToBottom}, {Helper.ReplaceComma( script.AutoDetachStart )}, {Helper.ReplaceComma( script.AutoDetachEnd )}, {RestPoint}, {PushOffInDirectionX}, {IsMoving}, {DetachEndOnSpawn}, {DetachEndOnUse}, {PanelOrigin}, {PanelAngles}, {PanelModels}, {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )";
+                        code.Append( $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(script.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildOrigin(script.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, true, {Helper.ReplaceComma( script.FadeDistance )}, {Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )}, {PreserveVelocity}, {DropToBottom}, {Helper.ReplaceComma( script.AutoDetachStart )}, {Helper.ReplaceComma( script.AutoDetachEnd )}, {RestPoint}, {PushOffInDirectionX}, {IsMoving}, {DetachEndOnSpawn}, {DetachEndOnUse}, {PanelOrigin}, {PanelAngles}, {PanelModels}, {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )" );
                         PageBreak( ref code );
                         break;
 
                     case BuildType.EntFile:
-                        code +=  "{"; PageBreak( ref code );
-                        code += $"\"ZiplinePushOffInDirectionX\" \"{PushOffInDirectionX}\""; PageBreak( ref code );
-                        code += $"\"origin\" \"{Helper.BuildOrigin( script.rope_end.gameObject, true, true )}\""; PageBreak( ref code );
-                        code += $"\"link_guid\" \"{LinkGuid}\""; PageBreak( ref code );
-                        code += $"\"ZiplineLengthScale\" \"{Helper.ReplaceComma( script.LengthScale )}\""; PageBreak( ref code );
-                        code += $"\"ZiplineAutoDetachDistance\" \"{Helper.ReplaceComma( script.AutoDetachEnd )}\""; PageBreak( ref code );
-                        code += $"\"classname\" \"zipline_end\""; PageBreak( ref code );
-                        code +=  "}"; PageBreak( ref code );
-                        code +=  "{"; PageBreak( ref code );
+                        code.Append(  "{" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplinePushOffInDirectionX\" \"{PushOffInDirectionX}\"" ); PageBreak( ref code );
+                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( script.rope_end.gameObject, true, true )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"link_guid\" \"{LinkGuid}\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplineLengthScale\" \"{Helper.ReplaceComma( script.LengthScale )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplineAutoDetachDistance\" \"{Helper.ReplaceComma( script.AutoDetachEnd )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"classname\" \"zipline_end\"" ); PageBreak( ref code );
+                        code.Append(  "}" ); PageBreak( ref code );
+                        code.Append(  "{" ); PageBreak( ref code );
 
                         if ( script.RestPoint )
                         {
-                            code += $"\"_zipline_rest_point_1\" \"{Helper.BuildOrigin( script.rope_end.gameObject, true )}\""; PageBreak( ref code );
-                            code += $"\"_zipline_rest_point_0\" \"{Helper.BuildOrigin( script.rope_start.gameObject, true )}\""; PageBreak( ref code );
+                            code.Append( $"\"_zipline_rest_point_1\" \"{Helper.BuildOrigin( script.rope_end.gameObject, true )}\"" ); PageBreak( ref code );
+                            code.Append( $"\"_zipline_rest_point_0\" \"{Helper.BuildOrigin( script.rope_start.gameObject, true )}\"" ); PageBreak( ref code );
                         }
 
-                        code += $"\"ZiplinePreserveVelocity\" \"{PreserveVelocity}\"";PageBreak( ref code );
-                        code += $"\"ZiplineFadeDistance\" \"{Helper.ReplaceComma( script.FadeDistance )}\""; PageBreak( ref code );
-                        code += $"\"ZiplineDropToBottom\" \"{DropToBottom}\""; PageBreak( ref code );
-                        code += $"\"Width\" \"{Helper.ReplaceComma( script.Width )}\""; PageBreak( ref code );
-                        code += $"\"Material\" \"cable/zipline.vmt\""; PageBreak( ref code );
-                        code += $"\"gamemode_freedm\" \"1\""; PageBreak( ref code );
-                        code += $"\"gamemode_control\" \"1\""; PageBreak( ref code );
-                        code += $"\"gamemode_arenas\" \"1\""; PageBreak( ref code );
-                        code += $"\"DetachEndOnUse\" \"{DetachEndOnUse}\""; PageBreak( ref code );
-                        code += $"\"DetachEndOnSpawn\" \"{DetachEndOnSpawn}\""; PageBreak( ref code );
-                        code += $"\"scale\" \"{Helper.ReplaceComma( script.Scale )}\""; PageBreak( ref code );
-                        code += $"\"angles\" \"{Helper.BuildAngles( script.rope_start.gameObject, true )}\""; PageBreak( ref code );
-                        code += $"\"origin\" \"{Helper.BuildOrigin( script.rope_start.gameObject, true, true )}\""; PageBreak( ref code );
-                        code += $"\"link_to_guid_0\" \"{LinkGuidTo0}\""; PageBreak( ref code );
-                        code += $"\"link_guid\" \"{LinkGuid}\""; PageBreak( ref code );
-                        code += $"\"ZiplineVertical\" \"1\""; PageBreak( ref code );
-                        code += $"\"ZiplineVersion\" \"3\""; PageBreak( ref code );
-                        code += $"\"ZiplineSpeedScale\" \"{Helper.ReplaceComma( script.SpeedScale )}\""; PageBreak( ref code );
-                        code += $"\"ZiplinePushOffInDirectionX\" \"{PushOffInDirectionX}\""; PageBreak( ref code );
-                        code += $"\"ZiplineLengthScale\" \"{Helper.ReplaceComma( script.LengthScale )}\""; PageBreak( ref code );
-                        code += $"\"ZiplineAutoDetachDistance\" \"{Helper.ReplaceComma( script.AutoDetachStart )}\""; PageBreak( ref code );
-                        code += $"\"gamemode_survival\" \"1\""; PageBreak( ref code );
-                        code += $"\"classname\" \"zipline\""; PageBreak( ref code );
-                        code +=  "}"; PageBreak( ref code );
+                        code.Append( $"\"ZiplinePreserveVelocity\" \"{PreserveVelocity}\"" );PageBreak( ref code );
+                        code.Append( $"\"ZiplineFadeDistance\" \"{Helper.ReplaceComma( script.FadeDistance )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplineDropToBottom\" \"{DropToBottom}\"" ); PageBreak( ref code );
+                        code.Append( $"\"Width\" \"{Helper.ReplaceComma( script.Width )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"Material\" \"cable/zipline.vmt\"" ); PageBreak( ref code );
+                        code.Append( $"\"gamemode_freedm\" \"1\"" ); PageBreak( ref code );
+                        code.Append( $"\"gamemode_control\" \"1\"" ); PageBreak( ref code );
+                        code.Append( $"\"gamemode_arenas\" \"1\"" ); PageBreak( ref code );
+                        code.Append( $"\"DetachEndOnUse\" \"{DetachEndOnUse}\"" ); PageBreak( ref code );
+                        code.Append( $"\"DetachEndOnSpawn\" \"{DetachEndOnSpawn}\"" ); PageBreak( ref code );
+                        code.Append( $"\"scale\" \"{Helper.ReplaceComma( script.Scale )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"angles\" \"{Helper.BuildAngles( script.rope_start.gameObject, true )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( script.rope_start.gameObject, true, true )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"link_to_guid_0\" \"{LinkGuidTo0}\"" ); PageBreak( ref code );
+                        code.Append( $"\"link_guid\" \"{LinkGuid}\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplineVertical\" \"1\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplineVersion\" \"3\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplineSpeedScale\" \"{Helper.ReplaceComma( script.SpeedScale )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplinePushOffInDirectionX\" \"{PushOffInDirectionX}\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplineLengthScale\" \"{Helper.ReplaceComma( script.LengthScale )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"ZiplineAutoDetachDistance\" \"{Helper.ReplaceComma( script.AutoDetachStart )}\"" ); PageBreak( ref code );
+                        code.Append( $"\"gamemode_survival\" \"1\"" ); PageBreak( ref code );
+                        code.Append( $"\"classname\" \"zipline\"" ); PageBreak( ref code );
+                        code.Append(  "}" ); PageBreak( ref code );
                         break;
 
                     case BuildType.Precache:

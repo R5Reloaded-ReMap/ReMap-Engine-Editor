@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -11,16 +12,16 @@ namespace Build
 {
     public class BuildZipline
     {
-        public static string BuildZiplineObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildZiplineObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
             List< String > precacheList = new List< String >();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Ziplines";
+                    code.Append( "    // Ziplines" );
                     PageBreak( ref code );
                     break;
 
@@ -43,7 +44,7 @@ namespace Build
                 DrawZipline script = ( DrawZipline ) Helper.GetComponentByEnum( obj, ObjectType.ZipLine );
                 if ( script == null ) continue;
 
-                //string model = "custom_zipline";
+                //string model = "custom_zipline" );
                 string ziplinestart = "";
                 string ziplineend = "";
 
@@ -56,7 +57,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )";
+                        code.Append( $"    CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )" );
                         PageBreak( ref code );
                         break;
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -10,15 +11,15 @@ namespace Build
 {
     public class BuildNewLocPair
     {
-        public static string BuildNewLocPairObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildNewLocPairObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // New Loc Pair";
+                    code.Append( "    // New Loc Pair" );
                     PageBreak( ref code );
                     break;
 
@@ -44,7 +45,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    NewLocPair( {Helper.BuildOrigin( obj )}, {Helper.BuildAngles( obj )} )";
+                        code.Append( $"    NewLocPair( {Helper.BuildOrigin( obj )}, {Helper.BuildAngles( obj )} )" );
                         PageBreak( ref code );
                         break;
 

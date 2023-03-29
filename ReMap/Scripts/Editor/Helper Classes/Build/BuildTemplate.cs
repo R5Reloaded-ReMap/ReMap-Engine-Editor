@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -10,15 +11,15 @@ namespace Build
 {
     public class BuildTemplate
     {
-        public static string BuildObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Template";
+                    code.Append( "    // Template" );
                     PageBreak( ref code );
                     break;
 

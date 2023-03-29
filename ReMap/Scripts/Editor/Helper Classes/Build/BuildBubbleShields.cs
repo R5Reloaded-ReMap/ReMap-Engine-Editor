@@ -3,6 +3,7 @@ using System.ComponentModel.Design;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -11,15 +12,15 @@ namespace Build
 {
     public class BuildBubbleShield
     {
-        public static string BuildBubbleShieldObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildBubbleShieldObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code += "    // Bubbles Shield";
+                    code.Append( "    // Bubbles Shield" );
                     PageBreak( ref code );
                     break;
 
@@ -50,7 +51,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\" )";
+                        code.Append( $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\" )" );
                         PageBreak( ref code );
                         break;
 

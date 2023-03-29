@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 using static Build.Build;
@@ -23,9 +24,9 @@ namespace Build
             { PropScriptOptions.NoCollision, "NoCollisionArray" }
         };
 
-        public static string BuildPropObjects( GameObject[] objectData, BuildType buildType )
+        public static StringBuilder BuildPropObjects( GameObject[] objectData, BuildType buildType )
         {
-            string code = ""; PrecacheList = new List< String >();
+            StringBuilder code = new StringBuilder(); PrecacheList = new List< String >();
 
             bool ClipArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClip );
             bool NoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoClimb );
@@ -40,18 +41,18 @@ namespace Build
                 case BuildType.Script:
                     if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || NoGrappleNoClimbArrayBool || NoCollisionArrayBool )
                     {
-                        code += "    // Props Array"; PageBreak( ref code );
-                        code += "    ";
-                        if ( ClipArrayBool ) code += $"array < entity > ClipArray; ";
-                        if ( NoClimbArrayBool ) code += $"array < entity > NoClimbArray; ";
-                        if ( InvisibleArrayBool ) code += $"array < entity > InvisibleArray; ";
-                        if ( NoGrappleArrayBool ) code += $"array < entity > NoGrappleArray; ";
-                        if ( NoGrappleNoClimbArrayBool ) code += $"array < entity > NoGrappleNoClimbArray; ";
-                        if ( NoCollisionArrayBool ) code += $"array < entity > NoCollisionArray; ";
+                        code.Append( "    // Props Array" ); PageBreak( ref code );
+                        code.Append( "    " );
+                        if ( ClipArrayBool ) code.Append( $"array < entity > ClipArray; " );
+                        if ( NoClimbArrayBool ) code.Append( $"array < entity > NoClimbArray; " );
+                        if ( InvisibleArrayBool ) code.Append( $"array < entity > InvisibleArray; " );
+                        if ( NoGrappleArrayBool ) code.Append( $"array < entity > NoGrappleArray; " );
+                        if ( NoGrappleNoClimbArrayBool ) code.Append( $"array < entity > NoGrappleNoClimbArray; " );
+                        if ( NoCollisionArrayBool ) code.Append( $"array < entity > NoCollisionArray; " );
                         PageBreak( ref code ); PageBreak( ref code );
                     }
 
-                    code += "    // Props";
+                    code.Append( "    // Props" );
                     PageBreak( ref code );
                     break;
 
@@ -64,7 +65,7 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
-                    code += "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"";
+                    code.Append( "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" );
                     PageBreak( ref code );
                 break;
             }
@@ -84,38 +85,38 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    {addToArray}MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ){endFunction}";
+                        code.Append( $"    {addToArray}MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ){endFunction}" );
                         PageBreak( ref code );
                         break;
 
                     case BuildType.EntFile:
-                        code +=  "{\n";
-                        code +=  "\"StartDisabled\" \"0\"\n";
-                        code +=  "\"spawnflags\" \"0\"\n";
-                        code += $"\"fadedist\" \"{Helper.ReplaceComma( script.FadeDistance )}\"\n";
-                        code += $"\"collide_titan\" \"1\"\n";
-                        code += $"\"collide_ai\" \"1\"\n";
-                        code += $"\"scale\" \"{scale}\"\n";
-                        code += $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"\n";
-                        code += $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n";
-                        code +=  "\"targetname\" \"ReMapEditorProp\"\n";
-                        code +=  "\"solid\" \"6\"\n";
-                        code += $"\"model\" \"{model}\"\n";
-                        code +=  "\"ClientSide\" \"0\"\n";
-                        code +=  "\"classname\" \"prop_dynamic\"\n";
-                        code +=  "}\n";
+                        code.Append(  "{\n" );
+                        code.Append(  "\"StartDisabled\" \"0\"\n" );
+                        code.Append(  "\"spawnflags\" \"0\"\n" );
+                        code.Append( $"\"fadedist\" \"{Helper.ReplaceComma( script.FadeDistance )}\"\n" );
+                        code.Append( $"\"collide_titan\" \"1\"\n" );
+                        code.Append( $"\"collide_ai\" \"1\"\n" );
+                        code.Append( $"\"scale\" \"{scale}\"\n" );
+                        code.Append( $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"\n" );
+                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n" );
+                        code.Append(  "\"targetname\" \"ReMapEditorProp\"\n" );
+                        code.Append(  "\"solid\" \"6\"\n" );
+                        code.Append( $"\"model\" \"{model}\"\n" );
+                        code.Append(  "\"ClientSide\" \"0\"\n" );
+                        code.Append(  "\"classname\" \"prop_dynamic\"\n" );
+                        code.Append(  "}\n" );
                         break;
 
                     case BuildType.Precache:
                         if ( PrecacheList.Contains( model ) )
                             continue;
                         PrecacheList.Add( model );
-                        code += $"    PrecacheModel( $\"{model}\" )";
+                        code.Append( $"    PrecacheModel( $\"{model}\" )" );
                         PageBreak( ref code );
                         break;
 
                     case BuildType.DataTable:
-                        code += $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"";
+                        code.Append( $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"" );
                         PageBreak( ref code );
                     break;
                 }
@@ -131,33 +132,33 @@ namespace Build
                         PageBreak( ref code );
                         if ( ClipArrayBool )
                         {
-                            code += "    foreach ( entity ent in ClipArray )\n";
-                            code += "    {\n";
-                            code += "        ent.MakeInvisible()\n";
-                            code += "        ent.kv.solid = 6\n";
-                            code += "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
-                            code += "        ent.kv.contents = CONTENTS_PLAYERCLIP\n";
-                            code += "    }\n";
+                            code.Append( "    foreach ( entity ent in ClipArray )\n" );
+                            code.Append( "    {\n" );
+                            code.Append( "        ent.MakeInvisible()\n" );
+                            code.Append( "        ent.kv.solid = 6\n" );
+                            code.Append( "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n" );
+                            code.Append( "        ent.kv.contents = CONTENTS_PLAYERCLIP\n" );
+                            code.Append( "    }\n" );
                         }
 
-                        if ( NoClimbArrayBool ) code += "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3\n";
+                        if ( NoClimbArrayBool ) code.Append( "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3\n" );
 
-                        if ( InvisibleArrayBool ) code += "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()\n";
+                        if ( InvisibleArrayBool ) code.Append( "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()\n" );
 
-                        if ( NoGrappleArrayBool ) code += "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n";
+                        if ( NoGrappleArrayBool ) code.Append( "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n" );
 
                         if ( NoGrappleNoClimbArrayBool )
                         {
-                            code += "    foreach ( entity ent in NoGrappleNoClimbArray )\n";
-                            code += "    {\n";
-                            code += "        ent.MakeInvisible()\n";
-                            code += "        ent.kv.solid = 3\n";
-                            code += "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
-                            code += "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n";
-                            code += "    }\n";
+                            code.Append( "    foreach ( entity ent in NoGrappleNoClimbArray )\n" );
+                            code.Append( "    {\n" );
+                            code.Append( "        ent.MakeInvisible()\n" );
+                            code.Append( "        ent.kv.solid = 3\n" );
+                            code.Append( "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n" );
+                            code.Append( "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n" );
+                            code.Append( "    }\n" );
                         }
 
-                        if ( NoCollisionArrayBool ) code += "    foreach ( entity ent in NoCollisionArray ) ent.kv.solid = 0\n";
+                        if ( NoCollisionArrayBool ) code.Append( "    foreach ( entity ent in NoCollisionArray ) ent.kv.solid = 0\n" );
                     }
 
                     PageBreak( ref code );
@@ -172,7 +173,7 @@ namespace Build
                     break;
                     
                 case BuildType.DataTable:
-                    code += "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"";
+                    code.Append( "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"" );
                 break;
             }
 

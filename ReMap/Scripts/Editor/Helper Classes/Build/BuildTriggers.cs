@@ -82,7 +82,7 @@ namespace Build
                             code += $"    {TLeaveCallback}\n";
                             code +=  "    })\n";
                         }
-                        code += $"    DispatchSpawn( trigger_{idx} )";
+                        code += $"    DispatchSpawn( trigger_{idx} )\n";
                         break;
 
                     case BuildType.EntFile:

@@ -3,25 +3,6 @@
 
 public static class TagHelper
 {
-    static string[] AllTags = {
-        "LootBin",
-        "ZipLine",
-        "VerticalZipLine",
-        "NonVerticalZipLine",
-        "Jumppad",
-        "LinkedZipline",
-        "SingleDoor",
-        "DoubleDoor",
-        "VerticalDoor",
-        "HorzDoor",
-        "WeaponRack",
-        "Button",
-        "Trigger",
-        "Prop",
-        "BubbleShield",
-        "Sound"
-    };
-
     public static void AddTag(string tag)
     {
         UnityEngine.Object[] asset = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset");
@@ -47,7 +28,6 @@ public static class TagHelper
 
     public static void CheckAndCreateTags()
     {
-        foreach (string tag in AllTags)
-            AddTag(tag);
+        foreach ( string tag in Helper.GetAllTags() ) AddTag(tag);
     }
 }

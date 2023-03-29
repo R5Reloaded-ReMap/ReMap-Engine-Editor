@@ -357,6 +357,16 @@ public class Helper
         return Guid.NewGuid().ToString().Replace( "-", "" ).Substring( 0, 16 );
     }
 
+    public static string[] GetAllTags()
+    {
+        List < string > tags = new List< string > ();
+        foreach ( ObjectType type in GetAllObjectTypeInArray() )
+        {
+            tags.Add( GetObjTagNameWithEnum( type ) );
+        }
+        return tags.ToArray();
+    }
+
     public static GameObject[] GetObjArrayWithEnum( ObjectType objectType )
     {
         return GameObject.FindGameObjectsWithTag( GetObjTagNameWithEnum( objectType ) );
@@ -409,7 +419,7 @@ public class Helper
 
     public static ObjectType? GetObjectTypeByObjName( string searchTerm )
     {
-        foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
         {
             if ( Helper.GetObjNameWithEnum( objectType ) == searchTerm ) return objectType;
         }
@@ -435,7 +445,7 @@ public class Helper
     {
         Dictionary< string, string > dictionary = new Dictionary< string, string >();
 
-        foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
         {
             dictionary.Add( GetObjRefWithEnum( objectType ), GetObjTagNameWithEnum( objectType ) );
         }
@@ -447,7 +457,7 @@ public class Helper
     {
         Dictionary< string, bool > dictionary = new Dictionary< string, bool >();
 
-        foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
         {
             dictionary.Add( GetObjNameWithEnum( objectType ), true );
         }
@@ -489,7 +499,7 @@ public class Helper
         List< ObjectType > objectTypeArray = new List< ObjectType >();
         if ( forceShow )
         {
-            foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+            foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
             {
                 if ( !array.Contains( objectType ) ) objectTypeArray.Add( objectType );
             }

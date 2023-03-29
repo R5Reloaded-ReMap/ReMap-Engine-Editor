@@ -107,7 +107,7 @@ namespace CodeViewsWindow
 
                 GUILayout.EndHorizontal();
         
-                if ( GUILayout.Button( "Copy To Clipboard" ) ) GenerateCorrectCode( true );
+                if ( GUILayout.Button( "Copy To Clipboard" ) ) Refresh( true );
             GUILayout.EndVertical();
         }
 
@@ -143,9 +143,9 @@ namespace CodeViewsWindow
         //  ██║   ██║██║    ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝  
         //  ╚██████╔╝██║    ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
         //   ╚═════╝ ╚═╝     ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
-        internal static void Refresh()
+        internal static void Refresh( bool copy = false )
         {
-            EntityCount = 0; GenerateCorrectCode( false );
+            EntityCount = 0; GenerateCorrectCode( copy );
         }
 
         internal static void ExportFunction()

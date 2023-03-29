@@ -87,8 +87,6 @@ namespace Build
                         // Empty
                     break;
                 }
-
-                await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
             }
 
             // Add something at the end of the text
@@ -110,6 +108,8 @@ namespace Build
                     // Empty
                 break;
             }
+
+            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
 
             return code;
         }

@@ -121,8 +121,6 @@ namespace Build
                         PageBreak( ref code );
                     break;
                 }
-
-                await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
             }
 
             // Add something at the end of the text
@@ -179,6 +177,8 @@ namespace Build
                     code.Append( "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"" );
                 break;
             }
+            
+            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
 
             return code;
         }

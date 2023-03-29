@@ -15,33 +15,39 @@ namespace Build
 
         private static Dictionary< PropScriptOptions, string > ArrayName = new Dictionary< PropScriptOptions, string >()
         {
-            { PropScriptOptions.PlayerClip, "PlayerClipArray" },
+            { PropScriptOptions.PlayerClip, "ClipArray" },
             { PropScriptOptions.PlayerNoClimb, "NoClimbArray" },
             { PropScriptOptions.MakeInvisible, "InvisibleArray" },
-            { PropScriptOptions.KvContentsNOGRAPPLE, "NoGrappleArray" }
+            { PropScriptOptions.PlayerNoGrapple, "NoGrappleArray" },
+            { PropScriptOptions.PlayerNoGrappleNoClimb, "NoGrappleNoClimbArray" },
+            { PropScriptOptions.NoCollision, "NoCollisionArray" }
         };
 
         public static string BuildPropObjects( GameObject[] objectData, BuildType buildType )
         {
             string code = ""; PrecacheList = new List< String >();
 
-            bool PlayerClipArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClip );
+            bool ClipArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClip );
             bool NoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoClimb );
             bool InvisibleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.MakeInvisible );
-            bool NoGrappleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.KvContentsNOGRAPPLE );
+            bool NoGrappleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoGrapple );
+            bool NoGrappleNoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoGrappleNoClimb );
+            bool NoCollisionArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoCollision );
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    if ( PlayerClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool)
+                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || NoGrappleNoClimbArrayBool || NoCollisionArrayBool )
                     {
                         code += "    // Props Array"; PageBreak( ref code );
                         code += "    ";
-                        if ( PlayerClipArrayBool ) code += $"array < entity > PlayerClipArray; ";
+                        if ( ClipArrayBool ) code += $"array < entity > ClipArray; ";
                         if ( NoClimbArrayBool ) code += $"array < entity > PlayerNoClimb; ";
                         if ( InvisibleArrayBool ) code += $"array < entity > MakeInvisible; ";
-                        if ( NoGrappleArrayBool ) code += $"array < entity > KvContentsNOGRAPPLE; ";
+                        if ( NoGrappleArrayBool ) code += $"array < entity > NoGrappleArray; ";
+                        if ( NoGrappleNoClimbArrayBool ) code += $"array < entity > NoGrappleNoClimbArray; ";
+                        if ( NoCollisionArrayBool ) code += $"array < entity > NoCollisionArray; ";
                         PageBreak( ref code ); PageBreak( ref code );
                     }
 
@@ -120,12 +126,12 @@ namespace Build
             {
                 case BuildType.Script:
                 
-                    if ( PlayerClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool)
+                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || NoGrappleNoClimbArrayBool || NoCollisionArrayBool )
                     {
                         PageBreak( ref code );
-                        if ( PlayerClipArrayBool )
+                        if ( ClipArrayBool )
                         {
-                            code += "    foreach ( entity ent in PlayerClipArray )\n";
+                            code += "    foreach ( entity ent in ClipArray )\n";
                             code += "    {\n";
                             code += "        ent.MakeInvisible()\n";
                             code += "        ent.kv.solid = 6\n";
@@ -139,6 +145,19 @@ namespace Build
                         if ( InvisibleArrayBool ) code += "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()\n";
 
                         if ( NoGrappleArrayBool ) code += "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n";
+
+                        if ( NoGrappleNoClimbArrayBool )
+                        {
+                            code += "    foreach ( entity ent in NoGrappleNoClimbArray )\n";
+                            code += "    {\n";
+                            code += "        ent.MakeInvisible()\n";
+                            code += "        ent.kv.solid = 3\n";
+                            code += "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n";
+                            code += "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n";
+                            code += "    }\n";
+                        }
+
+                        if ( NoCollisionArrayBool ) code += "    foreach ( entity ent in NoCollisionArray ) ent.kv.solid = 0\n";
                     }
 
                     PageBreak( ref code );

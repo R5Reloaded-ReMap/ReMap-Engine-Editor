@@ -7,7 +7,9 @@ public enum PropScriptOptions
     PlayerClip, // ent is a invisible wall
     PlayerNoClimb, // player can't climb this ent
     MakeInvisible, // ent is invisible
-    KvContentsNOGRAPPLE // player can't grapple this ent
+    PlayerNoGrapple, // player can't grapple this ent
+    PlayerNoGrappleNoClimb, // player can't grapple this ent and can't climb
+    NoCollision // ent have no collision
 }
 
 public class PropScript : MonoBehaviour

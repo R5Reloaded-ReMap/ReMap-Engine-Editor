@@ -19,7 +19,11 @@ public static class TagHelper
         "Trigger",
         "Prop",
         "BubbleShield",
-        "Sound"
+        "Sound",
+        "SpawnPoint",
+        "FuncWindowHint",
+        "NewLocPair",
+        "TextInfoPanel"
     };
 
     public static void AddTag(string tag)

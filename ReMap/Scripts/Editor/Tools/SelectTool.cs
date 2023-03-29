@@ -87,6 +87,30 @@ public class SelectTool
         SelectComponentScript<SoundScript>();
     }
 
+    [MenuItem("ReMap/Selection/Select All New Loc Pair Script", false, 100)]
+    public static void SelectNewLocPairScriptInit()
+    {
+        SelectComponentScript<NewLocPairScript>();
+    }
+
+    [MenuItem("ReMap/Selection/Select All Info Spawn Point Human Script", false, 100)]
+    public static void SelectSpawnPointScriptInit()
+    {
+        SelectComponentScript<SpawnPointScript>();
+    }
+
+    [MenuItem("ReMap/Selection/Select All Text Info Panel Script", false, 100)]
+    public static void SelectTextInfoPanelScriptInit()
+    {
+        SelectComponentScript<TextInfoPanelScript>();
+    }
+
+    [MenuItem("ReMap/Selection/Select All Window Hint Script", false, 100)]
+    public static void SelectWindowHintScriptInit()
+    {
+        SelectComponentScript<WindowHintScript>();
+    }
+
     public static void SelectComponentScript<T>() where T : Component
     {
         GameObject[] array = new GameObject[0];

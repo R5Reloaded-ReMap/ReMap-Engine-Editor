@@ -364,7 +364,7 @@ public class CodeImport : EditorWindow
             obj.name = Model;
 
             LootBinScript script = obj.GetComponent<LootBinScript>();
-            script.LootbinSkin = int.Parse(split[6]);
+            script.LootbinSkin = ( LootBinSkinType ) int.Parse(split[6]);
 
             GameObject parent = GameObject.Find("LootBins");
             if (parent != null)

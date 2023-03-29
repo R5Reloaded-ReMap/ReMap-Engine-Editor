@@ -41,10 +41,12 @@ namespace Build
                 LootBinScript script = ( LootBinScript ) Helper.GetComponentByEnum( obj, ObjectType.LootBin );
                 if ( script == null ) continue;
 
+                int skin = ( int )script.LootbinSkin;
+
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code += $"    MapEditor_CreateLootBin( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {script.LootbinSkin} )";
+                        code += $"    MapEditor_CreateLootBin( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {skin} )";
                         PageBreak( ref code );
                         break;
 
@@ -54,7 +56,7 @@ namespace Build
                         code += $"\"StartDisabled\" \"0\"\n";
                         code += $"\"spawnflags\" \"0\"\n";
                         code += $"\"solid\" \"6\"\n";
-                        code += $"\"skin\" \"{script.LootbinSkin}\"\n";
+                        code += $"\"skin\" \"{skin}\"\n";
                         code += $"\"SetBodyGroup\" \"0\"\n";
                         code += $"\"rendermode\" \"0\"\n";
                         code += $"\"renderfx\" \"0\"\n";

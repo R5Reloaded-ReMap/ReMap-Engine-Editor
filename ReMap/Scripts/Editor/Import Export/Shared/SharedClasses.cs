@@ -208,7 +208,7 @@ namespace ImportExport.Shared
     [Serializable]
     public class LootBinClassData : GlobalClassData
     {
-        public int LootbinSkin;
+        public LootBinSkinType LootbinSkin;
     }
 
     [Serializable]

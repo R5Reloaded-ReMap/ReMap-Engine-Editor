@@ -69,7 +69,7 @@ namespace Build
                             code += $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)\n";
                             code +=  "    {\n";
                             code += $"    {TEnterCallback}\n";
-                            code +=  "    }\n";
+                            code +=  "    })\n";
                         }
 
                         if ( TLeaveCallback != "" )
@@ -80,7 +80,7 @@ namespace Build
                             code += $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)\n";
                             code +=  "    {\n";
                             code += $"    {TLeaveCallback}\n";
-                            code +=  "    }\n";
+                            code +=  "    })\n";
                         }
                         code += $"    DispatchSpawn( trigger_{idx} )";
                         break;

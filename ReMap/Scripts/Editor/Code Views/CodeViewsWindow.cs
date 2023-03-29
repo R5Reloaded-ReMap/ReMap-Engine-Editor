@@ -31,6 +31,7 @@ namespace CodeViewsWindow
         internal static int tabEnt_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
         internal static int GUILayoutButtonSize = 297; // 320 - 23
+        private static int refreshLimit = 600;
 
         internal static bool ShowSettings = false;
         internal static bool ShowAdvancedMenu = false;
@@ -76,7 +77,7 @@ namespace CodeViewsWindow
             enableLogo = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
             disableLogo = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
 
-            Refresh();
+            Refresh( false, true );
         }
 
         void OnGUI()
@@ -88,7 +89,7 @@ namespace CodeViewsWindow
             if( tab != tab_temp || tabEnt != tabEnt_temp )
             {
                 GetFunctionName();
-                Refresh();
+                Refresh( false, true );
                 tab_temp = tab;
                 tabEnt_temp = tabEnt;
             }
@@ -107,7 +108,7 @@ namespace CodeViewsWindow
 
                 GUILayout.EndHorizontal();
         
-                if ( GUILayout.Button( "Copy To Clipboard" ) ) Refresh( true );
+                if ( GUILayout.Button( "Copy To Clipboard" ) ) Refresh( true, true );
             GUILayout.EndVertical();
         }
 
@@ -143,9 +144,12 @@ namespace CodeViewsWindow
         //  ██║   ██║██║    ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝  
         //  ╚██████╔╝██║    ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
         //   ╚═════╝ ╚═╝     ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
-        internal static void Refresh( bool copy = false )
+        internal static void Refresh( bool copy = false, bool forceRefresh = false )
         {
-            EntityCount = 0; GenerateCorrectCode( copy );
+            if ( UnityInfo.GetAllCount() < refreshLimit || forceRefresh )
+            {
+                EntityCount = 0; GenerateCorrectCode( copy );
+            }
         }
 
         internal static void ExportFunction()
@@ -154,7 +158,7 @@ namespace CodeViewsWindow
 
             EditorSceneManager.SaveOpenScenes();
 
-            Refresh();
+            Refresh( false, true );
 
             string[] fileInfo = new string[4];
 
@@ -446,7 +450,7 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical( "box" );
                 GUILayout.BeginHorizontal();
                     tab = GUILayout.Toolbar ( tab, toolbarTab );
-                    if ( GUILayout.Button( new GUIContent( "Refresh", "Refresh Window" ), GUILayout.Width( 100 ) ) ) Refresh();
+                    if ( GUILayout.Button( new GUIContent( "Refresh", "Refresh Window" ), GUILayout.Width( 100 ) ) ) Refresh( false, true );
                 GUILayout.EndHorizontal();
 
                 if ( tab == 3 )
@@ -460,6 +464,14 @@ namespace CodeViewsWindow
 
                 GUILayout.BeginHorizontal();
                         ObjectCount();
+                        if ( UnityInfo.GetAllCount() > refreshLimit )
+                        {
+                            Space( 6 );
+                            GUI.contentColor = Color.yellow;
+                            GUILayout.Label( $"Warning! The page is not refresh automatically because the level exceeds {refreshLimit} objects", EditorStyles.boldLabel );
+                            GUI.contentColor = Color.white;
+                        }
+
                         GUILayout.FlexibleSpace();
 
                         #if ReMapDev
@@ -565,7 +577,7 @@ namespace CodeViewsWindow
         {
             Event currentEvent = Event.current;
 
-            if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
+            if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh( false, true );
         } 
 
         private static void GetEditorWindowSize()

@@ -54,7 +54,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = true;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -80,7 +80,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = false;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -106,7 +106,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = true;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -132,7 +132,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = false;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -158,7 +158,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = false;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -184,7 +184,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = false;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -211,7 +211,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -238,7 +238,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -265,7 +265,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -293,7 +293,7 @@ namespace CodeViewsWindow
             //CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = 
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
 
             CodeViewsWindow.ExportFunction();
 
@@ -336,7 +336,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.EntFileID = EntFileID;
             Helper.UseStartingOffset = HelperUseStartingOffset;
 
-            CodeViewsWindow.Refresh();
+            CodeViewsWindow.Refresh( false, true );
         }
     }
 }

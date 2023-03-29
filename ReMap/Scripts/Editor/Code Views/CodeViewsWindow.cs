@@ -149,13 +149,16 @@ namespace CodeViewsWindow
             EntityCount = 0; GenerateCorrectCode( copy );
         }
 
-        internal static void ExportFunction()
+        internal static async void ExportFunction()
         {
             Helper.FixPropTags();
 
             EditorSceneManager.SaveOpenScenes();
 
             Refresh();
+
+            // Hack: As long as the code generation is not finished, then do not continue the script
+            while ( GenerationIsActive ) await Task.Delay( 100 ); // 100 ms
 
             string[] fileInfo = new string[4];
 

@@ -14,6 +14,8 @@ public class ModelSwap : EditorWindow
     private GameObject[] newSelection;
     private bool randomlyChanges = true;
 
+    Vector2 scroll;
+
     /// <summary>
     /// ModelSwap.Init()
     /// </summary>
@@ -21,7 +23,7 @@ public class ModelSwap : EditorWindow
     public static void Init()
     {
         ModelSwap window = ( ModelSwap )EditorWindow.GetWindow( typeof( ModelSwap ), false, "Model Swap Tool" );
-        //window.minSize = new Vector2(606, 252);
+        window.minSize = new Vector2(400, 295);
         //window.maxSize = new Vector2(606, 252);
         window.Show();
     }
@@ -34,39 +36,36 @@ public class ModelSwap : EditorWindow
         GUIStyle labelStyle = new GUIStyle();
         labelStyle.normal.textColor = Color.white;
 
-        EditorGUILayout.Space( 2 );
+        GUILayout.BeginVertical("box");
+            scroll = EditorGUILayout.BeginScrollView(scroll);
 
-        for (int i = 0; i < prefabs.Length; i++)
-        {
-            int idx = i + 1;
+            for (int i = 0; i < prefabs.Length; i++)
+            {
+                int idx = i + 1;
+                EditorGUILayout.BeginHorizontal("box");
+                    EditorGUILayout.LabelField( $"Prefab {idx.ToString("00")}: ", labelStyle, GUILayout.Width( 60 ));
+                    prefabs[i] = EditorGUILayout.ObjectField( prefabs[i], typeof( GameObject ), true ) as GameObject;
+                    if ( GUILayout.Button( $"Clear Prefab {idx.ToString("00")}", GUILayout.Width( 120 ) ) ) prefabs[i] = null;
+                EditorGUILayout.EndHorizontal();
+            }
+
+            GUILayout.EndScrollView();
             EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField( $"Prefab {idx.ToString("00")}: ", labelStyle, GUILayout.Width( 60 ));
-                prefabs[i] = EditorGUILayout.ObjectField( prefabs[i], typeof( GameObject ), true ) as GameObject;
-                if ( GUILayout.Button( $"Clear Prefab {idx.ToString("00")}", GUILayout.Width( 120 ) ) ) prefabs[i] = null;
+                if ( GUILayout.Button( $"Remove 1 Row" ) ) Array.Resize( ref prefabs, prefabs.Length - 1 );
+                if ( GUILayout.Button( $"Add 1 Row" ) ) Array.Resize( ref prefabs, prefabs.Length + 1 );
             EditorGUILayout.EndHorizontal();
-        }
+        GUILayout.EndVertical();
 
-        EditorGUILayout.Space( 2 );
+        GUILayout.BeginVertical("box");
+            EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Change randomly the selection: ", labelStyle, GUILayout.Width(370));
+                randomlyChanges = EditorGUILayout.Toggle(randomlyChanges);
+            EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Space( 4 );
 
-            if ( GUILayout.Button( $"Remove 1 Row" ) ) Array.Resize( ref prefabs, prefabs.Length - 1 );
-            if ( GUILayout.Button( $"Add 1 Row" ) ) Array.Resize( ref prefabs, prefabs.Length + 1 );
-
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space( 4 );
-
-        EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Change randomly the selection: ", labelStyle, GUILayout.Width( 180 ));
-            randomlyChanges = EditorGUILayout.Toggle(randomlyChanges);
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space( 4 );
-
-        EditorGUILayout.BeginHorizontal();
             if ( GUILayout.Button( "Change Selection" ) ) ChangeSelection();
-        EditorGUILayout.EndHorizontal();
+        GUILayout.EndVertical();
     }
 
     void ChangeSelection()

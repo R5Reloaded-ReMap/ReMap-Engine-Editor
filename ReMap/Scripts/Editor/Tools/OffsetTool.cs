@@ -18,8 +18,8 @@ public class OffsetTool : EditorWindow
     public static void Init()
     {
         OffsetTool window = ( OffsetTool )EditorWindow.GetWindow( typeof( OffsetTool ), false, "Offset Tool" );
-        window.minSize = new Vector2( 300, 70 );
-        window.maxSize = new Vector2( 300, 70 );
+        window.minSize = new Vector2( 300, 75 );
+        window.maxSize = new Vector2( 300, 75 );
         window.Show();
     }
 
@@ -28,16 +28,18 @@ public class OffsetTool : EditorWindow
     /// </summary>
     void OnGUI()
     {
-        EditorGUILayout.Space( 2 );
+        GUILayout.BeginVertical("box");
+            offset = EditorGUILayout.Vector3Field( "Offset: ", offset );
+        GUILayout.EndVertical();
 
-        offset = EditorGUILayout.Vector3Field( "Offset: ", offset );
-
-        if ( GUILayout.Button( "Apply Offset" ) )
-        {
-            foreach ( GameObject go in Selection.gameObjects )
+        GUILayout.BeginVertical("box");
+            if ( GUILayout.Button( "Apply Offset" ) )
             {
-                go.transform.position = go.transform.position + offset;
+                foreach ( GameObject go in Selection.gameObjects )
+                {
+                    go.transform.position = go.transform.position + offset;
+                }
             }
-        }
+        GUILayout.EndVertical();
     }
 }

@@ -18,8 +18,8 @@ public class ModelDistance : EditorWindow
     {
         ModelDistance window = (ModelDistance)EditorWindow.GetWindow(typeof(ModelDistance), false, "Measure Distance");
         window.Show();
-        //window.minSize = new Vector2(375, 140);
-        //window.maxSize = new Vector2(375, 140);
+        window.minSize = new Vector2(339, 120);
+        window.maxSize = new Vector2(339, 120);
     }
 
     void OnInspectorUpdate()
@@ -32,27 +32,18 @@ public class ModelDistance : EditorWindow
         sourceOrigin = new Vector3(0, 0, 0);
         targetOrigin = new Vector3(0, 0, 0);
 
-        GUILayout.Label("Select Axis: ");
-
-        EditorGUILayout.Space(4);
-
-        GUILayout.BeginHorizontal();
-        axisX = GUILayout.Toggle(axisX, "X");
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        axisY = GUILayout.Toggle(axisY, "Y");
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        axisZ = GUILayout.Toggle(axisZ, "Z");
-        GUILayout.EndHorizontal();
+        GUILayout.BeginVertical("box");
+            GUILayout.Label("Select Axis: ");
+            GUILayout.BeginHorizontal();
+                axisX = GUILayout.Toggle(axisX, "X");
+                axisY = GUILayout.Toggle(axisY, "Y");
+                axisZ = GUILayout.Toggle(axisZ, "Z");
+            GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
 
         //GUILayout.BeginHorizontal();
         //edgeToEdge = GUILayout.Toggle(edgeToEdge, "Edge To Edge Mode");
         //GUILayout.EndHorizontal();
-
-        EditorGUILayout.Space(4);
 
         if(isValid)
         {
@@ -115,15 +106,17 @@ public class ModelDistance : EditorWindow
         }
         else
         {
-            GUILayout.BeginHorizontal();
-                GUILayout.Label("Source", GUILayout.Width(60));
-                source = EditorGUILayout.ObjectField(source, typeof(Object), true);
-            GUILayout.EndHorizontal();
+            GUILayout.BeginVertical("box");
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Object 1", GUILayout.Width(60));
+                    source = EditorGUILayout.ObjectField(source, typeof(Object), true);
+                GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
-                GUILayout.Label("Target", GUILayout.Width(60));
-                target = EditorGUILayout.ObjectField(target, typeof(Object), true);
-            GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Object 2", GUILayout.Width(60));
+                    target = EditorGUILayout.ObjectField(target, typeof(Object), true);
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
 
             // Distance
             string distToString = "0.0";

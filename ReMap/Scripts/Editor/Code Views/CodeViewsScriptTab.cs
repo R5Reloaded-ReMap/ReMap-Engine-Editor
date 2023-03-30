@@ -46,8 +46,6 @@ namespace CodeViewsWindow
 
             CodeViewsWindow.OptionalSelection();
 
-            CodeViewsWindow.Space( 10 );
-
             CodeViewsWindow.OptionalAdvancedOption();
 
             GUILayout.EndScrollView();

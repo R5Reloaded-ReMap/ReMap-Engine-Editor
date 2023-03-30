@@ -296,6 +296,8 @@ namespace CodeViewsWindow
                     Refresh();
                 }
             GUILayout.EndHorizontal();
+
+            Space( 10 );
         }
 
         internal static void ShowSquirrelEntFunction( string trueText = "Hide Full File", string falseText = "Show Full File", string tooltip = "If true, display the code as ent file" )
@@ -361,9 +363,14 @@ namespace CodeViewsWindow
                 }
             GUILayout.EndHorizontal();
 
-            Space( 4 );
-
-            if ( !ShowAdvancedMenu ) return;
+            if ( !ShowAdvancedMenu )
+            {
+                return;
+            }
+            else
+            {
+                Space( 4 );
+            }
 
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();

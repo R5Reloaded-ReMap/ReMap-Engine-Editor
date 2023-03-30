@@ -14,22 +14,39 @@ namespace CodeViewsWindow
 {
     public class ScriptTab
     {
+        static FunctionRef[] SquirrelMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function" )
+        };
+
+        static FunctionRef[] OffsetMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalToggle( ref Helper.ShowStartingOffset, ref Helper.ShowStartingOffsetTemp, "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"" ),
+        };
+
+        static FunctionRef[] SelectionMenu = new FunctionRef[0];
+
+        static FunctionRef[] AdvancedMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalAdvancedOption()
+        };
+
+
+
         internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsWindow.ShowSquirrelFunction();
-            if ( CodeViewsWindow.ShowFunction )
-            {
-                CodeViewsWindow.Space( 4 );
-                CodeViewsWindow.OptionalFunctionName();
+            CodeViewsMenu.CreateMenu( SquirrelMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", ref CodeViewsWindow.ShowFunction );
 
-                CodeViewsWindow.Space( 6 );
-                CodeViewsWindow.Separator();
-            } else CodeViewsWindow.Space( 10 );
+            CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
 
-            CodeViewsWindow.OptionalUseOffset();
+            CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+
+            CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
+
+            /* CodeViewsWindow.OptionalUseOffset();
             if ( Helper.UseStartingOffset )
             {
                 CodeViewsWindow.Space( 4 );
@@ -42,11 +59,7 @@ namespace CodeViewsWindow
 
                 CodeViewsWindow.Space( 6 );
                 CodeViewsWindow.Separator();
-            } else CodeViewsWindow.Space( 10 );
-
-            CodeViewsWindow.OptionalSelection();
-
-            CodeViewsWindow.OptionalAdvancedOption();
+            } else CodeViewsWindow.Space( 10 );*/
 
             GUILayout.EndScrollView();
             GUILayout.EndVertical();

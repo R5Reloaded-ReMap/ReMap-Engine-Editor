@@ -31,7 +31,6 @@ namespace CodeViewsWindow
         internal static int tabEnt_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
         internal static int GUILayoutButtonSize = 297; // 320 - 23
-        private static int refreshLimit = 600;
 
         internal static bool ShowSettings = false;
         internal static bool ShowAdvancedMenu = false;
@@ -39,6 +38,7 @@ namespace CodeViewsWindow
         internal static bool ShowEntFunction = false;
         internal static bool ShowEntFunctionTemp = false;
         internal static bool EnableSelection = false;
+        internal static bool GenerationIsActive = false;
         internal static int EntityCount = 0;
         internal static int EntFileID = 27;
         internal static Vector3 InfoPlayerStartOrigin = Vector3.zero;
@@ -77,7 +77,7 @@ namespace CodeViewsWindow
             enableLogo = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
             disableLogo = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
 
-            Refresh( false, true );
+            Refresh();
         }
 
         void OnGUI()
@@ -89,7 +89,7 @@ namespace CodeViewsWindow
             if( tab != tab_temp || tabEnt != tabEnt_temp )
             {
                 GetFunctionName();
-                Refresh( false, true );
+                Refresh();
                 tab_temp = tab;
                 tabEnt_temp = tabEnt;
             }
@@ -108,7 +108,7 @@ namespace CodeViewsWindow
 
                 GUILayout.EndHorizontal();
         
-                if ( GUILayout.Button( "Copy To Clipboard" ) ) Refresh( true, true );
+                if ( GUILayout.Button( "Copy To Clipboard" ) ) Refresh( true );
             GUILayout.EndVertical();
         }
 
@@ -144,21 +144,21 @@ namespace CodeViewsWindow
         //  ██║   ██║██║    ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝  
         //  ╚██████╔╝██║    ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
         //   ╚═════╝ ╚═╝     ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
-        internal static void Refresh( bool copy = false, bool forceRefresh = false )
+        internal static void Refresh( bool copy = false )
         {
-            if ( UnityInfo.GetAllCount() < refreshLimit || forceRefresh )
-            {
-                EntityCount = 0; GenerateCorrectCode( copy );
-            }
+            EntityCount = 0; GenerateCorrectCode( copy );
         }
 
-        internal static void ExportFunction()
+        internal static async void ExportFunction()
         {
             Helper.FixPropTags();
 
             EditorSceneManager.SaveOpenScenes();
 
-            Refresh( false, true );
+            Refresh();
+
+            // Hack: As long as the code generation is not finished, then do not continue the script
+            while ( GenerationIsActive ) await Task.Delay( 100 ); // 100 ms
 
             string[] fileInfo = new string[4];
 
@@ -450,7 +450,7 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical( "box" );
                 GUILayout.BeginHorizontal();
                     tab = GUILayout.Toolbar ( tab, toolbarTab );
-                    if ( GUILayout.Button( new GUIContent( "Refresh", "Refresh Window" ), GUILayout.Width( 100 ) ) ) Refresh( false, true );
+                    if ( GUILayout.Button( new GUIContent( "Refresh", "Refresh Window" ), GUILayout.Width( 100 ) ) ) Refresh();
                 GUILayout.EndHorizontal();
 
                 if ( tab == 3 )
@@ -464,12 +464,9 @@ namespace CodeViewsWindow
 
                 GUILayout.BeginHorizontal();
                         ObjectCount();
-                        if ( UnityInfo.GetAllCount() > refreshLimit )
+                        if ( GenerationIsActive )
                         {
-                            Space( 6 );
-                            GUI.contentColor = Color.yellow;
-                            GUILayout.Label( $"Warning! The page is not refresh automatically because the level exceeds {refreshLimit} objects", EditorStyles.boldLabel );
-                            GUI.contentColor = Color.white;
+                            GUILayout.Label( $"|| Generating code..." );
                         }
 
                         GUILayout.FlexibleSpace();
@@ -577,7 +574,7 @@ namespace CodeViewsWindow
         {
             Event currentEvent = Event.current;
 
-            if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh( false, true );
+            if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
         } 
 
         private static void GetEditorWindowSize()
@@ -589,40 +586,44 @@ namespace CodeViewsWindow
             }
         }
 
-        private static void GenerateCorrectCode( bool copy )
+        private static async void GenerateCorrectCode( bool copy )
         {
             code = "";
+
+            GenerationIsActive = true;
 
             switch ( tab )
             {
                 case 0: // Squirrel Code
-                    code += ScriptTab.GenerateCode();
+                    code += await ScriptTab.GenerateCode();
                     break;
 
                 case 1: // DataTable Code
-                    code += DataTableTab.GenerateCode();
+                    code += await DataTableTab.GenerateCode();
                     break;
 
                 case 2: // Precache Code
-                    code += PrecacheTab.GenerateCode();
+                    code += await PrecacheTab.GenerateCode();
                     break;
 
                 case 3: // Ent Code
                     switch ( tabEnt )
                     {
                         case 0: // Script Code
-                            code += ScriptEntTab.GenerateCode();
+                            code += await ScriptEntTab.GenerateCode();
                             break;
 
                         case 1: // Sound Code
-                            code += SoundEntTab.GenerateCode();
+                            code += await SoundEntTab.GenerateCode();
                             break;
                         case 2:  // Spawn Code
-                            code += SpawnEntTab.GenerateCode();
+                            code += await SpawnEntTab.GenerateCode();
                         break;
                     }
                 break;
             }
+
+            GenerationIsActive = false;
 
             if( copy ) GUIUtility.systemCopyBuffer = code;
         }

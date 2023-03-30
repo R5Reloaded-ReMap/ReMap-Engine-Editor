@@ -45,7 +45,7 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        internal static string GenerateCode()
+        internal static async Task< string > GenerateCode()
         {
             string code = "";
 
@@ -56,7 +56,7 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[] { ObjectType.SpawnPoint }, true );
 
-            code += Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.EnableSelection );
+            code += await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 

@@ -54,7 +54,7 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        internal static string GenerateCode()
+        internal static async Task< string > GenerateCode()
         {
             string code = "";
 
@@ -67,9 +67,9 @@ namespace CodeViewsWindow
 
             code += Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z );
 
-            Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
+            Helper.ForceHideBoolToGenerateObjects( new ObjectType[] { ObjectType.Sound, ObjectType.SpawnPoint } );
             
-            code += Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.EnableSelection );
+            code += await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 

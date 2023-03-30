@@ -35,7 +35,7 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        internal static string GenerateCode()
+        internal static async Task< string > GenerateCode()
         {
             string code = "";
 
@@ -48,7 +48,7 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
 
-            code += BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.EnableSelection );
+            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.EnableSelection );
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 

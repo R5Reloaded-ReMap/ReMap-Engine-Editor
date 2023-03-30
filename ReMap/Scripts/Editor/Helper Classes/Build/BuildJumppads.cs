@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 using static Build.Build;
@@ -11,7 +12,7 @@ namespace Build
 {
     public class BuildJumppad
     {
-        public static StringBuilder BuildJumppadObjects( GameObject[] objectData, BuildType buildType )
+        public static async Task< StringBuilder > BuildJumppadObjects( GameObject[] objectData, BuildType buildType )
         {
             StringBuilder code = new StringBuilder();
 
@@ -85,6 +86,8 @@ namespace Build
                     // Empty
                 break;
             }
+
+            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
 
             return code;
         }

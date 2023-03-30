@@ -115,15 +115,24 @@ public class Helper
     /// <returns></returns>
     public static string ShouldAddStartingOrg( StartingOriginType type = StartingOriginType.Function, float x = 0, float y = 0, float z = 0 )
     {
-        if( !ShowStartingOffset && type == StartingOriginType.SquirrelFunction )
-            return "";
-
-        if( UseStartingOffset && type == StartingOriginType.Function )
-            return " + startingorg";
-
         string vector = $"< {ReplaceComma( x )}, {ReplaceComma( y )}, {ReplaceComma( z )} >";
 
-        return $"    //Starting Origin, Change this to a origin in a map \n    vector startingorg = {vector}" + "\n\n";
+        switch ( type )
+        {
+            case StartingOriginType.SquirrelFunction:
+                if ( UseStartingOffset && ShowStartingOffset )
+                return $"    //Starting Origin, Change this to a origin in a map \n    vector startingorg = {vector}" + "\n\n";
+                break;
+
+            case StartingOriginType.Function:
+                if ( UseStartingOffset )
+                return " + startingorg";
+                break;
+
+            default: break;
+        }
+
+        return "";
     }
 
     /// <summary>

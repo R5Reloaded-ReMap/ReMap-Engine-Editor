@@ -464,10 +464,6 @@ namespace CodeViewsWindow
 
                 GUILayout.BeginHorizontal();
                         ObjectCount();
-                        if ( GenerationIsActive )
-                        {
-                            GUILayout.Label( $"|| Generating code..." );
-                        }
 
                         GUILayout.FlexibleSpace();
 
@@ -535,9 +531,16 @@ namespace CodeViewsWindow
             string info = tab == 2 ? "Models Precached Count" : "Entity Count";
             GUILayout.BeginHorizontal();
 
-                SetCorrectColor( EntityCount );
-                GUILayout.Label( $" // {info}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
-                GUI.contentColor = Color.white;
+                if ( GenerationIsActive )
+                {
+                    GUILayout.Label( $" // Generating code...", EditorStyles.boldLabel );
+                }
+                else
+                {
+                    SetCorrectColor( EntityCount );
+                    GUILayout.Label( $" // {info}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
+                    GUI.contentColor = Color.white;
+                }
 
             GUILayout.EndHorizontal();
         }
@@ -678,7 +681,7 @@ namespace CodeViewsWindow
             if( count < greenPropCount )
                 GUI.contentColor = Color.green;
 
-            else if( ( count < yellowPropCount ) ) 
+            else if( count < yellowPropCount ) 
                 GUI.contentColor = Color.yellow;
 
             else GUI.contentColor = Color.red;

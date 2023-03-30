@@ -58,7 +58,6 @@ public class Helper
 {
     public static int maxBuildLength = 75000;
     public static bool UseStartingOffset = false;
-    public static bool UseStartingOffsetTemp = false;
     public static bool ShowStartingOffset = true;
     public static bool ShowStartingOffsetTemp = true;
 

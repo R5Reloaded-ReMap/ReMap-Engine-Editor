@@ -14,33 +14,37 @@ namespace CodeViewsWindow
 {
     public class SpawnEntTab
     {
+        static FunctionRef[] EntMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "File Name", "Change the name of the file" ),
+            () => CodeViewsMenu.OptionalIntField( ref CodeViewsWindow.EntFileID, "Ent ID", "Set the map ID" ),
+            () => CodeViewsMenu.OptionalTextInfo( "Info Player Start", "Settings of where to spawn the player" ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartOrigin, "- Origin", "Set origin to \"Info Player Start\"" ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartAngles, "- Angles", "Set angles to \"Info Player Start\"" )
+        };
+
+        static FunctionRef[] OffsetMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"" )
+        };
+
+        static FunctionRef[] SelectionMenu = new FunctionRef[0];
+
         internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsWindow.ShowSquirrelEntFunction();
-            if ( CodeViewsWindow.ShowEntFunction )
-            {
-                CodeViewsWindow.Space( 4 );
-                CodeViewsWindow.OptionalFunctionName( "File Name", "Change the name of the file" );
-                CodeViewsWindow.Space( 4 );
-                CodeViewsWindow.OptionalMapID();
-                CodeViewsWindow.Space( 6 );
-                CodeViewsWindow.Separator();
-            } else CodeViewsWindow.Space( 10 );
+            CodeViewsMenu.CreateMenu( EntMenu, "Hide Full File", "Show Full File", "If true, display the code as ent file", ref CodeViewsWindow.ShowEntFunction );
 
-            CodeViewsWindow.OptionalUseOffset();
-            if ( Helper.UseStartingOffset )
-            {
-                CodeViewsWindow.Space( 4 );
-                CodeViewsWindow.OptionalOffsetField();
-                CodeViewsWindow.Space( 6 );
-                CodeViewsWindow.Separator();
-            } else CodeViewsWindow.Space( 10 );
+            CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
 
-            CodeViewsWindow.OptionalSelection();
+            CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
 
+            #if ReMapDev
+            CodeViewsMenu.CreateMenu( CodeViewsMenu.DevMenu, "Dev Menu", "Dev Menu", "", ref CodeViewsMenu.ShowDevMenu );
+            #endif
+            
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }

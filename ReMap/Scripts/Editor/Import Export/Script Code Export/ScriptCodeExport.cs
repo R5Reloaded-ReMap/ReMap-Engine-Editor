@@ -50,7 +50,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = true;
             CodeViewsWindow.ShowEntFunction = false;
-            CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = true;
 
@@ -76,7 +75,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = true;
             CodeViewsWindow.ShowEntFunction = false;
-            CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = false;
 
@@ -102,7 +100,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = false;
-            CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = true;
 
@@ -128,7 +125,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = false;
-            CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = false;
 
@@ -154,7 +150,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = false;
-            CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = false;
 
@@ -180,7 +175,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = true;
             CodeViewsWindow.ShowEntFunction = false;
-            CodeViewsWindow.ShowEntFunctionTemp = false;
             CodeViewsWindow.EnableSelection = false;
             Helper.UseStartingOffset = false;
 
@@ -206,7 +200,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = true;
-            CodeViewsWindow.ShowEntFunctionTemp = true;
             CodeViewsWindow.EnableSelection = false;
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
@@ -233,7 +226,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = true;
-            CodeViewsWindow.ShowEntFunctionTemp = true;
             CodeViewsWindow.EnableSelection = false;
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
@@ -260,7 +252,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = false;
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = true;
-            CodeViewsWindow.ShowEntFunctionTemp = true;
             CodeViewsWindow.EnableSelection = false;
             CodeViewsWindow.EntFileID = 27;
             Helper.UseStartingOffset = false;
@@ -313,7 +304,6 @@ namespace CodeViewsWindow
             ShowAdvancedMenu = CodeViewsWindow.ShowAdvancedMenu;
             ShowFunction = CodeViewsWindow.ShowFunction;
             ShowEntFunction = CodeViewsWindow.ShowEntFunction;
-            ShowEntFunctionTemp = CodeViewsWindow.ShowEntFunctionTemp;
             EnableSelection = CodeViewsWindow.EnableSelection;
             EntFileID = CodeViewsWindow.EntFileID;
             HelperUseStartingOffset = Helper.UseStartingOffset;
@@ -331,7 +321,6 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowAdvancedMenu = ShowAdvancedMenu;
             CodeViewsWindow.ShowFunction = ShowFunction;
             CodeViewsWindow.ShowEntFunction = ShowEntFunction;
-            CodeViewsWindow.ShowEntFunctionTemp = ShowEntFunctionTemp;
             CodeViewsWindow.EnableSelection = EnableSelection;
             CodeViewsWindow.EntFileID = EntFileID;
             Helper.UseStartingOffset = HelperUseStartingOffset;

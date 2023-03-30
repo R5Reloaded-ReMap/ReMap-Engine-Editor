@@ -22,6 +22,7 @@ namespace CodeViewsWindow
         static FunctionRef[] OffsetMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.OptionalToggle( ref Helper.ShowStartingOffset, ref Helper.ShowStartingOffsetTemp, "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"" ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", Helper.ShowStartingOffset )
         };
 
         static FunctionRef[] SelectionMenu = new FunctionRef[0];
@@ -30,8 +31,6 @@ namespace CodeViewsWindow
         {
             () => CodeViewsMenu.OptionalAdvancedOption()
         };
-
-
 
         internal static void OnGUISettingsTab()
         {
@@ -46,20 +45,9 @@ namespace CodeViewsWindow
 
             CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
 
-            /* CodeViewsWindow.OptionalUseOffset();
-            if ( Helper.UseStartingOffset )
-            {
-                CodeViewsWindow.Space( 4 );
-                CodeViewsWindow.OptionalShowOffset();
-                if ( Helper.ShowStartingOffset )
-                {
-                    CodeViewsWindow.Space( 4 );
-                    CodeViewsWindow.OptionalOffsetField();
-                }
-
-                CodeViewsWindow.Space( 6 );
-                CodeViewsWindow.Separator();
-            } else CodeViewsWindow.Space( 10 );*/
+            #if ReMapDev
+            CodeViewsMenu.CreateMenu( CodeViewsMenu.DevMenu, "Dev Menu", "Dev Menu", "", ref CodeViewsMenu.ShowDevMenu );
+            #endif
 
             GUILayout.EndScrollView();
             GUILayout.EndVertical();

@@ -14,23 +14,26 @@ namespace CodeViewsWindow
 {
     public class PrecacheTab
     {
+        static FunctionRef[] SquirrelMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function" )
+        };
+
+        static FunctionRef[] SelectionMenu = new FunctionRef[0];
+
         internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsWindow.ShowSquirrelFunction();
-            if ( CodeViewsWindow.ShowFunction )
-            {
-                CodeViewsWindow.Space( 4 );
-                CodeViewsWindow.OptionalFunctionName();
+            CodeViewsMenu.CreateMenu( SquirrelMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", ref CodeViewsWindow.ShowFunction );
 
-                CodeViewsWindow.Space( 6 );
-                CodeViewsWindow.Separator();
-            } else CodeViewsWindow.Space( 10 );
+            CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
 
-            CodeViewsWindow.OptionalSelection();
-
+            #if ReMapDev
+            CodeViewsMenu.CreateMenu( CodeViewsMenu.DevMenu, "Dev Menu", "Dev Menu", "", ref CodeViewsMenu.ShowDevMenu );
+            #endif
+            
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }

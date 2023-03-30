@@ -30,13 +30,11 @@ namespace CodeViewsWindow
         internal static int tabEnt = 0;
         internal static int tabEnt_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
-        internal static int GUILayoutButtonSize = 297; // 320 - 23
 
         internal static bool ShowSettings = false;
         internal static bool ShowAdvancedMenu = false;
         internal static bool ShowFunction = false;
         internal static bool ShowEntFunction = false;
-        internal static bool ShowEntFunctionTemp = false;
         internal static bool EnableSelection = false;
         internal static bool GenerationIsActive = false;
         internal static int EntityCount = 0;
@@ -44,7 +42,6 @@ namespace CodeViewsWindow
         internal static Vector3 InfoPlayerStartOrigin = Vector3.zero;
         internal static Vector3 InfoPlayerStartAngles = Vector3.zero;
 
-        internal static Color SettingsColor = new Color( 255f, 255f, 255f );
         internal static Texture2D enableLogo;
         internal static Texture2D disableLogo;
 
@@ -202,232 +199,6 @@ namespace CodeViewsWindow
             File.WriteAllText( path, code );
         }
 
-
-        //   ██████╗ ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗ █████╗ ██╗         ██╗   ██╗██╗
-        //  ██╔═══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔══██╗██║         ██║   ██║██║
-        //  ██║   ██║██████╔╝   ██║   ██║██║   ██║██╔██╗ ██║███████║██║         ██║   ██║██║
-        //  ██║   ██║██╔═══╝    ██║   ██║██║   ██║██║╚██╗██║██╔══██║██║         ██║   ██║██║
-        //  ╚██████╔╝██║        ██║   ██║╚██████╔╝██║ ╚████║██║  ██║███████╗    ╚██████╔╝██║
-        //   ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝
-
-        internal static void ShowSquirrelFunction( string trueText = "Hide Squirrel Function", string falseText = "Show Squirrel Function", string tooltip = "If true, display the code as a function" )
-        {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
-
-            GUIContent buttonContent = new GUIContent( ShowFunction ? trueText : falseText, tooltip );
-
-            GUIContent buttonContentInfo = new GUIContent( ShowFunction ? enableLogo : disableLogo, tooltip );
-        
-            GUILayout.BeginHorizontal();
-                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
-                {
-                    ShowFunction = !ShowFunction;
-                    Refresh();
-                }
-            GUILayout.EndHorizontal();
-        }
-
-        internal static void OptionalFunctionName( string text = "Function Name", string tooltip = "Change the name of the function" )
-        {
-            GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( 96 ) );
-                functionName = EditorGUILayout.TextField( new GUIContent( "", tooltip ), functionName, GUILayout.Width( 220 ) );
-            GUILayout.EndHorizontal();
-        }
-
-        internal static void OptionalUseOffset( string trueText = "Disable Origin Offset", string falseText = "Enable Origin Offset", string tooltip = "If true, add a position offset to objects" )
-        {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
-
-            GUIContent buttonContent = new GUIContent( Helper.UseStartingOffset ? trueText : falseText, tooltip );
-
-            GUIContent buttonContentInfo = new GUIContent( Helper.UseStartingOffset ? enableLogo : disableLogo, tooltip );
-
-            GUILayout.BeginHorizontal();
-                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
-                {
-                    Helper.UseStartingOffset = !Helper.UseStartingOffset;
-                    Refresh();
-                }
-            GUILayout.EndHorizontal();
-        }
-
-        internal static void OptionalShowOffset( string text = "Show Origin Offset", string tooltip = "Show/Hide \"vector startingorg = < 0, 0, 0 >\"" )
-        {
-            GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( 302 ) );
-
-                Helper.ShowStartingOffset = EditorGUILayout.Toggle( "", Helper.ShowStartingOffset, GUILayout.Width( 0 ) );
-
-                if( Helper.ShowStartingOffset != Helper.ShowStartingOffsetTemp )
-                {
-                    Helper.ShowStartingOffsetTemp = Helper.ShowStartingOffset;
-                    Refresh();
-                }
-            GUILayout.EndHorizontal();
-        }
-
-        internal static void OptionalOffsetField( string text = "Starting Origin", string tooltip = "Change origins in \"vector startingorg = < 0, 0, 0 >\"" )
-        {
-            GUILayout.BeginHorizontal();
-
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.MaxWidth( 107 ) );
-
-                StartingOffset = EditorGUILayout.Vector3Field( "", StartingOffset, GUILayout.MaxWidth( 210 ) );
-                
-            GUILayout.EndHorizontal();
-        }
-
-        internal static void OptionalSelection( string trueText = "Disable Selection Only", string falseText = "Enable Selection Only", string tooltip = "If true, generates the code of the selection only" )
-        {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
-
-            GUIContent buttonContent = new GUIContent( EnableSelection ? trueText : falseText, tooltip );
-
-            GUIContent buttonContentInfo = new GUIContent( EnableSelection ? enableLogo : disableLogo, tooltip );
-
-            GUILayout.BeginHorizontal();
-                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
-                {
-                    EnableSelection = !EnableSelection;
-                    Refresh();
-                }
-            GUILayout.EndHorizontal();
-
-            Space( 10 );
-        }
-
-        internal static void ShowSquirrelEntFunction( string trueText = "Hide Full File", string falseText = "Show Full File", string tooltip = "If true, display the code as ent file" )
-        {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
-
-            GUIContent buttonContent = new GUIContent( ShowEntFunction ? trueText : falseText, tooltip );
-
-            GUIContent buttonContentInfo = new GUIContent( ShowEntFunction ? enableLogo : disableLogo, tooltip );
-        
-            GUILayout.BeginHorizontal();
-                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
-                {
-                    ShowEntFunction = !ShowEntFunction;
-                    Refresh();
-                }
-            GUILayout.EndHorizontal();
-        }
-
-        internal static void OptionalMapID()
-        {
-            GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField( new GUIContent( "Ent ID", "Set the map ID" ), GUILayout.MaxWidth( 277 ) );
-
-                string userInput = EditorGUILayout.TextField( EntFileID.ToString(), GUILayout.MaxWidth( 40 ) );
-                userInput = Regex.Replace( userInput, "[^0-9]", "" );
-
-                if ( int.TryParse( userInput, out EntFileID ) ) EntFileID = int.Parse( userInput );
-            GUILayout.EndHorizontal();
-        }
-
-        internal static void OptionalInfoPlayerStart()
-        {
-            EditorGUILayout.LabelField( new GUIContent( "Info Player Start", "Settings of where to spawn the player" ), GUILayout.MaxWidth( 107 ) );
-            GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField( new GUIContent( "- Origin", "Set origin to \"Info Player Start\"" ), GUILayout.MaxWidth( 107 ) );
-
-                InfoPlayerStartOrigin = EditorGUILayout.Vector3Field( "", InfoPlayerStartOrigin, GUILayout.MaxWidth( 210 ) );
-            GUILayout.EndHorizontal();
-            CodeViewsWindow.Space( 4 );
-            GUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField( new GUIContent( "- Angles", "Set angles to \"Info Player Start\"" ), GUILayout.MaxWidth( 107 ) );
-
-                InfoPlayerStartAngles = EditorGUILayout.Vector3Field( "", InfoPlayerStartAngles, GUILayout.MaxWidth( 210 ) );
-            GUILayout.EndHorizontal();
-        }
-
-        internal static void OptionalAdvancedOption( string trueText = "Hide Advanced Options", string falseText = "Show Advanced Options", string tooltip = "Choose the objects you want to\ngenerate or not" )
-        {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
-
-            GUIContent buttonContent = new GUIContent( ShowAdvancedMenu ? trueText : falseText, tooltip );
-
-            GUIContent buttonContentInfo = new GUIContent( ShowAdvancedMenu ? enableLogo : disableLogo, tooltip );
-        
-            GUILayout.BeginHorizontal();
-                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize )))
-                {
-                    ShowAdvancedMenu = !ShowAdvancedMenu;
-                    Refresh();
-                }
-            GUILayout.EndHorizontal();
-
-            if ( !ShowAdvancedMenu )
-            {
-                return;
-            }
-            else
-            {
-                Space( 4 );
-            }
-
-            GUILayout.BeginVertical();
-                GUILayout.BeginHorizontal();
-                    if ( GUILayout.Button( "Check All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize / 2 + 10 )))
-                    {
-                        Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), true );
-                        Refresh();
-                    }
-
-                    Space( 1 );
-
-                    if ( GUILayout.Button( "Uncheck All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUILayoutButtonSize / 2 + 10 )))
-                    {
-                        Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), false );
-                        Refresh();
-                    }
-                GUILayout.EndHorizontal();
-
-                foreach ( string key in GenerateObjectsFunction.Keys )
-                {
-                    ObjectType? type = Helper.GetObjectTypeByObjName( key );
-                    ObjectType typed = ( ObjectType ) type;
-
-                    if ( IsHided( typed ) ) continue;
-                    
-                    Space( 4 );
-
-                    GUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField( new GUIContent( $"Build {key}", GenerateObjectsFunctionTemp[key] ? $"Disable {key}" : $"Enable {key}" ), GUILayout.Width( 302 ) );
-                        GenerateObjectsFunctionTemp[key] = EditorGUILayout.Toggle( "", GenerateObjectsFunctionTemp[key], GUILayout.MaxWidth( 0 ) );
-                    GUILayout.EndHorizontal();
-
-                    if ( GenerateObjects[key] != GenerateObjectsFunctionTemp[key] )
-                    {
-                        GenerateObjects[key] = GenerateObjectsFunctionTemp[key];
-                        Refresh();
-                    }
-                }
-            GUILayout.EndVertical();
-            Space( 6 );
-            Separator();
-        }
-
-        internal static void Space( float value )
-        {
-            GUILayout.Space( value );
-        }
-
-        internal static void Separator()
-        {
-            Space( 2 );
-            GUI.backgroundColor = SettingsColor;
-            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
-            GUI.backgroundColor = Color.white;
-        }
-
-
         //  ██████╗ ██████╗ ██╗██╗   ██╗ █████╗ ████████╗███████╗    ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
         //  ██╔══██╗██╔══██╗██║██║   ██║██╔══██╗╚══██╔══╝██╔════╝    ██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
         //  ██████╔╝██████╔╝██║██║   ██║███████║   ██║   █████╗      █████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
@@ -473,10 +244,6 @@ namespace CodeViewsWindow
                         ObjectCount();
 
                         GUILayout.FlexibleSpace();
-
-                        #if ReMapDev
-                            Helper.OverideWindowSize( windowSize.x, windowSize.y, 100 );
-                        #endif
 
                         ExportButton();
                         SettingsMenuButton();

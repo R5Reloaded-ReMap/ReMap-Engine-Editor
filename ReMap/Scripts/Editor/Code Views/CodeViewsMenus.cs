@@ -68,7 +68,12 @@ namespace CodeViewsWindow
             }
             GUILayout.EndHorizontal();
 
-            FunctionInit( functionRefs, value );
+            if ( menuType == MenuType.SubMenu )
+            {
+                SubFunctionInit( functionRefs, value );
+            } else FunctionInit( functionRefs, value );
+
+            
         }
 
         internal static void FunctionInit( FunctionRef[] functionRefs, bool value )
@@ -80,6 +85,16 @@ namespace CodeViewsWindow
                 Space( 6 ); Separator( 318 );
             }
             else Space( 10 );
+        }
+
+        internal static void SubFunctionInit( FunctionRef[] functionRefs, bool value )
+        {
+            if ( functionRefs.Length != 0 && value )
+            {
+                CallFunctions( functionRefs );
+
+                Space( 6 ); Separator( 318 );
+            }
         }
 
         internal static void CallFunctions( FunctionRef[] functionRefs )

@@ -253,20 +253,6 @@ namespace CodeViewsWindow
 
         private static void SettingsMenu()
         {
-            //  FYI // ESTETICS MENU
-            //  
-            //  BUTTON SETTINGS MENU 1
-            //  SPACE 4
-            //  SETTING
-            //  SPACE 4
-            //  SETTING
-            //  SPACE 6                     // IF MENU IS OPEN
-            //  END LINE OF SETTINGS MENU 1 // IF MENU IS OPEN
-            //  SPACE 10                    // IF MENU IS CLOSED
-            //  
-            //  BUTTON SETTINGS MENU 2 ...
-            //
-
             switch ( tab )
             {
                 case 0: // Squirrel Code

@@ -15,37 +15,39 @@ namespace CodeViewsWindow
         Menu,
         SubMenu
     }
+    
     internal delegate void FunctionRef();
 
     public class CodeViewsMenu
     {
         private static int GUI_MenuSize = 297;
-        private static int GUI_SubMenuSize = 297 - 30;
+        private static int GUI_SubMenuSize = 274;
         internal static Color GUI_SettingsColor = new Color( 255f, 255f, 255f );
 
         internal static bool ShowDevMenu = false;
+        internal static bool ShowSubDevMenu = false;
 
         internal static FunctionRef[] DevMenu = new FunctionRef[]
+        {
+            () => CreateSubMenu( SubDevMenu, "Sub Menu", "Sub Menu", "", ref ShowSubDevMenu )
+        };
+
+        internal static FunctionRef[] SubDevMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.OptionalTextInfo( $"Window Size: {CodeViewsWindow.windowSize.x} x {CodeViewsWindow.windowSize.y}", "Show the current size of the window" )
         };
 
-
-        internal static void FunctionInit( FunctionRef[] functionRefs, bool value )
+        internal static void CreateMenu( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value )
         {
-            if ( functionRefs.Length != 0 && value )
-            {
-                foreach ( FunctionRef functionRef in functionRefs )
-                {
-                    Space( 4 );
-                    functionRef();
-                }
-                Space( 6 ); Separator();
-            } 
-            else Space( 10 );
+            Internal_CreateButton( functionRefs, trueText, falseText, tooltip, ref value, MenuType.Menu, GUI_MenuSize );
         }
 
-        internal static void CreateMenu( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value, MenuType menuType = MenuType.Menu )
+        internal static void CreateSubMenu( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value )
+        {
+            Internal_CreateButton( functionRefs, trueText, falseText, tooltip, ref value, MenuType.SubMenu, GUI_SubMenuSize );
+        }
+
+        internal static void Internal_CreateButton( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value, MenuType menuType, int buttonWidth )
         {
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
@@ -53,17 +55,40 @@ namespace CodeViewsWindow
             GUIContent buttonContent = new GUIContent( value ? trueText : falseText, tooltip );
             GUIContent buttonContentInfo = new GUIContent( value ? CodeViewsWindow.enableLogo : CodeViewsWindow.disableLogo, tooltip );
 
-            int size = menuType == MenuType.Menu ? GUI_MenuSize : GUI_SubMenuSize;
-        
             GUILayout.BeginHorizontal();
-                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 )) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( GUI_MenuSize )))
-                {
-                    value = !value;
-                    CodeViewsWindow.Refresh();
-                }
+            if ( menuType == MenuType.SubMenu )
+            {
+                Space( 26 );
+            }
+
+            if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 ) ) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( buttonWidth ) ) )
+            {
+                value = !value;
+                CodeViewsWindow.Refresh();
+            }
             GUILayout.EndHorizontal();
 
             FunctionInit( functionRefs, value );
+        }
+
+        internal static void FunctionInit( FunctionRef[] functionRefs, bool value )
+        {
+            if ( functionRefs.Length != 0 && value )
+            {
+                CallFunctions( functionRefs );
+
+                Space( 6 ); Separator( 318 );
+            }
+            else Space( 10 );
+        }
+
+        internal static void CallFunctions( FunctionRef[] functionRefs )
+        {
+            foreach ( FunctionRef functionRef in functionRefs )
+            {
+                Space( 4 );
+                functionRef();
+            }
         }
 
 
@@ -175,11 +200,10 @@ namespace CodeViewsWindow
             GUILayout.Space( value );
         }
 
-        internal static void Separator()
+        internal static void Separator( int space )
         {
-            Space( 2 );
             GUI.backgroundColor = GUI_SettingsColor;
-            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 4 ) );
+            GUILayout.Box( "", GUILayout.Width( space ), GUILayout.Height( 4 ) );
             GUI.backgroundColor = Color.white;
         }
 

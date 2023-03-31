@@ -21,8 +21,12 @@ namespace CodeViewsWindow
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalToggle( ref Helper.ShowStartingOffset, ref Helper.ShowStartingOffsetTemp, "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"" ),
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", Helper.ShowStartingOffset )
+            () => CodeViewsMenu.CreateSubMenu( OffsetSubMenu, "Hide Origin Offset", "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"", ref Helper.ShowStartingOffset )
+        };
+
+        static FunctionRef[] OffsetSubMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", Helper.ShowStartingOffset, MenuType.SubMenu )
         };
 
         static FunctionRef[] SelectionMenu = new FunctionRef[0];

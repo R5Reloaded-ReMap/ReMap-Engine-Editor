@@ -61,7 +61,7 @@ namespace CodeViewsWindow
             TagHelper.CheckAndCreateTags(); tab = 0; tabEnt = 0;
 
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
-            windowInstance.minSize = new Vector2( 1100, 500 );
+            windowInstance.minSize = new Vector2( 1230, 500 );
             windowInstance.Show();
             GetFunctionName();
         }
@@ -86,7 +86,7 @@ namespace CodeViewsWindow
             if( tab != tab_temp || tabEnt != tabEnt_temp )
             {
                 GetFunctionName();
-                Refresh();
+                Refresh( false, false );
                 tab_temp = tab;
                 tabEnt_temp = tabEnt;
             }
@@ -141,9 +141,18 @@ namespace CodeViewsWindow
         //  ██║   ██║██║    ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝  
         //  ╚██████╔╝██║    ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
         //   ╚═════╝ ╚═╝     ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
-        internal static void Refresh( bool copy = false )
+        internal static void Refresh( bool copy = false, bool reSetScroll = true )
         {
             EntityCount = 0; GenerateCorrectCode( copy );
+            if ( reSetScroll ) SetScrollView( scroll );
+        }
+
+        internal static async void SetScrollView( Vector2 scroll )
+        {
+            // Hack: As long as the code generation is not finished, then do not continue the script
+            while ( GenerationIsActive ) await Task.Delay( 100 ); // 100 ms
+
+            CodeViewsWindow.scroll = scroll;
         }
 
         internal static async void ExportFunction()
@@ -325,6 +334,7 @@ namespace CodeViewsWindow
         private static void CodeOutput()
         {
             GUIStyle style = new GUIStyle( GUI.skin.textArea );
+            style.fontSize = 12;
             style.wordWrap = false;
 
             scroll = EditorGUILayout.BeginScrollView( scroll );

@@ -108,7 +108,6 @@ GameObject:
   m_Component:
   - component: {fileID: 171202246557575127}
   - component: {fileID: 4215494205744204108}
-  - component: {fileID: 596945752382604853}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -185,27 +184,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.9970703, y: -1.199707, z: 9.510744}
     m_Extent: {x: 15.228516, y: 13.464358, z: 13.522463}
   m_DirtyAABB: 0
---- !u!65 &596945752382604853
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3178000226611493531}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 30.457052, y: 26.928738, z: 27.044939}
-  m_Center: {x: -0.9970728, y: -1.1997087, z: 9.510748}
 --- !u!1 &3469101144236115689
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +225,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5169917573241560758}
   - component: {fileID: 4232500233460700008}
-  - component: {fileID: -3705197288510312573}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -324,27 +301,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -0.00048828125, z: 12.446292}
     m_Extent: {x: 20.13623, y: 17.08057, z: 12.866214}
   m_DirtyAABB: 0
---- !u!65 &-3705197288510312573
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4442239688740927369}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 40.272488, y: 34.161163, z: 25.73244}
-  m_Center: {x: 0.00048531406, y: -0.00048976525, z: 12.446297}
 --- !u!1 &5522092273192222924
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8015064291580760649}
   - component: {fileID: 3469488224983819456}
+  - component: {fileID: -4479312705712579893}
   m_Layer: 0
   m_Name: mdl#foliage#desertlands_alien_tree_leaf_small_02
   m_TagString: Prop
@@ -390,6 +347,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-4479312705712579893
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5522092273192222924}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 34.16116, y: 29.324238, z: 40.27248}
+  m_Center: {x: -0.00048828125, y: 10.650396, z: 0.00048446655}

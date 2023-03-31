@@ -17,7 +17,7 @@ public class RealmParent : MonoBehaviour
             return;
         
         foreach (PropScript a in gameObject.GetComponentsInChildren<PropScript>())
-            a.realmID = realmId;
+            a.RealmID = realmId;
     }
 
     private void OnValidate()

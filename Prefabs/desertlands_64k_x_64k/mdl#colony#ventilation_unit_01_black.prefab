@@ -106,7 +106,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8196598863154381900}
   - component: {fileID: 1413153081369196369}
-  - component: {fileID: 3853889190981153506}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -183,27 +182,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: 0.013183594, z: 14.145512}
     m_Extent: {x: 29.105957, y: 57.23488, z: 1.0361328}
   m_DirtyAABB: 0
---- !u!65 &3853889190981153506
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5276462075274894244}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 58.21195, y: 114.46982, z: 2.07228}
-  m_Center: {x: 0.0004849073, y: 0.013181914, z: 14.145516}
 --- !u!1 &7729488358777229888
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,6 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8909889007442880460}
   - component: {fileID: 2794340425375145388}
+  - component: {fileID: -1003465714945231371}
   m_Layer: 0
   m_Name: mdl#colony#ventilation_unit_01_black
   m_TagString: Prop
@@ -282,9 +261,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-1003465714945231371
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8270018868958193986}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 119.9991, y: 16.000038, z: 64.00002}
+  m_Center: {x: -0.00048828125, y: 8.000005, z: -0.0000038146973}
 --- !u!1 &8594219503694458016
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +298,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6023891742492319705}
   - component: {fileID: 7337762697455787133}
-  - component: {fileID: 8061806974197567305}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -372,24 +374,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: -0.00048828125, z: 8.000002}
     m_Extent: {x: 32, y: 59.999527, z: 8.000002}
   m_DirtyAABB: 0
---- !u!65 &8061806974197567305
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8594219503694458016}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 64.000046, y: 119.999115, z: 16.000023}
-  m_Center: {x: -0.0000019072911, y: -0.00048923516, z: 8.000005}

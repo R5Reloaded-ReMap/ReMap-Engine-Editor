@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5013289044952111158}
   - component: {fileID: 5905388322113498761}
-  - component: {fileID: -1035246507382279158}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -87,27 +86,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -107.64746, y: -4.703125, z: 9.243166}
     m_Extent: {x: 104.64746, y: 128.70901, z: 6.73633}
   m_DirtyAABB: 0
---- !u!65 &-1035246507382279158
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 98812048184495797}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 209.29503, y: 257.41818, z: 13.472695}
-  m_Center: {x: -107.6475, y: -4.7031155, z: 9.24317}
 --- !u!1 &630314213987333678
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4980596204887736099}
   - component: {fileID: 6605388395670038946}
+  - component: {fileID: -5253756518371791838}
   m_Layer: 0
   m_Name: mdl#floating_village#roof_primitive_03_white
   m_TagString: Prop
@@ -153,9 +132,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-5253756518371791838
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630314213987333678}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 257.41815, y: 15.97953, z: 212.29497}
+  m_Center: {x: -4.7030945, y: 7.989765, z: -106.147484}
 --- !u!1 &1136648542614769135
 GameObject:
   m_ObjectHideFlags: 0

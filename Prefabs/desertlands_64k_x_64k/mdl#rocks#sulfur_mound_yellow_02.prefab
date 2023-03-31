@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1912134044303716964}
   - component: {fileID: 8743812856568115391}
+  - component: {fileID: -4103622135005489412}
   m_Layer: 0
   m_Name: mdl#rocks#sulfur_mound_yellow_02
   m_TagString: Prop
@@ -77,9 +78,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-4103622135005489412
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303018710281376560}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 403.6575, y: 224.9133, z: 331.14957}
+  m_Center: {x: -0.00048828125, y: 35.10695, z: 0.00047302246}
 --- !u!1 &3637756432998045770
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5410344455049391132}
   - component: {fileID: 5913081422633413354}
-  - component: {fileID: -7960209402417727642}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -0.00048828125, z: 35.106937}
     m_Extent: {x: 165.5747, y: 201.82866, z: 112.45657}
   m_DirtyAABB: 0
---- !u!65 &-7960209402417727642
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6889034800286352153}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 331.14966, y: 403.65756, z: 224.91327}
-  m_Center: {x: 0.00047991134, y: -0.0004924666, z: 35.10695}

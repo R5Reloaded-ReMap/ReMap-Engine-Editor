@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6385331909514186644}
   - component: {fileID: 1546904666352451061}
-  - component: {fileID: -3109384163366758786}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -87,27 +86,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.03535156, y: -0.011220705, z: 0.024653327}
     m_Extent: {x: 0.01754883, y: 0.037587896, z: 0.024614263}
   m_DirtyAABB: 0
---- !u!65 &-3109384163366758786
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 823663442549913501}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.03509769, y: 0.075175844, z: 0.049228553}
-  m_Center: {x: -0.03535158, y: -0.0112207085, z: 0.024653338}
 --- !u!1 &1294636476047386433
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +96,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3198331059311557131}
   - component: {fileID: 200508439610002730}
-  - component: {fileID: 1915671618657873894}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -195,27 +172,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.05102539, y: 0.009887699, z: 0.034741215}
     m_Extent: {x: 0, y: 0.0075927754, z: 0.007592775}
   m_DirtyAABB: 0
---- !u!65 &1915671618657873894
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1294636476047386433}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.0000000054307767, y: 0.01518556, z: 0.015185557}
-  m_Center: {x: -0.051025417, y: 0.0098877065, z: 0.034741227}
 --- !u!1 &4016540549769160647
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +182,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3905706051342406724}
   - component: {fileID: 22401589448611505}
-  - component: {fileID: 9134433471846512642}
   m_Layer: 0
   m_Name: KoreLibMesh02
   m_TagString: Untagged
@@ -303,27 +258,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.022963867, y: -0.045605477, z: 0.0075634783}
     m_Extent: {x: 0.002094727, y: 0.009462893, z: 0.00845215}
   m_DirtyAABB: 0
---- !u!65 &9134433471846512642
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016540549769160647}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.004189462, y: 0.018925797, z: 0.016904308}
-  m_Center: {x: -0.02296387, y: -0.045605496, z: 0.0075634867}
 --- !u!1 &4383356030032928670
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,6 +268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1423190793209105188}
   - component: {fileID: 8530677292451167665}
+  - component: {fileID: 2494982893210592163}
   m_Layer: 0
   m_Name: mdl#props#crypto_drone#crypto_drone_destoyed_03
   m_TagString: Prop
@@ -369,9 +304,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &2494982893210592163
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4383356030032928670}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.08143559, y: 0.050156273, z: 0.05290041}
+  m_Center: {x: -0.014350586, y: 0.024189474, z: -0.026450206}
 --- !u!1 &6174874452775389407
 GameObject:
   m_ObjectHideFlags: 0

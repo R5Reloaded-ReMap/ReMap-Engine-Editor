@@ -74,6 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 265794529969723064}
   - component: {fileID: 8191224294577107334}
+  - component: {fileID: -6853557671265126227}
   m_Layer: 0
   m_Name: mdl#desertlands#mobile_vehicle_01_windshield_ext_01
   m_TagString: Prop
@@ -109,9 +110,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-6853557671265126227
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3153819485980883083}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 232.4982, y: 101.17002, z: 110.971725}
+  m_Center: {x: 0, y: 0, z: 0.00048828125}
 --- !u!1 &5779663106164282321
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2096075223116976737}
   - component: {fileID: 3016220299757571360}
-  - component: {fileID: 8350049633611039171}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: 0, z: 0}
     m_Extent: {x: 55.48584, y: 116.249054, z: 50.584972}
   m_DirtyAABB: 0
---- !u!65 &8350049633611039171
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8620132789741058560}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 110.97177, y: 232.49825, z: 101.17001}
-  m_Center: {x: 0.0004882814, y: -5.820767e-11, z: -6.938894e-18}

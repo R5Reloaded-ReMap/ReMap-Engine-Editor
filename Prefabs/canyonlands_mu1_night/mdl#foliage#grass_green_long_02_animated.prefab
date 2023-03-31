@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3650669340839286874}
   - component: {fileID: 6993524515789994642}
+  - component: {fileID: 6383845620104275791}
   m_Layer: 0
   m_Name: mdl#foliage#grass_green_long_02_animated
   m_TagString: Prop
@@ -173,9 +174,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &6383845620104275791
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5348537217263180276}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 54.918983, y: 34.38382, z: 56.421898}
+  m_Center: {x: 0.3383789, y: 15.004404, z: 0.16698837}
 --- !u!1 &6934681600590182212
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7501424860335545612}
   - component: {fileID: 770011093295353924}
-  - component: {fileID: 2635459834907925173}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.16699219, y: 0.3383789, z: 15.004398}
     m_Extent: {x: 28.210938, y: 27.459478, z: 17.191898}
   m_DirtyAABB: 0
---- !u!65 &2635459834907925173
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6934681600590182212}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 56.42191, y: 54.918995, z: 34.383816}
-  m_Center: {x: 0.16698863, y: 0.33837724, z: 15.004404}

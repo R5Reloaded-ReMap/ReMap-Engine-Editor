@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1303527008044391667}
   - component: {fileID: 2577343212364012513}
-  - component: {fileID: 355280454256319472}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -118,27 +117,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -200.18262, y: -109.07131, z: 160.50835}
     m_Extent: {x: 200.18262, y: 109.07131, z: 160.50835}
   m_DirtyAABB: 0
---- !u!65 &355280454256319472
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3700759956560278068}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 400.3655, y: 218.14282, z: 321.01685}
-  m_Center: {x: -200.18272, y: -109.071365, z: 160.50842}
 --- !u!1 &5479782437563608594
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 393476067405634605}
   - component: {fileID: 3803619908378566307}
+  - component: {fileID: -8218163412252841984}
   m_Layer: 0
   m_Name: mdl#thunderdome#thunderdome_fan_stands_01
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-8218163412252841984
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8172231436280354861}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 218.14276, y: 321.01685, z: 400.36542}
+  m_Center: {x: -109.07129, y: 160.50842, z: -200.18271}

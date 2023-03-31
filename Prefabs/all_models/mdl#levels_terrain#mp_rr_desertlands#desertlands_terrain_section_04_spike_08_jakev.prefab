@@ -138,7 +138,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6694322915179469257}
   - component: {fileID: 6872080588701012544}
-  - component: {fileID: -4706358570583456078}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -215,27 +214,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 340.48975, y: -78.47011, z: 414.948}
     m_Extent: {x: 1023.3594, y: 212.01442, z: 1096.6797}
   m_DirtyAABB: 0
---- !u!65 &-4706358570583456078
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7341476465276730397}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2046.72, y: 424.02957, z: 2193.36}
-  m_Center: {x: 340.48978, y: -78.47023, z: 414.94815}
 --- !u!1 &8516961131914154182
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6926253592271881893}
   - component: {fileID: 2012352793324370159}
+  - component: {fileID: -4832658897582474286}
   m_Layer: 0
   m_Name: mdl#levels_terrain#mp_rr_desertlands#desertlands_terrain_section_04_spike_08_jakev
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-4832658897582474286
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8516961131914154182}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 424.02942, y: 2193.3599, z: 2046.7197}
+  m_Center: {x: -78.470215, y: 414.94812, z: 340.48975}

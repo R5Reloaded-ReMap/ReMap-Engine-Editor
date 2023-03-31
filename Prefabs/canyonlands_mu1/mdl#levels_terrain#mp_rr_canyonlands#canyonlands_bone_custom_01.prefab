@@ -42,7 +42,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2630708155594424132}
   - component: {fileID: 7349040336934057222}
-  - component: {fileID: -5109175905190793043}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -119,27 +118,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -616.2805, y: -700.14575, z: 938.1127}
     m_Extent: {x: 3453.6794, y: 2793.7612, z: 1863.6989}
   m_DirtyAABB: 0
---- !u!65 &-5109175905190793043
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5431876201446085300}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 6907.363, y: 5587.5264, z: 3727.3997}
-  m_Center: {x: -616.28094, y: -700.1461, z: 938.11304}
 --- !u!1 &6302292175026499426
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,6 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3151157829028690378}
   - component: {fileID: 2955533931513179251}
+  - component: {fileID: 435625320591111471}
   m_Layer: 0
   m_Name: mdl#levels_terrain#mp_rr_canyonlands#canyonlands_bone_custom_01
   m_TagString: Prop
@@ -248,9 +227,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &435625320591111471
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6794859536256417575}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5587.5254, y: 3727.4, z: 6907.3613}
+  m_Center: {x: -700.14575, y: 938.1131, z: -616.28076}
 --- !u!1 &8032151679267518248
 GameObject:
   m_ObjectHideFlags: 0

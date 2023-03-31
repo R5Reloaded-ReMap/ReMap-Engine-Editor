@@ -107,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2688396965552638216}
   - component: {fileID: 9000953890588635818}
+  - component: {fileID: -5463290911173898645}
   m_Layer: 0
   m_Name: mdl#levels_terrain#mp_rr_canyonlands#waterfall_canyonlands_04
   m_TagString: Prop
@@ -142,9 +143,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-5463290911173898645
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932243095330886627}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2768.492, y: 4679.7974, z: 2350.031}
+  m_Center: {x: -95.090576, y: 1297.4216, z: 116.352905}
 --- !u!1 &2144675428843884692
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +180,6 @@ GameObject:
   m_Component:
   - component: {fileID: 811038135791224272}
   - component: {fileID: 2968996056436760748}
-  - component: {fileID: -6326265425698589385}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -232,27 +256,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -303.83826, y: -62.62274, z: 1395.8264}
     m_Extent: {x: 754.82324, y: 951.1677, z: 2241.4927}
   m_DirtyAABB: 0
---- !u!65 &-6326265425698589385
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2144675428843884692}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1509.6483, y: 1902.3369, z: 4482.987}
-  m_Center: {x: -303.8387, y: -62.622906, z: 1395.8269}
 --- !u!1 &2973352625661758260
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +298,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9223289842783559250}
   - component: {fileID: 8736589313155234409}
-  - component: {fileID: -5015942952004275501}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -372,24 +374,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 271.95288, y: -95.090454, z: 1126.917}
     m_Extent: {x: 1019.41504, y: 1384.2454, z: 2169.3936}
   m_DirtyAABB: 0
---- !u!65 &-5015942952004275501
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8729797837284529100}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2038.8322, y: 2768.4927, z: 4338.789}
-  m_Center: {x: 271.9527, y: -95.09067, z: 1126.9174}

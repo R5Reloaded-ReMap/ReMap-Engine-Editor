@@ -73,6 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1934325869881278088}
   - component: {fileID: 2982297167496656343}
+  - component: {fileID: 3378052153598664616}
   m_Layer: 0
   m_Name: mdl#levels_terrain#mp_lobby#mp_lobby_godrays
   m_TagString: Prop
@@ -108,9 +109,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &3378052153598664616
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5216993824109722766}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 535.4124, y: 192.88889, z: 415.50992}
+  m_Center: {x: -20.299744, y: 55.63479, z: -207.75496}
 --- !u!1 &5301200258763663688
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5452402637996253659}
   - component: {fileID: 893853374365660426}
-  - component: {fileID: -4477462031755872249}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -247.50684, y: -20.299805, z: 55.634773}
     m_Extent: {x: 168.00293, y: 267.70612, z: 96.44436}
   m_DirtyAABB: 0
---- !u!65 &-4477462031755872249
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7658815859586552014}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 336.0061, y: 535.41254, z: 192.88885}
-  m_Center: {x: -247.50694, y: -20.299791, z: 55.634796}

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3558426530534097607}
   - component: {fileID: 967369854443281039}
   - component: {fileID: 9065809299699815745}
-  - component: {fileID: 9038711195981264281}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -84,27 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &9038711195981264281
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 35542720933577951}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 24.503912, y: 2.6718762, z: 14.833012}
-  m_Center: {x: 0, y: -11.102545, z: 12.234866}
 --- !u!1 &585115511651209645
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6806031283626699858}
   - component: {fileID: 277835494031163335}
+  - component: {fileID: -1768695902338324361}
   m_Layer: 0
   m_Name: mdl#holo_screens#monitor_hood_imc_01_screen_text_02
   m_TagString: Prop
@@ -150,9 +129,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-1768695902338324361
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585115511651209645}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 12.43848, y: 19.651371, z: 24.50391}
+  m_Center: {x: -6.21924, y: 9.8256855, z: -0.0000009536743}
 --- !u!1 &1211939242318544875
 GameObject:
   m_ObjectHideFlags: 0

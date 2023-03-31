@@ -105,7 +105,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1426099080989880056}
   - component: {fileID: 9134821125057905333}
-  - component: {fileID: -3004422164282901601}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -182,27 +181,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0007324219, y: -1.2655029, z: 1597.7572}
     m_Extent: {x: 1121.137, y: 1142.1672, z: 0}
   m_DirtyAABB: 0
---- !u!65 &-3004422164282901601
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7173572277535820716}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2242.275, y: 2284.3357, z: 0.0002723139}
-  m_Center: {x: 0.00035163792, y: -1.265694, z: 1597.7578}
 --- !u!1 &7742490728155026971
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3664647710913529777}
   - component: {fileID: 6536450791552423350}
+  - component: {fileID: -6463027909267405887}
   m_Layer: 0
   m_Name: mdl#levels_terrain#mp_rr_canyonlands#water_treatment_02_mud_water
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-6463027909267405887
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7845166558053799475}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2284.3354, y: 1597.7578, z: 2242.2744}
+  m_Center: {x: -1.2655029, y: 798.8789, z: 0.00036621094}

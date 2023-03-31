@@ -74,6 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1459692967727402665}
   - component: {fileID: 5660216295687145989}
+  - component: {fileID: 9211654844326377527}
   m_Layer: 0
   m_Name: mdl#props#bloodhound_skull#w_bloodhound_skull
   m_TagString: Prop
@@ -109,9 +110,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &9211654844326377527
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5523271971806803928}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.050830115, y: 0.05833012, z: 0.07141605}
+  m_Center: {x: -0.0000048838556, y: -0.0025341809, z: 0.0023779273}
 --- !u!1 &6285716347216958715
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3817635849688003558}
   - component: {fileID: 7051582166631175145}
-  - component: {fileID: -2163248069138826642}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0023779273, y: -0.0000048838556, z: -0.0025341809}
     m_Extent: {x: 0.03570801, y: 0.025415042, z: 0.029165044}
   m_DirtyAABB: 0
---- !u!65 &-2163248069138826642
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173850131141910347}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.071416065, y: 0.050830126, z: 0.05833012}
-  m_Center: {x: 0.002377929, y: -0.000004883839, z: -0.0025341818}

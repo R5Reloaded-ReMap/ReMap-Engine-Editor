@@ -43,7 +43,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2081315905538863139}
   - component: {fileID: 4233901679954178695}
-  - component: {fileID: -6492155985336123583}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -120,27 +119,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 606.4949, y: -5296.746, z: 4190.321}
     m_Extent: {x: 1776.719, y: 5335.9404, z: 3868.268}
   m_DirtyAABB: 0
---- !u!65 &-6492155985336123583
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2900235745879947173}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3553.4424, y: 10671.887, z: 7736.5405}
-  m_Center: {x: 606.49475, y: -5296.749, z: 4190.3228}
 --- !u!1 &4718451501738720256
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +129,6 @@ GameObject:
   m_Component:
   - component: {fileID: 560695658253445838}
   - component: {fileID: 1898700645718433306}
-  - component: {fileID: -3436261002489220607}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -228,27 +205,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.001953125, y: 0, z: -90.13428}
     m_Extent: {x: 21115.787, y: 31919.38, z: 7968.4546}
   m_DirtyAABB: 0
---- !u!65 &-3436261002489220607
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4718451501738720256}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 42231.6, y: 63838.797, z: 15936.923}
-  m_Center: {x: -0.001931636, y: 0.000010745081, z: -90.13431}
 --- !u!1 &4891421790500401959
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3817638626584858399}
   - component: {fileID: 412902829786187270}
+  - component: {fileID: 724794003636924622}
   m_Layer: 0
   m_Name: mdl#levels_terrain#mp_rr_desertlands#desertlands_godrays_zone_16_01
   m_TagString: Prop
@@ -390,6 +347,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &724794003636924622
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9050631312340751827}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 63838.79, y: 16117.192, z: 42231.59}
+  m_Center: {x: 0, y: -0.0024414062, z: -0.001953125}

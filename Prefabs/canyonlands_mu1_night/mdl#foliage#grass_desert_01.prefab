@@ -75,6 +75,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6555622263777338457}
   - component: {fileID: 6331098108642325144}
+  - component: {fileID: 5084411078872613089}
   m_Layer: 0
   m_Name: mdl#foliage#grass_desert_01
   m_TagString: Prop
@@ -110,9 +111,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &5084411078872613089
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3525115251700773205}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30.537132, y: 63.63285, z: 27.2051}
+  m_Center: {x: 2.2314463, y: 30.622086, z: 0.72069645}
 --- !u!1 &3701418439761229253
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +148,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1801556560114114475}
   - component: {fileID: 4277875860651702685}
-  - component: {fileID: 1356960134380633424}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -200,27 +224,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.7207031, y: 2.2314453, z: 30.622078}
     m_Extent: {x: 13.602539, y: 15.2685585, z: 31.816414}
   m_DirtyAABB: 0
---- !u!65 &1356960134380633424
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3701418439761229253}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 27.205107, y: 30.537144, z: 63.632854}
-  m_Center: {x: 0.72069585, y: 2.2314427, z: 30.62209}
 --- !u!1 &8279705872422633815
 GameObject:
   m_ObjectHideFlags: 0

@@ -105,7 +105,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6479249860248680648}
   - component: {fileID: 211238122396400348}
-  - component: {fileID: -1077657670150450706}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -182,27 +181,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 31.681152, y: -0.60595703, z: 16.722172}
     m_Extent: {x: 124.364746, y: 201.14604, z: 16.96436}
   m_DirtyAABB: 0
---- !u!65 &-1077657670150450706
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3606667192574991521}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 248.72964, y: 402.2923, z: 33.92878}
-  m_Center: {x: 31.68116, y: -0.60596305, z: 16.722178}
 --- !u!1 &5500855600969654389
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6436348365542903558}
   - component: {fileID: 1419450978696741107}
+  - component: {fileID: -8451146261458013651}
   m_Layer: 0
   m_Name: mdl#canyonlands#roof_planks_damaged_01
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-8451146261458013651
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876668449035616617}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 402.29224, y: 33.928818, z: 248.72957}
+  m_Center: {x: -0.6059723, y: 16.722174, z: 31.68116}

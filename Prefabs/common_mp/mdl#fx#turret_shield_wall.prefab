@@ -107,7 +107,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2913454918983254066}
   - component: {fileID: 4642030866205104368}
-  - component: {fileID: 9086487130797810158}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -184,27 +183,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.08352053, y: -0.000004887581, z: 1.5367386}
     m_Extent: {x: 1.5401416, y: 1.626636, z: 1.5349221}
   m_DirtyAABB: 0
---- !u!65 &9086487130797810158
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6494810616322105567}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3.0802855, y: 3.2532747, z: 3.069846}
-  m_Center: {x: 0.0835202, y: -0.000005080733, z: 1.5367392}
 --- !u!1 &7040846260285574718
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2451170774930092123}
   - component: {fileID: 8332803009132909531}
+  - component: {fileID: 2657544732575078419}
   m_Layer: 0
   m_Name: mdl#fx#turret_shield_wall
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &2657544732575078419
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8756754244174872743}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.2532735, y: 3.071662, z: 3.0802846}
+  m_Center: {x: -0.000004887581, y: 1.535831, z: 0.083520174}

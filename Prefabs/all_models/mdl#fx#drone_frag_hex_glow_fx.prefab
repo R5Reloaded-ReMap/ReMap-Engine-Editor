@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3187332524668513363}
   - component: {fileID: 6188798939858588083}
+  - component: {fileID: 8640850366808074970}
   m_Layer: 0
   m_Name: mdl#fx#drone_frag_hex_glow_fx
   m_TagString: Prop
@@ -140,9 +141,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &8640850366808074970
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7597500314985878308}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 28.40138, y: 22.613285, z: 28.405281}
+  m_Center: {x: -0.0004863739, y: 11.306643, z: 0.00048828125}
 --- !u!1 &7867647659051650782
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +212,6 @@ GameObject:
   - component: {fileID: 6581024392194658170}
   - component: {fileID: 5570773454956527144}
   - component: {fileID: 5945225760509091873}
-  - component: {fileID: -7677427847622713815}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -260,24 +284,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &-7677427847622713815
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8620767455011539128}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 28.405281, y: 28.40138, z: 18.4502}
-  m_Center: {x: 0.00048828137, y: -0.0004882815, z: 13.388186}

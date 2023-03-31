@@ -138,7 +138,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8889821229842126142}
   - component: {fileID: 8771732507037321616}
-  - component: {fileID: 6231439427445847144}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -215,27 +214,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 1.1357422, y: 0.9550781, z: 64.94679}
     m_Extent: {x: 58.70508, y: 17.053715, z: 64.94679}
   m_DirtyAABB: 0
---- !u!65 &6231439427445847144
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4943413958705292892}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 117.41024, y: 34.107475, z: 129.89363}
-  m_Center: {x: 1.1357269, y: 0.95507073, z: 64.946815}
 --- !u!1 &5832140366625736711
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3971418019528656854}
   - component: {fileID: 1995424986226765490}
+  - component: {fileID: -8994173228614418308}
   m_Layer: 0
   m_Name: mdl#desertlands#desertlands_plantroom_rack_03
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-8994173228614418308
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832140366625736711}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 34.107464, y: 129.89362, z: 117.41022}
+  m_Center: {x: 0.9550781, y: 64.9468, z: 1.1357269}

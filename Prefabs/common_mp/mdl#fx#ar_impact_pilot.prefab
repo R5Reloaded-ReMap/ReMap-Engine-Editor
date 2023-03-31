@@ -74,7 +74,6 @@ GameObject:
   - component: {fileID: 3603586448237240108}
   - component: {fileID: 4198384468866732349}
   - component: {fileID: 1685262281052901922}
-  - component: {fileID: 8286728966685255832}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -147,27 +146,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8286728966685255832
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3731148434944874412}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 187.02544, y: 186.44052, z: 186.21977}
-  m_Center: {x: 0, y: -0.0004882815, z: -0.00048828137}
 --- !u!1 &3988420807514468942
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +156,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8329316968058427903}
   - component: {fileID: 2620647202922299704}
+  - component: {fileID: 1146431568228727292}
   m_Layer: 0
   m_Name: mdl#fx#ar_impact_pilot
   m_TagString: Prop
@@ -213,9 +192,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &1146431568228727292
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3988420807514468942}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 186.4405, y: 186.21976, z: 187.02542}
+  m_Center: {x: -0.00048828125, y: -0.00048828125, z: 0}
 --- !u!1 &4044823334855622436
 GameObject:
   m_ObjectHideFlags: 0

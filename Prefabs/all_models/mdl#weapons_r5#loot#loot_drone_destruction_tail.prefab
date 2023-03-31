@@ -43,6 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4676331897643303869}
   - component: {fileID: 1353521611030956359}
+  - component: {fileID: 2363689764342428984}
   m_Layer: 0
   m_Name: mdl#weapons_r5#loot#loot_drone_destruction_tail
   m_TagString: Prop
@@ -78,9 +79,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &2363689764342428984
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668005098546536685}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.091552846, y: 0.2110548, z: 0.28814465}
+  m_Center: {x: 0.00014157966, y: -0.06467776, z: 0.09913089}
 --- !u!1 &4749005010159019163
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1964505930590536254}
   - component: {fileID: 6913506985591464476}
-  - component: {fileID: -5455620523356447384}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.099130854, y: 0.00014160201, z: -0.064677745}
     m_Extent: {x: 0.14407226, y: 0.04577638, z: 0.10552737}
   m_DirtyAABB: 0
---- !u!65 &-5455620523356447384
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9195472278441765625}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.28814468, y: 0.09155286, z: 0.21105483}
-  m_Center: {x: 0.099130906, y: 0.00014159798, z: -0.06467777}

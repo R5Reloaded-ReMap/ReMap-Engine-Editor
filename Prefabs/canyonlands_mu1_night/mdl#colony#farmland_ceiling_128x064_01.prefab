@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2277920644740857171}
   - component: {fileID: 2631204850396801229}
-  - component: {fileID: 1597652589665056370}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -87,27 +86,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.41601562, y: -0.00048828125, z: -7.2114277}
     m_Extent: {x: 60.021484, y: 27.590338, z: 3.2133799}
   m_DirtyAABB: 0
---- !u!65 &1597652589665056370
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232776076789705018}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 120.04302, y: 55.180717, z: 6.426769}
-  m_Center: {x: -0.41601405, y: -0.00048737222, z: -7.21143}
 --- !u!1 &1401324702390109720
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +225,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4106112121367456042}
   - component: {fileID: 6345416450633977923}
-  - component: {fileID: 670260315676731676}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -324,27 +301,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -0.047851562, z: -4.000001}
     m_Extent: {x: 63.99951, y: 31.952156, z: 4.000001}
   m_DirtyAABB: 0
---- !u!65 &670260315676731676
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2210293443070335118}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 127.99908, y: 63.904358, z: 8.000012}
-  m_Center: {x: 0.0004892408, y: -0.047851108, z: -4.0000024}
 --- !u!1 &9132737857758165519
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7788100785213734}
   - component: {fileID: 752719644385353284}
+  - component: {fileID: -7613678913321786434}
   m_Layer: 0
   m_Name: mdl#colony#farmland_ceiling_128x064_01
   m_TagString: Prop
@@ -390,6 +347,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-7613678913321786434
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9132737857758165519}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 63.904358, y: 10.424825, z: 127.999054}
+  m_Center: {x: -0.047851562, y: -5.2124047, z: 0.00048828125}

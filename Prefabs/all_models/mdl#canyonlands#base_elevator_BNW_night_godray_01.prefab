@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 821688887119226700}
   - component: {fileID: 3260509339466415018}
+  - component: {fileID: 525294827112265458}
   m_Layer: 0
   m_Name: mdl#canyonlands#base_elevator_BNW_night_godray_01
   m_TagString: Prop
@@ -173,9 +174,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &525294827112265458
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6530761955422315494}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3015.112, y: 1096.7733, z: 3055.0283}
+  m_Center: {x: -5.6202393, y: 548.38666, z: -0.34692383}
 --- !u!1 &8913177764408932804
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8702338099210887013}
   - component: {fileID: 1921457194881984171}
-  - component: {fileID: -4405103816912041569}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.34680176, y: -5.6202393, z: 555.5277}
     m_Extent: {x: 1527.5137, y: 1507.5553, z: 541.245}
   m_DirtyAABB: 0
---- !u!65 &-4405103816912041569
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8913177764408932804}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3055.0288, y: 3015.1125, z: 1082.4907}
-  m_Center: {x: -0.34693366, y: -5.6203084, z: 555.5279}

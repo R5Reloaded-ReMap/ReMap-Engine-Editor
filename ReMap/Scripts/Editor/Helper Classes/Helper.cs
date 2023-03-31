@@ -1,48 +1,90 @@
+
 using System;
-using System.IO;
 using System.Collections.Generic;
-using UnityEngine;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+using ImportExport.Shared;
+using static ImportExport.Shared.SharedFunction;
+using Build;
+using static Build.Build;
+using static CodeViewsWindow.CodeViewsWindow;
+
+public enum StartingOriginType
+{
+    SquirrelFunction = 0,
+    Function = 1
+}
+
+public enum StringType
+{
+    ObjectRef = 0,
+    TagName = 1,
+    Name = 2
+}
+
+public enum ObjectType
+{
+    // Order of importance
+    Prop,
+    ZipLine,
+    LinkedZipline,
+    VerticalZipLine,
+    NonVerticalZipLine,
+    SingleDoor,
+    DoubleDoor,
+    HorzDoor,
+    VerticalDoor,
+    Button,
+    Jumppad,
+    LootBin,
+    WeaponRack,
+    Trigger,
+    BubbleShield,
+    NewLocPair,
+    SpawnPoint,
+    TextInfoPanel,
+    FuncWindowHint,
+    Sound
+}
 
 public class Helper
 {
     public static int maxBuildLength = 75000;
-    public static int greenPropCount = 1500;
-    public static int yellowPropCount = 3000;
-    public static bool Is_Using_Starting_Offset = false;
-    public static bool DisableStartingOffsetString = false;
+    public static bool UseStartingOffset = false;
+    public static bool ShowStartingOffset = true;
 
-    // Gen Settings
-    public static bool GenerateProps = true;
-    public static bool GenerateButtons = true;
-    public static bool GenerateJumppads = true;
-    public static bool GenerateBubbleShields = true;
-    public static bool GenerateDoors = true;
-    public static bool GenerateLootBins = true;
-    public static bool GenerateZipLines = true;
-    public static bool GenerateWeaponRacks = true;
-    public static bool GenerateTriggers = true;
-
-    public static Dictionary<string, string> ObjectToTag = new Dictionary<string, string>
+    private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new Dictionary< ObjectType, ObjectTypeData >
     {
-        {"custom_lootbin", "LootBin"},
-        {"custom_zipline", "ZipLine"},
-        {"_vertical_zipline", "VerticalZipLine"},
-        {"_non_vertical_zipline", "NonVerticalZipLine"},
-        {"custom_jumppad", "Jumppad"},
-        {"custom_linked_zipline", "LinkedZipline"},
-        {"custom_single_door", "SingleDoor"},
-        {"custom_double_door", "DoubleDoor"},
-        {"custom_vertical_door", "VerticalDoor"},
-        {"custom_sliding_door", "HorzDoor"},
-        {"custom_weaponrack", "WeaponRack"},
-        {"custom_button", "Button"},
-        {"trigger_cylinder", "Trigger"},
-        {"mdl", "Prop"},
-        {"mdl#fx#bb_shield", "BubbleShield"},
-        {"custom_sound", "Sound"},
-        {"info_spawnpoint_human", "SpawnPoint"}
+        { ObjectType.Prop,               new ObjectTypeData( new string[] { "mdl",                          "Prop",               "Prop"                 }, typeof( PropScript ),             typeof( PropClassData ) ) },
+        { ObjectType.BubbleShield,       new ObjectTypeData( new string[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"        }, typeof( BubbleScript ),           typeof( BubbleShieldClassData ) ) },
+        { ObjectType.Button,             new ObjectTypeData( new string[] { "custom_button",                "Button",             "Button"               }, typeof( ButtonScripting ),        typeof( ButtonClassData ) ) },
+        { ObjectType.DoubleDoor,         new ObjectTypeData( new string[] { "custom_double_door",           "DoubleDoor",         "Double Door"          }, typeof( DoorScript ),             typeof( DoubleDoorClassData ) ) },
+        { ObjectType.FuncWindowHint,     new ObjectTypeData( new string[] { "custom_window_hint",           "FuncWindowHint",     "Window Hint"          }, typeof( WindowHintScript ),       typeof( FuncWindowHintClassData ) ) },
+        { ObjectType.HorzDoor,           new ObjectTypeData( new string[] { "custom_sliding_door",          "HorzDoor",           "Horizontal Door"      }, typeof( HorzDoorScript ),         typeof( HorzDoorClassData ) ) },
+        { ObjectType.Jumppad,            new ObjectTypeData( new string[] { "custom_jumppad",               "Jumppad",            "Jump Pad"             }, typeof( PropScript ),             typeof( JumppadClassData ) ) },
+        { ObjectType.LinkedZipline,      new ObjectTypeData( new string[] { "custom_linked_zipline",        "LinkedZipline",      "Linked Zipline"       }, typeof( LinkedZiplineScript ),    typeof( LinkedZipLinesClassData ) ) },
+        { ObjectType.LootBin,            new ObjectTypeData( new string[] { "custom_lootbin",               "LootBin",            "Loot Bin"             }, typeof( LootBinScript ),          typeof( LootBinClassData ) ) },
+        { ObjectType.SingleDoor,         new ObjectTypeData( new string[] { "custom_single_door",           "SingleDoor",         "Single Door"          }, typeof( DoorScript ),             typeof( SingleDoorClassData ) ) },
+        { ObjectType.Sound,              new ObjectTypeData( new string[] { "custom_sound",                 "Sound",              "Sound"                }, typeof( SoundScript ),            typeof( SoundClassData ) ) },
+        { ObjectType.NewLocPair,         new ObjectTypeData( new string[] { "custom_new_loc_pair",          "NewLocPair",         "New Loc Pair"         }, typeof( NewLocPairScript ),       typeof( NewLocPairClassData ) ) },
+        { ObjectType.SpawnPoint,         new ObjectTypeData( new string[] { "custom_info_spawnpoint_human", "SpawnPoint",         "Spawn Point"          }, typeof( SpawnPointScript ),       typeof( SpawnPointClassData ) ) },
+        { ObjectType.TextInfoPanel,      new ObjectTypeData( new string[] { "custom_text_info_panel",       "TextInfoPanel",      "Text Info Panel"      }, typeof( TextInfoPanelScript ),    typeof( TextInfoPanelClassData ) ) },
+        { ObjectType.Trigger,            new ObjectTypeData( new string[] { "trigger_cylinder",             "Trigger",            "Trigger"              }, typeof( TriggerScripting ),       typeof( TriggerClassData ) ) },
+        { ObjectType.VerticalDoor,       new ObjectTypeData( new string[] { "custom_vertical_door",         "VerticalDoor",       "Vertical Door"        }, typeof( VerticalDoorScript ),     typeof( VerticalDoorClassData ) ) },
+        { ObjectType.VerticalZipLine,    new ObjectTypeData( new string[] { "_vertical_zipline",            "VerticalZipLine",    "Vertical ZipLine"     }, typeof( DrawVerticalZipline ),    typeof( VerticalZipLineClassData ) ) },
+        { ObjectType.NonVerticalZipLine, new ObjectTypeData( new string[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine" }, typeof( DrawNonVerticalZipline ), typeof( NonVerticalZipLineClassData ) ) },
+        { ObjectType.WeaponRack,         new ObjectTypeData( new string[] { "custom_weaponrack",            "WeaponRack",         "Weapon Rack"          }, typeof( WeaponRackScript ),       typeof( WeaponRackClassData ) ) },
+        { ObjectType.ZipLine,            new ObjectTypeData( new string[] { "custom_zipline",               "ZipLine",            "ZipLine"              }, typeof( DrawZipline ),            typeof( ZipLineClassData ) ) }
     };
+
+    public static Dictionary<string, string> ObjectToTag = ObjectToTagDictionaryInit();
 
     public enum ExportType
     {
@@ -57,7 +99,7 @@ public class Helper
         public Vector3 Origin;
         public Vector3 Angles;
         public float Scale;
-        public string fadeDistance;
+        public string FadeDistance;
         public string canMantle;
         public string isVisible;
         public string Model;
@@ -69,18 +111,26 @@ public class Helper
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string ShouldAddStartingOrg(int type = 0)
+    public static string ShouldAddStartingOrg( StartingOriginType type = StartingOriginType.Function, float x = 0, float y = 0, float z = 0 )
     {
-        if(!Is_Using_Starting_Offset)
-            return "";
+        string vector = $"< {ReplaceComma( x )}, {ReplaceComma( y )}, {ReplaceComma( z )} >";
 
-        if(type == 0)
-            return " + startingorg";
+        switch ( type )
+        {
+            case StartingOriginType.SquirrelFunction:
+                if ( UseStartingOffset && ShowStartingOffset )
+                return $"    //Starting Origin, Change this to a origin in a map \n    vector startingorg = {vector}" + "\n\n";
+                break;
 
-        if(DisableStartingOffsetString)
-            return "";
+            case StartingOriginType.Function:
+                if ( UseStartingOffset )
+                return " + startingorg";
+                break;
 
-        return "    //Starting Origin, Change this to a origin in a map \n    vector startingorg = <0,0,0>" + "\n\n";
+            default: break;
+        }
+
+        return "";
     }
 
     /// <summary>
@@ -88,16 +138,40 @@ public class Helper
     /// </summary>
     /// <param name="go">Prop Object</param>
     /// <returns></returns>
-    public static string BuildAngles(GameObject go, bool isEntFile = false)
+    public static string BuildAngles( GameObject go, bool isEntFile = false )
     {
-        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString("F4").Replace(",", ".");
-        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString("F4").Replace(",", ".");
-        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString("F4").Replace(",", ".");
+        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
-        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
-        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
-        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
-                    
+        string angles = $"< {x}, {y}, {z} >";
+
+        if( isEntFile )
+            angles = $"{x} {y} {z}";
+
+        return angles;
+    }
+
+    public static string BuildAnglesVector( Vector3 vec, bool isEntFile = false )
+    {
+        string x = (-WrapAngle(vec.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (-WrapAngle(vec.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (WrapAngle(vec.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+
+        string angles = $"< {x}, {y}, {z} >";
+
+        if( isEntFile )
+            angles = $"{x} {y} {z}";
+
+        return angles;
+    }
+
+    public static string BuildRightVector( Vector3 vec, bool isEntFile = false )
+    {
+        string x = (WrapAngle(vec.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (WrapAngle(vec.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (-WrapAngle(vec.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+
         string angles = $"< {x}, {y}, {z} >";
 
         if( isEntFile )
@@ -111,10 +185,11 @@ public class Helper
     /// </summary>
     /// <param name="angle">Angle to wrap</param>
     /// <returns></returns>
-    public static float WrapAngle(float angle)
+    public static float WrapAngle( float angle )
     {
-        angle%=360;
-        if(angle >180)
+        angle %= 360;
+
+        if( angle > 180 )
             return angle - 360;
  
         return angle;
@@ -125,26 +200,15 @@ public class Helper
     /// </summary>
     /// <param name="go">Prop Object</param>
     /// <returns></returns>
-    public static string BuildOrigin(GameObject go, bool isEntFile = false)
+    public static string BuildOrigin( GameObject go, bool isEntFile = false, bool returnWithOffset = false )
     {
-        float xOffset = 0;
-        float yOffset = 0;
-        float zOffset = 0;
+        float xOffset = UseStartingOffset && returnWithOffset ? StartingOffset.x : 0;
+        float yOffset = UseStartingOffset && returnWithOffset ? StartingOffset.y : 0;
+        float zOffset = UseStartingOffset && returnWithOffset ? StartingOffset.z : 0;
 
-        if (CodeViews.UseOriginOffset)
-        {
-            xOffset = CodeViews.OriginOffset.x;
-            yOffset = CodeViews.OriginOffset.y;
-            zOffset = CodeViews.OriginOffset.z;
-        }
-
-        string x = (-go.transform.position.z + zOffset).ToString("F4").Replace(",", ".");
-        string y = (go.transform.position.x + xOffset).ToString("F4").Replace(",", ".");
-        string z = (go.transform.position.y + yOffset).ToString("F4").Replace(",", ".");
-
-        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
-        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
-        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
+        string x = (-go.transform.position.z + xOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (go.transform.position.x + yOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (go.transform.position.y + zOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
         string origin = $"< {x}, {y}, {z} >";
 
@@ -159,31 +223,20 @@ public class Helper
     /// </summary>
     /// <param name="go">Prop Object</param>
     /// <returns></returns>
-    public static string BuildOriginVector(Vector3 vec, bool isEntFile = false)
+    public static string BuildOriginVector( Vector3 vec, bool isEntFile = false, bool returnWithOffset = false )
     {
-        float xOffset = 0;
-        float yOffset = 0;
-        float zOffset = 0;
+        float xOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.x;
+        float yOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.y;
+        float zOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.z;
 
-        if (CodeViews.UseOriginOffset)
-        {
-            xOffset = CodeViews.OriginOffset.x;
-            yOffset = CodeViews.OriginOffset.y;
-            zOffset = CodeViews.OriginOffset.z;
-        }
-
-        string x = (-vec.z + zOffset).ToString("F4").Replace(",", ".");
-        string y = (vec.x + xOffset).ToString("F4").Replace(",", ".");
-        string z = (vec.y + yOffset).ToString("F4").Replace(",", ".");
-
-        if ( x.Contains( ".0000" ) ) x = x.Replace( ".0000", "" );
-        if ( y.Contains( ".0000" ) ) y = y.Replace( ".0000", "" );
-        if ( z.Contains( ".0000" ) ) z = z.Replace( ".0000", "" );
+        string x = (-vec.z + xOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string y = (vec.x + yOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string z = (vec.y + zOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
         string origin = $"< {x}, {y}, {z} >";
 
         if( isEntFile )
-            origin = $"( {x} {y} {z} )";
+            origin = $"{x} {y} {z}";
 
         return origin;
     }
@@ -193,10 +246,9 @@ public class Helper
     /// </summary>
     public static void FixPropTags()
     {
-        GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
-
         //Retag All Objects
-        foreach (GameObject go in allObjects) {
+        foreach ( GameObject go in UnityInfo.GetAllGameObjectInScene() )
+        {
             go.tag = "Untagged";
 
             foreach (string key in ObjectToTag.Keys)
@@ -214,7 +266,7 @@ public class Helper
         dt.Origin = new Vector3(float.Parse(items[2]), float.Parse(items[3].Replace(">", "")), -(float.Parse(items[1].Replace("<", ""))));
         dt.Angles = new Vector3(-(float.Parse(items[4].Replace("<", ""))), -(float.Parse(items[5])), float.Parse(items[6].Replace(">", "")));
         dt.Scale = float.Parse(items[7]);
-        dt.fadeDistance = items[8];
+        dt.FadeDistance = items[8];
         dt.canMantle = items[9];
         dt.isVisible = items[10];
         dt.Model = items[11].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "");
@@ -233,8 +285,8 @@ public class Helper
         obj.SetActive(dt.isVisible == "true");
 
         PropScript script = obj.GetComponent<PropScript>();
-        script.fadeDistance = float.Parse(dt.fadeDistance);
-        script.allowMantle = dt.canMantle == "true";
+        script.FadeDistance = float.Parse(dt.FadeDistance);
+        script.AllowMantle = dt.canMantle == "true";
 
         if (dt.Collection == "")
             return;
@@ -267,37 +319,253 @@ public class Helper
     }
 
     /// <summary>
-    /// Builds Map Code
+    /// Build Map Code
     /// </summary>
-    /// <returns>built map code string</returns>
-    public static string BuildMapCode(bool buttons = true, bool jumppads = true, bool bubbleshields = true, bool weaponracks = true, bool lootbins = true, bool ziplines = true, bool doors = true, bool props = true, bool triggers = true)
+    /// <returns>Map Code as string</returns>
+    public static async Task< string > BuildMapCode( BuildType buildType = BuildType.Script, bool Selection = false )
     {
-        string code = "";
-        if(buttons) code += Build.Buttons();
-        if(jumppads) code += Build.Jumpads();
-        if(bubbleshields) code += Build.BubbleShields();
-        if(weaponracks) code += Build.WeaponRacks();
-        if(lootbins) code += Build.LootBins();
-        if(ziplines) code += Build.ZipLines();
-        if(ziplines) code += Build.LinkedZipLines();
-        if(ziplines) code += Build.VerticalZipLines();
-        if(ziplines) code += Build.NonVerticalZipLines();
-        if(doors) code += Build.SingleDoors();
-        if(doors) code += Build.DoubleDoors();
-        if(doors) code += Build.VertDoors();
-        if(doors) code += Build.HorizontalDoors();
-        if(props) code += Build.Props(Build.BuildType.Map);
-        if(triggers) code += Build.Triggers();
-        return code;
+        // Order of importance
+        StringBuilder code = new StringBuilder();
+        if( GetBoolFromGenerateObjects( ObjectType.Prop ) )               code.Append( await BuildObjectsWithEnum( ObjectType.Prop, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.ZipLine ) )            code.Append( await BuildObjectsWithEnum( ObjectType.ZipLine, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.LinkedZipline ) )      code.Append( await BuildObjectsWithEnum( ObjectType.LinkedZipline, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) )    code.Append( await BuildObjectsWithEnum( ObjectType.VerticalZipLine, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code.Append( await BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.SingleDoor ) )         code.Append( await BuildObjectsWithEnum( ObjectType.SingleDoor, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.DoubleDoor ) )         code.Append( await BuildObjectsWithEnum( ObjectType.DoubleDoor, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.HorzDoor ) )           code.Append( await BuildObjectsWithEnum( ObjectType.HorzDoor, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.VerticalDoor ) )       code.Append( await BuildObjectsWithEnum( ObjectType.VerticalDoor, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.Button ) )             code.Append( await BuildObjectsWithEnum( ObjectType.Button, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.Jumppad ) )            code.Append( await BuildObjectsWithEnum( ObjectType.Jumppad, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.LootBin ) )            code.Append( await BuildObjectsWithEnum( ObjectType.LootBin, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.WeaponRack ) )         code.Append( await BuildObjectsWithEnum( ObjectType.WeaponRack, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.Trigger ) )            code.Append( await BuildObjectsWithEnum( ObjectType.Trigger, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.BubbleShield ) )       code.Append( await BuildObjectsWithEnum( ObjectType.BubbleShield, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.SpawnPoint ) )         code.Append( await BuildObjectsWithEnum( ObjectType.SpawnPoint, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.NewLocPair ) )         code.Append( await BuildObjectsWithEnum( ObjectType.NewLocPair, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ) )      code.Append( await BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ) )     code.Append( await BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.Sound ) )              code.Append( await BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection ) );
+
+        return code.ToString();
+    }
+
+    public static void ApplyComponentScriptData< T >( T target, T source ) where T : Component
+    {
+        Type type = typeof( T );
+        FieldInfo[] fields = type.GetFields( BindingFlags.Public | BindingFlags.Instance );
+
+        foreach ( FieldInfo field in fields )
+        {
+            object value = field.GetValue( source );
+            field.SetValue( target, value );
+        }
     }
 
     public static string GetRandomGUIDForEnt()
     {
-        return Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
+        return Guid.NewGuid().ToString().Replace( "-", "" ).Substring( 0, 16 );
     }
 
-    public static string Credits = @"
-//Made with Unity Map Editor
-//By AyeZee#6969 & Julefox#0050
-";
+    public static string[] GetAllTags()
+    {
+        List < string > tags = new List< string > ();
+        foreach ( ObjectType type in GetAllObjectTypeInArray() )
+        {
+            tags.Add( GetObjTagNameWithEnum( type ) );
+        }
+        return tags.ToArray();
+    }
+
+    public static GameObject[] GetObjArrayWithEnum( ObjectType objectType )
+    {
+        return GameObject.FindGameObjectsWithTag( GetObjTagNameWithEnum( objectType ) );
+    }
+
+    public static string GetObjRefWithEnum( ObjectType objectType )
+    {
+        return Internal_GetStringByEnum( objectType, StringType.ObjectRef );
+    }
+
+    public static string GetObjTagNameWithEnum( ObjectType objectType )
+    {
+        return Internal_GetStringByEnum( objectType, StringType.TagName );
+    }
+
+    public static string GetObjNameWithEnum( ObjectType objectType )
+    {
+        return Internal_GetStringByEnum( objectType, StringType.Name );
+    }
+
+    private static string Internal_GetStringByEnum( ObjectType objectType, StringType stringType )
+    {
+        if ( _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && objectTypeData != null )
+        {
+            return objectTypeData.StringData[ ( int ) stringType ];
+        }
+
+        throw new ArgumentOutOfRangeException( nameof( objectType ), objectType, "This ObjectType does not exist." );
+    }
+
+    public static Component GetComponentByEnum( GameObject obj, ObjectType objectType )
+    {
+        if ( _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && objectTypeData != null )
+        {
+            return obj.GetComponent( objectTypeData.ComponentType );
+        }
+
+        return null;
+    }
+
+    public static Type GetImportExportClassByEnum( ObjectType objectType )
+    {
+        if ( _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && objectTypeData != null )
+        {
+            return objectTypeData.ImportExportClass;
+        }
+
+        return null;
+    }
+
+    public static ObjectType? GetObjectTypeByObjName( string searchTerm )
+    {
+        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        {
+            if ( Helper.GetObjNameWithEnum( objectType ) == searchTerm ) return objectType;
+        }
+
+        return null;
+    }
+
+    private class ObjectTypeData
+    {
+        public string[] StringData { get; }
+        public System.Type ComponentType { get; }
+        public Type ImportExportClass { get; }
+
+        public ObjectTypeData( string[] stringData, System.Type componentType, Type importExportClass )
+        {
+            StringData = stringData;
+            ComponentType = componentType;
+            ImportExportClass = importExportClass;
+        }
+    }
+
+    private static Dictionary< string, string > ObjectToTagDictionaryInit()
+    {
+        Dictionary< string, string > dictionary = new Dictionary< string, string >();
+
+        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        {
+            dictionary.Add( GetObjRefWithEnum( objectType ), GetObjTagNameWithEnum( objectType ) );
+        }
+
+        return dictionary;
+    }
+
+    public static Dictionary< string, bool > ObjectGenerateDictionaryInit()
+    {
+        Dictionary< string, bool > dictionary = new Dictionary< string, bool >();
+
+        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        {
+            dictionary.Add( GetObjNameWithEnum( objectType ), true );
+        }
+
+        return dictionary;
+    }
+
+    public static ObjectType[] GetAllObjectTypeInArray()
+    {
+        List< ObjectType > list = new List< ObjectType >();
+
+        foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
+        {
+            list.Add( objectType );
+        }
+
+        return list.ToArray();
+    }
+
+    public static bool GetBoolFromGenerateObjects( ObjectType objectType )
+    {
+        return GenerateObjects[ GetObjNameWithEnum( objectType ) ];
+    }
+
+    public static void ForceSetBoolToGenerateObjects( ObjectType[] array, bool value )
+    {
+        foreach ( ObjectType objectType in array )
+        {
+            GenerateObjects[ GetObjNameWithEnum( objectType ) ] = value;
+            GenerateObjectsFunctionTemp[ GetObjNameWithEnum( objectType ) ] = value;
+        }
+    }
+
+    /// <summary>
+    /// Forces objects not to appear in code, if forceShow is true, this return the opposite of the array specifier
+    /// </summary>
+    public static void ForceHideBoolToGenerateObjects( ObjectType[] array, bool forceShow = false )
+    {
+        List< ObjectType > objectTypeArray = new List< ObjectType >();
+        if ( forceShow )
+        {
+            foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+            {
+                if ( !array.Contains( objectType ) ) objectTypeArray.Add( objectType );
+            }
+        } else objectTypeArray = array.ToList();
+
+        CodeViewsWindow.CodeViewsWindow.GenerateIgnore = objectTypeArray.ToArray();
+    }
+
+    public static GameObject[] GetSelectedObjectWithEnum( ObjectType objectType )
+    {
+        GameObject[] SelectedObject =
+        Selection.gameObjects.Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+        .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
+        .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+        .Select( child => child.gameObject )
+        .Concat( Selection.gameObjects.Where( obj => obj.transform.childCount > 0 )
+        .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
+        .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+        .Select( child => child.gameObject ) )
+        .Distinct()
+        .ToArray();
+
+        return SelectedObject;
+    }
+
+    public static void OverideWindowSize( float x, float y, float size )
+    {
+        GUILayout.Button( $"{x} x {y}", GUILayout.Width( size ) );
+    }
+
+    public static string ReplaceComma( float value )
+    {
+        return value.ToString().Replace( ",", "." );
+    }
+
+    public static string BoolToLower( bool value )
+    {
+        return value.ToString().ToLower();
+    }
+
+    public static string GetSquirrelSceneNameFunction( bool ext = true )
+    {
+        string extention = ext ? "()" : "";
+        return $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}{extention}";
+    }
+
+    public static string GetSceneName()
+    {
+        return $"{SceneManager.GetActiveScene().name.Replace(" ", "_")}";
+    }
+
+    public static string ReMapCredit()
+    {
+        string credit = "";
+        credit += $"    // Generated with Unity ReMap Editor {UnityInfo.ReMapVersion}\n";
+        credit += $"    // Made with love by AyeZee#6969 & Julefox#0050 :)\n\n";
+        return credit;
+    }
 }

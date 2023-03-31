@@ -12,10 +12,10 @@ public class LegionRpakExporting : EditorWindow
     static string currentDirectory = Directory.GetCurrentDirectory().Replace("\\","/");
     static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
     static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
-    static string relativeRpakFile = AssetLibrarySorter.relativeRpakFile;
+    static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
 
     #if ReMapDev
-    [MenuItem("ReMap Dev Tools/Asset Library Sorter/Legion/Create All Rpak List", false, 100)]
+    [MenuItem("ReMap Dev Tools/Prefabs Management/Legion/Create All Rpak List", false, 100)]
     public static async void RpakListInit()
     {
         await CreateAllRpakList();

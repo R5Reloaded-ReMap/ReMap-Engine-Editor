@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4056432571225481435}
   - component: {fileID: 7632252655929028436}
+  - component: {fileID: -8002833527146600889}
   m_Layer: 0
   m_Name: mdl#weapons_r5#misc_crypto_drone#crypto_drone_holo
   m_TagString: Prop
@@ -173,9 +174,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-8002833527146600889
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8285663686762759088}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.12954108, y: 0.136504, z: 0.08826177}
+  m_Center: {x: 0.0005908236, y: -0.011748053, z: 0.012617193}
 --- !u!1 &9006708079984721960
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2181875698782808699}
   - component: {fileID: 6663969575826495138}
-  - component: {fileID: -1281789452455741000}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.012617186, y: 0.0005908236, z: -0.011748048}
     m_Extent: {x: 0.044130858, y: 0.06477052, z: 0.06825197}
   m_DirtyAABB: 0
---- !u!65 &-1281789452455741000
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9006708079984721960}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.08826179, y: 0.12954113, z: 0.136504}
-  m_Center: {x: 0.012617193, y: 0.00059082377, z: -0.011748052}

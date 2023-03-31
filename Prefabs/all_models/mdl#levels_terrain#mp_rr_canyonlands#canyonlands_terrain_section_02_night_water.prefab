@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5662365511072526997}
   - component: {fileID: 5591709599247379801}
+  - component: {fileID: -7636449750822899630}
   m_Layer: 0
   m_Name: mdl#levels_terrain#mp_rr_canyonlands#canyonlands_terrain_section_02_night_water
   m_TagString: Prop
@@ -45,9 +46,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-7636449750822899630
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619741981429956787}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 40271.99, y: 2827.5718, z: 26441.309}
+  m_Center: {x: -20135.994, y: 1413.7859, z: -1444.6895}
 --- !u!1 &1857237355041535851
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +180,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5221711202754299642}
   - component: {fileID: 8325720133293519983}
-  - component: {fileID: -3442359182047937459}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -232,27 +256,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -4789.7295, y: -34010.46, z: 2128.122}
     m_Extent: {x: 9875.611, y: 3621.4805, z: 699.43945}
   m_DirtyAABB: 0
---- !u!65 &-3442359182047937459
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6007228362245537329}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 19751.23, y: 7242.967, z: 1398.8802}
-  m_Center: {x: -4789.728, y: -34010.477, z: 2128.127}
 --- !u!1 &8445647974370758303
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,7 +266,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6215326630585885768}
   - component: {fileID: 4124837036367234528}
-  - component: {fileID: 6550302617874026565}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -340,27 +342,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -3212.9248, y: -31014.348, z: 2827.5613}
     m_Extent: {x: 722.4409, y: 680.1797, z: 0}
   m_DirtyAABB: 0
---- !u!65 &6550302617874026565
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8445647974370758303}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1444.8824, y: 1360.3601, z: 0.00016216747}
-  m_Center: {x: -3212.923, y: -31014.363, z: 2827.566}
 --- !u!1 &8552074342683603991
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +385,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2173840667781921521}
   - component: {fileID: 246734706277629867}
-  - component: {fileID: -5919006533071389318}
   m_Layer: 0
   m_Name: KoreLibMesh02
   m_TagString: Untagged
@@ -481,24 +461,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 96.990234, y: -35272.285, z: 2741.7786}
     m_Extent: {x: 11678.973, y: 4999.6924, z: 85.78296}
   m_DirtyAABB: 0
---- !u!65 &-5919006533071389318
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8728938959401777780}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 23357.955, y: 9999.393, z: 171.56717}
-  m_Center: {x: 96.99382, y: -35272.3, z: 2741.7837}

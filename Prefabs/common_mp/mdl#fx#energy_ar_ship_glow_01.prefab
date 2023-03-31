@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 439544002840246537}
   - component: {fileID: 7900197784183130032}
+  - component: {fileID: -4908213506511778104}
   m_Layer: 0
   m_Name: mdl#fx#energy_ar_ship_glow_01
   m_TagString: Prop
@@ -140,9 +141,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-4908213506511778104
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6518373573888181686}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.025175806, y: 0.05215823, z: 0.06110354}
+  m_Center: {x: -0.0006835982, y: 0.026079115, z: 0.0135205}
 --- !u!1 &6869346133901513083
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6048768972224996622}
   - component: {fileID: 5139763232125554837}
-  - component: {fileID: -6369420415655682875}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.013520505, y: -0.0006835945, z: 0.030083016}
     m_Extent: {x: 0.030551758, y: 0.012587893, z: 0.022075199}
   m_DirtyAABB: 0
---- !u!65 &-6369420415655682875
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8031803850012347879}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.061103553, y: 0.02517581, z: 0.044150416}
-  m_Center: {x: 0.0135205025, y: -0.0006836001, z: 0.030083027}

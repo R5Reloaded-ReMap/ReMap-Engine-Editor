@@ -107,7 +107,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6187527128026997735}
   - component: {fileID: 3611021831970491533}
-  - component: {fileID: 6908729180844911157}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -184,27 +183,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -14.999023, y: -0.00048828125, z: -7.000978}
     m_Extent: {x: 17, y: 36.610847, z: 12.999025}
   m_DirtyAABB: 0
---- !u!65 &6908729180844911157
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2282955152494740372}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 34.000027, y: 73.22174, z: 25.99807}
-  m_Center: {x: -14.999027, y: -0.00048565888, z: -7.0009804}
 --- !u!1 &2806060092252628986
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +225,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7912388815744968420}
   - component: {fileID: 9132401039868069410}
-  - component: {fileID: 8044638559977046895}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -324,27 +301,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -12.007324, y: 0.1328125, z: -4.3867197}
     m_Extent: {x: 11.416504, y: 28.413094, z: 4.000001}
   m_DirtyAABB: 0
---- !u!65 &8044638559977046895
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4876937066361791653}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 22.833025, y: 56.826218, z: 8.000011}
-  m_Center: {x: -12.007328, y: 0.13281451, z: -4.386721}
 --- !u!1 &5852925841872854309
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4585348842839931489}
   - component: {fileID: 7761523362179522566}
+  - component: {fileID: -4485777709603022524}
   m_Layer: 0
   m_Name: mdl#playback#playback_staircase_64_base_double_01_a
   m_TagString: Prop
@@ -390,6 +347,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-4485777709603022524
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5852925841872854309}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 73.22172, y: 25.998074, z: 34.000015}
+  m_Center: {x: -0.00048446655, y: -7.0009804, z: -14.999025}

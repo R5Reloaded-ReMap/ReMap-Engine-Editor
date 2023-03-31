@@ -75,6 +75,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8557545099586907417}
   - component: {fileID: 5005499159749341107}
+  - component: {fileID: 7842924973621666773}
   m_Layer: 0
   m_Name: mdl#rocks#rock_white_chalk_modular_wallrun_03
   m_TagString: Prop
@@ -110,9 +111,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &7842924973621666773
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7913176760276159401}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 316.61737, y: 541.93097, z: 238.38788}
+  m_Center: {x: 0, y: -0.00048828125, z: 0.00048828125}
 --- !u!1 &8327833021934681471
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +180,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1528670707954826024}
   - component: {fileID: 6932835960808583858}
-  - component: {fileID: -133839086600826824}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -232,27 +256,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: 0, z: -0.00048828125}
     m_Extent: {x: 119.19385, y: 158.30862, z: 270.9654}
   m_DirtyAABB: 0
---- !u!65 &-133839086600826824
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8410841762313621288}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 238.38794, y: 316.6175, z: 541.931}
-  m_Center: {x: 0.00048828154, y: 2.0816682e-17, z: -0.0004882814}
 --- !u!1 &8614979196435959847
 GameObject:
   m_ObjectHideFlags: 0

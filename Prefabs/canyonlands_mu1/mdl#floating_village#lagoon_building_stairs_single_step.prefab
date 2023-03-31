@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1611165111200894105}
   - component: {fileID: 1215880716741838074}
+  - component: {fileID: 1560202327312962723}
   m_Layer: 0
   m_Name: mdl#floating_village#lagoon_building_stairs_single_step
   m_TagString: Prop
@@ -77,9 +78,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &1560202327312962723
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624015969820519235}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 104.00005, y: 8.001005, z: 21.995125}
+  m_Center: {x: -0.0009727478, y: 3.9995136, z: -10.997562}
 --- !u!1 &1449701158200974491
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +180,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6502566478070256059}
   - component: {fileID: 8889707068821384458}
-  - component: {fileID: 3674387079888657394}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -232,27 +256,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -10.997559, y: -0.0009765625, z: 3.9995127}
     m_Extent: {x: 10.997559, y: 52.00001, z: 4.000489}
   m_DirtyAABB: 0
---- !u!65 &3674387079888657394
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3104578939121385539}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 21.99514, y: 104.00008, z: 8.000994}
-  m_Center: {x: -10.997563, y: -0.00097572873, z: 3.999514}
 --- !u!1 &9196418754605202124
 GameObject:
   m_ObjectHideFlags: 0

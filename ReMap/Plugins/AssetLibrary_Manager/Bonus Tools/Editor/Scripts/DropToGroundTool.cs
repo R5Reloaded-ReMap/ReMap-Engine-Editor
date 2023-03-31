@@ -38,6 +38,10 @@ class DropToGroundTool : EditorTool
                 if (Physics.Raycast(go.transform.position, Vector3.down, out hit, 20000))
                 {
                     go.transform.position = hit.point;
+
+                    Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                    rotation *= go.transform.rotation;
+                    go.transform.rotation = rotation;
                 }
             }
         }

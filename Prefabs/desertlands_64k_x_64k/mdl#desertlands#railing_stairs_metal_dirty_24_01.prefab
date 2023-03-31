@@ -43,7 +43,6 @@ GameObject:
   m_Component:
   - component: {fileID: 960399393191870929}
   - component: {fileID: 5811986200439432296}
-  - component: {fileID: -302715262488196997}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -120,27 +119,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 12, y: -0.00048828125, z: 13.571779}
     m_Extent: {x: 12, y: 1.1127932, z: 26.405767}
   m_DirtyAABB: 0
---- !u!65 &-302715262488196997
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2109248018173840016}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 24.000021, y: 2.2255964, z: 52.811554}
-  m_Center: {x: 12.000001, y: -0.0004913299, z: 13.571784}
 --- !u!1 &3079575528869318321
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +225,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3787445091977879203}
   - component: {fileID: 6360458738309281780}
-  - component: {fileID: 3976443986439442905}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -324,27 +301,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 12.000488, y: -0.00048828125, z: 10.000002}
     m_Extent: {x: 6.8188477, y: 0.03271485, z: 15.649418}
   m_DirtyAABB: 0
---- !u!65 &3976443986439442905
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6476767336050259511}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 13.637708, y: 0.06543509, z: 31.298847}
-  m_Center: {x: 12.00049, y: -0.00049090415, z: 10.000006}
 --- !u!1 &8817921334588764479
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3683864315015718477}
   - component: {fileID: 2234809861932855532}
+  - component: {fileID: -4235275861732414705}
   m_Layer: 0
   m_Name: mdl#desertlands#railing_stairs_metal_dirty_24_01
   m_TagString: Prop
@@ -390,6 +347,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-4235275861732414705
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8817921334588764479}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.2255926, y: 52.811546, z: 24.00002}
+  m_Center: {x: -0.0004911423, y: 13.571782, z: 12}

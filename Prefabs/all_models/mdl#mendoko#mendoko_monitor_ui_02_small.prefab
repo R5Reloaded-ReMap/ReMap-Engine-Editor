@@ -74,7 +74,6 @@ GameObject:
   - component: {fileID: 1088556027979392627}
   - component: {fileID: 7954756133842525782}
   - component: {fileID: 1538631715382975554}
-  - component: {fileID: -729601063334094480}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -147,27 +146,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &-729601063334094480
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5242321564268255934}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 17.834965, y: 26.754896, z: 13.010745}
-  m_Center: {x: -8.917482, y: -13.377448, z: 6.5053725}
 --- !u!1 &5717517544644137515
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +156,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6352619011808318355}
   - component: {fileID: 7095274554719661682}
+  - component: {fileID: -8275410816438167013}
   m_Layer: 0
   m_Name: mdl#mendoko#mendoko_monitor_ui_02_small
   m_TagString: Prop
@@ -213,9 +192,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-8275410816438167013
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5717517544644137515}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 26.754892, y: 13.010747, z: 17.834967}
+  m_Center: {x: -13.377442, y: 6.5053735, z: -8.917483}
 --- !u!1 &7610278234940326864
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 800866707509625907}
   - component: {fileID: 3671399821287602057}
-  - component: {fileID: 8326904525412471802}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -87,27 +86,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 35.666992, y: 48.215836, z: 236.67096}
     m_Extent: {x: 91.37207, y: 200.35356, z: 291.52448}
   m_DirtyAABB: 0
---- !u!65 &8326904525412471802
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367400883992903985}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 182.74438, y: 400.7074, z: 583.0492}
-  m_Center: {x: 35.66694, y: 48.215828, z: 236.67105}
 --- !u!1 &2107899917840912382
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +225,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6315797408968095429}
   - component: {fileID: 6175337912300749002}
-  - component: {fileID: -7095437627311122533}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -324,27 +301,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 35.824707, y: 47.942398, z: 235.815}
     m_Extent: {x: 94.930176, y: 203.91606, z: 294.26324}
   m_DirtyAABB: 0
---- !u!65 &-7095437627311122533
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7006416809625233215}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 189.8606, y: 407.8324, z: 588.52673}
-  m_Center: {x: 35.824657, y: 47.94239, z: 235.8151}
 --- !u!1 &7462495860183844298
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,6 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6906132049980870977}
   - component: {fileID: 4366281476268924178}
+  - component: {fileID: 3836552221696033067}
   m_Layer: 0
   m_Name: mdl#levels_terrain#pve_test#spiderweb_rapped_bone_01
   m_TagString: Prop
@@ -390,6 +347,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &3836552221696033067
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462495860183844298}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 407.83224, y: 588.52673, z: 189.86053}
+  m_Center: {x: 47.942398, y: 235.81505, z: 35.824657}

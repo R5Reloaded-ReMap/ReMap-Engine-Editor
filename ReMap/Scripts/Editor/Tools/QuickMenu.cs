@@ -1,7 +1,10 @@
 using UnityEngine;
 using UnityEditor;
 using ThemesPlugin;
+
 using AssetLibraryManager;
+using CodeViewsWindow;
+using ImportExport.Json;
 
 public class QuickMenu : EditorWindow
 {
@@ -33,7 +36,7 @@ public class QuickMenu : EditorWindow
         if (utilfold)
         {
             if (GUILayout.Button("Code Views", GUILayout.ExpandWidth(true)))
-                CodeViews.Init();
+                CodeViewsWindow.CodeViewsWindow.Init();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();
@@ -47,7 +50,7 @@ public class QuickMenu : EditorWindow
             if (GUILayout.Button("Datatable", GUILayout.ExpandWidth(true)))
                 ImportExportDataTable.ImportDataTable();
             if (GUILayout.Button("Json", GUILayout.ExpandWidth(true)))
-                ImportExportJson.ImportJson();
+                JsonImport.ImportJson();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();
@@ -59,28 +62,30 @@ public class QuickMenu : EditorWindow
             exportfold2 = EditorGUILayout.Foldout(exportfold2, "Map with origin offset");
             if(exportfold2)
             {
-                if (GUILayout.Button("Whole Script", GUILayout.ExpandWidth(true)))
-                    MapExport.ExportWholeScriptOffset();
-                if (GUILayout.Button("Map Only", GUILayout.ExpandWidth(true)))
-                    MapExport.ExportMapOnlyOffset();
+                if (GUILayout.Button("With Function", GUILayout.ExpandWidth(true)))
+                    CodeViewsExport.ExportFunctionAndMapOffset();
+                if (GUILayout.Button("Code Only", GUILayout.ExpandWidth(true)))
+                    CodeViewsExport.ExportCodeAndMapOffset();
             }
             exportfold3 = EditorGUILayout.Foldout(exportfold3, "Map without origin offset");
             if(exportfold3)
             {
-                if (GUILayout.Button("Whole Script", GUILayout.ExpandWidth(true)))
-                    MapExport.ExportWholeScript();
-                if (GUILayout.Button("Map Only", GUILayout.ExpandWidth(true)))
-                    MapExport.ExportOnlyMap();
+                if (GUILayout.Button("With Function", GUILayout.ExpandWidth(true)))
+                    CodeViewsExport.ExportFunction();
+                if (GUILayout.Button("Code Only", GUILayout.ExpandWidth(true)))
+                    CodeViewsExport.ExportCode();
             }
             GUILayout.Space(5);
             if (GUILayout.Button("Script.ent", GUILayout.ExpandWidth(true)))
-                MapExport.ExportScriptEntCode();
-            if (GUILayout.Button("Sound.end", GUILayout.ExpandWidth(true)))
-                MapExport.ExportSoundEntCode();
+                CodeViewsExport.ExportEntFileScript();
+            if (GUILayout.Button("Sound.ent", GUILayout.ExpandWidth(true)))
+                CodeViewsExport.ExportEntFileSound();
+            if (GUILayout.Button("Spawn.ent", GUILayout.ExpandWidth(true)))
+                CodeViewsExport.ExportEntFileSpawn();
             if (GUILayout.Button("Datatable", GUILayout.ExpandWidth(true)))
-                ImportExportDataTable.ExportDataTable();
+                CodeViewsExport.ExportDataTable();
             if (GUILayout.Button("Json", GUILayout.ExpandWidth(true)))
-                ImportExportJson.ExportJson();
+                JsonExport.ExportJson();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();

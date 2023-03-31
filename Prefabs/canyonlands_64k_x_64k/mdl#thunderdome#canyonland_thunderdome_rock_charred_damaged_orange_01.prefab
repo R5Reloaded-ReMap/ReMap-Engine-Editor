@@ -74,7 +74,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3529654814233681466}
   - component: {fileID: 8796881601363839333}
-  - component: {fileID: 1077266773405232608}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -151,27 +150,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 4.376953, y: -3.3603516, z: -0.00048828125}
     m_Extent: {x: 328.60742, y: 573.506, z: 195.51323}
   m_DirtyAABB: 0
---- !u!65 &1077266773405232608
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5188004233961643941}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 657.21533, y: 1147.0126, z: 391.02673}
-  m_Center: {x: 4.376955, y: -3.3603537, z: -0.00048788084}
 --- !u!1 &7606367077705296661
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6062953945416779276}
   - component: {fileID: 1070167024520692407}
+  - component: {fileID: -935328794247001880}
   m_Layer: 0
   m_Name: mdl#thunderdome#canyonland_thunderdome_rock_charred_damaged_orange_01
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-935328794247001880
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8718695225964141996}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1147.0123, y: 391.02682, z: 657.21515}
+  m_Center: {x: -3.3603516, y: -0.00048828125, z: 4.376953}

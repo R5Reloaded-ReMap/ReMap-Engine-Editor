@@ -107,7 +107,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6736743424056448259}
   - component: {fileID: 3720651690883229299}
-  - component: {fileID: 718067393320341077}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -184,27 +183,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 3.0917969, y: 0, z: 0}
     m_Extent: {x: 3.0917969, y: 6.0000014, z: 6.0000014}
   m_DirtyAABB: 0
---- !u!65 &718067393320341077
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4769185411253032258}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 6.1836004, y: 12.000011, z: 12.00001}
-  m_Center: {x: 3.091798, y: -0.00000036857097, z: -4.3937076e-14}
 --- !u!1 &5469419876559981851
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4650178351337278594}
   - component: {fileID: 6088378689623339752}
+  - component: {fileID: -653365705468151453}
   m_Layer: 0
   m_Name: mdl#electricalboxes#fusebox_small_b
   m_TagString: Prop
@@ -250,9 +229,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-653365705468151453
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5469419876559981851}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 12.000008, y: 12.000009, z: 6.183598}
+  m_Center: {x: -0.0000009536743, y: 0, z: 3.0917976}
 --- !u!1 &8298991289703768695
 GameObject:
   m_ObjectHideFlags: 0

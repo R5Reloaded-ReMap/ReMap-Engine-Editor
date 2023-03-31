@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6002412064376884639}
   - component: {fileID: 6140130549845901519}
-  - component: {fileID: 2379112943293698339}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -87,27 +86,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000004887581, y: -0.000004887581, z: -0.0000048829243}
     m_Extent: {x: 0.07780762, y: 0.14081547, z: 0.012358401}
   m_DirtyAABB: 0
---- !u!65 &2379112943293698339
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 929619106071696840}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.15561533, y: 0.2816311, z: 0.024716845}
-  m_Center: {x: 0.0000048875845, y: -0.000004887583, z: -0.0000048829256}
 --- !u!1 &2282812354393648487
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3362114056548997213}
   - component: {fileID: 2059119017730656677}
+  - component: {fileID: 8779350455056306488}
   m_Layer: 0
   m_Name: mdl#fx#loot_ball_panel_5point_brk
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &8779350455056306488
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5611619053333372053}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.28163102, y: 0.024716875, z: 0.15561527}
+  m_Center: {x: -0.000004887581, y: -0.0000048829243, z: 0.000004887581}

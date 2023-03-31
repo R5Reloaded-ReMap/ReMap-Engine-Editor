@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8118246879459270086}
   - component: {fileID: 6487108686821679109}
-  - component: {fileID: -9003342417354685550}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -87,27 +86,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 4, y: -24.000006, z: 6.366212}
     m_Extent: {x: 4, y: 24.000006, z: 34.36622}
   m_DirtyAABB: 0
---- !u!65 &-9003342417354685550
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 343109336607658757}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 8.000025, y: 48.000042, z: 68.73247}
-  m_Center: {x: 4.000003, y: -24.000017, z: 6.366217}
 --- !u!1 &4013329271695188200
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3084866645381944583}
   - component: {fileID: 560842194141148656}
+  - component: {fileID: 2476679077396112088}
   m_Layer: 0
   m_Name: mdl#s2s#s2s_stair_railing_quad_01_inv
   m_TagString: Prop
@@ -153,9 +132,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &2476679077396112088
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4013329271695188200}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 48.000023, y: 68.73247, z: 8.000018}
+  m_Center: {x: -24.000011, y: 6.3662186, z: 3.9999995}
 --- !u!1 &4793553482420161487
 GameObject:
   m_ObjectHideFlags: 0

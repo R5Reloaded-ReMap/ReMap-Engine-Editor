@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8486598695987720397}
   - component: {fileID: 2727292372481705534}
-  - component: {fileID: -6119689798014950144}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -118,27 +117,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 1.7973633, y: 31.576178, z: -9.079592}
     m_Extent: {x: 11.26709, y: 41.551765, z: 10.5756855}
   m_DirtyAABB: 0
---- !u!65 &-6119689798014950144
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2745579927993515063}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 22.534203, y: 83.10357, z: 21.151388}
-  m_Center: {x: 1.7973622, y: 31.576195, z: -9.079598}
 --- !u!1 &4577318863450004290
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,6 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6864937433322752305}
   - component: {fileID: 3374144243781724931}
+  - component: {fileID: 6109126823595238412}
   m_Layer: 0
   m_Name: mdl#industrial#zipline_arm
   m_TagString: Prop
@@ -184,9 +163,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &6109126823595238412
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4577318863450004290}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 83.10356, y: 21.151398, z: 22.534191}
+  m_Center: {x: 31.576185, y: -9.079601, z: 1.7973661}
 --- !u!1 &4947761915224245807
 GameObject:
   m_ObjectHideFlags: 0

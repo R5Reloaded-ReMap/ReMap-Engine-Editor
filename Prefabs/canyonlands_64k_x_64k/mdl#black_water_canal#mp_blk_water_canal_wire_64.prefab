@@ -73,7 +73,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3666206399797244584}
   - component: {fileID: 3721943189510003417}
-  - component: {fileID: -6364253864827352384}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -150,27 +149,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -9.730469, y: 34.67579, z: -15.96973}
     m_Extent: {x: 9.839844, y: 34.67579, z: 15.96973}
   m_DirtyAABB: 0
---- !u!65 &-6364253864827352384
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2700016467280568158}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 19.67971, y: 69.35161, z: 31.93948}
-  m_Center: {x: -9.730473, y: 34.675804, z: -15.96974}
 --- !u!1 &4423045802022466279
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,6 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6006800751055763477}
   - component: {fileID: 1760214602013414394}
+  - component: {fileID: -2265130972188229874}
   m_Layer: 0
   m_Name: mdl#black_water_canal#mp_blk_water_canal_wire_64
   m_TagString: Prop
@@ -216,9 +195,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-2265130972188229874
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4423045802022466279}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 69.3516, y: 31.939486, z: 19.679699}
+  m_Center: {x: 34.6758, y: -15.969743, z: -9.730467}
 --- !u!1 &8147017741167108511
 GameObject:
   m_ObjectHideFlags: 0

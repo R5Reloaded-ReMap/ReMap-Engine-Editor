@@ -139,7 +139,6 @@ GameObject:
   - component: {fileID: 198993846931140388}
   - component: {fileID: 3815125641091370233}
   - component: {fileID: 4023151839460862489}
-  - component: {fileID: -6365930252808477005}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -212,27 +211,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &-6365930252808477005
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7134876899115476599}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 511.99915, y: 511.99927, z: 511.99915}
-  m_Center: {x: 0.00048828137, y: -0.0004882815, z: 255.99957}
 --- !u!1 &7642401499124081379
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7074166792949901377}
   - component: {fileID: 2857128493357892119}
+  - component: {fileID: 1006885793403937348}
   m_Layer: 0
   m_Name: mdl#weapons_r5#weapon_tesla_trap#mp_weapon_tesla_trap_ar_trigger_radius
   m_TagString: Prop
@@ -278,6 +257,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &1006885793403937348
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7642401499124081379}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 511.99927, y: 511.99915, z: 511.99915}
+  m_Center: {x: -0.00045776367, y: 255.99954, z: 0.00048828125}

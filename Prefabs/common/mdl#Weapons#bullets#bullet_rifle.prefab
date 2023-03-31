@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4152882928437041662}
   - component: {fileID: 8004494355604459319}
+  - component: {fileID: -5240041533073661700}
   m_Layer: 0
   m_Name: mdl#Weapons#bullets#bullet_rifle
   m_TagString: Prop
@@ -140,9 +141,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-5240041533073661700
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5585483964013697400}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.004648443, y: 0.004892582, z: 0.015478521}
+  m_Center: {x: -0.000009765383, y: 0.0000048829243, z: -0.0009619142}
 --- !u!1 &6480629384337795388
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 267301684683743956}
   - component: {fileID: 7649774926449418880}
-  - component: {fileID: 138239050451104635}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0009619137, y: -0.000009765616, z: 0.0000048829243}
     m_Extent: {x: 0.007739258, y: 0.002324219, z: 0.0024462899}
   m_DirtyAABB: 0
---- !u!65 &138239050451104635
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8613941740510536260}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.015478523, y: 0.004648443, z: 0.004892582}
-  m_Center: {x: -0.0009619141, y: -0.000009765507, z: 0.0000048829274}

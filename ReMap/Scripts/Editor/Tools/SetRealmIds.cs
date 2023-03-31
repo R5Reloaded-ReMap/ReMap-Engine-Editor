@@ -4,7 +4,7 @@ using UnityEditor;
 public class SetRealmIds : EditorWindow
 {
     private GameObject source;
-    private int realmID = 0;
+    private int RealmID = 0;
 
     [MenuItem("ReMap/Tools/RealmID Tool", false, 100)]
     public static void Init()
@@ -19,7 +19,7 @@ public class SetRealmIds : EditorWindow
     {
         GUILayout.BeginVertical("box");
         source = EditorGUILayout.ObjectField(source, typeof(Object), true) as GameObject;
-        realmID = EditorGUILayout.IntField("RealmID:", realmID);
+        RealmID = EditorGUILayout.IntField("RealmID:", RealmID);
         GUILayout.EndVertical();
 
         if (GUILayout.Button("Set Realm IDS"))
@@ -34,7 +34,7 @@ public class SetRealmIds : EditorWindow
         foreach (Transform child in source.transform) {
             PropScript script = child.gameObject.GetComponent<PropScript>();
             if(script != null)
-                script.realmID = realmID;
+                script.RealmID = RealmID;
         }
     }
 }

@@ -75,7 +75,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2625973752583951571}
   - component: {fileID: 3370099108022480505}
-  - component: {fileID: -4670603474443006914}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -152,27 +151,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -19.779297, y: -0.00048828125, z: 67.99953}
     m_Extent: {x: 19.779297, y: 47.999523, z: 59.999527}
   m_DirtyAABB: 0
---- !u!65 &-4670603474443006914
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2522214663174003554}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 39.558647, y: 95.999115, z: 119.99911}
-  m_Center: {x: -19.77932, y: -0.0004940298, z: 67.99955}
 --- !u!1 &3641390505170018440
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +226,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8106970687959527212}
   - component: {fileID: 8014716494661743829}
-  - component: {fileID: -4513850440253953323}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -325,27 +302,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -22.072754, y: -18.314457, z: 90.22707}
     m_Extent: {x: 8.339355, y: 27.75977, z: 35.674324}
   m_DirtyAABB: 0
---- !u!65 &-4513850440253953323
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5871660727390318626}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 16.67874, y: 55.519577, z: 71.34868}
-  m_Center: {x: -22.07278, y: -18.314476, z: 90.227104}
 --- !u!1 &5926152795577610937
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7289560167847254901}
   - component: {fileID: 7510733330292889903}
+  - component: {fileID: 273069974248748321}
   m_Layer: 0
   m_Name: mdl#colony#farmland_kitchen_cabinets_02
   m_TagString: Prop
@@ -391,9 +348,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &273069974248748321
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5926152795577610937}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 95.99908, y: 127.999115, z: 39.55863}
+  m_Center: {x: -0.00048446655, y: 63.999546, z: -19.779316}
 --- !u!1 &6542921467390822802
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +385,6 @@ GameObject:
   m_Component:
   - component: {fileID: 140504390036555592}
   - component: {fileID: 2485630137812705716}
-  - component: {fileID: -9125639216236413722}
   m_Layer: 0
   m_Name: KoreLibMesh02
   m_TagString: Untagged
@@ -481,24 +461,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -13.999512, y: -0.00048828125, z: 63.999527}
     m_Extent: {x: 13.999512, y: 47.999523, z: 63.999527}
   m_DirtyAABB: 0
---- !u!65 &-9125639216236413722
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6542921467390822802}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 27.999075, y: 95.99911, z: 127.99911}
-  m_Center: {x: -13.999532, y: -0.00049424195, z: 63.99955}

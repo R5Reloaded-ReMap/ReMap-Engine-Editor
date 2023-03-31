@@ -106,7 +106,6 @@ GameObject:
   m_Component:
   - component: {fileID: 84338610770659057}
   - component: {fileID: 6206693072396390584}
-  - component: {fileID: 7760930182477979753}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -183,27 +182,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0000048838556, y: -0.000053711236, z: 0.07455079}
     m_Extent: {x: 0.04172363, y: 0.04175294, z: 0.07432619}
   m_DirtyAABB: 0
---- !u!65 &7760930182477979753
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5184428802160529005}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.08344734, y: 0.083505936, z: 0.14865245}
-  m_Center: {x: 0.0000048660895, y: -0.00005372015, z: 0.07455082}
 --- !u!1 &6803600892502251908
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5526950443484430270}
   - component: {fileID: 3119297895558139341}
+  - component: {fileID: -5629216752325390640}
   m_Layer: 0
   m_Name: mdl#props#caustic_flask#caustic_flask
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-5629216752325390640
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6998378004081207830}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.08350592, y: 0.14887702, z: 0.08344732}
+  m_Center: {x: -0.000053711236, y: 0.07443851, z: 0.000004865229}

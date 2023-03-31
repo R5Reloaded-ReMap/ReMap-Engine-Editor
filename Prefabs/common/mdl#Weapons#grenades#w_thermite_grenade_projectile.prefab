@@ -42,7 +42,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3077159244828576629}
   - component: {fileID: 9123871230623375064}
-  - component: {fileID: -6362507666844538499}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -119,27 +118,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000019531697, y: -0.0000048829243, z: -0.006279297}
     m_Extent: {x: 0.013798827, y: 0.01336426, z: 0.04678712}
   m_DirtyAABB: 0
---- !u!65 &-6362507666844538499
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2247033311329155754}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.02759769, y: 0.026728548, z: 0.09357427}
-  m_Center: {x: 0.000019533201, y: -0.0000048821803, z: -0.0062792995}
 --- !u!1 &3034368185357595097
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,6 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5668318979610447938}
   - component: {fileID: 8355172857459687134}
+  - component: {fileID: 1293335104927593131}
   m_Layer: 0
   m_Name: mdl#Weapons#grenades#w_thermite_grenade_projectile
   m_TagString: Prop
@@ -248,9 +227,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &1293335104927593131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451229776838330904}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.026728533, y: 0.09357427, z: 0.027597684}
+  m_Center: {x: -0.0000048829243, y: -0.006279297, z: 0.00001953356}
 --- !u!1 &4370191739098552045
 GameObject:
   m_ObjectHideFlags: 0

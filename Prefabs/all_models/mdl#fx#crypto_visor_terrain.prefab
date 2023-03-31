@@ -42,7 +42,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7912790190993747659}
   - component: {fileID: 1137468852568402332}
-  - component: {fileID: 8916075352372623198}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -119,27 +118,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0000048838556, y: -0.000004887581, z: 5.426305e-20}
     m_Extent: {x: 0.02699707, y: 0.06252442, z: 6.941606e-16}
   m_DirtyAABB: 0
---- !u!65 &8916075352372623198
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2796073459466885642}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.053994175, y: 0.1250489, z: 0.000000014906984}
-  m_Center: {x: 0.000004883858, y: -0.0000048875836, z: 5.82645e-13}
 --- !u!1 &3972935732299231209
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5882387296233059876}
   - component: {fileID: 3685465847587032979}
+  - component: {fileID: -3458882835837776443}
   m_Layer: 0
   m_Name: mdl#fx#crypto_visor_terrain
   m_TagString: Prop
@@ -281,6 +260,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-3458882835837776443
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684498343925094337}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.12504889, y: 0.000000029813968, z: 0.053994153}
+  m_Center: {x: -0.000004887581, y: 1.1652901e-12, z: 0.0000048838556}

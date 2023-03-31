@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4006946621661366579}
   - component: {fileID: 2981196656104448136}
+  - component: {fileID: -7301753630882031603}
   m_Layer: 0
   m_Name: mdl#levels_terrain#mp_rr_canyonlands#water_foam_radial_down_outwards_01
   m_TagString: Prop
@@ -173,9 +174,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-7301753630882031603
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3919170275689675098}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 553.84424, y: 0.00013204667, z: 1060.7493}
+  m_Center: {x: -252.58997, y: 0.000060222126, z: 0.15478516}
 --- !u!1 &5430346100849776930
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8555787948354045196}
   - component: {fileID: 6051290974908043072}
-  - component: {fileID: -2796645517801235688}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.15478516, y: -252.5899, z: 0}
     m_Extent: {x: 530.3745, y: 276.92194, z: 0}
   m_DirtyAABB: 0
---- !u!65 &-2796645517801235688
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5430346100849776930}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1060.7495, y: 553.84424, z: 0.00006602334}
-  m_Center: {x: 0.15481533, y: -252.59003, z: 0.00003011106}

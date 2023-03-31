@@ -198,7 +198,7 @@ public class SerializeTool : EditorWindow
 
             PropScript script = go.GetComponent<PropScript>();
 
-            UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
+            UnityEngine.Object loadedPrefabResource = UnityInfo.FindPrefabFromName(name);
             if (loadedPrefabResource == null)
             {
                 ReMapConsole.Log($"[Serialize Tool] Couldnt find prefab with name of: {name}" , ReMapConsole.LogType.Error);
@@ -211,9 +211,7 @@ public class SerializeTool : EditorWindow
             obj.gameObject.transform.localScale = go.transform.lossyScale;
 
             PropScript scriptInstance = obj.GetComponent<PropScript>();
-            scriptInstance.fadeDistance = script.fadeDistance;
-            scriptInstance.allowMantle = script.allowMantle;
-            scriptInstance.realmID = script.realmID;
+            Helper.ApplyComponentScriptData<PropScript>( scriptInstance, script );
 
             obj.transform.SetParent(go.transform.parent);
 
@@ -351,7 +349,7 @@ public class SerializeTool : EditorWindow
             if(!IsValidGameObject(go))
                 continue;
 
-            UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
+            UnityEngine.Object loadedPrefabResource = UnityInfo.FindPrefabFromName(name);
             if (loadedPrefabResource == null)
             {
                 ReMapConsole.Log($"[Serialize Tool] Couldn't find prefab with name of: {name}", ReMapConsole.LogType.Error);
@@ -420,7 +418,7 @@ public class SerializeTool : EditorWindow
         if(!IsValidGameObject(go))
             return new Vector3[4];
 
-        UnityEngine.Object loadedPrefabResource = ImportExportJson.FindPrefabFromName(name);
+        UnityEngine.Object loadedPrefabResource = UnityInfo.FindPrefabFromName(name);
         if (loadedPrefabResource == null)
         {
             ReMapConsole.Log($"[Serialize Tool] Couldn't find prefab with name of: {name}", ReMapConsole.LogType.Error);

@@ -234,7 +234,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8795322328044228267}
   - component: {fileID: 219502245241660226}
-  - component: {fileID: -6318445218837771725}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -311,27 +310,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0000048829243, y: -0.0000048838556, z: 0.000063477084}
     m_Extent: {x: 0.014262695, y: 0.039907236, z: 0.014028324}
   m_DirtyAABB: 0
---- !u!65 &-6318445218837771725
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7738328678276266865}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.028525416, y: 0.07981451, z: 0.028056666}
-  m_Center: {x: 0.0000048829115, y: -0.000004883866, z: 0.000063477106}
 --- !u!1 &8165969302536175111
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,6 +320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5315903167308470536}
   - component: {fileID: 6970970207966584814}
+  - component: {fileID: 5961575679814877256}
   m_Layer: 0
   m_Name: mdl#Weapons#grenades#w_bangalore_canister_gas_projectile
   m_TagString: Prop
@@ -377,6 +356,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &5961575679814877256
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8165969302536175111}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0798145, y: 0.028056674, z: 0.028525405}
+  m_Center: {x: -0.0000048838556, y: 0.000063477084, z: 0.0000048829243}

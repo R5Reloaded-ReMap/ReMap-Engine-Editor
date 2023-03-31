@@ -43,7 +43,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6099684346317814015}
   - component: {fileID: 8166497069438650982}
-  - component: {fileID: -1498892482402153849}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -120,27 +119,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -8.5, y: 8.499025, z: 32.000008}
     m_Extent: {x: 8.5, y: 8.500002, z: 32.000008}
   m_DirtyAABB: 0
---- !u!65 &-1498892482402153849
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3172138551203072751}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 17.000023, y: 17.000021, z: 64.00004}
-  m_Center: {x: -8.500011, y: 8.499026, z: 32.00002}
 --- !u!1 &4752447403321904948
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,6 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 612853824342892171}
   - component: {fileID: 7548319647780984135}
+  - component: {fileID: 6380266640987098154}
   m_Layer: 0
   m_Name: mdl#desertlands#industrial_support_beam_16x64_vertical_corner
   m_TagString: Prop
@@ -249,9 +228,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &6380266640987098154
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7083360366573523599}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 17.000011, y: 64.00004, z: 17.00002}
+  m_Center: {x: 8.499029, y: 32.00001, z: -8.50001}
 --- !u!1 &8403070620562584857
 GameObject:
   m_ObjectHideFlags: 0

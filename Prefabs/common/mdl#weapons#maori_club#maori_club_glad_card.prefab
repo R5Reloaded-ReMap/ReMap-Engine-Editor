@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6842958204935076323}
   - component: {fileID: 1385255586661045675}
+  - component: {fileID: -2702659683904765612}
   m_Layer: 0
   m_Name: mdl#weapons#maori_club#maori_club_glad_card
   m_TagString: Prop
@@ -76,9 +77,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &-2702659683904765612
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011487070849378246}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0935548, y: 0.025712924, z: 0.28102544}
+  m_Center: {x: -0.0043359213, y: -0.000004881993, z: -0.084790066}
 --- !u!1 &2735676268762767248
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1853073172696890747}
   - component: {fileID: 5299412756237158719}
-  - component: {fileID: 5961180774281051069}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -263,24 +287,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.084790036, y: -0.00433594, z: -0.0000048829243}
     m_Extent: {x: 0.14051269, y: 0.046777356, z: 0.012856448}
   m_DirtyAABB: 0
---- !u!65 &5961180774281051069
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4877525458382795873}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.28102547, y: 0.09355479, z: 0.025712917}
-  m_Center: {x: -0.084790066, y: -0.0043359315, z: -0.000004882409}

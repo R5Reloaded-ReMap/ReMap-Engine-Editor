@@ -1,11 +1,14 @@
 using UnityEngine;
 
+public enum LootBinSkinType
+{
+    Default = 0,
+    Blue = 1,
+    Gold = 2,
+    Yellow = 3
+}
+
 public class LootBinScript : MonoBehaviour
 {
-    [Header("Skin IDs:")]
-    [Header("0 - default")]
-    [Header("1 - blue")]
-    [Header("2 - gold")]
-    [Header("3 - yellow")]
-    public int lootbinSkin = 0;
+    public LootBinSkinType LootbinSkin = LootBinSkinType.Default;
 }

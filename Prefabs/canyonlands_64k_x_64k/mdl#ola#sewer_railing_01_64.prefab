@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8129708392578797078}
   - component: {fileID: 6914433654838725549}
-  - component: {fileID: -2093253582675108830}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -87,27 +86,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -3, y: 0, z: 22.000006}
     m_Extent: {x: 3, y: 30.000008, z: 26.000006}
   m_DirtyAABB: 0
---- !u!65 &-2093253582675108830
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 46052088451179215}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 6.0000215, y: 60.000053, z: 52.00004}
-  m_Center: {x: -3.0000062, y: -0.0000022649785, z: 22.000013}
 --- !u!1 &1220875809130475383
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7909630368040420490}
   - component: {fileID: 4376176833936715795}
+  - component: {fileID: 869842282415263356}
   m_Layer: 0
   m_Name: mdl#ola#sewer_railing_01_64
   m_TagString: Prop
@@ -153,9 +132,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &869842282415263356
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220875809130475383}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 60.00003, y: 52.00004, z: 6.000014}
+  m_Center: {x: 0, y: 22.000011, z: -3.000006}
 --- !u!1 &2498568360629083267
 GameObject:
   m_ObjectHideFlags: 0

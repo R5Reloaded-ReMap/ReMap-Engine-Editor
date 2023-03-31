@@ -42,7 +42,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3098838471483836975}
   - component: {fileID: 2140213976939407214}
-  - component: {fileID: -4756565815740173393}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -119,27 +118,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.31884766, y: -0.4609375, z: -0.00048828125}
     m_Extent: {x: 0.31884766, y: 15.697269, z: 9.71924}
   m_DirtyAABB: 0
---- !u!65 &-4756565815740173393
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3164455343054956948}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.63770396, y: 31.394556, z: 19.438492}
-  m_Center: {x: -0.31884772, y: -0.46093768, z: -0.00048822648}
 --- !u!1 &5883874618916198235
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7367762736636600107}
   - component: {fileID: 3357466902212428252}
+  - component: {fileID: 809030882708176799}
   m_Layer: 0
   m_Name: mdl#signs#sign_caution_red_light_01
   m_TagString: Prop
@@ -185,9 +164,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b4f31a2773bb4088a74701c2abb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowMantle: 1
-  fadeDistance: 50000
-  realmID: -1
+  AllowMantle: 1
+  FadeDistance: 50000
+  RealmID: -1
+  playerClip: 0
+  playerNoClimb: 0
+  playerNoCollision: 0
+--- !u!65 &809030882708176799
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5883874618916198235}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 31.394547, y: 19.438492, z: 0.63770014}
+  m_Center: {x: -0.4609375, y: -0.00048828125, z: -0.31884775}
 --- !u!1 &7179085375834645643
 GameObject:
   m_ObjectHideFlags: 0

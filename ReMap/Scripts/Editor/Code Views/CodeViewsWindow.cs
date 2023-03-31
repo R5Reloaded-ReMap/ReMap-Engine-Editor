@@ -243,6 +243,13 @@ namespace CodeViewsWindow
                 GUILayout.BeginHorizontal();
                         ObjectCount();
 
+                        if ( CodeViewsMenu.EnableDevInfo )
+                        {
+                            CodeViewsMenu.Space( 10 );
+                            GUILayout.Label( $"Window Size: {CodeViewsWindow.windowSize.x} x {CodeViewsWindow.windowSize.y}" );
+                            GUILayout.Label( $"Scroll Position: {Helper.ReplaceComma( CodeViewsWindow.scroll.x )} x {Helper.ReplaceComma( CodeViewsWindow.scroll.y )}" );
+                        }
+
                         GUILayout.FlexibleSpace();
 
                         ExportButton();

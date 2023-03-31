@@ -26,18 +26,14 @@ namespace CodeViewsWindow
         internal static Color GUI_SettingsColor = new Color( 255f, 255f, 255f );
 
         internal static bool ShowDevMenu = false;
-        internal static bool ShowSubDevMenu = false;
+        internal static bool EnableDevInfo = false;
 
         internal static FunctionRef[] DevMenu = new FunctionRef[]
         {
-            () => CreateSubMenu( SubDevMenu, "Window Info", "Window Info", "Get infos from current window", ref ShowSubDevMenu )
+            () => CreateSubMenu( SubDevMenu, "Hide Debug Info", "Show Debug Info", "Get infos from current window", ref EnableDevInfo )
         };
 
-        internal static FunctionRef[] SubDevMenu = new FunctionRef[]
-        {
-            () => OptionalTextInfo( $"Window Size: {CodeViewsWindow.windowSize.x} x {CodeViewsWindow.windowSize.y}", "Show the current size of the window", null, MenuType.SubMenu ),
-            () => OptionalTextInfo( $"Scroll Size: {CodeViewsWindow.scroll.x} x {CodeViewsWindow.scroll.y}", "Show the current size of the code scroll", null, MenuType.SubMenu ),
-        };
+        internal static FunctionRef[] SubDevMenu = new FunctionRef[0];
 
         internal static void CreateMenu( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value )
         {

@@ -19,7 +19,7 @@ namespace CodeViewsWindow
     {
         internal static CodeViewsWindow windowInstance;
         internal static string code = "";
-        internal static string functionName = "unnamed";
+        internal static string functionName = "Unnamed";
         internal static string[] toolbarTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code" };
         internal static string[] toolbarSubTabEntCode = new[] { "script.ent", "snd.ent", "spawn.ent" };
         internal static Vector2 scroll;

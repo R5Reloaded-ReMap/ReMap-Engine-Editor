@@ -558,6 +558,8 @@ public class Helper
 
     public static string GetSceneName()
     {
+        if ( SceneManager.GetActiveScene().name == "" ) return "Unnamed";
+
         return $"{SceneManager.GetActiveScene().name.Replace(" ", "_")}";
     }
 

@@ -98,7 +98,7 @@ namespace CodeViewsWindow
                     
                     if ( ShowSettings )
                     {
-                        GUILayout.BeginVertical( "box", GUILayout.Width( 340 ) );
+                        GUILayout.BeginVertical( "box", GUILayout.Width( 332 ) );
                             SettingsMenu();
                         GUILayout.EndVertical();
                     }

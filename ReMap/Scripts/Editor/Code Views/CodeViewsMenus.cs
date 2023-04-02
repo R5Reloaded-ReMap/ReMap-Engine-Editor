@@ -197,7 +197,7 @@ namespace CodeViewsWindow
                         CodeViewsWindow.Refresh();
                     }
 
-                    Space( 2 );
+                    Space( 1 );
 
                     if ( GUILayout.Button( "Uncheck All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 158 ) ) )
                     {

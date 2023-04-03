@@ -86,7 +86,7 @@ namespace CodeViewsWindow
             if( tab != tab_temp || tabEnt != tabEnt_temp )
             {
                 GetFunctionName();
-                Refresh( false, false );
+                Refresh( false );
                 tab_temp = tab;
                 tabEnt_temp = tabEnt;
             }
@@ -105,7 +105,7 @@ namespace CodeViewsWindow
 
                 GUILayout.EndHorizontal();
         
-                if ( GUILayout.Button( "Copy To Clipboard" ) ) Refresh( true );
+                if ( GUILayout.Button( "Copy To Clipboard" ) ) CopyCode();
             GUILayout.EndVertical();
         }
 
@@ -141,10 +141,15 @@ namespace CodeViewsWindow
         //  ██║   ██║██║    ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝  
         //  ╚██████╔╝██║    ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
         //   ╚═════╝ ╚═╝     ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
-        internal static void Refresh( bool copy = false, bool reSetScroll = true )
+        internal static void Refresh( bool reSetScroll = true )
         {
-            EntityCount = 0; GenerateCorrectCode( copy );
+            EntityCount = 0; GenerateCorrectCode();
             if ( reSetScroll ) SetScrollView( scroll );
+        }
+
+        internal static void CopyCode()
+        {
+            GUIUtility.systemCopyBuffer = code;
         }
 
         internal static async void SetScrollView( Vector2 scroll )
@@ -366,7 +371,7 @@ namespace CodeViewsWindow
             }
         }
 
-        private static async void GenerateCorrectCode( bool copy )
+        private static async void GenerateCorrectCode()
         {
             code = "";
 
@@ -404,8 +409,6 @@ namespace CodeViewsWindow
             }
 
             GenerationIsActive = false;
-
-            if( copy ) GUIUtility.systemCopyBuffer = code;
         }
 
         private static void GetFunctionName()

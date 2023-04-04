@@ -24,7 +24,7 @@ namespace CodeViewsWindow
         internal static FunctionRef[] DevMenu = new FunctionRef[]
         {
             () => CreateSubMenu( SubDevMenu, "Hide Debug Info", "Show Debug Info", "Get infos from current window", ref EnableDevInfo ),
-            () => DevMenuOptions()
+            () => OptionalButton( "Send Map Code To Game", "Dev Test", LiveMap.SendMap, null )
         };
 
         internal static FunctionRef[] SubDevMenu = new FunctionRef[0];
@@ -178,6 +178,24 @@ namespace CodeViewsWindow
             GUILayout.EndHorizontal();
         }
 
+        internal static void OptionalButton( string text = "button", string tooltip = "", FunctionRef functionRef = null, bool ? condition = null, MenuType menuType = MenuType.Menu )
+        {
+            if ( condition != null && !condition.Value ) return;
+
+            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
+
+            float space = menuType == MenuType.Menu ? 320 : 297;
+
+            GUILayout.BeginHorizontal();
+                if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
+                if( GUILayout.Button( new GUIContent( text, tooltip ), buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( space ) ) )
+                {
+                    if ( functionRef != null ) functionRef();
+                }
+            GUILayout.EndHorizontal();
+        }
+
         internal static void OptionalAdvancedOption()
         {
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
@@ -241,19 +259,5 @@ namespace CodeViewsWindow
         //  ██║  ██║██╔══╝  ╚██╗ ██╔╝    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
         //  ██████╔╝███████╗ ╚████╔╝     ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
         //  ╚═════╝ ╚══════╝  ╚═══╝      ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ 
-
-
-        internal static void DevMenuOptions()
-        {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
-
-            GUILayout.BeginVertical();
-                    if ( GUILayout.Button( "Send Map Code To Game", buttonStyle, GUILayout.Height( 20 ) ) )
-                    {
-                        LiveMap.SendMap();
-                    }
-            GUILayout.EndVertical();
-        }
     }
 }

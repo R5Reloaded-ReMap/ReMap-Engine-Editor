@@ -51,14 +51,22 @@ namespace Build
 
                 foreach ( Transform child in obj.transform )
                 {
-                    if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject );
-                    if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject );
+                    if(buildType == BuildType.LiveMap)
+                    {
+                        if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject, false, true );
+                        if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject, false, true );
+                    }
+                    else
+                    {
+                        if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject );
+                        if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject );
+                    }
                 }
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )" );
+                        code.Append( $"    MapEditor_CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )" );
                         PageBreak( ref code );
                         break;
 
@@ -73,6 +81,11 @@ namespace Build
                     case BuildType.DataTable:
                         // Empty
                     break;
+
+                    case BuildType.LiveMap:
+                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateZipline( {ziplinestart}, {ziplineend}, true )");
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        break;
                 }
             }
 

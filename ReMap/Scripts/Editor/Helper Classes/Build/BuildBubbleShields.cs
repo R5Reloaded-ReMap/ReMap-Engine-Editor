@@ -57,8 +57,8 @@ namespace Build
                         break;
 
                     case BuildType.EntFile:
-                        // Empty
-                        break;
+                    // Empty
+                    break;
 
                     case BuildType.Precache:
                         // Empty
@@ -67,6 +67,11 @@ namespace Build
                     case BuildType.DataTable:
                         // Empty
                     break;
+
+                    case BuildType.LiveMap:
+                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\", true )");
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        break;
                 }
             }
 

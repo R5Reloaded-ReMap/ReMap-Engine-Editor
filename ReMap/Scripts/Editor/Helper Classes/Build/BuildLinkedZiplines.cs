@@ -69,6 +69,18 @@ namespace Build
                     case BuildType.DataTable:
                         // Empty
                     break;
+
+                    case BuildType.LiveMap:
+                        string function2 = "";
+                        string smoothType2 = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
+                        string nodes2 = MakeLinkedZiplineNodeArray( obj );
+
+                        if ( script.EnableSmoothing ) function = $"{smoothType2}( {nodes2}, {script.SmoothAmount} )";
+                        else function2 = $"{nodes2}";
+
+                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateLinkedZipline( {function2}, true )");
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        break;
                 }
             }
 

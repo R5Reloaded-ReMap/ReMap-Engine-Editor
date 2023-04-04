@@ -15,7 +15,8 @@ namespace Build
         Script,
         EntFile,
         Precache,
-        DataTable
+        DataTable,
+        LiveMap
     }
 
     public class Build
@@ -50,6 +51,10 @@ namespace Build
                     PrecacheList.Add( model );
                 }
                 CodeViewsWindow.CodeViewsWindow.EntityCount += PrecacheList.Count;
+            }
+            else if (buildType == BuildType.LiveMap)
+            {
+                // Nothing  
             }
             else CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength;
             

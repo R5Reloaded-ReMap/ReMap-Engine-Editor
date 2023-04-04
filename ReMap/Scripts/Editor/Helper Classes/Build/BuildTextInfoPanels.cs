@@ -60,6 +60,11 @@ namespace Build
                     case BuildType.DataTable:
                         // Empty
                     break;
+
+                    case BuildType.LiveMap:
+                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.showPIN )}, {Helper.ReplaceComma( script.Scale )})");
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        break;
                 }
             }
 

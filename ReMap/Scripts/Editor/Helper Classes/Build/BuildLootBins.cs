@@ -109,6 +109,11 @@ namespace Build
                     case BuildType.DataTable:
                         // Empty
                     break;
+
+                    case BuildType.LiveMap:
+                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateLootBin( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {skin}, true )");
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        break;
                 }
             }
 

@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
-
-using Build;
-using static Build.Build;
 
 namespace CodeViewsWindow
 {
@@ -30,7 +23,8 @@ namespace CodeViewsWindow
 
         internal static FunctionRef[] DevMenu = new FunctionRef[]
         {
-            () => CreateSubMenu( SubDevMenu, "Hide Debug Info", "Show Debug Info", "Get infos from current window", ref EnableDevInfo )
+            () => CreateSubMenu( SubDevMenu, "Hide Debug Info", "Show Debug Info", "Get infos from current window", ref EnableDevInfo ),
+            () => DevMenuOptions()
         };
 
         internal static FunctionRef[] SubDevMenu = new FunctionRef[0];
@@ -248,6 +242,18 @@ namespace CodeViewsWindow
         //  ██████╔╝███████╗ ╚████╔╝     ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
         //  ╚═════╝ ╚══════╝  ╚═══╝      ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ 
 
-    }
 
+        internal static void DevMenuOptions()
+        {
+            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
+
+            GUILayout.BeginVertical();
+                    if ( GUILayout.Button( "Send Map Code To Game", buttonStyle, GUILayout.Height( 20 ) ) )
+                    {
+                        LiveMap.SendMap();
+                    }
+            GUILayout.EndVertical();
+        }
+    }
 }

@@ -4,27 +4,10 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-public class LiveUpdate : EditorWindow
+public static class LiveMap
 {
-    bool IsSending = false;
-    IntPtr m_hEngine;
-
-    #if ReMapDev
-    [MenuItem("ReMap/LiveMapTesting", false, 0)]
-    static void Init()
-    {
-        LiveUpdate window = (LiveUpdate)EditorWindow.GetWindow(typeof(LiveUpdate), false, "Testing");
-        window.minSize = new Vector2(678, 290);
-        window.maxSize = new Vector2(678, 290);
-        window.Show();
-    }
-    #endif
-
-    private Texture2D m_Logo = null;
-    void OnEnable()
-    {
-        m_Logo = (Texture2D)Resources.Load("Images/logo",typeof(Texture2D));
-    }
+    static bool IsSending = false;
+    static IntPtr m_hEngine;
 
     [DllImport("user32.dll")]
     public static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
@@ -42,27 +25,12 @@ public class LiveUpdate : EditorWindow
 
     const int WM_COPYDATA = 0x4A;
 
-    void OnGUI()
-    {
-        GUI.contentColor = Color.white;
-        GUILayout.BeginVertical("box");
-            GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Send Map"))
-                    if(!IsSending)
-                        SendMap();
-
-            if(IsSending)
-                GUILayout.Label("Sending Map");
-            GUILayout.EndHorizontal();
-        GUILayout.EndVertical();
-    }
-
-    public IntPtr FindApexWindow()
+    public static IntPtr FindApexWindow()
     { 
         return FindWindow("Respawn001", "Apex Legends"); 
     }
 
-    public void SendCommandToApex(string command)
+    public static void SendCommandToApex(string command)
     {
         if(m_hEngine == null)
             return;
@@ -80,10 +48,9 @@ public class LiveUpdate : EditorWindow
         SendMessage(m_hEngine, WM_COPYDATA, IntPtr.Zero, ptrCopyData);
     }
 
-    public void SendMap()
+    public static async void SendMap()
     {
         IsSending = true;
-        Debug.Log("Find Window");
         //find and set window once
         m_hEngine = FindApexWindow();
         if(m_hEngine == null) {
@@ -96,14 +63,14 @@ public class LiveUpdate : EditorWindow
         SendCommandToApex($"sv_quota_stringCmdsPerSecond 9999999");
         SendCommandToApex($"cl_quota_stringCmdsPerSecond 9999999");
 
-        SendProps();
-        SendZiplines();
-        SendLinkedZiplines();
+        await SendProps();
+        await SendZiplines();
+        await SendLinkedZiplines();
 
         IsSending = false;
     }
 
-    public void SendProps()
+    public static Task SendProps()
     {
         GameObject[] PropObjects = GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( ObjectType.Prop ) );
 
@@ -122,9 +89,11 @@ public class LiveUpdate : EditorWindow
             //10 seems to be the lowest otherwise it sends to many commands
             DelayInMS(10);
         }
+
+        return Task.CompletedTask;
     }
 
-    void DelayInMS(int ms) // Stops the code for milliseconds and then resumes it (Basically It's delay)
+    static void DelayInMS(int ms) // Stops the code for milliseconds and then resumes it (Basically It's delay)
         {
             for (int i = 0; i < ms * 100000; i++) 
             {
@@ -136,7 +105,7 @@ public class LiveUpdate : EditorWindow
             }
         }
 
-    public void SendZiplines()
+    public static Task SendZiplines()
     {
         GameObject[] Ziplines = GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( ObjectType.ZipLine ) );
 
@@ -160,12 +129,14 @@ public class LiveUpdate : EditorWindow
 
             //Custom delay function
             //using any other wait is accurate down to the miliseconds
-            //10 seems to be the lowest otherwise it sends to many commands
-            DelayInMS(10);
+            //15 seems to be the lowest otherwise it sends to many commands
+            DelayInMS(15);
         }
+
+        return Task.CompletedTask;
     }
 
-    public void SendLinkedZiplines()
+    public static Task SendLinkedZiplines()
     {
         GameObject[] Ziplines = GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( ObjectType.LinkedZipline ) );
 
@@ -189,6 +160,8 @@ public class LiveUpdate : EditorWindow
             //10 seems to be the lowest otherwise it sends to many commands
             DelayInMS(10);
         }
+
+        return Task.CompletedTask;
     }
 
     private static string MakeLinkedZiplineNodeArray( GameObject obj )

@@ -24,7 +24,7 @@ namespace CodeViewsWindow
         internal static FunctionRef[] DevMenu = new FunctionRef[]
         {
             () => CreateSubMenu( SubDevMenu, "Hide Debug Info", "Show Debug Info", "Get infos from current window", ref EnableDevInfo ),
-            () => OptionalButton( "Send Map Code To Game", "Dev Test", LiveMap.SendMap, null )
+            () => OptionalButton( "Send Map Code To Game", "Dev Test", () => LiveMap.SendMap(), null )
         };
 
         internal static FunctionRef[] SubDevMenu = new FunctionRef[0];

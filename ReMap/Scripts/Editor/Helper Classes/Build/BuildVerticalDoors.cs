@@ -34,6 +34,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -106,12 +110,12 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
-                    break;
+                        break;
 
                     case BuildType.LiveMap:
                         CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_SpawnDoor( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Vertical, false, true )");
                         Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
-                        break;
+                    break;
                 }
             }
 
@@ -131,6 +135,10 @@ namespace Build
                     break;
                     
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }

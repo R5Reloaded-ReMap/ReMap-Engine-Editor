@@ -34,6 +34,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -51,8 +55,8 @@ namespace Build
                         break;
 
                     case BuildType.EntFile:
-                    // Empty
-                    break;
+                        // Empty
+                        break;
 
                     case BuildType.Precache:
                         // Empty
@@ -60,12 +64,12 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
-                    break;
+                        break;
 
                     case BuildType.LiveMap:
                         CodeViewsWindow.LiveMap.SendCommandToApex($"script AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + " { }, true)");
                         Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
-                        break;
+                    break;
                 }
             }
 
@@ -85,6 +89,10 @@ namespace Build
                     break;
                     
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }

@@ -34,6 +34,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -60,12 +64,12 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
-                    break;
+                        break;
 
                     case BuildType.LiveMap:
                         CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )}, true )");
                         Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
-                        break;
+                    break;
                 }
             }
 
@@ -85,6 +89,10 @@ namespace Build
                     break;
                     
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }

@@ -34,6 +34,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -68,7 +72,7 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
-                    break;
+                        break;
 
                     case BuildType.LiveMap:
                         string function2 = "";
@@ -80,7 +84,7 @@ namespace Build
 
                         CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateLinkedZipline( {function2}, true )");
                         Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
-                        break;
+                    break;
                 }
             }
 
@@ -100,6 +104,10 @@ namespace Build
                     break;
                     
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }

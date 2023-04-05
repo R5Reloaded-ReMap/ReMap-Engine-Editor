@@ -34,6 +34,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -63,12 +67,12 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
-                    break;
+                        break;
 
                     case BuildType.LiveMap:
                         CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateJumpPad( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ), true )");
                         Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
-                        break;
+                    break;
                 }
             }
 
@@ -88,6 +92,10 @@ namespace Build
                     break;
                     
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }

@@ -68,6 +68,10 @@ namespace Build
                 case BuildType.DataTable:
                     code.Append( "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" );
                     PageBreak( ref code );
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -119,12 +123,12 @@ namespace Build
                     case BuildType.DataTable:
                         code.Append( $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"" );
                         PageBreak( ref code );
-                    break;
+                        break;
 
                     case BuildType.LiveMap:
                         CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale}, true )");
                         Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
-                        break;
+                    break;
                 }
             }
 
@@ -180,6 +184,10 @@ namespace Build
                     
                 case BuildType.DataTable:
                     code.Append( "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"" );
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
             

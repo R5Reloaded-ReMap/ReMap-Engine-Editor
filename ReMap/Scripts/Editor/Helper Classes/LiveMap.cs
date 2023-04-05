@@ -1,8 +1,10 @@
-using UnityEngine;
-using UnityEditor;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using UnityEditor;
+using UnityEngine;
 
 namespace CodeViewsWindow
 {
@@ -63,7 +65,7 @@ namespace CodeViewsWindow
             if(m_hEngine == null) {
                 IsSending = false;
                 CodeViewsWindow.EnableAutoLiveMapCode = false;
-                Debug.Log("Window Not Found");
+                UnityInfo.Printt("Window Not Found");
                 return;
             }
 
@@ -76,5 +78,84 @@ namespace CodeViewsWindow
 
             IsSending = false;
         }
+
+        public static async void Test()
+        {
+            string processName = "r5apex";
+            Process[] processes = Process.GetProcesses();
+            bool processFound = false;
+            string path = "";
+
+            foreach (Process process in processes)
+            {
+                if ( process.ProcessName == processName )
+                {
+                    try
+                    {
+                        path = Path.GetDirectoryName( process.MainModule.FileName );
+                        processFound = true;
+                    }
+                    catch (System.ComponentModel.Win32Exception)
+                    {
+                        UnityInfo.Printt("System.ComponentModel.Win32Exception: Process Not Found");
+                    }
+
+                    break;
+                }
+            }
+
+            if ( path != "" )
+            {
+                path += "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
+
+                if ( !File.Exists( path ) ) File.Create( path );
+
+                string code = await BuildScriptFile();
+
+                File.WriteAllText( path, code );
+
+                UnityInfo.Printt( path );
+            }
+
+            if (!processFound)
+            {
+                UnityEngine.Debug.Log("Process Not Found");
+            }
+        }
+
+        private static async Task<string> BuildScriptFile()
+        {
+            string code = "";
+
+            code += "\nglobal function ReMapLive_Init\n\n";
+            code += Helper.ReMapCredit( true );
+
+            code += "void function ReMapLive_Init()\n";
+            code += "{\n";
+            code += await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false );
+            code += "\n    AddCallback_EntitiesDidLoad( ReMapLive )\n";
+            code += "}\n\n";
+
+            code += "void function ReMapLive()\n";
+            code += "{\n";
+            code += await Helper.BuildMapCode( Build.BuildType.Script, false );
+            code += "}\n";
+
+            return code;
+        }
+
+        /*
+        global function ReMapLive_Init
+
+        void function ReMapLive_Init()
+        {
+            AddCallback_EntitiesDidLoad( ReMapLive )
+        }
+
+        void function ReMapLive()
+        {
+        
+        }
+        */
     }
 }

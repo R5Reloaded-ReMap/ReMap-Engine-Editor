@@ -575,11 +575,13 @@ public class Helper
         }
     }
 
-    public static string ReMapCredit()
+    public static string ReMapCredit( bool noSpace = false )
     {
         string credit = "";
-        credit += $"    // Generated with Unity ReMap Editor {UnityInfo.ReMapVersion}\n";
-        credit += $"    // Made with love by AyeZee#6969 & Julefox#0050 :)\n\n";
+        string space = noSpace ? "" : "    ";
+
+        credit += $"{space}// Generated with Unity ReMap Editor {UnityInfo.ReMapVersion}\n";
+        credit += $"{space}// Made with love by AyeZee#6969 & Julefox#0050 :)\n\n";
         return credit;
     }
 }

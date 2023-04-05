@@ -29,11 +29,22 @@ namespace CodeViewsWindow
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", Helper.ShowStartingOffset, MenuType.SubMenu )
         };
 
-        static FunctionRef[] SelectionMenu = new FunctionRef[0];
-
         static FunctionRef[] AdvancedMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.OptionalAdvancedOption()
+        };
+
+        internal static FunctionRef[] LiveCode = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalButton( "Send Map Code To Game", "Dev Test", () => LiveMap.Send(), null ),
+            () => CodeViewsMenu.CreateSubMenu( CodeViewsMenu.SubEmptyMenu, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly Sends Live Map Code", ref CodeViewsWindow.EnableAutoLiveMapCode ),
+            () => CodeViewsMenu.CreateSubMenu( SubLiveCodeAdvancedMenu, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map", ref CodeViewsWindow.ShowSubAdvancedLiveMenu )
+        };
+
+        internal static FunctionRef[] SubLiveCodeAdvancedMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalButton( "Restart Level And Write Script", "Generate your map in mp_rr_remap.nut\nand reload the level", () => LiveMap.ReloadLevel(), null, MenuType.SubMenu ),
+            () => CodeViewsMenu.OptionalButton( "Reset Script", "Reset mp_rr_remap.nut", () => LiveMap.ReloadLevel( true ), null, MenuType.SubMenu )
         };
 
         internal static void OnGUISettingsTab()
@@ -45,7 +56,9 @@ namespace CodeViewsWindow
 
             CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
 
-            CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            CodeViewsMenu.CreateMenu( CodeViewsMenu.SubEmptyMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+
+            CodeViewsMenu.CreateMenu( LiveCode, "Hide Live Generation", "Show Live Generation", "Allows you to send commands to\nspawn prop if your game is open", ref CodeViewsWindow.ShowLiveMenu );
 
             CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
 

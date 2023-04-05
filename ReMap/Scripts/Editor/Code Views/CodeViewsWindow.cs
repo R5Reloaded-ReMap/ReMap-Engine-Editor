@@ -37,6 +37,7 @@ namespace CodeViewsWindow
         internal static bool ShowEntFunction = false;
         internal static bool EnableSelection = false;
         internal static bool ShowLiveMenu = false;
+        internal static bool ShowSubAdvancedLiveMenu = false;
         internal static bool ShowDevMenu = false;
         internal static bool EnableDevInfo = false;
         internal static bool EnableAutoLiveMapCode = false;

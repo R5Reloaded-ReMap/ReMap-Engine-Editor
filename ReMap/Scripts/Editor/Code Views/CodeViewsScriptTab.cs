@@ -88,7 +88,7 @@ namespace CodeViewsWindow
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 
             if ( CodeViewsWindow.EnableAutoLiveMapCode ){
-                LiveMap.BuildWaitMS = 25;
+                LiveMap.BuildWaitMS = 50;
                 LiveMap.Send();
                 LiveMap.BuildWaitMS = 50;
             }

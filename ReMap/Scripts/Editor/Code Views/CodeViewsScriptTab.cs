@@ -76,6 +76,12 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 
+            if ( CodeViewsMenu.EnableAutoLiveMapCode ){
+                LiveMap.BuildWaitMS = 25;
+                LiveMap.Send();
+                LiveMap.BuildWaitMS = 50;
+            }
+
             return code;
         }
     }

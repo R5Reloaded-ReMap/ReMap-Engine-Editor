@@ -20,14 +20,18 @@ namespace CodeViewsWindow
 
         internal static bool ShowDevMenu = false;
         internal static bool EnableDevInfo = false;
+        internal static bool EnableAutoLiveMapCode = false;
 
         internal static FunctionRef[] DevMenu = new FunctionRef[]
         {
             () => CreateSubMenu( SubDevMenu, "Hide Debug Info", "Show Debug Info", "Get infos from current window", ref EnableDevInfo ),
+            () => CreateSubMenu( SubDevMenu, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly Sends Live Map Code", ref EnableAutoLiveMapCode ),
             () => OptionalButton( "Send Map Code To Game", "Dev Test", () => LiveMap.Send(), null )
         };
 
         internal static FunctionRef[] SubDevMenu = new FunctionRef[0];
+
+        internal static FunctionRef[] EnablePushMapCode = new FunctionRef[1];
 
         internal static void CreateMenu( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value )
         {

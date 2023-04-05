@@ -62,7 +62,7 @@ namespace CodeViewsWindow
             m_hEngine = FindApexWindow();
             if(m_hEngine == null) {
                 IsSending = false;
-                CodeViewsMenu.EnableAutoLiveMapCode = false;
+                CodeViewsWindow.EnableAutoLiveMapCode = false;
                 Debug.Log("Window Not Found");
                 return;
             }

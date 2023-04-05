@@ -48,9 +48,7 @@ namespace CodeViewsWindow
 
             CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
 
-            #if ReMapDev
-            CodeViewsMenu.CreateMenu( CodeViewsMenu.DevMenu, "Dev Menu", "Dev Menu", "", ref CodeViewsMenu.ShowDevMenu );
-            #endif
+            CodeViewsMenu.SharedFunctions();
             
             GUILayout.EndScrollView();
             GUILayout.EndVertical();

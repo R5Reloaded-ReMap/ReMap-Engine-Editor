@@ -30,9 +30,7 @@ namespace CodeViewsWindow
 
             CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
 
-            #if ReMapDev
-            CodeViewsMenu.CreateMenu( CodeViewsMenu.DevMenu, "Dev Menu", "Dev Menu", "", ref CodeViewsMenu.ShowDevMenu );
-            #endif
+            CodeViewsMenu.SharedFunctions();
             
             GUILayout.EndScrollView();
             GUILayout.EndVertical();

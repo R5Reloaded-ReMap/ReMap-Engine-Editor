@@ -36,6 +36,10 @@ namespace CodeViewsWindow
         internal static bool ShowFunction = false;
         internal static bool ShowEntFunction = false;
         internal static bool EnableSelection = false;
+        internal static bool ShowLiveMenu = false;
+        internal static bool ShowDevMenu = false;
+        internal static bool EnableDevInfo = false;
+        internal static bool EnableAutoLiveMapCode = false;
         internal static bool GenerationIsActive = false;
         internal static int EntityCount = 0;
         internal static int EntFileID = 27;
@@ -257,7 +261,7 @@ namespace CodeViewsWindow
                 GUILayout.BeginHorizontal();
                         ObjectCount();
 
-                        if ( CodeViewsMenu.EnableDevInfo )
+                        if ( EnableDevInfo )
                         {
                             CodeViewsMenu.Space( 10 );
                             GUILayout.Label( $"Window Size: {CodeViewsWindow.windowSize.x} x {CodeViewsWindow.windowSize.y}" );

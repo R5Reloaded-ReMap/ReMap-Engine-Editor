@@ -49,9 +49,7 @@ namespace CodeViewsWindow
 
             CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
 
-            #if ReMapDev
-            CodeViewsMenu.CreateMenu( CodeViewsMenu.DevMenu, "Dev Menu", "Dev Menu", "", ref CodeViewsMenu.ShowDevMenu );
-            #endif
+            CodeViewsMenu.SharedFunctions();
 
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
@@ -76,7 +74,7 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 
-            if ( CodeViewsMenu.EnableAutoLiveMapCode ){
+            if ( CodeViewsWindow.EnableAutoLiveMapCode ){
                 LiveMap.BuildWaitMS = 25;
                 LiveMap.Send();
                 LiveMap.BuildWaitMS = 50;

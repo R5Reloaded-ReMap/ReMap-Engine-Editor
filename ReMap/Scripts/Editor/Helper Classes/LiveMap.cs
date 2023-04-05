@@ -79,7 +79,7 @@ namespace CodeViewsWindow
             IsSending = false;
         }
 
-        public static async void Test()
+        public static async void ReloadLevel( bool reset = false )
         {
             string processName = "r5apex";
             Process[] processes = Process.GetProcesses();
@@ -104,58 +104,60 @@ namespace CodeViewsWindow
                 }
             }
 
+            m_hEngine = FindApexWindow();
+
+            if( m_hEngine == null ) return;
+
             if ( path != "" )
             {
                 path += "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
 
                 if ( !File.Exists( path ) ) File.Create( path );
 
-                string code = await BuildScriptFile();
+                string code = await BuildScriptFile( reset );
 
                 File.WriteAllText( path, code );
 
-                UnityInfo.Printt( path );
+                if ( !reset ) SendCommandToApex( $"script GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
             }
 
             if (!processFound)
             {
-                UnityEngine.Debug.Log("Process Not Found");
+                UnityEngine.Debug.Log( "Process Not Found" );
             }
         }
 
-        private static async Task<string> BuildScriptFile()
+        private static async Task<string> BuildScriptFile( bool reset = false )
         {
             string code = "";
+
+            Build.Build.IgnoreCounter = true;
 
             code += "\nglobal function ReMapLive_Init\n\n";
             code += Helper.ReMapCredit( true );
 
             code += "void function ReMapLive_Init()\n";
             code += "{\n";
-            code += await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false );
-            code += "\n    AddCallback_EntitiesDidLoad( ReMapLive )\n";
-            code += "}\n\n";
+            
+            if ( reset )
+            {
+                code += "\n}\n";
+            }
+            else
+            {
+                code += await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false );
+                code += "\n    AddCallback_EntitiesDidLoad( ReMapLive )\n";
+                code += "}\n\n";
 
-            code += "void function ReMapLive()\n";
-            code += "{\n";
-            code += await Helper.BuildMapCode( Build.BuildType.Script, false );
-            code += "}\n";
+                code += "void function ReMapLive()\n";
+                code += "{\n";
+                code += await Helper.BuildMapCode( Build.BuildType.Script, false );
+                code += "}\n";
+            }
+
+            Build.Build.IgnoreCounter = false;
 
             return code;
         }
-
-        /*
-        global function ReMapLive_Init
-
-        void function ReMapLive_Init()
-        {
-            AddCallback_EntitiesDidLoad( ReMapLive )
-        }
-
-        void function ReMapLive()
-        {
-        
-        }
-        */
     }
 }

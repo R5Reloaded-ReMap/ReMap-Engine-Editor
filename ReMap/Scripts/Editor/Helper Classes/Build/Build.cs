@@ -21,6 +21,8 @@ namespace Build
 
     public class Build
     {
+        public static bool IgnoreCounter = false;
+
         public static async Task< string > BuildObjectsWithEnum( ObjectType objectType, BuildType buildType, bool selection = false )
         {
             StringBuilder code = new StringBuilder();
@@ -36,6 +38,7 @@ namespace Build
             if ( IsHided( objectType ) ) return "";
             
             // Dynamic Counter
+            if ( !IgnoreCounter )
             if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine || objectType == ObjectType.DoubleDoor )
             {
                 CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength * 2;
@@ -52,7 +55,7 @@ namespace Build
                 }
                 CodeViewsWindow.CodeViewsWindow.EntityCount += PrecacheList.Count;
             }
-            else if (buildType == BuildType.LiveMap)
+            else if ( buildType == BuildType.LiveMap )
             {
                 // Nothing  
             }

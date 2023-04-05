@@ -31,7 +31,8 @@ namespace CodeViewsWindow
         {
             () => CreateSubMenu( SubEmptyMenu, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly Sends Live Map Code", ref CodeViewsWindow.EnableAutoLiveMapCode ),
             () => OptionalButton( "Send Map Code To Game", "Dev Test", () => LiveMap.Send(), null ),
-            () => OptionalButton( "Restart Map With New Code To Game", "Dev Test", () => LiveMap.Test(), null )
+            () => OptionalButton( "Restart Map With New Code To Game", "Dev Test", () => LiveMap.ReloadLevel(), null ),
+            () => OptionalButton( "Reset Script", "Dev Test", () => LiveMap.ReloadLevel( true ), null )
         };
 
         internal static void SharedFunctions()

@@ -70,9 +70,13 @@ namespace CodeViewsWindow
             }
 
             SendCommandToApex($"sv_cheats 1");
+            Helper.DelayInMS(BuildWaitMS);
             SendCommandToApex($"sv_quota_stringCmdsPerSecond 9999999");
+            Helper.DelayInMS(BuildWaitMS);
             SendCommandToApex($"cl_quota_stringCmdsPerSecond 9999999");
+            Helper.DelayInMS(BuildWaitMS);
             SendCommandToApex($"script MapEditor_RemoveAllEnts()");
+            Helper.DelayInMS(BuildWaitMS);
 
             await Helper.BuildMapCode(Build.BuildType.LiveMap, CodeViewsWindow.EnableSelection);
 

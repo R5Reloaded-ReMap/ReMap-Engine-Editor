@@ -151,6 +151,7 @@ namespace CodeViewsWindow
 
                 code += "void function ReMapLive()\n";
                 code += "{\n";
+                code += Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z );
                 code += await Helper.BuildMapCode( Build.BuildType.Script, false );
                 code += "}\n";
             }

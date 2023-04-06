@@ -222,10 +222,10 @@ public class LibrarySorterWindow : EditorWindow
                 continue;
             }
 
-            if(loadedPrefabResource.tag != "Prop")
-                loadedPrefabResource.tag = "Prop";
+            if(loadedPrefabResource.tag != Helper.GetObjTagNameWithEnum(ObjectType.Prop))
+                loadedPrefabResource.tag = Helper.GetObjTagNameWithEnum(ObjectType.Prop);
 
-            ReMapConsole.Log($"[Library Sorter] Set {path} tag to: Prop", ReMapConsole.LogType.Info);
+            ReMapConsole.Log($"[Library Sorter] Set {path} tag to: {Helper.GetObjTagNameWithEnum(ObjectType.Prop)}", ReMapConsole.LogType.Info);
 
             PrefabUtility.SavePrefabAsset(loadedPrefabResource);
         }
@@ -400,7 +400,7 @@ public class LibrarySorterWindow : EditorWindow
                     objectInstance.transform.eulerAngles = FindAnglesOffset( modelPath, offsets );
                     objectInstance.transform.localScale = new Vector3(1, 1, 1);
     
-                    prefabInstance.tag = "Prop";
+                    prefabInstance.tag = Helper.GetObjTagNameWithEnum(ObjectType.Prop);
     
                     CheckBoxColliderComponent( prefabInstance );
     

@@ -49,9 +49,7 @@ namespace Build
 
                 int PreserveVelocity = script.PreserveVelocity  ? 1 : 0;
                 int DropToBottom = script.DropToBottom ? 1 : 0;
-                string RestPoint = script.RestPoint.ToString().ToLower();
                 int PushOffInDirectionX = script.PushOffInDirectionX ? 1 : 0;
-                string IsMoving = script.IsMoving.ToString().ToLower();
                 int DetachEndOnSpawn = script.DetachEndOnSpawn ? 1 : 0;
                 int DetachEndOnUse = script.DetachEndOnUse ? 1 : 0;
                 float PanelTimerMin = script.PanelTimerMin;
@@ -67,7 +65,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(script.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildOrigin(script.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, true, {Helper.ReplaceComma( script.FadeDistance )}, {Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )}, {PreserveVelocity}, {DropToBottom}, {Helper.ReplaceComma( script.AutoDetachStart )}, {Helper.ReplaceComma( script.AutoDetachEnd )}, {RestPoint}, {PushOffInDirectionX}, {IsMoving}, {DetachEndOnSpawn}, {DetachEndOnUse}, {PanelOrigin}, {PanelAngles}, {PanelModels}, {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )" );
+                        code.Append( $"    MapEditor_CreateZiplineFromUnity( {Helper.BuildOrigin(script.rope_start.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildOrigin(script.rope_end.gameObject) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(script.rope_start.gameObject)}, true, {Helper.ReplaceComma( script.FadeDistance )}, {Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )}, {PreserveVelocity}, {DropToBottom}, {Helper.ReplaceComma( script.AutoDetachStart )}, {Helper.ReplaceComma( script.AutoDetachEnd )}, {Helper.BoolToLower( script.RestPoint )}, {PushOffInDirectionX}, {Helper.BoolToLower( script.IsMoving )}, {DetachEndOnSpawn}, {DetachEndOnUse}, {PanelOrigin}, {PanelAngles}, {PanelModels}, {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )" );
                         PageBreak( ref code );
                         break;
 
@@ -123,7 +121,24 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        // Empty
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetOrigin( {Helper.BuildOrigin(script.rope_start.gameObject, false, true)}, {Helper.BuildOrigin(script.rope_end.gameObject, false, true)} )" );
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetAngles( {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildAngles(script.rope_start.gameObject)} )" );
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplineVars01( true, {Helper.ReplaceComma( script.FadeDistance )}, {Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )}, {PreserveVelocity}, {DropToBottom} )" );
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplineVars02( {Helper.ReplaceComma( script.AutoDetachStart )}, {Helper.ReplaceComma( script.AutoDetachEnd )}, {Helper.BoolToLower( script.RestPoint )}, {PushOffInDirectionX}, {Helper.BoolToLower( script.IsMoving )}, {DetachEndOnSpawn}, {DetachEndOnUse} )" );
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplinePanelOrigin( {PanelOrigin} )" );
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplinePanelAngles( {PanelAngles} )" );
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplinePanelModel( {PanelModels} )" );
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplinePanelSettings( {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )");
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapCreateVerticalZipline()" );
+                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
                     break;
                 }
             }
@@ -162,7 +177,7 @@ namespace Build
             string array = "[ ";
             for( int i = 0 ; i < objArray.Length ; i++ )
             {
-                array += $" {Helper.BuildOrigin( objArray[i] )}{Helper.ShouldAddStartingOrg()}";
+                array += $" {Helper.BuildOrigin( objArray[i], false, true )}";
 
                 if ( i != objArray.Length - 1 ) array += ", ";
             }

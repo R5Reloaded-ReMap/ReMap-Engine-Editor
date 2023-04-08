@@ -8,8 +8,16 @@ using UnityEngine;
 public class UnityInfo
 {
     public static string ReMapVersion = "Version 1.0";
-    public static string currentDirectory = LibrarySorterWindow.currentDirectory;
-    public static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
+
+    // Path Utility
+    public static string currentDirectoryPath =    Directory.GetCurrentDirectory().Replace("\\","/");
+    public static string relativePathLods =        $"Assets/ReMap/Lods - Dont use these";
+    public static string relativePathEmptyPrefab = $"{relativePathLods}/EmptyPrefab.prefab";
+    public static string relativePathModel =       $"{relativePathLods}/Models";
+    public static string relativePathMaterials =   $"{relativePathLods}/Materials";
+    public static string relativePathPrefabs =     $"Assets/Prefabs";
+    public static string relativePathRpakFile =    $"Assets/ReMap/Resources/rpakModelFile";
+    public static string relativePathJsonOffset =  $"{relativePathRpakFile}/prefabOffsetList.json";
 
 
     /// <summary>
@@ -79,7 +87,7 @@ public class UnityInfo
     /// <returns></returns>
     public static string[] GetAllRpakModelsFile( bool includeAllModelFile = false, bool returnFileName = false )
     {
-        string[] filePaths = Directory.GetFiles($"{currentDirectory}/{relativeRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where( f => IsNotExcludedFile( f, includeAllModelFile ) ).ToArray();
+        string[] filePaths = Directory.GetFiles($"{currentDirectoryPath}/{relativePathRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where( f => IsNotExcludedFile( f, includeAllModelFile ) ).ToArray();
 
         // Return path
         if ( !returnFileName ) return filePaths;

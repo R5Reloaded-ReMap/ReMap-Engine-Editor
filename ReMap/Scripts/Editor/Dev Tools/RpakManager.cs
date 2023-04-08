@@ -26,13 +26,13 @@ namespace LibrarySorter
             [ MenuItem( "ReMap Dev Tools/Prefabs Management/Windows/Rpak Manager", false, 100 ) ]
             public static void Init()
             {
-                if ( !File.Exists( UnityInfo.relativePathRpakManagerList ) )
+                if ( !File.Exists( rpakManagerPath ) )
                 {
                     CreateNewJsonLibraryData();
                 }
 
                 string json = System.IO.File.ReadAllText( rpakManagerPath );
-                libraryData = JsonUtility.FromJson<LibraryData>( json );
+                libraryData = JsonUtility.FromJson< LibraryData >( json );
 
                 Refresh();
 
@@ -41,6 +41,14 @@ namespace LibrarySorter
                 window.Show();
             }
         #endif
+
+        private void OnEnable()
+        {
+            string json = System.IO.File.ReadAllText( rpakManagerPath );
+            libraryData = JsonUtility.FromJson< LibraryData >( json );
+
+            Refresh();
+        }
 
         void OnGUI()
         {
@@ -53,7 +61,7 @@ namespace LibrarySorter
 
                 GUILayout.BeginHorizontal();
                     GUILayout.FlexibleSpace();
-                    if ( !isAllModels ) WindowUtility.WindowUtility.CreateButton( "Add Rpak", "", () => AddNewRpakList(), 100 );
+                    WindowUtility.WindowUtility.CreateButton( "Add Rpak", "", () => AddNewRpakList(), 100 );
                     if ( !isAllModels ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100 );
                     WindowUtility.WindowUtility.CreateButton( "Build all_models", "", () => BuildAllModels(), 100 );
                     WindowUtility.WindowUtility.CreateButton( "Save", "", () => SaveJson(), 100 );
@@ -94,10 +102,9 @@ namespace LibrarySorter
 
         internal static void AddNewRpakList()
         {
-            RpakData data = new RpakData();
-            data.Name = "unnamed";
+            libraryData.RpakList.Add( NewRpakData() );
 
-            libraryData.RpakList.Add( data );
+            tabIdx = rpakTab.Length;
 
             Refresh();
         }
@@ -106,7 +113,7 @@ namespace LibrarySorter
         {
             libraryData.RpakList.Remove( libraryData.RpakList[ tabIdx ] );
 
-            tabIdx = 0;
+            tabIdx = rpakTab.Length - 2;
 
             BuildAllModels();
             
@@ -169,7 +176,7 @@ namespace LibrarySorter
 
             if ( allModelsData == null )
             {
-                allModelsData = new RpakData();
+                allModelsData = NewRpakData();
                 allModelsData.Name = allModelsDataName;
 
                 libraryData.RpakList.Add( allModelsData );
@@ -187,8 +194,25 @@ namespace LibrarySorter
             libraryData = new LibraryData();
             libraryData.RpakList = new List< RpakData >();
 
+            RpakData allModelsData = NewRpakData();
+            allModelsData.Name = allModelsDataName;
+
+            libraryData.RpakList.Add( allModelsData );
+
             string json = JsonUtility.ToJson( libraryData );
             System.IO.File.WriteAllText( rpakManagerPath, json );
+
+            SaveJson();
+        }
+
+        private static RpakData NewRpakData()
+        {
+            RpakData data = new RpakData();
+            data.Name = "unnamed";
+            data.Data = new List< string >();
+            data.Update = DateTime.Now;
+
+            return data;
         }
 
         private static void Refresh()

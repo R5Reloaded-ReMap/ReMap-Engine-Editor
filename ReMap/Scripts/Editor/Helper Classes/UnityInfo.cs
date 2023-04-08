@@ -10,14 +10,16 @@ public class UnityInfo
     public static string ReMapVersion = "Version 1.0";
 
     // Path Utility
-    public static string currentDirectoryPath =    Directory.GetCurrentDirectory().Replace("\\","/");
-    public static string relativePathLods =        $"Assets/ReMap/Lods - Dont use these";
-    public static string relativePathEmptyPrefab = $"{relativePathLods}/EmptyPrefab.prefab";
-    public static string relativePathModel =       $"{relativePathLods}/Models";
-    public static string relativePathMaterials =   $"{relativePathLods}/Materials";
-    public static string relativePathPrefabs =     $"Assets/Prefabs";
-    public static string relativePathRpakFile =    $"Assets/ReMap/Resources/rpakModelFile";
-    public static string relativePathJsonOffset =  $"{relativePathRpakFile}/prefabOffsetList.json";
+    public static string currentDirectoryPath =        Directory.GetCurrentDirectory().Replace("\\","/");
+    public static string relativePathLods =            $"Assets/ReMap/Lods - Dont use these";
+    public static string relativePathEmptyPrefab =     $"{relativePathLods}/EmptyPrefab.prefab";
+    public static string relativePathModel =           $"{relativePathLods}/Models";
+    public static string relativePathMaterials =       $"{relativePathLods}/Materials";
+    public static string relativePathPrefabs =         $"Assets/Prefabs";
+    public static string relativePathRpakFile =        $"Assets/ReMap/Resources/rpakModelFile";
+    public static string relativePathJsonOffset =      $"{relativePathRpakFile}/prefabOffsetList.json";
+    public static string relativePathRpakManager =     $"Assets/ReMap/Resources/RpakManager";
+    public static string relativePathRpakManagerList = $"{relativePathRpakManager}/rpakManagerList.json";
 
 
     /// <summary>

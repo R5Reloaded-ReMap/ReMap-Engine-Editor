@@ -12,6 +12,8 @@ namespace LibrarySorter
 {
     public class LibrarySorterWindowTest : EditorWindow
     {
+        Vector2 scrollPos = Vector2.zero;
+        
         #if ReMapDev
              [ MenuItem( "ReMap Dev Tools/Prefabs Management/Windows/Prefab Fix Manager Test", false, 100 ) ]
             public static void Init()

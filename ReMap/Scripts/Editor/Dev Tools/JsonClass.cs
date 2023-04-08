@@ -12,6 +12,7 @@ namespace LibrarySorter
     [Serializable]
     public class RpakData
     {
+        public string Name;
         public List< string > Data;
         public DateTime Update;
     }

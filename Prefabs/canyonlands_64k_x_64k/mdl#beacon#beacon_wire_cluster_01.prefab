@@ -29,7 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5035826373772247363}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2045500151084470924
 GameObject:
@@ -63,7 +63,7 @@ Transform:
   m_Children:
   - {fileID: 2791415402223455387}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8472559894444038617
 MonoBehaviour:
@@ -100,8 +100,40 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 96.000046, y: 4.3730717, z: 13.707035}
-  m_Center: {x: -48.000023, y: -0.15428543, z: 4.772462}
+  m_Size: {x: 96.000046, y: 4.3730597, z: 13.707045}
+  m_Center: {x: -48.000023, y: -0.15429115, z: 4.7724557}
+--- !u!1 &3122689174994182136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1333776610297027438}
+  m_Layer: 0
+  m_Name: beacon_wire_cluster_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1333776610297027438
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3122689174994182136}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5053237208297509906}
+  m_Father: {fileID: 2791415402223455387}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3159503656453841464
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +164,7 @@ Transform:
   m_Children:
   - {fileID: 8162520077417527473}
   m_Father: {fileID: 2791415402223455387}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8268253328886239127
 GameObject:
@@ -163,8 +195,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2212870869974271117}
-  m_RootOrder: 0
+  m_Father: {fileID: 1333776610297027438}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4143634079974710701
 SkinnedMeshRenderer:
@@ -220,38 +252,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 4.772461, y: -48.00001, z: -0.15429688}
     m_Extent: {x: 6.8535156, y: 48.00001, z: 2.186524}
   m_DirtyAABB: 0
---- !u!1 &8583844604595073256
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2212870869974271117}
-  m_Layer: 0
-  m_Name: beacon_wire_cluster_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2212870869974271117
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8583844604595073256}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5053237208297509906}
-  m_Father: {fileID: 2791415402223455387}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9117791978113338630
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,8 +280,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2212870869974271117}
+  - {fileID: 1333776610297027438}
   - {fileID: 5035826373772247363}
   m_Father: {fileID: 2125597033433601671}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

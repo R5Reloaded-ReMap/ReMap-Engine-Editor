@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &717591940297244859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2448343162997410070}
+  m_Layer: 0
+  m_Name: industrial_door_frame_160x128_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2448343162997410070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717591940297244859}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2078469220051108317}
+  m_Father: {fileID: 1963481926413486417}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1103567805768480012
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 6880037164036917527}
   m_Father: {fileID: 1963481926413486417}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2023068525946073024
 GameObject:
@@ -61,7 +93,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4968264726388752864}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2180634398480894926
 GameObject:
@@ -91,10 +123,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6170008824068620721}
+  - {fileID: 2448343162997410070}
   - {fileID: 4968264726388752864}
   m_Father: {fileID: 8733989332999976935}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2945732134009917798
 GameObject:
@@ -125,8 +157,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6170008824068620721}
-  m_RootOrder: 0
+  m_Father: {fileID: 2448343162997410070}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8342886807501806118
 SkinnedMeshRenderer:
@@ -182,38 +214,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -6.9995117, y: 0, z: 63.999527}
     m_Extent: {x: 7.0004883, y: 80.000015, z: 63.999527}
   m_DirtyAABB: 0
---- !u!1 &4420807759872265378
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6170008824068620721}
-  m_Layer: 0
-  m_Name: industrial_door_frame_160x128_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6170008824068620721
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4420807759872265378}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2078469220051108317}
-  m_Father: {fileID: 1963481926413486417}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6230898423391288496
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 1963481926413486417}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &225545587461558956
 MonoBehaviour:
@@ -283,5 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 160.00008, y: 127.999115, z: 14.001011}
-  m_Center: {x: 0, y: 63.99954, z: -6.999529}
+  m_Size: {x: 160.00009, y: 127.9991, z: 14.000998}
+  m_Center: {x: 0.0000076293945, y: 63.99954, z: -6.9995127}

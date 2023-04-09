@@ -1,5 +1,39 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1347971815740096250
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1097755632524014362}
+  m_Layer: 0
+  m_Name: spherical_pressure_tank_base_LM_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1097755632524014362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347971815740096250}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6860534562740089793}
+  - {fileID: 5965209499172026675}
+  - {fileID: 6732563516642202064}
+  m_Father: {fileID: 4865331614595879290}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2053746364336481612
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,7 +63,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 938833670866293796}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2642323768167177130
 GameObject:
@@ -63,7 +97,7 @@ Transform:
   m_Children:
   - {fileID: 4865331614595879290}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9184413203352920874
 MonoBehaviour:
@@ -100,8 +134,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 460.8285, y: 300.57935, z: 460.8}
-  m_Center: {x: -0.0009765625, y: 150.28961, z: 0.00045776367}
+  m_Size: {x: 460.82846, y: 300.57925, z: 460.79993}
+  m_Center: {x: -0.0009613037, y: 150.2896, z: 0.00048828125}
 --- !u!1 &2719288882974835257
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +166,7 @@ Transform:
   m_Children:
   - {fileID: 6878807265901250941}
   m_Father: {fileID: 4865331614595879290}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4976849919237837018
 GameObject:
@@ -163,9 +197,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 938833670866293796}
-  - {fileID: 7246952447789499732}
+  - {fileID: 1097755632524014362}
   m_Father: {fileID: 4424796288994423966}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5794983063596780198
 GameObject:
@@ -196,8 +230,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7246952447789499732}
-  m_RootOrder: 0
+  m_Father: {fileID: 1097755632524014362}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &206673837315549253
 SkinnedMeshRenderer:
@@ -253,40 +287,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -0.0009765625, z: 150.28958}
     m_Extent: {x: 230.3999, y: 230.41412, z: 150.28958}
   m_DirtyAABB: 0
---- !u!1 &6057020959112445808
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7246952447789499732}
-  m_Layer: 0
-  m_Name: spherical_pressure_tank_base_LM_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7246952447789499732
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6057020959112445808}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6860534562740089793}
-  - {fileID: 5965209499172026675}
-  - {fileID: 6732563516642202064}
-  m_Father: {fileID: 4865331614595879290}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6129154507691044030
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,8 +316,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7246952447789499732}
-  m_RootOrder: 2
+  m_Father: {fileID: 1097755632524014362}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2961639789541298035
 SkinnedMeshRenderer:
@@ -402,8 +402,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7246952447789499732}
-  m_RootOrder: 1
+  m_Father: {fileID: 1097755632524014362}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7022544851050910832
 SkinnedMeshRenderer:

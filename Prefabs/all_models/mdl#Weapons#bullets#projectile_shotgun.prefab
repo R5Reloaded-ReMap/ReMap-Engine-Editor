@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1452960354119117166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 482666208373579858}
+  m_Layer: 0
+  m_Name: projectile_shotgun_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &482666208373579858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452960354119117166}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2027006519244223742}
+  m_Father: {fileID: 3573717228051890366}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2869085020619461137
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,9 +61,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8567249095909616187}
-  - {fileID: 5212976343165896364}
+  - {fileID: 482666208373579858}
   m_Father: {fileID: 3557769967089250052}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4987854780666326930
 GameObject:
@@ -62,7 +94,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8567249095909616187}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6501555594086189570
 GameObject:
@@ -96,7 +128,7 @@ Transform:
   m_Children:
   - {fileID: 3573717228051890366}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7137018516303341823
 MonoBehaviour:
@@ -133,40 +165,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.002763674, y: 0.002763674, z: 0.0027636732}
-  m_Center: {x: -0.000004882808, y: -0.000004882808, z: 0.000004882808}
---- !u!1 &6736572999926647921
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5212976343165896364}
-  m_Layer: 0
-  m_Name: projectile_shotgun_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5212976343165896364
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6736572999926647921}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2027006519244223742}
-  m_Father: {fileID: 3573717228051890366}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.27636737, y: 0.2763673, z: 0.27636725}
+  m_Center: {x: -0.00048828125, y: -0.00048828125, z: 0.00048828125}
 --- !u!1 &6812146475333132474
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +197,7 @@ Transform:
   m_Children:
   - {fileID: 6426958358541559548}
   m_Father: {fileID: 3573717228051890366}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7045916559092644235
 GameObject:
@@ -228,8 +228,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5212976343165896364}
-  m_RootOrder: 0
+  m_Father: {fileID: 482666208373579858}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3559241187987349126
 SkinnedMeshRenderer:
@@ -282,6 +282,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 6426958358541559548}
   m_AABB:
-    m_Center: {x: 0.000004882808, y: -0.000004882808, z: -0.000004882808}
-    m_Extent: {x: 0.0013818359, y: 0.0013818362, z: 0.0013818362}
+    m_Center: {x: 0.00048828125, y: -0.00048828125, z: -0.00048828125}
+    m_Extent: {x: 0.1381836, y: 0.13818362, z: 0.13818362}
   m_DirtyAABB: 0

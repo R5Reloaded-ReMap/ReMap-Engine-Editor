@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &609939240444683475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1698085967188787734}
+  m_Layer: 0
+  m_Name: monitor_hood_imc_03_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1698085967188787734
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609939240444683475}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2874917770419187379}
+  m_Father: {fileID: 3871741976189181068}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1316789456236439447
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 2675977429716673228}
   m_Father: {fileID: 3871741976189181068}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1678901630953400718
 GameObject:
@@ -61,9 +93,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5341970826446231069}
-  - {fileID: 7082826184600629668}
+  - {fileID: 1698085967188787734}
   m_Father: {fileID: 4598442854854899868}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4998583967396925889
 GameObject:
@@ -94,7 +126,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5341970826446231069}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5134276239851373859
 GameObject:
@@ -125,8 +157,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7082826184600629668}
-  m_RootOrder: 0
+  m_Father: {fileID: 1698085967188787734}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3720058395416968940
 SkinnedMeshRenderer:
@@ -182,38 +214,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.029296875, y: -0.14501953, z: 4.333497}
     m_Extent: {x: 7.163086, y: 11.772952, z: 9.547365}
   m_DirtyAABB: 0
---- !u!1 &7825887607488839963
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7082826184600629668}
-  m_Layer: 0
-  m_Name: monitor_hood_imc_03_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7082826184600629668
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7825887607488839963}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2874917770419187379}
-  m_Father: {fileID: 3871741976189181068}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9011005058996430380
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 3871741976189181068}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2502124439215230230
 MonoBehaviour:
@@ -283,5 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 23.545914, y: 19.09474, z: 14.32618}
-  m_Center: {x: -0.14501953, y: 4.333498, z: -0.029297829}
+  m_Size: {x: 23.545914, y: 19.094734, z: 14.326177}
+  m_Center: {x: -0.14501858, y: 4.3334975, z: -0.029296875}

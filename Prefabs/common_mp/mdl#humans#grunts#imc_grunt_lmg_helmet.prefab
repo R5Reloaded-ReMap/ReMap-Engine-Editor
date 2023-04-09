@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &36074093227014699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3931550931937347284}
+  m_Layer: 0
+  m_Name: imc_grunt_lmg_helmet_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3931550931937347284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36074093227014699}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9113568557531183912}
+  - {fileID: 2930138215707440479}
+  m_Father: {fileID: 7075761679191159666}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &873164287203549495
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,10 +61,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 869147758355345048}
+  - {fileID: 3931550931937347284}
   - {fileID: 3076315325041234293}
   m_Father: {fileID: 4092035076375990917}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2597522045078268506
 GameObject:
@@ -63,7 +96,7 @@ Transform:
   m_Children:
   - {fileID: 7934837153466251030}
   m_Father: {fileID: 7075761679191159666}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7110371248300552828
 GameObject:
@@ -94,8 +127,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 869147758355345048}
-  m_RootOrder: 1
+  m_Father: {fileID: 3931550931937347284}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5244841063877441887
 SkinnedMeshRenderer:
@@ -148,42 +181,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 7934837153466251030}
   m_AABB:
-    m_Center: {x: 0.029658202, y: 0.004404299, z: 0.022446293}
-    m_Extent: {x: 0.033867184, y: 0.052382823, z: 0.013022463}
+    m_Center: {x: 2.9658203, y: 0.4404297, z: 2.2446294}
+    m_Extent: {x: 3.3867188, y: 5.2382827, z: 1.3022466}
   m_DirtyAABB: 0
---- !u!1 &7472102950864740691
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 869147758355345048}
-  m_Layer: 0
-  m_Name: imc_grunt_lmg_helmet_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &869147758355345048
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7472102950864740691}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 9113568557531183912}
-  - {fileID: 2930138215707440479}
-  m_Father: {fileID: 7075761679191159666}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7544877125399990914
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +216,7 @@ Transform:
   m_Children:
   - {fileID: 7075761679191159666}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7016709769557735735
 MonoBehaviour:
@@ -253,8 +253,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.1195997, y: 0.1264161, z: 0.1384278}
-  m_Center: {x: -0.0000048838556, y: 0.0035498068, z: 0.000004887581}
+  m_Size: {x: 11.95997, y: 12.641607, z: 13.842776}
+  m_Center: {x: -0.00048828125, y: 0.35498047, z: 0.00048828125}
 --- !u!1 &8098130951397970781
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,7 +284,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3076315325041234293}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8371288692768032537
 GameObject:
@@ -315,8 +315,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 869147758355345048}
-  m_RootOrder: 0
+  m_Father: {fileID: 3931550931937347284}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3007207865079767999
 SkinnedMeshRenderer:
@@ -369,6 +369,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 7934837153466251030}
   m_AABB:
-    m_Center: {x: 0.000004887581, y: -0.0000048838556, z: 0.0035498068}
-    m_Extent: {x: 0.06921387, y: 0.05979982, z: 0.06320802}
+    m_Center: {x: 0.00048828125, y: -0.00048828125, z: 0.35498047}
+    m_Extent: {x: 6.9213867, y: 5.979982, z: 6.320802}
   m_DirtyAABB: 0

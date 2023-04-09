@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1128403210131641498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1369141782406412816}
+  m_Layer: 0
+  m_Name: sewer_staircase_double_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1369141782406412816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128403210131641498}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7728687298436768892}
+  - {fileID: 1168953816069089544}
+  m_Father: {fileID: 6602971095330408897}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3429585042838632998
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,9 +62,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7064128328156616584}
-  - {fileID: 3352069777801221599}
+  - {fileID: 1369141782406412816}
   m_Father: {fileID: 2783933266207576954}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3567135890312595257
 GameObject:
@@ -62,8 +95,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3352069777801221599}
-  m_RootOrder: 1
+  m_Father: {fileID: 1369141782406412816}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6630343213368797808
 SkinnedMeshRenderer:
@@ -119,39 +152,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -11.999512, y: -0.00048828125, z: -5.250001}
     m_Extent: {x: 9.999512, y: 61.999527, z: 4.250001}
   m_DirtyAABB: 0
---- !u!1 &4244288931208967938
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3352069777801221599}
-  m_Layer: 0
-  m_Name: sewer_staircase_double_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3352069777801221599
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4244288931208967938}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7728687298436768892}
-  - {fileID: 1168953816069089544}
-  m_Father: {fileID: 6602971095330408897}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5370906984333404815
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,7 +182,7 @@ Transform:
   m_Children:
   - {fileID: 3068670641809779133}
   m_Father: {fileID: 6602971095330408897}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6493296941731957381
 GameObject:
@@ -216,7 +216,7 @@ Transform:
   m_Children:
   - {fileID: 6602971095330408897}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9082385533235901603
 MonoBehaviour:
@@ -253,8 +253,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 127.999084, y: 32.800827, z: 36.800797}
-  m_Center: {x: -0.00048828125, y: -16.400398, z: -5.5996075}
+  m_Size: {x: 127.9991, y: 32.800808, z: 36.8008}
+  m_Center: {x: -0.00048828125, y: -16.400396, z: -5.5996094}
 --- !u!1 &9201409804847922340
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,8 +284,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3352069777801221599}
-  m_RootOrder: 0
+  m_Father: {fileID: 1369141782406412816}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4318835661192051043
 SkinnedMeshRenderer:
@@ -370,5 +370,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7064128328156616584}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

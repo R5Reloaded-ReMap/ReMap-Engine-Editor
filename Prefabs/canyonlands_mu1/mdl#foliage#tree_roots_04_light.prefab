@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1883884023836139539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7612366291474175637}
+  m_Layer: 0
+  m_Name: tree_roots_04_light_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7612366291474175637
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883884023836139539}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6579083088090784303}
+  - {fileID: 6041134827436693297}
+  m_Father: {fileID: 2640215948729288103}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3109549955369466368
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,8 +62,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4625709466872589813}
-  m_RootOrder: 0
+  m_Father: {fileID: 7612366291474175637}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2080947013473733422
 SkinnedMeshRenderer:
@@ -115,8 +148,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4625709466872589813}
-  m_RootOrder: 1
+  m_Father: {fileID: 7612366291474175637}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8730773081619868510
 SkinnedMeshRenderer:
@@ -172,39 +205,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -63.794434, y: 4.1381836, z: 21.06446}
     m_Extent: {x: 68.42236, y: 79.24953, z: 36.523445}
   m_DirtyAABB: 0
---- !u!1 &6147197815923872064
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4625709466872589813}
-  m_Layer: 0
-  m_Name: tree_roots_04_light_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4625709466872589813
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6147197815923872064}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6579083088090784303}
-  - {fileID: 6041134827436693297}
-  m_Father: {fileID: 2640215948729288103}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6361094992928780760
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,9 +234,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2696048861437074064}
-  - {fileID: 4625709466872589813}
+  - {fileID: 7612366291474175637}
   m_Father: {fileID: 7695092074146283111}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6576181734881175347
 GameObject:
@@ -268,7 +268,7 @@ Transform:
   m_Children:
   - {fileID: 1891383635721935784}
   m_Father: {fileID: 2640215948729288103}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7897675302709208112
 GameObject:
@@ -302,7 +302,7 @@ Transform:
   m_Children:
   - {fileID: 2640215948729288103}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2675618114973986511
 MonoBehaviour:
@@ -339,8 +339,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 168.13098, y: 208.60269, z: 137.9952}
-  m_Center: {x: 4.1738434, y: 88.84234, z: -63.45951}
+  m_Size: {x: 168.131, y: 208.60263, z: 137.99515}
+  m_Center: {x: 4.173851, y: 88.84232, z: -63.459488}
 --- !u!1 &8853029416925908878
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,5 +370,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2696048861437074064}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

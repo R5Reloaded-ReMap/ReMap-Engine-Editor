@@ -1,37 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &842291418992680284
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7542749378071218496}
-  m_Layer: 0
-  m_Name: ar_hazard_ring_1_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7542749378071218496
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 842291418992680284}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8557972058312941679}
-  m_Father: {fileID: 8679945276457065936}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1540219673578871723
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,8 +29,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7542749378071218496}
-  m_RootOrder: 0
+  m_Father: {fileID: 4250098183635134529}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6912525827965747208
 SkinnedMeshRenderer:
@@ -115,8 +83,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 4016137214358553131}
   m_AABB:
-    m_Center: {x: 0.000004887581, y: -0.000004887581, z: 0.03181153}
-    m_Extent: {x: 0.39369628, y: 0.39369637, z: 0.03181153}
+    m_Center: {x: 0.00048828125, y: -0.00048828125, z: 3.181153}
+    m_Extent: {x: 39.36963, y: 39.369637, z: 3.181153}
   m_DirtyAABB: 0
 --- !u!1 &1927428847327687731
 GameObject:
@@ -148,7 +116,39 @@ Transform:
   m_Children:
   - {fileID: 4016137214358553131}
   m_Father: {fileID: 8679945276457065936}
-  m_RootOrder: 1
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5040068688629096544
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4250098183635134529}
+  m_Layer: 0
+  m_Name: ar_hazard_ring_1_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4250098183635134529
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5040068688629096544}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8557972058312941679}
+  m_Father: {fileID: 8679945276457065936}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7169231628437790130
 GameObject:
@@ -178,10 +178,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7542749378071218496}
+  - {fileID: 4250098183635134529}
   - {fileID: 3477417344604966502}
   m_Father: {fileID: 7821955152875738335}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8484807085282835942
 GameObject:
@@ -215,7 +215,7 @@ Transform:
   m_Children:
   - {fileID: 8679945276457065936}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1530123710556596004
 MonoBehaviour:
@@ -252,8 +252,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.7873931, y: 0.063623264, z: 0.78739274}
-  m_Center: {x: -0.000004887581, y: 0.03181154, z: 0.000004887581}
+  m_Size: {x: 78.739296, y: 6.3623166, z: 78.73927}
+  m_Center: {x: -0.00048828125, y: 3.1811535, z: 0.00048828125}
 --- !u!1 &9114566741647245049
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3477417344604966502}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

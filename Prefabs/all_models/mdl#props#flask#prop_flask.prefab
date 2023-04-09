@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &32117225240437143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3826327475088418386}
+  m_Layer: 0
+  m_Name: prop_flask_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3826327475088418386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32117225240437143}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 311022501112460326}
+  m_Father: {fileID: 6751098154973411892}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &789730552587747125
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,7 +64,7 @@ Transform:
   m_Children:
   - {fileID: 6751098154973411892}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1815861064135983680
 MonoBehaviour:
@@ -69,8 +101,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.050380882, y: 0.065781295, z: 0.021279316}
-  m_Center: {x: -0.0000048838556, y: 0, z: 0.0000048829243}
+  m_Size: {x: 5.03809, y: 6.578128, z: 2.1279306}
+  m_Center: {x: -0.00048828125, y: 0, z: 0.00048828125}
 --- !u!1 &2001659526216117428
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,9 +132,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8496006899381127248}
-  - {fileID: 4406561487569356829}
+  - {fileID: 3826327475088418386}
   m_Father: {fileID: 7328762893776654264}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5341460460717325790
 GameObject:
@@ -133,39 +165,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8496006899381127248}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5695321901374487146
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4406561487569356829}
-  m_Layer: 0
-  m_Name: prop_flask_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4406561487569356829
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5695321901374487146}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 311022501112460326}
-  m_Father: {fileID: 6751098154973411892}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7714661053590617155
 GameObject:
@@ -197,7 +197,7 @@ Transform:
   m_Children:
   - {fileID: 6124511445847233457}
   m_Father: {fileID: 6751098154973411892}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8231980281611031732
 GameObject:
@@ -228,8 +228,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4406561487569356829}
-  m_RootOrder: 0
+  m_Father: {fileID: 3826327475088418386}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &226516906186693769
 SkinnedMeshRenderer:
@@ -282,6 +282,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 6124511445847233457}
   m_AABB:
-    m_Center: {x: 0.0000048829243, y: -0.0000048838556, z: 0}
-    m_Extent: {x: 0.010639648, y: 0.025190433, z: 0.032890633}
+    m_Center: {x: 0.00048828125, y: -0.00048828125, z: 0}
+    m_Extent: {x: 1.0639648, y: 2.5190437, z: 3.2890632}
   m_DirtyAABB: 0

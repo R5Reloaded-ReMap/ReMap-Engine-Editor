@@ -14,12 +14,14 @@ namespace LibrarySorter
     {
         FixPrefabsTags,
         FixPrefabsLabels,
-        FixPrefabsData
+        FixPrefabsData,
+        FixAllPrefabsData
     }
 
     public class LibrarySorterWindowTest : EditorWindow
     {
         internal static LibraryData libraryData;
+        internal static bool checkExist = false;
         Vector2 scrollPos = Vector2.zero;
         Vector2 scrollPosFixPrefabs = Vector2.zero;
 
@@ -64,11 +66,20 @@ namespace LibrarySorter
                             foreach ( RpakData data in libraryData.RpakList )
                             {
                                 GUILayout.BeginHorizontal();
-                                    WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ) );
+                                    if ( WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ) ) )
+                                    {
+                                        GUILayout.EndHorizontal();
+                                        GUILayout.EndScrollView();
+                                        EditorGUILayout.EndFoldoutHeaderGroup();
+                                        GUILayout.EndScrollView();
+                                        GUILayout.EndVertical();
+                                        return;
+                                    }
                                     WindowUtility.WindowUtility.CreateButton( $"Find Missing", "", null, 140 );
                                     GUILayout.Label( $"Lastest Ckeck: {data.Update}", GUILayout.Width( 216 ) );
                                 GUILayout.EndHorizontal();
                             }
+                            WindowUtility.WindowUtility.CreateButton( $"Check All", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
                         GUILayout.EndScrollView();
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();
@@ -90,7 +101,17 @@ namespace LibrarySorter
                     await SetModelLabels( arg );
                     break;
                 case TaskType.FixPrefabsData:
+                    checkExist = CheckDialog( "Check Existing Prefabs", "Do you want check existing prefabs ?" );
                     await SortFolder( data );
+                    await SetModelLabels( data.Name );
+                    break;
+                case TaskType.FixAllPrefabsData:
+                    checkExist = CheckDialog( "Check Existing Prefabs", "Do you want check existing prefabs ?" );
+                    foreach ( RpakData _data in libraryData.RpakList )
+                    {
+                        await SortFolder( _data );
+                        await SetModelLabels( _data.Name );
+                    }
                 break;
             }
         }
@@ -104,42 +125,38 @@ namespace LibrarySorter
                 ReMapConsole.Log( $"[Library Sorter] Creating directory: {UnityInfo.relativePathPrefabs}/{data.Name}", ReMapConsole.LogType.Info );
                 Directory.CreateDirectory( rpakPath );
             }
-            /*
-            //////////////////////////
 
-            int datalen = data.Data.Length;
-
-            string modelReplacePath;
+            string modelName; string modelReplacePath;
             GameObject prefabToAdd; GameObject prefabInstance;
             GameObject objectToAdd; GameObject objectInstance;
 
             string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
             List< PrefabOffset > offsets = JsonUtility.FromJson< PrefabOffsetList >( json ).List;
 
-            int i = 0;
+            int i = 0; int total = data.Data.Count;
             foreach ( string model in data.Data )
             {
-                model = Path.GetFileNameWithoutExtension(modelPath);
+                modelName = Path.GetFileNameWithoutExtension( model );
 
-                if (File.Exists($"{currentDirectory}/{relativeModel}/{model + "_LOD0.fbx"}"))
+                if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName + "_LOD0.fbx"}" ) )
                 {
-                    modelReplacePath = modelPath.Replace("/", "#").Replace(".rmdl", ".prefab");
+                    modelReplacePath = model.Replace("/", "#").Replace(".rmdl", ".prefab");
 
-                    EditorUtility.DisplayProgressBar("Sorting Files", $"Sorting: {mapName}/{modelReplacePath}", (i + 1) / (float)arraylen);
+                    EditorUtility.DisplayProgressBar( $"Sorting {data.Name} Folder {i}/{total}", $"Sorting: {modelReplacePath}", ( i + 1 ) / ( float )total );
 
-                    if (!File.Exists($"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}"))
+                    if (!File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{data.Name}/{modelReplacePath}" ) )
                     {
-                        prefabToAdd = AssetDatabase.LoadAssetAtPath($"{relativeEmptyPrefab}", typeof(UnityEngine.Object)) as GameObject;
-                        objectToAdd = AssetDatabase.LoadAssetAtPath($"{relativeModel}/{model + "_LOD0.fbx"}", typeof(UnityEngine.Object)) as GameObject;
+                        prefabToAdd = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathEmptyPrefab}", typeof( UnityEngine.Object ) ) as GameObject;
+                        objectToAdd = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", typeof( UnityEngine.Object ) ) as GameObject;
 
-                        if (prefabToAdd == null || objectToAdd == null)
+                        if ( prefabToAdd == null || objectToAdd == null )
                         {
                             ReMapConsole.Log($"[Library Sorter] Error loading prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
                             continue;
                         }
 
-                        prefabInstance = UnityEngine.Object.Instantiate(prefabToAdd) as GameObject;
-                        objectInstance = UnityEngine.Object.Instantiate(objectToAdd) as GameObject;
+                        prefabInstance = UnityEngine.Object.Instantiate( prefabToAdd ) as GameObject;
+                        objectInstance = UnityEngine.Object.Instantiate( objectToAdd ) as GameObject;
 
                         if (prefabInstance == null || objectInstance == null)
                         {
@@ -147,68 +164,103 @@ namespace LibrarySorter
                             continue;
                         }
 
-                        prefabInstance.AddComponent<PropScript>();
+                        prefabInstance.AddComponent< PropScript >();
 
                         prefabInstance.name = modelReplacePath.Replace(".prefab", "");
-                        objectInstance.name = model + "_LOD0";
+                        objectInstance.name = modelName + "_LOD0";
 
                         prefabInstance.transform.position = Vector3.zero;
                         prefabInstance.transform.eulerAngles = Vector3.zero;
 
                         objectInstance.transform.parent = prefabInstance.transform;
                         objectInstance.transform.position = Vector3.zero;
-                        objectInstance.transform.eulerAngles = FindAnglesOffset( modelPath, offsets );
+                        objectInstance.transform.eulerAngles = FindAnglesOffset( model, offsets );
                         objectInstance.transform.localScale = new Vector3(1, 1, 1);
 
-                        prefabInstance.tag = Helper.GetObjTagNameWithEnum(ObjectType.Prop);
+                        prefabInstance.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
 
                         CheckBoxColliderComponent( prefabInstance );
 
-                        PrefabUtility.SaveAsPrefabAsset(prefabInstance, $"{currentDirectory}/{relativePrefabs}/{mapName}/{modelReplacePath}");
+                        PrefabUtility.SaveAsPrefabAsset( prefabInstance, $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}" );
 
-                        UnityEngine.Object.DestroyImmediate(prefabInstance);
-                        ReMapConsole.Log($"[Library Sorter] Creating prefab: {relativePrefabs}/{mapName}/{modelReplacePath}", ReMapConsole.LogType.Info);
+                        UnityEngine.Object.DestroyImmediate( prefabInstance );
+                        ReMapConsole.Log( $"[Library Sorter] Created and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}", ReMapConsole.LogType.Info );
                     }
                     else
                     {
-                        if(!checkandfixifexists)
-                            continue;
+                        if( !checkExist ) continue;
 
-                        UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath($"{relativePrefabs}/{mapName}/{modelReplacePath}", typeof(UnityEngine.Object)) as GameObject;
-                        if (loadedPrefabResource == null)
+                        UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}", typeof( UnityEngine.Object ) ) as GameObject;
+                        if ( loadedPrefabResource == null )
                         {
                             ReMapConsole.Log($"[Library Sorter] Error loading prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
                             continue;
                         }
 
-                        Transform child = loadedPrefabResource.GetComponentsInChildren<Transform>()[1];
+                        Transform child = loadedPrefabResource.GetComponentsInChildren< Transform >()[1];
 
                         loadedPrefabResource.transform.position = Vector3.zero;
                         loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-                        child.transform.eulerAngles = FindAnglesOffset( modelPath, offsets );
+                        child.transform.eulerAngles = FindAnglesOffset( model, offsets );
                         child.transform.position = Vector3.zero;
 
                         CheckBoxColliderComponent( loadedPrefabResource );
 
-                        PrefabUtility.SavePrefabAsset(loadedPrefabResource);
+                        PrefabUtility.SavePrefabAsset( loadedPrefabResource );
 
-                        ReMapConsole.Log($"[Library Sorter] Fixed and saved prefab: {relativePrefabs}/{mapName}/{modelReplacePath}", ReMapConsole.LogType.Success);
+                        ReMapConsole.Log( $"[Library Sorter] Fixed and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}", ReMapConsole.LogType.Success );
                     }
                 }
                 i++;
             }
 
-            ReMapConsole.Log($"[Library Sorter] Setting labels for prefabs in: {mapName}", ReMapConsole.LogType.Info);
             EditorUtility.ClearProgressBar();
-            LibrarySorterWindow.SetFolderLabels(mapName);
-            //////////////////////////
-            */
 
-            data.Update = DateTime.Now.ToString();
+            data.Update = DateTime.UtcNow.ToString();
 
-            //ReMapConsole.Log($"[Library Sorter] Finished sorting models", ReMapConsole.LogType.Success);
+            RpakManagerWindow.SaveJson();
 
             return Task.CompletedTask;
+        }
+
+        private static Vector3 FindAnglesOffset( string searchTerm, List< PrefabOffset > list )
+        {
+            Vector3 returnedVector = new Vector3( 0, -90, 0 );
+
+            PrefabOffset offset = list.Find( o => o.ModelName == searchTerm );
+            if ( offset != null )
+            {
+                returnedVector = offset.Rotation;
+                ReMapConsole.Log( $"[Library Sorter] Angle override found for {searchTerm}, setting angles to: {returnedVector}", ReMapConsole.LogType.Info );
+            }
+
+            return returnedVector;
+        }
+
+        private static void CheckBoxColliderComponent( GameObject go )
+        {
+            BoxCollider collider = go.GetComponent<BoxCollider>();
+
+            if( collider == null ) collider = go.AddComponent<BoxCollider>();
+
+            Bounds bounds = new Bounds();
+
+            foreach(Renderer renderer in go.GetComponentsInChildren<Renderer>())
+            {
+                bounds.Encapsulate(renderer.bounds);
+
+                BoxCollider BoxColliderChild = renderer.GetComponent<BoxCollider>();
+
+                if(BoxColliderChild != null) DestroyImmediate(BoxColliderChild, true);
+            }
+
+            foreach(Renderer renderer in go.GetComponentsInChildren<SkinnedMeshRenderer>())
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+
+            collider.center = bounds.center;
+            collider.size = bounds.size;
         }
 
         public static Task SetModelLabels( string specificModelOrFolderOrnull = null )

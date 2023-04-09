@@ -29,7 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7640208578696857102}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &621835645117988082
 GameObject:
@@ -61,7 +61,40 @@ Transform:
   m_Children:
   - {fileID: 6845930196958880486}
   m_Father: {fileID: 4812930460101500577}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2334025260672323056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5545400879236649487}
+  m_Layer: 0
+  m_Name: mobile_vehicle_01_wheel_02_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5545400879236649487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2334025260672323056}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3025121115653395208}
+  - {fileID: 4602008089365457844}
+  m_Father: {fileID: 4812930460101500577}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3009416200839118564
 GameObject:
@@ -92,8 +125,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8874421135422916368}
-  m_RootOrder: 0
+  m_Father: {fileID: 5545400879236649487}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5241063646680800627
 SkinnedMeshRenderer:
@@ -178,8 +211,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8874421135422916368}
-  m_RootOrder: 1
+  m_Father: {fileID: 5545400879236649487}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7635981251373989667
 SkinnedMeshRenderer:
@@ -235,39 +268,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -9.515627, z: 28.837898}
     m_Extent: {x: 117.34131, y: 6.488283, z: 23.837898}
   m_DirtyAABB: 0
---- !u!1 &5904099742160395088
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8874421135422916368}
-  m_Layer: 0
-  m_Name: mobile_vehicle_01_wheel_02_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8874421135422916368
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5904099742160395088}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3025121115653395208}
-  - {fileID: 4602008089365457844}
-  m_Father: {fileID: 4812930460101500577}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6346236702583601635
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +300,7 @@ Transform:
   m_Children:
   - {fileID: 4812930460101500577}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2599626068599884514
 MonoBehaviour:
@@ -337,8 +337,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 68.08212, y: 57.573288, z: 245.36433}
-  m_Center: {x: -34.04103, y: 28.786644, z: 0.00048065186}
+  m_Size: {x: 68.0821, y: 57.573273, z: 245.3643}
+  m_Center: {x: -34.041027, y: 28.786636, z: 0.00048065186}
 --- !u!1 &7485428183466082606
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +368,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7640208578696857102}
-  - {fileID: 8874421135422916368}
+  - {fileID: 5545400879236649487}
   m_Father: {fileID: 1254008827396643923}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

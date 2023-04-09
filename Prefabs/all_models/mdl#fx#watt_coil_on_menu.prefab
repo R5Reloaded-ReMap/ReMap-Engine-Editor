@@ -1,37 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &246625214346216279
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7898165661075497883}
-  m_Layer: 0
-  m_Name: watt_coil_on_menu_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7898165661075497883
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 246625214346216279}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3370846611058856538}
-  m_Father: {fileID: 6256362296709944579}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3089257241615658326
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 8466685696745169283}
   m_Father: {fileID: 6256362296709944579}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3169881137435230017
 GameObject:
@@ -96,7 +64,7 @@ Transform:
   m_Children:
   - {fileID: 6256362296709944579}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5747680966926958701
 MonoBehaviour:
@@ -133,8 +101,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.08561528, y: 0.05358402, z: 0.053584006}
-  m_Center: {x: 0.04280764, y: -0.0000048950315, z: 0.000004881993}
+  m_Size: {x: 8.561528, y: 5.3584013, z: 5.3584}
+  m_Center: {x: 4.280764, y: -0.0004889965, z: 0.0004889965}
 --- !u!1 &5054403333076728770
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +132,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3770167868831853367}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5716082256794811679
 GameObject:
@@ -195,9 +163,41 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3770167868831853367}
-  - {fileID: 7898165661075497883}
+  - {fileID: 1534646522888895042}
   m_Father: {fileID: 4620860807465940781}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6217418231416257541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1534646522888895042}
+  m_Layer: 0
+  m_Name: watt_coil_on_menu_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1534646522888895042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6217418231416257541}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3370846611058856538}
+  m_Father: {fileID: 6256362296709944579}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8042220374109198861
 GameObject:
@@ -228,8 +228,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7898165661075497883}
-  m_RootOrder: 0
+  m_Father: {fileID: 1534646522888895042}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3382493742396968834
 SkinnedMeshRenderer:
@@ -282,6 +282,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 8466685696745169283}
   m_AABB:
-    m_Center: {x: 0.000004881993, y: 0.052529305, z: -0.000004881993}
-    m_Extent: {x: 0.026791992, y: 0.033085942, z: 0.026791997}
+    m_Center: {x: 0.00048828125, y: 5.252931, z: -0.00048828125}
+    m_Extent: {x: 2.6791992, y: 3.3085942, z: 2.6792}
   m_DirtyAABB: 0

@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1460827646501544190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3456814211903828942}
+  m_Layer: 0
+  m_Name: caustic_flask_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3456814211903828942
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460827646501544190}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 84338610770659057}
+  m_Father: {fileID: 6806066785669651464}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1467755422413627581
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,42 +60,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2313648550464384974}
+  - {fileID: 3456814211903828942}
   - {fileID: 3860521893060708207}
   m_Father: {fileID: 5526950443484430270}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1570746754509088789
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2313648550464384974}
-  m_Layer: 0
-  m_Name: caustic_flask_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2313648550464384974
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1570746754509088789}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 84338610770659057}
-  m_Father: {fileID: 6806066785669651464}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3754756788273332441
 GameObject:
@@ -94,7 +94,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3860521893060708207}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5184428802160529005
 GameObject:
@@ -125,8 +125,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2313648550464384974}
-  m_RootOrder: 0
+  m_Father: {fileID: 3456814211903828942}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6206693072396390584
 SkinnedMeshRenderer:
@@ -179,8 +179,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 7501051878161338211}
   m_AABB:
-    m_Center: {x: 0.0000048838556, y: -0.000053711236, z: 0.07455079}
-    m_Extent: {x: 0.04172363, y: 0.04175294, z: 0.07432619}
+    m_Center: {x: 0.00048828125, y: -0.0053710938, z: 7.45508}
+    m_Extent: {x: 4.1723633, y: 4.175294, z: 7.432619}
   m_DirtyAABB: 0
 --- !u!1 &6803600892502251908
 GameObject:
@@ -212,7 +212,7 @@ Transform:
   m_Children:
   - {fileID: 7501051878161338211}
   m_Father: {fileID: 6806066785669651464}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6998378004081207830
 GameObject:
@@ -246,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 6806066785669651464}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3119297895558139341
 MonoBehaviour:
@@ -283,5 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.08350592, y: 0.14887702, z: 0.08344732}
-  m_Center: {x: -0.000053711236, y: 0.07443851, z: 0.000004865229}
+  m_Size: {x: 8.350593, y: 14.887701, z: 8.344728}
+  m_Center: {x: -0.00537014, y: 7.4438505, z: 0.00048828125}

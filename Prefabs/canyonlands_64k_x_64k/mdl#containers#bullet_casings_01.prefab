@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &367567676927834596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6921370845052384580}
+  m_Layer: 0
+  m_Name: bullet_casings_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6921370845052384580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367567676927834596}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7059923296982180078}
+  m_Father: {fileID: 2078074112955542530}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &488272959357048692
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,10 +60,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 562033063593120912}
+  - {fileID: 6921370845052384580}
   - {fileID: 7998687296402399165}
   m_Father: {fileID: 8157630787340021281}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4349761616265188753
 GameObject:
@@ -63,7 +95,7 @@ Transform:
   m_Children:
   - {fileID: 2044749524719407005}
   m_Father: {fileID: 2078074112955542530}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5538633299055581364
 GameObject:
@@ -94,7 +126,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7998687296402399165}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7138702674454283605
 GameObject:
@@ -128,7 +160,7 @@ Transform:
   m_Children:
   - {fileID: 2078074112955542530}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &427794347814037876
 MonoBehaviour:
@@ -165,8 +197,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 57.019577, y: 2.9336085, z: 66.45021}
-  m_Center: {x: 2.2460957, y: 0.9052733, z: -7.6342773}
+  m_Size: {x: 57.01957, y: 2.9336014, z: 66.45021}
+  m_Center: {x: 2.2460957, y: 0.9052735, z: -7.6342773}
 --- !u!1 &8149130680293902496
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,8 +228,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 562033063593120912}
-  m_RootOrder: 0
+  m_Father: {fileID: 6921370845052384580}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3441714833989096184
 SkinnedMeshRenderer:
@@ -253,35 +285,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -7.6342773, y: 2.2460938, z: 0.9052736}
     m_Extent: {x: 33.225098, y: 28.509773, z: 1.4667971}
   m_DirtyAABB: 0
---- !u!1 &8421386830395204396
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 562033063593120912}
-  m_Layer: 0
-  m_Name: bullet_casings_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &562033063593120912
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8421386830395204396}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7059923296982180078}
-  m_Father: {fileID: 2078074112955542530}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 5418147229249370737}
   m_Father: {fileID: 6157442353455167623}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1239136269378778603
 GameObject:
@@ -61,7 +61,39 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8918113880854571372}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2205539012679386658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6879769634489202128}
+  m_Layer: 0
+  m_Name: trophy_system_spin_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6879769634489202128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2205539012679386658}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8488056830468202626}
+  m_Father: {fileID: 6157442353455167623}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2591672246217971181
 GameObject:
@@ -92,8 +124,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6832588597418704377}
-  m_RootOrder: 0
+  m_Father: {fileID: 6879769634489202128}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3264124650835859626
 SkinnedMeshRenderer:
@@ -146,8 +178,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5418147229249370737}
   m_AABB:
-    m_Center: {x: 0.0010498017, y: 0.0002490282, z: 0.00057617575}
-    m_Extent: {x: 0.12328613, y: 0.12369631, z: 0.07068361}
+    m_Center: {x: 0.10498047, y: 0.024902344, z: 0.057617188}
+    m_Extent: {x: 12.328613, y: 12.369632, z: 7.0683613}
   m_DirtyAABB: 0
 --- !u!1 &2610133623749399724
 GameObject:
@@ -178,41 +210,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8918113880854571372}
-  - {fileID: 6832588597418704377}
+  - {fileID: 6879769634489202128}
   m_Father: {fileID: 6873068996242457226}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5747504175606966310
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6832588597418704377}
-  m_Layer: 0
-  m_Name: trophy_system_spin_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6832588597418704377
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5747504175606966310}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8488056830468202626}
-  m_Father: {fileID: 6157442353455167623}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6978976409852195459
 GameObject:
@@ -246,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 6157442353455167623}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8597414451153110183
 MonoBehaviour:
@@ -283,5 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.24739274, y: 0.14136732, z: 0.24657235}
-  m_Center: {x: 0.0002490282, y: 0.00057617575, z: 0.0010498017}
+  m_Size: {x: 24.739275, y: 14.136727, z: 24.657234}
+  m_Center: {x: 0.024902344, y: 0.057617188, z: 0.10498047}

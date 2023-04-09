@@ -140,13 +140,13 @@ namespace LibrarySorter
                     break;
                 case TaskType.FixPrefabsData:
                     if ( !DoStartTask() ) return;
-                    checkExist = CheckDialog( "Check Existing Prefabs", "Do you want check existing prefabs ?" );
+                    CheckExisting();
                     await SortFolder( data );
                     await SetModelLabels( data.Name );
                     break;
                 case TaskType.FixAllPrefabsData:
                     if ( !DoStartTask() ) return;
-                    checkExist = CheckDialog( "Check Existing Prefabs", "Do you want check existing prefabs ?" );
+                    CheckExisting();
                     foreach ( RpakData _data in libraryData.RpakList )
                     {
                         await SortFolder( _data );
@@ -415,6 +415,11 @@ namespace LibrarySorter
     
                 searchResult.Add( path );
             }
+        }
+
+        internal static void CheckExisting()
+        {
+            checkExist = CheckDialog( "Check Existing Prefabs", "Do you want check existing prefabs ?" );
         }
 
         internal static bool DoStartTask()

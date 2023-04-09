@@ -13,11 +13,8 @@ namespace LibrarySorter
 {
     public class OffsetManagerWindow : EditorWindow
     {
-        static string currentDirectory = LibrarySorterWindow.currentDirectory;
-        static string relativeJsonOffset = LibrarySorterWindow.relativeJsonOffset;
-
         static Vector2 scrollPos = Vector2.zero;
-        string json = System.IO.File.ReadAllText( $"{currentDirectory}/{relativeJsonOffset}" );
+        string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
         static PrefabOffsetList offsetlist;
         static PrefabOffsetList newOffsetlist;
         static List< PrefabOffset > offsets;
@@ -30,7 +27,7 @@ namespace LibrarySorter
 
         public static void Init()
         {
-            OffsetManagerWindow window = (OffsetManagerWindow)GetWindow(typeof(OffsetManagerWindow), false, "Prefab Offset Manager");
+            OffsetManagerWindow window = ( OffsetManagerWindow )GetWindow( typeof( OffsetManagerWindow ), false, "Prefab Offset Manager" );
             window.minSize = new Vector2( 800, 400 ); // new Vector2( 888, 700 );
             //window.maxSize = new Vector2( 888, 700 );
             window.Show(); RefreshPage();
@@ -117,7 +114,7 @@ namespace LibrarySorter
         internal static void SaveJson()
         {
             newOffsetlist = new PrefabOffsetList();
-            newOffsetlist.List = new List<PrefabOffset>();
+            newOffsetlist.List = new List< PrefabOffset >();
 
             foreach ( PrefabOffset offset in offsets )
             {
@@ -128,7 +125,7 @@ namespace LibrarySorter
             }
 
             string json = JsonUtility.ToJson( newOffsetlist );
-            System.IO.File.WriteAllText( $"{currentDirectory}/{relativeJsonOffset}", json );
+            System.IO.File.WriteAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}", json );
         }
 
         internal static void FindObjectAndSetScroll( string objectName )
@@ -140,8 +137,8 @@ namespace LibrarySorter
 
         internal static void RefreshPage()
         {
-            string json = System.IO.File.ReadAllText( $"{currentDirectory}/{relativeJsonOffset}" );
-            offsetlist = JsonUtility.FromJson<PrefabOffsetList>( json );
+            string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
+            offsetlist = JsonUtility.FromJson< PrefabOffsetList >( json );
             offsets = offsetlist.List;
 
             UnityInfo.SortListByKey(offsets, x => x.ModelName);

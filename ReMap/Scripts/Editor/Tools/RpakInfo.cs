@@ -10,21 +10,21 @@ using UnityEngine;
 [Serializable]
 public class RpakContentJson
 {
-    public List<RpakContentClass> List;
+    public List< RpakContentClass > List;
 }
 
 [Serializable]
 public class RpakContentClass
 {
     public string modelName;
-    public string[] location;
+    public List< string > location;
 }
 
 public class RpakInfo : EditorWindow
 {
     static string usedRpak = "";
-    static string currentDirectory = LibrarySorterWindow.currentDirectory;
-    static string relativePrefabs = LibrarySorterWindow.relativePrefabs;
+    static string currentDirectory = UnityInfo.currentDirectoryPath;
+    static string relativePrefabs = UnityInfo.relativePathPrefabs;
 
     Vector2 scrollPosition;
 

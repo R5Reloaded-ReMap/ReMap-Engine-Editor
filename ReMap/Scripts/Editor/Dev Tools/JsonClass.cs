@@ -1,5 +1,7 @@
+
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace LibrarySorter
 {
@@ -15,5 +17,19 @@ namespace LibrarySorter
         public string Name;
         public List< string > Data;
         public string Update;
+    }
+
+
+    [Serializable]
+    public class PrefabOffsetList
+    {
+        public List< PrefabOffset > List;
+    }
+
+    [Serializable]
+    public class PrefabOffset
+    {
+        public string ModelName;
+        public Vector3 Rotation;
     }
 }

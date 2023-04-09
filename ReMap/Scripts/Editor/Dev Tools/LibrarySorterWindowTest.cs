@@ -154,7 +154,7 @@ namespace LibrarySorter
                     }
                     break;
                 case TaskType.FixSpecificPrefabData:
-                    //await FixPrefab( arg );
+                    await FixPrefab( arg );
                     await SetModelLabels( arg );
                 break;
             }
@@ -339,7 +339,7 @@ namespace LibrarySorter
                     ReMapConsole.Log( $"[Library Sorter] Setting label for {modelname} to {category}", ReMapConsole.LogType.Info );
                 }
 
-                EditorUtility.DisplayProgressBar( $"Sorting Tags {i}/{total}", $"Setting {modelname} to {category}", (i + 1) / (float)total ); i++;
+                EditorUtility.DisplayProgressBar( $"Sorting Tags {i}/{total}", $"Setting {modelname} to {category}", ( i + 1 ) / ( float )total ); i++;
             }
 
             ReMapConsole.Log($"[Library Sorter] Finished setting labels", ReMapConsole.LogType.Success);
@@ -380,8 +380,46 @@ namespace LibrarySorter
                 ReMapConsole.Log( $"[Library Sorter] Set {path} tag to: {Helper.GetObjTagNameWithEnum( ObjectType.Prop )}", ReMapConsole.LogType.Info );
 
                 PrefabUtility.SavePrefabAsset( loadedPrefabResource ); i++;
+            }
 
-                //await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            EditorUtility.ClearProgressBar();
+
+            return Task.CompletedTask;
+        }
+
+        internal static Task FixPrefab( string prefabName )
+        {
+            string[] prefabs = AssetDatabase.FindAssets( prefabName, new [] { UnityInfo.relativePathPrefabs } );
+
+            if ( prefabOffset == null ) prefabOffset = FindPrefabOffsetFile();
+
+            int i = 0; int total = prefabs.Length;
+            foreach ( string prefab in prefabs )
+            {
+                string file = AssetDatabase.GUIDToAssetPath( prefab );
+                string rpakName = UnityInfo.GetApexModelName( prefabName, true );
+
+                EditorUtility.DisplayProgressBar( $"Fixing Prefabs {i}/{total}", $"Prefab: {prefab}", ( i + 1 ) / ( float )total );
+
+                UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath( file, typeof( UnityEngine.Object ) ) as GameObject;
+                if ( loadedPrefabResource == null )
+                {
+                    ReMapConsole.Log($"[Library Sorter] Error loading prefab: {file}", ReMapConsole.LogType.Error );
+                    continue;
+                }
+
+                Transform child = loadedPrefabResource.GetComponentsInChildren< Transform >()[1];
+
+                CheckBoxColliderComponent( loadedPrefabResource );
+
+                loadedPrefabResource.transform.position = Vector3.zero;
+                loadedPrefabResource.transform.eulerAngles = Vector3.zero;
+                child.transform.eulerAngles = FindAnglesOffset( rpakName, prefabOffset );
+                child.transform.position = Vector3.zero;
+
+                PrefabUtility.SavePrefabAsset( loadedPrefabResource );
+
+                ReMapConsole.Log( $"[Library Sorter] Fixed and saved prefab: {file}", ReMapConsole.LogType.Success ); i++;
             }
 
             EditorUtility.ClearProgressBar();

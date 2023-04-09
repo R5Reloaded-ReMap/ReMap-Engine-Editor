@@ -28,13 +28,7 @@ namespace LibrarySorter
             [ MenuItem( "ReMap Dev Tools/Prefabs Management/Windows/Rpak Manager", false, 100 ) ]
             public static void Init()
             {
-                if ( !File.Exists( rpakManagerPath ) )
-                {
-                    CreateNewJsonLibraryData();
-                }
-
-                string json = System.IO.File.ReadAllText( rpakManagerPath );
-                libraryData = JsonUtility.FromJson< LibraryData >( json );
+                libraryData = FindLibraryDataFile();
 
                 Refresh();
 
@@ -227,6 +221,19 @@ namespace LibrarySorter
             System.IO.File.WriteAllText( rpakManagerPath, json );
 
             SaveJson();
+        }
+
+        internal static LibraryData FindLibraryDataFile()
+        {
+            if ( !File.Exists( rpakManagerPath ) )
+            {
+                CreateNewJsonLibraryData();
+            }
+
+            string json = System.IO.File.ReadAllText( rpakManagerPath );
+            libraryData = JsonUtility.FromJson< LibraryData >( json );
+
+            return libraryData;
         }
 
         private static RpakData NewRpakData()

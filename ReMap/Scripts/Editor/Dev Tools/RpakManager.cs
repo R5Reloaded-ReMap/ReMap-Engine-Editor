@@ -20,6 +20,8 @@ namespace LibrarySorter
         internal static LibraryData libraryData;
         internal static string[] rpakTab = new string[0];
         internal static int tabIdx = 0;
+        internal static int tabIdxTemp = 0;
+        internal static int modelCount = 0;
         Vector2 scrollPos = Vector2.zero;
 
         #if ReMapDev
@@ -57,9 +59,16 @@ namespace LibrarySorter
             if ( libraryData.RpakList[ tabIdx ].Name != allModelsDataName ) isAllModels = false;
 
             GUILayout.BeginVertical( "box" );
-                tabIdx = GUILayout.Toolbar ( tabIdx, rpakTab );
+                tabIdx = GUILayout.Toolbar( tabIdx, rpakTab );
+
+                if( tabIdx != tabIdxTemp )
+                {
+                    Refresh();
+                    tabIdxTemp = 0;
+                }
 
                 GUILayout.BeginHorizontal();
+                    GUILayout.Label( $"Models: {modelCount}" );
                     GUILayout.FlexibleSpace();
                     WindowUtility.WindowUtility.CreateButton( "Add Rpak", "", () => AddNewRpakList(), 100 );
                     if ( !isAllModels ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100 );
@@ -73,7 +82,7 @@ namespace LibrarySorter
 
                 foreach ( string model in libraryData.RpakList[ tabIdx ].Data )
                 {
-                    GUILayout.BeginHorizontal();
+                    GUILayout.BeginHorizontal( "box" );
                         GUILayout.Label( model );
                         if( !isAllModels )
                         if( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveModel( model ), 100 ) )
@@ -92,7 +101,7 @@ namespace LibrarySorter
                 if ( !isAllModels )
                 {
                     GUILayout.BeginHorizontal();
-                        entry = EditorGUILayout.TextField( entry );
+                        entry = EditorGUILayout.TextField( "", entry );
                         WindowUtility.WindowUtility.CreateButton( "Add Model", "", () => AddModel(), 100 );
                         WindowUtility.WindowUtility.CreateButton( "Rename Folder", "", () => RenameTab(), 100 );
                     GUILayout.EndHorizontal();
@@ -106,7 +115,7 @@ namespace LibrarySorter
 
             tabIdx = rpakTab.Length;
 
-            Refresh();
+            SaveJson();
         }
 
         internal static void DeleteRpakList()
@@ -116,8 +125,8 @@ namespace LibrarySorter
             tabIdx = rpakTab.Length - 2;
 
             BuildAllModels();
-            
-            Refresh();
+
+            SaveJson();
         }
 
         internal static void AddModel()
@@ -125,25 +134,33 @@ namespace LibrarySorter
             string[] models = entry.Replace( " ", "" ).Split( ";" );
 
             foreach ( string model in models )
-            libraryData.RpakList[ tabIdx ].Data.Add( model );
+            {
+                if ( libraryData.RpakList[ tabIdx ].Data.Contains( model ) || model == "" ) continue;
+
+                libraryData.RpakList[ tabIdx ].Data.Add( model );
+            }
 
             libraryData.RpakList[ tabIdx ].Data.Sort();
 
-            Refresh();
+            entry = "";
+
+            SaveJson();
         }
 
         internal static void RemoveModel( string model )
         {
             libraryData.RpakList[ tabIdx ].Data.Remove( model );
 
-            Refresh();
+            SaveJson();
         }
 
         internal static void RenameTab()
         {
             libraryData.RpakList[ tabIdx ].Name = entry;
 
-            Refresh();
+            entry = "";
+
+            SaveJson();
         }
 
         internal static void SaveJson()
@@ -186,7 +203,7 @@ namespace LibrarySorter
 
             allModelsData.Data = allModels;
 
-            Refresh();
+            SaveJson();
         }
 
         internal static void CreateNewJsonLibraryData()
@@ -227,6 +244,8 @@ namespace LibrarySorter
             }
 
             rpakTab = pages.ToArray();
+
+            modelCount = libraryData.RpakList[ tabIdx ].Data.Count;
         }
     }
 }

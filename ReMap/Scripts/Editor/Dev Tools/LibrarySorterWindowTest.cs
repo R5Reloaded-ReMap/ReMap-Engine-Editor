@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace LibrarySorter
     {
         FixPrefabsTags,
         FixPrefabsLabels,
+        DeleteUnusuedTextures,
+        FixLodsScale,
         FixPrefabsData,
         FixAllPrefabsData,
         FixSpecificPrefabData
@@ -34,10 +37,11 @@ namespace LibrarySorter
         static List< string > searchResult = new List< string >();
         
         #if ReMapDev
-            [ MenuItem( "ReMap Dev Tools/Prefabs Management/Windows/Prefab Fix Manager Test", false, 100 ) ]
+            [ MenuItem( "ReMap Dev Tools/Prefabs Management/Prefab Fix Manager", false, 100 ) ]
             public static void Init()
             {
                 libraryData = RpakManagerWindow.FindLibraryDataFile();
+                prefabOffset = OffsetManagerWindow.FindPrefabOffsetFile();
 
                 LibrarySorterWindowTest window = ( LibrarySorterWindowTest )GetWindow( typeof( LibrarySorterWindowTest ), false, "Prefab Fix Manager" );
                 window.minSize = new Vector2( 650, 600 );
@@ -48,7 +52,7 @@ namespace LibrarySorter
         private void OnEnable()
         {
             libraryData = RpakManagerWindow.FindLibraryDataFile();
-            prefabOffset = FindPrefabOffsetFile();
+            prefabOffset = OffsetManagerWindow.FindPrefabOffsetFile();
         }
 
         void OnGUI()
@@ -57,9 +61,17 @@ namespace LibrarySorter
 
                 GUILayout.BeginHorizontal();
 
-                    WindowUtility.WindowUtility.CreateButton( "Rpak Manager", "", () => RpakManagerWindow.Init() );
-                    WindowUtility.WindowUtility.CreateButton( "Fix Prefabs Tags", "", () => AwaitTask( TaskType.FixPrefabsTags ) );
+                    WindowUtility.WindowUtility.CreateButton( "Rpak Manager Window", "", () => RpakManagerWindow.Init() );
+                    WindowUtility.WindowUtility.CreateButton( "Offset Manager Window", "", () => OffsetManagerWindow.Init() );
+
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+
+                    WindowUtility.WindowUtility.CreateButton( "Check Prefabs Tags", "", () => AwaitTask( TaskType.FixPrefabsTags ) );
                     WindowUtility.WindowUtility.CreateButton( "Check Prefabs Labels", "", () => AwaitTask( TaskType.FixPrefabsLabels ) );
+                    WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
+                    WindowUtility.WindowUtility.CreateButton( "Check Lods Scale", "", () => AwaitTask( TaskType.FixLodsScale ) );
 
                 GUILayout.EndHorizontal();
 
@@ -81,10 +93,11 @@ namespace LibrarySorter
                                     return;
                                 }
                                 WindowUtility.WindowUtility.CreateButton( $"Find Missing", "", null, 140 );
-                                GUILayout.Label( $"Lastest Ckeck: {data.Update}", GUILayout.Width( 216 ) );
+                                GUILayout.Label( $"Lastest Check: {data.Update}", GUILayout.Width( 216 ) );
                             GUILayout.EndHorizontal();
                         }
                         WindowUtility.WindowUtility.CreateButton( $"Check All", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
+                        GUILayout.Space( 4 );
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -134,16 +147,29 @@ namespace LibrarySorter
                     if ( !DoStartTask() ) return;
                     await FixPrefabsTags();
                     break;
+
                 case TaskType.FixPrefabsLabels:
                     if ( !DoStartTask() ) return;
                     await SetModelLabels( arg );
                     break;
+
+                case TaskType.DeleteUnusuedTextures:
+                    if ( !DoStartTask() ) return;
+                    await DeleteNotUsedTexture();
+                    break;
+
+                case TaskType.FixLodsScale:
+                    if ( !DoStartTask() ) return;
+                    await SetScale100ToFBX();
+                    break;
+
                 case TaskType.FixPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
                     await SortFolder( data );
                     await SetModelLabels( data.Name );
                     break;
+
                 case TaskType.FixAllPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
@@ -153,6 +179,7 @@ namespace LibrarySorter
                         await SetModelLabels( _data.Name );
                     }
                     break;
+
                 case TaskType.FixSpecificPrefabData:
                     await FixPrefab( arg );
                     await SetModelLabels( arg );
@@ -383,6 +410,101 @@ namespace LibrarySorter
             }
 
             EditorUtility.ClearProgressBar();
+
+            return Task.CompletedTask;
+        }
+
+        internal static Task DeleteNotUsedTexture()
+        {
+            List< string > texturesList = new List< string >();
+
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
+
+            int i = 0; int total = modeltextureGUID.Length;
+            foreach ( var guid in modeltextureGUID )
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath( guid );
+                string[] dependencie = AssetDatabase.GetDependencies( assetPath );
+                foreach( string dependencies in dependencie )
+                {
+                    string fileName = Path.GetFileNameWithoutExtension( dependencies );
+                    if ( Path.GetExtension( dependencies ) == ".dds" && !texturesList.Contains( fileName ) )
+                    {
+                        texturesList.Add( fileName );
+                    }
+                }
+
+                EditorUtility.DisplayProgressBar( $"Obtaining dependencies {i}/{total}", $"Checking: {guid}", ( i + 1 ) / ( float )total ); i++;
+            }
+
+            string[] usedTextures = texturesList.ToArray();
+
+            string[] defaultAssetGUID = AssetDatabase.FindAssets( "t:defaultAsset", new [] { UnityInfo.relativePathMaterials } );
+            int j = 0; total = defaultAssetGUID.Length;
+            foreach ( var guid in defaultAssetGUID )
+            {
+                string defaultAssetPath = AssetDatabase.GUIDToAssetPath( guid );
+
+                if ( Path.GetExtension( defaultAssetPath ) == ".dds")
+                {
+                    File.Delete( defaultAssetPath );
+                    File.Delete( defaultAssetPath + ".meta");
+                    j++;
+                }
+
+                EditorUtility.DisplayProgressBar( $"Checking default assets {j}/{total}", $"Checking: {guid}", ( j + 1 ) / ( float )total ); j++;
+            }
+
+            string[] textureGUID = AssetDatabase.FindAssets("t:texture", new [] { UnityInfo.relativePathMaterials });
+            int k = 0; total = textureGUID.Length;
+            foreach ( var guid in textureGUID )
+            {
+                string texturePath = AssetDatabase.GUIDToAssetPath( guid );
+
+                if( !usedTextures.Contains(Path.GetFileNameWithoutExtension( texturePath ) ) )
+                {
+                    File.Delete( texturePath );
+                    File.Delete( texturePath + ".meta");
+                    k++;
+                }
+
+                EditorUtility.DisplayProgressBar( $"Checking textures {k}/{total}", $"Checking: {guid}", ( k + 1 ) / ( float )total ); k++;
+            }
+
+            ReMapConsole.Log( $"{j} native assets have been deleted", ReMapConsole.LogType.Success );
+            ReMapConsole.Log( $"{k} textures not used have been deleted", ReMapConsole.LogType.Success );
+            ReMapConsole.Log( $"Total used textures: {usedTextures.Length} for {modeltextureGUID.Length} models", ReMapConsole.LogType.Info );
+
+            EditorUtility.ClearProgressBar();
+
+            return Task.CompletedTask;
+        }
+
+        internal static Task SetScale100ToFBX()
+        {
+            string[] models = AssetDatabase.FindAssets( "t:Model", new string[] { UnityInfo.relativePathModel } );
+
+            List< ModelImporter > modelImporter = new List< ModelImporter >();
+
+            int i = 0; int total = models.Length;
+            foreach ( string model in models )
+            {
+                string path = AssetDatabase.GUIDToAssetPath( model );
+                EditorUtility.DisplayProgressBar( $"Checking FBX Scale {i}/{total}", $"Checking: {Path.GetFileName( path )}", ( i + 1 ) / ( float )models.Length);
+                ModelImporter importer = AssetImporter.GetAtPath( path ) as ModelImporter;
+                if ( importer != null )
+                {
+                    importer.globalScale = 100;
+                    modelImporter.Add( importer );
+                } i++;
+            }
+
+            EditorUtility.ClearProgressBar();
+
+            foreach ( ModelImporter model in modelImporter ) model.SaveAndReimport();
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
             return Task.CompletedTask;
         }

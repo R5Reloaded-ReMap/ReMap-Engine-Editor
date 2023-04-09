@@ -113,6 +113,8 @@ namespace LibrarySorter
 
         internal static void DeleteRpakList()
         {
+            if ( !LibrarySorterWindowTest.CheckDialog( "Delete Rpak List", "Are you sure you want delete this rpak list ?" ) ) return;
+
             libraryData.RpakList.Remove( libraryData.RpakList[ tabIdx ] );
 
             tabIdx = rpakTab.Length - 2;
@@ -142,6 +144,8 @@ namespace LibrarySorter
 
         internal static void DeleteList()
         {
+            if ( !LibrarySorterWindowTest.CheckDialog( "Delete Rpak Content", "Are you sure you want delete this rpak content ?" ) ) return;
+
             libraryData.RpakList[ tabIdx ].Data = new List< string >();
 
             SaveJson();
@@ -149,6 +153,8 @@ namespace LibrarySorter
 
         internal static void RemoveModel( string model )
         {
+            if ( !LibrarySorterWindowTest.CheckDialog( "Remove Model", $"Are you sure you want remove this model ?\n\n{model}" ) ) return;
+
             libraryData.RpakList[ tabIdx ].Data.Remove( model );
 
             SaveJson();

@@ -10,6 +10,12 @@ using UnityEngine;
 
 namespace LibrarySorter
 {
+    internal enum TaskType
+    {
+        FixPrefabsTags,
+        FixPrefabsLabels
+    }
+
     public class LibrarySorterWindowTest : EditorWindow
     {
         internal static LibraryData libraryData;
@@ -34,7 +40,8 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
 
                     WindowUtility.WindowUtility.CreateButton( "Rpak Manager", "", () => RpakManagerWindow.Init() );
-                    WindowUtility.WindowUtility.CreateButton( "Fix Prefabs Tags", "", () => FixPrefabsTags() );
+                    WindowUtility.WindowUtility.CreateButton( "Fix Prefabs Tags", "", () => AwaitTask( TaskType.FixPrefabsTags ) );
+                    WindowUtility.WindowUtility.CreateButton( "Check Prefabs Labels", "", () => AwaitTask( TaskType.FixPrefabsLabels ) );
 
                 GUILayout.EndHorizontal();
 
@@ -47,7 +54,64 @@ namespace LibrarySorter
             GUILayout.EndVertical();
         }
 
-        internal static async void FixPrefabsTags()
+        internal static async void AwaitTask( TaskType taskType, string arg = null )
+        {
+            if ( !CheckDialog( "Library Sorter", "Are you sure to start this task ?" ) ) return;
+
+            switch ( taskType )
+            {
+                case TaskType.FixPrefabsTags:
+                    await FixPrefabsTags();
+                    break;
+                case TaskType.FixPrefabsLabels:
+                    await SetModelLabels( arg );
+                break;
+            }
+        }
+
+        public static Task SetModelLabels( string specificModelOrFolderOrnull = null )
+        {
+            string specificFolder = $"";
+            string specificModel = $"mdl#";
+
+            if ( specificModelOrFolderOrnull != null )
+            {
+                if ( specificModelOrFolderOrnull.Contains("mdl#") )
+                {
+                    specificModel = specificModelOrFolderOrnull;
+                }
+                else specificFolder = $"/{specificModelOrFolderOrnull}";
+            }
+
+            int i = 0;
+            string[] guids = AssetDatabase.FindAssets( $"{specificModel}", new [] {$"{UnityInfo.relativePathPrefabs}{specificFolder}"} );
+            foreach ( var guid in guids )
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath( guid );
+                UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath( assetPath );
+                string category = assetPath.Split( "#" )[1].Replace( ".prefab", "" ).ToLower();
+
+                string[] modelnamesplit = assetPath.Split( "/" );
+                string modelname = modelnamesplit[modelnamesplit.Length - 1].Replace( ".prefab", "" );
+
+                string[] labels = AssetDatabase.GetLabels( asset );
+
+                if( !labels.Contains( category ) )
+                {
+                    AssetDatabase.SetLabels(asset, new []{category});
+                    ReMapConsole.Log( $"[Library Sorter] Setting label for {modelname} to {category}", ReMapConsole.LogType.Info );
+                }
+
+                EditorUtility.DisplayProgressBar( "Sorting Tags", $"Setting {modelname} to {category}", (i + 1) / (float)guids.Length ); i++;
+            }
+
+            ReMapConsole.Log($"[Library Sorter] Finished setting labels", ReMapConsole.LogType.Success);
+            EditorUtility.ClearProgressBar();
+
+            return Task.CompletedTask;
+        }
+
+        internal static async Task FixPrefabsTags()
         {
             string[] prefabs = AssetDatabase.FindAssets("t:prefab", new[] { UnityInfo.relativePathPrefabs });
 
@@ -55,6 +119,7 @@ namespace LibrarySorter
             foreach ( string prefab in prefabs )
             {
                 string path = AssetDatabase.GUIDToAssetPath( prefab );
+                string pathReplace = path.Replace( "Assets/Prefabs/", "" );
 
                 if ( path.Contains( "_custom_prefabs" ) )
                 {
@@ -77,12 +142,17 @@ namespace LibrarySorter
 
                 ReMapConsole.Log( $"[Library Sorter] Set {path} tag to: {Helper.GetObjTagNameWithEnum( ObjectType.Prop )}", ReMapConsole.LogType.Info );
 
-                PrefabUtility.SavePrefabAsset(loadedPrefabResource); i++;
+                PrefabUtility.SavePrefabAsset( loadedPrefabResource ); i++;
 
-                await Task.Delay(TimeSpan.FromSeconds(0.001));
+                await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
             }
 
             EditorUtility.ClearProgressBar();
+        }
+
+        internal static bool CheckDialog( string title, string content, string trueText = "Yes", string falseText = "No" )
+        {
+            return EditorUtility.DisplayDialog( title, content, trueText, falseText );
         }
     }
 }

@@ -39,8 +39,7 @@ namespace LibrarySorter
 
         private void OnEnable()
         {
-            string json = System.IO.File.ReadAllText( rpakManagerPath );
-            libraryData = JsonUtility.FromJson< LibraryData >( json );
+            libraryData = FindLibraryDataFile();
 
             Refresh();
         }

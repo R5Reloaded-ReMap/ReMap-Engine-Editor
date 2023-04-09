@@ -15,17 +15,23 @@ namespace LibrarySorter
         FixPrefabsTags,
         FixPrefabsLabels,
         FixPrefabsData,
-        FixAllPrefabsData
+        FixAllPrefabsData,
+        FixSpecificPrefabData
     }
 
     public class LibrarySorterWindowTest : EditorWindow
     {
         internal static LibraryData libraryData;
+        internal static List< PrefabOffset > prefabOffset;
         internal static bool checkExist = false;
         Vector2 scrollPos = Vector2.zero;
-        Vector2 scrollPosFixPrefabs = Vector2.zero;
+        Vector2 scrollPosSearchPrefabs = Vector2.zero;
 
-        static bool fixFolders = true;
+        static bool foldoutFixFolders = true;
+        static bool foldoutSearchPrefab = true;
+        static string searchEntry = "";
+        static string search = "";
+        static List< string > searchResult = new List< string >();
         
         #if ReMapDev
             [ MenuItem( "ReMap Dev Tools/Prefabs Management/Windows/Prefab Fix Manager Test", false, 100 ) ]
@@ -42,6 +48,7 @@ namespace LibrarySorter
         private void OnEnable()
         {
             libraryData = RpakManagerWindow.FindLibraryDataFile();
+            prefabOffset = FindPrefabOffsetFile();
         }
 
         void OnGUI()
@@ -59,27 +66,58 @@ namespace LibrarySorter
                 GUILayout.Space( 4 );
 
                 scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
-                    fixFolders = EditorGUILayout.BeginFoldoutHeaderGroup( fixFolders, "Fix Folders" );
-                    if ( fixFolders )
+                    foldoutFixFolders = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutFixFolders, "Fix Folders" );
+                    if ( foldoutFixFolders )
                     {
-                        scrollPosFixPrefabs = EditorGUILayout.BeginScrollView( scrollPosFixPrefabs );
-                            foreach ( RpakData data in libraryData.RpakList )
+                        foreach ( RpakData data in libraryData.RpakList )
+                        {
+                            GUILayout.BeginHorizontal();
+                                if ( WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ) ) )
+                                {
+                                    GUILayout.EndHorizontal();
+                                    EditorGUILayout.EndFoldoutHeaderGroup();
+                                    GUILayout.EndScrollView();
+                                    GUILayout.EndVertical();
+                                    return;
+                                }
+                                WindowUtility.WindowUtility.CreateButton( $"Find Missing", "", null, 140 );
+                                GUILayout.Label( $"Lastest Ckeck: {data.Update}", GUILayout.Width( 216 ) );
+                            GUILayout.EndHorizontal();
+                        }
+                        WindowUtility.WindowUtility.CreateButton( $"Check All", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
+                    }
+                    EditorGUILayout.EndFoldoutHeaderGroup();
+
+                    foldoutSearchPrefab = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutSearchPrefab, "Fix Prefabs" );
+                    if ( foldoutSearchPrefab )
+                    {
+                        searchEntry = EditorGUILayout.TextField( searchEntry );
+
+                        if ( searchEntry.Length >= 3 )
+                        {
+                            if ( searchEntry != search )
                             {
-                                GUILayout.BeginHorizontal();
-                                    if ( WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ) ) )
-                                    {
-                                        GUILayout.EndHorizontal();
-                                        GUILayout.EndScrollView();
-                                        EditorGUILayout.EndFoldoutHeaderGroup();
-                                        GUILayout.EndScrollView();
-                                        GUILayout.EndVertical();
-                                        return;
-                                    }
-                                    WindowUtility.WindowUtility.CreateButton( $"Find Missing", "", null, 140 );
-                                    GUILayout.Label( $"Lastest Ckeck: {data.Update}", GUILayout.Width( 216 ) );
-                                GUILayout.EndHorizontal();
+                                search = searchEntry;
+                                SearchPrefabs( search );
                             }
-                            WindowUtility.WindowUtility.CreateButton( $"Check All", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
+                        }
+
+                        scrollPosSearchPrefabs = EditorGUILayout.BeginScrollView( scrollPosSearchPrefabs );
+
+                            GUILayout.Space( 10 );
+                            if ( searchEntry.Length >= 3 )
+                            {
+                                foreach ( string prefab in searchResult )
+                                {
+                                    string prefabName = Path.GetFileNameWithoutExtension( prefab );
+                                    WindowUtility.WindowUtility.CreateButton( $"{prefabName}", "", () => AwaitTask( TaskType.FixSpecificPrefabData, prefabName ) );
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Label("Search must be at least 3 characters long.");
+                            }
+
                         GUILayout.EndScrollView();
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();
@@ -90,33 +128,39 @@ namespace LibrarySorter
 
         internal static async void AwaitTask( TaskType taskType, string arg = null, RpakData data = null )
         {
-            if ( !CheckDialog( "Library Sorter", "Are you sure to start this task ?" ) ) return;
-
             switch ( taskType )
             {
                 case TaskType.FixPrefabsTags:
+                    if ( !DoStartTask() ) return;
                     await FixPrefabsTags();
                     break;
                 case TaskType.FixPrefabsLabels:
+                    if ( !DoStartTask() ) return;
                     await SetModelLabels( arg );
                     break;
                 case TaskType.FixPrefabsData:
+                    if ( !DoStartTask() ) return;
                     checkExist = CheckDialog( "Check Existing Prefabs", "Do you want check existing prefabs ?" );
                     await SortFolder( data );
                     await SetModelLabels( data.Name );
                     break;
                 case TaskType.FixAllPrefabsData:
+                    if ( !DoStartTask() ) return;
                     checkExist = CheckDialog( "Check Existing Prefabs", "Do you want check existing prefabs ?" );
                     foreach ( RpakData _data in libraryData.RpakList )
                     {
                         await SortFolder( _data );
                         await SetModelLabels( _data.Name );
                     }
+                    break;
+                case TaskType.FixSpecificPrefabData:
+                    //await FixPrefab( arg );
+                    await SetModelLabels( arg );
                 break;
             }
         }
 
-        public static Task SortFolder( RpakData data )
+        internal static Task SortFolder( RpakData data )
         {
             string rpakPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}";
 
@@ -130,8 +174,7 @@ namespace LibrarySorter
             GameObject prefabToAdd; GameObject prefabInstance;
             GameObject objectToAdd; GameObject objectInstance;
 
-            string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
-            List< PrefabOffset > offsets = JsonUtility.FromJson< PrefabOffsetList >( json ).List;
+            if ( prefabOffset == null ) prefabOffset = FindPrefabOffsetFile();
 
             int i = 0; int total = data.Data.Count;
             foreach ( string model in data.Data )
@@ -174,7 +217,7 @@ namespace LibrarySorter
 
                         objectInstance.transform.parent = prefabInstance.transform;
                         objectInstance.transform.position = Vector3.zero;
-                        objectInstance.transform.eulerAngles = FindAnglesOffset( model, offsets );
+                        objectInstance.transform.eulerAngles = FindAnglesOffset( model, prefabOffset );
                         objectInstance.transform.localScale = new Vector3(1, 1, 1);
 
                         prefabInstance.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
@@ -201,7 +244,7 @@ namespace LibrarySorter
 
                         loadedPrefabResource.transform.position = Vector3.zero;
                         loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-                        child.transform.eulerAngles = FindAnglesOffset( model, offsets );
+                        child.transform.eulerAngles = FindAnglesOffset( model, prefabOffset );
                         child.transform.position = Vector3.zero;
 
                         CheckBoxColliderComponent( loadedPrefabResource );
@@ -263,7 +306,7 @@ namespace LibrarySorter
             collider.size = bounds.size;
         }
 
-        public static Task SetModelLabels( string specificModelOrFolderOrnull = null )
+        internal static Task SetModelLabels( string specificModelOrFolderOrnull = null )
         {
             string specificFolder = $"";
             string specificModel = $"mdl#";
@@ -344,6 +387,39 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
 
             return Task.CompletedTask;
+        }
+
+        internal static List< PrefabOffset > FindPrefabOffsetFile()
+        {
+            string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
+            return JsonUtility.FromJson< PrefabOffsetList >( json ).List;
+        }
+
+        private static void SearchPrefabs( string search = "" )
+        {
+            string[] prefabs = AssetDatabase.FindAssets("t:prefab", new string[] {"Assets/Prefabs"});
+            searchResult = new List<string>();
+    
+            foreach ( string prefab in prefabs )
+            {
+                string path = AssetDatabase.GUIDToAssetPath( prefab );
+
+                if( !path.Contains("mdl#") )
+                    continue;
+    
+                if( !path.Contains("all_models") )
+                    continue;
+    
+                if( search != "" && !path.Contains( search ) )
+                    continue;
+    
+                searchResult.Add( path );
+            }
+        }
+
+        internal static bool DoStartTask()
+        {
+            return CheckDialog( "Library Sorter", "Are you sure to start this task ?" );
         }
 
         internal static bool CheckDialog( string title, string content, string trueText = "Yes", string falseText = "No" )

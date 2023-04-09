@@ -64,7 +64,7 @@ namespace LibrarySorter
                 if( tabIdx != tabIdxTemp )
                 {
                     Refresh();
-                    tabIdxTemp = 0;
+                    tabIdxTemp = tabIdx;
                 }
 
                 GUILayout.BeginHorizontal();
@@ -72,6 +72,7 @@ namespace LibrarySorter
                     GUILayout.FlexibleSpace();
                     WindowUtility.WindowUtility.CreateButton( "Add Rpak", "", () => AddNewRpakList(), 100 );
                     if ( !isAllModels ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100 );
+                    if ( !isAllModels ) WindowUtility.WindowUtility.CreateButton( "Delete List", "", () => DeleteList(), 100 );
                     WindowUtility.WindowUtility.CreateButton( "Build all_models", "", () => BuildAllModels(), 100 );
                     WindowUtility.WindowUtility.CreateButton( "Save", "", () => SaveJson(), 100 );
                 GUILayout.EndHorizontal();
@@ -90,7 +91,6 @@ namespace LibrarySorter
                             GUILayout.EndHorizontal();
                             GUILayout.EndScrollView();
                             GUILayout.EndVertical();
-                            Refresh();
                             return;
                         }
                     GUILayout.EndHorizontal();
@@ -143,6 +143,13 @@ namespace LibrarySorter
             libraryData.RpakList[ tabIdx ].Data.Sort();
 
             entry = "";
+
+            SaveJson();
+        }
+
+        internal static void DeleteList()
+        {
+            libraryData.RpakList[ tabIdx ].Data = new List< string >();
 
             SaveJson();
         }

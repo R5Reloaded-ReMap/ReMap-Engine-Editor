@@ -25,7 +25,6 @@ namespace LibrarySorter
         Vector2 scrollPos = Vector2.zero;
 
         #if ReMapDev
-            [ MenuItem( "ReMap Dev Tools/Prefabs Management/Windows/Rpak Manager", false, 100 ) ]
             public static void Init()
             {
                 libraryData = FindLibraryDataFile();

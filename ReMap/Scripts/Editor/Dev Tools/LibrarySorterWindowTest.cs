@@ -29,11 +29,60 @@ namespace LibrarySorter
 
         void OnGUI()
         {
-            scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
+            GUILayout.BeginVertical( "box" );
+
+                GUILayout.BeginHorizontal();
+
+                    WindowUtility.WindowUtility.CreateButton( "Rpak Manager", "", () => RpakManagerWindow.Init() );
+                    WindowUtility.WindowUtility.CreateButton( "Fix Prefabs Tags", "", () => FixPrefabsTags() );
+
+                GUILayout.EndHorizontal();
+
+                scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
 
 
 
-            GUILayout.EndScrollView();
+                GUILayout.EndScrollView();
+
+            GUILayout.EndVertical();
+        }
+
+        internal static async void FixPrefabsTags()
+        {
+            string[] prefabs = AssetDatabase.FindAssets("t:prefab", new[] { UnityInfo.relativePathPrefabs });
+
+            int i = 0; int total = prefabs.Length;
+            foreach ( string prefab in prefabs )
+            {
+                string path = AssetDatabase.GUIDToAssetPath( prefab );
+
+                if ( path.Contains( "_custom_prefabs" ) )
+                {
+                    i++;
+                    continue;
+                }
+
+                UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject;
+                if ( loadedPrefabResource == null )
+                {
+                    ReMapConsole.Log( $"[Library Sorter] Error loading prefab: {path}", ReMapConsole.LogType.Error );
+                    i++;
+                    continue;
+                }
+
+                EditorUtility.DisplayProgressBar( $"Fixing Prefabs Tags {i}/{total}", $"Checking: {path}", ( i + 1 ) / ( float )total );
+
+                if( loadedPrefabResource.tag != Helper.GetObjTagNameWithEnum( ObjectType.Prop ) )
+                    loadedPrefabResource.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
+
+                ReMapConsole.Log( $"[Library Sorter] Set {path} tag to: {Helper.GetObjTagNameWithEnum( ObjectType.Prop )}", ReMapConsole.LogType.Info );
+
+                PrefabUtility.SavePrefabAsset(loadedPrefabResource); i++;
+
+                await Task.Delay(TimeSpan.FromSeconds(0.001));
+            }
+
+            EditorUtility.ClearProgressBar();
         }
     }
 }

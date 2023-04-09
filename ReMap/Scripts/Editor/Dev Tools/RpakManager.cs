@@ -210,7 +210,7 @@ namespace LibrarySorter
             RpakData data = new RpakData();
             data.Name = "unnamed";
             data.Data = new List< string >();
-            data.Update = DateTime.Now;
+            data.Update = DateTime.Now.ToString();
 
             return data;
         }

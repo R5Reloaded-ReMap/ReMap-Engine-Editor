@@ -50,7 +50,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal )" );
+                        code.Append( $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal, false, {Helper.BoolToLower( script.AppearOpen )} )" );
                         PageBreak( ref code );
                         break;
 
@@ -113,7 +113,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_SpawnDoor( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal, false, true )");
+                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_SpawnDoor( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal, false, {Helper.BoolToLower( script.AppearOpen )}, true )");
                         Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
                     break;
                 }

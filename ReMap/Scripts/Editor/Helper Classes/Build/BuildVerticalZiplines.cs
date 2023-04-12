@@ -191,7 +191,7 @@ namespace Build
             string array = "[ ";
             for( int i = 0 ; i < objArray.Length ; i++ )
             {
-                array += $"{ Helper.BuildAngles( objArray[i] )}";
+                array += $"{Helper.BuildAngles( objArray[i] )}";
 
                 if ( i != objArray.Length - 1 ) array += ", ";
             }

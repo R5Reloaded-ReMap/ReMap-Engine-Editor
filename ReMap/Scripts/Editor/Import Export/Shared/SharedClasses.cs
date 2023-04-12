@@ -168,24 +168,26 @@ namespace ImportExport.Shared
     public class SingleDoorClassData : GlobalClassData
     {
         public bool GoldDoor;
+        public bool AppearOpen;
     }
 
     [Serializable]
     public class DoubleDoorClassData : GlobalClassData
     {
         public bool GoldDoor;
+        public bool AppearOpen;
     }
 
     [Serializable]
     public class HorzDoorClassData : GlobalClassData
     {
-        // Stub class
+        public bool AppearOpen;
     }
 
     [Serializable]
     public class VerticalDoorClassData : GlobalClassData
     {
-        // Stub class
+        public bool AppearOpen;
     }
 
     [Serializable]

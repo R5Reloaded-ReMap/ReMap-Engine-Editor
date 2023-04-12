@@ -21,18 +21,16 @@ namespace LibrarySorter
         internal static int modelCount = 0;
         Vector2 scrollPos = Vector2.zero;
 
-        #if ReMapDev
-            public static void Init()
-            {
-                libraryData = FindLibraryDataFile();
+        public static void Init()
+        {
+            libraryData = FindLibraryDataFile();
 
-                Refresh();
+            Refresh();
 
-                RpakManagerWindow window = ( RpakManagerWindow )GetWindow( typeof( RpakManagerWindow ), false, "Rpak Manager" );
-                window.minSize = new Vector2( 650, 600 );
-                window.Show();
-            }
-        #endif
+            RpakManagerWindow window = ( RpakManagerWindow )GetWindow( typeof( RpakManagerWindow ), false, "Rpak Manager" );
+            window.minSize = new Vector2( 650, 600 );
+            window.Show();
+        }
 
         private void OnEnable()
         {

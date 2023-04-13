@@ -36,14 +36,14 @@ namespace CodeViewsWindow
 
         internal static FunctionRef[] LiveCode = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalButton( "Send Map Code To Game", "Dev Test", () => LiveMap.Send(), null ),
+            () => CodeViewsMenu.OptionalButton( "Send Map Code To Game", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(), null ),
             () => CodeViewsMenu.CreateSubMenu( CodeViewsMenu.SubEmptyMenu, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly Sends Live Map Code", ref CodeViewsWindow.EnableAutoLiveMapCode ),
             () => CodeViewsMenu.CreateSubMenu( SubLiveCodeAdvancedMenu, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map", ref CodeViewsWindow.ShowSubAdvancedLiveMenu )
         };
 
         internal static FunctionRef[] SubLiveCodeAdvancedMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalButton( "Restart Level And Write Script", "Generate your map in mp_rr_remap.nut\nand reload the level", () => LiveMap.ReloadLevel(), null, MenuType.SubMenu ),
+            () => CodeViewsMenu.OptionalButton( "Restart Level And Write Script", "Generate your map in mp_rr_remap.nut\nand reload the level\nNote: Works only on the survival_dev playlist", () => LiveMap.ReloadLevel(), null, MenuType.SubMenu ),
             () => CodeViewsMenu.OptionalButton( "Reset Script", "Reset mp_rr_remap.nut", () => LiveMap.ReloadLevel( true ), null, MenuType.SubMenu )
         };
 

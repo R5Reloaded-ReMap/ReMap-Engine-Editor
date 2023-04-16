@@ -234,6 +234,7 @@ namespace ImportExport.Json
         private static void ResetJsonData()
         {
             jsonData = new JsonData();
+            jsonData.Version = UnityInfo.JsonVersion;
             jsonData.Props = new List< PropClassData >();
             jsonData.Ziplines = new List< ZipLineClassData >();
             jsonData.LinkedZiplines = new List< LinkedZipLinesClassData >();

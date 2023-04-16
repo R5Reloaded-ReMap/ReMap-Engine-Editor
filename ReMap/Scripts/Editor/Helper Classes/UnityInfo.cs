@@ -8,6 +8,7 @@ using UnityEngine;
 public class UnityInfo
 {
     public static string ReMapVersion = "Version 1.0";
+    public static string JsonVersion = "1.0";
 
     // Path Utility
     public static string currentDirectoryPath =        Directory.GetCurrentDirectory().Replace("\\","/");
@@ -142,9 +143,9 @@ public class UnityInfo
         return obj.name.Split( char.Parse( " " ) )[0];
     }
 
-    public static void SortListByKey<T, TKey>(List<T> list, Func<T, TKey> keySelector) where TKey : IComparable
+    public static void SortListByKey< T, TKey >( List< T > list, Func< T, TKey > keySelector ) where TKey : IComparable
     {
-        list.Sort((x, y) => keySelector(x).CompareTo(keySelector(y)));
+        list.Sort( ( x, y ) => keySelector( x ).CompareTo( keySelector( y ) ) );
     }
 
     public static UnityEngine.Object FindPrefabFromName(string name)

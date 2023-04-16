@@ -9,6 +9,7 @@ namespace ImportExport.Shared
     [Serializable]
     public class JsonData
     {
+        public string Version;
         public List< PropClassData > Props;
         public List< ZipLineClassData > Ziplines;
         public List< LinkedZipLinesClassData > LinkedZiplines;

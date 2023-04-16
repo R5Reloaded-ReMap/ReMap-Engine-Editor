@@ -30,6 +30,12 @@ namespace ImportExport.Json
             string json = System.IO.File.ReadAllText( path );
             JsonData jsonData = JsonUtility.FromJson< JsonData >( json );
 
+            if ( !CheckJsonVersion( jsonData ) )
+            {
+                EditorUtility.ClearProgressBar();
+                return;
+            }
+
             // Sort by alphabetical name
             UnityInfo.SortListByKey( jsonData.Props, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.Ziplines, x => x.PathString );
@@ -224,6 +230,21 @@ namespace ImportExport.Json
             CreatePath( objData.Path, objData.PathString, obj );
 
             return obj;
+        }
+
+        private static bool CheckJsonVersion( JsonData jsonData )
+        {
+            string Version = UnityInfo.JsonVersion;
+            if ( jsonData.Version != Version )
+            {
+                string fileVersion = jsonData.Version == null ? "Unknown Version" : jsonData.Version;
+
+                UnityInfo.Printt( $"This json file is outdated ( {fileVersion} / {Version} )" );
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

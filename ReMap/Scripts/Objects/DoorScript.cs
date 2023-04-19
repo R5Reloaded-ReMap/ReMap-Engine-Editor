@@ -15,11 +15,11 @@ public class DoorScript : MonoBehaviour
         {
             if ( AppearOpen )
             {
-                DoorLeft.eulerAngles = this.transform.eulerAngles + new Vector3( 0, 90, 0 );
+                DoorLeft.localEulerAngles = new Vector3( 0, 90, 0 );
             }
             else
             {
-                DoorLeft.eulerAngles = this.transform.eulerAngles + new Vector3( 0, 180, 0 );
+                DoorLeft.localEulerAngles = new Vector3( 0, 180, 0 );
             }
         }
 
@@ -27,11 +27,11 @@ public class DoorScript : MonoBehaviour
         {
             if ( AppearOpen )
             {
-                DoorRight.eulerAngles = this.transform.eulerAngles + new Vector3( 0, 90, 0 );
+                DoorRight.localEulerAngles = new Vector3( 0, 90, 0 );
             }
             else
             {
-                DoorRight.eulerAngles = this.transform.eulerAngles;
+                DoorRight.localEulerAngles = new Vector3( 0, 0, 0 );
             }
         }
     }

@@ -193,7 +193,7 @@ namespace CodeViewsWindow
 
             int objLength = obj.Length;
 
-            if ( objLength == 0 ) return new[] { $"[{ Helper.BuildOriginVector( new Vector3( 0, 10, 0 ), false, true ) }]", $"[{ Helper.BuildAnglesVector( new Vector3( 0, 0, 0 ), false ) }]" };
+            if ( objLength == 0 ) return new[] { $"[{ Helper.BuildOriginVector( new Vector3( 0, 40, 0 ), false, true ) }]", $"[{ Helper.BuildAnglesVector( new Vector3( 0, 0, 0 ), false ) }]" };
 
             StringBuilder origin = new StringBuilder(); int i = 1;
             StringBuilder angles = new StringBuilder();

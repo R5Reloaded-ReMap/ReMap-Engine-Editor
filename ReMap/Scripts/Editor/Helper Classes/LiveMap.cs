@@ -56,29 +56,39 @@ namespace CodeViewsWindow
 
         public static async void Send()
         {
-            if(IsSending)
+            if( IsSending )
                 return;
+
+            // Delete the button until the message is displayed and to prevent sending too many commands to apex
+            FunctionRef[] newLiveCode = new FunctionRef[ ScriptTab.LiveCode.Length - 1 ];
+            Array.Copy( ScriptTab.LiveCode, 1, newLiveCode, 0, ScriptTab.LiveCode.Length - 1 );
+            ScriptTab.LiveCode = newLiveCode;
             
             IsSending = true;
             //find and set window once
             m_hEngine = FindApexWindow();
-            if(m_hEngine == null) {
+            if( m_hEngine == null )
+            {
                 IsSending = false;
                 CodeViewsWindow.EnableAutoLiveMapCode = false;
-                UnityInfo.Printt("Window Not Found");
+                UnityInfo.Printt( "Window Not Found" );
                 return;
             }
 
             SendCommandToApex($"sv_cheats 1");
-            Helper.DelayInMS(BuildWaitMS);
-            SendCommandToApex($"sv_quota_stringCmdsPerSecond 9999999");
-            Helper.DelayInMS(BuildWaitMS);
-            SendCommandToApex($"cl_quota_stringCmdsPerSecond 9999999");
-            Helper.DelayInMS(BuildWaitMS);
-            SendCommandToApex($"script MapEditor_RemoveAllEnts()");
-            Helper.DelayInMS(BuildWaitMS);
+            Helper.DelayInMS( BuildWaitMS );
+            SendCommandToApex( $"sv_quota_stringCmdsPerSecond 9999999" );
+            Helper.DelayInMS( BuildWaitMS );
+            SendCommandToApex( $"cl_quota_stringCmdsPerSecond 9999999" );
+            Helper.DelayInMS( BuildWaitMS );
+            SendCommandToApex ($"script MapEditor_RemoveAllEnts()" );
+            Helper.DelayInMS( BuildWaitMS );
 
-            await Helper.BuildMapCode(Build.BuildType.LiveMap, CodeViewsWindow.EnableSelection);
+            CodeViewsWindow.SendedEntityCount = 0;
+
+            await Helper.BuildMapCode( Build.BuildType.LiveMap, CodeViewsWindow.EnableSelection );
+
+            SendConfirmed();
 
             IsSending = false;
         }
@@ -163,6 +173,21 @@ namespace CodeViewsWindow
             Build.Build.IgnoreCounter = false;
 
             return code;
+        }
+
+        private static async void SendConfirmed()
+        {
+            CodeViewsWindow.SendingObjects = true;
+
+            await Task.Delay( 1000 * 6 ); // Show the message while 6 seconds
+
+            CodeViewsWindow.SendingObjects = false;
+
+            // Add the button
+            FunctionRef[] updatedLiveCode = new FunctionRef[ ScriptTab.LiveCode.Length + 1 ];
+            updatedLiveCode[0] = ScriptTab.SendMapCodeButton;
+            Array.Copy( ScriptTab.LiveCode, 0, updatedLiveCode, 1, ScriptTab.LiveCode.Length );
+            ScriptTab.LiveCode = updatedLiveCode;
         }
     }
 }

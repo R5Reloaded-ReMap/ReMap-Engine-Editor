@@ -93,7 +93,8 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        // Empty
+                        // Remove 1 to the counter since we don't support this object for live map code
+                        CodeViewsWindow.CodeViewsWindow.SendedEntityCount -= 1;
                     break;
                 }
             }

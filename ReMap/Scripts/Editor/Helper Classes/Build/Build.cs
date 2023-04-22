@@ -32,35 +32,11 @@ namespace Build
             if ( selection ) objectData = Helper.GetSelectedObjectWithEnum( objectType );
             else objectData = Helper.GetObjArrayWithEnum( objectType );
 
-            int objectDataLength = objectData.Length;
-
             // Does not generate if the type of object are flaged hide
             if ( IsHided( objectType ) ) return "";
             
             // Dynamic Counter
-            if ( !IgnoreCounter )
-            if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine || objectType == ObjectType.DoubleDoor )
-            {
-                CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength * 2;
-            }
-            else if ( buildType == BuildType.Precache )
-            {
-                List< String > PrecacheList = new List< String >();
-                foreach ( GameObject obj in objectData )
-                {
-                    string model = UnityInfo.GetObjName( obj );
-                    if ( PrecacheList.Contains( model ) )
-                        continue;
-                    PrecacheList.Add( model );
-                }
-                CodeViewsWindow.CodeViewsWindow.EntityCount += PrecacheList.Count;
-            }
-            else if ( buildType == BuildType.LiveMap )
-            {
-                // Nothing  
-            }
-            else CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength;
-            
+            if ( !IgnoreCounter ) IncrementToCounter( objectType, buildType, objectData );
 
             switch ( objectType )
             {
@@ -132,6 +108,50 @@ namespace Build
         internal static void PageBreak( ref StringBuilder code )
         {
             code.Append( Environment.NewLine );
+        }
+
+        private static void IncrementToCounter( ObjectType objectType, BuildType buildType, GameObject[] objectData )
+        {
+            int objectDataLength = objectData.Length;
+
+            switch ( objectType )
+            {
+                case ObjectType.ZipLine:
+                case ObjectType.LinkedZipline:
+                case ObjectType.VerticalZipLine:
+                case ObjectType.NonVerticalZipLine:
+                case ObjectType.DoubleDoor:
+
+                    objectDataLength = objectDataLength * 2;
+
+                    break;
+
+                default: break;
+            }
+
+            switch ( buildType )
+            {
+                case BuildType.Precache:
+
+                    List< String > PrecacheList = new List< String >();
+                    foreach ( GameObject obj in objectData )
+                    {
+                        string model = UnityInfo.GetObjName( obj );
+                        if ( PrecacheList.Contains( model ) )
+                            continue;
+                        PrecacheList.Add( model );
+                    }
+                    CodeViewsWindow.CodeViewsWindow.EntityCount += PrecacheList.Count;
+
+                    break;
+                case BuildType.LiveMap:
+                        CodeViewsWindow.CodeViewsWindow.SendedEntityCount += objectDataLength;
+                    break;
+
+                default:
+                    CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength;
+                break;
+            }
         }
     }
 }

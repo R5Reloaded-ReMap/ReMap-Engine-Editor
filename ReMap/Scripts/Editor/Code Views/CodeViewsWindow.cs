@@ -42,7 +42,9 @@ namespace CodeViewsWindow
         internal static bool EnableDevInfo = false;
         internal static bool EnableAutoLiveMapCode = false;
         internal static bool GenerationIsActive = false;
+        public static bool SendingObjects = false;
         internal static int EntityCount = 0;
+        internal static int SendedEntityCount = 0;
         internal static int EntFileID = 27;
         internal static Vector3 InfoPlayerStartOrigin = Vector3.zero;
         internal static Vector3 InfoPlayerStartAngles = Vector3.zero;
@@ -326,6 +328,11 @@ namespace CodeViewsWindow
                     SetCorrectColor( EntityCount );
                     GUILayout.Label( $" // {info}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
                     GUI.contentColor = Color.white;
+                }
+
+                if ( SendingObjects )
+                {
+                    GUILayout.Label( $"|| {SendedEntityCount} Objects have been sent to the game", EditorStyles.boldLabel );
                 }
 
             GUILayout.EndHorizontal();

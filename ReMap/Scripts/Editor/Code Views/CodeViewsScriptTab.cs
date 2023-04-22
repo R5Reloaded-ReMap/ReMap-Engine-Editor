@@ -14,6 +14,8 @@ namespace CodeViewsWindow
 {
     public class ScriptTab
     {
+        internal static FunctionRef SendMapCodeButton = () => CodeViewsMenu.OptionalButton( "Send Map Code To Game", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(), null );
+
         static FunctionRef[] SquirrelMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function" )
@@ -36,7 +38,7 @@ namespace CodeViewsWindow
 
         internal static FunctionRef[] LiveCode = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalButton( "Send Map Code To Game", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(), null ),
+            SendMapCodeButton,
             () => CodeViewsMenu.CreateSubMenu( CodeViewsMenu.SubEmptyMenu, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly Sends Live Map Code", ref CodeViewsWindow.EnableAutoLiveMapCode ),
             () => CodeViewsMenu.CreateSubMenu( SubLiveCodeAdvancedMenu, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map", ref CodeViewsWindow.ShowSubAdvancedLiveMenu )
         };

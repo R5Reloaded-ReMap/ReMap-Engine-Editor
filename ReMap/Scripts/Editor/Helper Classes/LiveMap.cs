@@ -76,13 +76,13 @@ namespace CodeViewsWindow
             }
 
             SendCommandToApex($"sv_cheats 1");
-            Helper.DelayInMS( BuildWaitMS );
+            Helper.DelayInMS();
             SendCommandToApex( $"sv_quota_stringCmdsPerSecond 9999999" );
-            Helper.DelayInMS( BuildWaitMS );
+            Helper.DelayInMS();
             SendCommandToApex( $"cl_quota_stringCmdsPerSecond 9999999" );
-            Helper.DelayInMS( BuildWaitMS );
+            Helper.DelayInMS();
             SendCommandToApex ($"script MapEditor_RemoveAllEnts()" );
-            Helper.DelayInMS( BuildWaitMS );
+            Helper.DelayInMS();
 
             CodeViewsWindow.SendedEntityCount = 0;
 

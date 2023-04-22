@@ -68,7 +68,7 @@ namespace Build
 
                     case BuildType.LiveMap:
                         CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )}, true )");
-                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        Helper.DelayInMS();
                     break;
                 }
             }

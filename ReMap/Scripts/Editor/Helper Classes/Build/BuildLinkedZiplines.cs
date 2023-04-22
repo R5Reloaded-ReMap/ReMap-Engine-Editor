@@ -83,7 +83,7 @@ namespace Build
                         else function2 = $"{nodes2}";
 
                         CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateLinkedZipline( {function2}, true )");
-                        Helper.DelayInMS(CodeViewsWindow.LiveMap.BuildWaitMS);
+                        Helper.DelayInMS();
                     break;
                 }
             }

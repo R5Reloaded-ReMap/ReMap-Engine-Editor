@@ -139,7 +139,7 @@ namespace Build
                         Helper.DelayInMS();
                         CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplinePanelSettings( {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )");
                         Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapCreateVerticalZipline()" );
+                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapCreateZipline()" );
                         Helper.DelayInMS();
                     break;
                 }

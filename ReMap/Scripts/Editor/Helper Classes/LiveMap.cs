@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -90,6 +91,17 @@ namespace CodeViewsWindow
 
             SendConfirmed();
 
+            if ( CodeViewsWindow.EnableTeleportPlayerToMap )
+            {
+                string[] data = GetLiveMapCodePlayerSpawnData();
+                SendCommandToApex( $"script ReMapSetRemapArrayVec01( {data[0]} )" );
+                Helper.DelayInMS();
+                SendCommandToApex( $"script ReMapSetRemapArrayVec02( {data[1]} )" );
+                Helper.DelayInMS();
+                SendCommandToApex ($"script ReMapTeleportToMap()" );
+                Helper.DelayInMS();
+            }
+
             IsSending = false;
         }
 
@@ -173,6 +185,33 @@ namespace CodeViewsWindow
             Build.Build.IgnoreCounter = false;
 
             return code;
+        }
+
+        private static string[] GetLiveMapCodePlayerSpawnData()
+        {
+            GameObject[] obj = Helper.GetObjArrayWithEnum( ObjectType.LiveMapCodePlayerSpawn );
+
+            int objLength = obj.Length;
+
+            if ( objLength == 0 ) return new[] { $"[{ Helper.BuildOriginVector( new Vector3( 0, 10, 0 ), false, true ) }]", $"[{ Helper.BuildAnglesVector( new Vector3( 0, 0, 0 ), false ) }]" };
+
+            StringBuilder origin = new StringBuilder(); int i = 1;
+            StringBuilder angles = new StringBuilder();
+
+            foreach ( GameObject playerSpawn in obj )
+            {
+                origin.Append( Helper.BuildOrigin( playerSpawn, false, true ) );
+                angles.Append( Helper.BuildAngles( playerSpawn, false ) );
+
+                if ( i != objLength )
+                {
+                    origin.Append( "," );
+                    angles.Append( "," );
+                    i++;
+                }
+            }
+
+            return new[] { $"[{ origin }]", $"[{ angles }]" };
         }
 
         private static async void SendConfirmed()

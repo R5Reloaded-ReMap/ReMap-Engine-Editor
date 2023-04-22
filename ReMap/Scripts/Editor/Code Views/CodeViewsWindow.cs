@@ -41,6 +41,7 @@ namespace CodeViewsWindow
         internal static bool ShowDevMenu = false;
         internal static bool EnableDevInfo = false;
         internal static bool EnableAutoLiveMapCode = false;
+        internal static bool EnableTeleportPlayerToMap = false;
         internal static bool GenerationIsActive = false;
         public static bool SendingObjects = false;
         internal static int EntityCount = 0;

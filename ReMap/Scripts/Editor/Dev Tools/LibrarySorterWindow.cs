@@ -516,6 +516,7 @@ namespace LibrarySorter
 
         internal static Task FixPrefab( string prefabName )
         {
+            UnityInfo.Printt(prefabName);
             string[] prefabs = AssetDatabase.FindAssets( prefabName, new [] { UnityInfo.relativePathPrefabs } );
 
             if ( prefabOffset == null ) prefabOffset = FindPrefabOffsetFile();

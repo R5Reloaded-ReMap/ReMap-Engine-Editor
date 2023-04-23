@@ -68,7 +68,7 @@ namespace LibrarySorter
                         GUILayout.EndScrollView();
                         return;
                     }
-                    if ( GUILayout.Button( "Fix Prefab", GUILayout.Width( 100 ) ) ) LibrarySorterWindow.FixPrefab( offset.ModelName );
+                    if ( GUILayout.Button( "Fix Prefab", GUILayout.Width( 100 ) ) ) LibrarySorterWindow.AwaitTask( TaskType.FixSpecificPrefabData, UnityInfo.GetUnityModelName( offset.ModelName ) );
                 EditorGUILayout.EndHorizontal();
 
                 if ( Input.GetKeyDown( KeyCode.Return ) || Input.GetKeyDown( KeyCode.Tab ) || Event.current.type == EventType.MouseDown )

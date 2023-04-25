@@ -91,16 +91,7 @@ namespace CodeViewsWindow
 
             SendConfirmed();
 
-            if ( CodeViewsWindow.EnableTeleportPlayerToMap )
-            {
-                string[] data = GetLiveMapCodePlayerSpawnData();
-                SendCommandToApex( $"script ReMapSetRemapArrayVec01( {data[0]} )" );
-                Helper.DelayInMS();
-                SendCommandToApex( $"script ReMapSetRemapArrayVec02( {data[1]} )" );
-                Helper.DelayInMS();
-                SendCommandToApex ($"script ReMapTeleportToMap()" );
-                Helper.DelayInMS();
-            }
+            if ( CodeViewsWindow.EnableTeleportPlayerToMap ) RespawnPlayers();
 
             IsSending = false;
         }
@@ -185,6 +176,18 @@ namespace CodeViewsWindow
             Build.Build.IgnoreCounter = false;
 
             return code;
+        }
+
+        public static void RespawnPlayers()
+        {
+
+            string[] data = GetLiveMapCodePlayerSpawnData();
+            SendCommandToApex( $"script ReMapSetRemapArrayVec01( {data[0]} )" );
+            Helper.DelayInMS();
+            SendCommandToApex( $"script ReMapSetRemapArrayVec02( {data[1]} )" );
+            Helper.DelayInMS();
+            SendCommandToApex ($"script ReMapTeleportToMap()" );
+            Helper.DelayInMS();
         }
 
         private static string[] GetLiveMapCodePlayerSpawnData()

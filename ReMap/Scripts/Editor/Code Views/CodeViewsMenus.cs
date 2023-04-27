@@ -209,19 +209,11 @@ namespace CodeViewsWindow
 
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
-                    if ( GUILayout.Button( "Check All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 158 ) ) )
-                    {
-                        Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), true );
-                        CodeViewsWindow.Refresh();
-                    }
+                    WindowUtility.WindowUtility.CreateButton( "Check All", "", () => CkeckOptionalAdvancedOption( true ), 158 );
 
                     Space( 1 );
 
-                    if ( GUILayout.Button( "Uncheck All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 158 ) ) )
-                    {
-                        Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), false );
-                        CodeViewsWindow.Refresh();
-                    }
+                    WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CkeckOptionalAdvancedOption( false ), 158 );
                 GUILayout.EndHorizontal();
 
                 foreach ( string key in CodeViewsWindow.GenerateObjectsFunction.Keys )
@@ -245,6 +237,12 @@ namespace CodeViewsWindow
                     }
                 }
             GUILayout.EndVertical();
+        }
+
+        private static void CkeckOptionalAdvancedOption( bool value )
+        {
+            Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), value );
+            CodeViewsWindow.Refresh();
         }
 
         internal static void Space( float value )

@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using WindowUtility;
 
 namespace CodeViewsWindow
 {
@@ -8,8 +9,6 @@ namespace CodeViewsWindow
         Menu,
         SubMenu
     }
-    
-    internal delegate void FunctionRef();
 
     public class CodeViewsMenu
     {
@@ -117,13 +116,13 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float labelSpace = menuType == MenuType.Menu ? 96 : 94;
-            float fieldSpace = menuType == MenuType.Menu ? 220 : 200;
+            int labelSpace = menuType == MenuType.Menu ? 96 : 94;
+            int fieldSpace = menuType == MenuType.Menu ? 220 : 200;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( labelSpace ) );
-                reference = EditorGUILayout.TextField( new GUIContent( "", tooltip ), reference, GUILayout.Width( fieldSpace ) );
+
+                WindowUtility.WindowUtility.CreateTextField( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
         }
 
@@ -131,16 +130,12 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float space = menuType == MenuType.Menu ? 302 : 279;
+            int space = menuType == MenuType.Menu ? 302 : 279;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
 
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( space ) );
-                reference = EditorGUILayout.Toggle( "", reference, GUILayout.MaxWidth( 0 ) );
-
-                if( reference != referenceTemp ) referenceTemp = reference;
-
+                WindowUtility.WindowUtility.CreateToggle( ref reference, ref referenceTemp, text, tooltip, space );
             GUILayout.EndHorizontal();
         }
 
@@ -191,14 +186,12 @@ namespace CodeViewsWindow
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            float space = menuType == MenuType.Menu ? 320 : 297;
+            int space = menuType == MenuType.Menu ? 320 : 297;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                if( GUILayout.Button( new GUIContent( text, tooltip ), buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( space ) ) )
-                {
-                    if ( functionRef != null ) functionRef();
-                }
+
+                WindowUtility.WindowUtility.CreateButton( text, tooltip, functionRef, space, 20 );
             GUILayout.EndHorizontal();
         }
 

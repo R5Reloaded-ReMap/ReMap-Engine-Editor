@@ -73,8 +73,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj, false, true )}, {Helper.ReplaceComma( script.HalfHeight )}, {Helper.ReplaceComma( script.HalfWidth )}, {Helper.BuildRightVector( script.Right )}, true )");
-                        Helper.DelayInMS();
+                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj, false, true )}, {Helper.ReplaceComma( script.HalfHeight )}, {Helper.ReplaceComma( script.HalfWidth )}, {Helper.BuildRightVector( script.Right )}, true )");
                     break;
                 }
             }

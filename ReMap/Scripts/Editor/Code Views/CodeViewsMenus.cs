@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using WindowUtility;
 
 namespace CodeViewsWindow
 {
@@ -8,8 +9,6 @@ namespace CodeViewsWindow
         Menu,
         SubMenu
     }
-    
-    internal delegate void FunctionRef();
 
     public class CodeViewsMenu
     {
@@ -122,8 +121,8 @@ namespace CodeViewsWindow
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( labelSpace ) );
-                reference = EditorGUILayout.TextField( new GUIContent( "", tooltip ), reference, GUILayout.Width( fieldSpace ) );
+
+                WindowUtility.WindowUtility.CreateTextField( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
         }
 
@@ -136,11 +135,7 @@ namespace CodeViewsWindow
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
 
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( space ) );
-                reference = EditorGUILayout.Toggle( "", reference, GUILayout.MaxWidth( 0 ) );
-
-                if( reference != referenceTemp ) referenceTemp = reference;
-
+                WindowUtility.WindowUtility.CreateToggle( ref reference, text, tooltip, space );
             GUILayout.EndHorizontal();
         }
 
@@ -153,8 +148,8 @@ namespace CodeViewsWindow
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.MaxWidth( labelSpace ) );
-                reference = EditorGUILayout.IntField( "", reference, GUILayout.MaxWidth( fieldSpace ) );
+
+                WindowUtility.WindowUtility.CreateIntField( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
         }
 
@@ -167,12 +162,12 @@ namespace CodeViewsWindow
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.MaxWidth( labelSpace ) );
-                reference = EditorGUILayout.Vector3Field( "", reference, GUILayout.MaxWidth( fieldSpace ) );
+
+                WindowUtility.WindowUtility.CreateVector3Field( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
         }
 
-        internal static void OptionalTextInfo( string text = "text field", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Menu )
+        internal static void OptionalTextInfo( string text = "text", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Menu )
         {
             if ( condition != null && !condition.Value ) return;
 
@@ -180,7 +175,7 @@ namespace CodeViewsWindow
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( space ) );
+                WindowUtility.WindowUtility.CreateTextInfo( text, tooltip, space );
             GUILayout.EndHorizontal();
         }
 
@@ -191,14 +186,12 @@ namespace CodeViewsWindow
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            float space = menuType == MenuType.Menu ? 320 : 297;
+            int space = menuType == MenuType.Menu ? 320 : 297;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                if( GUILayout.Button( new GUIContent( text, tooltip ), buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( space ) ) )
-                {
-                    if ( functionRef != null ) functionRef();
-                }
+
+                WindowUtility.WindowUtility.CreateButton( text, tooltip, functionRef, space, 20 );
             GUILayout.EndHorizontal();
         }
 
@@ -209,19 +202,11 @@ namespace CodeViewsWindow
 
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
-                    if ( GUILayout.Button( "Check All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 158 ) ) )
-                    {
-                        Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), true );
-                        CodeViewsWindow.Refresh();
-                    }
+                    WindowUtility.WindowUtility.CreateButton( "Check All", "", () => CheckOptionalAdvancedOption( true ), 158 );
 
                     Space( 1 );
 
-                    if ( GUILayout.Button( "Uncheck All", buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 158 ) ) )
-                    {
-                        Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), false );
-                        CodeViewsWindow.Refresh();
-                    }
+                    WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 158 );
                 GUILayout.EndHorizontal();
 
                 foreach ( string key in CodeViewsWindow.GenerateObjectsFunction.Keys )
@@ -245,6 +230,12 @@ namespace CodeViewsWindow
                     }
                 }
             GUILayout.EndVertical();
+        }
+
+        private static void CheckOptionalAdvancedOption( bool value )
+        {
+            Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), value );
+            CodeViewsWindow.Refresh();
         }
 
         internal static void Space( float value )

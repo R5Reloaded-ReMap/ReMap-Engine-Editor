@@ -87,8 +87,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateZipline( {ziplinestart}, {ziplineend}, true )");
-                        Helper.DelayInMS();
+                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateZipline( {ziplinestart}, {ziplineend}, true )");
                     break;
                 }
             }

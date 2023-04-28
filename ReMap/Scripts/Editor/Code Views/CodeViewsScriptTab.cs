@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 
 using Build;
 using static Build.Build;
+using WindowUtility;
 
 namespace CodeViewsWindow
 {
@@ -89,7 +90,14 @@ namespace CodeViewsWindow
 
             code += Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z );
 
-            Helper.ForceHideBoolToGenerateObjects( new ObjectType[] { ObjectType.Sound, ObjectType.SpawnPoint } );
+            ObjectType[] forceHide = new ObjectType[]
+            {
+                ObjectType.Sound,
+                ObjectType.SpawnPoint,
+                ObjectType.LiveMapCodePlayerSpawn
+            };
+
+            Helper.ForceHideBoolToGenerateObjects( forceHide );
             
             code += await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.EnableSelection );
 

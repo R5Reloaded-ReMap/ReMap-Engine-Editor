@@ -113,8 +113,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_SpawnDoor( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal, false, {Helper.BoolToLower( script.AppearOpen )}, true )");
-                        Helper.DelayInMS();
+                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_SpawnDoor( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal, false, {Helper.BoolToLower( script.AppearOpen )}, true )");
                     break;
                 }
             }

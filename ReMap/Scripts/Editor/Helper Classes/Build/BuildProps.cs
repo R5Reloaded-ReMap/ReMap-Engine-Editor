@@ -126,8 +126,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale}, true )");
-                        Helper.DelayInMS();
+                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale}, true )");
                     break;
                 }
             }

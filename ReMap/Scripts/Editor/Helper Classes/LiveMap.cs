@@ -24,7 +24,7 @@ namespace CodeViewsWindow
         public static bool IsSending = false;
         static IntPtr m_hEngine;
 
-        public static int CommandDelay = 50;
+        public static int commandDelay = 50;
 
         [ DllImport( "user32.dll" ) ]
         public static extern int SendMessage( IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam );
@@ -120,7 +120,7 @@ namespace CodeViewsWindow
             {
                 SendCommandToApex( command );
 
-                for (int i = 0; i < CommandDelay * 100000; i++) 
+                for (int i = 0; i < commandDelay * 100000; i++) 
                 {
                     ;;;;;
                 }

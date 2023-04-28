@@ -123,24 +123,15 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetOrigin( {Helper.BuildOrigin(script.rope_start.gameObject, false, true)}, {Helper.BuildOrigin(script.rope_end.gameObject, false, true)} )" );
-                        Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetAngles( {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildAngles(script.rope_start.gameObject)} )" );
-                        Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplineVars01( false, {Helper.ReplaceComma( script.FadeDistance )}, {Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )}, {PreserveVelocity}, {DropToBottom} )" );
-                        Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplineVars02( {Helper.ReplaceComma( script.AutoDetachStart )}, {Helper.ReplaceComma( script.AutoDetachEnd )}, {Helper.BoolToLower( script.RestPoint )}, {PushOffInDirectionX}, {Helper.BoolToLower( script.IsMoving )}, {DetachEndOnSpawn}, {DetachEndOnUse} )" );
-                        Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetRemapArrayVec01( {PanelOrigin} )" );
-                        Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetRemapArrayVec02( {PanelAngles} )" );
-                        Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplinePanelModel( {PanelModels} )" );
-                        Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapSetZiplinePanelSettings( {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )");
-                        Helper.DelayInMS();
-                        CodeViewsWindow.LiveMap.SendCommandToApex( $"script ReMapCreateZipline()" );
-                        Helper.DelayInMS();
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetOrigin( {Helper.BuildOrigin(script.rope_start.gameObject, false, true)}, {Helper.BuildOrigin(script.rope_end.gameObject, false, true)} )" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetAngles( {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildAngles(script.rope_start.gameObject)} )" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetZiplineVars01( false, {Helper.ReplaceComma( script.FadeDistance )}, {Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )}, {PreserveVelocity}, {DropToBottom} )" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetZiplineVars02( {Helper.ReplaceComma( script.AutoDetachStart )}, {Helper.ReplaceComma( script.AutoDetachEnd )}, {Helper.BoolToLower( script.RestPoint )}, {PushOffInDirectionX}, {Helper.BoolToLower( script.IsMoving )}, {DetachEndOnSpawn}, {DetachEndOnUse} )" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetRemapArrayVec01( {PanelOrigin} )" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetRemapArrayVec02( {PanelAngles} )" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetZiplinePanelModel( {PanelModels} )" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetZiplinePanelSettings( {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )");
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapCreateZipline()" );
                     break;
                 }
             }

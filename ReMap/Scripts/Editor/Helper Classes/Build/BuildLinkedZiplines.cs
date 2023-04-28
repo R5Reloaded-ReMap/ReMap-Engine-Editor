@@ -82,8 +82,7 @@ namespace Build
                         if ( script.EnableSmoothing ) function = $"{smoothType2}( {nodes2}, {script.SmoothAmount} )";
                         else function2 = $"{nodes2}";
 
-                        CodeViewsWindow.LiveMap.SendCommandToApex($"script MapEditor_CreateLinkedZipline( {function2}, true )");
-                        Helper.DelayInMS();
+                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateLinkedZipline( {function2}, true )");
                     break;
                 }
             }

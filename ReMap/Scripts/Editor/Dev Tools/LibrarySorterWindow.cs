@@ -84,7 +84,7 @@ namespace LibrarySorter
                         foreach ( RpakData data in libraryData.RpakList )
                         {
                             GUILayout.BeginHorizontal();
-                                if ( WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ) ) )
+                                if ( WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ), 260 ) )
                                 {
                                     GUILayout.EndHorizontal();
                                     EditorGUILayout.EndFoldoutHeaderGroup();
@@ -92,8 +92,8 @@ namespace LibrarySorter
                                     GUILayout.EndVertical();
                                     return;
                                 }
-                                WindowUtility.WindowUtility.CreateButton( $"Find Missing", "", null, 140 );
-                                GUILayout.Label( $"Lastest Check: {data.Update}", GUILayout.Width( 216 ) );
+                                WindowUtility.WindowUtility.CreateButton( $"Find Missing", "TODO", 160 );
+                                WindowUtility.WindowUtility.CreateTextInfo( $"Lastest Check: {data.Update}", "" );
                             GUILayout.EndHorizontal();
                         }
                         WindowUtility.WindowUtility.CreateButton( $"Check All", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
@@ -128,7 +128,7 @@ namespace LibrarySorter
                             }
                             else
                             {
-                                GUILayout.Label("Search must be at least 3 characters long.");
+                                //WindowUtility.WindowUtility.CreateTextInfo( "Search must be at least 3 characters long.", "" );
                             }
 
                         GUILayout.EndScrollView();

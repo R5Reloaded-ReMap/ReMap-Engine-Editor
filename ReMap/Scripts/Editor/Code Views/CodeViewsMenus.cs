@@ -116,8 +116,8 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            int labelSpace = menuType == MenuType.Menu ? 96 : 94;
-            int fieldSpace = menuType == MenuType.Menu ? 220 : 200;
+            float labelSpace = menuType == MenuType.Menu ? 96 : 94;
+            float fieldSpace = menuType == MenuType.Menu ? 220 : 200;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
@@ -130,12 +130,12 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            int space = menuType == MenuType.Menu ? 302 : 279;
+            float space = menuType == MenuType.Menu ? 302 : 279;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
 
-                WindowUtility.WindowUtility.CreateToggle( ref reference, ref referenceTemp, text, tooltip, space );
+                WindowUtility.WindowUtility.CreateToggle( ref reference, text, tooltip, space );
             GUILayout.EndHorizontal();
         }
 
@@ -148,8 +148,8 @@ namespace CodeViewsWindow
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.MaxWidth( labelSpace ) );
-                reference = EditorGUILayout.IntField( "", reference, GUILayout.MaxWidth( fieldSpace ) );
+
+                WindowUtility.WindowUtility.CreateIntField( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
         }
 
@@ -162,12 +162,12 @@ namespace CodeViewsWindow
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.MaxWidth( labelSpace ) );
-                reference = EditorGUILayout.Vector3Field( "", reference, GUILayout.MaxWidth( fieldSpace ) );
+
+                WindowUtility.WindowUtility.CreateVector3Field( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
         }
 
-        internal static void OptionalTextInfo( string text = "text field", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Menu )
+        internal static void OptionalTextInfo( string text = "text", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Menu )
         {
             if ( condition != null && !condition.Value ) return;
 
@@ -175,7 +175,7 @@ namespace CodeViewsWindow
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
-                EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( space ) );
+                WindowUtility.WindowUtility.CreateTextInfo( text, tooltip, space );
             GUILayout.EndHorizontal();
         }
 
@@ -202,11 +202,11 @@ namespace CodeViewsWindow
 
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
-                    WindowUtility.WindowUtility.CreateButton( "Check All", "", () => CkeckOptionalAdvancedOption( true ), 158 );
+                    WindowUtility.WindowUtility.CreateButton( "Check All", "", () => CheckOptionalAdvancedOption( true ), 158 );
 
                     Space( 1 );
 
-                    WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CkeckOptionalAdvancedOption( false ), 158 );
+                    WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 158 );
                 GUILayout.EndHorizontal();
 
                 foreach ( string key in CodeViewsWindow.GenerateObjectsFunction.Keys )
@@ -232,7 +232,7 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
-        private static void CkeckOptionalAdvancedOption( bool value )
+        private static void CheckOptionalAdvancedOption( bool value )
         {
             Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), value );
             CodeViewsWindow.Refresh();

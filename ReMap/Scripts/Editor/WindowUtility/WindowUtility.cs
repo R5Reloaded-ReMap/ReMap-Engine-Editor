@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,24 +9,22 @@ namespace WindowUtility
 
     public class WindowUtility
     {
-        internal static bool CreateButton( string text = "button", string tooltip = "", int? width = null, int height = 20 )
+        public static bool CreateButton( string text = "button", string tooltip = "", float width = 0, float height = 0 )
         {
-            return CreateButton(text, tooltip, ( FunctionRef ) null, width, height);
+            return CreateButton( text, tooltip, ( FunctionRef[] ) null, width, height );
         }
 
-        internal static bool CreateButton( string text, string tooltip, FunctionRef functionRef, int? width = null, int height = 20 )
+        public static bool CreateButton( string text = "button", string tooltip = "", FunctionRef functionRef = null, float width = 0, float height = 0 )
         {
             return CreateButton( text, tooltip, new FunctionRef[] { functionRef }, width, height );
         }
 
-        internal static bool CreateButton( string text = "button", string tooltip = "", FunctionRef[] functionRefs = null, int? width = null, int height = 20 )
+        public static bool CreateButton( string text = "button", string tooltip = "", FunctionRef[] functionRefs = null, float width = 0, float height = 0 )
         {
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            GUILayoutOption widthOption = width.HasValue ? GUILayout.Width( width.Value ) : null;
-
-            if( GUILayout.Button( new GUIContent( text, tooltip ), buttonStyle, GUILayout.Height( height ), widthOption ) )
+            if( GUILayout.Button( new GUIContent( text, tooltip ), buttonStyle, SizeOptions( width, height ) ) )
             {
                 if ( functionRefs != null )
                 {
@@ -39,22 +38,54 @@ namespace WindowUtility
         }
 
 
-        internal static void CreateTextField( ref string reference, string text = "button", string tooltip = "", int labelWidth = 100, int fieldWidth = 200, int? height = 20 )
+        public static void CreateTextField( ref string reference, string text = "button", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0 )
         {
-            GUILayoutOption heightOption = height.HasValue ? GUILayout.Height( height.Value ) : null;
-
-            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( labelWidth ), heightOption );
-            reference = EditorGUILayout.TextField( new GUIContent( "", tooltip ), reference, GUILayout.Width( fieldWidth ), heightOption );
+            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
+            reference = EditorGUILayout.TextField( new GUIContent( "", tooltip ), reference, SizeOptions( fieldWidth, height ) );
         }
 
-        internal static void CreateToggle( ref bool reference, ref bool referenceTemp, string text = "toggle", string tooltip = "", int labelWidth = 100, int? height = 20 )
+        public static void CreateToggle( ref bool reference, string text = "toggle", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
-            GUILayoutOption heightOption = height.HasValue ? GUILayout.Height( height.Value ) : null;
+            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
+            if ( EditorGUILayout.Toggle( "", reference, GUILayout.MaxWidth( 0 ), HeightOption( height ) ) )
+            {
+                reference = !reference;
+            }
+        }
 
-            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), GUILayout.Width( labelWidth ), heightOption );
-            reference = EditorGUILayout.Toggle( "", reference, GUILayout.MaxWidth( 0 ), heightOption );
+        public static void CreateIntField( ref int reference, string text = "int field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0 )
+        {
+            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
+            reference = EditorGUILayout.IntField( "", reference, SizeOptions( fieldWidth, height ) );
+        }
 
-            if( reference != referenceTemp ) referenceTemp = reference;
+        public static void CreateVector3Field( ref Vector3 reference, string text = "vector3 field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0 )
+        {
+            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
+            reference = EditorGUILayout.Vector3Field( "", reference, SizeOptions( fieldWidth, height ) );
+        }
+
+        public static void CreateTextInfo( string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
+        {
+            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
+        }
+
+
+        private static GUILayoutOption HeightOption( float value )
+        {
+            GUILayoutOption heightOption = value != 0 ? GUILayout.Height( value ) : default( GUILayoutOption );
+
+            return heightOption;
+        }
+
+        private static GUILayoutOption[] SizeOptions( float width, float height )
+        {
+            List< GUILayoutOption > options = new List< GUILayoutOption >();
+
+            if ( width != 0 ) options.Add( GUILayout.Width( width ) );
+            if ( height != 0 ) options.Add( GUILayout.Height( height ) );
+
+            return options.ToArray();
         }
     }
 }

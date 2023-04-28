@@ -334,7 +334,11 @@ namespace CodeViewsWindow
 
                 if ( SendingObjects )
                 {
-                    GUILayout.Label( $"|| {SendedEntityCount} Objects have been sent to the game", EditorStyles.boldLabel );
+                    if ( LiveMap.ApexProcessIsActive() )
+                    {
+                        GUILayout.Label( $"|| Sending {SendedEntityCount} Objects to the game", EditorStyles.boldLabel );
+                    }
+                    else GUILayout.Label( $"|| Game not found !", EditorStyles.boldLabel );
                 }
 
             GUILayout.EndHorizontal();

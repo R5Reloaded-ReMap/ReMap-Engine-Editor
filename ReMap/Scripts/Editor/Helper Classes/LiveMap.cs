@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -13,18 +14,25 @@ namespace CodeViewsWindow
 {
     public static class LiveMap
     {
+        private enum ConfirmationType
+        {
+            ERROR,
+            OPTIMAL
+        }
+
+        public static List< String > Commands;
         public static bool IsSending = false;
         static IntPtr m_hEngine;
 
-        public static int BuildWaitMS = 50;
+        public static int CommandDelay = 50;
 
-        [DllImport("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
+        [ DllImport( "user32.dll" ) ]
+        public static extern int SendMessage( IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam );
 
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [ DllImport( "user32.dll", SetLastError = true ) ]
+        static extern IntPtr FindWindow( string lpClassName, string lpWindowName );
 
-        [StructLayout(LayoutKind.Sequential)]
+        [ StructLayout( LayoutKind.Sequential ) ]
         public struct COPYDATASTRUCT
         {
             public IntPtr dwData;
@@ -34,15 +42,20 @@ namespace CodeViewsWindow
 
         const int WM_COPYDATA = 0x4A;
 
+
         public static IntPtr FindApexWindow()
         { 
             return FindWindow("Respawn001", "Apex Legends"); 
         }
 
+        public static bool ApexProcessIsActive()
+        {
+            return m_hEngine != IntPtr.Zero;
+        }
+
         public static void SendCommandToApex(string command)
         {
-            if(m_hEngine == null)
-                return;
+            if ( !ApexProcessIsActive() ) return;
                 
             string m_pCommand = command;
 
@@ -70,32 +83,48 @@ namespace CodeViewsWindow
             IsSending = true;
             //find and set window once
             m_hEngine = FindApexWindow();
-            if( m_hEngine == null )
+            if ( !ApexProcessIsActive() )
             {
                 IsSending = false;
                 CodeViewsWindow.EnableAutoLiveMapCode = false;
-                UnityInfo.Printt( "Window Not Found" );
+                SendConfirmation( ConfirmationType.ERROR );
                 return;
             }
 
-            SendCommandToApex($"sv_cheats 1");
-            Helper.DelayInMS();
-            SendCommandToApex( $"sv_quota_stringCmdsPerSecond 9999999" );
-            Helper.DelayInMS();
-            SendCommandToApex( $"cl_quota_stringCmdsPerSecond 9999999" );
-            Helper.DelayInMS();
-            SendCommandToApex ($"script MapEditor_RemoveAllEnts()" );
-            Helper.DelayInMS();
+            Commands = new List< string >();
+
+            AddToGameQueue( $"sv_cheats 1" );
+            AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999" );
+            AddToGameQueue( $"cl_quota_stringCmdsPerSecond 9999999" );
+            AddToGameQueue( $"script MapEditor_RemoveAllEnts()" );
 
             CodeViewsWindow.SendedEntityCount = 0;
 
             await Helper.BuildMapCode( Build.BuildType.LiveMap, CodeViewsWindow.EnableSelection );
 
-            SendConfirmed();
-
             if ( CodeViewsWindow.EnableTeleportPlayerToMap ) RespawnPlayers();
 
+            SendConfirmation( ConfirmationType.OPTIMAL );
+
             IsSending = false;
+        }
+
+        public static void AddToGameQueue( string command )
+        {
+            Commands.Add( command );
+        }
+
+        private static void SendCommands()
+        {
+            foreach ( string command in Commands )
+            {
+                SendCommandToApex( command );
+
+                for (int i = 0; i < CommandDelay * 100000; i++) 
+                {
+                    ;;;;;
+                }
+            }
         }
 
         public static async void ReloadLevel( bool reset = false )
@@ -105,7 +134,7 @@ namespace CodeViewsWindow
             bool processFound = false;
             string path = "";
 
-            foreach (Process process in processes)
+            foreach ( Process process in processes )
             {
                 if ( process.ProcessName == processName )
                 {
@@ -114,9 +143,9 @@ namespace CodeViewsWindow
                         path = Path.GetDirectoryName( process.MainModule.FileName );
                         processFound = true;
                     }
-                    catch (System.ComponentModel.Win32Exception)
+                    catch ( System.ComponentModel.Win32Exception )
                     {
-                        UnityInfo.Printt("System.ComponentModel.Win32Exception: Process Not Found");
+                        UnityInfo.Printt( "System.ComponentModel.Win32Exception: Process Not Found" );
                     }
 
                     break;
@@ -140,7 +169,7 @@ namespace CodeViewsWindow
                 if ( !reset ) SendCommandToApex( $"script GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
             }
 
-            if (!processFound)
+            if ( !processFound )
             {
                 UnityEngine.Debug.Log( "Process Not Found" );
             }
@@ -184,12 +213,9 @@ namespace CodeViewsWindow
         {
 
             string[] data = GetLiveMapCodePlayerSpawnData();
-            SendCommandToApex( $"script ReMapSetRemapArrayVec01( {data[0]} )" );
-            Helper.DelayInMS();
-            SendCommandToApex( $"script ReMapSetRemapArrayVec02( {data[1]} )" );
-            Helper.DelayInMS();
-            SendCommandToApex ($"script ReMapTeleportToMap()" );
-            Helper.DelayInMS();
+            AddToGameQueue( $"script ReMapSetRemapArrayVec01( {data[0]} )" );
+            AddToGameQueue( $"script ReMapSetRemapArrayVec02( {data[1]} )" );
+            AddToGameQueue($"script ReMapTeleportToMap()" );
         }
 
         private static string[] GetLiveMapCodePlayerSpawnData()
@@ -219,11 +245,21 @@ namespace CodeViewsWindow
             return new[] { $"[{ origin }]", $"[{ angles }]" };
         }
 
-        private static async void SendConfirmed()
+        private static async void SendConfirmation( ConfirmationType confirmationType )
         {
             CodeViewsWindow.SendingObjects = true;
 
-            await Task.Delay( 1000 * 6 ); // Show the message while 6 seconds
+            switch ( confirmationType )
+            {
+                case ConfirmationType.ERROR:
+                    await Task.Delay( 1000 * 6 ); // Show the message while 6 seconds
+                    break;
+
+                case ConfirmationType.OPTIMAL:
+                    SendCommands();
+                    await Task.Delay( 1000 * 2 ); // Show the message while 2 seconds
+                break;
+            }
 
             CodeViewsWindow.SendingObjects = false;
 

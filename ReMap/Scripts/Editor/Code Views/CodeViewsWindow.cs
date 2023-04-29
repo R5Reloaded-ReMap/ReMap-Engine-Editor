@@ -32,9 +32,13 @@ namespace CodeViewsWindow
         internal static int tabEnt_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
 
+        // Menu bool
+        // Function Menu
+        internal static bool ShowFunction = false;
+
         internal static bool ShowSettings = false;
         internal static bool ShowAdvancedMenu = false;
-        internal static bool ShowFunction = false;
+        
         internal static bool ShowEntFunction = false;
         internal static bool EnableSelection = false;
         internal static bool ShowLiveMenu = false;
@@ -44,6 +48,7 @@ namespace CodeViewsWindow
         internal static bool EnableAutoLiveMapCode = false;
         internal static bool EnableTeleportPlayerToMap = false;
         internal static bool GenerationIsActive = false;
+         
         public static bool SendingObjects = false;
         internal static int EntityCount = 0;
         internal static int SendedEntityCount = 0;

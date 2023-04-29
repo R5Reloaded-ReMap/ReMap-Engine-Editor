@@ -47,7 +47,7 @@ namespace CodeViewsWindow
 
         internal static FunctionRef[] SubLiveCodeTeleportMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.RespawnPlayers(), null, MenuType.SubMenu )
+            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => ReMapTeleportToMap(), null, MenuType.SubMenu )
         };
 
         internal static FunctionRef[] SubLiveCodeAdvancedMenu = new FunctionRef[]
@@ -108,6 +108,13 @@ namespace CodeViewsWindow
             }
 
             return code;
+        }
+
+        private static void ReMapTeleportToMap()
+        {
+            LiveMap.Commands = new List< string >();
+            LiveMap.RespawnPlayers();
+            LiveMap.SendCommands();
         }
     }
 }

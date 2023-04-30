@@ -60,13 +60,6 @@ namespace CodeViewsWindow
         internal static string DevMenuDebugInfo = "DevMenuDebugInfo";
         //
 
-        // Function Menu // TO DELETE
-        internal static bool ShowFunction = false;
-        
-        internal static bool ShowEntFunction = false;
-        internal static bool EnableSelection = false;
-        // TO DELETE
-
         internal static bool GenerationIsActive = false;
 
         public static bool SendingObjects = false;

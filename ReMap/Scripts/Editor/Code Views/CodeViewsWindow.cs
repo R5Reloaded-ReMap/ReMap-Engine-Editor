@@ -32,26 +32,11 @@ namespace CodeViewsWindow
         internal static int tabEnt_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
 
-        // Menu bool
+        // Menus
         // Show / Hide Settings Menu
         internal static bool ShowSettingsMenu = false;
 
-        // Function Menu
-        internal static bool ShowFunctionMenu = false;
-        internal static bool ShowFunction = false;
-        internal static bool ShowAdvancedMenu = false;
-        
-        internal static bool ShowEntFunction = false;
-        internal static bool EnableSelection = false;
-        internal static bool ShowLiveMenu = false;
-        internal static bool ShowSubAdvancedLiveMenu = false;
-        internal static bool ShowDevMenu = false;
-        internal static bool EnableDevInfo = false;
-        internal static bool EnableAutoLiveMapCode = false;
-        internal static bool EnableTeleportPlayerToMap = false;
-        internal static bool GenerationIsActive = false;
-
-        // InDev
+        // Menu Names
         internal static string SquirrelMenu = "SquirrelMenu";
         internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
 
@@ -73,7 +58,16 @@ namespace CodeViewsWindow
 
         internal static string DevMenu = "DevMenu";
         internal static string DevMenuDebugInfo = "DevMenuDebugInfo";
-         
+        //
+
+        // Function Menu // TO DELETE
+        internal static bool ShowFunction = false;
+        
+        internal static bool ShowEntFunction = false;
+        internal static bool EnableSelection = false;
+        // TO DELETE
+
+        internal static bool GenerationIsActive = false;
 
         public static bool SendingObjects = false;
         internal static int EntityCount = 0;

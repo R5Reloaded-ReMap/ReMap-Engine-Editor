@@ -14,9 +14,6 @@ namespace CodeViewsWindow
 
     public class CodeViewsMenu
     {
-        private static int GUI_MenuSize = 297;
-        private static int GUI_SubMenuSize = 274;
-        private static int GUI_SubMenuSpace = 25;
         internal static Color GUI_SettingsColor = new Color( 255f, 255f, 255f );
 
         internal static FunctionRef[] DevMenu = new FunctionRef[]
@@ -138,7 +135,7 @@ namespace CodeViewsWindow
             float fieldSpace = menuType == MenuType.Menu ? 77 : 70;
 
             GUILayout.BeginHorizontal();
-                if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
+                if ( menuType == MenuType.SubMenu ) Space( 25 );
 
                 WindowUtility.WindowUtility.CreateIntField( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
@@ -152,7 +149,7 @@ namespace CodeViewsWindow
             float fieldSpace = menuType == MenuType.Menu ? 210 : 200;
 
             GUILayout.BeginHorizontal();
-                if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
+                if ( menuType == MenuType.SubMenu ) Space( 25 );
 
                 WindowUtility.WindowUtility.CreateVector3Field( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
@@ -165,7 +162,7 @@ namespace CodeViewsWindow
             float space = menuType == MenuType.Menu ? 316 : 289;
 
             GUILayout.BeginHorizontal();
-                if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
+                if ( menuType == MenuType.SubMenu ) Space( 25 );
                 WindowUtility.WindowUtility.CreateTextInfo( text, tooltip, space );
             GUILayout.EndHorizontal();
         }
@@ -180,7 +177,7 @@ namespace CodeViewsWindow
             int space = menuType == MenuType.Menu ? 314 : 292;
 
             GUILayout.BeginHorizontal();
-                if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
+                if ( menuType == MenuType.SubMenu ) Space( 25 );
 
                 WindowUtility.WindowUtility.CreateButton( text, tooltip, functionRef, space, 20 );
             GUILayout.EndHorizontal();

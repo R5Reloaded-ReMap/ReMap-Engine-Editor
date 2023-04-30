@@ -102,7 +102,7 @@ namespace CodeViewsWindow
 
             await Helper.BuildMapCode( Build.BuildType.LiveMap, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
 
-            if ( CodeViewsWindow.EnableTeleportPlayerToMap ) RespawnPlayers();
+            if ( MenuInit.IsEnable( CodeViewsWindow.LiveCodeMenuTeleportation ) ) RespawnPlayers();
 
             SendConfirmation( ConfirmationType.OPTIMAL );
 

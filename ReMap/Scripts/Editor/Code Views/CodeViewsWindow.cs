@@ -33,10 +33,12 @@ namespace CodeViewsWindow
         internal static Vector3 StartingOffset = Vector3.zero;
 
         // Menu bool
-        // Function Menu
-        internal static bool ShowFunction = false;
+        // Show / Hide Settings Menu
+        internal static bool ShowSettingsMenu = false;
 
-        internal static bool ShowSettings = false;
+        // Function Menu
+        internal static bool ShowFunctionMenu = false;
+        internal static bool ShowFunction = false;
         internal static bool ShowAdvancedMenu = false;
         
         internal static bool ShowEntFunction = false;
@@ -48,6 +50,9 @@ namespace CodeViewsWindow
         internal static bool EnableAutoLiveMapCode = false;
         internal static bool EnableTeleportPlayerToMap = false;
         internal static bool GenerationIsActive = false;
+
+        internal static string SquirrelMenu = "SquirrelMenu";
+        internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
          
         public static bool SendingObjects = false;
         internal static int EntityCount = 0;
@@ -110,9 +115,9 @@ namespace CodeViewsWindow
 
                     CodeOutput();
                     
-                    if ( ShowSettings )
+                    if ( ShowSettingsMenu )
                     {
-                        GUILayout.BeginVertical( "box", GUILayout.Width( 332 ) );
+                        GUILayout.BeginVertical( "box", GUILayout.Width( 340 ) );
                             SettingsMenu();
                         GUILayout.EndVertical();
                     }
@@ -356,7 +361,7 @@ namespace CodeViewsWindow
 
         private static void SettingsMenuButton( string text = "Settings", string tooltip = "Show settings" )
         {
-            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 100 ) ) ) ShowSettings = !ShowSettings;
+            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 100 ) ) ) ShowSettingsMenu = !ShowSettingsMenu;
         }
 
         private static void CodeOutput()

@@ -19,7 +19,12 @@ namespace CodeViewsWindow
 
         static FunctionRef[] SquirrelMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function" )
+            () => CodeViewsMenu.Internal_CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.SubMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true )
+        };
+
+        static FunctionRef[] SquirrelFunction = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.SubMenu )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
@@ -61,17 +66,19 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsMenu.CreateMenu( SquirrelMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", ref CodeViewsWindow.ShowFunction );
+            CodeViewsMenu.Internal_CreateMenu( CodeViewsWindow.SquirrelMenu, SquirrelMenu, MenuType.Menu, "Function Menu", "Function Menu", "" );
 
-            CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
+            //CodeViewsMenu.CreateMenu( SquirrelMenu, "Function Menu", "Function Menu", "", ref CodeViewsWindow.ShowFunctionMenu );
 
-            CodeViewsMenu.CreateMenu( CodeViewsMenu.SubEmptyMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            //CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
 
-            CodeViewsMenu.CreateMenu( LiveCode, "Hide Live Generation", "Show Live Generation", "Allows you to send commands to\nspawn prop if your game is open", ref CodeViewsWindow.ShowLiveMenu );
+            //CodeViewsMenu.CreateMenu( CodeViewsMenu.SubEmptyMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
 
-            CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
+            //CodeViewsMenu.CreateMenu( LiveCode, "Hide Live Generation", "Show Live Generation", "Allows you to send commands to\nspawn prop if your game is open", ref CodeViewsWindow.ShowLiveMenu );
 
-            CodeViewsMenu.SharedFunctions();
+            //CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
+
+            //CodeViewsMenu.SharedFunctions();
 
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
@@ -103,9 +110,7 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 
-            if ( CodeViewsWindow.EnableAutoLiveMapCode ){
-                LiveMap.Send();
-            }
+            if ( CodeViewsWindow.EnableAutoLiveMapCode ) LiveMap.Send();
 
             return code;
         }

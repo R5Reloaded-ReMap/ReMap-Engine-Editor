@@ -114,13 +114,13 @@ namespace CodeViewsWindow
             Commands.Add( command );
         }
 
-        private static void SendCommands()
+        public static void SendCommands()
         {
             foreach ( string command in Commands )
             {
                 SendCommandToApex( command );
 
-                for (int i = 0; i < commandDelay * 100000; i++) 
+                for ( int i = 0; i < commandDelay * 100000; i++ ) 
                 {
                     ;;;;;
                 }

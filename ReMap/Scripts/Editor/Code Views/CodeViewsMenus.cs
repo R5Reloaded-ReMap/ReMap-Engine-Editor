@@ -1,10 +1,12 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
 using WindowUtility;
 
 namespace CodeViewsWindow
 {
-    internal enum MenuType
+    public enum MenuType
     {
         Menu,
         SubMenu
@@ -14,7 +16,7 @@ namespace CodeViewsWindow
     {
         private static int GUI_MenuSize = 297;
         private static int GUI_SubMenuSize = 274;
-        private static int GUI_SubMenuSpace = 26;
+        private static int GUI_SubMenuSpace = 25;
         internal static Color GUI_SettingsColor = new Color( 255f, 255f, 255f );
 
         internal static FunctionRef[] DevMenu = new FunctionRef[]
@@ -23,8 +25,6 @@ namespace CodeViewsWindow
         };
 
         internal static FunctionRef[] SubEmptyMenu = new FunctionRef[0];
-
-        //internal static FunctionRef[] EnablePushMapCode = new FunctionRef[1];
 
         internal static void SharedFunctions()
         {
@@ -61,7 +61,7 @@ namespace CodeViewsWindow
             if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 ) ) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( buttonWidth ) ) )
             {
                 value = !value;
-                CodeViewsWindow.Refresh();
+                if ( menuType == MenuType.SubMenu ) CodeViewsWindow.Refresh();
             }
             GUILayout.EndHorizontal();
 
@@ -69,8 +69,53 @@ namespace CodeViewsWindow
             {
                 SubFunctionInit( functionRefs, value );
             } else FunctionInit( functionRefs, value );
+        }
 
-            
+        internal static MenuInit Internal_CreateMenu( string name, FunctionRef[] functionRef, MenuType menuType, string trueText, string falseText, string tooltip, bool refresh = false )
+        {
+            MenuInit menu;
+
+            if ( MenuInit.Exist( name ) )
+            {
+                menu = MenuInit.Find( name );
+                menu.Content = functionRef; 
+            }
+            else menu = new MenuInit( name, functionRef, menuType );
+
+            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
+
+            GUIContent buttonContent = new GUIContent( menu.IsOpen ? trueText : falseText, tooltip );
+            GUIContent buttonContentInfo = new GUIContent( menu.IsOpen ? CodeViewsWindow.enableLogo : CodeViewsWindow.disableLogo, tooltip );
+
+            GUILayout.BeginHorizontal();
+
+            Space( menu.Space );
+
+            if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 ) ) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( menu.Width ) ) )
+            {
+                menu.IsOpen = !menu.IsOpen;
+
+                if ( refresh ) CodeViewsWindow.Refresh();
+            }
+            GUILayout.EndHorizontal();
+
+            Internal_FunctionInit( menu );
+
+            return menu;
+        }
+
+        internal static void Internal_FunctionInit( MenuInit menu )
+        {
+            if ( menu.Content.Length != 0 && menu.IsOpen )
+            {
+                CallFunctions( menu.Content );
+
+                if ( menu.MenuType == MenuType.SubMenu ) GUILayout.BeginHorizontal();
+                Space( menu.Space ); Separator( menu.SeparatorWidth );
+                if ( menu.MenuType == MenuType.SubMenu ) GUILayout.EndHorizontal();
+            }
+            else Space( 10 );
         }
 
         internal static void FunctionInit( FunctionRef[] functionRefs, bool value )
@@ -116,7 +161,7 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float labelSpace = menuType == MenuType.Menu ? 96 : 94;
+            float labelSpace = menuType == MenuType.Menu ? 96 : 89;
             float fieldSpace = menuType == MenuType.Menu ? 220 : 200;
 
             GUILayout.BeginHorizontal();
@@ -249,12 +294,76 @@ namespace CodeViewsWindow
             GUILayout.Box( "", GUILayout.Width( space ), GUILayout.Height( 4 ) );
             GUI.backgroundColor = Color.white;
         }
+    }
 
-        //  ██████╗ ███████╗██╗   ██╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗
-        //  ██╔══██╗██╔════╝██║   ██║    ████╗ ████║██╔════╝████╗  ██║██║   ██║
-        //  ██║  ██║█████╗  ██║   ██║    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
-        //  ██║  ██║██╔══╝  ╚██╗ ██╔╝    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
-        //  ██████╔╝███████╗ ╚████╔╝     ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
-        //  ╚═════╝ ╚══════╝  ╚═══╝      ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ 
+    public class MenuInit
+    {
+        public static List < MenuInit > MenuArray = new List< MenuInit >();
+        public string Name { get; set; }
+        public bool IsOpen { get; set; }
+        public FunctionRef[] Content { get; set; }
+        public MenuType MenuType { get; set; }
+
+        public int Space { get; set; }
+        public int Width { get; set; }
+        public int SeparatorWidth { get; set; }
+
+        public MenuInit( string name, FunctionRef[] functionRef, MenuType menuType )
+        {
+            if ( Exist( name ) ) return;
+
+            Name = name;
+            IsOpen = false;
+            Content = functionRef;
+            MenuType = menuType;
+
+            switch ( menuType )
+            {
+                case MenuType.Menu:
+                    Space = 2;
+                    Width = 292;
+                    SeparatorWidth = 312;
+                    break;                
+                case MenuType.SubMenu:
+                    Space = 25;
+                    Width = 269;
+                    SeparatorWidth = 289;
+                break;
+            }
+
+            MenuArray.Add( this );
+        }
+
+        public static bool Exist( string name )
+        {
+            foreach ( MenuInit menu in MenuArray )
+            {
+                if ( menu.Name == name ) return true;
+            }
+
+            return false;
+        }
+
+        public static MenuInit Find( string name )
+        {
+            foreach ( MenuInit menu in MenuArray )
+            {
+                if ( menu.Name == name ) return menu;
+            }
+
+            return null;
+        }
+
+        public static bool IsEnable( string name )
+        {
+            MenuInit menu = Find( name );
+
+            if ( menu != null )
+            {
+                return menu.IsOpen;
+            }
+
+            return false;
+        }
     }
 }

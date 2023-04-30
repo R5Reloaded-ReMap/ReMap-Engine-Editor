@@ -569,18 +569,6 @@ public class Helper
         return $"{SceneManager.GetActiveScene().name.Replace(" ", "_")}";
     }
 
-    public static void DelayInMS( int ms = 50 ) // Stops the code for milliseconds and then resumes it (Basically It's delay)
-    {
-        for (int i = 0; i < ms * 100000; i++) 
-        {
-            ;
-            ;
-            ;
-            ;
-            ;
-        }
-    }
-
     public static string ReMapCredit( bool noSpace = false )
     {
         string credit = "";

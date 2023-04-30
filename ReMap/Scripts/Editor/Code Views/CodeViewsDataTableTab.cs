@@ -17,19 +17,22 @@ namespace CodeViewsWindow
     {
         static FunctionRef[] OffsetMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"" )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.SubMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
         };
 
-        static FunctionRef[] SelectionMenu = new FunctionRef[0];
+        static FunctionRef[] OffsetSubMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.SubMenu )
+        };
 
         internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            //CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Menu, "Offset Menu", "Offset Menu", "" );
 
-            //CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.SelectionMenu, CodeViewsMenu.SubEmptyMenu, MenuType.Menu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true );
 
             CodeViewsMenu.SharedFunctions();
             

@@ -33,6 +33,11 @@ namespace CodeViewsWindow
             #endif
         }
 
+        internal static void SelectionMenu()
+        {
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.SelectionMenu, CodeViewsMenu.SubEmptyMenu, MenuType.Menu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true );
+        }
+
         internal static MenuInit CreateMenu( string name, FunctionRef[] functionRef, MenuType menuType = MenuType.Menu, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false )
         {
             MenuInit menu;
@@ -129,7 +134,7 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float labelSpace = menuType == MenuType.Menu ? 240 : 224;
+            float labelSpace = menuType == MenuType.Menu ? 240 : 219;
             float fieldSpace = menuType == MenuType.Menu ? 77 : 70;
 
             GUILayout.BeginHorizontal();
@@ -157,7 +162,7 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float space = menuType == MenuType.Menu ? 316 : 286;
+            float space = menuType == MenuType.Menu ? 316 : 289;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );

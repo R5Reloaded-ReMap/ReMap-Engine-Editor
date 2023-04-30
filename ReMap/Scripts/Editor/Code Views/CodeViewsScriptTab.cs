@@ -71,7 +71,7 @@ namespace CodeViewsWindow
 
             CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Menu, "Offset Menu", "Offset Menu", "" );
 
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.SelectionMenu, CodeViewsMenu.SubEmptyMenu, MenuType.Menu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true );
+            CodeViewsMenu.SelectionMenu();
 
             CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenu, LiveCodeMenu, MenuType.Menu, "Live Generation", "Live Generation", "Allows you to send commands to\nspawn prop if your game is open" );
 

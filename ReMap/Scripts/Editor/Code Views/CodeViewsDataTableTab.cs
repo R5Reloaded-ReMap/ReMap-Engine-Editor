@@ -32,7 +32,7 @@ namespace CodeViewsWindow
 
             CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Menu, "Offset Menu", "Offset Menu", "" );
 
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.SelectionMenu, CodeViewsMenu.SubEmptyMenu, MenuType.Menu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true );
+            CodeViewsMenu.SelectionMenu();
 
             CodeViewsMenu.SharedFunctions();
             

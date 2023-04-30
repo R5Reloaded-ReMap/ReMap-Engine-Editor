@@ -15,21 +15,29 @@ namespace CodeViewsWindow
 {
     public class ScriptEntTab
     {
+        static FunctionRef[] FullFileMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.FullFileEntSubMenu, EntMenu, MenuType.SubMenu, "Hide Full File", "Show Full File", "If true, display the code as ent file", true )
+        };
+
         static FunctionRef[] EntMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "File Name", "Change the name of the file" ),
-            () => CodeViewsMenu.OptionalIntField( ref CodeViewsWindow.EntFileID, "Ent ID", "Set the map ID" ),
-            () => CodeViewsMenu.OptionalTextInfo( "Info Player Start", "Settings of where to spawn the player" ),
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartOrigin, "- Origin", "Set origin to \"Info Player Start\"" ),
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartAngles, "- Angles", "Set angles to \"Info Player Start\"" )
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "File Name", "Change the name of the file", null, MenuType.SubMenu ),
+            () => CodeViewsMenu.OptionalIntField( ref CodeViewsWindow.EntFileID, "Ent ID", "Set the map ID", null, MenuType.SubMenu ),
+            () => CodeViewsMenu.OptionalTextInfo( "Info Player Start", "Settings of where to spawn the player", null, MenuType.SubMenu ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartOrigin, "- Origin", "Set origin to \"Info Player Start\"", null, MenuType.SubMenu ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartAngles, "- Angles", "Set angles to \"Info Player Start\"", null, MenuType.SubMenu )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"" )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.SubMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
         };
 
-        static FunctionRef[] SelectionMenu = new FunctionRef[0];
+        static FunctionRef[] OffsetSubMenu = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.SubMenu )
+        };
 
         static FunctionRef[] AdvancedMenu = new FunctionRef[]
         {
@@ -41,13 +49,13 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            //CodeViewsMenu.CreateMenu( EntMenu, "Hide Full File", "Show Full File", "If true, display the code as ent file", ref CodeViewsWindow.ShowEntFunction );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.FullFileEntMenu, FullFileMenu, MenuType.Menu, "Full File", "Full File", "" );
 
-            //CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Menu, "Offset Menu", "Offset Menu", "" );
 
-            //CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            CodeViewsMenu.SelectionMenu();
 
-            //CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.AdvancedMenu, AdvancedMenu, MenuType.Menu, "Advanced Options", "Advanced Options", "Choose the objects you want to\ngenerate or not" );
 
             CodeViewsMenu.SharedFunctions();
             
@@ -62,7 +70,7 @@ namespace CodeViewsWindow
             Vector3 IPSAngles = CodeViewsWindow.InfoPlayerStartAngles;
             Vector3 IPSOrigin = CodeViewsWindow.InfoPlayerStartOrigin;
 
-            if ( CodeViewsWindow.ShowEntFunction )
+            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) )
             {
                 code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n";
                 code +=  "{\n";
@@ -91,7 +99,7 @@ namespace CodeViewsWindow
 
             code += await Helper.BuildMapCode( BuildType.EntFile, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
 
-            if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
+            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) code += "\u0000";
 
             return code;
         }

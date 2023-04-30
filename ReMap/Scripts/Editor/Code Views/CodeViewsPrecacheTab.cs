@@ -27,9 +27,9 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsMenu.CreateMenu( SquirrelMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", ref CodeViewsWindow.ShowFunction );
+            //CodeViewsMenu.CreateMenu( SquirrelMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", ref CodeViewsWindow.ShowFunction );
 
-            CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            //CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
 
             CodeViewsMenu.SharedFunctions();
             
@@ -50,7 +50,7 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
 
-            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.EnableSelection );
+            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
 
             if ( CodeViewsWindow.ShowFunction ) code += "}";
 

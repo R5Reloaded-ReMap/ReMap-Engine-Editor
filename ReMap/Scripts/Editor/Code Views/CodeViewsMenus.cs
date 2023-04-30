@@ -21,7 +21,7 @@ namespace CodeViewsWindow
 
         internal static FunctionRef[] DevMenu = new FunctionRef[]
         {
-            () => CreateSubMenu( SubEmptyMenu, "Hide Debug Info", "Show Debug Info", "Get infos from current window", ref CodeViewsWindow.EnableDevInfo )
+            () => CreateMenu( CodeViewsWindow.DevMenuDebugInfo, SubEmptyMenu, MenuType.SubMenu, "Hide Debug Info", "Show Debug Info", "Get infos from current window" )
         };
 
         internal static FunctionRef[] SubEmptyMenu = new FunctionRef[0];
@@ -29,49 +29,11 @@ namespace CodeViewsWindow
         internal static void SharedFunctions()
         {
             #if ReMapDev
-            CreateMenu( DevMenu, "Dev Menu", "Dev Menu", "", ref CodeViewsWindow.ShowDevMenu );
+                CreateMenu( CodeViewsWindow.DevMenu, DevMenu, MenuType.Menu, "Dev Menu", "Dev Menu", "" );
             #endif
         }
 
-
-        internal static void CreateMenu( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value )
-        {
-            Internal_CreateButton( functionRefs, trueText, falseText, tooltip, ref value, MenuType.Menu, GUI_MenuSize );
-        }
-
-        internal static void CreateSubMenu( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value )
-        {
-            Internal_CreateButton( functionRefs, trueText, falseText, tooltip, ref value, MenuType.SubMenu, GUI_SubMenuSize );
-        }
-
-        internal static void Internal_CreateButton( FunctionRef[] functionRefs, string trueText, string falseText, string tooltip, ref bool value, MenuType menuType, int buttonWidth )
-        {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-            buttonStyle.alignment = TextAnchor.MiddleCenter;
-
-            GUIContent buttonContent = new GUIContent( value ? trueText : falseText, tooltip );
-            GUIContent buttonContentInfo = new GUIContent( value ? CodeViewsWindow.enableLogo : CodeViewsWindow.disableLogo, tooltip );
-
-            GUILayout.BeginHorizontal();
-            if ( menuType == MenuType.SubMenu )
-            {
-                Space( GUI_SubMenuSpace );
-            }
-
-            if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 ) ) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( buttonWidth ) ) )
-            {
-                value = !value;
-                if ( menuType == MenuType.SubMenu ) CodeViewsWindow.Refresh();
-            }
-            GUILayout.EndHorizontal();
-
-            if ( menuType == MenuType.SubMenu )
-            {
-                SubFunctionInit( functionRefs, value );
-            } else FunctionInit( functionRefs, value );
-        }
-
-        internal static MenuInit Internal_CreateMenu( string name, FunctionRef[] functionRef, MenuType menuType, string trueText, string falseText, string tooltip, bool refresh = false )
+        internal static MenuInit CreateMenu( string name, FunctionRef[] functionRef, MenuType menuType = MenuType.Menu, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false )
         {
             MenuInit menu;
 
@@ -115,30 +77,7 @@ namespace CodeViewsWindow
                 Space( menu.Space ); Separator( menu.SeparatorWidth );
                 if ( menu.MenuType == MenuType.SubMenu ) GUILayout.EndHorizontal();
             }
-            else Space( 10 );
-        }
-
-        internal static void FunctionInit( FunctionRef[] functionRefs, bool value )
-        {
-            if ( functionRefs.Length != 0 && value )
-            {
-                CallFunctions( functionRefs );
-
-                Space( 6 ); Separator( 318 );
-            }
-            else Space( 10 );
-        }
-
-        internal static void SubFunctionInit( FunctionRef[] functionRefs, bool value )
-        {
-            if ( functionRefs.Length != 0 && value )
-            {
-                CallFunctions( functionRefs );
-
-                GUILayout.BeginHorizontal();
-                Space( GUI_SubMenuSpace ); Separator( 296 );
-                GUILayout.EndHorizontal();
-            }
+            else if ( menu.MenuType == MenuType.Menu ) Space( 10 );
         }
 
         internal static void CallFunctions( FunctionRef[] functionRefs )
@@ -161,11 +100,12 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
+            float space = menuType == MenuType.Menu ? 2 : 25;
             float labelSpace = menuType == MenuType.Menu ? 96 : 89;
             float fieldSpace = menuType == MenuType.Menu ? 220 : 200;
 
             GUILayout.BeginHorizontal();
-                if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
+                Space( space );
 
                 WindowUtility.WindowUtility.CreateTextField( ref reference, text, tooltip, labelSpace, fieldSpace );
             GUILayout.EndHorizontal();
@@ -175,12 +115,13 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float space = menuType == MenuType.Menu ? 302 : 279;
+            float space = menuType == MenuType.Menu ? 2 : 25;
+            float labelSpace = menuType == MenuType.Menu ? 302 : 279;
 
             GUILayout.BeginHorizontal();
-                if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
+                Space( space );
 
-                WindowUtility.WindowUtility.CreateToggle( ref reference, text, tooltip, space );
+                WindowUtility.WindowUtility.CreateToggle( ref reference, text, tooltip, labelSpace );
             GUILayout.EndHorizontal();
         }
 
@@ -202,8 +143,8 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float labelSpace = menuType == MenuType.Menu ? 107 : 98;
-            float fieldSpace = menuType == MenuType.Menu ? 210 : 196;
+            float labelSpace = menuType == MenuType.Menu ? 107 : 89;
+            float fieldSpace = menuType == MenuType.Menu ? 210 : 200;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
@@ -231,7 +172,7 @@ namespace CodeViewsWindow
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            int space = menuType == MenuType.Menu ? 320 : 297;
+            int space = menuType == MenuType.Menu ? 314 : 292;
 
             GUILayout.BeginHorizontal();
                 if ( menuType == MenuType.SubMenu ) Space( GUI_SubMenuSpace );
@@ -247,11 +188,9 @@ namespace CodeViewsWindow
 
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
-                    WindowUtility.WindowUtility.CreateButton( "Check All", "", () => CheckOptionalAdvancedOption( true ), 158 );
+                    WindowUtility.WindowUtility.CreateButton( "Check All", "", () => CheckOptionalAdvancedOption( true ), 156 );
 
-                    Space( 1 );
-
-                    WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 158 );
+                    WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 156 );
                 GUILayout.EndHorizontal();
 
                 foreach ( string key in CodeViewsWindow.GenerateObjectsFunction.Keys )
@@ -264,7 +203,7 @@ namespace CodeViewsWindow
                     Space( 4 );
 
                     GUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField( new GUIContent( $"Build {key}", CodeViewsWindow.GenerateObjectsFunctionTemp[key] ? $"Disable {key}" : $"Enable {key}" ), GUILayout.Width( 302 ) );
+                        EditorGUILayout.LabelField( new GUIContent( $"Build {key}", CodeViewsWindow.GenerateObjectsFunctionTemp[key] ? $"Disable {key}" : $"Enable {key}" ), GUILayout.Width( 296 ) );
                         CodeViewsWindow.GenerateObjectsFunctionTemp[key] = EditorGUILayout.Toggle( "", CodeViewsWindow.GenerateObjectsFunctionTemp[key], GUILayout.MaxWidth( 0 ) );
                     GUILayout.EndHorizontal();
 
@@ -327,7 +266,7 @@ namespace CodeViewsWindow
                 case MenuType.SubMenu:
                     Space = 25;
                     Width = 269;
-                    SeparatorWidth = 289;
+                    SeparatorWidth = 291;
                 break;
             }
 
@@ -364,6 +303,16 @@ namespace CodeViewsWindow
             }
 
             return false;
+        }
+
+        public static void SetBool( string name, bool value )
+        {
+            MenuInit menu = Find( name );
+
+            if ( menu != null )
+            {
+                menu.IsOpen = value;
+            }
         }
     }
 }

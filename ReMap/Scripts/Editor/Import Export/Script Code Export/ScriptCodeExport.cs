@@ -51,7 +51,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunction = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.EnableSelection = false;
-            Helper.UseStartingOffset = true;
+            Helper.SetUseStartingOffset( true );
 
             CodeViewsWindow.Refresh();
 
@@ -76,7 +76,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunction = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.EnableSelection = false;
-            Helper.UseStartingOffset = false;
+            Helper.SetUseStartingOffset( false );
 
             CodeViewsWindow.Refresh();
 
@@ -101,7 +101,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.EnableSelection = false;
-            Helper.UseStartingOffset = true;
+            Helper.SetUseStartingOffset( true );
 
             CodeViewsWindow.Refresh();
 
@@ -126,7 +126,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.EnableSelection = false;
-            Helper.UseStartingOffset = false;
+            Helper.SetUseStartingOffset( false );
 
             CodeViewsWindow.Refresh();
 
@@ -151,7 +151,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunction = false;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.EnableSelection = false;
-            Helper.UseStartingOffset = false;
+            Helper.SetUseStartingOffset( false );
 
             CodeViewsWindow.Refresh();
 
@@ -176,7 +176,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowFunction = true;
             CodeViewsWindow.ShowEntFunction = false;
             CodeViewsWindow.EnableSelection = false;
-            Helper.UseStartingOffset = false;
+            Helper.SetUseStartingOffset( false );
 
             CodeViewsWindow.Refresh();
 
@@ -202,7 +202,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.EnableSelection = false;
             CodeViewsWindow.EntFileID = 27;
-            Helper.UseStartingOffset = false;
+            Helper.SetUseStartingOffset( false );
 
             CodeViewsWindow.Refresh();
 
@@ -228,7 +228,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.EnableSelection = false;
             CodeViewsWindow.EntFileID = 27;
-            Helper.UseStartingOffset = false;
+            Helper.SetUseStartingOffset( false );
 
             CodeViewsWindow.Refresh();
 
@@ -254,7 +254,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowEntFunction = true;
             CodeViewsWindow.EnableSelection = false;
             CodeViewsWindow.EntFileID = 27;
-            Helper.UseStartingOffset = false;
+            Helper.SetUseStartingOffset( false );
 
             CodeViewsWindow.Refresh();
 
@@ -282,7 +282,7 @@ namespace CodeViewsWindow
             //CodeViewsWindow.ShowEntFunctionTemp = 
             //CodeViewsWindow.EnableSelection = false;
             //CodeViewsWindow.EntFileID = 27;
-            Helper.UseStartingOffset = 
+            Helper.SetUseStartingOffset(  );
 
             CodeViewsWindow.Refresh();
 
@@ -306,7 +306,7 @@ namespace CodeViewsWindow
             ShowEntFunction = CodeViewsWindow.ShowEntFunction;
             EnableSelection = CodeViewsWindow.EnableSelection;
             EntFileID = CodeViewsWindow.EntFileID;
-            HelperUseStartingOffset = Helper.UseStartingOffset;
+            HelperUseStartingOffset = Helper.UseStartingOffset();
         }
 
         internal static void SetCodeViewsWindowValue()
@@ -323,7 +323,7 @@ namespace CodeViewsWindow
             CodeViewsWindow.ShowEntFunction = ShowEntFunction;
             CodeViewsWindow.EnableSelection = EnableSelection;
             CodeViewsWindow.EntFileID = EntFileID;
-            Helper.UseStartingOffset = HelperUseStartingOffset;
+            Helper.SetUseStartingOffset( HelperUseStartingOffset );
 
             CodeViewsWindow.Refresh();
         }

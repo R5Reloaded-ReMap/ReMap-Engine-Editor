@@ -41,13 +41,13 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsMenu.CreateMenu( EntMenu, "Hide Full File", "Show Full File", "If true, display the code as ent file", ref CodeViewsWindow.ShowEntFunction );
+            //CodeViewsMenu.CreateMenu( EntMenu, "Hide Full File", "Show Full File", "If true, display the code as ent file", ref CodeViewsWindow.ShowEntFunction );
 
-            CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
+            //CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
 
-            CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            //CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
 
-            CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
+            //CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
 
             CodeViewsMenu.SharedFunctions();
             
@@ -89,7 +89,7 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( showOnly, true );
 
-            code += await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.EnableSelection );
+            code += await Helper.BuildMapCode( BuildType.EntFile, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
 
             if ( CodeViewsWindow.ShowEntFunction ) code += "\u0000";
 

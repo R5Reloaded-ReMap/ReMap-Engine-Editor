@@ -27,9 +27,9 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
+            //CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
 
-            CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            //CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
 
             CodeViewsMenu.SharedFunctions();
             
@@ -43,7 +43,7 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
 
-            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.EnableSelection );
+            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
 
             return code;
         }

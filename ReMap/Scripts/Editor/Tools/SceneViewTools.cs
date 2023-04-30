@@ -40,8 +40,8 @@
     {
         Helper.FixPropTags();
 
-        Helper.UseStartingOffset = false;
-        Helper.ShowStartingOffset = false;
+        Helper.SetUseStartingOffset( false );
+        Helper.SetShowStartingOffset( false );
 
         string mapcode = "";
         if(onlyMapCode)

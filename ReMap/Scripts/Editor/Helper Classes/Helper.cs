@@ -60,8 +60,6 @@ public enum ObjectType
 public class Helper
 {
     public static int maxBuildLength = 75000;
-    public static bool UseStartingOffset = false;
-    public static bool ShowStartingOffset = true;
 
     private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new Dictionary< ObjectType, ObjectTypeData >
     {
@@ -100,6 +98,24 @@ public class Helper
         MapOnly
     }
 
+    public static bool UseStartingOffset()
+    {
+        return CodeViewsWindow.MenuInit.IsEnable( CodeViewsWindow.CodeViewsWindow.OffsetMenuOffset );
+    }
+    public static bool ShowStartingOffset()
+    {
+        return CodeViewsWindow.MenuInit.IsEnable( CodeViewsWindow.CodeViewsWindow.OffsetMenuShowOffset );
+    }
+
+    public static void SetUseStartingOffset( bool value )
+    {
+        CodeViewsWindow.MenuInit.SetBool( CodeViewsWindow.CodeViewsWindow.OffsetMenuOffset, value );
+    }
+    public static void SetShowStartingOffset( bool value )
+    {
+        CodeViewsWindow.MenuInit.SetBool( CodeViewsWindow.CodeViewsWindow.OffsetMenuShowOffset, value );
+    }
+
     public struct NewDataTable {
         public string Type;
         public Vector3 Origin;
@@ -124,12 +140,12 @@ public class Helper
         switch ( type )
         {
             case StartingOriginType.SquirrelFunction:
-                if ( UseStartingOffset && ShowStartingOffset )
+                if ( UseStartingOffset() && ShowStartingOffset() )
                 return $"    //Starting Origin, Change this to a origin in a map \n    vector startingorg = {vector}" + "\n\n";
                 break;
 
             case StartingOriginType.Function:
-                if ( UseStartingOffset )
+                if ( UseStartingOffset() )
                 return " + startingorg";
                 break;
 
@@ -208,9 +224,9 @@ public class Helper
     /// <returns></returns>
     public static string BuildOrigin( GameObject go, bool isEntFile = false, bool returnWithOffset = false )
     {
-        float xOffset = UseStartingOffset && returnWithOffset ? StartingOffset.x : 0;
-        float yOffset = UseStartingOffset && returnWithOffset ? StartingOffset.y : 0;
-        float zOffset = UseStartingOffset && returnWithOffset ? StartingOffset.z : 0;
+        float xOffset = UseStartingOffset() && returnWithOffset ? StartingOffset.x : 0;
+        float yOffset = UseStartingOffset() && returnWithOffset ? StartingOffset.y : 0;
+        float zOffset = UseStartingOffset() && returnWithOffset ? StartingOffset.z : 0;
 
         string x = (-go.transform.position.z + xOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
         string y = (go.transform.position.x + yOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
@@ -231,9 +247,9 @@ public class Helper
     /// <returns></returns>
     public static string BuildOriginVector( Vector3 vec, bool isEntFile = false, bool returnWithOffset = false )
     {
-        float xOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.x;
-        float yOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.y;
-        float zOffset = UseStartingOffset && returnWithOffset ? 0 : StartingOffset.z;
+        float xOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.x;
+        float yOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.y;
+        float zOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.z;
 
         string x = (-vec.z + xOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
         string y = (vec.x + yOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );

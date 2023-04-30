@@ -51,9 +51,27 @@ namespace CodeViewsWindow
         internal static bool EnableTeleportPlayerToMap = false;
         internal static bool GenerationIsActive = false;
 
+        // InDev
         internal static string SquirrelMenu = "SquirrelMenu";
         internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
+
+        internal static string OffsetMenu = "OffsetMenu";
+        internal static string OffsetMenuOffset = "OffsetMenuOffset";
+        internal static string OffsetMenuShowOffset = "OffsetMenuShowOffset";
+
+        internal static string SelectionMenu = "SelectionMenu";
+
+        internal static string LiveCodeMenu = "LiveCodeMenu";
+        internal static string LiveCodeMenuTeleportation = "LiveCodeMenuTeleportation";
+        internal static string LiveCodeMenuAutoSend = "LiveCodeMenuAutoSend";
+        internal static string LiveCodeMenuAdvanced = "LiveCodeMenuAdvanced";
+
+        internal static string AdvancedMenu = "AdvancedMenu";
+
+        internal static string DevMenu = "DevMenu";
+        internal static string DevMenuDebugInfo = "DevMenuDebugInfo";
          
+
         public static bool SendingObjects = false;
         internal static int EntityCount = 0;
         internal static int SendedEntityCount = 0;
@@ -83,6 +101,8 @@ namespace CodeViewsWindow
             windowInstance.minSize = new Vector2( 1230, 500 );
             windowInstance.Show();
             GetFunctionName();
+
+            Helper.SetShowStartingOffset( true );
         }
 
         void OnEnable()
@@ -132,7 +152,7 @@ namespace CodeViewsWindow
         {
             // Ensure the objectData is not empty
             GameObject[] objectData;
-            if ( EnableSelection )
+            if ( MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) )
                 objectData = Helper.GetSelectedObjectWithEnum( objectType );
             else objectData = Helper.GetObjArrayWithEnum( objectType );
 
@@ -276,7 +296,7 @@ namespace CodeViewsWindow
                 GUILayout.BeginHorizontal();
                         ObjectCount();
 
-                        if ( EnableDevInfo )
+                        if ( MenuInit.IsEnable( CodeViewsWindow.DevMenuDebugInfo ) )
                         {
                             CodeViewsMenu.Space( 10 );
                             GUILayout.Label( $"Window Size: {CodeViewsWindow.windowSize.x} x {CodeViewsWindow.windowSize.y}" );

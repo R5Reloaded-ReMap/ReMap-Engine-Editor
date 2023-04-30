@@ -19,17 +19,23 @@ namespace CodeViewsWindow
 
         static FunctionRef[] SquirrelMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function" )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.SubMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true )
+        };
+
+        static FunctionRef[] SquirrelFunction = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.SubMenu )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.CreateSubMenu( OffsetSubMenu, "Hide Origin Offset", "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"", ref Helper.ShowStartingOffset )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.SubMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
         };
 
         static FunctionRef[] OffsetSubMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", Helper.ShowStartingOffset, MenuType.SubMenu )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuShowOffset, CodeViewsMenu.SubEmptyMenu, MenuType.SubMenu, "Hide Origin Offset", "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"", true ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", MenuInit.IsEnable( CodeViewsWindow.OffsetMenuShowOffset ), MenuType.SubMenu )
         };
 
         static FunctionRef[] AdvancedMenu = new FunctionRef[]
@@ -37,17 +43,17 @@ namespace CodeViewsWindow
             () => CodeViewsMenu.OptionalAdvancedOption()
         };
 
-        internal static FunctionRef[] LiveCode = new FunctionRef[]
+        internal static FunctionRef[] LiveCodeMenu = new FunctionRef[]
         {
             SendMapCodeButton,
-            () => CodeViewsMenu.CreateSubMenu( SubLiveCodeTeleportMenu, "Disable Teleport Player To Map", "Enable Teleport Player To Map", "Automaticly teleport all players to the map", ref CodeViewsWindow.EnableTeleportPlayerToMap ),
-            () => CodeViewsMenu.CreateSubMenu( CodeViewsMenu.SubEmptyMenu, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly sends live map code", ref CodeViewsWindow.EnableAutoLiveMapCode ),
-            () => CodeViewsMenu.CreateSubMenu( SubLiveCodeAdvancedMenu, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map", ref CodeViewsWindow.ShowSubAdvancedLiveMenu )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuTeleportation, SubLiveCodeTeleportMenu, MenuType.SubMenu, "Disable Teleport Player To Map", "Enable Teleport Player To Map", "Automaticly teleport all players to the map" ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAutoSend, CodeViewsMenu.SubEmptyMenu, MenuType.SubMenu, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly sends live map code" ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAdvanced, SubLiveCodeAdvancedMenu, MenuType.SubMenu, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map" )
         };
 
         internal static FunctionRef[] SubLiveCodeTeleportMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.RespawnPlayers(), null, MenuType.SubMenu )
+            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.ReMapTeleportToMap(), null, MenuType.SubMenu )
         };
 
         internal static FunctionRef[] SubLiveCodeAdvancedMenu = new FunctionRef[]
@@ -61,15 +67,15 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsMenu.CreateMenu( SquirrelMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", ref CodeViewsWindow.ShowFunction );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenu, SquirrelMenu, MenuType.Menu, "Function Menu", "Function Menu", "" );
 
-            CodeViewsMenu.CreateMenu( OffsetMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", ref Helper.UseStartingOffset );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Menu, "Offset Menu", "Offset Menu", "" );
 
-            CodeViewsMenu.CreateMenu( CodeViewsMenu.SubEmptyMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            CodeViewsMenu.SelectionMenu();
 
-            CodeViewsMenu.CreateMenu( LiveCode, "Hide Live Generation", "Show Live Generation", "Allows you to send commands to\nspawn prop if your game is open", ref CodeViewsWindow.ShowLiveMenu );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenu, LiveCodeMenu, MenuType.Menu, "Live Generation", "Live Generation", "Allows you to send commands to\nspawn prop if your game is open" );
 
-            CodeViewsMenu.CreateMenu( AdvancedMenu, "Hide Advanced Options", "Show Advanced Options", "Choose the objects you want to\ngenerate or not", ref CodeViewsWindow.ShowAdvancedMenu );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.AdvancedMenu, AdvancedMenu, MenuType.Menu, "Advanced Options", "Advanced Options", "Choose the objects you want to\ngenerate or not" );
 
             CodeViewsMenu.SharedFunctions();
 
@@ -81,7 +87,7 @@ namespace CodeViewsWindow
         {
             string code = "";
 
-            if ( CodeViewsWindow.ShowFunction )
+            if ( MenuInit.IsEnable( CodeViewsWindow.SquirrelMenuShowFunction ) )
             {
                 code += $"void function {CodeViewsWindow.functionName}()\n";
                 code += "{\n";
@@ -99,13 +105,11 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( forceHide );
             
-            code += await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.EnableSelection );
+            code += await Helper.BuildMapCode( BuildType.Script, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
 
-            if ( CodeViewsWindow.ShowFunction ) code += "}";
+            if ( MenuInit.IsEnable( CodeViewsWindow.SquirrelMenuShowFunction ) ) code += "}";
 
-            if ( CodeViewsWindow.EnableAutoLiveMapCode ){
-                LiveMap.Send();
-            }
+            if ( MenuInit.IsEnable( CodeViewsWindow.LiveCodeMenuAutoSend ) ) LiveMap.Send();
 
             return code;
         }

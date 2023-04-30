@@ -13,8 +13,6 @@ public class QuickMenu : EditorWindow
     bool utilfold = true;
     bool importfold = true;
     bool exportfold = true;
-    bool exportfold2 = false;
-    bool exportfold3 = false;
     bool toolsfold = true;
     bool otherfold = true;
     bool otherfold2 = false;
@@ -59,31 +57,7 @@ public class QuickMenu : EditorWindow
         exportfold = EditorGUILayout.BeginFoldoutHeaderGroup(exportfold, "Export");
         if (exportfold)
         {
-            exportfold2 = EditorGUILayout.Foldout(exportfold2, "Map with origin offset");
-            if(exportfold2)
-            {
-                if (GUILayout.Button("With Function", GUILayout.ExpandWidth(true)))
-                    CodeViewsExport.ExportFunctionAndMapOffset();
-                if (GUILayout.Button("Code Only", GUILayout.ExpandWidth(true)))
-                    CodeViewsExport.ExportCodeAndMapOffset();
-            }
-            exportfold3 = EditorGUILayout.Foldout(exportfold3, "Map without origin offset");
-            if(exportfold3)
-            {
-                if (GUILayout.Button("With Function", GUILayout.ExpandWidth(true)))
-                    CodeViewsExport.ExportFunction();
-                if (GUILayout.Button("Code Only", GUILayout.ExpandWidth(true)))
-                    CodeViewsExport.ExportCode();
-            }
             GUILayout.Space(5);
-            if (GUILayout.Button("Script.ent", GUILayout.ExpandWidth(true)))
-                CodeViewsExport.ExportEntFileScript();
-            if (GUILayout.Button("Sound.ent", GUILayout.ExpandWidth(true)))
-                CodeViewsExport.ExportEntFileSound();
-            if (GUILayout.Button("Spawn.ent", GUILayout.ExpandWidth(true)))
-                CodeViewsExport.ExportEntFileSpawn();
-            if (GUILayout.Button("Datatable", GUILayout.ExpandWidth(true)))
-                CodeViewsExport.ExportDataTable();
             if (GUILayout.Button("Json", GUILayout.ExpandWidth(true)))
                 JsonExport.ExportJson();
         }

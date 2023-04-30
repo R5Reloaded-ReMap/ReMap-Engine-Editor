@@ -76,9 +76,9 @@ namespace CodeViewsWindow
                 return;
 
             // Delete the button until the message is displayed and to prevent sending too many commands to apex
-            FunctionRef[] newLiveCode = new FunctionRef[ ScriptTab.LiveCode.Length - 1 ];
-            Array.Copy( ScriptTab.LiveCode, 1, newLiveCode, 0, ScriptTab.LiveCode.Length - 1 );
-            ScriptTab.LiveCode = newLiveCode;
+            FunctionRef[] newLiveCode = new FunctionRef[ ScriptTab.LiveCodeMenu.Length - 1 ];
+            Array.Copy( ScriptTab.LiveCodeMenu, 1, newLiveCode, 0, ScriptTab.LiveCodeMenu.Length - 1 );
+            ScriptTab.LiveCodeMenu = newLiveCode;
             
             IsSending = true;
             //find and set window once
@@ -86,7 +86,7 @@ namespace CodeViewsWindow
             if ( !ApexProcessIsActive() )
             {
                 IsSending = false;
-                CodeViewsWindow.EnableAutoLiveMapCode = false;
+                MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
                 SendConfirmation( ConfirmationType.ERROR );
                 return;
             }
@@ -100,9 +100,9 @@ namespace CodeViewsWindow
 
             CodeViewsWindow.SendedEntityCount = 0;
 
-            await Helper.BuildMapCode( Build.BuildType.LiveMap, CodeViewsWindow.EnableSelection );
+            await Helper.BuildMapCode( Build.BuildType.LiveMap, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
 
-            if ( CodeViewsWindow.EnableTeleportPlayerToMap ) RespawnPlayers();
+            if ( MenuInit.IsEnable( CodeViewsWindow.LiveCodeMenuTeleportation ) ) RespawnPlayers();
 
             SendConfirmation( ConfirmationType.OPTIMAL );
 
@@ -114,13 +114,13 @@ namespace CodeViewsWindow
             Commands.Add( command );
         }
 
-        private static void SendCommands()
+        public static void SendCommands()
         {
             foreach ( string command in Commands )
             {
                 SendCommandToApex( command );
 
-                for (int i = 0; i < commandDelay * 100000; i++) 
+                for ( int i = 0; i < commandDelay * 100000; i++ ) 
                 {
                     ;;;;;
                 }
@@ -211,7 +211,6 @@ namespace CodeViewsWindow
 
         public static void RespawnPlayers()
         {
-
             string[] data = GetLiveMapCodePlayerSpawnData();
             AddToGameQueue( $"script ReMapSetRemapArrayVec01( {data[0]} )" );
             AddToGameQueue( $"script ReMapSetRemapArrayVec02( {data[1]} )" );
@@ -245,7 +244,7 @@ namespace CodeViewsWindow
             return new[] { $"[{ origin }]", $"[{ angles }]" };
         }
 
-        private static async void SendConfirmation( ConfirmationType confirmationType )
+        private static async void SendConfirmation( ConfirmationType confirmationType, bool ignoreFunctionRef = false )
         {
             CodeViewsWindow.SendingObjects = true;
 
@@ -263,11 +262,34 @@ namespace CodeViewsWindow
 
             CodeViewsWindow.SendingObjects = false;
 
+            if ( ignoreFunctionRef ) return;
+
             // Add the button
-            FunctionRef[] updatedLiveCode = new FunctionRef[ ScriptTab.LiveCode.Length + 1 ];
+            FunctionRef[] updatedLiveCode = new FunctionRef[ ScriptTab.LiveCodeMenu.Length + 1 ];
             updatedLiveCode[0] = ScriptTab.SendMapCodeButton;
-            Array.Copy( ScriptTab.LiveCode, 0, updatedLiveCode, 1, ScriptTab.LiveCode.Length );
-            ScriptTab.LiveCode = updatedLiveCode;
+            Array.Copy( ScriptTab.LiveCodeMenu, 0, updatedLiveCode, 1, ScriptTab.LiveCodeMenu.Length );
+            ScriptTab.LiveCodeMenu = updatedLiveCode;
+        }
+
+        internal static void ReMapTeleportToMap()
+        {
+            IsSending = true;
+
+            m_hEngine = FindApexWindow();
+
+            if ( !ApexProcessIsActive() )
+            {
+                IsSending = false;
+                MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
+                SendConfirmation( ConfirmationType.ERROR, true );
+                return;
+            }
+
+            Commands = new List< string >();
+            RespawnPlayers();
+            SendCommands();
+
+            IsSending = false;
         }
     }
 }

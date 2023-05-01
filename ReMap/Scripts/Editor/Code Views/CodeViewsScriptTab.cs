@@ -46,14 +46,10 @@ namespace CodeViewsWindow
         internal static FunctionRef[] LiveCodeMenu = new FunctionRef[]
         {
             SendMapCodeButton,
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuTeleportation, SubLiveCodeTeleportMenu, MenuType.SubMenu, "Disable Teleport Player To Map", "Enable Teleport Player To Map", "Automaticly teleport all players to the map" ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuTeleportation, CodeViewsMenu.SubEmptyMenu, MenuType.SubMenu, "Disable Teleport Player To Map", "Enable Teleport Player To Map", "Automaticly teleport all players to the map when sending the code to the game" ),
+            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.ReMapTeleportToMap(), null, MenuType.SubMenu ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAutoSend, CodeViewsMenu.SubEmptyMenu, MenuType.SubMenu, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly sends live map code" ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAdvanced, SubLiveCodeAdvancedMenu, MenuType.SubMenu, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map" )
-        };
-
-        internal static FunctionRef[] SubLiveCodeTeleportMenu = new FunctionRef[]
-        {
-            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.ReMapTeleportToMap(), null, MenuType.SubMenu )
         };
 
         internal static FunctionRef[] SubLiveCodeAdvancedMenu = new FunctionRef[]

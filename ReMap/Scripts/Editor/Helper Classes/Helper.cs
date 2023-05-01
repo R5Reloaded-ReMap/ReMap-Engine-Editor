@@ -562,9 +562,13 @@ public class Helper
         GUILayout.Button( $"{x} x {y}", GUILayout.Width( size ) );
     }
 
-    public static string ReplaceComma( float value )
+    public static string ReplaceComma( float value, bool forceComma = false )
     {
-        return value.ToString().Replace( ",", "." );
+        string str = value.ToString().Replace( ",", "." );
+
+        if ( !str.Contains('.') && forceComma ) str += ".0";
+
+        return str;
     }
 
     public static string BoolToLower( bool value )

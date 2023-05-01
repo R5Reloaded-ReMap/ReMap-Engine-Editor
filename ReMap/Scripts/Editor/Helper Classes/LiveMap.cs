@@ -212,8 +212,8 @@ namespace CodeViewsWindow
         public static void RespawnPlayers()
         {
             string[] data = GetLiveMapCodePlayerSpawnData();
-            AddToGameQueue( $"script ReMapSetRemapArrayVec01( {data[0]} )" );
-            AddToGameQueue( $"script ReMapSetRemapArrayVec02( {data[1]} )" );
+            AddToGameQueue( $"script ReMapSetVectorArray01( {data[0]} )" );
+            AddToGameQueue( $"script ReMapSetVectorArray02( {data[1]} )" );
             AddToGameQueue( $"script ReMapTeleportToMap()" );
         }
 

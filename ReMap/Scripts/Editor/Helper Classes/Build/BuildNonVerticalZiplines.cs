@@ -54,8 +54,8 @@ namespace Build
                 string IsMoving = script.IsMoving.ToString().ToLower();
                 int DetachEndOnSpawn = script.DetachEndOnSpawn ? 1 : 0;
                 int DetachEndOnUse = script.DetachEndOnUse ? 1 : 0;
-                float PanelTimerMin = script.PanelTimerMin;
-                float PanelTimerMax = script.PanelTimerMax;
+                string PanelTimerMin = Helper.ReplaceComma( script.PanelTimerMin );
+                string PanelTimerMax = Helper.ReplaceComma( script.PanelTimerMax );
                 int PanelMaxUse = script.PanelMaxUse;
 
                 string PanelOrigin = BuildVerticalZipline.BuildPanelOriginArray( script.Panels );
@@ -123,14 +123,14 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetOrigin( {Helper.BuildOrigin(script.rope_start.gameObject, false, true)}, {Helper.BuildOrigin(script.rope_end.gameObject, false, true)} )" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetAngles( {Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildAngles(script.rope_start.gameObject)} )" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetZiplineVars01( false, {Helper.ReplaceComma( script.FadeDistance )}, {Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )}, {PreserveVelocity}, {DropToBottom} )" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetZiplineVars02( {Helper.ReplaceComma( script.AutoDetachStart )}, {Helper.ReplaceComma( script.AutoDetachEnd )}, {Helper.BoolToLower( script.RestPoint )}, {PushOffInDirectionX}, {Helper.BoolToLower( script.IsMoving )}, {DetachEndOnSpawn}, {DetachEndOnUse} )" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetRemapArrayVec01( {PanelOrigin} )" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetRemapArrayVec02( {PanelAngles} )" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetZiplinePanelModel( {PanelModels} )" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetZiplinePanelSettings( {PanelTimerMin}, {PanelTimerMax}, {PanelMaxUse} )");
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetOrigin({Helper.BuildOrigin(script.rope_start.gameObject, false, true)}, {Helper.BuildOrigin(script.rope_end.gameObject, false, true)})" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetAngles({Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildAngles(script.rope_start.gameObject)})" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetBool([false,{Helper.BoolToLower( script.RestPoint )},{Helper.BoolToLower( script.IsMoving )}])" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetFloat([{Helper.ReplaceComma( script.FadeDistance, true )},{Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )},{Helper.ReplaceComma( script.AutoDetachStart )},{Helper.ReplaceComma( script.AutoDetachEnd )},{PanelTimerMin}, {PanelTimerMax}])" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetInt([{PreserveVelocity},{DropToBottom},{PushOffInDirectionX},{DetachEndOnSpawn},{DetachEndOnUse},{PanelMaxUse}])" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetVectorArray01({PanelOrigin})" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetVectorArray02({PanelAngles})" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapSetAssetArray01({PanelModels})" );
                         CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapCreateZipline()" );
                     break;
                 }

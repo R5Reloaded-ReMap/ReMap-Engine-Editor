@@ -63,7 +63,7 @@ namespace CodeViewsWindow
 
         internal static void SelectionMenu()
         {
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.SelectionMenu, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Menu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.SelectionMenu, EmptyFunctionRefArray, MenuType.Menu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true );
         }
 
         internal static MenuInit CreateMenu( string name, FunctionRef[] functionRef, MenuType menuType = MenuType.Menu, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false )
@@ -231,7 +231,7 @@ namespace CodeViewsWindow
                     WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 156 );
                 GUILayout.EndHorizontal();
 
-                foreach ( string key in CodeViewsWindow.GenerateObjectsFunction.Keys )
+                foreach ( string key in CodeViewsWindow.GenerateObjects.Keys )
                 {
                     ObjectType? type = Helper.GetObjectTypeByObjName( key );
                     ObjectType typed = ( ObjectType ) type;
@@ -241,15 +241,19 @@ namespace CodeViewsWindow
                     Space( 4 );
 
                     GUILayout.BeginHorizontal();
-                        bool value = CodeViewsWindow.GenerateObjectsFunctionTemp[key];
+                        bool value = CodeViewsWindow.GenerateObjects[key];
                         OptionalToggle( ref value, $"Build {key}", value ? $"Disable {key}" : $"Enable {key}" );
-                        CodeViewsWindow.GenerateObjectsFunctionTemp[key] = value;
                     GUILayout.EndHorizontal();
 
-                    if ( CodeViewsWindow.GenerateObjects[key] != CodeViewsWindow.GenerateObjectsFunctionTemp[key] )
+                    if ( CodeViewsWindow.GenerateObjects[key] != value )
                     {
-                        CodeViewsWindow.GenerateObjects[key] = CodeViewsWindow.GenerateObjectsFunctionTemp[key];
+                        CodeViewsWindow.GenerateObjects[key] = value;
                         CodeViewsWindow.Refresh();
+                        
+                        GUILayout.EndHorizontal();
+                        GUILayout.EndVertical();
+
+                        return;
                     }
                 }
             GUILayout.EndVertical();

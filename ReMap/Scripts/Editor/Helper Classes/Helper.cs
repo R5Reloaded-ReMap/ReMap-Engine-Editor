@@ -519,7 +519,6 @@ public class Helper
         foreach ( ObjectType objectType in array )
         {
             GenerateObjects[ GetObjNameWithEnum( objectType ) ] = value;
-            GenerateObjectsFunctionTemp[ GetObjNameWithEnum( objectType ) ] = value;
         }
     }
 

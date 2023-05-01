@@ -74,8 +74,6 @@ namespace CodeViewsWindow
 
         // Gen Settings
         public static Dictionary< string, bool > GenerateObjects = Helper.ObjectGenerateDictionaryInit();
-        public static Dictionary< string, bool > GenerateObjectsFunction = new Dictionary< string, bool >( GenerateObjects );
-        public static Dictionary< string, bool > GenerateObjectsFunctionTemp = new Dictionary< string, bool >( GenerateObjects );
         public static ObjectType[] GenerateIgnore = new ObjectType[0];
 
         public static int greenPropCount = 1500;

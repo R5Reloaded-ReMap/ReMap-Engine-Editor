@@ -22,7 +22,8 @@ namespace CodeViewsWindow
 
         static FunctionRef[] OffsetSubMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.SubMenu )
+            () => CodeViewsMenu.OptionalTextInfo( "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.SubMenu ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.SubMenu )
         };
 
         internal static void OnGUISettingsTab()

@@ -47,10 +47,7 @@ namespace WindowUtility
         public static void CreateToggle( ref bool reference, string text = "toggle", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
-            if ( EditorGUILayout.Toggle( "", reference, GUILayout.MaxWidth( 0 ), HeightOption( height ) ) )
-            {
-                reference = !reference;
-            }
+            reference = EditorGUILayout.Toggle( "", reference, GUILayout.MaxWidth( 0 ) );
         }
 
         public static void CreateIntField( ref int reference, string text = "int field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0 )

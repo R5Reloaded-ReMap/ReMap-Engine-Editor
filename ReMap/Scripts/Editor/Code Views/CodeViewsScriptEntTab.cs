@@ -17,27 +17,27 @@ namespace CodeViewsWindow
     {
         static FunctionRef[] FullFileMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.FullFileEntSubMenu, EntMenu, MenuType.SubMenu, "Hide Full File", "Show Full File", "If true, display the code as ent file", true )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.FullFileEntSubMenu, EntMenu, MenuType.Small, "Hide Full File", "Show Full File", "If true, display the code as ent file", true )
         };
 
         static FunctionRef[] EntMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "File Name", "Change the name of the file", null, MenuType.SubMenu ),
-            () => CodeViewsMenu.OptionalIntField( ref CodeViewsWindow.EntFileID, "Ent ID", "Set the map ID", null, MenuType.SubMenu ),
-            () => CodeViewsMenu.OptionalTextInfo( "Info Player Start", "Settings of where to spawn the player", null, MenuType.SubMenu ),
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartOrigin, "- Origin", "Set origin to \"Info Player Start\"", null, MenuType.SubMenu ),
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartAngles, "- Angles", "Set angles to \"Info Player Start\"", null, MenuType.SubMenu )
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "File Name", "Change the name of the file", null, MenuType.Small ),
+            () => CodeViewsMenu.OptionalIntField( ref CodeViewsWindow.EntFileID, "Ent ID", "Set the map ID", null, MenuType.Small ),
+            () => CodeViewsMenu.OptionalTextInfo( "Info Player Start", "Settings of where to spawn the player", null, MenuType.Small ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartOrigin, "- Origin", "Set origin to \"Info Player Start\"", null, MenuType.Small ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartAngles, "- Angles", "Set angles to \"Info Player Start\"", null, MenuType.Small )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.SubMenu, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.Small, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
         };
 
         static FunctionRef[] OffsetSubMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextInfo( "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.SubMenu ),
-            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.SubMenu )
+            () => CodeViewsMenu.OptionalTextInfo( "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
+            () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small )
         };
 
         static FunctionRef[] AdvancedMenu = new FunctionRef[]
@@ -50,13 +50,13 @@ namespace CodeViewsWindow
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.FullFileEntMenu, FullFileMenu, MenuType.Menu, "Full File", "Full File", "" );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.FullFileEntMenu, FullFileMenu, MenuType.Large, "Full File", "Full File", "" );
 
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Menu, "Offset Menu", "Offset Menu", "" );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Large, "Offset Menu", "Offset Menu", "" );
 
             CodeViewsMenu.SelectionMenu();
 
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.AdvancedMenu, AdvancedMenu, MenuType.Menu, "Advanced Options", "Advanced Options", "Choose the objects you want to\ngenerate or not" );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.AdvancedMenu, AdvancedMenu, MenuType.Large, "Advanced Options", "Advanced Options", "Choose the objects you want to\ngenerate or not" );
 
             CodeViewsMenu.SharedFunctions();
             

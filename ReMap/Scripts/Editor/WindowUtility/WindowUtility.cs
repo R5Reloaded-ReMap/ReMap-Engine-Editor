@@ -38,9 +38,9 @@ namespace WindowUtility
         }
 
 
-        public static void CreateTextField( ref string reference, string text = "button", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0 )
+        public static void CreateTextField( ref string reference, string text = "button", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0, bool fieldOnly = false )
         {
-            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
+            if ( !fieldOnly ) EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
             reference = EditorGUILayout.TextField( new GUIContent( "", tooltip ), reference, SizeOptions( fieldWidth, height ) );
         }
 

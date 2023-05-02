@@ -369,7 +369,18 @@ public class Helper
         if( GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ) )     code.Append( await BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection ) );
         if( GetBoolFromGenerateObjects( ObjectType.Sound ) )              code.Append( await BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection ) );
 
+        if( AdditionalCodeEnable() && buildType == BuildType.Script )
+        {
+            code.Append( CodeViewsWindow.AdditionalCodeWindow.additionalCode.Content[ CodeViewsWindow.AdditionalCodeWindow.tabIdx ].Code );
+            PageBreak( ref code );
+        }
+
         return code.ToString();
+    }
+
+    public static bool AdditionalCodeEnable()
+    {
+        return CodeViewsWindow.MenuInit.IsEnable( CodeViewsWindow.CodeViewsWindow.SquirrelMenuShowAdditionalCode ) && CodeViewsWindow.AdditionalCodeWindow.additionalCode != null;
     }
 
     public static void ApplyComponentScriptData< T >( T target, T source ) where T : Component

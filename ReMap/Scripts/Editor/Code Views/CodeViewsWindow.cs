@@ -39,6 +39,7 @@ namespace CodeViewsWindow
         // Menu Names
         internal static string SquirrelMenu = "SquirrelMenu";
         internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
+        internal static string SquirrelMenuShowAdditionalCode = "SquirrelMenuAdditionalCode";
 
         internal static string OffsetMenu = "OffsetMenu";
         internal static string OffsetMenuOffset = "OffsetMenuOffset";
@@ -175,6 +176,7 @@ namespace CodeViewsWindow
         {
             EntityCount = 0; GenerateCorrectCode();
             if ( reSetScroll ) SetScrollView( scroll );
+            if ( AdditionalCodeWindow.windowInstance != null ) AdditionalCodeWindow.Refresh();
         }
 
         internal static void CopyCode()

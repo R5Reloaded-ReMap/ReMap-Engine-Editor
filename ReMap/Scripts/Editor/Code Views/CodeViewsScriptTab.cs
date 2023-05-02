@@ -24,7 +24,8 @@ namespace CodeViewsWindow
 
         static FunctionRef[] SquirrelFunction = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small )
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowAdditionalCode, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Add Additional Code", "Add Additional Code", "", true )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]

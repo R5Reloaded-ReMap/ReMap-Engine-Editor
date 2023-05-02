@@ -373,7 +373,7 @@ namespace CodeViewsWindow
 
         private static void AdditionalCodeButton( string text = "Additional Code", string tooltip = "Open Additional Code Window" )
         {
-            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 120 ) ) ) AdditionalCode.Init();
+            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 120 ) ) ) AdditionalCodeWindow.Init();
         }
 
         private static void SettingsMenuButton( string text = "Settings", string tooltip = "Show settings" )

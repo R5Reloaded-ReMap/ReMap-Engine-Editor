@@ -72,7 +72,7 @@ namespace CodeViewsWindow
 
                 if( tabIdx != tabIdxTemp )
                 {
-                    Refresh();
+                    Refresh( true );
                     tabIdxTemp = tabIdx;
                 }
 

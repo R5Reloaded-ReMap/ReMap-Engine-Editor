@@ -380,7 +380,7 @@ public class Helper
 
     public static bool AdditionalCodeEnable()
     {
-        return CodeViewsWindow.MenuInit.IsEnable( CodeViewsWindow.CodeViewsWindow.SquirrelMenuShowAdditionalCode ) && CodeViewsWindow.AdditionalCodeWindow.additionalCode != null;
+        return CodeViewsWindow.AdditionalCodeWindow.additionalCode != null;
     }
 
     public static void ApplyComponentScriptData< T >( T target, T source ) where T : Component

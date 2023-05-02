@@ -14,7 +14,7 @@ namespace LibrarySorter
         static string currentDirectory = UnityInfo.currentDirectoryPath;
         static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
         static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
-        static string relativeRpakFile = UnityInfo.relativePathRpakFile;
+        static string relativePathRpakManager = UnityInfo.relativePathRpakManager;
 
         #if ReMapDev
         [MenuItem("ReMap Dev Tools/Prefabs Management/Legion/Create All Rpak List", false, 100)]
@@ -86,8 +86,8 @@ namespace LibrarySorter
 
                         //if ( Path.GetFileNameWithoutExtension(rpakPath).Contains("(") )
 
-                        File.Move( $"{exportedFilePath}", $"{relativeRpakFile}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt" );
-                        if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{relativeRpakFile}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
+                        File.Move( $"{exportedFilePath}", $"{relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt" );
+                        if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
                     }
                 }
             }

@@ -47,7 +47,7 @@ namespace CodeViewsWindow
         internal static FunctionRef[] LiveCodeMenu = new FunctionRef[]
         {
             SendMapCodeButton,
-            () => CodeViewsMenu.CreateMenu( "Yes", SubLiveCodeRespawnMenu, MenuType.Medium, "Respawn Menu", "Respawn Menu", "" ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuRespawn, SubLiveCodeRespawnMenu, MenuType.Medium, "Respawn Menu", "Respawn Menu", "" ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAutoSend, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly sends live map code" ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAdvanced, SubLiveCodeAdvancedMenu, MenuType.Small, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map" )
         };

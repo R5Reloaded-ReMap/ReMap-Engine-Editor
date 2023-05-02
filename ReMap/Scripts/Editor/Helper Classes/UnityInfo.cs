@@ -17,10 +17,9 @@ public class UnityInfo
     public static string relativePathModel =           $"{relativePathLods}/Models";
     public static string relativePathMaterials =       $"{relativePathLods}/Materials";
     public static string relativePathPrefabs =         $"Assets/Prefabs";
-    public static string relativePathRpakFile =        $"Assets/ReMap/Resources/rpakModelFile";
-    public static string relativePathJsonOffset =      $"{relativePathRpakFile}/prefabOffsetList.json";
     public static string relativePathRpakManager =     $"Assets/ReMap/Resources/RpakManager";
     public static string relativePathRpakManagerList = $"{relativePathRpakManager}/rpakManagerList.json";
+    public static string relativePathJsonOffset =      $"{relativePathRpakManager}/prefabOffsetList.json";
 
 
     /// <summary>
@@ -88,6 +87,7 @@ public class UnityInfo
     /// Get all rpak list in /ReMap/Resources/rpakModelFile
     /// </summary>
     /// <returns></returns>
+    /*
     public static string[] GetAllRpakModelsFile( bool includeAllModelFile = false, bool returnFileName = false )
     {
         string[] filePaths = Directory.GetFiles($"{currentDirectoryPath}/{relativePathRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where( f => IsNotExcludedFile( f, includeAllModelFile ) ).ToArray();
@@ -105,6 +105,7 @@ public class UnityInfo
 
         return fileNames.ToArray();
     }
+    */
 
     /// <summary>
     /// Returns the model name as a prefab

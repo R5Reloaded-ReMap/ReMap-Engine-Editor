@@ -47,9 +47,12 @@ namespace CodeViewsWindow
         internal static string SelectionMenu = "SelectionMenu";
 
         internal static string LiveCodeMenu = "LiveCodeMenu";
+        internal static string LiveCodeMenuRespawn = "LiveCodeMenuRespawn";
         internal static string LiveCodeMenuTeleportation = "LiveCodeMenuTeleportation";
         internal static string LiveCodeMenuAutoSend = "LiveCodeMenuAutoSend";
         internal static string LiveCodeMenuAdvanced = "LiveCodeMenuAdvanced";
+
+        internal static string AdditionalCodeMenu = "AdditionalCodeMenu";
 
         internal static string AdvancedMenu = "AdvancedMenu";
 
@@ -294,6 +297,7 @@ namespace CodeViewsWindow
                         GUILayout.FlexibleSpace();
 
                         ExportButton();
+                        if ( tab == 0 ) AdditionalCodeButton();
                         SettingsMenuButton();
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -365,6 +369,11 @@ namespace CodeViewsWindow
         private static void ExportButton( string text = "Export Code", string tooltip = "Export current code" )
         {
             if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 100 ) ) ) ExportFunction();
+        }
+
+        private static void AdditionalCodeButton( string text = "Additional Code", string tooltip = "Open Additional Code Window" )
+        {
+            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 120 ) ) ) AdditionalCode.Init();
         }
 
         private static void SettingsMenuButton( string text = "Settings", string tooltip = "Show settings" )

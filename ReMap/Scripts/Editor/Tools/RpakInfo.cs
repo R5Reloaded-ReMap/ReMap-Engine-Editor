@@ -73,9 +73,9 @@ public class RpakInfo : EditorWindow
     {
         List<string> modelsInScene = UnityInfo.GetModelsListInScene().ToList();
 
-        List<string> rpakLists = new List<string>( UnityInfo.GetAllRpakModelsFile( true, true ) );
+        //List<string> rpakLists = new List<string>( UnityInfo.GetAllRpakModelsFile( true, true ) );
 
-        RemoveFromList( rpakLists, "_custom_models" );
+        //RemoveFromList( rpakLists, "_custom_models" );
 
         List< List<string> > rpakFiles = new List< List<string> >();
 
@@ -103,9 +103,9 @@ public class RpakInfo : EditorWindow
             }
         }
 
-        RemoveFromList( rpakLists, "common" );
-        RemoveFromList( rpakLists, "common_mp" );
-        RemoveFromList( rpakLists, "common_sdk" );
+        //RemoveFromList( rpakLists, "common" );
+        //RemoveFromList( rpakLists, "common_mp" );
+        //RemoveFromList( rpakLists, "common_sdk" );
 
         newRpak = true;
         if (rpakFiles.Count != 0)
@@ -178,7 +178,7 @@ public class RpakInfo : EditorWindow
                 }
             }
 
-            RemoveFromList( rpakLists, mostCommonLocation );
+            //RemoveFromList( rpakLists, mostCommonLocation );
 
             newRpak = true;
             if (rpakFiles.Count != 0)
@@ -202,11 +202,11 @@ public class RpakInfo : EditorWindow
 
 
         // Remove after tests
-            usedRpak += $"\n\n\n";
-            foreach ( string rpakList in rpakLists )
-            {
-                usedRpak += $"- {rpakList}\n";
-            }
+            //usedRpak += $"\n\n\n";
+            //foreach ( string rpakList in rpakLists )
+            //{
+            //    usedRpak += $"- {rpakList}\n";
+            //}
         //
     }
 

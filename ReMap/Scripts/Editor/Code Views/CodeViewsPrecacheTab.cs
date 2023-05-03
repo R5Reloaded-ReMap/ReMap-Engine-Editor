@@ -1,5 +1,7 @@
+
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -42,22 +44,23 @@ namespace CodeViewsWindow
 
         internal static async Task< string > GenerateCode()
         {
-            string code = "";
+            Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
+
+
+            StringBuilder code = new StringBuilder();
 
             if ( CodeViewsWindow.ShowFunctionEnable() )
             {
-                code += $"void function {CodeViewsWindow.functionName}()\n";
-                code += "{\n";
-                code += Helper.ReMapCredit();
+                code.Append( $"void function {CodeViewsWindow.functionName}()\n" );
+                code.Append( "{\n" );
+                code.Append( Helper.ReMapCredit() );
             }
 
-            Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
+            code.Append(  await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.SelectionEnable() ) );
 
-            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.SelectionEnable() );
+            if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}" );
 
-            if ( CodeViewsWindow.ShowFunctionEnable() ) code += "}";
-
-            return code;
+            return code.ToString();
         }
     }
 }

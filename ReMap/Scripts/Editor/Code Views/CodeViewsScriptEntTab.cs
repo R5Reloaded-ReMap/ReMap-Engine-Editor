@@ -1,5 +1,7 @@
+
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -66,23 +68,6 @@ namespace CodeViewsWindow
 
         internal static async Task< string > GenerateCode()
         {
-            string code = "";
-
-            Vector3 IPSAngles = CodeViewsWindow.InfoPlayerStartAngles;
-            Vector3 IPSOrigin = CodeViewsWindow.InfoPlayerStartOrigin;
-
-            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) )
-            {
-                code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n";
-                code +=  "{\n";
-                code +=  "\"spawnflags\" \"0\"\n";
-                code +=  "\"scale\" \"1\"\n";
-                code += $"\"angles\" \"{Helper.ReplaceComma( IPSAngles.x )} {Helper.ReplaceComma( IPSAngles.y )} {Helper.ReplaceComma( IPSAngles.z )}\"\n";
-                code += $"\"origin\" \"{Helper.ReplaceComma( IPSOrigin.x )} {Helper.ReplaceComma( IPSOrigin.y )} {Helper.ReplaceComma( IPSOrigin.z )}\"\n";
-                code +=  "\"classname\" \"info_player_start\"\n";
-                code +=  "}\n";
-            }
-
             ObjectType[] showOnly = new ObjectType[]
             {
                 ObjectType.Prop,
@@ -98,11 +83,29 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( showOnly, true );
 
-            code += await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() );
+            Vector3 IPSAngles = CodeViewsWindow.InfoPlayerStartAngles;
+            Vector3 IPSOrigin = CodeViewsWindow.InfoPlayerStartOrigin;
 
-            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) code += "\u0000";
 
-            return code;
+            StringBuilder code = new StringBuilder();
+
+            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) )
+            {
+                code.Append( $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n" );
+                code.Append(  "{\n" );
+                code.Append(  "\"spawnflags\" \"0\"\n" );
+                code.Append(  "\"scale\" \"1\"\n" );
+                code.Append( $"\"angles\" \"{Helper.ReplaceComma( IPSAngles.x )} {Helper.ReplaceComma( IPSAngles.y )} {Helper.ReplaceComma( IPSAngles.z )}\"\n" );
+                code.Append( $"\"origin\" \"{Helper.ReplaceComma( IPSOrigin.x )} {Helper.ReplaceComma( IPSOrigin.y )} {Helper.ReplaceComma( IPSOrigin.z )}\"\n" );
+                code.Append(  "\"classname\" \"info_player_start\"\n" );
+                code.Append(  "}\n" );
+            }
+
+            code.Append( await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() ) );
+
+            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) code.Append( "\u0000" );
+
+            return code.ToString();
         }
     }
 }

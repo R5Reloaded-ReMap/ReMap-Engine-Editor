@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -56,20 +57,21 @@ namespace CodeViewsWindow
 
         internal static async Task< string > GenerateCode()
         {
-            string code = "";
+            Helper.ForceHideBoolToGenerateObjects( new ObjectType[] { ObjectType.Sound }, true );
+
+
+            StringBuilder code = new StringBuilder();
 
             if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) )
             {
-                code += $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n";
+                code.Append( $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n" );
             }
 
-            Helper.ForceHideBoolToGenerateObjects( new ObjectType[] { ObjectType.Sound }, true );
+            code.Append( await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() ) );
 
-            code += await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() );
+            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) code.Append( "\u0000" );
 
-            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) code += "\u0000";
-
-            return code;
+            return code.ToString();
         }
     }
 }

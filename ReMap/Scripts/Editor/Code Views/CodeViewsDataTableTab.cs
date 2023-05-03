@@ -1,5 +1,7 @@
+
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -43,13 +45,14 @@ namespace CodeViewsWindow
 
         internal static async Task< string > GenerateCode()
         {
-            string code = "";
-
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
 
-            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.SelectionEnable() );
 
-            return code;
+            StringBuilder code = new StringBuilder();
+
+            code.Append( await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.SelectionEnable() ) );
+
+            return code.ToString();
         }
     }
 }

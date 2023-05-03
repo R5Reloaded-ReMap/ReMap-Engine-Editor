@@ -21,7 +21,7 @@ namespace CodeViewsWindow
         static FunctionRef[] SquirrelMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.Small, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true ),
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowAdditionalCode, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Add Additional Code", "Add Additional Code", "", true )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowInBlockAdditionalCode, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Add Additional Code", "Add Additional Code", "", true )
         };
 
         static FunctionRef[] SquirrelFunction = new FunctionRef[]
@@ -112,6 +112,12 @@ namespace CodeViewsWindow
             code.Append( Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ) );
             
             code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
+
+            if( CodeViewsWindow.InBlockAdditionalCodeEnable() )
+            {
+                code.Append( AdditionalCodeWindow.inBlockAdditionalCode.Content[ AdditionalCodeWindow.tabIdx ].Code );
+                PageBreak( ref code );
+            }
 
             if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}" );
 

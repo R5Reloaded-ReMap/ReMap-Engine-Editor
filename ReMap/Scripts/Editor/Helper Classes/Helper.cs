@@ -133,15 +133,16 @@ public class Helper
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static string ShouldAddStartingOrg( StartingOriginType type = StartingOriginType.Function, float x = 0, float y = 0, float z = 0 )
+    public static string ShouldAddStartingOrg( StartingOriginType type = StartingOriginType.Function, float x = 0, float y = 0, float z = 0, bool addSpace = true )
     {
         string vector = $"< {ReplaceComma( x )}, {ReplaceComma( y )}, {ReplaceComma( z )} >";
+        string space = addSpace ? "    " : "";
 
         switch ( type )
         {
             case StartingOriginType.SquirrelFunction:
                 if ( UseStartingOffset() && ShowStartingOffset() )
-                return $"    //Starting Origin, Change this to a origin in a map \n    vector startingorg = {vector}" + "\n\n";
+                return $"{space}//Starting Origin, Change this to a origin in a map \n{space}vector startingorg = {vector}" + "\n\n";
                 break;
 
             case StartingOriginType.Function:
@@ -369,18 +370,7 @@ public class Helper
         if( GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ) )     code.Append( await BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection ) );
         if( GetBoolFromGenerateObjects( ObjectType.Sound ) )              code.Append( await BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection ) );
 
-        if( AdditionalCodeEnable() && buildType == BuildType.Script )
-        {
-            code.Append( CodeViewsWindow.AdditionalCodeWindow.additionalCode.Content[ CodeViewsWindow.AdditionalCodeWindow.tabIdx ].Code );
-            PageBreak( ref code );
-        }
-
         return code.ToString();
-    }
-
-    public static bool AdditionalCodeEnable()
-    {
-        return CodeViewsWindow.AdditionalCodeWindow.additionalCode != null;
     }
 
     public static void ApplyComponentScriptData< T >( T target, T source ) where T : Component

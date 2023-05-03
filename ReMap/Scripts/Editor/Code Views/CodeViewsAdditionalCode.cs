@@ -22,13 +22,13 @@ namespace CodeViewsWindow
         internal static string[] toolbarTab = new string[0];
         internal static Vector2 scroll;
 
-        internal static AdditionalCode additionalCode;
+        internal static AdditionalCode inBlockAdditionalCode;
         private static string entry = "";
         private static string emptyContentStr = "Empty Code";
 
         public static void Init()
         {
-            additionalCode = FindAdditionalCode();
+            inBlockAdditionalCode = FindAdditionalCode();
 
             Refresh();
 
@@ -38,21 +38,21 @@ namespace CodeViewsWindow
 
         private void OnEnable()
         {
-            additionalCode = FindAdditionalCode();
+            inBlockAdditionalCode = FindAdditionalCode();
 
             Refresh();
         }
 
         private void EditorSceneManager_sceneSaved( UnityEngine.SceneManagement.Scene arg0 )
         {
-            additionalCode = FindAdditionalCode();
+            inBlockAdditionalCode = FindAdditionalCode();
 
             Refresh();
         }
 
         private void EditorSceneManager_sceneOpened( UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode )
         {
-            additionalCode = FindAdditionalCode();
+            inBlockAdditionalCode = FindAdditionalCode();
 
             Refresh();
         }
@@ -61,7 +61,7 @@ namespace CodeViewsWindow
         {
             bool isEmptyCode = true;
 
-            if ( additionalCode.Content[ tabIdx ].Name != emptyContentStr ) isEmptyCode = false;
+            if ( inBlockAdditionalCode.Content[ tabIdx ].Name != emptyContentStr ) isEmptyCode = false;
 
             GUILayout.BeginVertical( "box" );
 
@@ -96,7 +96,7 @@ namespace CodeViewsWindow
                 }
 
                 scroll = EditorGUILayout.BeginScrollView( scroll );
-                    additionalCode.Content[ tabIdx ].Code = EditorGUILayout.TextArea( additionalCode.Content[ tabIdx ].Code, GUILayout.ExpandHeight( true ) );
+                    inBlockAdditionalCode.Content[ tabIdx ].Code = EditorGUILayout.TextArea( inBlockAdditionalCode.Content[ tabIdx ].Code, GUILayout.ExpandHeight( true ) );
                 EditorGUILayout.EndScrollView();
 
             GUILayout.EndVertical();
@@ -104,7 +104,7 @@ namespace CodeViewsWindow
 
         internal static void AddNewCode()
         {
-            additionalCode.Content.Add( NewAdditionalCodeContent() );
+            inBlockAdditionalCode.Content.Add( NewAdditionalCodeContent() );
 
             tabIdx = toolbarTab.Length;
 
@@ -115,7 +115,7 @@ namespace CodeViewsWindow
         {
             if ( !LibrarySorter.LibrarySorterWindow.CheckDialog( "Delete Code", "Are you sure you want delete this code ?" ) ) return;
 
-            additionalCode.Content.Remove( additionalCode.Content[ tabIdx ] );
+            inBlockAdditionalCode.Content.Remove( inBlockAdditionalCode.Content[ tabIdx ] );
 
             tabIdx = toolbarTab.Length - 2;
 
@@ -124,7 +124,7 @@ namespace CodeViewsWindow
 
         internal static void RenameTab()
         {
-            additionalCode.Content[ tabIdx ].Name = entry;
+            inBlockAdditionalCode.Content[ tabIdx ].Name = entry;
 
             entry = "";
 
@@ -139,20 +139,20 @@ namespace CodeViewsWindow
             }
 
             string json = System.IO.File.ReadAllText( relativePathAdditionalCode );
-            additionalCode = JsonUtility.FromJson< AdditionalCode >( json );
+            inBlockAdditionalCode = JsonUtility.FromJson< AdditionalCode >( json );
 
-            return additionalCode;
+            return inBlockAdditionalCode;
         }
 
         internal static void CreateNewJsonAdditionalCode()
         {
-            additionalCode = new AdditionalCode();
-            additionalCode.Content = new List< AdditionalCodeContent >();
+            inBlockAdditionalCode = new AdditionalCode();
+            inBlockAdditionalCode.Content = new List< AdditionalCodeContent >();
 
             AdditionalCodeContent emptyContent = NewAdditionalCodeContent();
             emptyContent.Name = emptyContentStr;
 
-            additionalCode.Content.Add( emptyContent );
+            inBlockAdditionalCode.Content.Add( emptyContent );
 
             SaveJson();
         }
@@ -169,7 +169,7 @@ namespace CodeViewsWindow
 
         internal static void SaveJson()
         {
-            string json = JsonUtility.ToJson( additionalCode );
+            string json = JsonUtility.ToJson( inBlockAdditionalCode );
             System.IO.File.WriteAllText( relativePathAdditionalCode, json );
 
             Refresh();
@@ -177,15 +177,15 @@ namespace CodeViewsWindow
 
         internal static void Refresh( bool refreshCodeView = false )
         {
-            UnityInfo.SortListByKey( additionalCode.Content, x => x.Name );
+            UnityInfo.SortListByKey( inBlockAdditionalCode.Content, x => x.Name );
 
             int targetIndex = -1;
 
             List< string > pages = new List< string >();
 
-            for ( int i = 0; i < additionalCode.Content.Count; i++ )
+            for ( int i = 0; i < inBlockAdditionalCode.Content.Count; i++ )
             {
-                AdditionalCodeContent content = additionalCode.Content[ i ];
+                AdditionalCodeContent content = inBlockAdditionalCode.Content[ i ];
                 pages.Add( content.Name );
 
                 if ( content.Name == emptyContentStr )
@@ -196,9 +196,9 @@ namespace CodeViewsWindow
 
             if ( targetIndex != -1 )
             {
-                AdditionalCodeContent targetContent = additionalCode.Content[ targetIndex ];
-                additionalCode.Content.RemoveAt( targetIndex );
-                additionalCode.Content.Insert( 0, targetContent );
+                AdditionalCodeContent targetContent = inBlockAdditionalCode.Content[ targetIndex ];
+                inBlockAdditionalCode.Content.RemoveAt( targetIndex );
+                inBlockAdditionalCode.Content.Insert( 0, targetContent );
 
                 pages.RemoveAt( targetIndex );
                 pages.Insert( 0, emptyContentStr );

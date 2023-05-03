@@ -47,7 +47,7 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
 
-            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
+            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.SelectionEnable() );
 
             return code;
         }

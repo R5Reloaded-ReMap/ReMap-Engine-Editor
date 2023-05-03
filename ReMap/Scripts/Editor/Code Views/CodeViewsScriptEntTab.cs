@@ -98,7 +98,7 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( showOnly, true );
 
-            code += await Helper.BuildMapCode( BuildType.EntFile, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
+            code += await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() );
 
             if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) code += "\u0000";
 

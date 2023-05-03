@@ -144,7 +144,7 @@ namespace CodeViewsWindow
         {
             // Ensure the objectData is not empty
             GameObject[] objectData;
-            if ( MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) )
+            if ( CodeViewsWindow.SelectionEnable() )
                 objectData = Helper.GetSelectedObjectWithEnum( objectType );
             else objectData = Helper.GetObjArrayWithEnum( objectType );
 
@@ -512,6 +512,22 @@ namespace CodeViewsWindow
                 GUI.contentColor = Color.yellow;
 
             else GUI.contentColor = Color.red;
+        }
+
+
+        internal static bool ShowFunctionEnable()
+        {
+            return MenuInit.IsEnable( SquirrelMenuShowFunction );
+        }
+
+        internal static bool SelectionEnable()
+        {
+            return MenuInit.IsEnable( SelectionMenu );
+        }
+
+        internal static bool AutoSendEnable()
+        {
+            return MenuInit.IsEnable( LiveCodeMenuAutoSend );
         }
     }
 }

@@ -44,7 +44,7 @@ namespace CodeViewsWindow
         {
             string code = "";
 
-            if ( MenuInit.IsEnable( CodeViewsWindow.SquirrelMenuShowFunction ) )
+            if ( CodeViewsWindow.ShowFunctionEnable() )
             {
                 code += $"void function {CodeViewsWindow.functionName}()\n";
                 code += "{\n";
@@ -53,9 +53,9 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
 
-            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
+            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.SelectionEnable() );
 
-            if ( MenuInit.IsEnable( CodeViewsWindow.SquirrelMenuShowFunction ) ) code += "}";
+            if ( CodeViewsWindow.ShowFunctionEnable() ) code += "}";
 
             return code;
         }

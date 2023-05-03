@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -88,17 +89,7 @@ namespace CodeViewsWindow
 
         internal static async Task< string > GenerateCode()
         {
-            string code = "";
-
-            if ( MenuInit.IsEnable( CodeViewsWindow.SquirrelMenuShowFunction ) )
-            {
-                code += $"void function {CodeViewsWindow.functionName}()\n";
-                code += "{\n";
-                code += Helper.ReMapCredit();
-            }
-
-            code += Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z );
-
+            
             ObjectType[] forceHide = new ObjectType[]
             {
                 ObjectType.Sound,
@@ -107,14 +98,26 @@ namespace CodeViewsWindow
             };
 
             Helper.ForceHideBoolToGenerateObjects( forceHide );
+
+
+            StringBuilder code = new StringBuilder();
+
+            if ( CodeViewsWindow.ShowFunctionEnable() )
+            {
+                code.Append( $"void function {CodeViewsWindow.functionName}()\n" );
+                code.Append( "{\n" );
+                code.Append( Helper.ReMapCredit() );
+            }
+
+            code.Append( Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ) );
             
-            code += await Helper.BuildMapCode( BuildType.Script, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
+            code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
 
-            if ( MenuInit.IsEnable( CodeViewsWindow.SquirrelMenuShowFunction ) ) code += "}";
+            if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}" );
 
-            if ( MenuInit.IsEnable( CodeViewsWindow.LiveCodeMenuAutoSend ) ) LiveMap.Send();
+            if ( CodeViewsWindow.AutoSendEnable() ) LiveMap.Send();
 
-            return code;
+            return code.ToString();
         }
     }
 }

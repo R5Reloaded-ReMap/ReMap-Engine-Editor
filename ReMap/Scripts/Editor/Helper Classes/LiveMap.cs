@@ -100,7 +100,7 @@ namespace CodeViewsWindow
 
             CodeViewsWindow.SendedEntityCount = 0;
 
-            await Helper.BuildMapCode( Build.BuildType.LiveMap, MenuInit.IsEnable( CodeViewsWindow.SelectionMenu ) );
+            await Helper.BuildMapCode( Build.BuildType.LiveMap, CodeViewsWindow.SelectionEnable() );
 
             if ( MenuInit.IsEnable( CodeViewsWindow.LiveCodeMenuTeleportation ) ) RespawnPlayers();
 

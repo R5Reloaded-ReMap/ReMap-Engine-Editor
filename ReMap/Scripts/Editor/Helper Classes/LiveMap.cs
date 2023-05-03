@@ -127,7 +127,7 @@ namespace CodeViewsWindow
             }
         }
 
-        public static async void ReloadLevel( bool reset = false )
+        public static async void ReloadLevel( bool reset = false, string code = null )
         {
             string processName = "r5apex";
             Process[] processes = Process.GetProcesses();
@@ -158,11 +158,14 @@ namespace CodeViewsWindow
 
             if ( path != "" )
             {
-                path += "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
+                path += UnityInfo.relativePathR5RScripts;
 
                 if ( !File.Exists( path ) ) File.Create( path );
-
-                string code = await BuildScriptFile( reset );
+                
+                if ( code == null )
+                {
+                    code = await BuildScriptFile( reset );
+                }
 
                 File.WriteAllText( path, code );
 

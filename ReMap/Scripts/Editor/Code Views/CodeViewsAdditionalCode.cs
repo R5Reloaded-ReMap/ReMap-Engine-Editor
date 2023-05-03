@@ -15,7 +15,8 @@ namespace CodeViewsWindow
 {
     public class AdditionalCodeWindow : EditorWindow
     {
-        private static string relativePathAdditionalCode = UnityInfo.relativePathAdditionalCode;
+        private static string relativePathInBlockAdditionalCode = UnityInfo.relativePathInBlockAdditionalCode;
+        
         internal static AdditionalCodeWindow windowInstance;
         internal static int tabIdx = 0;
         internal static int tabIdxTemp = 0;
@@ -133,12 +134,12 @@ namespace CodeViewsWindow
 
         public static AdditionalCode FindAdditionalCode()
         {
-            if ( !File.Exists( relativePathAdditionalCode ) )
+            if ( !File.Exists( relativePathInBlockAdditionalCode ) )
             {
                 CreateNewJsonAdditionalCode();
             }
 
-            string json = System.IO.File.ReadAllText( relativePathAdditionalCode );
+            string json = System.IO.File.ReadAllText( relativePathInBlockAdditionalCode );
             inBlockAdditionalCode = JsonUtility.FromJson< AdditionalCode >( json );
 
             return inBlockAdditionalCode;
@@ -170,7 +171,7 @@ namespace CodeViewsWindow
         internal static void SaveJson()
         {
             string json = JsonUtility.ToJson( inBlockAdditionalCode );
-            System.IO.File.WriteAllText( relativePathAdditionalCode, json );
+            System.IO.File.WriteAllText( relativePathInBlockAdditionalCode, json );
 
             Refresh();
         }

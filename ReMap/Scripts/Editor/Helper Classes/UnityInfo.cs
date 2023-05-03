@@ -11,16 +11,17 @@ public class UnityInfo
     public static string JsonVersion = "1.0";
 
     // Path Utility
-    public static string currentDirectoryPath =        Directory.GetCurrentDirectory().Replace("\\","/");
-    public static string relativePathLods =            $"Assets/ReMap/Lods - Dont use these";
-    public static string relativePathEmptyPrefab =     $"{relativePathLods}/EmptyPrefab.prefab";
-    public static string relativePathModel =           $"{relativePathLods}/Models";
-    public static string relativePathMaterials =       $"{relativePathLods}/Materials";
-    public static string relativePathPrefabs =         $"Assets/Prefabs";
-    public static string relativePathAdditionalCode =  $"Assets/ReMap/Resources/AdditionalCode/inBlockAdditionalCode.json";
-    public static string relativePathRpakManager =     $"Assets/ReMap/Resources/RpakManager";
-    public static string relativePathRpakManagerList = $"{relativePathRpakManager}/rpakManagerList.json";
-    public static string relativePathJsonOffset =      $"{relativePathRpakManager}/prefabOffsetList.json";
+    public static string currentDirectoryPath =               Directory.GetCurrentDirectory().Replace("\\","/");
+    public static string relativePathLods =                   $"Assets/ReMap/Lods - Dont use these";
+    public static string relativePathEmptyPrefab =            $"{relativePathLods}/EmptyPrefab.prefab";
+    public static string relativePathModel =                  $"{relativePathLods}/Models";
+    public static string relativePathMaterials =              $"{relativePathLods}/Materials";
+    public static string relativePathPrefabs =                $"Assets/Prefabs";
+    public static string relativePathInBlockAdditionalCode =  $"Assets/ReMap/Resources/AdditionalCode/inBlockAdditionalCode.json";
+    public static string relativePathRpakManager =            $"Assets/ReMap/Resources/RpakManager";
+    public static string relativePathRpakManagerList =        $"{relativePathRpakManager}/rpakManagerList.json";
+    public static string relativePathJsonOffset =             $"{relativePathRpakManager}/prefabOffsetList.json";
+    public static string relativePathR5RScripts =              "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
 
 
     /// <summary>

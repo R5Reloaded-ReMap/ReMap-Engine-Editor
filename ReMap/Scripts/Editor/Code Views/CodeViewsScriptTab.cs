@@ -114,11 +114,11 @@ namespace CodeViewsWindow
             
             code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
 
-            if( CodeViewsWindow.InBlockAdditionalCodeEnable() )
-            {
-                code.Append( AdditionalCodeWindow.inBlockAdditionalCode.Content[ AdditionalCodeWindow.tabIdx ].Code );
-                PageBreak( ref code );
-            }
+            //if( CodeViewsWindow.InBlockAdditionalCodeEnable() )
+            //{
+            //    code.Append( AdditionalCodeWindow.additionalCode.Content[ AdditionalCodeWindow.tabIdx ].Code );
+            //    PageBreak( ref code );
+            //}
 
             if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}" );
 

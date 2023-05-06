@@ -178,38 +178,47 @@ namespace CodeViewsWindow
             }
         }
 
-        private static async Task<string> BuildScriptFile( bool reset = false )
+        private static async Task< string > BuildScriptFile( bool reset = false )
         {
-            string code = "";
+            StringBuilder code = new StringBuilder();
 
             Build.Build.IgnoreCounter = true;
 
-            code += "\nglobal function ReMapLive_Init\n\n";
-            code += Helper.ReMapCredit( true );
+            code.Append( "\nglobal function ReMapLive_Init\n\n" );
+            code.Append( Helper.ReMapCredit( true ) );
 
-            code += "void function ReMapLive_Init()\n";
-            code += "{\n";
+            code.Append( CodeViewsWindow.additionalCodeHead );
+            Build.Build.PageBreak( ref code );
+
+            code.Append( "void function ReMapLive_Init()\n" );
+            code.Append( "{\n" );
             
             if ( reset )
             {
-                code += "\n}\n";
+                code.Append( "\n}\n" );
             }
             else
             {
-                code += await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false );
-                code += "\n    AddCallback_EntitiesDidLoad( ReMapLive )\n";
-                code += "}\n\n";
+                code.Append( await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false ) );
+                code.Append( "\n    AddCallback_EntitiesDidLoad( ReMapLive )\n" );
+                code.Append( "}\n\n" );
 
-                code += "void function ReMapLive()\n";
-                code += "{\n";
-                code += Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z );
-                code += await Helper.BuildMapCode( Build.BuildType.Script, false );
-                code += "}\n";
+                code.Append( "void function ReMapLive()\n" );
+                code.Append( "{\n" );
+                code.Append( Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ) );
+                code.Append( await Helper.BuildMapCode( Build.BuildType.Script, false ) );
+                code.Append( "    " + CodeViewsWindow.additionalCodeInBlock.Replace( "\n", "\n    " ) );
+                code.Append( "\n" );
+                code.Append( "}\n" );
+
+                Build.Build.PageBreak( ref code );
+                code.Append( CodeViewsWindow.additionalCodeBelow );
+                Build.Build.PageBreak( ref code );
             }
 
             Build.Build.IgnoreCounter = false;
 
-            return code;
+            return code.ToString();
         }
 
         public static void RespawnPlayers()

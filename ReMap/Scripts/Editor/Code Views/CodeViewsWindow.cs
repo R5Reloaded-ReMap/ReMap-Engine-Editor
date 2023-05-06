@@ -39,7 +39,7 @@ namespace CodeViewsWindow
         // Menu Names
         internal static string SquirrelMenu = "SquirrelMenu";
         internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
-        internal static string SquirrelMenuShowInBlockAdditionalCode = "SquirrelMenuInBlockAdditionalCode";
+        internal static string SquirrelMenuShowAdditionalCode = "SquirrelMenuInBlockAdditionalCode";
 
         internal static string OffsetMenu = "OffsetMenu";
         internal static string OffsetMenuOffset = "OffsetMenuOffset";
@@ -520,9 +520,9 @@ namespace CodeViewsWindow
             return MenuInit.IsEnable( SquirrelMenuShowFunction );
         }
 
-        internal static bool InBlockAdditionalCodeEnable()
+        internal static bool AdditionalCodeEnable()
         {
-            return MenuInit.IsEnable( SquirrelMenuShowInBlockAdditionalCode );
+            return MenuInit.IsEnable( SquirrelMenuShowAdditionalCode );
         }
 
         internal static bool SelectionEnable()

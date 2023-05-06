@@ -120,7 +120,7 @@ namespace CodeViewsWindow
         {
             if ( !LibrarySorter.LibrarySorterWindow.CheckDialog( "Delete Code", "Are you sure you want delete this code ?" ) ) return;
 
-            activeCode.Content.Remove(  activeCode.Content[ tabCodeIdx ] );
+            activeCode.Content.Remove( activeCode.Content[ tabCodeIdx ] );
 
             tabCodeIdx = toolbarCodeTab.Length - 1;
 
@@ -158,9 +158,11 @@ namespace CodeViewsWindow
             {
                 CreateNewJsonAdditionalCode();
             }
-
-            string json = System.IO.File.ReadAllText( relativePathAdditionalCode );
-            additionalCode = JsonUtility.FromJson< AdditionalCode >( json );
+            else
+            {
+                string json = System.IO.File.ReadAllText( relativePathAdditionalCode );
+                additionalCode = JsonUtility.FromJson< AdditionalCode >( json );
+            }
 
             return additionalCode;
         }

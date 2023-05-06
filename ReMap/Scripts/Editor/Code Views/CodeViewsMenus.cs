@@ -67,7 +67,12 @@ namespace CodeViewsWindow
             CodeViewsMenu.CreateMenu( CodeViewsWindow.SelectionMenu, EmptyFunctionRefArray, MenuType.Large, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true );
         }
 
-        internal static MenuInit CreateMenu( string name, FunctionRef[] functionRef, MenuType menuType = MenuType.Large, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false )
+        internal static MenuInit CreateMenu( string name, FunctionRef functionRef, MenuType menuType = MenuType.Large, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false, bool enableSeparator = true )
+        {
+            return CreateMenu( name, new FunctionRef[] { functionRef }, menuType, trueText, falseText, tooltip, refresh, enableSeparator );
+        }
+
+        internal static MenuInit CreateMenu( string name, FunctionRef[] functionRef, MenuType menuType = MenuType.Large, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false, bool enableSeparator = true )
         {
             MenuInit menu;
 
@@ -77,6 +82,8 @@ namespace CodeViewsWindow
                 menu.Content = functionRef; 
             }
             else menu = new MenuInit( name, functionRef, menuType );
+
+            menu.EnableSeparator = enableSeparator;
 
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
@@ -106,6 +113,8 @@ namespace CodeViewsWindow
             if ( menu.Content.Length != 0 && menu.IsOpen )
             {
                 CallFunctions( menu.Content );
+
+                if ( !menu.EnableSeparator ) return;
 
                 if ( menu.MenuType == MenuType.Medium || menu.MenuType == MenuType.Small ) GUILayout.BeginHorizontal();
                 Space( menu.Space ); Separator( menu.SeparatorWidth );
@@ -260,6 +269,15 @@ namespace CodeViewsWindow
             GUILayout.EndVertical();
         }
 
+        internal static void OptionalAdditionalCodeOption()
+        {
+            GUILayout.BeginVertical();
+
+
+
+            GUILayout.EndVertical();
+        }
+
         private static void CheckOptionalAdvancedOption( bool value )
         {
             Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), value );
@@ -284,6 +302,7 @@ namespace CodeViewsWindow
         public static List < MenuInit > MenuArray = new List< MenuInit >();
         public string Name { get; set; }
         public bool IsOpen { get; set; }
+        public bool EnableSeparator { get; set; }
         public FunctionRef[] Content { get; set; }
         public MenuType MenuType { get; set; }
 
@@ -297,6 +316,7 @@ namespace CodeViewsWindow
 
             Name = name;
             IsOpen = false;
+            EnableSeparator = true;
             Content = functionRef;
             MenuType = menuType;
 

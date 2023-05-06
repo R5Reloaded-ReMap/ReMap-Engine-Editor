@@ -21,13 +21,13 @@ namespace CodeViewsWindow
 
         static FunctionRef[] SquirrelMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.Small, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true ),
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowInBlockAdditionalCode, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Add Additional Code", "Add Additional Code", "", true )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.Medium, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true )
         };
 
         static FunctionRef[] SquirrelFunction = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small )
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowAdditionalCode, () => CodeViewsMenu.OptionalAdditionalCodeOption(), MenuType.Medium, "Add Additional Code", "Add Additional Code", "", true, false )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
@@ -80,7 +80,7 @@ namespace CodeViewsWindow
 
             CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenu, LiveCodeMenu, MenuType.Large, "Live Generation", "Live Generation", "Allows you to send commands to\nspawn prop if your game is open" );
 
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.AdvancedMenu, AdvancedMenu, MenuType.Large, "Advanced Options", "Advanced Options", "Choose the objects you want to\ngenerate or not" );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.AdvancedMenu, () => CodeViewsMenu.OptionalAdvancedOption(), MenuType.Large, "Advanced Options", "Advanced Options", "Choose the objects you want to\ngenerate or not" );
 
             CodeViewsMenu.SharedFunctions();
 
@@ -100,8 +100,16 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( forceHide );
 
+            if ( AdditionalCodeWindow.additionalCode == null ) AdditionalCodeWindow.AdditionalCodeInit();
+
 
             StringBuilder code = new StringBuilder();
+
+            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() )
+            {
+                code.Append( AdditionalCodeWindow.additionalCode.HeadContent.Content[ AdditionalCodeWindow.tabCodeIdx ].Code );
+                PageBreak( ref code );
+            }
 
             if ( CodeViewsWindow.ShowFunctionEnable() )
             {
@@ -114,13 +122,20 @@ namespace CodeViewsWindow
             
             code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
 
-            //if( CodeViewsWindow.InBlockAdditionalCodeEnable() )
-            //{
-            //    code.Append( AdditionalCodeWindow.additionalCode.Content[ AdditionalCodeWindow.tabIdx ].Code );
-            //    PageBreak( ref code );
-            //}
+            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() )
+            {
+                code.Append( "    " + AdditionalCodeWindow.additionalCode.InBlockContent.Content[ AdditionalCodeWindow.tabCodeIdx ].Code.Replace( "\n", "\n    " ) );
+                PageBreak( ref code );
+            }
 
-            if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}" );
+            if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}\n" );
+
+            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() )
+            {
+                PageBreak( ref code );
+                code.Append( AdditionalCodeWindow.additionalCode.BelowContent.Content[ AdditionalCodeWindow.tabCodeIdx ].Code );
+                PageBreak( ref code );
+            }
 
             if ( CodeViewsWindow.AutoSendEnable() ) LiveMap.Send();
 

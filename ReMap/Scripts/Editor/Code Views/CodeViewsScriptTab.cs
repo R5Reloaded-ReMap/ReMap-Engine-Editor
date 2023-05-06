@@ -21,13 +21,13 @@ namespace CodeViewsWindow
 
         static FunctionRef[] SquirrelMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.Medium, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.Medium, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowAdditionalCode, () => CodeViewsMenu.OptionalAdditionalCodeOption(), MenuType.Medium, "Add Additional Code", "Add Additional Code", "", true )
         };
 
         static FunctionRef[] SquirrelFunction = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small ),
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowAdditionalCode, () => CodeViewsMenu.OptionalAdditionalCodeOption(), MenuType.Medium, "Add Additional Code", "Add Additional Code", "", true, false )
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
@@ -100,14 +100,12 @@ namespace CodeViewsWindow
 
             Helper.ForceHideBoolToGenerateObjects( forceHide );
 
-            if ( AdditionalCodeWindow.additionalCode == null ) AdditionalCodeWindow.AdditionalCodeInit();
-
 
             StringBuilder code = new StringBuilder();
 
             if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() )
             {
-                code.Append( AdditionalCodeWindow.additionalCode.HeadContent.Content[ AdditionalCodeWindow.tabCodeIdx ].Code );
+                code.Append( CodeViewsWindow.additionalCodeHead );
                 PageBreak( ref code );
             }
 
@@ -122,9 +120,9 @@ namespace CodeViewsWindow
             
             code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
 
-            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() )
+            if( CodeViewsWindow.AdditionalCodeEnable() )
             {
-                code.Append( "    " + AdditionalCodeWindow.additionalCode.InBlockContent.Content[ AdditionalCodeWindow.tabCodeIdx ].Code.Replace( "\n", "\n    " ) );
+                code.Append( "    " + CodeViewsWindow.additionalCodeInBlock.Replace( "\n", "\n    " ) );
                 PageBreak( ref code );
             }
 
@@ -133,7 +131,7 @@ namespace CodeViewsWindow
             if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() )
             {
                 PageBreak( ref code );
-                code.Append( AdditionalCodeWindow.additionalCode.BelowContent.Content[ AdditionalCodeWindow.tabCodeIdx ].Code );
+                code.Append( CodeViewsWindow.additionalCodeBelow );
                 PageBreak( ref code );
             }
 

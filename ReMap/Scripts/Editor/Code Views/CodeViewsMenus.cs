@@ -202,8 +202,23 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float space = menuType == MenuType.Large ? 2 : 25;
-            float labelSpace = menuType == MenuType.Large ? 316 : 289;
+            float space = 0, labelSpace = 0;
+
+            switch ( menuType )
+            {
+                case MenuType.Large:
+                    space = 2;
+                    labelSpace = 316;
+                    break;
+                case MenuType.Medium:
+                    space = 12;
+                    labelSpace = 302;
+                    break; 
+                case MenuType.Small:
+                    space = 25;
+                    labelSpace = 289;
+                break;
+            }
 
             GUILayout.BeginHorizontal();
                 Space( space );
@@ -273,7 +288,33 @@ namespace CodeViewsWindow
         {
             GUILayout.BeginVertical();
 
+            AdditionalCode code = AdditionalCodeWindow.additionalCode;
 
+            OptionalTextInfo( $"Head Code = {CodeViewsWindow.additionalCodeHeadName}", "", null, MenuType.Medium );
+            Space( 2 );
+
+            foreach ( AdditionalCodeContent content in code.HeadContent.Content )
+            {
+                OptionalButton( content.Name, "", () => ChangeAdditionalCode( ref CodeViewsWindow.additionalCodeHeadName, ref CodeViewsWindow.additionalCodeHead, content ), null, MenuType.Small );
+            }
+
+            Space( 1 );
+            OptionalTextInfo( $"In-Block Code = {CodeViewsWindow.additionalCodeInBlockName}", "", null, MenuType.Medium );
+            Space( 2 );
+            
+            foreach ( AdditionalCodeContent content in code.InBlockContent.Content )
+            {
+                OptionalButton( content.Name, "",() => ChangeAdditionalCode( ref CodeViewsWindow.additionalCodeInBlockName, ref CodeViewsWindow.additionalCodeInBlock, content ), null, MenuType.Small );
+            }
+
+            Space( 1 );
+            OptionalTextInfo( $"Below Code = {CodeViewsWindow.additionalCodeBelowName}", "", null, MenuType.Medium );
+            Space( 2 );
+            
+            foreach ( AdditionalCodeContent content in code.BelowContent.Content )
+            {
+                OptionalButton( content.Name, "",() => ChangeAdditionalCode( ref CodeViewsWindow.additionalCodeBelowName, ref CodeViewsWindow.additionalCodeBelow, content ), null, MenuType.Small );
+            }
 
             GUILayout.EndVertical();
         }
@@ -281,6 +322,14 @@ namespace CodeViewsWindow
         private static void CheckOptionalAdvancedOption( bool value )
         {
             Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), value );
+            CodeViewsWindow.Refresh();
+        }
+
+        private static void ChangeAdditionalCode( ref string nameRef, ref string codeRef, AdditionalCodeContent content )
+        {
+            nameRef = content.Name;
+            codeRef = content.Code;
+
             CodeViewsWindow.Refresh();
         }
 

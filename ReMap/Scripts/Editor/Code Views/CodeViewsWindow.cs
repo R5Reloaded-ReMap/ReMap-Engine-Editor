@@ -32,6 +32,13 @@ namespace CodeViewsWindow
         internal static int tabEnt_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
 
+        internal static string additionalCodeHeadName = "Empty Code";
+        internal static string additionalCodeInBlockName = "Empty Code";
+        internal static string additionalCodeBelowName = "Empty Code";
+        internal static string additionalCodeHead = "";
+        internal static string additionalCodeInBlock = "";
+        internal static string additionalCodeBelow = "";
+
         // Menus
         // Show / Hide Settings Menu
         internal static bool ShowSettingsMenu = false;
@@ -88,6 +95,8 @@ namespace CodeViewsWindow
         public static void Init()
         {
             TagHelper.CheckAndCreateTags(); tab = 0; tabEnt = 0;
+
+            if ( AdditionalCodeWindow.additionalCode == null ) AdditionalCodeWindow.AdditionalCodeInit();
 
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
             windowInstance.minSize = new Vector2( 1230, 500 );
@@ -177,6 +186,7 @@ namespace CodeViewsWindow
             EntityCount = 0; GenerateCorrectCode();
             if ( reSetScroll ) SetScrollView( scroll );
             if ( AdditionalCodeWindow.windowInstance != null ) AdditionalCodeWindow.Refresh();
+            if ( AdditionalCodeWindow.additionalCode == null ) AdditionalCodeWindow.AdditionalCodeInit();
         }
 
         internal static void CopyCode()

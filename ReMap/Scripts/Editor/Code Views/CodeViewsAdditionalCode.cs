@@ -78,6 +78,7 @@ namespace CodeViewsWindow
                 {
                     tabIdxTemp = tabIdx;
                     tabCodeIdxTemp = tabCodeIdx;
+                    GUI.FocusControl( null );
                     Refresh( true );
                 }
 

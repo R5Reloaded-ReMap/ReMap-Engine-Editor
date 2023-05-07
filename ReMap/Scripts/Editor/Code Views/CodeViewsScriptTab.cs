@@ -32,12 +32,12 @@ namespace CodeViewsWindow
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.Small, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.Medium, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
         };
 
         static FunctionRef[] OffsetSubMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuShowOffset, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Hide Origin Offset", "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"", true ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuShowOffset, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Medium, "Hide Origin Offset", "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"", true ),
             () => CodeViewsMenu.OptionalTextInfo( "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", MenuInit.IsEnable( CodeViewsWindow.OffsetMenuShowOffset ), MenuType.Small ),
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", MenuInit.IsEnable( CodeViewsWindow.OffsetMenuShowOffset ), MenuType.Small )
         };
@@ -51,8 +51,8 @@ namespace CodeViewsWindow
         {
             SendMapCodeButton,
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuRespawn, SubLiveCodeRespawnMenu, MenuType.Medium, "Respawn Menu", "Respawn Menu", "" ),
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAutoSend, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly sends live map code" ),
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAdvanced, SubLiveCodeAdvancedMenu, MenuType.Small, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map" )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAutoSend, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Medium, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly sends live map code" ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAdvanced, SubLiveCodeAdvancedMenu, MenuType.Medium, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map" )
         };
 
         internal static FunctionRef[] SubLiveCodeRespawnMenu = new FunctionRef[]

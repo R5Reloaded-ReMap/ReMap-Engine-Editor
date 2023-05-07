@@ -29,7 +29,7 @@ namespace CodeViewsWindow
 
         internal static FunctionRef[] DevMenu = new FunctionRef[]
         {
-            () => CreateMenu( CodeViewsWindow.DevMenuDebugInfo, EmptyFunctionRefArray, MenuType.Small, "Hide Debug Info", "Show Debug Info", "Get infos from current window" )
+            () => CreateMenu( CodeViewsWindow.DevMenuDebugInfo, EmptyFunctionRefArray, MenuType.Medium, "Hide Debug Info", "Show Debug Info", "Get infos from current window" )
         };
 
         internal static FunctionRef[] FieldPreview = new FunctionRef[]

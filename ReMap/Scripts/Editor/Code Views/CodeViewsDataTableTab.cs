@@ -19,7 +19,7 @@ namespace CodeViewsWindow
     {
         static FunctionRef[] OffsetMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.Small, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.Medium, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
         };
 
         static FunctionRef[] OffsetSubMenu = new FunctionRef[]

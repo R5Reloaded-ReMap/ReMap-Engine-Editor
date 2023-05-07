@@ -110,7 +110,7 @@ namespace CodeViewsWindow
                 PageBreak( ref code );
             }
 
-            if ( CodeViewsWindow.ShowPrecacheEnable() )
+            if ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.ShowPrecacheEnable() )
             {
                 code.Append( $"void function {CodeViewsWindow.functionName}_Init()\n" );
                 code.Append( "{\n" );

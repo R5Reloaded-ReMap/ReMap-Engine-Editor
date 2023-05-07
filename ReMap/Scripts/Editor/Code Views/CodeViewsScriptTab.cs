@@ -27,7 +27,8 @@ namespace CodeViewsWindow
 
         static FunctionRef[] SquirrelFunction = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small )
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowPrecacheCode, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Medium, "Hide Precache Code", "Show Precache Code", "", true )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
@@ -103,10 +104,19 @@ namespace CodeViewsWindow
 
             StringBuilder code = new StringBuilder();
 
-            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeHead != "" )
+            if ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeHead != "" )
             {
                 code.Append( CodeViewsWindow.additionalCodeHead );
                 PageBreak( ref code );
+            }
+
+            if ( CodeViewsWindow.ShowPrecacheEnable() )
+            {
+                code.Append( $"void function {CodeViewsWindow.functionName}_Init()\n" );
+                code.Append( "{\n" );
+                code.Append( await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false ) );
+                code.Append( $"\n    AddCallback_EntitiesDidLoad( {CodeViewsWindow.functionName} )\n" );
+                code.Append( "}\n\n" );
             }
 
             if ( CodeViewsWindow.ShowFunctionEnable() )
@@ -120,7 +130,7 @@ namespace CodeViewsWindow
             
             code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
 
-            if( CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeInBlock != "" )
+            if ( CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeInBlock != "" )
             {
                 code.Append( "    " + CodeViewsWindow.additionalCodeInBlock.Replace( "\n", "\n    " ) );
                 PageBreak( ref code );
@@ -128,7 +138,7 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}\n" );
 
-            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeBelow != "" )
+            if ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeBelow != "" )
             {
                 PageBreak( ref code );
                 code.Append( CodeViewsWindow.additionalCodeBelow );

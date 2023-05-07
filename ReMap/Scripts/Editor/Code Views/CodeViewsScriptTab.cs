@@ -103,7 +103,7 @@ namespace CodeViewsWindow
 
             StringBuilder code = new StringBuilder();
 
-            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() )
+            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeHead != "" )
             {
                 code.Append( CodeViewsWindow.additionalCodeHead );
                 PageBreak( ref code );
@@ -120,7 +120,7 @@ namespace CodeViewsWindow
             
             code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
 
-            if( CodeViewsWindow.AdditionalCodeEnable() )
+            if( CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeInBlock != "" )
             {
                 code.Append( "    " + CodeViewsWindow.additionalCodeInBlock.Replace( "\n", "\n    " ) );
                 PageBreak( ref code );
@@ -128,7 +128,7 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}\n" );
 
-            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() )
+            if( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() && CodeViewsWindow.additionalCodeBelow != "" )
             {
                 PageBreak( ref code );
                 code.Append( CodeViewsWindow.additionalCodeBelow );

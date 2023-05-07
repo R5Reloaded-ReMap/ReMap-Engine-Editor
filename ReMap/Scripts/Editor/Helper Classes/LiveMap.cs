@@ -178,7 +178,7 @@ namespace CodeViewsWindow
             }
         }
 
-        private static async Task< string > BuildScriptFile( bool reset = false )
+        public static async Task< string > BuildScriptFile( bool reset = false )
         {
             StringBuilder code = new StringBuilder();
 

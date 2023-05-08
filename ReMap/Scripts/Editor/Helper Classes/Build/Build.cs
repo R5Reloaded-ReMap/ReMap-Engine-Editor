@@ -105,9 +105,9 @@ namespace Build
             return code.ToString();
         }
 
-        internal static void PageBreak( ref StringBuilder code )
+        internal static void PageBreak( ref StringBuilder code, int idx = 1 )
         {
-            code.Append( Environment.NewLine );
+            for ( int i = 0; i < idx; i++ ) code.Append( Environment.NewLine );
         }
 
         private static void IncrementToCounter( ObjectType objectType, BuildType buildType, GameObject[] objectData )

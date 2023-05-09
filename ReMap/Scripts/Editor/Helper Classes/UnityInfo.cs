@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class UnityInfo
 {
-    public static string ReMapVersion = "Version 1.0";
+    public static string ReMapVersion = "Version 1.0.1";
     public static string JsonVersion = "1.0";
 
     // Path Utility

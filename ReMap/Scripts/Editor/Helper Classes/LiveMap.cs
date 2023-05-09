@@ -92,6 +92,7 @@ namespace CodeViewsWindow
             }
 
             Commands = new List< string >();
+            ReMapConsole.Log( $"[LiveCode] Reset Command Queue", ReMapConsole.LogType.Success );
 
             AddToGameQueue( $"sv_cheats 1" );
             AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999" );
@@ -111,11 +112,14 @@ namespace CodeViewsWindow
 
         public static void AddToGameQueue( string command )
         {
+            ReMapConsole.Log( $"[LiveCode] Adding Command: \"{command}\"", ReMapConsole.LogType.Info );
             Commands.Add( command );
         }
 
         public static void SendCommands()
         {
+            ReMapConsole.Log( $"[LiveCode] Sending Commands", ReMapConsole.LogType.Success );
+            
             foreach ( string command in Commands )
             {
                 SendCommandToApex( command );

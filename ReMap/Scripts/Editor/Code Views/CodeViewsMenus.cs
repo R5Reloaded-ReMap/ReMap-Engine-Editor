@@ -41,7 +41,7 @@ namespace CodeViewsWindow
             () => OptionalTextInfo( "info ref", "info field", null, MenuType.Large ),
             () => OptionalButton( "button ref", "button field", EmptyFunctionRef, null, MenuType.Large ),
 
-            () => CreateMenu( "MediumFieldPreview", MediumFieldPreview, MenuType.Medium, "Medium Field Preview", "Medium Field Preview", "" )
+            () => CreateMenu( "MediumFieldPreview", MediumFieldPreview, MenuType.Medium, "Medium Field Preview", "Medium Field Preview", "", false, false )
         };
 
         internal static FunctionRef[] MediumFieldPreview = new FunctionRef[]
@@ -53,7 +53,7 @@ namespace CodeViewsWindow
             () => OptionalTextInfo( "info ref", "info field", null, MenuType.Medium ),
             () => OptionalButton( "button ref", "button field", EmptyFunctionRef, null, MenuType.Medium ),
 
-            () => CreateMenu( "SmallFieldPreview", SmallFieldPreview, MenuType.Small, "Small Field Preview", "Small Field Preview", "" )
+            () => CreateMenu( "SmallFieldPreview", SmallFieldPreview, MenuType.Small, "Small Field Preview", "Small Field Preview", "", false, false )
         };
 
         internal static FunctionRef[] SmallFieldPreview = new FunctionRef[]

@@ -22,7 +22,7 @@ public class Startup : EditorWindow {
         //These will run when Unity starts up
         TagHelper.CheckAndCreateTags();
 
-        if (!File.Exists(currentDirectory + "/" + relativeConfigFile))
+        /*if (!File.Exists(currentDirectory + "/" + relativeConfigFile))
         {
             Root myObject = new Root();
             myObject.ShowStartupWindow = true;
@@ -38,7 +38,7 @@ public class Startup : EditorWindow {
             {
                 StartupWindow.Init();
             }
-        }
+        }*/
     }
 
     public class Root

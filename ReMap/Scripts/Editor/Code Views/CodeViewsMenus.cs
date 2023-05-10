@@ -32,7 +32,7 @@ namespace CodeViewsWindow
             () => CreateMenu( CodeViewsWindow.DevMenuDebugInfo, EmptyFunctionRefArray, MenuType.Medium, "Hide Debug Info", "Show Debug Info", "Get infos from current window" )
         };
 
-        internal static FunctionRef[] FieldPreview = new FunctionRef[]
+        internal static FunctionRef[] LargeFieldPreview = new FunctionRef[]
         {
             () => OptionalTextField( ref strRef, "text ref", "text field", null, MenuType.Large ),
             () => OptionalToggle( ref boolRef, "toggle ref", "toggle field", null, MenuType.Large ),
@@ -41,10 +41,22 @@ namespace CodeViewsWindow
             () => OptionalTextInfo( "info ref", "info field", null, MenuType.Large ),
             () => OptionalButton( "button ref", "button field", EmptyFunctionRef, null, MenuType.Large ),
 
-            () => CreateMenu( "SubFieldPreview", SubFieldPreview, MenuType.Small, "Sub Field Preview", "Sub Field Preview", "" )
+            () => CreateMenu( "MediumFieldPreview", MediumFieldPreview, MenuType.Medium, "Medium Field Preview", "Medium Field Preview", "" )
         };
 
-        internal static FunctionRef[] SubFieldPreview = new FunctionRef[]
+        internal static FunctionRef[] MediumFieldPreview = new FunctionRef[]
+        {
+            () => OptionalTextField( ref strRef, "text ref", "text field", null, MenuType.Medium ),
+            () => OptionalToggle( ref boolRef, "toggle ref", "toggle field", null, MenuType.Medium ),
+            () => OptionalIntField( ref intRef, "int ref", "int field", null, MenuType.Medium ),
+            () => OptionalVector3Field( ref vecRef, "vector ref", "vector field", null, MenuType.Medium ),
+            () => OptionalTextInfo( "info ref", "info field", null, MenuType.Medium ),
+            () => OptionalButton( "button ref", "button field", EmptyFunctionRef, null, MenuType.Medium ),
+
+            () => CreateMenu( "SmallFieldPreview", SmallFieldPreview, MenuType.Small, "Small Field Preview", "Small Field Preview", "" )
+        };
+
+        internal static FunctionRef[] SmallFieldPreview = new FunctionRef[]
         {
             () => OptionalTextField( ref strRef, "text ref", "text field", null, MenuType.Small ),
             () => OptionalToggle( ref boolRef, "toggle ref", "toggle field", null, MenuType.Small ),
@@ -58,7 +70,7 @@ namespace CodeViewsWindow
         {
             #if ReMapDev
                 CreateMenu( CodeViewsWindow.DevMenu, DevMenu, MenuType.Large, "Dev Menu", "Dev Menu", "" );
-                CreateMenu( "FieldPreview", FieldPreview, MenuType.Large, "Field Preview", "Field Preview", "" );
+                CreateMenu( "LargeFieldPreview", LargeFieldPreview, MenuType.Large, "Field Preview", "Field Preview", "" );
             #endif
         }
 
@@ -79,7 +91,7 @@ namespace CodeViewsWindow
             if ( MenuInit.Exist( name ) )
             {
                 menu = MenuInit.Find( name );
-                menu.Content = functionRef; 
+                menu.Content = functionRef;
             }
             else menu = new MenuInit( name, functionRef, menuType );
 
@@ -90,6 +102,8 @@ namespace CodeViewsWindow
 
             GUIContent buttonContent = new GUIContent( menu.IsOpen ? trueText : falseText, tooltip );
             GUIContent buttonContentInfo = new GUIContent( menu.IsOpen ? CodeViewsWindow.enableLogo : CodeViewsWindow.disableLogo, tooltip );
+
+            if ( menuType != MenuType.Large ) Space( 4 );
 
             GUILayout.BeginHorizontal();
 
@@ -112,7 +126,7 @@ namespace CodeViewsWindow
         {
             if ( menu.Content.Length != 0 && menu.IsOpen )
             {
-                CallFunctions( menu.Content );
+                foreach ( FunctionRef functionRef in menu.Content ) functionRef();
 
                 if ( !menu.EnableSeparator ) return;
 
@@ -120,16 +134,7 @@ namespace CodeViewsWindow
                 Space( menu.Space ); Separator( menu.SeparatorWidth );
                 if ( menu.MenuType == MenuType.Medium || menu.MenuType == MenuType.Small ) GUILayout.EndHorizontal();
             }
-            else if ( menu.MenuType == MenuType.Large ) Space( 10 );
-        }
-
-        internal static void CallFunctions( FunctionRef[] functionRefs )
-        {
-            foreach ( FunctionRef functionRef in functionRefs )
-            {
-                Space( 4 );
-                functionRef();
-            }
+            else if ( menu.MenuType == MenuType.Large ) Space( 8 );
         }
 
 
@@ -143,9 +148,28 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float space = menuType == MenuType.Large ? 2 : 25;
-            float labelSpace = menuType == MenuType.Large ? 92 : 89;
-            float fieldSpace = menuType == MenuType.Large ? 220 : 200;
+            Space( 4 );
+
+            float space = 0, labelSpace = 0, fieldSpace = 0;
+
+            switch ( menuType )
+            {
+                case MenuType.Large:
+                    space = 2;
+                    labelSpace = 92;
+                    fieldSpace = 220;
+                    break;
+                case MenuType.Medium:
+                    space = 12;
+                    labelSpace = 92;
+                    fieldSpace = 210;
+                    break; 
+                case MenuType.Small:
+                    space = 25;
+                    labelSpace = 89;
+                    fieldSpace = 200;
+                break;
+            }
 
             GUILayout.BeginHorizontal();
                 Space( space );
@@ -158,8 +182,25 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float space = menuType == MenuType.Large ? 2 : 25;
-            float labelSpace = menuType == MenuType.Large ? 298 : 275;
+            Space( 4 );
+
+            float space = 0, labelSpace = 0;
+
+            switch ( menuType )
+            {
+                case MenuType.Large:
+                    space = 2;
+                    labelSpace = 298;
+                    break;
+                case MenuType.Medium:
+                    space = 12;
+                    labelSpace = 288;
+                    break; 
+                case MenuType.Small:
+                    space = 25;
+                    labelSpace = 275;
+                break;
+            }
 
             GUILayout.BeginHorizontal();
                 Space( space );
@@ -171,10 +212,29 @@ namespace CodeViewsWindow
         internal static void OptionalIntField( ref int reference, string text = "int field", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Large )
         {
             if ( condition != null && !condition.Value ) return;
+            
+            Space( 4 );
 
-            float space = menuType == MenuType.Large ? 2 : 25;
-            float labelSpace = menuType == MenuType.Large ? 226 : 219;
-            float fieldSpace = menuType == MenuType.Large ? 86 : 70;
+            float space = 0, labelSpace = 0, fieldSpace = 0;
+
+            switch ( menuType )
+            {
+                case MenuType.Large:
+                    space = 2;
+                    labelSpace = 226;
+                    fieldSpace = 86;
+                    break;
+                case MenuType.Medium:
+                    space = 12;
+                    labelSpace = 224;
+                    fieldSpace = 78;
+                    break; 
+                case MenuType.Small:
+                    space = 25;
+                    labelSpace = 219;
+                    fieldSpace = 70;
+                break;
+            }
 
             GUILayout.BeginHorizontal();
                 Space( space );
@@ -187,9 +247,28 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
-            float space = menuType == MenuType.Large ? 2 : 25;
-            float labelSpace = menuType == MenuType.Large ? 102 : 79;
-            float fieldSpace = menuType == MenuType.Large ? 210 : 210;
+            Space( 4 );
+
+            float space = 0, labelSpace = 0, fieldSpace = 0;
+
+            switch ( menuType )
+            {
+                case MenuType.Large:
+                    space = 2;
+                    labelSpace = 102;
+                    fieldSpace = 210;
+                    break;
+                case MenuType.Medium:
+                    space = 12;
+                    labelSpace = 92;
+                    fieldSpace = 210;
+                    break; 
+                case MenuType.Small:
+                    space = 25;
+                    labelSpace = 79;
+                    fieldSpace = 210;
+                break;
+            }
 
             GUILayout.BeginHorizontal();
                 Space( space );
@@ -201,6 +280,8 @@ namespace CodeViewsWindow
         internal static void OptionalTextInfo( string text = "text", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Large )
         {
             if ( condition != null && !condition.Value ) return;
+
+            Space( 4 );
 
             float space = 0, labelSpace = 0;
 
@@ -231,11 +312,28 @@ namespace CodeViewsWindow
         {
             if ( condition != null && !condition.Value ) return;
 
+            Space( 4 );
+
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            int space = menuType == MenuType.Large ? 2 : 25;
-            float labelSpace = menuType == MenuType.Large ? 314 : 292;
+            float space = 0, labelSpace = 0;
+
+            switch ( menuType )
+            {
+                case MenuType.Large:
+                    space = 2;
+                    labelSpace = 314;
+                    break;
+                case MenuType.Medium:
+                    space = 12;
+                    labelSpace = 305;
+                    break; 
+                case MenuType.Small:
+                    space = 25;
+                    labelSpace = 292;
+                break;
+            }
 
             GUILayout.BeginHorizontal();
                 Space( space );
@@ -248,6 +346,8 @@ namespace CodeViewsWindow
         {
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
+
+            Space( 4 );
 
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();

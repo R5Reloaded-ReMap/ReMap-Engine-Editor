@@ -74,11 +74,6 @@ namespace CodeViewsWindow
         {
             if( IsSending )
                 return;
-
-            // Delete the button until the message is displayed and to prevent sending too many commands to apex
-            FunctionRef[] newLiveCode = new FunctionRef[ ScriptTab.LiveCodeMenu.Length - 1 ];
-            Array.Copy( ScriptTab.LiveCodeMenu, 1, newLiveCode, 0, ScriptTab.LiveCodeMenu.Length - 1 );
-            ScriptTab.LiveCodeMenu = newLiveCode;
             
             IsSending = true;
             //find and set window once
@@ -271,7 +266,7 @@ namespace CodeViewsWindow
             return new[] { $"[{ origin }]", $"[{ angles }]" };
         }
 
-        private static async void SendConfirmation( ConfirmationType confirmationType, bool ignoreFunctionRef = false )
+        private static async void SendConfirmation( ConfirmationType confirmationType, bool ignoreSending = false )
         {
             CodeViewsWindow.SendingObjects = true;
 
@@ -288,14 +283,6 @@ namespace CodeViewsWindow
             }
 
             CodeViewsWindow.SendingObjects = false;
-
-            if ( ignoreFunctionRef ) return;
-
-            // Add the button
-            FunctionRef[] updatedLiveCode = new FunctionRef[ ScriptTab.LiveCodeMenu.Length + 1 ];
-            updatedLiveCode[0] = ScriptTab.SendMapCodeButton;
-            Array.Copy( ScriptTab.LiveCodeMenu, 0, updatedLiveCode, 1, ScriptTab.LiveCodeMenu.Length );
-            ScriptTab.LiveCodeMenu = updatedLiveCode;
         }
 
         internal static void ReMapTeleportToMap()
@@ -313,6 +300,8 @@ namespace CodeViewsWindow
             }
 
             Commands = new List< string >();
+            ReMapConsole.Log( $"[LiveCode] Reset Command Queue", ReMapConsole.LogType.Success );
+            
             RespawnPlayers();
             SendCommands();
 

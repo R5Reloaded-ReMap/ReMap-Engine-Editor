@@ -17,8 +17,6 @@ namespace CodeViewsWindow
 {
     public class ScriptTab
     {
-        internal static FunctionRef SendMapCodeButton = () => CodeViewsMenu.OptionalButton( "Send Map Code To Game", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(), null );
-
         static FunctionRef[] SquirrelMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.Medium, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true ),
@@ -50,7 +48,7 @@ namespace CodeViewsWindow
 
         internal static FunctionRef[] LiveCodeMenu = new FunctionRef[]
         {
-            SendMapCodeButton,
+            () => CodeViewsMenu.OptionalButton( "Fast Load", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(), !CodeViewsWindow.SendingObjects ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuRespawn, SubLiveCodeRespawnMenu, MenuType.Medium, "Respawn Menu", "Respawn Menu", "" ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAutoSend, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Medium, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly sends live map code" ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAdvanced, SubLiveCodeAdvancedMenu, MenuType.Medium, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map" )
@@ -59,7 +57,7 @@ namespace CodeViewsWindow
         internal static FunctionRef[] SubLiveCodeRespawnMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuTeleportation, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Disable Teleport Player To Map", "Enable Teleport Player To Map", "Automaticly teleport all players to the map when sending the code to the game" ),
-            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.ReMapTeleportToMap(), null, MenuType.Small ),
+            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.ReMapTeleportToMap(), !CodeViewsWindow.SendingObjects, MenuType.Small ),
         };
 
         internal static FunctionRef[] SubLiveCodeAdvancedMenu = new FunctionRef[]

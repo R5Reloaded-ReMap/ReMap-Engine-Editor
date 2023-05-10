@@ -156,9 +156,19 @@ namespace CodeViewsWindow
                 }
             }
 
+            if ( !processFound )
+            {
+                SendConfirmation( ConfirmationType.ERROR );
+                return;
+            }
+
             m_hEngine = FindApexWindow();
 
-            if( m_hEngine == null ) return;
+            if( m_hEngine == null )
+            {
+                SendConfirmation( ConfirmationType.ERROR );
+                return;
+            }
 
             if ( path != "" )
             {
@@ -174,11 +184,6 @@ namespace CodeViewsWindow
                 File.WriteAllText( path, code );
 
                 if ( !reset ) SendCommandToApex( $"script GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
-            }
-
-            if ( !processFound )
-            {
-                UnityEngine.Debug.Log( "Process Not Found" );
             }
         }
 

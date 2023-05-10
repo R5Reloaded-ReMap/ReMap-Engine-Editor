@@ -86,8 +86,7 @@ namespace CodeViewsWindow
                 return;
             }
 
-            Commands = new List< string >();
-            ReMapConsole.Log( $"[LiveCode] Reset Command Queue", ReMapConsole.LogType.Success );
+            ResetCommandList();
 
             AddToGameQueue( $"sv_cheats 1" );
             AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999" );
@@ -124,6 +123,12 @@ namespace CodeViewsWindow
                     ;;;;;
                 }
             }
+        }
+
+        public static void ResetCommandList()
+        {
+            Commands = new List< string >();
+            ReMapConsole.Log( $"[LiveCode] Reset Command Queue", ReMapConsole.LogType.Success );
         }
 
         public static async void ReloadLevel( bool reset = false, string code = null )
@@ -266,13 +271,14 @@ namespace CodeViewsWindow
             return new[] { $"[{ origin }]", $"[{ angles }]" };
         }
 
-        private static async void SendConfirmation( ConfirmationType confirmationType, bool ignoreSending = false )
+        private static async void SendConfirmation( ConfirmationType confirmationType )
         {
             CodeViewsWindow.SendingObjects = true;
 
             switch ( confirmationType )
             {
                 case ConfirmationType.ERROR:
+                    ReMapConsole.Log( $"[LiveCode] Game not found", ReMapConsole.LogType.Error );
                     await Task.Delay( 1000 * 6 ); // Show the message while 6 seconds
                     break;
 
@@ -295,12 +301,11 @@ namespace CodeViewsWindow
             {
                 IsSending = false;
                 MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
-                SendConfirmation( ConfirmationType.ERROR, true );
+                SendConfirmation( ConfirmationType.ERROR );
                 return;
             }
 
-            Commands = new List< string >();
-            ReMapConsole.Log( $"[LiveCode] Reset Command Queue", ReMapConsole.LogType.Success );
+            ResetCommandList();
             
             RespawnPlayers();
             SendCommands();

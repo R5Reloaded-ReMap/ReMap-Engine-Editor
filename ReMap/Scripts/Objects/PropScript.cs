@@ -5,10 +5,11 @@ public enum PropScriptOptions
 {
     NoOption, // null
     PlayerClip, // ent is a invisible wall
-    PlayerNoClimb, // player can't climb this ent
+    NoClimb, // player can't climb this ent
     MakeInvisible, // ent is invisible
-    PlayerNoGrapple, // player can't grapple this ent
-    PlayerNoGrappleNoClimb, // player can't grapple this ent and can't climb
+    NoGrapple, // player can't grapple this ent
+    PlayerClipInvisibleNoGrappleNoClimb, // player can't grapple this ent and can't climb && ent is invisible
+    PlayerClipNoGrappleNoClimb, // player can't grapple this ent and can't climb
     NoCollision // ent have no collision
 }
 

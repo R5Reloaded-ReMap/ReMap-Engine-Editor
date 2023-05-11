@@ -18,10 +18,11 @@ namespace Build
         private static Dictionary< PropScriptOptions, string > ArrayName = new Dictionary< PropScriptOptions, string >()
         {
             { PropScriptOptions.PlayerClip, "ClipArray" },
-            { PropScriptOptions.PlayerNoClimb, "NoClimbArray" },
+            { PropScriptOptions.NoClimb, "NoClimbArray" },
             { PropScriptOptions.MakeInvisible, "InvisibleArray" },
-            { PropScriptOptions.PlayerNoGrapple, "NoGrappleArray" },
-            { PropScriptOptions.PlayerNoGrappleNoClimb, "NoGrappleNoClimbArray" },
+            { PropScriptOptions.NoGrapple, "NoGrappleArray" },
+            { PropScriptOptions.PlayerClipInvisibleNoGrappleNoClimb, "ClipInvisibleNoGrappleNoClimbArray" },
+            { PropScriptOptions.PlayerClipNoGrappleNoClimb, "ClipNoGrappleNoClimb" },
             { PropScriptOptions.NoCollision, "NoCollisionArray" }
         };
 
@@ -30,17 +31,18 @@ namespace Build
             StringBuilder code = new StringBuilder(); PrecacheList = new List< String >();
 
             bool ClipArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClip );
-            bool NoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoClimb );
+            bool NoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoClimb );
             bool InvisibleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.MakeInvisible );
-            bool NoGrappleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoGrapple );
-            bool NoGrappleNoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoGrappleNoClimb );
+            bool NoGrappleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoGrapple );
+            bool ClipInvisibleNoGrappleNoClimb = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClipInvisibleNoGrappleNoClimb );
+            bool PlayerClipNoGrappleNoClimb = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClipNoGrappleNoClimb );
             bool NoCollisionArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoCollision );
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || NoGrappleNoClimbArrayBool || NoCollisionArrayBool )
+                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || ClipInvisibleNoGrappleNoClimb || PlayerClipNoGrappleNoClimb || NoCollisionArrayBool )
                     {
                         code.Append( "    // Props Array" ); PageBreak( ref code );
                         code.Append( "    " );
@@ -48,7 +50,8 @@ namespace Build
                         if ( NoClimbArrayBool ) code.Append( $"array < entity > NoClimbArray; " );
                         if ( InvisibleArrayBool ) code.Append( $"array < entity > InvisibleArray; " );
                         if ( NoGrappleArrayBool ) code.Append( $"array < entity > NoGrappleArray; " );
-                        if ( NoGrappleNoClimbArrayBool ) code.Append( $"array < entity > NoGrappleNoClimbArray; " );
+                        if ( ClipInvisibleNoGrappleNoClimb ) code.Append( $"array < entity > ClipInvisibleNoGrappleNoClimbArray; " );
+                        if ( PlayerClipNoGrappleNoClimb ) code.Append( $"array < entity > ClipNoGrappleNoClimb; " );
                         if ( NoCollisionArrayBool ) code.Append( $"array < entity > NoCollisionArray; " );
                         PageBreak( ref code, 2 );
                     }
@@ -136,7 +139,7 @@ namespace Build
             {
                 case BuildType.Script:
                 
-                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || NoGrappleNoClimbArrayBool || NoCollisionArrayBool )
+                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || ClipInvisibleNoGrappleNoClimb || PlayerClipNoGrappleNoClimb || NoCollisionArrayBool )
                     {
                         PageBreak( ref code );
                         if ( ClipArrayBool )
@@ -156,9 +159,20 @@ namespace Build
 
                         if ( NoGrappleArrayBool ) code.Append( "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n" );
 
-                        if ( NoGrappleNoClimbArrayBool )
+                        if ( ClipInvisibleNoGrappleNoClimb )
                         {
-                            code.Append( "    foreach ( entity ent in NoGrappleNoClimbArray )\n" );
+                            code.Append( "    foreach ( entity ent in ClipInvisibleNoGrappleNoClimbArray )\n" );
+                            code.Append( "    {\n" );
+                            code.Append( "        ent.MakeInvisible()\n" );
+                            code.Append( "        ent.kv.solid = 3\n" );
+                            code.Append( "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n" );
+                            code.Append( "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n" );
+                            code.Append( "    }\n" );
+                        }
+
+                        if ( PlayerClipNoGrappleNoClimb )
+                        {
+                            code.Append( "    foreach ( entity ent in ClipNoGrappleNoClimb )\n" );
                             code.Append( "    {\n" );
                             code.Append( "        ent.kv.solid = 3\n" );
                             code.Append( "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n" );

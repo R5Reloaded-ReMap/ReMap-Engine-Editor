@@ -50,7 +50,7 @@ namespace Build
                         if ( NoGrappleArrayBool ) code.Append( $"array < entity > NoGrappleArray; " );
                         if ( NoGrappleNoClimbArrayBool ) code.Append( $"array < entity > NoGrappleNoClimbArray; " );
                         if ( NoCollisionArrayBool ) code.Append( $"array < entity > NoCollisionArray; " );
-                        PageBreak( ref code ); PageBreak( ref code );
+                        PageBreak( ref code, 2 );
                     }
 
                     code.Append( "    // Props" );
@@ -160,7 +160,6 @@ namespace Build
                         {
                             code.Append( "    foreach ( entity ent in NoGrappleNoClimbArray )\n" );
                             code.Append( "    {\n" );
-                            code.Append( "        ent.MakeInvisible()\n" );
                             code.Append( "        ent.kv.solid = 3\n" );
                             code.Append( "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n" );
                             code.Append( "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n" );

@@ -218,7 +218,7 @@ namespace ImportExport.Json
                         TransferDataToClass( data, linkedZiplineScript, new[] { "zipline_start", "zipline_end" }.ToList() );
                         foreach ( Vector3 nodesPos in data.Nodes )
                         {
-                            GameObject node = CreateCube( "path_point" );
+                            GameObject node = CreateGameObject( "path_point" );
                             if ( node == null ) continue;
                             node.transform.position = nodesPos;
                             node.transform.parent = obj.transform;
@@ -363,12 +363,12 @@ namespace ImportExport.Json
                         obj.AddComponent< PathScript >();
                         PathScript pathScript = ( PathScript ) Helper.GetComponentByEnum( obj, dataType );
                         TransferDataToClass( data, pathScript );
-                        pathScript.targetRef = CreateCube( "targetRef" );
+                        pathScript.targetRef = CreateGameObject( "targetRef" );
                         GetSetTransformData( pathScript.targetRef, data.TargetRef );
                         pathScript.targetRef.transform.parent = obj.transform;
                         foreach ( TransformData nodeData in data.PathNode )
                         {
-                            GameObject node = CreateCube( "path_point", $"{UnityInfo.relativePathLodsUtility}/Camera.prefab" );
+                            GameObject node = CreateGameObject( "path_point", $"{UnityInfo.relativePathLodsUtility}/Camera.prefab" );
                             if ( node == null ) continue;
                             GetSetTransformData( node, nodeData );
                             node.transform.localScale = new Vector3( 1, 1, 1 );
@@ -392,7 +392,7 @@ namespace ImportExport.Json
             return true;
         }
 
-        private static GameObject CreateCube( string name = "cube", string path = "" )
+        private static GameObject CreateGameObject( string name = "cube", string path = "" )
         {
             GameObject cube = null; path = path != "" ? path : UnityInfo.relativePathCubePrefab;
 

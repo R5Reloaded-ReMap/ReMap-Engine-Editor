@@ -283,6 +283,8 @@ namespace ImportExport.Shared
         public float ShowPathDistance;
         public float SpeedTransition;
         public float Fov;
+        public bool TrackTarget;
+        public TransformData TargetRef;
         public List< TransformData > PathNode;
     }
 

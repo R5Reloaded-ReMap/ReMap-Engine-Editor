@@ -4,11 +4,16 @@ using UnityEditor;
 
 public class PathScript : MonoBehaviour
 {
-    [ Header( "Settings:" ) ]
+    [ Header( "Unity Settings:" ) ]
     public bool ShowPath = true;
     public float ShowPathDistance = 8000;
+
+    [ Header( "Path Parameters:" ) ]
     public float SpeedTransition = 8;
     public float Fov = 120;
+    public bool TrackTarget = false;
+
+    [ HideInInspector ] public GameObject targetRef;
     
     void OnDrawGizmos()
     {
@@ -24,18 +29,32 @@ public class PathScript : MonoBehaviour
 
         foreach ( Transform node in gameObject.transform )
         {
-            PathNode.Add( node.gameObject );
+            if ( node.gameObject.name != "targetRef" )
+            {
+                PathNode.Add( node.gameObject );
+            }
+            else targetRef = node.gameObject;
         }
 
-        for ( int i = 0; i < PathNode.Count -1; i++ )
+        for ( int i = 0; i < PathNode.Count; i++ )
         {
-            var startPos = PathNode[ i ].transform.position;
-            var endPos = PathNode[ i + 1 ].transform.position;
-            var thickness = 3;
-
-            if ( Vector3.Distance( startPos, endPos ) > 10 )
+            if ( targetRef != null )
             {
-                Handles.DrawBezier( startPos, endPos, startPos, endPos, Color.yellow, null, thickness );
+                if ( TrackTarget ) PathNode[ i ].transform.LookAt( targetRef.transform );
+
+                targetRef.SetActive( TrackTarget );
+            }
+
+            if ( i < PathNode.Count -1 )
+            {
+                var startPos = PathNode[ i ].transform.position;
+                var endPos = PathNode[ i + 1 ].transform.position;
+                var thickness = 3;
+
+                if ( Vector3.Distance( startPos, endPos ) > 10 )
+                {
+                    Handles.DrawBezier( startPos, endPos, startPos, endPos, Color.yellow, null, thickness );
+                }
             }
         }
     }

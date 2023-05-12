@@ -178,9 +178,15 @@ namespace ImportExport.Json
                     case CameraPathClassData data: // Camera Paths
                         data = ( CameraPathClassData )( object ) scriptData;
                         PathScript pathScript = ( PathScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( pathScript, data, new[] { "PathNode" }.ToList() );
+                        TransferDataToClass( pathScript, data, new[] { "TargetRef", "PathNode" }.ToList() );
+                        data.TargetRef = GetSetTransformData( pathScript.targetRef );
                         data.PathNode = new List< TransformData >();
-                        foreach ( Transform nodes in obj.transform ) data.PathNode.Add( GetSetTransformData( nodes.gameObject ) );
+                        foreach ( Transform node in obj.transform )
+                        {
+                            if ( node.gameObject.name == "targetRef" ) continue;
+                            
+                            data.PathNode.Add( GetSetTransformData( node.gameObject ) );
+                        }
                         break;
 
                     default: break;
@@ -357,11 +363,14 @@ namespace ImportExport.Json
                         obj.AddComponent< PathScript >();
                         PathScript pathScript = ( PathScript ) Helper.GetComponentByEnum( obj, dataType );
                         TransferDataToClass( data, pathScript );
-                        foreach ( TransformData nodesPos in data.PathNode )
+                        pathScript.targetRef = CreateCube( "targetRef" );
+                        GetSetTransformData( pathScript.targetRef, data.TargetRef );
+                        pathScript.targetRef.transform.parent = obj.transform;
+                        foreach ( TransformData nodeData in data.PathNode )
                         {
                             GameObject node = CreateCube( "path_point", $"{UnityInfo.relativePathLodsUtility}/Camera.prefab" );
                             if ( node == null ) continue;
-                            GetSetTransformData( node, nodesPos );
+                            GetSetTransformData( node, nodeData );
                             node.transform.localScale = new Vector3( 1, 1, 1 );
                             node.transform.parent = obj.transform;
                         }

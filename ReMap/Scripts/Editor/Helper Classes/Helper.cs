@@ -52,6 +52,7 @@ public enum ObjectType
     TextInfoPanel,
     FuncWindowHint,
     Sound,
+    CameraPath,
 
     // Unity Only
     LiveMapCodePlayerSpawn
@@ -66,6 +67,7 @@ public class Helper
         { ObjectType.Prop,                   new ObjectTypeData( new string[] { "mdl",                          "Prop",               "Prop"                        }, typeof( PropScript ),             typeof( PropClassData ) ) },
         { ObjectType.BubbleShield,           new ObjectTypeData( new string[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"               }, typeof( BubbleScript ),           typeof( BubbleShieldClassData ) ) },
         { ObjectType.Button,                 new ObjectTypeData( new string[] { "custom_button",                "Button",             "Button"                      }, typeof( ButtonScripting ),        typeof( ButtonClassData ) ) },
+        { ObjectType.CameraPath,             new ObjectTypeData( new string[] { "custom_camera_path",           "CameraPath",         "Camera Path"                 }, typeof( PathScript ),             typeof( CameraPathClassData ) ) },
         { ObjectType.DoubleDoor,             new ObjectTypeData( new string[] { "custom_double_door",           "DoubleDoor",         "Double Door"                 }, typeof( DoorScript ),             typeof( DoubleDoorClassData ) ) },
         { ObjectType.FuncWindowHint,         new ObjectTypeData( new string[] { "custom_window_hint",           "FuncWindowHint",     "Window Hint"                 }, typeof( WindowHintScript ),       typeof( FuncWindowHintClassData ) ) },
         { ObjectType.HorzDoor,               new ObjectTypeData( new string[] { "custom_sliding_door",          "HorzDoor",           "Horizontal Door"             }, typeof( HorzDoorScript ),         typeof( HorzDoorClassData ) ) },
@@ -369,6 +371,7 @@ public class Helper
         if( GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ) )      code.Append( await BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType, Selection ) );
         if( GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ) )     code.Append( await BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection ) );
         if( GetBoolFromGenerateObjects( ObjectType.Sound ) )              code.Append( await BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection ) );
+        if( GetBoolFromGenerateObjects( ObjectType.CameraPath ) )         code.Append( await BuildObjectsWithEnum( ObjectType.CameraPath, buildType, Selection ) );
 
         return code.ToString();
     }

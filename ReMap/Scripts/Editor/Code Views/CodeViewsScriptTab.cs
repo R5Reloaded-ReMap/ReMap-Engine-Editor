@@ -41,11 +41,6 @@ namespace CodeViewsWindow
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", MenuInit.IsEnable( CodeViewsWindow.OffsetMenuShowOffset ), MenuType.Small )
         };
 
-        static FunctionRef[] AdvancedMenu = new FunctionRef[]
-        {
-            () => CodeViewsMenu.OptionalAdvancedOption()
-        };
-
         internal static FunctionRef[] LiveCodeMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.OptionalButton( "Fast Load", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(), !CodeViewsWindow.SendingObjects, MenuType.Medium ),
@@ -94,6 +89,7 @@ namespace CodeViewsWindow
             {
                 ObjectType.Sound,
                 ObjectType.SpawnPoint,
+                ObjectType.CameraPath,
                 ObjectType.LiveMapCodePlayerSpawn
             };
 

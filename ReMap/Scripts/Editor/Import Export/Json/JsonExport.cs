@@ -57,6 +57,7 @@ namespace ImportExport.Json
             await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
             await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
             await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
+            await ExportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPath );
 
             ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
             string json = JsonUtility.ToJson( jsonData );
@@ -99,6 +100,7 @@ namespace ImportExport.Json
             await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPath, ExportType.Selection );
 
             ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
             string json = JsonUtility.ToJson( jsonData );
@@ -210,6 +212,9 @@ namespace ImportExport.Json
                     case SoundClassData data: // Sounds
                         ProcessExportClassData( data, obj, objPath, objectType );
                         break;
+                    case CameraPathClassData data: // Camera Paths
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
 
                     default: break;
                 }
@@ -255,6 +260,7 @@ namespace ImportExport.Json
             jsonData.TextInfoPanels = new List< TextInfoPanelClassData >();
             jsonData.FuncWindowHints = new List< FuncWindowHintClassData >();
             jsonData.Sounds = new List< SoundClassData >();
+            jsonData.CameraPath = new List< CameraPathClassData >();
         }
     }
 }

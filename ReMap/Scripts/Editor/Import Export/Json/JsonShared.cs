@@ -175,6 +175,14 @@ namespace ImportExport.Json
                         TransferDataToClass( soundScript, data, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
                         break;
 
+                    case CameraPathClassData data: // Camera Paths
+                        data = ( CameraPathClassData )( object ) scriptData;
+                        PathScript pathScript = ( PathScript ) Helper.GetComponentByEnum( obj, dataType );
+                        TransferDataToClass( pathScript, data, new[] { "PathNode" }.ToList() );
+                        data.PathNode = new List< TransformData >();
+                        foreach ( Transform nodes in obj.transform ) data.PathNode.Add( GetSetTransformData( nodes.gameObject ) );
+                        break;
+
                     default: break;
                 }
             }
@@ -204,9 +212,10 @@ namespace ImportExport.Json
                         TransferDataToClass( data, linkedZiplineScript, new[] { "zipline_start", "zipline_end" }.ToList() );
                         foreach ( Vector3 nodesPos in data.Nodes )
                         {
-                            GameObject nodes = new GameObject( "zipline_node" );
-                            nodes.transform.position = nodesPos;
-                            nodes.transform.parent = obj.transform;
+                            GameObject node = CreateCube( "path_point" );
+                            if ( node == null ) continue;
+                            node.transform.position = nodesPos;
+                            node.transform.parent = obj.transform;
                         }
                         break;
 
@@ -343,6 +352,21 @@ namespace ImportExport.Json
                         TransferDataToClass( data, soundScript, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
                         break;
 
+                    case CameraPathClassData data: // Camera Paths
+                        data = ( CameraPathClassData )( object ) scriptData;
+                        obj.AddComponent< PathScript >();
+                        PathScript pathScript = ( PathScript ) Helper.GetComponentByEnum( obj, dataType );
+                        TransferDataToClass( data, pathScript );
+                        foreach ( TransformData nodesPos in data.PathNode )
+                        {
+                            GameObject node = CreateCube( "path_point", $"{UnityInfo.relativePathLodsUtility}/Camera.prefab" );
+                            if ( node == null ) continue;
+                            GetSetTransformData( node, nodesPos );
+                            node.transform.localScale = new Vector3( 1, 1, 1 );
+                            node.transform.parent = obj.transform;
+                        }
+                        break;
+
                     default: break;
                 }
             }
@@ -357,6 +381,26 @@ namespace ImportExport.Json
             }
 
             return true;
+        }
+
+        private static GameObject CreateCube( string name = "cube", string path = "" )
+        {
+            GameObject cube = null; path = path != "" ? path : UnityInfo.relativePathCubePrefab;
+
+            UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject;
+
+            if ( loadedPrefabResource == null )
+            {
+                return cube;
+            }
+            else
+            {
+                cube = UnityEngine.Object.Instantiate( loadedPrefabResource ) as GameObject;
+            }
+
+            cube.name = name;
+
+            return cube;
         }
     }
 }

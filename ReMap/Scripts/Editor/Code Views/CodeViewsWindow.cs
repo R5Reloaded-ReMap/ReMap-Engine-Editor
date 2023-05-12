@@ -21,7 +21,7 @@ namespace CodeViewsWindow
         internal static CodeViewsWindow windowInstance;
         internal static string code = "";
         internal static string functionName = "Unnamed";
-        internal static string[] toolbarTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code" };
+        internal static string[] toolbarTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code", "Camera Path" };
         internal static string[] toolbarSubTabEntCode = new[] { "script.ent", "snd.ent", "spawn.ent" };
         internal static Vector2 scroll;
         internal static Vector2 scrollSettings;
@@ -246,6 +246,10 @@ namespace CodeViewsWindow
                             fileInfo[2] = $"{functionName}.ent";
                         break;
                     }
+                    break;
+
+                case 4: // Camera Path Code
+                    fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
                 break;
             }
 
@@ -347,13 +351,33 @@ namespace CodeViewsWindow
                             SpawnEntTab.OnGUISettingsTab();
                         break;
                     }
+                    break;
+                
+                case 4: // Camera Path Code
+                    CameraPathTab.OnGUISettingsTab();
                 break;
             }
         }
 
         private static void ObjectCount()
         {
-            string info = tab == 2 ? "Models Precached Count" : "Entity Count";
+            string info;
+
+            switch ( tab )
+            {
+                case 2:
+                    info = "Models Precached Count";
+                    break;
+
+                case 4:
+                    info = "Total Paths Count";
+                    break;
+
+                default:
+                    info = "Entity Count";
+                break;
+            }
+
             GUILayout.BeginHorizontal();
 
                 if ( GenerationIsActive )
@@ -463,6 +487,10 @@ namespace CodeViewsWindow
                             code += await SpawnEntTab.GenerateCode();
                         break;
                     }
+                    break;
+
+                case 4: // Camera Path Code
+                    code += await CameraPathTab.GenerateCode();
                 break;
             }
 
@@ -499,6 +527,10 @@ namespace CodeViewsWindow
                             functionName = $"mp_rr_remap_spawn";
                         break;
                     }
+                break;
+
+                case 4: // Camera Path Code
+                    functionName = $"remap_camera_path";
                 break;
             }
         }

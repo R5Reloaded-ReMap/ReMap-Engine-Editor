@@ -30,6 +30,7 @@ namespace ImportExport.Shared
         public List< TextInfoPanelClassData > TextInfoPanels;
         public List< FuncWindowHintClassData > FuncWindowHints;
         public List< SoundClassData > Sounds;
+        public List< CameraPathClassData > CameraPath;
     }
 
     /// <summary>
@@ -273,6 +274,16 @@ namespace ImportExport.Shared
         public bool Enable;
         public string SoundName;
         public Vector3[] PolylineSegment;
+    }
+
+    [Serializable]
+    public class CameraPathClassData : GlobalClassData
+    {
+        public bool ShowPath;
+        public float ShowPathDistance;
+        public float SpeedTransition;
+        public float Fov;
+        public List< TransformData > PathNode;
     }
 
     [Serializable]

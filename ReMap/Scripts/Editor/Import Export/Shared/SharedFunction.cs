@@ -175,8 +175,6 @@ namespace ImportExport.Shared
                 obj.transform.eulerAngles = data.eulerAngles;
                 obj.transform.localScale = data.localScale;
 
-                UnityInfo.Printt( data.ToString() );
-
                 return null;
             }
         }

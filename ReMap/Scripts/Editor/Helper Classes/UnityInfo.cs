@@ -8,12 +8,14 @@ using UnityEngine;
 public class UnityInfo
 {
     public static string ReMapVersion = "Version 1.0.1";
-    public static string JsonVersion = "1.0";
+    public static string JsonVersion = "1.0.1";
 
     // Path Utility
     public static string currentDirectoryPath =        Directory.GetCurrentDirectory().Replace("\\","/");
     public static string relativePathLods =            $"Assets/ReMap/Lods - Dont use these";
-    public static string relativePathEmptyPrefab =     $"{relativePathLods}/EmptyPrefab.prefab";
+    public static string relativePathLodsUtility =     $"{relativePathLods}/Utility";
+    public static string relativePathEmptyPrefab =     $"{relativePathLodsUtility}/EmptyPrefab.prefab";
+    public static string relativePathCubePrefab =      $"{relativePathLodsUtility}/Cube.prefab";
     public static string relativePathModel =           $"{relativePathLods}/Models";
     public static string relativePathMaterials =       $"{relativePathLods}/Materials";
     public static string relativePathPrefabs =         $"Assets/Prefabs";

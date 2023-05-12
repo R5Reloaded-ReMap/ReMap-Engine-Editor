@@ -57,6 +57,8 @@ namespace ImportExport.Json
             UnityInfo.SortListByKey( jsonData.TextInfoPanels, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.FuncWindowHints, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.Sounds, x => x.PathString );
+            UnityInfo.SortListByKey( jsonData.CameraPath, x => x.PathString );
+
 
 
             await ImportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
@@ -79,6 +81,7 @@ namespace ImportExport.Json
             await ImportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
             await ImportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
             await ImportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
+            await ImportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPath );
 
             ReMapConsole.Log( "[Json Import] Finished", ReMapConsole.LogType.Success );
 
@@ -197,6 +200,11 @@ namespace ImportExport.Json
                         obj = ProcessImportClassData( data, "custom_sound", objectType, i, j, objectsCount );
                         break;
 
+                    case CameraPathClassData data: // Camera Paths
+                        data = ( CameraPathClassData )( object ) objData;
+                        obj = ProcessImportClassData( data, "custom_camera_path", objectType, i, j, objectsCount );
+                        break;
+
                     default: break;
                 }
 
@@ -216,14 +224,26 @@ namespace ImportExport.Json
             EditorUtility.DisplayProgressBar( $"Importing {Helper.GetObjNameWithEnum( objectType )} {j}/{objectsCount}", $"Importing: {importing}", ( i + 1 ) / ( float )objectsCount );
             ReMapConsole.Log( "[Json Import] Importing: " + objName, ReMapConsole.LogType.Info );
 
-            if ( objName == "custom_linked_zipline" ) return new GameObject( "custom_linked_zipline" );
-
-            UnityEngine.Object loadedPrefabResource = UnityInfo.FindPrefabFromName( objName );
-            if ( loadedPrefabResource == null )
+            switch ( objName )
             {
-                ReMapConsole.Log( $"[Json Import] Couldnt find prefab with name of: {objName}" , ReMapConsole.LogType.Error );
-                return null;
-            } else obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
+                case "custom_linked_zipline":
+                    obj = new GameObject( "custom_linked_zipline" );
+                    break;
+
+                case "custom_camera_path":
+                    obj = new GameObject( "custom_camera_path" );
+                    break;
+
+                default:
+                    UnityEngine.Object loadedPrefabResource = UnityInfo.FindPrefabFromName( objName );
+                    if ( loadedPrefabResource == null )
+                    {
+                        ReMapConsole.Log( $"[Json Import] Couldnt find prefab with name of: {objName}" , ReMapConsole.LogType.Error );
+                        return null;
+                    } else obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
+
+                break;
+            }
 
             GetSetTransformData( obj, objData.TransformData );
             GetSetScriptData( obj, objData, objectType, GetSetData.Set );

@@ -49,6 +49,9 @@ namespace Build
                 case ObjectType.DoubleDoor:
                     code.Append( await BuildDoubleDoor.BuildDoubleDoorObjects( objectData, buildType ) );
                     break;
+                case ObjectType.CameraPath:
+                    code.Append( await BuildCameraPath.BuildCameraPathObjects( objectData, buildType ) );
+                    break;
                 case ObjectType.FuncWindowHint:
                     code.Append( await BuildFuncWindowHint.BuildFuncWindowHintObjects( objectData, buildType ) );
                     break;

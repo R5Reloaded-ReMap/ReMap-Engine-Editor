@@ -88,30 +88,6 @@ public class UnityInfo
     }
 
     /// <summary>
-    /// Get all rpak list in /ReMap/Resources/rpakModelFile
-    /// </summary>
-    /// <returns></returns>
-    /*
-    public static string[] GetAllRpakModelsFile( bool includeAllModelFile = false, bool returnFileName = false )
-    {
-        string[] filePaths = Directory.GetFiles($"{currentDirectoryPath}/{relativePathRpakFile}", "*.txt", SearchOption.TopDirectoryOnly).Where( f => IsNotExcludedFile( f, includeAllModelFile ) ).ToArray();
-
-        // Return path
-        if ( !returnFileName ) return filePaths;
-
-        // Return file name
-        List<string> fileNames = new List<string>();
-
-        foreach ( string filePath in filePaths )
-        {
-            fileNames.Add( Path.GetFileNameWithoutExtension( filePath ) );
-        }
-
-        return fileNames.ToArray();
-    }
-    */
-
-    /// <summary>
     /// Returns the model name as a prefab
     /// </summary>
     /// <returns></returns>
@@ -153,33 +129,18 @@ public class UnityInfo
         list.Sort( ( x, y ) => keySelector( x ).CompareTo( keySelector( y ) ) );
     }
 
-    public static UnityEngine.Object FindPrefabFromName(string name)
+    public static UnityEngine.Object FindPrefabFromName( string name )
     {
         // Hack so that the models named at the end with "(number)" still work
-        if(name.Contains(" "))
-            name = name.Split(" ")[0];
+        if( name.Contains( " " ) ) name = name.Split( " " )[0];
 
         //Find Model GUID in Assets
-        string[] results = AssetDatabase.FindAssets(name);
-        if (results.Length == 0)
-            return null;
+        string[] results = AssetDatabase.FindAssets( name );
+        if ( results.Length == 0 ) return null;
 
         //Get model path from guid and load it
-        UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(results[0]), typeof(UnityEngine.Object)) as GameObject;
+        UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof( UnityEngine.Object ) ) as GameObject;
         return loadedPrefabResource;
-    }
-
-    private static bool IsNotExcludedFile( string filePath, bool includeAllModelFile )
-    {
-        string fileName = Path.GetFileName(filePath);
-        string[] excludedFiles;
-
-        if ( includeAllModelFile )
-        {   excludedFiles = new string[] { "lastestFolderUpdate.txt", "all_models.txt" }; }
-        else
-        { excludedFiles = new string[] { "lastestFolderUpdate.txt" }; }
-
-        return !excludedFiles.Contains(fileName);
     }
 
     /// <summary>

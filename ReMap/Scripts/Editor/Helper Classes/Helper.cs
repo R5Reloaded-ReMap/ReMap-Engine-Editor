@@ -29,6 +29,12 @@ public enum StringType
     Name = 2
 }
 
+public enum PathType
+{
+    Path = 0,
+    Name = 1,
+}
+
 public enum ObjectType
 {
     // Order of importance
@@ -558,6 +564,41 @@ public class Helper
         .ToArray();
 
         return SelectedObject;
+    }
+
+    public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )
+    {
+        GameObject obj = null;
+        
+        if ( path == "" ) path = UnityInfo.relativePathEmptyPrefab;
+
+        UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject;
+
+        switch ( pathType )
+        {
+            case PathType.Path:
+                loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject;
+                break;
+
+            case PathType.Name:
+                loadedPrefabResource = UnityInfo.FindPrefabFromName( path );
+                break;
+
+            default: return null;
+        }
+
+        if ( loadedPrefabResource == null ) return null;
+        
+        obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
+
+        if ( name != "" ) obj.name = name;
+
+        return obj;
+    }
+
+    public static bool IsValid( GameObject obj )
+    {
+        return obj != null;
     }
 
     public static void OverideWindowSize( float x, float y, float size )

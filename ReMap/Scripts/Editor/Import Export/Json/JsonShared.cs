@@ -218,8 +218,8 @@ namespace ImportExport.Json
                         TransferDataToClass( data, linkedZiplineScript, new[] { "zipline_start", "zipline_end" }.ToList() );
                         foreach ( Vector3 nodesPos in data.Nodes )
                         {
-                            GameObject node = CreateGameObject( "path_point" );
-                            if ( node == null ) continue;
+                            GameObject node = Helper.CreateGameObject( "path_point" );
+                            if ( !Helper.IsValid( node ) ) continue;
                             node.transform.position = nodesPos;
                             node.transform.parent = obj.transform;
                         }
@@ -232,14 +232,8 @@ namespace ImportExport.Json
 
                         foreach ( VCPanelsClassData panelData in data.Panels )
                         {
-                            UnityEngine.Object loadedPrefabResourcePanel = UnityInfo.FindPrefabFromName( "mdl#" + panelData.Model );
-                            if ( loadedPrefabResourcePanel == null )
-                            {
-                                ReMapConsole.Log( $"[Json Import] Couldnt find prefab with name of: {panelData.Model}" , ReMapConsole.LogType.Error );
-                                continue;
-                            }
-
-                            GameObject panel = PrefabUtility.InstantiatePrefab( loadedPrefabResourcePanel as GameObject ) as GameObject;
+                            GameObject panel = Helper.CreateGameObject( "", $"mdl#{panelData.Model}", PathType.Name );
+                            if ( !Helper.IsValid( panel ) ) continue;
                             GetSetTransformData( panel, panelData.TransformData );
                             CreatePath( panelData.Path, panelData.PathString, panel );
 
@@ -257,14 +251,8 @@ namespace ImportExport.Json
 
                         foreach ( VCPanelsClassData panelData in data.Panels )
                         {
-                            UnityEngine.Object loadedPrefabResourcePanel = UnityInfo.FindPrefabFromName( "mdl#" + panelData.Model );
-                            if ( loadedPrefabResourcePanel == null )
-                            {
-                                ReMapConsole.Log( $"[Json Import] Couldnt find prefab with name of: {panelData.Model}" , ReMapConsole.LogType.Error );
-                                continue;
-                            }
-
-                            GameObject panel = PrefabUtility.InstantiatePrefab( loadedPrefabResourcePanel as GameObject ) as GameObject;
+                            GameObject panel = Helper.CreateGameObject( "", $"mdl#{panelData.Model}", PathType.Name );
+                            if ( !Helper.IsValid( panel ) ) continue;
                             GetSetTransformData( panel, panelData.TransformData );
                             CreatePath( panelData.Path, panelData.PathString, panel );
 
@@ -363,15 +351,14 @@ namespace ImportExport.Json
                         obj.AddComponent< PathScript >();
                         PathScript pathScript = ( PathScript ) Helper.GetComponentByEnum( obj, dataType );
                         TransferDataToClass( data, pathScript );
-                        pathScript.targetRef = CreateGameObject( "targetRef" );
+                        pathScript.targetRef = Helper.CreateGameObject( "targetRef", UnityInfo.relativePathCubePrefab );
                         GetSetTransformData( pathScript.targetRef, data.TargetRef );
                         pathScript.targetRef.transform.parent = obj.transform;
                         foreach ( TransformData nodeData in data.PathNode )
                         {
-                            GameObject node = CreateGameObject( "path_point", $"{UnityInfo.relativePathLodsUtility}/Camera.prefab" );
-                            if ( node == null ) continue;
+                            GameObject node = Helper.CreateGameObject( "path_point", $"{UnityInfo.relativePathLodsUtility}/Camera.prefab" );
+                            if ( !Helper.IsValid( node ) ) continue;
                             GetSetTransformData( node, nodeData );
-                            node.transform.localScale = new Vector3( 1, 1, 1 );
                             node.transform.parent = obj.transform;
                         }
                         break;
@@ -390,26 +377,6 @@ namespace ImportExport.Json
             }
 
             return true;
-        }
-
-        private static GameObject CreateGameObject( string name = "cube", string path = "" )
-        {
-            GameObject cube = null; path = path != "" ? path : UnityInfo.relativePathCubePrefab;
-
-            UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject;
-
-            if ( loadedPrefabResource == null )
-            {
-                return cube;
-            }
-            else
-            {
-                cube = UnityEngine.Object.Instantiate( loadedPrefabResource ) as GameObject;
-            }
-
-            cube.name = name;
-
-            return cube;
         }
     }
 }

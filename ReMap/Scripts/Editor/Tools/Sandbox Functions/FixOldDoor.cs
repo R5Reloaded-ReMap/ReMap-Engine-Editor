@@ -55,12 +55,8 @@ namespace Sandbox
                     break;
                 }
 
-                UnityEngine.Object loadedPrefabResource = UnityInfo.FindPrefabFromName( Helper.GetObjRefWithEnum( objectType ) );
-                if ( loadedPrefabResource != null )
-                {
-                    obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-                }
-                else continue;
+                obj = Helper.CreateGameObject( "", Helper.GetObjRefWithEnum( objectType ), PathType.Name );
+                if ( !Helper.IsValid( obj ) ) continue;
 
                 obj.transform.position = position;
                 obj.transform.eulerAngles = angles;

@@ -235,15 +235,11 @@ namespace ImportExport.Json
                     break;
 
                 default:
-                    UnityEngine.Object loadedPrefabResource = UnityInfo.FindPrefabFromName( objName );
-                    if ( loadedPrefabResource == null )
-                    {
-                        ReMapConsole.Log( $"[Json Import] Couldnt find prefab with name of: {objName}" , ReMapConsole.LogType.Error );
-                        return null;
-                    } else obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-
+                    obj = Helper.CreateGameObject( "", objName, PathType.Name );
                 break;
             }
+
+            if ( !Helper.IsValid( obj ) ) return null;
 
             GetSetTransformData( obj, objData.TransformData );
             GetSetScriptData( obj, objData, objectType, GetSetData.Set );

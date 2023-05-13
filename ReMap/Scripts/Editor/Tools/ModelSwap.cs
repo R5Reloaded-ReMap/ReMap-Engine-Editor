@@ -109,14 +109,12 @@ public class ModelSwap : EditorWindow
             }
         }
 
-        UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets( chosenObject.name )[0] ), typeof( UnityEngine.Object ) ) as GameObject;
-        if ( loadedPrefabResource == null ) return;
-
         Vector3 position = selection.transform.position;
         Vector3 rotation = selection.transform.eulerAngles;
         Vector3 localScale = selection.transform.localScale;
 
-        GameObject obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
+        GameObject obj = Helper.CreateGameObject( "", chosenObject.name, PathType.Name );
+        if ( !Helper.IsValid( obj ) ) return;
         obj.transform.position = position;
         obj.transform.eulerAngles = rotation;
         obj.transform.localScale = localScale;

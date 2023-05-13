@@ -40,7 +40,11 @@ public class PathScript : MonoBehaviour
         {
             if ( targetRef != null )
             {
-                if ( TrackTarget ) PathNode[ i ].transform.LookAt( targetRef.transform );
+                if ( TrackTarget )
+                {
+                    PathNode[ i ].transform.LookAt( targetRef.transform );
+                    PathNode[ i ].transform.Rotate( 0, 180, 0 );
+                }
 
                 targetRef.SetActive( TrackTarget );
             }

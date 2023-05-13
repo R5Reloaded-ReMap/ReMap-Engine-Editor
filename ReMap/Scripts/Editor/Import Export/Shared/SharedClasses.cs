@@ -284,6 +284,8 @@ namespace ImportExport.Shared
         public float SpeedTransition;
         public float Fov;
         public bool TrackTarget;
+        public bool EnableSpacing;
+        public float Spacing;
         public TransformData TargetRef;
         public List< TransformData > PathNode;
     }

@@ -12,6 +12,8 @@ public class PathScript : MonoBehaviour
     public float SpeedTransition = 8;
     public float Fov = 120;
     public bool TrackTarget = false;
+    public bool EnableSpacing = false;
+    public float Spacing = 0;
 
     [ HideInInspector ] public GameObject targetRef;
     
@@ -54,6 +56,14 @@ public class PathScript : MonoBehaviour
                 var startPos = PathNode[ i ].transform.position;
                 var endPos = PathNode[ i + 1 ].transform.position;
                 var thickness = 3;
+
+                if ( EnableSpacing )
+                {
+                    var direction = ( PathNode[ i + 1 ].transform.position - startPos ).normalized;
+                    endPos = startPos + direction * Spacing;
+
+                    PathNode[ i + 1 ].transform.position = endPos;
+                }
 
                 if ( Vector3.Distance( startPos, endPos ) > 10 )
                 {

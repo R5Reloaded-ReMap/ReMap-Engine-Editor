@@ -51,6 +51,9 @@ namespace Build
 
                 string idxStr = idx.ToString( "00" ); bool isFirst = true;
 
+                string fov = Helper.ReplaceComma( script.Fov );
+                string speed = Helper.ReplaceComma( script.SpeedTransition );
+
                 switch ( buildType )
                 {
                     case BuildType.Script:
@@ -62,8 +65,8 @@ namespace Build
                             {
                                 code.Append( $"    // Path_{idxStr}\n" );
                                 code.Append( $"    if ( IsValid( GetLocalClientPlayer() ) ) return\n" );
-                                code.Append( $"    float fov_{idxStr} = {script.Fov}\n" );
-                                code.Append( $"    float speed_{idxStr} = {script.SpeedTransition}\n" );
+                                code.Append( $"    float fov_{idxStr} = {fov}\n" );
+                                code.Append( $"    float speed_{idxStr} = {speed}\n" );
                                 code.Append( $"    vector origin_{idxStr} = {Helper.BuildOrigin( node.gameObject ) + Helper.ShouldAddStartingOrg()}\n" );
                                 code.Append( $"    vector angles_{idxStr} = {Helper.BuildAngles( node.gameObject )}\n" );
                                 code.Append( $"\n" );

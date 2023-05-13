@@ -64,7 +64,7 @@ namespace Build
                             if ( isFirst )
                             {
                                 code.Append( $"    // Path_{idxStr}\n" );
-                                code.Append( $"    if ( IsValid( GetLocalClientPlayer() ) ) return\n" );
+                                code.Append( $"    if ( !IsValid( GetLocalClientPlayer() ) ) return\n" );
                                 code.Append( $"    float fov_{idxStr} = {fov}\n" );
                                 code.Append( $"    float speed_{idxStr} = {speed}\n" );
                                 code.Append( $"    vector origin_{idxStr} = {Helper.BuildOrigin( node.gameObject ) + Helper.ShouldAddStartingOrg()}\n" );

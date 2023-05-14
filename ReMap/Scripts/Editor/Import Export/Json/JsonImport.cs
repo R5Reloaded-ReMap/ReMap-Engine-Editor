@@ -230,14 +230,14 @@ namespace ImportExport.Json
             EditorUtility.DisplayProgressBar( $"Importing {Helper.GetObjNameWithEnum( objectType )} {j}/{objectsCount}", $"Importing: {importing}", ( i + 1 ) / ( float )objectsCount );
             ReMapConsole.Log( "[Json Import] Importing: " + objName, ReMapConsole.LogType.Info );
 
-            switch ( objName )
+            switch ( objectType )
             {
-                case "custom_linked_zipline":
-                    obj = new GameObject( "custom_linked_zipline" );
+                case ObjectType.LinkedZipline:
+                    obj = new GameObject( Helper.GetObjRefWithEnum( objectType ) );
                     break;
 
-                case "custom_camera_path":
-                    obj = new GameObject( "custom_camera_path" );
+                case ObjectType.CameraPath:
+                    obj = new GameObject( Helper.GetObjRefWithEnum( objectType ) );
                     break;
 
                 default:

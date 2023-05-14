@@ -111,6 +111,18 @@ public class SelectTool
         SelectComponentScript<WindowHintScript>();
     }
 
+    [MenuItem("ReMap/Selection/Select All Path Script Script", false, 100)]
+    public static void SelectPathScriptInit()
+    {
+        SelectComponentScript<PathScript>();
+    }
+
+    [MenuItem("ReMap/Selection/Select All Empty Script Script", false, 100)]
+    public static void SelectEmptyScriptInit()
+    {
+        SelectComponentScript<EmptyScript>();
+    }
+
     public static void SelectComponentScript<T>() where T : Component
     {
         GameObject[] array = new GameObject[0];

@@ -30,6 +30,8 @@ namespace CodeViewsWindow
         internal static int tab_temp = 0;
         internal static int tabEnt = 0;
         internal static int tabEnt_temp = 0;
+        internal static int objectTypeInSceneCount = 0;
+        internal static int objectTypeInSceneCount_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
 
         internal static string additionalCodeHeadName = "Empty Code";
@@ -120,12 +122,13 @@ namespace CodeViewsWindow
 
             GetEditorWindowSize(); ShortCut();
 
-            if( tab != tab_temp || tabEnt != tabEnt_temp )
+            if( tab != tab_temp || tabEnt != tabEnt_temp || objectTypeInSceneCount != objectTypeInSceneCount_temp )
             {
                 GetFunctionName();
                 Refresh( false );
                 tab_temp = tab;
                 tabEnt_temp = tabEnt;
+                objectTypeInSceneCount_temp = objectTypeInSceneCount;
             }
 
             GUILayout.BeginVertical( "box" );

@@ -358,6 +358,8 @@ namespace CodeViewsWindow
                     WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 156 );
                 GUILayout.EndHorizontal();
 
+                int idx = 0;
+
                 foreach ( string key in Helper.GenerateObjects.Keys )
                 {
                     ObjectType? type = Helper.GetObjectTypeByObjName( key );
@@ -370,6 +372,8 @@ namespace CodeViewsWindow
                         OptionalToggle( ref value, $"Build {key}", value ? $"Disable {key}" : $"Enable {key}" );
                     GUILayout.EndHorizontal();
 
+                    if ( value ) idx++;
+
                     if ( Helper.GenerateObjects[key] != value )
                     {
                         Helper.GenerateObjects[key] = value;
@@ -381,6 +385,9 @@ namespace CodeViewsWindow
                         return;
                     }
                 }
+
+                CodeViewsWindow.objectTypeInSceneCount = idx;
+
             GUILayout.EndVertical();
         }
 

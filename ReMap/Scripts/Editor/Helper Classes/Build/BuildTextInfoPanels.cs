@@ -50,7 +50,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.showPIN )}, {Helper.ReplaceComma( script.Scale )})" + "\n" );
+                        code.Append( $"    MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.showPIN )}, {Helper.ReplaceComma( script.Scale )} )" + "\n" );
                         break;
 
                     case BuildType.EntFile:
@@ -66,7 +66,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.showPIN )}, {Helper.ReplaceComma( script.Scale )})");
+                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateTextInfoPanel(\"{script.Title}\",\"{script.Description}\",{Helper.BuildOrigin( obj, false, true )},{Helper.BuildAngles( obj )},{Helper.BoolToLower( script.showPIN )},{Helper.ReplaceComma( script.Scale )})");
                     break;
                 }
             }

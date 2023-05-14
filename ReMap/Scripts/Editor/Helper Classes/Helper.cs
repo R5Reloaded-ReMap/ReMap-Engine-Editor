@@ -188,9 +188,9 @@ public class Helper
     /// <returns></returns>
     public static string BuildAngles( GameObject go, bool isEntFile = false )
     {
-        string x = (-WrapAngle(go.transform.eulerAngles.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string y = (-WrapAngle(go.transform.eulerAngles.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string z = (WrapAngle(go.transform.eulerAngles.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string x = ReplaceComma( -WrapAngle( go.transform.eulerAngles.x ) );
+        string y = ReplaceComma( -WrapAngle( go.transform.eulerAngles.y ) );
+        string z = ReplaceComma( WrapAngle( go.transform.eulerAngles.z ) );
 
         string angles = $"< {x}, {y}, {z} >";
 
@@ -202,9 +202,9 @@ public class Helper
 
     public static string BuildAnglesVector( Vector3 vec, bool isEntFile = false )
     {
-        string x = (-WrapAngle(vec.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string y = (-WrapAngle(vec.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string z = (WrapAngle(vec.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string x = ReplaceComma( -WrapAngle(vec.x) );
+        string y = ReplaceComma( -WrapAngle(vec.y) );
+        string z = ReplaceComma( WrapAngle(vec.z) );
 
         string angles = $"< {x}, {y}, {z} >";
 
@@ -216,9 +216,9 @@ public class Helper
 
     public static string BuildRightVector( Vector3 vec, bool isEntFile = false )
     {
-        string x = (WrapAngle(vec.z)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string y = (WrapAngle(vec.x)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string z = (-WrapAngle(vec.y)).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string x = ReplaceComma( WrapAngle(vec.z) );
+        string y = ReplaceComma( WrapAngle(vec.x) );
+        string z = ReplaceComma( -WrapAngle(vec.y) );
 
         string angles = $"< {x}, {y}, {z} >";
 
@@ -254,9 +254,9 @@ public class Helper
         float yOffset = UseStartingOffset() && returnWithOffset ? StartingOffset.y : 0;
         float zOffset = UseStartingOffset() && returnWithOffset ? StartingOffset.z : 0;
 
-        string x = (-go.transform.position.z + xOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string y = (go.transform.position.x + yOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string z = (go.transform.position.y + zOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string x = ReplaceComma( -go.transform.position.z + xOffset );
+        string y = ReplaceComma( go.transform.position.x + yOffset );
+        string z = ReplaceComma( go.transform.position.y + zOffset );
 
         string origin = $"< {x}, {y}, {z} >";
 
@@ -277,9 +277,9 @@ public class Helper
         float yOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.y;
         float zOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.z;
 
-        string x = (-vec.z + xOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string y = (vec.x + yOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
-        string z = (vec.y + zOffset).ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
+        string x = ReplaceComma( -vec.z + xOffset );
+        string y = ReplaceComma( vec.x + yOffset );
+        string z = ReplaceComma( vec.y + zOffset );
 
         string origin = $"< {x}, {y}, {z} >";
 
@@ -621,7 +621,7 @@ public class Helper
 
     public static string ReplaceComma( float value, bool forceComma = false )
     {
-        string str = value.ToString().Replace( ",", "." );
+        string str = value.ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
         if ( !str.Contains('.') && forceComma ) str += ".0";
 

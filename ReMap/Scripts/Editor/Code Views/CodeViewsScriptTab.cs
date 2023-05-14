@@ -97,11 +97,7 @@ namespace CodeViewsWindow
 
             StringBuilder code = new StringBuilder();
 
-            if ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() && !string.IsNullOrEmpty( CodeViewsWindow.additionalCodeHead ) )
-            {
-                code.Append( CodeViewsWindow.additionalCodeHead );
-                PageBreak( ref code );
-            }
+            CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Head, ref code, CodeViewsWindow.additionalCodeHead, ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() ) );
 
             if ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.ShowPrecacheEnable() )
             {
@@ -123,20 +119,11 @@ namespace CodeViewsWindow
             
             code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
 
-            if ( CodeViewsWindow.AdditionalCodeEnable() && !string.IsNullOrEmpty( CodeViewsWindow.additionalCodeInBlock ) )
-            {
-                code.Append( "    " + CodeViewsWindow.additionalCodeInBlock.Replace( "\n", "\n    " ) );
-                PageBreak( ref code );
-            }
+            CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.InBlock, ref code, CodeViewsWindow.additionalCodeInBlock, CodeViewsWindow.AdditionalCodeEnable() );
 
             if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}\n" );
 
-            if ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() && !string.IsNullOrEmpty( CodeViewsWindow.additionalCodeBelow ) )
-            {
-                PageBreak( ref code );
-                code.Append( CodeViewsWindow.additionalCodeBelow );
-                PageBreak( ref code );
-            }
+            CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Below, ref code, CodeViewsWindow.additionalCodeBelow, ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() ) );
 
             if ( CodeViewsWindow.AutoSendEnable() ) LiveMap.Send();
 

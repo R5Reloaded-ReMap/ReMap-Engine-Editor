@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -16,6 +16,13 @@ using WindowUtility;
 
 namespace CodeViewsWindow
 {
+    internal enum AdditionalCodeType
+    {
+        Head,
+        InBlock,
+        Below
+    }
+
     public class CodeViewsWindow : EditorWindow
     {
         internal static CodeViewsWindow windowInstance;
@@ -554,6 +561,36 @@ namespace CodeViewsWindow
                 GUI.contentColor = Color.yellow;
 
             else GUI.contentColor = Color.red;
+        }
+
+        internal static void AppendAdditionalCode( AdditionalCodeType type, ref StringBuilder code, string codeToAdd, bool verify = true )
+        {
+            if ( !verify && !string.IsNullOrEmpty( codeToAdd ) ) return;
+
+            string precache = CodeViewsWindow.ShowPrecacheEnable() ? "_Init()" : "";
+
+            codeToAdd = codeToAdd.Replace( "#FUNCTION_NAME", CodeViewsWindow.functionName + precache );
+            
+            switch ( type )
+            {
+                case AdditionalCodeType.Head:
+                    code.Append( codeToAdd );
+                    break;
+
+                case AdditionalCodeType.InBlock:
+                    codeToAdd = "    " + codeToAdd.Replace( "\n", "\n    " );
+
+                    code.Append( codeToAdd );
+                    break;
+
+                case AdditionalCodeType.Below:
+                    Build.Build.PageBreak( ref code );
+                    
+                    code.Append( codeToAdd );
+                break;
+            }
+
+            Build.Build.PageBreak( ref code );
         }
 
 

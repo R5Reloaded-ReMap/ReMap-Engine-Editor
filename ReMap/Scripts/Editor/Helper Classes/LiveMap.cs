@@ -196,11 +196,7 @@ namespace CodeViewsWindow
             code.Append( "\nglobal function ReMapLive_Init\n\n" );
             code.Append( Helper.ReMapCredit( true ) );
 
-            if ( !reset && CodeViewsWindow.additionalCodeHead != "" )
-            {
-                code.Append( CodeViewsWindow.additionalCodeHead );
-                Build.Build.PageBreak( ref code );
-            }
+            CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Head, ref code, CodeViewsWindow.additionalCodeHead, !reset );
 
             code.Append( "void function ReMapLive_Init()\n" );
             code.Append( "{\n" );
@@ -220,20 +216,11 @@ namespace CodeViewsWindow
                 code.Append( Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ) );
                 code.Append( await Helper.BuildMapCode( Build.BuildType.Script, false ) );
 
-                if ( CodeViewsWindow.additionalCodeInBlock != "" )
-                {
-                    code.Append( "    " + CodeViewsWindow.additionalCodeInBlock.Replace( "\n", "\n    " ) );
-                    Build.Build.PageBreak( ref code );
-                }
+                CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.InBlock, ref code, CodeViewsWindow.additionalCodeInBlock );
 
                 code.Append( "}\n" );
-                
-                if ( CodeViewsWindow.additionalCodeBelow != "" )
-                {
-                    Build.Build.PageBreak( ref code );
-                    code.Append( CodeViewsWindow.additionalCodeBelow );
-                    Build.Build.PageBreak( ref code );
-                }
+
+                CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Below, ref code, CodeViewsWindow.additionalCodeBelow );
             }
 
             Build.Build.IgnoreCounter = false;

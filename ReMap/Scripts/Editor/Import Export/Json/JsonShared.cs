@@ -170,7 +170,7 @@ namespace ImportExport.Json
                         break;
 
                     case SoundClassData data: // Sounds
-                        data = (SoundClassData  )( object ) scriptData;
+                        data = ( SoundClassData )( object ) scriptData;
                         SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
                         TransferDataToClass( soundScript, data, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
                         break;
@@ -187,6 +187,12 @@ namespace ImportExport.Json
                             
                             data.PathNode.Add( GetSetTransformData( node.gameObject ) );
                         }
+                        break;
+                    
+                    case UOPlayerSpawnClassData data: // Unity Only Player Spawn
+                        data = ( UOPlayerSpawnClassData )( object ) scriptData;
+                        EmptyScript emptyScript = ( EmptyScript ) Helper.GetComponentByEnum( obj, dataType );
+                        TransferDataToClass( emptyScript, data );
                         break;
 
                     default: break;
@@ -341,7 +347,7 @@ namespace ImportExport.Json
                         break;
 
                     case SoundClassData data: // Sounds
-                        data = (SoundClassData  )( object ) scriptData;
+                        data = ( SoundClassData )( object ) scriptData;
                         SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
                         TransferDataToClass( data, soundScript, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
                         break;
@@ -361,6 +367,12 @@ namespace ImportExport.Json
                             GetSetTransformData( node, nodeData );
                             node.transform.parent = obj.transform;
                         }
+                        break;
+
+                    case UOPlayerSpawnClassData data: // Unity Only Player Spawn
+                        data = ( UOPlayerSpawnClassData )( object ) scriptData;
+                        EmptyScript emptyScript = ( EmptyScript ) Helper.GetComponentByEnum( obj, dataType );
+                        TransferDataToClass( data, emptyScript );
                         break;
 
                     default: break;

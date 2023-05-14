@@ -57,7 +57,8 @@ namespace ImportExport.Json
             await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
             await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
             await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
-            await ExportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPath );
+            await ExportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPaths );
+            await ExportObjectsWithEnum( ObjectType.LiveMapCodePlayerSpawn, jsonData.PlayerSpawns );
 
             ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
             string json = JsonUtility.ToJson( jsonData );
@@ -100,7 +101,7 @@ namespace ImportExport.Json
             await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPath, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPaths, ExportType.Selection );
 
             ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
             string json = JsonUtility.ToJson( jsonData );
@@ -150,73 +151,9 @@ namespace ImportExport.Json
 
                 T classData = Activator.CreateInstance( typeof( T ) ) as T;
 
-                switch ( classData )
+                if ( classData is GlobalClassData data )
                 {
-                    case PropClassData data: // Props
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case ZipLineClassData data: // Ziplines
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case LinkedZipLinesClassData data: // Linked Ziplines
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case VerticalZipLineClassData data: // Vertical Ziplines
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case NonVerticalZipLineClassData data: // Non Vertical ZipLines
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case SingleDoorClassData data: // Single Doors
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case DoubleDoorClassData data: // Double Doors
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case HorzDoorClassData data: // Horizontal Doors
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case VerticalDoorClassData data: // Vertical Doors
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case ButtonClassData data: // Bouttons
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case JumppadClassData data: // Jumppads
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case LootBinClassData data: // Loot Bins
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case WeaponRackClassData data: // Weapon Racks
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case TriggerClassData data: // Triggers
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case BubbleShieldClassData data: // Bubbles Shield
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case SpawnPointClassData data: // Spawn Points
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case NewLocPairClassData data: // New Loc Pairs
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case TextInfoPanelClassData data: // Text Info Panels
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case FuncWindowHintClassData data: // Window Hints
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case SoundClassData data: // Sounds
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case CameraPathClassData data: // Camera Paths
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-
-                    default: break;
+                    ProcessExportClassData( data, obj, objPath, objectType );
                 }
 
                 if ( IsValidPath( objPath ) ) listType.Add( classData );
@@ -260,7 +197,8 @@ namespace ImportExport.Json
             jsonData.TextInfoPanels = new List< TextInfoPanelClassData >();
             jsonData.FuncWindowHints = new List< FuncWindowHintClassData >();
             jsonData.Sounds = new List< SoundClassData >();
-            jsonData.CameraPath = new List< CameraPathClassData >();
+            jsonData.CameraPaths = new List< CameraPathClassData >();
+            jsonData.PlayerSpawns = new List< UOPlayerSpawnClassData >();
         }
     }
 }

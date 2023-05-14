@@ -30,7 +30,8 @@ namespace ImportExport.Shared
         public List< TextInfoPanelClassData > TextInfoPanels;
         public List< FuncWindowHintClassData > FuncWindowHints;
         public List< SoundClassData > Sounds;
-        public List< CameraPathClassData > CameraPath;
+        public List< CameraPathClassData > CameraPaths;
+        public List< UOPlayerSpawnClassData > PlayerSpawns;
     }
 
     /// <summary>
@@ -292,6 +293,12 @@ namespace ImportExport.Shared
 
     [Serializable]
     public class NewLocPairClassData : GlobalClassData
+    {
+        // Stub script
+    }
+
+    [Serializable]
+    public class UOPlayerSpawnClassData : GlobalClassData
     {
         // Stub script
     }

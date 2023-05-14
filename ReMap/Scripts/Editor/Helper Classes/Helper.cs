@@ -70,30 +70,30 @@ public class Helper
 
     private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new Dictionary< ObjectType, ObjectTypeData >
     {
-        { ObjectType.BubbleShield,           new ObjectTypeData( new string[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"               }, typeof( BubbleScript ),           typeof( BubbleShieldClassData ) ) },
-        { ObjectType.Button,                 new ObjectTypeData( new string[] { "custom_button",                "Button",             "Button"                      }, typeof( ButtonScripting ),        typeof( ButtonClassData ) ) },
-        { ObjectType.CameraPath,             new ObjectTypeData( new string[] { "custom_camera_path",           "CameraPath",         "Camera Path"                 }, typeof( PathScript ),             typeof( CameraPathClassData ) ) },
-        { ObjectType.DoubleDoor,             new ObjectTypeData( new string[] { "custom_double_door",           "DoubleDoor",         "Double Door"                 }, typeof( DoorScript ),             typeof( DoubleDoorClassData ) ) },
-        { ObjectType.FuncWindowHint,         new ObjectTypeData( new string[] { "custom_window_hint",           "FuncWindowHint",     "Window Hint"                 }, typeof( WindowHintScript ),       typeof( FuncWindowHintClassData ) ) },
-        { ObjectType.HorzDoor,               new ObjectTypeData( new string[] { "custom_sliding_door",          "HorzDoor",           "Horizontal Door"             }, typeof( HorzDoorScript ),         typeof( HorzDoorClassData ) ) },
-        { ObjectType.Jumppad,                new ObjectTypeData( new string[] { "custom_jumppad",               "Jumppad",            "Jump Pad"                    }, typeof( PropScript ),             typeof( JumppadClassData ) ) },
-        { ObjectType.LinkedZipline,          new ObjectTypeData( new string[] { "custom_linked_zipline",        "LinkedZipline",      "Linked Zipline"              }, typeof( LinkedZiplineScript ),    typeof( LinkedZipLinesClassData ) ) },
-        { ObjectType.LootBin,                new ObjectTypeData( new string[] { "custom_lootbin",               "LootBin",            "Loot Bin"                    }, typeof( LootBinScript ),          typeof( LootBinClassData ) ) },
-        { ObjectType.NewLocPair,             new ObjectTypeData( new string[] { "custom_new_loc_pair",          "NewLocPair",         "New Loc Pair"                }, typeof( NewLocPairScript ),       typeof( NewLocPairClassData ) ) },
-        { ObjectType.NonVerticalZipLine,     new ObjectTypeData( new string[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine"        }, typeof( DrawNonVerticalZipline ), typeof( NonVerticalZipLineClassData ) ) },
-        { ObjectType.Prop,                   new ObjectTypeData( new string[] { "mdl",                          "Prop",               "Prop"                        }, typeof( PropScript ),             typeof( PropClassData ) ) },
-        { ObjectType.SingleDoor,             new ObjectTypeData( new string[] { "custom_single_door",           "SingleDoor",         "Single Door"                 }, typeof( DoorScript ),             typeof( SingleDoorClassData ) ) },
-        { ObjectType.Sound,                  new ObjectTypeData( new string[] { "custom_sound",                 "Sound",              "Sound"                       }, typeof( SoundScript ),            typeof( SoundClassData ) ) },
-        { ObjectType.SpawnPoint,             new ObjectTypeData( new string[] { "custom_info_spawnpoint_human", "SpawnPoint",         "Spawn Point"                 }, typeof( SpawnPointScript ),       typeof( SpawnPointClassData ) ) },
-        { ObjectType.TextInfoPanel,          new ObjectTypeData( new string[] { "custom_text_info_panel",       "TextInfoPanel",      "Text Info Panel"             }, typeof( TextInfoPanelScript ),    typeof( TextInfoPanelClassData ) ) },
-        { ObjectType.Trigger,                new ObjectTypeData( new string[] { "trigger_cylinder",             "Trigger",            "Trigger"                     }, typeof( TriggerScripting ),       typeof( TriggerClassData ) ) },
-        { ObjectType.VerticalDoor,           new ObjectTypeData( new string[] { "custom_vertical_door",         "VerticalDoor",       "Vertical Door"               }, typeof( VerticalDoorScript ),     typeof( VerticalDoorClassData ) ) },
-        { ObjectType.VerticalZipLine,        new ObjectTypeData( new string[] { "_vertical_zipline",            "VerticalZipLine",    "Vertical ZipLine"            }, typeof( DrawVerticalZipline ),    typeof( VerticalZipLineClassData ) ) },
-        { ObjectType.WeaponRack,             new ObjectTypeData( new string[] { "custom_weaponrack",            "WeaponRack",         "Weapon Rack"                 }, typeof( WeaponRackScript ),       typeof( WeaponRackClassData ) ) },
-        { ObjectType.ZipLine,                new ObjectTypeData( new string[] { "custom_zipline",               "ZipLine",            "ZipLine"                     }, typeof( DrawZipline ),            typeof( ZipLineClassData ) ) },
+        { ObjectType.BubbleShield,           new ObjectTypeData( new[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"               }, typeof( BubbleScript ),           typeof( BubbleShieldClassData ) ) },
+        { ObjectType.Button,                 new ObjectTypeData( new[] { "custom_button",                "Button",             "Button"                      }, typeof( ButtonScripting ),        typeof( ButtonClassData ) ) },
+        { ObjectType.CameraPath,             new ObjectTypeData( new[] { "custom_camera_path",           "CameraPath",         "Camera Path"                 }, typeof( PathScript ),             typeof( CameraPathClassData ) ) },
+        { ObjectType.DoubleDoor,             new ObjectTypeData( new[] { "custom_double_door",           "DoubleDoor",         "Double Door"                 }, typeof( DoorScript ),             typeof( DoubleDoorClassData ) ) },
+        { ObjectType.FuncWindowHint,         new ObjectTypeData( new[] { "custom_window_hint",           "FuncWindowHint",     "Window Hint"                 }, typeof( WindowHintScript ),       typeof( FuncWindowHintClassData ) ) },
+        { ObjectType.HorzDoor,               new ObjectTypeData( new[] { "custom_sliding_door",          "HorzDoor",           "Horizontal Door"             }, typeof( HorzDoorScript ),         typeof( HorzDoorClassData ) ) },
+        { ObjectType.Jumppad,                new ObjectTypeData( new[] { "custom_jumppad",               "Jumppad",            "Jump Pad"                    }, typeof( PropScript ),             typeof( JumppadClassData ) ) },
+        { ObjectType.LinkedZipline,          new ObjectTypeData( new[] { "custom_linked_zipline",        "LinkedZipline",      "Linked Zipline"              }, typeof( LinkedZiplineScript ),    typeof( LinkedZipLinesClassData ) ) },
+        { ObjectType.LootBin,                new ObjectTypeData( new[] { "custom_lootbin",               "LootBin",            "Loot Bin"                    }, typeof( LootBinScript ),          typeof( LootBinClassData ) ) },
+        { ObjectType.NewLocPair,             new ObjectTypeData( new[] { "custom_new_loc_pair",          "NewLocPair",         "New Loc Pair"                }, typeof( NewLocPairScript ),       typeof( NewLocPairClassData ) ) },
+        { ObjectType.NonVerticalZipLine,     new ObjectTypeData( new[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine"        }, typeof( DrawNonVerticalZipline ), typeof( NonVerticalZipLineClassData ) ) },
+        { ObjectType.Prop,                   new ObjectTypeData( new[] { "mdl",                          "Prop",               "Prop"                        }, typeof( PropScript ),             typeof( PropClassData ) ) },
+        { ObjectType.SingleDoor,             new ObjectTypeData( new[] { "custom_single_door",           "SingleDoor",         "Single Door"                 }, typeof( DoorScript ),             typeof( SingleDoorClassData ) ) },
+        { ObjectType.Sound,                  new ObjectTypeData( new[] { "custom_sound",                 "Sound",              "Sound"                       }, typeof( SoundScript ),            typeof( SoundClassData ) ) },
+        { ObjectType.SpawnPoint,             new ObjectTypeData( new[] { "custom_info_spawnpoint_human", "SpawnPoint",         "Spawn Point"                 }, typeof( SpawnPointScript ),       typeof( SpawnPointClassData ) ) },
+        { ObjectType.TextInfoPanel,          new ObjectTypeData( new[] { "custom_text_info_panel",       "TextInfoPanel",      "Text Info Panel"             }, typeof( TextInfoPanelScript ),    typeof( TextInfoPanelClassData ) ) },
+        { ObjectType.Trigger,                new ObjectTypeData( new[] { "trigger_cylinder",             "Trigger",            "Trigger"                     }, typeof( TriggerScripting ),       typeof( TriggerClassData ) ) },
+        { ObjectType.VerticalDoor,           new ObjectTypeData( new[] { "custom_vertical_door",         "VerticalDoor",       "Vertical Door"               }, typeof( VerticalDoorScript ),     typeof( VerticalDoorClassData ) ) },
+        { ObjectType.VerticalZipLine,        new ObjectTypeData( new[] { "_vertical_zipline",            "VerticalZipLine",    "Vertical ZipLine"            }, typeof( DrawVerticalZipline ),    typeof( VerticalZipLineClassData ) ) },
+        { ObjectType.WeaponRack,             new ObjectTypeData( new[] { "custom_weaponrack",            "WeaponRack",         "Weapon Rack"                 }, typeof( WeaponRackScript ),       typeof( WeaponRackClassData ) ) },
+        { ObjectType.ZipLine,                new ObjectTypeData( new[] { "custom_zipline",               "ZipLine",            "ZipLine"                     }, typeof( DrawZipline ),            typeof( ZipLineClassData ) ) },
 
         // Unity Only
-        { ObjectType.LiveMapCodePlayerSpawn, new ObjectTypeData( new string[] { "unityonly_player_spawn",       "LMCPlayerSpawn",     "Player Spawn ( Unity Only )" }, null,                             null ) }
+        { ObjectType.LiveMapCodePlayerSpawn, new ObjectTypeData( new[] { "unityonly_player_spawn",       "LMCPlayerSpawn",     "Player Spawn ( Unity Only )" }, typeof( EmptyScript ),            typeof( UOPlayerSpawnClassData ) ) }
     };
 
     private static readonly List< ObjectType > ObjectToTagPriorities = new List< ObjectType > 

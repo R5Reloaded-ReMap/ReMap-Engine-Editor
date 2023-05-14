@@ -57,8 +57,8 @@ namespace ImportExport.Json
             UnityInfo.SortListByKey( jsonData.TextInfoPanels, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.FuncWindowHints, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.Sounds, x => x.PathString );
-            UnityInfo.SortListByKey( jsonData.CameraPath, x => x.PathString );
-
+            UnityInfo.SortListByKey( jsonData.CameraPaths, x => x.PathString );
+            UnityInfo.SortListByKey( jsonData.PlayerSpawns, x => x.PathString );
 
 
             await ImportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
@@ -81,7 +81,8 @@ namespace ImportExport.Json
             await ImportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
             await ImportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
             await ImportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
-            await ImportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPath );
+            await ImportObjectsWithEnum( ObjectType.CameraPath, jsonData.CameraPaths );
+            await ImportObjectsWithEnum( ObjectType.LiveMapCodePlayerSpawn, jsonData.PlayerSpawns );
 
             ReMapConsole.Log( "[Json Import] Finished", ReMapConsole.LogType.Success );
 
@@ -107,12 +108,12 @@ namespace ImportExport.Json
 
                     case ZipLineClassData data: // Ziplines
                         data = ( ZipLineClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_zipline", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case LinkedZipLinesClassData data: // Linked Ziplines
                         data = ( LinkedZipLinesClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_linked_zipline", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case VerticalZipLineClassData data: // Vertical Ziplines
@@ -127,37 +128,37 @@ namespace ImportExport.Json
 
                     case SingleDoorClassData data: // Single Doors
                         data = ( SingleDoorClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_single_door", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case DoubleDoorClassData data: // Double Doors
                         data = ( DoubleDoorClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_double_door", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case HorzDoorClassData data: // Horizontal Doors
                         data = ( HorzDoorClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_sliding_door", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case VerticalDoorClassData data: // Vertical Doors
                         data = ( VerticalDoorClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_vertical_door", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case ButtonClassData data: // Bouttons
                         data = ( ButtonClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_button", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case JumppadClassData data: // Jumppads
                         data = ( JumppadClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_jumppad", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case LootBinClassData data: // Loot Bins
                         data = ( LootBinClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_lootbin", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case WeaponRackClassData data: // Weapon Racks
@@ -167,7 +168,7 @@ namespace ImportExport.Json
 
                     case TriggerClassData data: // Triggers
                         data = ( TriggerClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "trigger_cylinder", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case BubbleShieldClassData data: // Bubbles Shield
@@ -177,32 +178,37 @@ namespace ImportExport.Json
 
                     case SpawnPointClassData data: // Spawn Points
                         data = ( SpawnPointClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_info_spawnpoint_human", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case NewLocPairClassData data: // New Loc Pair
                         data = ( NewLocPairClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_new_loc_pair", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case TextInfoPanelClassData data: // Text Info Panels
                         data = ( TextInfoPanelClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_text_info_panel", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case FuncWindowHintClassData data: // Window Hints
                         data = ( FuncWindowHintClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_window_hint", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case SoundClassData data: // Sounds
                         data = ( SoundClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_sound", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case CameraPathClassData data: // Camera Paths
                         data = ( CameraPathClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, "custom_camera_path", objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        break;
+
+                    case UOPlayerSpawnClassData data: // Unity Only Player Spawn
+                        data = ( UOPlayerSpawnClassData )( object ) objData;
+                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
                         break;
 
                     default: break;

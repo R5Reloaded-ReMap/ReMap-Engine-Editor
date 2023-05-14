@@ -70,7 +70,6 @@ public class Helper
 
     private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new Dictionary< ObjectType, ObjectTypeData >
     {
-        { ObjectType.Prop,                   new ObjectTypeData( new string[] { "mdl",                          "Prop",               "Prop"                        }, typeof( PropScript ),             typeof( PropClassData ) ) },
         { ObjectType.BubbleShield,           new ObjectTypeData( new string[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"               }, typeof( BubbleScript ),           typeof( BubbleShieldClassData ) ) },
         { ObjectType.Button,                 new ObjectTypeData( new string[] { "custom_button",                "Button",             "Button"                      }, typeof( ButtonScripting ),        typeof( ButtonClassData ) ) },
         { ObjectType.CameraPath,             new ObjectTypeData( new string[] { "custom_camera_path",           "CameraPath",         "Camera Path"                 }, typeof( PathScript ),             typeof( CameraPathClassData ) ) },
@@ -80,15 +79,16 @@ public class Helper
         { ObjectType.Jumppad,                new ObjectTypeData( new string[] { "custom_jumppad",               "Jumppad",            "Jump Pad"                    }, typeof( PropScript ),             typeof( JumppadClassData ) ) },
         { ObjectType.LinkedZipline,          new ObjectTypeData( new string[] { "custom_linked_zipline",        "LinkedZipline",      "Linked Zipline"              }, typeof( LinkedZiplineScript ),    typeof( LinkedZipLinesClassData ) ) },
         { ObjectType.LootBin,                new ObjectTypeData( new string[] { "custom_lootbin",               "LootBin",            "Loot Bin"                    }, typeof( LootBinScript ),          typeof( LootBinClassData ) ) },
+        { ObjectType.NewLocPair,             new ObjectTypeData( new string[] { "custom_new_loc_pair",          "NewLocPair",         "New Loc Pair"                }, typeof( NewLocPairScript ),       typeof( NewLocPairClassData ) ) },
+        { ObjectType.NonVerticalZipLine,     new ObjectTypeData( new string[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine"        }, typeof( DrawNonVerticalZipline ), typeof( NonVerticalZipLineClassData ) ) },
+        { ObjectType.Prop,                   new ObjectTypeData( new string[] { "mdl",                          "Prop",               "Prop"                        }, typeof( PropScript ),             typeof( PropClassData ) ) },
         { ObjectType.SingleDoor,             new ObjectTypeData( new string[] { "custom_single_door",           "SingleDoor",         "Single Door"                 }, typeof( DoorScript ),             typeof( SingleDoorClassData ) ) },
         { ObjectType.Sound,                  new ObjectTypeData( new string[] { "custom_sound",                 "Sound",              "Sound"                       }, typeof( SoundScript ),            typeof( SoundClassData ) ) },
-        { ObjectType.NewLocPair,             new ObjectTypeData( new string[] { "custom_new_loc_pair",          "NewLocPair",         "New Loc Pair"                }, typeof( NewLocPairScript ),       typeof( NewLocPairClassData ) ) },
         { ObjectType.SpawnPoint,             new ObjectTypeData( new string[] { "custom_info_spawnpoint_human", "SpawnPoint",         "Spawn Point"                 }, typeof( SpawnPointScript ),       typeof( SpawnPointClassData ) ) },
         { ObjectType.TextInfoPanel,          new ObjectTypeData( new string[] { "custom_text_info_panel",       "TextInfoPanel",      "Text Info Panel"             }, typeof( TextInfoPanelScript ),    typeof( TextInfoPanelClassData ) ) },
         { ObjectType.Trigger,                new ObjectTypeData( new string[] { "trigger_cylinder",             "Trigger",            "Trigger"                     }, typeof( TriggerScripting ),       typeof( TriggerClassData ) ) },
         { ObjectType.VerticalDoor,           new ObjectTypeData( new string[] { "custom_vertical_door",         "VerticalDoor",       "Vertical Door"               }, typeof( VerticalDoorScript ),     typeof( VerticalDoorClassData ) ) },
         { ObjectType.VerticalZipLine,        new ObjectTypeData( new string[] { "_vertical_zipline",            "VerticalZipLine",    "Vertical ZipLine"            }, typeof( DrawVerticalZipline ),    typeof( VerticalZipLineClassData ) ) },
-        { ObjectType.NonVerticalZipLine,     new ObjectTypeData( new string[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine"        }, typeof( DrawNonVerticalZipline ), typeof( NonVerticalZipLineClassData ) ) },
         { ObjectType.WeaponRack,             new ObjectTypeData( new string[] { "custom_weaponrack",            "WeaponRack",         "Weapon Rack"                 }, typeof( WeaponRackScript ),       typeof( WeaponRackClassData ) ) },
         { ObjectType.ZipLine,                new ObjectTypeData( new string[] { "custom_zipline",               "ZipLine",            "ZipLine"                     }, typeof( DrawZipline ),            typeof( ZipLineClassData ) ) },
 
@@ -96,7 +96,24 @@ public class Helper
         { ObjectType.LiveMapCodePlayerSpawn, new ObjectTypeData( new string[] { "unityonly_player_spawn",       "LMCPlayerSpawn",     "Player Spawn ( Unity Only )" }, null,                             null ) }
     };
 
-    public static Dictionary<string, string> ObjectToTag = ObjectToTagDictionaryInit();
+    private static readonly List< ObjectType > ObjectToTagPriorities = new List< ObjectType > 
+    { 
+        ObjectType.Prop,
+        ObjectType.BubbleShield,
+        ObjectType.VerticalZipLine,
+        ObjectType.NonVerticalZipLine
+    };
+
+    public static readonly Dictionary< string, string > ObjectToTag = ObjectToTagDictionaryInit();
+
+    // Gen Settings
+    public static Dictionary< string, bool > GenerateObjects = ObjectGenerateDictionaryInit();
+    // Always Hide Unity Only Objects
+    public static ObjectType[] GenerateIgnoreStatic = new ObjectType[]
+    {
+        ObjectType.LiveMapCodePlayerSpawn
+    };
+    public static ObjectType[] GenerateIgnore = new ObjectType[0];
 
     public enum ExportType
     {
@@ -282,9 +299,10 @@ public class Helper
         {
             go.tag = "Untagged";
 
-            foreach (string key in ObjectToTag.Keys)
-                if (go.name.Contains(key))
-                    go.tag = ObjectToTag[key];
+            foreach ( string key in ObjectToTag.Keys )
+            {
+                if ( go.name.Contains( key ) ) go.tag = ObjectToTag[key];
+            }
         }
     }
 
@@ -357,27 +375,11 @@ public class Helper
     {
         // Order of importance
         StringBuilder code = new StringBuilder();
-        if( GetBoolFromGenerateObjects( ObjectType.Prop ) )               code.Append( await BuildObjectsWithEnum( ObjectType.Prop, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.ZipLine ) )            code.Append( await BuildObjectsWithEnum( ObjectType.ZipLine, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.LinkedZipline ) )      code.Append( await BuildObjectsWithEnum( ObjectType.LinkedZipline, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.VerticalZipLine ) )    code.Append( await BuildObjectsWithEnum( ObjectType.VerticalZipLine, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.NonVerticalZipLine ) ) code.Append( await BuildObjectsWithEnum( ObjectType.NonVerticalZipLine, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.SingleDoor ) )         code.Append( await BuildObjectsWithEnum( ObjectType.SingleDoor, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.DoubleDoor ) )         code.Append( await BuildObjectsWithEnum( ObjectType.DoubleDoor, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.HorzDoor ) )           code.Append( await BuildObjectsWithEnum( ObjectType.HorzDoor, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.VerticalDoor ) )       code.Append( await BuildObjectsWithEnum( ObjectType.VerticalDoor, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.Button ) )             code.Append( await BuildObjectsWithEnum( ObjectType.Button, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.Jumppad ) )            code.Append( await BuildObjectsWithEnum( ObjectType.Jumppad, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.LootBin ) )            code.Append( await BuildObjectsWithEnum( ObjectType.LootBin, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.WeaponRack ) )         code.Append( await BuildObjectsWithEnum( ObjectType.WeaponRack, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.Trigger ) )            code.Append( await BuildObjectsWithEnum( ObjectType.Trigger, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.BubbleShield ) )       code.Append( await BuildObjectsWithEnum( ObjectType.BubbleShield, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.SpawnPoint ) )         code.Append( await BuildObjectsWithEnum( ObjectType.SpawnPoint, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.NewLocPair ) )         code.Append( await BuildObjectsWithEnum( ObjectType.NewLocPair, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.TextInfoPanel ) )      code.Append( await BuildObjectsWithEnum( ObjectType.TextInfoPanel, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.FuncWindowHint ) )     code.Append( await BuildObjectsWithEnum( ObjectType.FuncWindowHint, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.Sound ) )              code.Append( await BuildObjectsWithEnum( ObjectType.Sound, buildType, Selection ) );
-        if( GetBoolFromGenerateObjects( ObjectType.CameraPath ) )         code.Append( await BuildObjectsWithEnum( ObjectType.CameraPath, buildType, Selection ) );
+
+        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        {
+            if ( GetBoolFromGenerateObjects( objectType ) ) code.Append( await BuildObjectsWithEnum( objectType, buildType, Selection ) );
+        }
 
         return code.ToString();
     }
@@ -487,9 +489,18 @@ public class Helper
     {
         Dictionary< string, string > dictionary = new Dictionary< string, string >();
 
-        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        foreach ( ObjectType objectType in ObjectToTagPriorities )
         {
             dictionary.Add( GetObjRefWithEnum( objectType ), GetObjTagNameWithEnum( objectType ) );
+        }
+
+        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        {
+            string key = GetObjRefWithEnum( objectType );
+
+            if ( dictionary.ContainsKey( key ) ) continue;
+
+            dictionary.Add( key, GetObjTagNameWithEnum( objectType ) );
         }
 
         return dictionary;
@@ -546,7 +557,9 @@ public class Helper
             }
         } else objectTypeArray = array.ToList();
 
-        CodeViewsWindow.CodeViewsWindow.GenerateIgnore = objectTypeArray.ToArray();
+        objectTypeArray.AddRange( GenerateIgnoreStatic.ToList() );
+
+        GenerateIgnore = objectTypeArray.ToArray();
     }
 
     public static GameObject[] GetSelectedObjectWithEnum( ObjectType objectType )

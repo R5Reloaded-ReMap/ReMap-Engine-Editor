@@ -90,7 +90,6 @@ namespace CodeViewsWindow
                 ObjectType.Sound,
                 ObjectType.SpawnPoint,
                 ObjectType.CameraPath,
-                ObjectType.LiveMapCodePlayerSpawn
             };
 
             Helper.ForceHideBoolToGenerateObjects( forceHide );

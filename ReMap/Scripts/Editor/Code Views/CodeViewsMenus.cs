@@ -358,23 +358,21 @@ namespace CodeViewsWindow
                     WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 156 );
                 GUILayout.EndHorizontal();
 
-                foreach ( string key in CodeViewsWindow.GenerateObjects.Keys )
+                foreach ( string key in Helper.GenerateObjects.Keys )
                 {
                     ObjectType? type = Helper.GetObjectTypeByObjName( key );
                     ObjectType typed = ( ObjectType ) type;
 
                     if ( CodeViewsWindow.IsHided( typed ) ) continue;
-                    
-                    Space( 4 );
 
                     GUILayout.BeginHorizontal();
-                        bool value = CodeViewsWindow.GenerateObjects[key];
+                        bool value = Helper.GenerateObjects[key];
                         OptionalToggle( ref value, $"Build {key}", value ? $"Disable {key}" : $"Enable {key}" );
                     GUILayout.EndHorizontal();
 
-                    if ( CodeViewsWindow.GenerateObjects[key] != value )
+                    if ( Helper.GenerateObjects[key] != value )
                     {
-                        CodeViewsWindow.GenerateObjects[key] = value;
+                        Helper.GenerateObjects[key] = value;
                         CodeViewsWindow.Refresh();
                         
                         GUILayout.EndHorizontal();

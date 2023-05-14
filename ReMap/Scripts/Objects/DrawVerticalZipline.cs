@@ -3,14 +3,16 @@ using UnityEditor;
 
 public class DrawVerticalZipline : MonoBehaviour
 {
+    /*
     [Header("Developer options, do not modify:")]
     public bool ShowDevelopersOptions = false;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform zipline;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform fence_post;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform arm;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_start;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_end;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform helperPlacement;
+    */
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform zipline;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform fence_post;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform arm;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform rope_start;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform rope_end;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform helperPlacement;
 
     [Header("Unity Settings:")]
     public bool ShowZipline = true;

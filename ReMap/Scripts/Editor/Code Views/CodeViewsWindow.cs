@@ -84,10 +84,6 @@ namespace CodeViewsWindow
         internal static Texture2D enableLogo;
         internal static Texture2D disableLogo;
 
-        // Gen Settings
-        public static Dictionary< string, bool > GenerateObjects = Helper.ObjectGenerateDictionaryInit();
-        public static ObjectType[] GenerateIgnore = new ObjectType[0];
-
         public static int greenPropCount = 1500;
         public static int yellowPropCount = 3000;
 
@@ -161,7 +157,7 @@ namespace CodeViewsWindow
             if ( objectData.Length == 0 ) return true;
 
             // Check if objectType are flaged hide
-            foreach ( ObjectType hidedObjectType in GenerateIgnore )
+            foreach ( ObjectType hidedObjectType in Helper.GenerateIgnore )
             {
                 if ( hidedObjectType == objectType ) return true;
             }

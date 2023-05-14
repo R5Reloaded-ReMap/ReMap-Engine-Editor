@@ -579,6 +579,33 @@ public class Helper
         return SelectedObject;
     }
 
+    public static GameObject[] GetAllObjectTypeWithEnum( ObjectType objectType )
+    {
+        List< GameObject > objects = new List< GameObject >();
+
+        foreach ( GameObject obj in UnityInfo.GetAllGameObjectInScene() )
+        {
+            if ( obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+            {
+                objects.Add( obj );
+            }
+        }
+
+        return objects.ToArray();
+    }
+
+    public static GameObject[] AppendMultipleObjectType( GameObject[][] objectsArray )
+    {
+        List< GameObject > list = new List< GameObject >();
+
+        foreach ( GameObject[] objectArray in objectsArray )
+        {
+            list.AddRange( objectArray.ToList() );
+        }
+
+        return list.ToArray();
+    }
+
     public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )
     {
         GameObject obj = null;

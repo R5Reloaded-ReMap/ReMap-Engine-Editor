@@ -9,121 +9,161 @@ using UnityEngine;
 
 public class SelectTool
 {
-    [MenuItem("ReMap/Selection/Select All Prop Script", false, 100)]
-    public static void SelectPropScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Prop", false, 100 ) ]
+    public static void SelectPropInit()
     {
-        SelectComponentScript<PropScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.Prop );
     }
 
-    [MenuItem("ReMap/Selection/Select All Draw Zipline", false, 100)]
-    public static void SelectDrawZiplineInit()
+    [ MenuItem( "ReMap/Selection/Select All Zipline ( simple )", false, 100 ) ]
+    public static void SelectZiplineInit()
     {
-        SelectComponentScript<DrawZipline>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.ZipLine );
     }
 
-    [MenuItem("ReMap/Selection/Select All Draw Linked Zipline", false, 100)]
-    public static void SelectDrawLinkedZiplineInit()
+    [ MenuItem( "ReMap/Selection/Select All Linked Zipline", false, 100 ) ]
+    public static void SelectLinkedZiplineInit()
     {
-        SelectComponentScript<DrawLinkedZipline>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.LinkedZipline );
     }
 
-    [MenuItem("ReMap/Selection/Select All Draw Vertical Zipline", false, 100)]
-    public static void SelectDrawVerticalZiplineInit()
+    [ MenuItem( "ReMap/Selection/Select All Vertical Zipline", false, 100 ) ]
+    public static void SelectVerticalZiplineInit()
     {
-        SelectComponentScript<DrawVerticalZipline>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.VerticalZipLine );
     }
 
-    [MenuItem("ReMap/Selection/Select All Draw Non Vertical Zipline", false, 100)]
-    public static void SelectDrawNonVerticalZiplineInit()
+    [ MenuItem( "ReMap/Selection/Select All Non Vertical Zipline", false, 100 ) ]
+    public static void SelectNonVerticalZiplineInit()
     {
-        SelectComponentScript<DrawNonVerticalZipline>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.NonVerticalZipLine );
     }
     
-    [MenuItem("ReMap/Selection/Select All Ziplines Types", false, 100)]
+    [ MenuItem( "ReMap/Selection/Select All Ziplines Types", false, 100 ) ]
     public static void SelectAllZiplinesTypesInit()
     {
-        SelectComponents( typeof( DrawZipline ), typeof( DrawLinkedZipline ), typeof( DrawVerticalZipline ), typeof( DrawNonVerticalZipline ) );
+        GameObject[][] array = new GameObject[][]
+        {
+            Helper.GetAllObjectTypeWithEnum( ObjectType.ZipLine ),
+            Helper.GetAllObjectTypeWithEnum( ObjectType.LinkedZipline ),
+            Helper.GetAllObjectTypeWithEnum( ObjectType.VerticalZipLine ),
+            Helper.GetAllObjectTypeWithEnum( ObjectType.NonVerticalZipLine )
+        };
+
+        Selection.objects = Helper.AppendMultipleObjectType( array );
     }
 
-    [MenuItem("ReMap/Selection/Select All Door Script", false, 100)]
-    public static void SelectDoorScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Single Doors", false, 100 ) ]
+    public static void SelectSingleDoorsInit()
     {
-        SelectComponentScript<DoorScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.SingleDoor );
     }
 
-    [MenuItem("ReMap/Selection/Select All Loot Bin Script", false, 100)]
-    public static void SelectLootBinScriptInit()
+        [ MenuItem( "ReMap/Selection/Select All Double Doors", false, 100 ) ]
+    public static void SelectDoubleDoorsInit()
     {
-        SelectComponentScript<LootBinScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.DoubleDoor );
     }
 
-    [MenuItem("ReMap/Selection/Select All Button Scripting", false, 100)]
-    public static void SelectButtonScriptingInit()
+        [ MenuItem( "ReMap/Selection/Select All Vertical Doors", false, 100 ) ]
+    public static void SelectVerticalDoorsInit()
     {
-        SelectComponentScript<ButtonScripting>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.VerticalDoor );
     }
 
-    [MenuItem("ReMap/Selection/Select All Trigger Scripting", false, 100)]
-    public static void SelectTriggerScriptingInit()
+        [ MenuItem( "ReMap/Selection/Select All Horizontal Doors", false, 100 ) ]
+    public static void SelectHorizontalDoorsInit()
     {
-        SelectComponentScript<TriggerScripting>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.HorzDoor );
     }
 
-    [MenuItem("ReMap/Selection/Select All Weapon Rack Script", false, 100)]
-    public static void SelectWeaponRackScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Doors Types", false, 100 ) ]
+    public static void SelectAllDoorsTypesInit()
     {
-        SelectComponentScript<WeaponRackScript>();
+        GameObject[][] array = new GameObject[][]
+        {
+            Helper.GetAllObjectTypeWithEnum( ObjectType.SingleDoor ),
+            Helper.GetAllObjectTypeWithEnum( ObjectType.DoubleDoor ),
+            Helper.GetAllObjectTypeWithEnum( ObjectType.VerticalDoor ),
+            Helper.GetAllObjectTypeWithEnum( ObjectType.HorzDoor )
+        };
+
+        Selection.objects = Helper.AppendMultipleObjectType( array );
     }
 
-    [MenuItem("ReMap/Selection/Select All Bubble Script", false, 100)]
-    public static void SelectBubbleScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Loot Bins", false, 100 ) ]
+    public static void SelectLootBinsInit()
     {
-        SelectComponentScript<BubbleScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.LootBin );
     }
 
-    [MenuItem("ReMap/Selection/Select All Sound Script", false, 100)]
-    public static void SelectSoundScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Buttons", false, 100 ) ]
+    public static void SelectButtonsInit()
     {
-        SelectComponentScript<SoundScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.Button );
     }
 
-    [MenuItem("ReMap/Selection/Select All New Loc Pair Script", false, 100)]
-    public static void SelectNewLocPairScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Trigger Scripting", false, 100 ) ]
+    public static void SelectTriggersInit()
     {
-        SelectComponentScript<NewLocPairScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.Trigger );
     }
 
-    [MenuItem("ReMap/Selection/Select All Info Spawn Point Human Script", false, 100)]
-    public static void SelectSpawnPointScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Weapon Racks", false, 100 ) ]
+    public static void SelectWeaponRacksInit()
     {
-        SelectComponentScript<SpawnPointScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.WeaponRack );
     }
 
-    [MenuItem("ReMap/Selection/Select All Text Info Panel Script", false, 100)]
-    public static void SelectTextInfoPanelScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Bubble Shields", false, 100 ) ]
+    public static void SelectBubbleShieldsInit()
     {
-        SelectComponentScript<TextInfoPanelScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.BubbleShield );
     }
 
-    [MenuItem("ReMap/Selection/Select All Window Hint Script", false, 100)]
-    public static void SelectWindowHintScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Sounds", false, 100 ) ]
+    public static void SelectSoundsInit()
     {
-        SelectComponentScript<WindowHintScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.Sound );
     }
 
-    [MenuItem("ReMap/Selection/Select All Path Script Script", false, 100)]
-    public static void SelectPathScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All New Loc Pairs", false, 100 ) ]
+    public static void SelectNewLocPairsInit()
     {
-        SelectComponentScript<PathScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.NewLocPair );
     }
 
-    [MenuItem("ReMap/Selection/Select All Empty Script Script", false, 100)]
-    public static void SelectEmptyScriptInit()
+    [ MenuItem( "ReMap/Selection/Select All Info Spawn Points Human", false, 100 ) ]
+    public static void SelectSpawnPointsHumanInit()
     {
-        SelectComponentScript<EmptyScript>();
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.SpawnPoint );
     }
 
-    public static void SelectComponentScript<T>() where T : Component
+    [ MenuItem( "ReMap/Selection/Select All Text Info Panels", false, 100 ) ]
+    public static void SelectTextInfoPanelsInit()
+    {
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.TextInfoPanel );
+    }
+
+    [ MenuItem( "ReMap/Selection/Select All Window Hints", false, 100 ) ]
+    public static void SelectWindowHintsInit()
+    {
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.FuncWindowHint );
+    }
+
+    [ MenuItem( "ReMap/Selection/Select All Camera Paths", false, 100 ) ]
+    public static void SelectCameraPathsInit()
+    {
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.CameraPath );
+    }
+
+    [ MenuItem( "ReMap/Selection/Select All Unity Only Player Spawn", false, 100 ) ]
+    public static void SelectUOPlayerSpawnInit()
+    {
+        Selection.objects = Helper.GetAllObjectTypeWithEnum( ObjectType.LiveMapCodePlayerSpawn );
+    }
+
+    private static void SelectComponentScript< T >() where T : Component
     {
         GameObject[] array = new GameObject[0];
 
@@ -142,7 +182,7 @@ public class SelectTool
         Selection.objects = array;
     }
 
-    public static void SelectComponents(params Type[] componentTypes)
+    private static void SelectComponents( params Type[] componentTypes )
     {
         GameObject[] array = new GameObject[0];
 

@@ -115,14 +115,6 @@ public class Helper
     };
     public static ObjectType[] GenerateIgnore = new ObjectType[0];
 
-    public enum ExportType
-    {
-        WholeScriptOffset,
-        MapOnlyOffset,
-        WholeScript,
-        MapOnly
-    }
-
     public static bool UseStartingOffset()
     {
         return CodeViewsWindow.MenuInit.IsEnable( CodeViewsWindow.CodeViewsWindow.OffsetMenuOffset );
@@ -141,7 +133,8 @@ public class Helper
         CodeViewsWindow.MenuInit.SetBool( CodeViewsWindow.CodeViewsWindow.OffsetMenuShowOffset, value );
     }
 
-    public struct NewDataTable {
+    public struct NewDataTable
+    {
         public string Type;
         public Vector3 Origin;
         public Vector3 Angles;

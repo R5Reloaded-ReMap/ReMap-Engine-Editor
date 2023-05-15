@@ -113,7 +113,7 @@ namespace ImportExport.Json
         }
 
 
-        private static async Task ExportObjectsWithEnum< T >( ObjectType objectType, List< T > listType, ExportType exportType = ExportType.All ) where T : class
+        private static async Task ExportObjectsWithEnum< T >( ObjectType objectType, List< T > listType, ExportType exportType = ExportType.All ) where T : GlobalClassData
         {
             int i = 0; int j = 1; GameObject[] objectsData;
 
@@ -151,9 +151,77 @@ namespace ImportExport.Json
 
                 T classData = Activator.CreateInstance( typeof( T ) ) as T;
 
-                if ( classData is GlobalClassData data )
+                switch ( classData )
                 {
-                    ProcessExportClassData( data, obj, objPath, objectType );
+                    case PropClassData data: // Props
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case ZipLineClassData data: // Ziplines
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case LinkedZipLinesClassData data: // Linked Ziplines
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case VerticalZipLineClassData data: // Vertical Ziplines
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case NonVerticalZipLineClassData data: // Non Vertical ZipLines
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case SingleDoorClassData data: // Single Doors
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case DoubleDoorClassData data: // Double Doors
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case HorzDoorClassData data: // Horizontal Doors
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case VerticalDoorClassData data: // Vertical Doors
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case ButtonClassData data: // Bouttons
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case JumppadClassData data: // Jumppads
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case LootBinClassData data: // Loot Bins
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case WeaponRackClassData data: // Weapon Racks
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case TriggerClassData data: // Triggers
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case BubbleShieldClassData data: // Bubbles Shield
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case SpawnPointClassData data: // Spawn Points
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case NewLocPairClassData data: // New Loc Pairs
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case TextInfoPanelClassData data: // Text Info Panels
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case FuncWindowHintClassData data: // Window Hints
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case SoundClassData data: // Sounds
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+                    case CameraPathClassData data: // Camera Paths
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+
+                    case UOPlayerSpawnClassData data: // Unity Only Player Spawn
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
+
+                    default: break;
                 }
 
                 if ( IsValidPath( objPath ) ) listType.Add( classData );

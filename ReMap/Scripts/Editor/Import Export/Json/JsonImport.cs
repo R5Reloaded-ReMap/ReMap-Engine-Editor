@@ -89,7 +89,7 @@ namespace ImportExport.Json
             EditorUtility.ClearProgressBar();
         }
 
-        private static async Task ImportObjectsWithEnum< T >( ObjectType objectType, List< T > listType ) where T : class
+        private static async Task ImportObjectsWithEnum< T >( ObjectType objectType, List< T > listType ) where T : GlobalClassData
         {
             int i = 0; int j = 1;
 
@@ -103,112 +103,112 @@ namespace ImportExport.Json
                 {
                     case PropClassData data: // Props
                         data = ( PropClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case ZipLineClassData data: // Ziplines
                         data = ( ZipLineClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case LinkedZipLinesClassData data: // Linked Ziplines
                         data = ( LinkedZipLinesClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case VerticalZipLineClassData data: // Vertical Ziplines
                         data = ( VerticalZipLineClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case NonVerticalZipLineClassData data: // Non Vertical ZipLines
                         data = ( NonVerticalZipLineClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case SingleDoorClassData data: // Single Doors
                         data = ( SingleDoorClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case DoubleDoorClassData data: // Double Doors
                         data = ( DoubleDoorClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case HorzDoorClassData data: // Horizontal Doors
                         data = ( HorzDoorClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case VerticalDoorClassData data: // Vertical Doors
                         data = ( VerticalDoorClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case ButtonClassData data: // Bouttons
                         data = ( ButtonClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case JumppadClassData data: // Jumppads
                         data = ( JumppadClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case LootBinClassData data: // Loot Bins
                         data = ( LootBinClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case WeaponRackClassData data: // Weapon Racks
                         data = ( WeaponRackClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case TriggerClassData data: // Triggers
                         data = ( TriggerClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case BubbleShieldClassData data: // Bubbles Shield
                         data = ( BubbleShieldClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, data.Name, objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case SpawnPointClassData data: // Spawn Points
                         data = ( SpawnPointClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case NewLocPairClassData data: // New Loc Pair
                         data = ( NewLocPairClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case TextInfoPanelClassData data: // Text Info Panels
                         data = ( TextInfoPanelClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case FuncWindowHintClassData data: // Window Hints
                         data = ( FuncWindowHintClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case SoundClassData data: // Sounds
                         data = ( SoundClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case CameraPathClassData data: // Camera Paths
                         data = ( CameraPathClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     case UOPlayerSpawnClassData data: // Unity Only Player Spawn
                         data = ( UOPlayerSpawnClassData )( object ) objData;
-                        obj = ProcessImportClassData( data, Helper.GetObjRefWithEnum( objectType ), objectType, i, j, objectsCount );
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 
                     default: break;
@@ -252,6 +252,20 @@ namespace ImportExport.Json
             CreatePath( objData.Path, objData.PathString, obj );
 
             return obj;
+        }
+
+        private static string DetermineDataName< T >( T objData, ObjectType objectType ) where T : GlobalClassData
+        {
+            switch ( objData )
+            {
+                case PropClassData data: return data.Name;
+                case VerticalZipLineClassData data: return data.Name;
+                case NonVerticalZipLineClassData data: return data.Name;
+                case WeaponRackClassData data: return data.Name;
+                case BubbleShieldClassData data: return data.Name;
+            }
+
+            return Helper.GetObjRefWithEnum( objectType );
         }
 
         private static bool CheckJsonVersion( JsonData jsonData )

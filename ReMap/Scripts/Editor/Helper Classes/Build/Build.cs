@@ -61,6 +61,9 @@ namespace Build
                 case ObjectType.Jumppad:
                     code.Append( await BuildJumppad.BuildJumppadObjects( objectData, buildType ) );
                     break;
+                case ObjectType.JumpTower:
+                    code.Append( await BuildJumpTower.BuildJumpTowerObjects( objectData, buildType ) );
+                    break;
                 case ObjectType.LinkedZipline:
                     code.Append( await BuildLinkedZipline.BuildLinkedZiplineObjects( objectData, buildType ) );
                     break;
@@ -126,6 +129,12 @@ namespace Build
                 case ObjectType.DoubleDoor:
 
                     objectDataLength = objectDataLength * 2;
+
+                    break;
+
+                case ObjectType.JumpTower:
+
+                    objectDataLength = objectDataLength * 4;
 
                     break;
 

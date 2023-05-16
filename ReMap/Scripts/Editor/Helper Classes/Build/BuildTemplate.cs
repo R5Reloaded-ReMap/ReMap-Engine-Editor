@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Template" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Template" );
                     break;
 
                 case BuildType.EntFile:
@@ -75,7 +74,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

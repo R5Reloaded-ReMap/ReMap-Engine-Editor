@@ -670,11 +670,13 @@ public class Helper
 
     public static string ReMapCredit( bool noSpace = false )
     {
-        string credit = "";
+        StringBuilder credit = new StringBuilder();
+
         string space = noSpace ? "" : "    ";
 
-        credit += $"{space}// Generated with Unity ReMap Editor {UnityInfo.ReMapVersion}\n";
-        credit += $"{space}// Made with love by AyeZee#6969 & Julefox#0050 :)\n\n";
-        return credit;
+        AppendCode( ref credit, $"{space}// Generated with Unity ReMap Editor {UnityInfo.ReMapVersion}" );
+        AppendCode( ref credit, $"{space}// Made with love by AyeZee#6969 & Julefox#0050 :)", 2 );
+
+        return credit.ToString();
     }
 }

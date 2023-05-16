@@ -41,77 +41,82 @@ namespace Build
             switch ( objectType )
             {
                 case ObjectType.BubbleShield:
-                    code.Append( await BuildBubbleShield.BuildBubbleShieldObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildBubbleShield.BuildBubbleShieldObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.Button:
-                    code.Append( await BuildButton.BuildButtonObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildButton.BuildButtonObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.DoubleDoor:
-                    code.Append( await BuildDoubleDoor.BuildDoubleDoorObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildDoubleDoor.BuildDoubleDoorObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.CameraPath:
-                    code.Append( await BuildCameraPath.BuildCameraPathObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildCameraPath.BuildCameraPathObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.FuncWindowHint:
-                    code.Append( await BuildFuncWindowHint.BuildFuncWindowHintObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildFuncWindowHint.BuildFuncWindowHintObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.HorzDoor:
-                    code.Append( await BuildHorzDoor.BuildHorzDoorObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildHorzDoor.BuildHorzDoorObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.Jumppad:
-                    code.Append( await BuildJumppad.BuildJumppadObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildJumppad.BuildJumppadObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.JumpTower:
-                    code.Append( await BuildJumpTower.BuildJumpTowerObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildJumpTower.BuildJumpTowerObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.LinkedZipline:
-                    code.Append( await BuildLinkedZipline.BuildLinkedZiplineObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildLinkedZipline.BuildLinkedZiplineObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.LootBin:
-                    code.Append( await BuildLootBin.BuildLootBinObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildLootBin.BuildLootBinObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.NonVerticalZipLine:
-                    code.Append( await BuildNonVerticalZipline.BuildNonVerticalZipLineObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildNonVerticalZipline.BuildNonVerticalZipLineObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.Prop:
-                    code.Append( await BuildProp.BuildPropObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildProp.BuildPropObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.SingleDoor:
-                    code.Append( await BuildSingleDoor.BuildSingleDoorObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildSingleDoor.BuildSingleDoorObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.Sound:
-                    code.Append( await BuildSound.BuildSoundObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildSound.BuildSoundObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.NewLocPair:
-                    code.Append( await BuildNewLocPair.BuildNewLocPairObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildNewLocPair.BuildNewLocPairObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.SpawnPoint:
-                    code.Append( await BuildSpawnPoint.BuildSpawnPointObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildSpawnPoint.BuildSpawnPointObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.TextInfoPanel:
-                    code.Append( await BuildTextInfoPanel.BuildTextInfoPanelObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildTextInfoPanel.BuildTextInfoPanelObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.Trigger:
-                    code.Append( await BuildTrigger.BuildTriggerObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildTrigger.BuildTriggerObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.VerticalDoor:
-                    code.Append( await BuildVerticalDoor.BuildVerticalDoorObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildVerticalDoor.BuildVerticalDoorObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.VerticalZipLine:
-                    code.Append( await BuildVerticalZipline.BuildVerticalZipLineObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildVerticalZipline.BuildVerticalZipLineObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.WeaponRack:
-                    code.Append( await BuildWeaponRack.BuildWeaponRackObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildWeaponRack.BuildWeaponRackObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.ZipLine:
-                    code.Append( await BuildZipline.BuildZiplineObjects( objectData, buildType ) );
+                    AppendCode( ref code, await BuildZipline.BuildZiplineObjects( objectData, buildType ), 0 );
                 break;
             }
 
             return code.ToString();
         }
 
-        internal static void AppendCode( ref StringBuilder code, string line, int idx = 1 )
+        internal static void AppendCode( ref StringBuilder code, string line = "", int idx = 1 )
+        {
+            code.Append( line ); PageBreak( ref code, idx );
+        }
+
+        internal static void AppendCode( ref StringBuilder code, StringBuilder line, int idx = 1 )
         {
             code.Append( line ); PageBreak( ref code, idx );
         }
@@ -162,7 +167,7 @@ namespace Build
 
                     break;
                 case BuildType.LiveMap:
-                        CodeViewsWindow.CodeViewsWindow.SendedEntityCount += objectDataLength;
+                    CodeViewsWindow.CodeViewsWindow.SendedEntityCount += objectDataLength;
                     break;
 
                 default:

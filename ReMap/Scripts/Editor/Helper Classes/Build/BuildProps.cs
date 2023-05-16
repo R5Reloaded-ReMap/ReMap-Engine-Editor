@@ -117,13 +117,11 @@ namespace Build
                         if ( PrecacheList.Contains( model ) )
                             continue;
                         PrecacheList.Add( model );
-                        code.Append( $"    PrecacheModel( $\"{model}\" )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    PrecacheModel( $\"{model}\" )" );
                         break;
 
                     case BuildType.DataTable:
-                        code.Append( $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"" );
                         break;
 
                     case BuildType.LiveMap:
@@ -139,7 +137,8 @@ namespace Build
                 
                     if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || ClipInvisibleNoGrappleNoClimb || PlayerClipNoGrappleNoClimb || NoCollisionArrayBool )
                     {
-                        PageBreak( ref code );
+                        AppendCode( ref code );
+                        
                         if ( ClipArrayBool )
                         {
                             AppendCode( ref code, "    foreach ( entity ent in ClipArray )" );

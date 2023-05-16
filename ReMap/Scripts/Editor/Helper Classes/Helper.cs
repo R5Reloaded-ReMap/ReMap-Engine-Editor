@@ -373,7 +373,7 @@ public class Helper
 
         foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
         {
-            if ( GetBoolFromGenerateObjects( objectType ) ) code.Append( await BuildObjectsWithEnum( objectType, buildType, Selection ) );
+            if ( GetBoolFromGenerateObjects( objectType ) ) AppendCode( ref code, await BuildObjectsWithEnum( objectType, buildType, Selection ), 0 );
         }
 
         return code.ToString();
@@ -629,6 +629,11 @@ public class Helper
         if ( name != "" ) obj.name = name;
 
         return obj;
+    }
+
+    public static void RemoveEntityCount( int value = 1 )
+    {
+        CodeViewsWindow.CodeViewsWindow.SendedEntityCount -= value;
     }
 
     public static bool IsValid( GameObject obj )

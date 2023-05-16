@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Buttons" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Buttons" );
                     break;
 
                 case BuildType.EntFile:
@@ -50,8 +49,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n" );
                         break;
 
                     case BuildType.EntFile:
@@ -76,7 +74,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

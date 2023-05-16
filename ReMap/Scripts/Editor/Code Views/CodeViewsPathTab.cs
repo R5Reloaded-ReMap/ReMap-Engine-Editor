@@ -71,16 +71,16 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunctionEnable() )
             {
-                code.Append( $"void function {CodeViewsWindow.functionName}()\n" );
-                code.Append( "{\n" );
-                code.Append( Helper.ReMapCredit() );
+                AppendCode( ref code, $"void function {CodeViewsWindow.functionName}()" );
+                AppendCode( ref code, "{" );
+                AppendCode( ref code, Helper.ReMapCredit(), 0 );
             }
 
-            code.Append( Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ) );
+            AppendCode( ref code, Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ), 0 );
             
-            code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
+            AppendCode( ref code, await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ), 0 );
 
-            if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}\n" );
+            if ( CodeViewsWindow.ShowFunctionEnable() ) AppendCode( ref code, "}" );
 
             return code.ToString();
         }

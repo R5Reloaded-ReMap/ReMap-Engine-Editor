@@ -28,8 +28,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Triggers" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Triggers" );
                     break;
 
                 case BuildType.EntFile:
@@ -62,8 +61,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    entity trigger_{idx} = MapEditor_CreateTrigger( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.Width / 2 )}, {Helper.ReplaceComma( script.Height )}, {Helper.BoolToLower( script.Debug )} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    entity trigger_{idx} = MapEditor_CreateTrigger( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.Width / 2 )}, {Helper.ReplaceComma( script.Height )}, {Helper.BoolToLower( script.Debug )} )" );
 
                         GameObject helper = script.Helper.gameObject;
 
@@ -72,10 +70,10 @@ namespace Build
                             ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Origin );
                             ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Angles );
                             ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Offset );
-                            code.Append( $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)\n" );
-                            code.Append(  "    {\n" );
-                            code.Append( $"    {TEnterCallback}\n" );
-                            code.Append(  "    })\n" );
+                            AppendCode( ref code, $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)" );
+                            AppendCode( ref code,  "    {" );
+                            AppendCode( ref code, $"    {TEnterCallback}" );
+                            AppendCode( ref code,  "    })" );
                         }
 
                         if ( TLeaveCallback != "" )
@@ -83,12 +81,12 @@ namespace Build
                             ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Origin );
                             ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Angles );
                             ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Offset );
-                            code.Append( $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)\n" );
-                            code.Append(  "    {\n" );
-                            code.Append( $"    {TLeaveCallback}\n" );
-                            code.Append(  "    })\n" );
+                            AppendCode( ref code, $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)" );
+                            AppendCode( ref code,  "    {" );
+                            AppendCode( ref code, $"    {TLeaveCallback}" );
+                            AppendCode( ref code,  "    })" );
                         }
-                        code.Append( $"    DispatchSpawn( trigger_{idx} )\n" );
+                        AppendCode( ref code, $"    DispatchSpawn( trigger_{idx} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -105,7 +103,7 @@ namespace Build
 
                     case BuildType.LiveMap:
                         // Remove 1 to the counter since we don't support this object for live map code
-                        CodeViewsWindow.CodeViewsWindow.SendedEntityCount -= 1;
+                        Helper.RemoveEntityCount();
                     break;
                 }
 
@@ -116,7 +114,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

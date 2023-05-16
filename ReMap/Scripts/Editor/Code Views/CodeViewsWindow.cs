@@ -574,23 +574,23 @@ namespace CodeViewsWindow
             switch ( type )
             {
                 case AdditionalCodeType.Head:
-                    code.Append( codeToAdd );
+                    Build.Build.AppendCode( ref code, codeToAdd, 0 );
                     break;
 
                 case AdditionalCodeType.InBlock:
                     codeToAdd = "    " + codeToAdd.Replace( "\n", "\n    " );
 
-                    code.Append( codeToAdd );
+                    Build.Build.AppendCode( ref code, codeToAdd, 0 );
                     break;
 
                 case AdditionalCodeType.Below:
-                    Build.Build.PageBreak( ref code );
+                    Build.Build.AppendCode( ref code );
                     
-                    code.Append( codeToAdd );
+                    Build.Build.AppendCode( ref code, codeToAdd, 0 );
                 break;
             }
 
-            Build.Build.PageBreak( ref code );
+            Build.Build.AppendCode( ref code );
         }
 
 

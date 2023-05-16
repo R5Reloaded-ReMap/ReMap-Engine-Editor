@@ -22,8 +22,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Ziplines" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Ziplines" );
                     break;
 
                 case BuildType.EntFile:
@@ -70,8 +69,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -96,7 +94,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

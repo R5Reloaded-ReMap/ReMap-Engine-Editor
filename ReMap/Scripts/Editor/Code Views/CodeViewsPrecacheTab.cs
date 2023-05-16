@@ -51,14 +51,14 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunctionEnable() )
             {
-                code.Append( $"void function {CodeViewsWindow.functionName}()\n" );
-                code.Append( "{\n" );
-                code.Append( Helper.ReMapCredit() );
+                AppendCode( ref code, $"void function {CodeViewsWindow.functionName}()" );
+                AppendCode( ref code, "{" );
+                AppendCode( ref code, Helper.ReMapCredit(), 0 );
             }
 
-            code.Append(  await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.SelectionEnable() ) );
+            AppendCode( ref code, await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.SelectionEnable() ), 0 );
 
-            if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}" );
+            if ( CodeViewsWindow.ShowFunctionEnable() ) AppendCode( ref code, "}", 0 );
 
             return code.ToString();
         }

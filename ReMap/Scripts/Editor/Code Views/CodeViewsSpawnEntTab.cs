@@ -64,12 +64,12 @@ namespace CodeViewsWindow
 
             if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) )
             {
-                code.Append( $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n" );
+                AppendCode( ref code, $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}" );
             }
 
-            code.Append( await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() ) );
+            AppendCode( ref code, await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() ), 0 );
 
-            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) code.Append( "\u0000" );
+            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) AppendCode( ref code, "\u0000", 0 );
 
             return code.ToString();
         }

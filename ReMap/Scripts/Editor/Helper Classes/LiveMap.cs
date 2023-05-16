@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
+using static Build.Build;
+
 using WindowUtility;
 
 namespace CodeViewsWindow
@@ -193,32 +195,34 @@ namespace CodeViewsWindow
 
             Build.Build.IgnoreCounter = true;
 
-            code.Append( "\nglobal function ReMapLive_Init\n\n" );
-            code.Append( Helper.ReMapCredit( true ) );
+            AppendCode( ref code, "\nglobal function ReMapLive_Init", 2 );
+            AppendCode( ref code, Helper.ReMapCredit( true ), 0 );
 
             CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Head, ref code, CodeViewsWindow.additionalCodeHead, !reset );
 
-            code.Append( "void function ReMapLive_Init()\n" );
-            code.Append( "{\n" );
+            AppendCode( ref code, "void function ReMapLive_Init()" );
             
             if ( reset )
             {
-                code.Append( "\n}\n" );
+                AppendCode( ref code, "{" );
+                AppendCode( ref code );
+                AppendCode( ref code, "}" );
             }
             else
             {
-                code.Append( await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false ) );
-                code.Append( "\n    AddCallback_EntitiesDidLoad( ReMapLive )\n" );
-                code.Append( "}\n\n" );
+                AppendCode( ref code, "{" );
+                AppendCode( ref code, await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false ) );
+                AppendCode( ref code, "    AddCallback_EntitiesDidLoad( ReMapLive )" );
+                AppendCode( ref code, "}", 2 );
 
-                code.Append( "void function ReMapLive()\n" );
-                code.Append( "{\n" );
-                code.Append( Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ) );
-                code.Append( await Helper.BuildMapCode( Build.BuildType.Script, false ) );
+                AppendCode( ref code, "void function ReMapLive()" );
+                AppendCode( ref code, "{" );
+                AppendCode( ref code, Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ), 0 );
+                AppendCode( ref code, await Helper.BuildMapCode( Build.BuildType.Script, false ), 0 );
 
                 CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.InBlock, ref code, CodeViewsWindow.additionalCodeInBlock );
 
-                code.Append( "}\n" );
+                AppendCode( ref code, "}" );
 
                 CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Below, ref code, CodeViewsWindow.additionalCodeBelow );
             }
@@ -249,13 +253,13 @@ namespace CodeViewsWindow
 
             foreach ( GameObject playerSpawn in obj )
             {
-                origin.Append( Helper.BuildOrigin( playerSpawn, false, true ) );
-                angles.Append( Helper.BuildAngles( playerSpawn, false ) );
+                AppendCode( ref origin, Helper.BuildOrigin( playerSpawn, false, true ), 0 );
+                AppendCode( ref angles, Helper.BuildAngles( playerSpawn, false ), 0 );
 
                 if ( i != objLength )
                 {
-                    origin.Append( "," );
-                    angles.Append( "," );
+                    AppendCode( ref origin, ",", 0 );
+                    AppendCode( ref angles, ",", 0 );
                     i++;
                 }
             }

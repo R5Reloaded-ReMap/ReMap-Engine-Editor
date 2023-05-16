@@ -50,7 +50,7 @@ namespace CodeViewsWindow
 
             StringBuilder code = new StringBuilder();
 
-            code.Append( await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.SelectionEnable() ) );
+            AppendCode( ref code, await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.SelectionEnable() ), 0 );
 
             return code.ToString();
         }

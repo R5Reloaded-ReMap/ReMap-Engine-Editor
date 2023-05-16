@@ -21,8 +21,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Bubbles Shield" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Bubbles Shield" );
                     break;
 
                 case BuildType.EntFile:
@@ -56,8 +55,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\" )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\" )" );
                         break;
 
                     case BuildType.EntFile:
@@ -82,7 +80,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

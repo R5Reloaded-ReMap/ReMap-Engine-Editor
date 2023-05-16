@@ -101,27 +101,27 @@ namespace CodeViewsWindow
 
             if ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.ShowPrecacheEnable() )
             {
-                code.Append( $"void function {CodeViewsWindow.functionName}_Init()\n" );
-                code.Append( "{\n" );
-                code.Append( await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false ) );
-                code.Append( $"\n    AddCallback_EntitiesDidLoad( {CodeViewsWindow.functionName} )\n" );
-                code.Append( "}\n\n" );
+                AppendCode( ref code, $"void function {CodeViewsWindow.functionName}_Init()" );
+                AppendCode( ref code, "{" );
+                AppendCode( ref code, await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false ) );
+                AppendCode( ref code, $"    AddCallback_EntitiesDidLoad( {CodeViewsWindow.functionName} )" );
+                AppendCode( ref code, "}", 2 );
             }
 
             if ( CodeViewsWindow.ShowFunctionEnable() )
             {
-                code.Append( $"void function {CodeViewsWindow.functionName}()\n" );
-                code.Append( "{\n" );
-                code.Append( Helper.ReMapCredit() );
+                AppendCode( ref code, $"void function {CodeViewsWindow.functionName}()" );
+                AppendCode( ref code, "{" );
+                AppendCode( ref code, Helper.ReMapCredit(), 0 );
             }
 
-            code.Append( Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ) );
-            
-            code.Append( await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ) );
+            AppendCode( ref code, Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ), 0 );
+
+            AppendCode( ref code, await Helper.BuildMapCode( BuildType.Script, CodeViewsWindow.SelectionEnable() ), 0 );
 
             CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.InBlock, ref code, CodeViewsWindow.additionalCodeInBlock, CodeViewsWindow.AdditionalCodeEnable() );
 
-            if ( CodeViewsWindow.ShowFunctionEnable() ) code.Append( "}\n" );
+            if ( CodeViewsWindow.ShowFunctionEnable() ) AppendCode( ref code, "}" );
 
             CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Below, ref code, CodeViewsWindow.additionalCodeBelow, ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() ) );
 

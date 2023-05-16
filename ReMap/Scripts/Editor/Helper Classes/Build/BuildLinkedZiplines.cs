@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Linked Ziplines" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Linked Ziplines" );
                     break;
 
                 case BuildType.EntFile:
@@ -58,8 +57,7 @@ namespace Build
                         if ( script.EnableSmoothing ) function = $"{smoothType}( {nodes}, {script.SmoothAmount} )";
                         else function = $"{nodes}";
 
-                        code.Append( $"    MapEditor_CreateLinkedZipline( {function} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_CreateLinkedZipline( {function} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -91,7 +89,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

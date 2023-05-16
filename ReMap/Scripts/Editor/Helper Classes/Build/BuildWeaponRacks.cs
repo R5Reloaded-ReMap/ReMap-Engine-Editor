@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Weapon Racks" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Weapon Racks" );
                     break;
 
                 case BuildType.EntFile:
@@ -50,8 +49,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -76,7 +74,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

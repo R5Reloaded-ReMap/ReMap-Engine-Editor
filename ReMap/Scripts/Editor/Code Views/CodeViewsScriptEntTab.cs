@@ -92,19 +92,19 @@ namespace CodeViewsWindow
 
             if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) )
             {
-                code.Append( $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}\n" );
-                code.Append(  "{\n" );
-                code.Append(  "\"spawnflags\" \"0\"\n" );
-                code.Append(  "\"scale\" \"1\"\n" );
-                code.Append( $"\"angles\" \"{Helper.ReplaceComma( IPSAngles.x )} {Helper.ReplaceComma( IPSAngles.y )} {Helper.ReplaceComma( IPSAngles.z )}\"\n" );
-                code.Append( $"\"origin\" \"{Helper.ReplaceComma( IPSOrigin.x )} {Helper.ReplaceComma( IPSOrigin.y )} {Helper.ReplaceComma( IPSOrigin.z )}\"\n" );
-                code.Append(  "\"classname\" \"info_player_start\"\n" );
-                code.Append(  "}\n" );
+                AppendCode( ref code, $"ENTITIES02 num_models={CodeViewsWindow.EntFileID}" );
+                AppendCode( ref code,  "{" );
+                AppendCode( ref code,  "\"spawnflags\" \"0\"" );
+                AppendCode( ref code,  "\"scale\" \"1\"" );
+                AppendCode( ref code, $"\"angles\" \"{Helper.ReplaceComma( IPSAngles.x )} {Helper.ReplaceComma( IPSAngles.y )} {Helper.ReplaceComma( IPSAngles.z )}\"" );
+                AppendCode( ref code, $"\"origin\" \"{Helper.ReplaceComma( IPSOrigin.x )} {Helper.ReplaceComma( IPSOrigin.y )} {Helper.ReplaceComma( IPSOrigin.z )}\"" );
+                AppendCode( ref code,  "\"classname\" \"info_player_start\"" );
+                AppendCode( ref code,  "}" );
             }
 
-            code.Append( await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() ) );
+            AppendCode( ref code, await Helper.BuildMapCode( BuildType.EntFile, CodeViewsWindow.SelectionEnable() ), 0 );
 
-            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) code.Append( "\u0000" );
+            if ( MenuInit.IsEnable( CodeViewsWindow.FullFileEntSubMenu ) ) AppendCode( ref code, "\u0000", 0 );
 
             return code.ToString();
         }

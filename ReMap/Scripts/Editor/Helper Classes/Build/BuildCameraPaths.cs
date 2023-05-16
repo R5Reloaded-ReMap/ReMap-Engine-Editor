@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( $"    // Camera Paths" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, $"    // Camera Paths" );
                     break;
 
                 case BuildType.EntFile:
@@ -63,34 +62,34 @@ namespace Build
 
                             if ( isFirst )
                             {
-                                code.Append( $"    // Path_{idxStr}\n" );
-                                code.Append( $"    if ( !IsValid( GetLocalClientPlayer() ) ) return\n" );
-                                code.Append( $"    float fov_{idxStr} = {fov}\n" );
-                                code.Append( $"    float speed_{idxStr} = {speed}\n" );
-                                code.Append( $"    vector origin_{idxStr} = {Helper.BuildOrigin( node.gameObject ) + Helper.ShouldAddStartingOrg()}\n" );
-                                code.Append( $"    vector angles_{idxStr} = {Helper.BuildAngles( node.gameObject )}\n" );
-                                code.Append( $"\n" );
-                                code.Append( $"    entity camera_{idxStr} = CreateClientSidePointCamera( origin_{idxStr}, angles_{idxStr}, fov_{idxStr} )\n" );
-                                code.Append( $"    entity scriptMover_{idxStr} = CreateClientsideScriptMover( $\"mdl/dev/empty_model.rmdl\", origin_{idxStr}, angles_{idxStr} )\n" );
-                                code.Append( $"    camera_{idxStr}.SetParent( scriptMover_{idxStr} )\n" );
-                                code.Append( $"    if ( IsValid( GetLocalClientPlayer() ) ) GetLocalClientPlayer().SetMenuCameraEntity( camera_{idxStr} )\n" );
-                                code.Append( $"\n" );
+                                AppendCode( ref code, $"    // Path_{idxStr}" );
+                                AppendCode( ref code, $"    if ( !IsValid( GetLocalClientPlayer() ) ) return" );
+                                AppendCode( ref code, $"    float fov_{idxStr} = {fov}" );
+                                AppendCode( ref code, $"    float speed_{idxStr} = {speed}" );
+                                AppendCode( ref code, $"    vector origin_{idxStr} = {Helper.BuildOrigin( node.gameObject ) + Helper.ShouldAddStartingOrg()}" );
+                                AppendCode( ref code, $"    vector angles_{idxStr} = {Helper.BuildAngles( node.gameObject )}" );
+                                AppendCode( ref code );
+                                AppendCode( ref code, $"    entity camera_{idxStr} = CreateClientSidePointCamera( origin_{idxStr}, angles_{idxStr}, fov_{idxStr} )" );
+                                AppendCode( ref code, $"    entity scriptMover_{idxStr} = CreateClientsideScriptMover( $\"mdl/dev/empty_model.rmdl\", origin_{idxStr}, angles_{idxStr} )" );
+                                AppendCode( ref code, $"    camera_{idxStr}.SetParent( scriptMover_{idxStr} )" );
+                                AppendCode( ref code, $"    if ( IsValid( GetLocalClientPlayer() ) ) GetLocalClientPlayer().SetMenuCameraEntity( camera_{idxStr} )" );
+                                AppendCode( ref code );
 
                                 isFirst = false;
                             }
                             else
                             {
-                                code.Append( $"    scriptMover_{idxStr}.NonPhysicsMoveTo( {Helper.BuildOrigin( node.gameObject ) + Helper.ShouldAddStartingOrg()}, speed_{idxStr}, 0, 0)\n" );
-                                code.Append( $"    scriptMover_{idxStr}.NonPhysicsRotateTo( {Helper.BuildAngles( node.gameObject )}, speed_{idxStr}, 0, 0)\n" );
-                                code.Append( $"    wait speed_{idxStr}\n" );
-                                code.Append( $"\n" );
+                                AppendCode( ref code, $"    scriptMover_{idxStr}.NonPhysicsMoveTo( {Helper.BuildOrigin( node.gameObject ) + Helper.ShouldAddStartingOrg()}, speed_{idxStr}, 0, 0)" );
+                                AppendCode( ref code, $"    scriptMover_{idxStr}.NonPhysicsRotateTo( {Helper.BuildAngles( node.gameObject )}, speed_{idxStr}, 0, 0)" );
+                                AppendCode( ref code, $"    wait speed_{idxStr}" );
+                                AppendCode( ref code );
                             }
                         }
 
-                        code.Append( $"    if ( IsValid( GetLocalClientPlayer() ) ) GetLocalClientPlayer().ClearMenuCameraEntity()\n" );
-                        code.Append( $"    if ( IsValid( scriptMover_{idxStr} ) ) scriptMover_{idxStr}.Destroy()\n" );
-                        code.Append( $"    if ( IsValid( camera_{idxStr} ) ) camera_{idxStr}.Destroy()\n" );
-                        code.Append( $"\n" );
+                        AppendCode( ref code, $"    if ( IsValid( GetLocalClientPlayer() ) ) GetLocalClientPlayer().ClearMenuCameraEntity()" );
+                        AppendCode( ref code, $"    if ( IsValid( scriptMover_{idxStr} ) ) scriptMover_{idxStr}.Destroy()" );
+                        AppendCode( ref code, $"    if ( IsValid( camera_{idxStr} ) ) camera_{idxStr}.Destroy()" );
+                        AppendCode( ref code );
 
                         break;
 
@@ -118,7 +117,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

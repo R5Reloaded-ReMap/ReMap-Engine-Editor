@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Text Info Panels" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Text Info Panels" );
                     break;
 
                 case BuildType.EntFile:
@@ -50,7 +49,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.showPIN )}, {Helper.ReplaceComma( script.Scale )} )" + "\n" );
+                        AppendCode( ref code, $"    MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.showPIN )}, {Helper.ReplaceComma( script.Scale )} )" + "\n" );
                         break;
 
                     case BuildType.EntFile:
@@ -75,7 +74,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:

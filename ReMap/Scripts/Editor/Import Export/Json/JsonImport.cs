@@ -46,6 +46,7 @@ namespace ImportExport.Json
             UnityInfo.SortListByKey( jsonData.DoubleDoors, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.HorzDoors, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.VerticalDoors, x => x.PathString );
+            UnityInfo.SortListByKey( jsonData.JumpTowers, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.Buttons, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.Jumppads, x => x.PathString );
             UnityInfo.SortListByKey( jsonData.LootBins, x => x.PathString );
@@ -70,6 +71,7 @@ namespace ImportExport.Json
             await ImportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors );
             await ImportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors );
             await ImportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors );
+            await ImportObjectsWithEnum( ObjectType.JumpTower, jsonData.JumpTowers );
             await ImportObjectsWithEnum( ObjectType.Button, jsonData.Buttons );
             await ImportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads );
             await ImportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins );
@@ -143,6 +145,11 @@ namespace ImportExport.Json
 
                     case VerticalDoorClassData data: // Vertical Doors
                         data = ( VerticalDoorClassData )( object ) objData;
+                        obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
+                        break;
+
+                    case JumpTowerClassData data: // Jump Towers
+                        data = ( JumpTowerClassData )( object ) objData;
                         obj = ProcessImportClassData( data, DetermineDataName( data, objectType ), objectType, i, j, objectsCount );
                         break;
 

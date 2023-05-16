@@ -19,6 +19,7 @@ namespace ImportExport.Shared
         public List< DoubleDoorClassData > DoubleDoors;
         public List< HorzDoorClassData > HorzDoors;
         public List< VerticalDoorClassData > VerticalDoors;
+        public List< JumpTowerClassData > JumpTowers;
         public List< ButtonClassData > Buttons;
         public List< JumppadClassData > Jumppads;
         public List< LootBinClassData > LootBins;
@@ -191,6 +192,14 @@ namespace ImportExport.Shared
     public class VerticalDoorClassData : GlobalClassData
     {
         public bool AppearOpen;
+    }
+
+    [Serializable]
+    public class JumpTowerClassData : GlobalClassData
+    {
+        public bool ShowZipline;
+        public float ShowZiplineDistance;
+        public float Height;
     }
 
     [Serializable]

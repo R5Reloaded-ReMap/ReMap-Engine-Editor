@@ -112,6 +112,12 @@ namespace ImportExport.Json
                         TransferDataToClass( verticalDoorScript, data );
                         break;
 
+                    case JumpTowerClassData data: // Jump Towers
+                        data = ( JumpTowerClassData )( object ) scriptData;
+                        JumpTowerScript jumpTowerScript = ( JumpTowerScript ) Helper.GetComponentByEnum( obj, dataType );
+                        TransferDataToClass( jumpTowerScript, data );
+                        break;
+
                     case ButtonClassData data: // Bouttons
                         data = ( ButtonClassData )( object ) scriptData;
                         ButtonScripting buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, dataType );
@@ -289,6 +295,12 @@ namespace ImportExport.Json
                         data = ( VerticalDoorClassData )( object ) scriptData;
                         VerticalDoorScript verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, dataType );
                         TransferDataToClass( data, verticalDoorScript );
+                        break;
+
+                    case JumpTowerClassData data: // Jump Towers
+                        data = ( JumpTowerClassData )( object ) scriptData;
+                        JumpTowerScript jumpTowerScript = ( JumpTowerScript ) Helper.GetComponentByEnum( obj, dataType );
+                        TransferDataToClass( data, jumpTowerScript );
                         break;
 
                     case ButtonClassData data: // Bouttons

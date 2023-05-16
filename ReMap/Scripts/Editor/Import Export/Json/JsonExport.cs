@@ -46,6 +46,7 @@ namespace ImportExport.Json
             await ExportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors );
             await ExportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors );
             await ExportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors );
+            await ExportObjectsWithEnum( ObjectType.JumpTower, jsonData.JumpTowers );
             await ExportObjectsWithEnum( ObjectType.Button, jsonData.Buttons );
             await ExportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads );
             await ExportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins );
@@ -90,6 +91,7 @@ namespace ImportExport.Json
             await ExportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors, ExportType.Selection );
+            await ExportObjectsWithEnum( ObjectType.JumpTower, jsonData.JumpTowers, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.Button, jsonData.Buttons, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads, ExportType.Selection );
             await ExportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins, ExportType.Selection );
@@ -180,6 +182,9 @@ namespace ImportExport.Json
                     case VerticalDoorClassData data: // Vertical Doors
                         ProcessExportClassData( data, obj, objPath, objectType );
                         break;
+                    case JumpTowerClassData data: // Jump Towers
+                        ProcessExportClassData( data, obj, objPath, objectType );
+                        break;
                     case ButtonClassData data: // Bouttons
                         ProcessExportClassData( data, obj, objPath, objectType );
                         break;
@@ -254,6 +259,7 @@ namespace ImportExport.Json
             jsonData.DoubleDoors = new List< DoubleDoorClassData >();
             jsonData.HorzDoors = new List< HorzDoorClassData >();
             jsonData.VerticalDoors = new List< VerticalDoorClassData >();
+            jsonData.JumpTowers = new List< JumpTowerClassData >();
             jsonData.Buttons = new List< ButtonClassData >();
             jsonData.Jumppads = new List< JumppadClassData >();
             jsonData.LootBins = new List< LootBinClassData >();

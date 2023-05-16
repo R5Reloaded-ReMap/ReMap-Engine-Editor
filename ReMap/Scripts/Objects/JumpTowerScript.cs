@@ -4,8 +4,8 @@ using UnityEditor;
 
 public class JumpTowerScript : MonoBehaviour
 {
-    /* [ HideInInspector ] */ public Transform ballon_base;
-    /* [ HideInInspector ] */ public Transform ballon_top;
+    [ HideInInspector ] public Transform ballon_base;
+    [ HideInInspector ] public Transform ballon_top;
 
     [ Header( "Unity Settings:" ) ]
     public bool ShowZipline = true;

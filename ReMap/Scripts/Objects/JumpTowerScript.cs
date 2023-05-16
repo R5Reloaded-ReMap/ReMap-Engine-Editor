@@ -27,7 +27,7 @@ public class JumpTowerScript : MonoBehaviour
         float dist2 = Vector3.Distance( SceneView.currentDrawingSceneView.camera.transform.position, this.transform.position );
         if( dist < ShowZiplineDistance || dist2 < ShowZiplineDistance )
         {
-            var startPos = ballon_base.position + new Vector3( 2.75f, 64, 2 );;
+            var startPos = ballon_base.position + new Vector3( 2.75f, 64, 2 );
             var endPos = ballon_top.position;
             var thickness = 3;
 

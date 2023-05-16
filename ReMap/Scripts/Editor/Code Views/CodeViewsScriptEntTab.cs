@@ -77,6 +77,7 @@ namespace CodeViewsWindow
                 ObjectType.DoubleDoor,
                 ObjectType.HorzDoor,
                 ObjectType.VerticalDoor,
+              //ObjectType.JumpTower,
                 ObjectType.LootBin,
                 ObjectType.FuncWindowHint
             };

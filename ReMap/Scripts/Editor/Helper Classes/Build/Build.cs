@@ -111,6 +111,11 @@ namespace Build
             return code.ToString();
         }
 
+        internal static void AppendCode( ref StringBuilder code, string line, int idx = 1 )
+        {
+            code.Append( line ); PageBreak( ref code, idx );
+        }
+
         internal static void PageBreak( ref StringBuilder code, int idx = 1 )
         {
             for ( int i = 0; i < idx; i++ ) code.Append( Environment.NewLine );

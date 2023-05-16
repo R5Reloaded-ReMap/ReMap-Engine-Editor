@@ -565,7 +565,7 @@ namespace CodeViewsWindow
 
         internal static void AppendAdditionalCode( AdditionalCodeType type, ref StringBuilder code, string codeToAdd, bool verify = true )
         {
-            if ( !verify && !string.IsNullOrEmpty( codeToAdd ) ) return;
+            if ( !verify && string.IsNullOrEmpty( codeToAdd ) ) return;
 
             string precache = CodeViewsWindow.ShowPrecacheEnable() ? "_Init()" : "";
 

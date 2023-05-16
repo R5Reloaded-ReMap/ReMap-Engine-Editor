@@ -97,7 +97,7 @@ namespace CodeViewsWindow
 
             StringBuilder code = new StringBuilder();
 
-            CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Head, ref code, CodeViewsWindow.additionalCodeHead, ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() ) );
+            CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Head, ref code, CodeViewsWindow.additionalCodeHead, CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.AdditionalCodeEnable() );
 
             if ( CodeViewsWindow.ShowFunctionEnable() && CodeViewsWindow.ShowPrecacheEnable() )
             {

@@ -631,7 +631,22 @@ public class Helper
         return obj;
     }
 
+    public static void IncrementEntityCount( int value = 1 )
+    {
+        CodeViewsWindow.CodeViewsWindow.EntityCount += value;
+    }
+
     public static void RemoveEntityCount( int value = 1 )
+    {
+        CodeViewsWindow.CodeViewsWindow.EntityCount -= value;
+    }
+
+    public static void IncrementSendedEntityCount( int value = 1 )
+    {
+        CodeViewsWindow.CodeViewsWindow.SendedEntityCount += value;
+    }
+
+    public static void RemoveSendedEntityCount( int value = 1 )
     {
         CodeViewsWindow.CodeViewsWindow.SendedEntityCount -= value;
     }

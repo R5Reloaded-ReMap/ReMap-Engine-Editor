@@ -66,7 +66,7 @@ namespace Build
 
                     case BuildType.LiveMap:
                         // Remove 1 to the counter since we don't support this object for live map code
-                        Helper.RemoveEntityCount();
+                        Helper.RemoveSendedEntityCount();
                     break;
                 }
             }

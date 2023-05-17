@@ -23,6 +23,7 @@ public class UnityInfo
     public static string relativePathRpakManager =     $"Assets/ReMap/Resources/RpakManager";
     public static string relativePathRpakManagerList = $"{relativePathRpakManager}/rpakManagerList.json";
     public static string relativePathJsonOffset =      $"{relativePathRpakManager}/prefabOffsetList.json";
+    public static string relativePathR5RPlayerInfo =    "\\platform\\scripts\\player_info.txt";
     public static string relativePathR5RScripts =       "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
 
 

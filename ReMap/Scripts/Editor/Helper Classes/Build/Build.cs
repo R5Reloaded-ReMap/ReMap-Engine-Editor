@@ -178,15 +178,15 @@ namespace Build
                             continue;
                         PrecacheList.Add( model );
                     }
-                    CodeViewsWindow.CodeViewsWindow.EntityCount += PrecacheList.Count;
+                    Helper.IncrementEntityCount( PrecacheList.Count );
 
                     break;
                 case BuildType.LiveMap:
-                    CodeViewsWindow.CodeViewsWindow.SendedEntityCount += objectDataLength;
+                    Helper.IncrementSendedEntityCount( objectDataLength );
                     break;
 
                 default:
-                    CodeViewsWindow.CodeViewsWindow.EntityCount += objectDataLength;
+                    Helper.IncrementEntityCount( objectDataLength );
                 break;
             }
         }

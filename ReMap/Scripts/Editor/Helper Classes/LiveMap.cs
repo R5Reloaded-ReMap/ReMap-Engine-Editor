@@ -14,6 +14,12 @@ using WindowUtility;
 
 namespace CodeViewsWindow
 {
+    internal enum PageType
+    {
+        SQUIRREL,
+        ENT
+    }
+
     public static class LiveMap
     {
         private enum ConfirmationType
@@ -135,28 +141,10 @@ namespace CodeViewsWindow
 
         public static async void ReloadLevel( bool reset = false, string code = null )
         {
-            string processName = "r5apex";
-            Process[] processes = Process.GetProcesses();
-            bool processFound = false;
-            string path = "";
+            bool processFound;
+            string path;
 
-            foreach ( Process process in processes )
-            {
-                if ( process.ProcessName == processName )
-                {
-                    try
-                    {
-                        path = Path.GetDirectoryName( process.MainModule.FileName );
-                        processFound = true;
-                    }
-                    catch ( System.ComponentModel.Win32Exception )
-                    {
-                        UnityInfo.Printt( "System.ComponentModel.Win32Exception: Process Not Found" );
-                    }
-
-                    break;
-                }
-            }
+            ( processFound, path ) = GetApexPath();
 
             if ( !processFound )
             {
@@ -187,6 +175,34 @@ namespace CodeViewsWindow
 
                 if ( !reset ) SendCommandToApex( $"script GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
             }
+        }
+
+        private static ( bool, string ) GetApexPath()
+        {
+            string processName = "r5apex";
+            Process[] processes = Process.GetProcesses();
+            bool processFound = false;
+            string path = "";
+
+            foreach ( Process process in processes )
+            {
+                if ( process.ProcessName == processName )
+                {
+                    try
+                    {
+                        path = Path.GetDirectoryName( process.MainModule.FileName );
+                        processFound = true;
+                    }
+                    catch ( System.ComponentModel.Win32Exception )
+                    {
+                        UnityInfo.Printt( "System.ComponentModel.Win32Exception: Process Not Found" );
+                    }
+
+                    break;
+                }
+            }
+
+            return ( processFound, path );
         }
 
         public static async Task< string > BuildScriptFile( bool reset = false )
@@ -230,6 +246,87 @@ namespace CodeViewsWindow
             Build.Build.IgnoreCounter = false;
 
             return code.ToString();
+        }
+
+        internal static async void GetApexPlayerInfo( PageType pageType = PageType.SQUIRREL )
+        {
+            m_hEngine = FindApexWindow();
+            if ( !ApexProcessIsActive() )
+            {
+                IsSending = false;
+                MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
+                SendConfirmation( ConfirmationType.ERROR );
+                return;
+            }
+
+            ResetCommandList();
+
+            AddToGameQueue( $"script ReMapWritePlayer0ToFile()" );
+
+            SendCommands();
+
+            await Task.Delay( 100 ); // 100 ms
+
+            bool processFound;
+            string path;
+
+            ( processFound, path ) = GetApexPath();
+
+            if ( !processFound )
+            {
+                SendConfirmation( ConfirmationType.ERROR );
+                return;
+            }
+
+            if ( path != "" )
+            {
+                path += UnityInfo.relativePathR5RPlayerInfo;
+
+                if ( !File.Exists( path ) ) return;
+
+                string[] file = File.ReadAllLines( path );
+
+                string origin = "", angles = "";
+
+                foreach ( string line in file )
+                {
+                    if ( line.Contains( "origin" ) ) origin = line.Replace( "origin =", "" ).Replace( "<", "" ).Replace( " ", "" ).Replace( ">", "" );
+                    if ( line.Contains( "angles" ) ) angles = line.Replace( "angles =", "" ).Replace( "<", "" ).Replace( " ", "" ).Replace( ">", "" );
+                }
+
+                string[] value = origin.Split( "," ); float x, y, z;
+
+                if ( float.TryParse( value[0].Replace( ".", "," ), out x ) && float.TryParse( value[1].Replace( ".", "," ), out y ) && float.TryParse( value[2].Replace( ".", "," ), out z ) )
+                {
+                    switch ( pageType )
+                    {
+                        case PageType.SQUIRREL:
+                            CodeViewsWindow.StartingOffset = new Vector3( x, y, z );
+                            break;
+
+                        case PageType.ENT:
+                            CodeViewsWindow.InfoPlayerStartOrigin  = new Vector3( x, y, z );
+                        break;
+                    }
+                }
+
+                value = angles.Split( "," );
+
+                if ( float.TryParse( value[0].Replace( ".", "," ), out x ) && float.TryParse( value[1].Replace( ".", "," ), out y ) && float.TryParse( value[2].Replace( ".", "," ), out z ) )
+                {
+                    switch ( pageType )
+                    {
+                        case PageType.SQUIRREL:
+                            break;
+
+                        case PageType.ENT:
+                            CodeViewsWindow.InfoPlayerStartAngles = new Vector3( x, y, z );
+                        break;
+                    }
+                }
+
+                CodeViewsWindow.Refresh();
+            }
         }
 
         public static void RespawnPlayers()

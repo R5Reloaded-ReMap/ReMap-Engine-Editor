@@ -28,8 +28,9 @@ namespace CodeViewsWindow
         internal static CodeViewsWindow windowInstance;
         internal static string code = "";
         internal static string functionName = "Unnamed";
-        internal static string[] toolbarTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code", "Camera Path" };
+        internal static string[] toolbarTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code", "Other Code" };
         internal static string[] toolbarSubTabEntCode = new[] { "script.ent", "snd.ent", "spawn.ent" };
+        internal static string[] toolbarSubTabOtherCode = new[] { "Camera Path" };
         internal static Vector2 scroll;
         internal static Vector2 scrollSettings;
         internal static Vector2 windowSize;
@@ -37,6 +38,8 @@ namespace CodeViewsWindow
         internal static int tab_temp = 0;
         internal static int tabEnt = 0;
         internal static int tabEnt_temp = 0;
+        internal static int tabOther = 0;
+        internal static int tabOther_temp = 0;
         internal static int objectTypeInSceneCount = 0;
         internal static int objectTypeInSceneCount_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
@@ -129,12 +132,13 @@ namespace CodeViewsWindow
 
             GetEditorWindowSize(); ShortCut();
 
-            if( tab != tab_temp || tabEnt != tabEnt_temp || objectTypeInSceneCount != objectTypeInSceneCount_temp )
+            if( tab != tab_temp || tabEnt != tabEnt_temp || tabOther != tabOther_temp || objectTypeInSceneCount != objectTypeInSceneCount_temp )
             {
                 GetFunctionName();
                 Refresh( false );
                 tab_temp = tab;
                 tabEnt_temp = tabEnt;
+                tabOther_temp = tabOther;
                 objectTypeInSceneCount_temp = objectTypeInSceneCount;
             }
 
@@ -237,25 +241,16 @@ namespace CodeViewsWindow
                     break;
 
                 case 3: // Ent Code
-                    fileInfo = new[] { "Ent Code Export", "", "", "ent" };
-                    switch ( tabEnt )
-                    {
-                        case 0: // Script Code
-                            fileInfo[2] = $"{functionName}.ent";
-                            break;
-
-                        case 1: // Sound Code
-                            fileInfo[2] = $"{functionName}.ent";
-                            break;
-
-                        case 2: // Spawn Code
-                            fileInfo[2] = $"{functionName}.ent";
-                        break;
-                    }
+                    fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                     break;
 
-                case 4: // Camera Path Code
-                    fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
+                case 4: // Other Code
+                    switch ( tabOther )
+                    {
+                        case 0: // Camera Path Code
+                            fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
+                        break;
+                    }
                 break;
             }
 
@@ -303,6 +298,13 @@ namespace CodeViewsWindow
                     GUILayout.BeginHorizontal();
                         tabEnt = GUILayout.Toolbar ( tabEnt, toolbarSubTabEntCode );
                     GUILayout.EndHorizontal();           
+                }
+
+                if ( tab == 4 )
+                {
+                    GUILayout.BeginHorizontal();
+                        tabOther = GUILayout.Toolbar ( tabOther, toolbarSubTabOtherCode );
+                    GUILayout.EndHorizontal(); 
                 }
 
                 GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
@@ -358,9 +360,14 @@ namespace CodeViewsWindow
                         break;
                     }
                     break;
-                
-                case 4: // Camera Path Code
-                    CameraPathTab.OnGUISettingsTab();
+
+                case 4: // Other Code
+                    switch ( tabOther )
+                    {
+                        case 0: // Camera Path Code
+                            CameraPathTab.OnGUISettingsTab();
+                        break;
+                    }
                 break;
             }
         }
@@ -495,8 +502,13 @@ namespace CodeViewsWindow
                     }
                     break;
 
-                case 4: // Camera Path Code
-                    code += await CameraPathTab.GenerateCode();
+                case 4: // Other Code
+                    switch ( tabOther )
+                    {
+                        case 0: // Camera Path Code
+                            code += await CameraPathTab.GenerateCode();
+                        break;
+                    }
                 break;
             }
 
@@ -533,10 +545,15 @@ namespace CodeViewsWindow
                             functionName = $"mp_rr_remap_spawn";
                         break;
                     }
-                break;
+                    break;
 
-                case 4: // Camera Path Code
-                    functionName = $"remap_camera_path";
+                case 4: // Other Code
+                    switch ( tabOther )
+                    {
+                        case 0: // Camera Path Code
+                            functionName = $"remap_camera_path";
+                        break;
+                    }
                 break;
             }
         }

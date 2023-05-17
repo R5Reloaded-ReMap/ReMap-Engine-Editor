@@ -99,7 +99,7 @@ namespace CodeViewsWindow
             AddToGameQueue( $"sv_cheats 1" );
             AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999" );
             AddToGameQueue( $"cl_quota_stringCmdsPerSecond 9999999" );
-            AddToGameQueue( $"script MapEditor_RemoveAllEnts()" );
+            AddToGameQueue( $"script ReMapRemoveAllEnts()" );
 
             CodeViewsWindow.SendedEntityCount = 0;
 

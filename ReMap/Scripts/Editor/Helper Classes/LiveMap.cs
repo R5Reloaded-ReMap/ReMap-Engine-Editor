@@ -261,7 +261,7 @@ namespace CodeViewsWindow
 
             ResetCommandList();
 
-            AddToGameQueue( $"script ReMapWritePlayer0ToFile()" );
+            AddToGameQueue( $"script ReMapWritePlayerInfoToFile()" );
 
             SendCommands();
 

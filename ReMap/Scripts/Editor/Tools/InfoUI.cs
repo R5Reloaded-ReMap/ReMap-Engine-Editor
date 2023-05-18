@@ -7,8 +7,8 @@ public class InfoUI : EditorWindow
     static void Init()
     {
         InfoUI window = (InfoUI)EditorWindow.GetWindow(typeof(InfoUI), false, "ReMap Info");
-        window.minSize = new Vector2(678, 290);
-        window.maxSize = new Vector2(678, 290);
+        window.minSize = new Vector2(678, 310);
+        window.maxSize = new Vector2(678, 310);
         window.Show();
     }
 
@@ -20,8 +20,52 @@ public class InfoUI : EditorWindow
 
     void OnGUI()
     {
-        //Logo
-        GUILayout.Label(m_Logo, GUILayout.Height(50));
+        GUILayout.BeginHorizontal();
+
+            GUILayout.BeginVertical("box", GUILayout.Height(150), GUILayout.Width(150));
+                GUILayout.Label(m_Logo, GUILayout.Height(140), GUILayout.Width(140));
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical("box", GUILayout.Height(150));
+                GUILayout.Label("Links:", EditorStyles.boldLabel);
+                //Docs
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("ReMap Docs:", EditorStyles.boldLabel, GUILayout.Width(120));
+                    if (GUILayout.Button("remap.ayezee.app/"))
+                        Application.OpenURL("https://remap.ayezee.app/");
+                GUILayout.EndHorizontal();
+                //Github
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Github:", EditorStyles.boldLabel, GUILayout.Width(120));
+                    if (GUILayout.Button("github.com/R5Reloaded-ReMap/"))
+                        Application.OpenURL("https://github.com/R5Reloaded-ReMap/");
+                GUILayout.EndHorizontal();
+                //Discord
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Discord:", EditorStyles.boldLabel, GUILayout.Width(120));
+                    if (GUILayout.Button("discord.gg/snsyDVa2fn"))
+                        Application.OpenURL("https://discord.gg/snsyDVa2fn");
+                GUILayout.EndHorizontal();
+                //Twitter
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Twitter:", EditorStyles.boldLabel, GUILayout.Width(120));
+                    if (GUILayout.Button("twitter.com/ReMapR5R"))
+                        Application.OpenURL("https://twitter.com/ReMapR5R");
+                GUILayout.EndHorizontal();
+                //Base Scripts
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Base Scripts:", EditorStyles.boldLabel, GUILayout.Width(120));
+                    if (GUILayout.Button("github.com/R5Reloaded-ReMap/scripts_r5"))
+                        Application.OpenURL("hhttps://github.com/R5Reloaded-ReMap/scripts_r5");
+                GUILayout.EndHorizontal();
+                //Flowstate Scripts
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label("Flowstate Scripts:", EditorStyles.boldLabel, GUILayout.Width(120));
+                    if (GUILayout.Button("github.com/ColombianGuy/r5_flowstate"))
+                        Application.OpenURL("https://github.com/ColombianGuy/r5_flowstate");
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
 
         GUI.contentColor = Color.white;
         GUILayout.BeginHorizontal();
@@ -44,28 +88,6 @@ public class InfoUI : EditorWindow
                     Application.OpenURL("https://www.paypal.com/paypalme/Julefx");
             GUILayout.EndVertical();
         GUILayout.EndHorizontal();
-
-        GUILayout.BeginVertical("box");
-            GUILayout.Label("Links:", EditorStyles.boldLabel);
-            //Docs
-            GUILayout.BeginHorizontal();
-                GUILayout.Label("R5Reloaded Docs:", EditorStyles.boldLabel, GUILayout.Width(120));
-                if (GUILayout.Button("docs.r5reloaded.com"))
-                    Application.OpenURL("https://docs.r5reloaded.com/");
-            GUILayout.EndHorizontal();
-            //Github
-            GUILayout.BeginHorizontal();
-                GUILayout.Label("Github:", EditorStyles.boldLabel, GUILayout.Width(120));
-                if (GUILayout.Button("github.com/R5Reloaded-ReMap/"))
-                    Application.OpenURL("https://github.com/R5Reloaded-ReMap/");
-            GUILayout.EndHorizontal();
-            //Discord
-            GUILayout.BeginHorizontal();
-                GUILayout.Label("Discord:", EditorStyles.boldLabel, GUILayout.Width(120));
-                if (GUILayout.Button("discord.gg/snsyDVa2fn"))
-                    Application.OpenURL("https://discord.gg/snsyDVa2fn");
-            GUILayout.EndHorizontal();
-        GUILayout.EndVertical();
 
         //Version
         GUILayout.BeginVertical("box");

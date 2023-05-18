@@ -428,7 +428,7 @@ namespace CodeViewsWindow
 
         private static void CheckOptionalAdvancedOption( bool value )
         {
-            Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectTypeInArray(), value );
+            Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectType(), value );
             CodeViewsWindow.Refresh();
         }
 

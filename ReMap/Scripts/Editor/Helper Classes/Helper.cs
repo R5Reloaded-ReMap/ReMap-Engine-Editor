@@ -98,7 +98,7 @@ public class Helper
         { ObjectType.LiveMapCodePlayerSpawn, new ObjectTypeData( new[] { "unityonly_player_spawn",       "LMCPlayerSpawn",     "Player Spawn ( Unity Only )" }, typeof( EmptyScript ),            typeof( UOPlayerSpawnClassData ) ) }
     };
 
-    private static readonly List< ObjectType > ObjectToTagPriorities = new List< ObjectType > 
+    private static readonly List< ObjectType > ObjectToTagPriorities = new List< ObjectType >
     { 
         ObjectType.Prop,
         ObjectType.BubbleShield,
@@ -371,7 +371,7 @@ public class Helper
         // Order of importance
         StringBuilder code = new StringBuilder();
 
-        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        foreach ( ObjectType objectType in GetAllObjectType() )
         {
             if ( GetBoolFromGenerateObjects( objectType ) ) AppendCode( ref code, await BuildObjectsWithEnum( objectType, buildType, Selection ), 0 );
         }
@@ -399,7 +399,7 @@ public class Helper
     public static string[] GetAllTags()
     {
         List < string > tags = new List< string > ();
-        foreach ( ObjectType type in GetAllObjectTypeInArray() )
+        foreach ( ObjectType type in GetAllObjectType() )
         {
             tags.Add( GetObjTagNameWithEnum( type ) );
         }
@@ -456,9 +456,47 @@ public class Helper
         return null;
     }
 
+    public static FieldInfo[] GetJsonDataList()
+    {
+        Type jsonData = typeof( JsonData );
+
+        FieldInfo[] jsonDataField = jsonData.GetFields( BindingFlags.Public | BindingFlags.Instance );
+
+        List< FieldInfo > listToReturn = new List< FieldInfo >();
+
+        foreach ( FieldInfo field in jsonDataField )
+        {
+            if ( field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof( List<> ) )
+            {
+                listToReturn.Add( field );
+            }
+        }
+
+        return listToReturn.ToArray();
+    }
+
+    public static List< GlobalClassData > FindJsonDataList< GlobalClassData >( JsonData jsonData, ObjectType objectType )
+    {
+        foreach ( FieldInfo field in GetJsonDataList() )
+        {
+            if ( field.FieldType.IsGenericType )
+            {
+                Type listElementType = field.FieldType.GetGenericArguments()[0];
+                if ( listElementType == GetImportExportClassByEnum( objectType ) )
+                {
+                    //UnityInfo.Printt( listElementType.Name );
+                    return field.GetValue( jsonData ) as List< GlobalClassData >;
+                }
+            }
+        }
+        UnityInfo.Printt( "null" );
+
+        return null;
+    }
+
     public static ObjectType? GetObjectTypeByObjName( string searchTerm )
     {
-        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        foreach ( ObjectType objectType in GetAllObjectType() )
         {
             if ( Helper.GetObjNameWithEnum( objectType ) == searchTerm ) return objectType;
         }
@@ -474,6 +512,11 @@ public class Helper
 
         public ObjectTypeData( string[] stringData, System.Type componentType, Type importExportClass )
         {
+            if ( stringData.Length != 3 )
+            {
+                throw new ArgumentException( "stringData must have exactly 3 elements", nameof( stringData ) );
+            }
+
             StringData = stringData;
             ComponentType = componentType;
             ImportExportClass = importExportClass;
@@ -489,7 +532,7 @@ public class Helper
             dictionary.Add( GetObjRefWithEnum( objectType ), GetObjTagNameWithEnum( objectType ) );
         }
 
-        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        foreach ( ObjectType objectType in GetAllObjectType() )
         {
             string key = GetObjRefWithEnum( objectType );
 
@@ -505,7 +548,7 @@ public class Helper
     {
         Dictionary< string, bool > dictionary = new Dictionary< string, bool >();
 
-        foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+        foreach ( ObjectType objectType in GetAllObjectType() )
         {
             dictionary.Add( GetObjNameWithEnum( objectType ), true );
         }
@@ -513,7 +556,7 @@ public class Helper
         return dictionary;
     }
 
-    public static ObjectType[] GetAllObjectTypeInArray()
+    public static ObjectType[] GetAllObjectType()
     {
         List< ObjectType > list = new List< ObjectType >();
 
@@ -546,7 +589,7 @@ public class Helper
         List< ObjectType > objectTypeArray = new List< ObjectType >();
         if ( forceShow )
         {
-            foreach ( ObjectType objectType in GetAllObjectTypeInArray() )
+            foreach ( ObjectType objectType in GetAllObjectType() )
             {
                 if ( !array.Contains( objectType ) ) objectTypeArray.Add( objectType );
             }

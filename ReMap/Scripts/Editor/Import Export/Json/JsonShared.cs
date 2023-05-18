@@ -11,11 +11,28 @@ using UnityEngine;
 // Internal
 using ImportExport.Shared;
 using static ImportExport.Shared.SharedFunction;
+using static ImportExport.Json.JsonImport;
+using static ImportExport.Json.JsonExport;
 
 namespace ImportExport.Json
 {
+    public enum ExportType
+    {
+        All = 0,
+        Selection = 1,
+    }
+
+    public enum ExecuteType
+    {
+        SortList,
+        Import,
+        Export
+    }
+
     public class JsonShared
     {
+        internal static JsonData jsonData = new JsonData();
+
         internal static string[] protectedModels = { "_vertical_zipline", "_non_vertical_zipline" };
 
         /// <summary>
@@ -389,6 +406,383 @@ namespace ImportExport.Json
 
                     default: break;
                 }
+            }
+        }
+        
+        public static async Task ExecuteJson( ObjectType objectType, ExecuteType executeType, ExportType exportType = ExportType.All )
+        {
+            switch ( objectType )
+            {
+                case ObjectType.BubbleShield:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.BubbleShields, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.BubbleShields );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.BubbleShields, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.Button:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.Buttons, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.Buttons );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.Buttons, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.CameraPath:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.CameraPaths, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.CameraPaths );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.CameraPaths, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.DoubleDoor:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.DoubleDoors, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.DoubleDoors );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.DoubleDoors, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.FuncWindowHint:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.FuncWindowHints, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.FuncWindowHints );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.FuncWindowHints, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.HorzDoor:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.HorzDoors, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.HorzDoors );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.HorzDoors, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.Jumppad:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.Jumppads, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.Jumppads );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.Jumppads, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.JumpTower:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.JumpTowers, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.JumpTowers );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.JumpTowers, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.LinkedZipline:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.LinkedZiplines, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.LinkedZiplines );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.LinkedZiplines, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.LootBin:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.LootBins, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.LootBins );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.LootBins, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.NewLocPair:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.NewLocPairs, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.NewLocPairs );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.NewLocPairs, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.NonVerticalZipLine:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.NonVerticalZipLines, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.NonVerticalZipLines );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.NonVerticalZipLines, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.Prop:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.Props, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.Props );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.Props, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.SingleDoor:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.SingleDoors, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.SingleDoors );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.SingleDoors, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.Sound:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.Sounds, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.Sounds );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.Sounds, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.SpawnPoint:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.SpawnPoints, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.SpawnPoints );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.SpawnPoints, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.TextInfoPanel:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.TextInfoPanels, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.TextInfoPanels );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.TextInfoPanels, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.Trigger:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.Triggers, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.Triggers );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.Triggers, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.VerticalDoor:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.VerticalDoors, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.VerticalDoors );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.VerticalDoors, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.VerticalZipLine:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.VerticalZipLines, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.VerticalZipLines );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.VerticalZipLines, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.WeaponRack:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.WeaponRacks, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.WeaponRacks );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.WeaponRacks, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.ZipLine:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.Ziplines, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.Ziplines );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.Ziplines, exportType );
+                        break;
+                    }
+                    break;
+                case ObjectType.LiveMapCodePlayerSpawn:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.PlayerSpawns, x => x.PathString );
+                            break;
+
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.PlayerSpawns );
+                            break;
+
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.PlayerSpawns, exportType );
+                        break;
+                    }
+                    break;
+
+                default: return;
             }
         }
 

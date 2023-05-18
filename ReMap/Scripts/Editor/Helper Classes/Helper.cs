@@ -456,44 +456,6 @@ public class Helper
         return null;
     }
 
-    public static FieldInfo[] GetJsonDataList()
-    {
-        Type jsonData = typeof( JsonData );
-
-        FieldInfo[] jsonDataField = jsonData.GetFields( BindingFlags.Public | BindingFlags.Instance );
-
-        List< FieldInfo > listToReturn = new List< FieldInfo >();
-
-        foreach ( FieldInfo field in jsonDataField )
-        {
-            if ( field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof( List<> ) )
-            {
-                listToReturn.Add( field );
-            }
-        }
-
-        return listToReturn.ToArray();
-    }
-
-    public static List< GlobalClassData > FindJsonDataList< GlobalClassData >( JsonData jsonData, ObjectType objectType )
-    {
-        foreach ( FieldInfo field in GetJsonDataList() )
-        {
-            if ( field.FieldType.IsGenericType )
-            {
-                Type listElementType = field.FieldType.GetGenericArguments()[0];
-                if ( listElementType == GetImportExportClassByEnum( objectType ) )
-                {
-                    //UnityInfo.Printt( listElementType.Name );
-                    return field.GetValue( jsonData ) as List< GlobalClassData >;
-                }
-            }
-        }
-        UnityInfo.Printt( "null" );
-
-        return null;
-    }
-
     public static ObjectType? GetObjectTypeByObjName( string searchTerm )
     {
         foreach ( ObjectType objectType in GetAllObjectType() )

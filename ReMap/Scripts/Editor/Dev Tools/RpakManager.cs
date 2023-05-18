@@ -156,7 +156,25 @@ namespace LibrarySorter
 
         internal static void RenameTab()
         {
-            libraryData.RpakList[ tabIdx ].Name = entry;
+            if ( string.IsNullOrEmpty( entry ) ) return;
+
+            string newEntry = entry; int idx = 1; bool nameExists;
+
+            do
+            {
+                nameExists = false;
+                foreach ( RpakData content in libraryData.RpakList )
+                {
+                    if ( content.Name == newEntry )
+                    {
+                        nameExists = true;
+                        newEntry = $"{entry} ({++idx})";
+                        break;
+                    }
+                }
+            } while ( nameExists );
+            
+            libraryData.RpakList[ tabIdx ].Name = newEntry;
 
             entry = "";
 

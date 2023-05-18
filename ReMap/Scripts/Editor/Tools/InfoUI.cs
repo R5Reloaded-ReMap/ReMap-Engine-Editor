@@ -27,7 +27,6 @@ public class InfoUI : EditorWindow
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical("box", GUILayout.Height(150));
-                GUILayout.Label("Links:", EditorStyles.boldLabel);
                 //Docs
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("ReMap Docs:", EditorStyles.boldLabel, GUILayout.Width(120));

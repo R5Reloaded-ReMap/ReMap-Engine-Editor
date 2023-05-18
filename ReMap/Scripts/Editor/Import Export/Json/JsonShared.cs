@@ -38,62 +38,194 @@ namespace ImportExport.Json
         /// <summary>
         /// Get or Set the values contained in GameObject component
         /// </summary>
-        internal static void GetSetScriptData< T >( GameObject obj, T scriptData, ObjectType dataType, GetSetData getSet ) where T : class
+        internal static void GetSetScriptData< T >( ObjectType objectType, GameObject obj, T scriptData, GetSetData getSet ) where T : class
         {
-            T classData = Activator.CreateInstance( typeof( T ) ) as T;
-
-            if ( getSet == GetSetData.Get )
+            switch ( objectType )
             {
-                switch ( classData )
-                {
-                    case PropClassData data: // Props
-                        data = ( PropClassData )( object ) scriptData;
-                        PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( propScript, data );
-                        data.Name = UnityInfo.GetObjName( obj );
-                        break;
+                case ObjectType.BubbleShield:
+                    BubbleShieldClassData bubbleShieldData = ( BubbleShieldClassData )( object ) scriptData;
+                    BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case ZipLineClassData data: // Ziplines
-                        data = ( ZipLineClassData )( object ) scriptData;
-                        DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( drawZipline, data, new[] { "zipline_start", "zipline_end" }.ToList() );
-                        data.Zipline_start = drawZipline.zipline_start.position;
-                        data.Zipline_end = drawZipline.zipline_end.position;
-                        break;
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( bubbleScript, bubbleShieldData, new[] { "Name" }.ToList() );
+                        bubbleShieldData.Name = UnityInfo.GetObjName( obj );
+                    }
+                    else TransferDataToClass( bubbleShieldData, bubbleScript, new[] { "Name" }.ToList() );
+                    break;
 
-                    case LinkedZipLinesClassData data: // Linked Ziplines
-                        data = ( LinkedZipLinesClassData )( object ) scriptData;
-                        LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( linkedZiplineScript, data );
-                        data.Nodes = new List< Vector3 >();
-                        foreach ( Transform nodes in obj.transform ) data.Nodes.Add( nodes.gameObject.transform.position );
-                        break;
+                case ObjectType.Button:
+                    ButtonClassData buttonData = ( ButtonClassData )( object ) scriptData;
+                    ButtonScripting buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case VerticalZipLineClassData data: // Vertical Ziplines
-                        data = ( VerticalZipLineClassData )( object ) scriptData;
-                        DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( drawVerticalZipline, data, new[] { "Panels", "Name" }.ToList() );
-                        data.Name = UnityInfo.GetObjName( obj );
-                        data.Panels = new List< VCPanelsClassData >();
-                        foreach ( GameObject panel in drawVerticalZipline.Panels )
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( buttonScripting, buttonData );
+                    }
+                    else TransferDataToClass( buttonData, buttonScripting );
+                    break;
+
+                case ObjectType.CameraPath:
+                    CameraPathClassData cameraPathData = ( CameraPathClassData )( object ) scriptData;
+                    PathScript cameraPathScript = ( PathScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( cameraPathScript, cameraPathData, new[] { "TargetRef", "PathNode" }.ToList() );
+                        cameraPathData.TargetRef = GetSetTransformData( cameraPathScript.targetRef );
+                        cameraPathData.PathNode = new List< TransformData >();
+                        foreach ( Transform node in obj.transform )
                         {
-                            VCPanelsClassData panelClass = new VCPanelsClassData();
-                            panelClass.Model = panel.name;
-                            panelClass.TransformData = GetSetTransformData( panel, panelClass.TransformData );
-                            panelClass.Path = FindPath( panel );
-                            panelClass.PathString = FindPathString( panel );
-                            data.Panels.Add( panelClass );
+                            if ( node.gameObject.name == "targetRef" ) continue;
+                         
+                            cameraPathData.PathNode.Add( GetSetTransformData( node.gameObject ) );
                         }
-                        break;
+                    }
+                    else
+                    {
+                        List< Transform > path_point = new List< Transform >();
+                        for ( int i = 0; i < obj.transform.childCount; i++ )
+                        {
+                            path_point.Add( obj.transform.GetChild( i ) );
+                        }
+                        for ( int i = 0; i < path_point.Count; i++ )
+                        {
+                            if ( Helper.IsValid( path_point[i].gameObject ) ) GameObject.DestroyImmediate( path_point[i].gameObject );
+                        }
+                        TransferDataToClass( cameraPathData, cameraPathScript );
+                        cameraPathScript.targetRef = Helper.CreateGameObject( "targetRef", UnityInfo.relativePathCubePrefab );
+                        GetSetTransformData( cameraPathScript.targetRef, cameraPathData.TargetRef );
+                        cameraPathScript.targetRef.transform.parent = obj.transform;
+                        foreach ( TransformData nodeData in cameraPathData.PathNode )
+                        {
+                            GameObject node = Helper.CreateGameObject( "path_point", $"{UnityInfo.relativePathLodsUtility}/Camera.prefab" );
+                            if ( !Helper.IsValid( node ) ) continue;
+                            GetSetTransformData( node, nodeData );
+                            node.transform.parent = obj.transform;
+                        }
+                    }
+                    break;
 
-                    case NonVerticalZipLineClassData data: // Non Vertical ZipLines
-                        data = ( NonVerticalZipLineClassData )( object ) scriptData;
-                        DrawNonVerticalZipline drawNonVerticalZipline = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( drawNonVerticalZipline, data, new[] { "Panels", "Name", "ZiplineStart", "ZiplineEnd" }.ToList() );
-                        data.Name = UnityInfo.GetObjName( obj );
-                        data.ZiplineStart = GetSetTransformData( obj.transform.Find( "support_start" ).gameObject, data.ZiplineStart );
-                        data.ZiplineEnd = GetSetTransformData( obj.transform.Find( "support_end" ).gameObject, data.ZiplineEnd );
-                        data.Panels = new List< VCPanelsClassData >();
+                case ObjectType.DoubleDoor:
+                    DoubleDoorClassData doubleDoorData = ( DoubleDoorClassData )( object ) scriptData;
+                    DoorScript doorScriptDouble = ( DoorScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( doorScriptDouble, doubleDoorData );
+                    }
+                    else TransferDataToClass( doubleDoorData, doorScriptDouble );
+                    break;
+
+                case ObjectType.FuncWindowHint:
+                    FuncWindowHintClassData windowHintData = ( FuncWindowHintClassData )( object ) scriptData;
+                    WindowHintScript windowHintScript = ( WindowHintScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( windowHintScript, windowHintData );
+                    }
+                    else TransferDataToClass( windowHintData, windowHintScript );
+                    break;
+
+                case ObjectType.HorzDoor:
+                    HorzDoorClassData horzDoorData = ( HorzDoorClassData )( object ) scriptData;
+                    HorzDoorScript horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( horzDoorScript, horzDoorData );
+                    }
+                    else TransferDataToClass( horzDoorData, horzDoorScript );
+                    break;
+
+                case ObjectType.Jumppad:
+                    JumppadClassData jumppadData = ( JumppadClassData )( object ) scriptData;
+                    PropScript propScriptJumppad = ( PropScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( propScriptJumppad, jumppadData );
+                    }
+                    else TransferDataToClass( jumppadData, propScriptJumppad );
+                    break;
+
+                case ObjectType.JumpTower:
+                    JumpTowerClassData jumpTowerData = ( JumpTowerClassData )( object ) scriptData;
+                    JumpTowerScript jumpTowerScript = ( JumpTowerScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( jumpTowerScript, jumpTowerData );
+                    }
+                    else TransferDataToClass( jumpTowerData, jumpTowerScript );
+                    break;
+
+                case ObjectType.LinkedZipline:
+                    LinkedZipLinesClassData linkedZiplineData = ( LinkedZipLinesClassData )( object ) scriptData;
+                    LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( linkedZiplineScript, linkedZiplineData );
+                        linkedZiplineData.Nodes = new List< Vector3 >();
+                        foreach ( Transform nodes in obj.transform ) linkedZiplineData.Nodes.Add( nodes.gameObject.transform.position );
+                    }
+                    else
+                    {
+                        List< Transform > nodes = new List< Transform >();
+                        for ( int i = 0; i < obj.transform.childCount; i++ )
+                        {
+                            nodes.Add( obj.transform.GetChild( i ) );
+                        }
+                        for ( int i = 0; i < nodes.Count; i++ )
+                        {
+                            if ( Helper.IsValid( nodes[i].gameObject ) ) GameObject.DestroyImmediate( nodes[i].gameObject );
+                        }
+                        TransferDataToClass( linkedZiplineData, linkedZiplineScript, new[] { "zipline_start", "zipline_end" }.ToList() );
+                        foreach ( Vector3 nodesPos in linkedZiplineData.Nodes )
+                        {
+                            GameObject node = Helper.CreateGameObject( "zipline_node", UnityInfo.relativePathCubePrefab );
+                            if ( !Helper.IsValid( node ) ) continue;
+                            node.transform.position = nodesPos;
+                            node.transform.parent = obj.transform;
+                        }
+                    }
+                    break;
+
+                case ObjectType.LootBin:
+                    LootBinClassData lootBinData = ( LootBinClassData )( object ) scriptData;
+                    LootBinScript lootBinScript = ( LootBinScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( lootBinScript, lootBinData );
+                    }
+                    else TransferDataToClass( lootBinData, lootBinScript );
+                    break;
+
+                case ObjectType.NewLocPair:
+                    NewLocPairClassData newLocPairData = ( NewLocPairClassData )( object ) scriptData;
+                    NewLocPairScript newLocPairScript = ( NewLocPairScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( newLocPairScript, newLocPairData );
+                    }
+                    else TransferDataToClass( newLocPairData, newLocPairScript );
+                    break;
+
+                case ObjectType.NonVerticalZipLine:
+                    NonVerticalZipLineClassData nonVerticalZipLineData = ( NonVerticalZipLineClassData )( object ) scriptData;
+                    DrawNonVerticalZipline drawNonVerticalZipline = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( drawNonVerticalZipline, nonVerticalZipLineData, new[] { "Panels", "Name", "ZiplineStart", "ZiplineEnd" }.ToList() );
+                        nonVerticalZipLineData.Name = UnityInfo.GetObjName( obj );
+                        nonVerticalZipLineData.ZiplineStart = GetSetTransformData( obj.transform.Find( "support_start" ).gameObject, nonVerticalZipLineData.ZiplineStart );
+                        nonVerticalZipLineData.ZiplineEnd = GetSetTransformData( obj.transform.Find( "support_end" ).gameObject, nonVerticalZipLineData.ZiplineEnd );
+                        nonVerticalZipLineData.Panels = new List< VCPanelsClassData >();
                         foreach ( GameObject panel in drawNonVerticalZipline.Panels )
                         {
                             VCPanelsClassData panelClass = new VCPanelsClassData();
@@ -101,184 +233,16 @@ namespace ImportExport.Json
                             panelClass.TransformData = GetSetTransformData( panel, panelClass.TransformData );
                             panelClass.Path = FindPath( panel );
                             panelClass.PathString = FindPathString( panel );
-                            data.Panels.Add( panelClass );
+                            nonVerticalZipLineData.Panels.Add( panelClass );
                         }
-                        break;
+                    }
+                    else
+                    {
+                        TransferDataToClass( nonVerticalZipLineData, drawNonVerticalZipline, new[] { "Panels", "ShowDevelopersOptions", "zipline", "fence_post_start", "arm_start", "fence_post_end", "arm_end", "rope_start", "rope_end", "helperPlacement_start", "helperPlacement_end" }.ToList() );
+                        GetSetTransformData( obj.transform.Find( "support_start" ).gameObject, nonVerticalZipLineData.ZiplineStart );
+                        GetSetTransformData( obj.transform.Find( "support_end" ).gameObject, nonVerticalZipLineData.ZiplineEnd );
 
-                    case SingleDoorClassData data: // Single Doors
-                        data = ( SingleDoorClassData )( object ) scriptData;
-                        DoorScript doorScriptSingle = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( doorScriptSingle, data );
-                        break;
-
-                    case DoubleDoorClassData data: // Double Doors
-                        data = ( DoubleDoorClassData )( object ) scriptData;
-                        DoorScript doorScriptDouble = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( doorScriptDouble, data );
-                        break;
-
-                    case HorzDoorClassData data: // Horizontal Doors
-                        data = ( HorzDoorClassData )( object ) scriptData;
-                        HorzDoorScript horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( horzDoorScript, data );
-                        break;
-
-                    case VerticalDoorClassData data: // Vertical Doors
-                        data = ( VerticalDoorClassData )( object ) scriptData;
-                        VerticalDoorScript verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( verticalDoorScript, data );
-                        break;
-
-                    case JumpTowerClassData data: // Jump Towers
-                        data = ( JumpTowerClassData )( object ) scriptData;
-                        JumpTowerScript jumpTowerScript = ( JumpTowerScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( jumpTowerScript, data );
-                        break;
-
-                    case ButtonClassData data: // Bouttons
-                        data = ( ButtonClassData )( object ) scriptData;
-                        ButtonScripting buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( buttonScripting, data );
-                        break;
-
-                    case JumppadClassData data: // Jumppads
-                        data = ( JumppadClassData )( object ) scriptData;
-                        PropScript propScriptJumppad = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( propScriptJumppad, data );
-                        break;
-
-                    case LootBinClassData data: // Loot Bins
-                        data = ( LootBinClassData )( object ) scriptData;
-                        LootBinScript lootBinScript = ( LootBinScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( lootBinScript, data );
-                        break;
-
-                    case WeaponRackClassData data: // Weapon Racks
-                        data = ( WeaponRackClassData )( object ) scriptData;
-                        WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( weaponRackScript, data, new[] { "Name" }.ToList() );
-                        data.Name = UnityInfo.GetObjName( obj );
-                        break;
-
-                    case TriggerClassData data: // Triggers
-                        data = ( TriggerClassData )( object ) scriptData;
-                        TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( triggerScripting, data, new[] { "HelperData" }.ToList() );
-                        data.HelperData = GetSetTransformData( triggerScripting.Helper.gameObject, data.HelperData );
-                        break;
-
-                    case BubbleShieldClassData data: // Bubbles Shield
-                        data = ( BubbleShieldClassData )( object ) scriptData;
-                        BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( bubbleScript, data, new[] { "Name" }.ToList() );
-                        data.Name = UnityInfo.GetObjName( obj );
-                        break;
-
-                    case SpawnPointClassData data: // Spawn Points
-                        data = ( SpawnPointClassData )( object ) scriptData;
-                        SpawnPointScript spawnPointScript = ( SpawnPointScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( spawnPointScript, data );
-                        break;
-
-                    case TextInfoPanelClassData data: // Text Info Panels
-                        data = ( TextInfoPanelClassData )( object ) scriptData;
-                        TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( textInfoPanelScript, data, new[] { "TextMeshTitle", "TextMeshDescription" }.ToList() );
-                        break;
-
-                    case FuncWindowHintClassData data: // Window Hints
-                        data = ( FuncWindowHintClassData )( object ) scriptData;
-                        WindowHintScript windowHintScript = ( WindowHintScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( windowHintScript, data );
-                        break;
-
-                    case SoundClassData data: // Sounds
-                        data = ( SoundClassData )( object ) scriptData;
-                        SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( soundScript, data, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
-                        break;
-
-                    case CameraPathClassData data: // Camera Paths
-                        data = ( CameraPathClassData )( object ) scriptData;
-                        PathScript pathScript = ( PathScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( pathScript, data, new[] { "TargetRef", "PathNode" }.ToList() );
-                        data.TargetRef = GetSetTransformData( pathScript.targetRef );
-                        data.PathNode = new List< TransformData >();
-                        foreach ( Transform node in obj.transform )
-                        {
-                            if ( node.gameObject.name == "targetRef" ) continue;
-                            
-                            data.PathNode.Add( GetSetTransformData( node.gameObject ) );
-                        }
-                        break;
-                    
-                    case UOPlayerSpawnClassData data: // Unity Only Player Spawn
-                        data = ( UOPlayerSpawnClassData )( object ) scriptData;
-                        EmptyScript emptyScript = ( EmptyScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( emptyScript, data );
-                        break;
-
-                    default: break;
-                }
-            }
-            else
-            {
-                switch ( classData )
-                {
-                    case PropClassData data: // Props
-                        data = ( PropClassData )( object ) scriptData;
-                        PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, propScript );
-                        break;
-
-                    case ZipLineClassData data: // Ziplines
-                        data = ( ZipLineClassData )( object ) scriptData;
-                        DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, drawZipline, new[] { "Zipline_start", "Zipline_end" }.ToList() );
-                        drawZipline.zipline_start.position = data.Zipline_start;
-                        drawZipline.zipline_end.position = data.Zipline_end;
-                        break;
-
-                    case LinkedZipLinesClassData data: // Linked Ziplines
-                        data = ( LinkedZipLinesClassData )( object ) scriptData;
-                        obj.AddComponent< DrawLinkedZipline >();
-                        obj.AddComponent< LinkedZiplineScript >();
-                        LinkedZiplineScript linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, linkedZiplineScript, new[] { "zipline_start", "zipline_end" }.ToList() );
-                        foreach ( Vector3 nodesPos in data.Nodes )
-                        {
-                            GameObject node = Helper.CreateGameObject( "path_point" );
-                            if ( !Helper.IsValid( node ) ) continue;
-                            node.transform.position = nodesPos;
-                            node.transform.parent = obj.transform;
-                        }
-                        break;
-
-                    case VerticalZipLineClassData data: // Vertical Ziplines
-                        data = ( VerticalZipLineClassData )( object ) scriptData;
-                        DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, drawVerticalZipline, new[] { "Panels", "ShowDevelopersOptions", "zipline", "fence_post", "arm", "rope_start", "rope_end", "helperPlacement" }.ToList() );
-
-                        foreach ( VCPanelsClassData panelData in data.Panels )
-                        {
-                            GameObject panel = Helper.CreateGameObject( "", $"mdl#{panelData.Model}", PathType.Name );
-                            if ( !Helper.IsValid( panel ) ) continue;
-                            GetSetTransformData( panel, panelData.TransformData );
-                            CreatePath( panelData.Path, panelData.PathString, panel );
-
-                            Array.Resize( ref drawVerticalZipline.Panels, drawVerticalZipline.Panels.Length + 1 );
-                            drawVerticalZipline.Panels[ drawVerticalZipline.Panels.Length - 1 ] = panel;
-                        }
-                        break;
-
-                    case NonVerticalZipLineClassData data: // Non Vertical ZipLines
-                        data = ( NonVerticalZipLineClassData )( object ) scriptData;
-                        DrawNonVerticalZipline drawNonVerticalZipline = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, drawNonVerticalZipline, new[] { "Panels", "ShowDevelopersOptions", "zipline", "fence_post_start", "arm_start", "fence_post_end", "arm_end", "rope_start", "rope_end", "helperPlacement_start", "helperPlacement_end" }.ToList() );
-                        GetSetTransformData( obj.transform.Find( "support_start" ).gameObject, data.ZiplineStart );
-                        GetSetTransformData( obj.transform.Find( "support_end" ).gameObject, data.ZiplineEnd );
-
-                        foreach ( VCPanelsClassData panelData in data.Panels )
+                        foreach ( VCPanelsClassData panelData in nonVerticalZipLineData.Panels )
                         {
                             GameObject panel = Helper.CreateGameObject( "", $"mdl#{panelData.Model}", PathType.Name );
                             if ( !Helper.IsValid( panel ) ) continue;
@@ -288,127 +252,172 @@ namespace ImportExport.Json
                             Array.Resize( ref drawNonVerticalZipline.Panels, drawNonVerticalZipline.Panels.Length + 1 );
                             drawNonVerticalZipline.Panels[ drawNonVerticalZipline.Panels.Length - 1 ] = panel;
                         }
-                        break;
+                    }
+                    break;
 
-                    case SingleDoorClassData data: // Single Doors
-                        data = ( SingleDoorClassData )( object ) scriptData;
-                        DoorScript doorScriptSingle = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, doorScriptSingle );
-                        break;
+                case ObjectType.Prop:
+                    PropClassData propData = ( PropClassData )( object ) scriptData;
+                    PropScript propScript = ( PropScript ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case DoubleDoorClassData data: // Double Doors
-                        data = ( DoubleDoorClassData )( object ) scriptData;
-                        DoorScript doorScriptDouble = ( DoorScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, doorScriptDouble );
-                        break;
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( propScript, propData );
+                        propData.Name = UnityInfo.GetObjName( obj );
+                    }
+                    else TransferDataToClass( propData, propScript );
+                    break;
 
-                    case HorzDoorClassData data: // Horizontal Doors
-                        data = ( HorzDoorClassData )( object ) scriptData;
-                        HorzDoorScript horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, horzDoorScript );
-                        break;
+                case ObjectType.SingleDoor:
+                    SingleDoorClassData singleDoorData = ( SingleDoorClassData )( object ) scriptData;
+                    DoorScript doorScriptSingle = ( DoorScript ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case VerticalDoorClassData data: // Vertical Doors
-                        data = ( VerticalDoorClassData )( object ) scriptData;
-                        VerticalDoorScript verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, verticalDoorScript );
-                        break;
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( doorScriptSingle, singleDoorData );
+                    }
+                    else TransferDataToClass( singleDoorData, doorScriptSingle );
+                    break;
 
-                    case JumpTowerClassData data: // Jump Towers
-                        data = ( JumpTowerClassData )( object ) scriptData;
-                        JumpTowerScript jumpTowerScript = ( JumpTowerScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, jumpTowerScript );
-                        break;
+                case ObjectType.Sound:
+                    SoundClassData soundData = ( SoundClassData )( object ) scriptData;
+                    SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case ButtonClassData data: // Bouttons
-                        data = ( ButtonClassData )( object ) scriptData;
-                        ButtonScripting buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, buttonScripting );
-                        break;
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( soundScript, soundData, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
+                    }
+                    else TransferDataToClass( soundData, soundScript, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
+                    break;
 
-                    case JumppadClassData data: // Jumppads
-                        data = ( JumppadClassData )( object ) scriptData;
-                        PropScript propScriptJumppad = ( PropScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, propScriptJumppad );
-                        break;
+                case ObjectType.SpawnPoint:
+                    SpawnPointClassData spawnPointData = ( SpawnPointClassData )( object ) scriptData;
+                    SpawnPointScript spawnPointScript = ( SpawnPointScript ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case LootBinClassData data: // Loot Bins
-                        data = ( LootBinClassData )( object ) scriptData;
-                        LootBinScript lootBinScript = ( LootBinScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, lootBinScript );
-                        break;
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( spawnPointScript, spawnPointData );
+                    }
+                    else TransferDataToClass( spawnPointData, spawnPointScript );
+                    break;
 
-                    case WeaponRackClassData data: // Weapon Racks
-                        data = ( WeaponRackClassData )( object ) scriptData;
-                        WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, weaponRackScript, new[] { "Name" }.ToList() );
-                        break;
+                case ObjectType.TextInfoPanel:
+                    TextInfoPanelClassData textInfoPanelData = ( TextInfoPanelClassData )( object ) scriptData;
+                    TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case TriggerClassData data: // Triggers
-                        data = ( TriggerClassData )( object ) scriptData;
-                        TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, triggerScripting, new[] { "HelperData" }.ToList() );
-                        GetSetTransformData( triggerScripting.Helper.gameObject, data.HelperData );
-                        break;
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( textInfoPanelScript, textInfoPanelData, new[] { "TextMeshTitle", "TextMeshDescription" }.ToList() );
+                    }
+                    else TransferDataToClass( textInfoPanelData, textInfoPanelScript, new[] { "TextMeshTitle", "TextMeshDescription" }.ToList() );
+                    break;
 
-                    case BubbleShieldClassData data: // Bubbles Shield
-                        data = ( BubbleShieldClassData )( object ) scriptData;
-                        BubbleScript bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, bubbleScript, new[] { "Name" }.ToList() );
-                        break;
+                case ObjectType.Trigger:
+                    TriggerClassData triggerData = ( TriggerClassData )( object ) scriptData;
+                    TriggerScripting triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case SpawnPointClassData data: // Spawn Points
-                        data = ( SpawnPointClassData )( object ) scriptData;
-                        SpawnPointScript spawnPointScript = ( SpawnPointScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, spawnPointScript );
-                        break;
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( triggerScripting, triggerData, new[] { "HelperData" }.ToList() );
+                        triggerData.HelperData = GetSetTransformData( triggerScripting.Helper.gameObject, triggerData.HelperData );
+                    }
+                    else
+                    {
+                        TransferDataToClass( triggerData, triggerScripting, new[] { "HelperData" }.ToList() );
+                        GetSetTransformData( triggerScripting.Helper.gameObject, triggerData.HelperData );
+                    }
+                    break;
 
-                    case TextInfoPanelClassData data: // Text Info Panels
-                        data = ( TextInfoPanelClassData )( object ) scriptData;
-                        TextInfoPanelScript textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, textInfoPanelScript, new[] { "TextMeshTitle", "TextMeshDescription" }.ToList() );
-                        break;
+                case ObjectType.VerticalDoor:
+                    VerticalDoorClassData verticalDoorData = ( VerticalDoorClassData )( object ) scriptData;
+                    VerticalDoorScript verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case FuncWindowHintClassData data: // Window Hints
-                        data = ( FuncWindowHintClassData )( object ) scriptData;
-                        WindowHintScript windowHintScript = ( WindowHintScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, windowHintScript );
-                        break;
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( verticalDoorScript, verticalDoorData );
+                    }
+                    else TransferDataToClass( verticalDoorData, verticalDoorScript );
+                    break;
 
-                    case SoundClassData data: // Sounds
-                        data = ( SoundClassData )( object ) scriptData;
-                        SoundScript soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, soundScript, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
-                        break;
+                case ObjectType.VerticalZipLine:
+                    VerticalZipLineClassData verticalZipLineData = ( VerticalZipLineClassData )( object ) scriptData;
+                    DrawVerticalZipline drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, objectType );
 
-                    case CameraPathClassData data: // Camera Paths
-                        data = ( CameraPathClassData )( object ) scriptData;
-                        obj.AddComponent< PathScript >();
-                        PathScript pathScript = ( PathScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, pathScript );
-                        pathScript.targetRef = Helper.CreateGameObject( "targetRef", UnityInfo.relativePathCubePrefab );
-                        GetSetTransformData( pathScript.targetRef, data.TargetRef );
-                        pathScript.targetRef.transform.parent = obj.transform;
-                        foreach ( TransformData nodeData in data.PathNode )
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( drawVerticalZipline, verticalZipLineData, new[] { "Panels", "Name" }.ToList() );
+                        verticalZipLineData.Name = UnityInfo.GetObjName( obj );
+                        verticalZipLineData.Panels = new List< VCPanelsClassData >();
+                        foreach ( GameObject panel in drawVerticalZipline.Panels )
                         {
-                            GameObject node = Helper.CreateGameObject( "path_point", $"{UnityInfo.relativePathLodsUtility}/Camera.prefab" );
-                            if ( !Helper.IsValid( node ) ) continue;
-                            GetSetTransformData( node, nodeData );
-                            node.transform.parent = obj.transform;
+                            VCPanelsClassData panelClass = new VCPanelsClassData();
+                            panelClass.Model = panel.name;
+                            panelClass.TransformData = GetSetTransformData( panel, panelClass.TransformData );
+                            panelClass.Path = FindPath( panel );
+                            panelClass.PathString = FindPathString( panel );
+                            verticalZipLineData.Panels.Add( panelClass );
                         }
-                        break;
+                    }
+                    else
+                    {
+                        TransferDataToClass( verticalZipLineData, drawVerticalZipline, new[] { "Panels", "ShowDevelopersOptions", "zipline", "fence_post", "arm", "rope_start", "rope_end", "helperPlacement" }.ToList() );
+                        foreach ( VCPanelsClassData panelData in verticalZipLineData.Panels )
+                        {
+                            GameObject panel = Helper.CreateGameObject( "", $"mdl#{panelData.Model}", PathType.Name );
+                            if ( !Helper.IsValid( panel ) ) continue;
+                            GetSetTransformData( panel, panelData.TransformData );
+                            CreatePath( panelData.Path, panelData.PathString, panel );
 
-                    case UOPlayerSpawnClassData data: // Unity Only Player Spawn
-                        data = ( UOPlayerSpawnClassData )( object ) scriptData;
-                        EmptyScript emptyScript = ( EmptyScript ) Helper.GetComponentByEnum( obj, dataType );
-                        TransferDataToClass( data, emptyScript );
-                        break;
+                            Array.Resize( ref drawVerticalZipline.Panels, drawVerticalZipline.Panels.Length + 1 );
+                            drawVerticalZipline.Panels[ drawVerticalZipline.Panels.Length - 1 ] = panel;
+                        }
+                    }
+                    break;
 
-                    default: break;
-                }
+                case ObjectType.WeaponRack:
+                    WeaponRackClassData weaponRackData = ( WeaponRackClassData )( object ) scriptData;
+                    WeaponRackScript weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( weaponRackScript, weaponRackData, new[] { "Name" }.ToList() );
+                        weaponRackData.Name = UnityInfo.GetObjName( obj );
+                    }
+                    else TransferDataToClass( weaponRackData, weaponRackScript, new[] { "Name" }.ToList() );
+                    break;
+
+                case ObjectType.ZipLine:
+                    ZipLineClassData ziplineData = ( ZipLineClassData )( object ) scriptData;
+                    DrawZipline drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( drawZipline, ziplineData, new[] { "zipline_start", "zipline_end" }.ToList() );
+                        ziplineData.Zipline_start = drawZipline.zipline_start.position;
+                        ziplineData.Zipline_end = drawZipline.zipline_end.position;
+                    }
+                    else
+                    {
+                        TransferDataToClass( ziplineData, drawZipline, new[] { "Zipline_start", "Zipline_end" }.ToList() );
+                        drawZipline.zipline_start.position = ziplineData.Zipline_start;
+                        drawZipline.zipline_end.position = ziplineData.Zipline_end;
+                    }
+                    break;
+
+                case ObjectType.LiveMapCodePlayerSpawn:
+                    UOPlayerSpawnClassData UOPlayerSpawnData = ( UOPlayerSpawnClassData )( object ) scriptData;
+                    EmptyScript UOPlayerSpawnScript = ( EmptyScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( UOPlayerSpawnScript, UOPlayerSpawnData );
+                    }
+                    else TransferDataToClass( UOPlayerSpawnData, UOPlayerSpawnScript );
+                    break;
+
+                default: return;
             }
         }
-        
+
         public static async Task ExecuteJson( ObjectType objectType, ExecuteType executeType, ExportType exportType = ExportType.All )
         {
             switch ( objectType )
@@ -790,8 +799,7 @@ namespace ImportExport.Json
         {
             foreach ( string protectedModel in protectedModels )
             {
-                if ( path.Contains( protectedModel ) )
-                    return false;
+                if ( path.Contains( protectedModel ) ) return false;
             }
 
             return true;

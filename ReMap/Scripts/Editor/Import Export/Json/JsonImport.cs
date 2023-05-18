@@ -78,25 +78,12 @@ namespace ImportExport.Json
             EditorUtility.DisplayProgressBar( $"Importing {Helper.GetObjNameWithEnum( objectType )} {j}/{objectsCount}", $"Importing: {importing}", ( i + 1 ) / ( float )objectsCount );
             ReMapConsole.Log( "[Json Import] Importing: " + objName, ReMapConsole.LogType.Info );
 
-            switch ( objectType )
-            {
-                case ObjectType.LinkedZipline:
-                    obj = new GameObject( Helper.GetObjRefWithEnum( objectType ) );
-                    break;
-
-                case ObjectType.CameraPath:
-                    obj = new GameObject( Helper.GetObjRefWithEnum( objectType ) );
-                    break;
-
-                default:
-                    obj = Helper.CreateGameObject( "", objName, PathType.Name );
-                break;
-            }
+            obj = Helper.CreateGameObject( "", objName, PathType.Name );
 
             if ( !Helper.IsValid( obj ) ) return null;
 
             GetSetTransformData( obj, objData.TransformData );
-            GetSetScriptData( obj, objData, objectType, GetSetData.Set );
+            GetSetScriptData( objectType, obj, objData, GetSetData.Set );
             CreatePath( objData.Path, objData.PathString, obj );
 
             return obj;

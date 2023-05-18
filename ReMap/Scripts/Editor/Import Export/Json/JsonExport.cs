@@ -109,7 +109,7 @@ namespace ImportExport.Json
                 EditorUtility.DisplayProgressBar( $"Exporting {objType} {j}/{objectsCount}", $"Exporting: {exporting}", ( i + 1 ) / ( float )objectsCount );
 
                 T classData = Activator.CreateInstance( typeof( T ) ) as T;
-                
+
                 ProcessExportClassData( classData, obj, objPath, objectType );
 
                 if ( IsValidPath( objPath ) ) listType.Add( classData );
@@ -123,7 +123,7 @@ namespace ImportExport.Json
             classData.PathString = objPath;
             classData.Path = FindPath( obj );
             classData.TransformData = GetSetTransformData( obj, classData.TransformData );
-            GetSetScriptData( obj, classData, objectType, GetSetData.Get );
+            GetSetScriptData( objectType, obj, classData, GetSetData.Get );
         }
 
         /// <summary>

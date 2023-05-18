@@ -30,13 +30,13 @@ public class InfoUI : EditorWindow
                 //Docs
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("ReMap Docs:", EditorStyles.boldLabel, GUILayout.Width(120));
-                    if (GUILayout.Button("remap.ayezee.app/"))
+                    if (GUILayout.Button("remap.ayezee.app"))
                         Application.OpenURL("https://remap.ayezee.app/");
                 GUILayout.EndHorizontal();
                 //Github
                 GUILayout.BeginHorizontal();
                     GUILayout.Label("Github:", EditorStyles.boldLabel, GUILayout.Width(120));
-                    if (GUILayout.Button("github.com/R5Reloaded-ReMap/"))
+                    if (GUILayout.Button("github.com/R5Reloaded-ReMap"))
                         Application.OpenURL("https://github.com/R5Reloaded-ReMap/");
                 GUILayout.EndHorizontal();
                 //Discord

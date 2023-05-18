@@ -130,23 +130,35 @@ namespace CodeViewsWindow
 
         internal static void RenameTab()
         {
-            foreach ( AdditionalCodeContent content in activeCode.Content )
+            if ( string.IsNullOrEmpty( entry ) ) return;
+
+            string newEntry = entry; int idx = 1; bool nameExists;
+
+            do
             {
-                if ( content.Name == entry ) return;
-            }
+                nameExists = false;
+                foreach ( AdditionalCodeContent content in activeCode.Content )
+                {
+                    if ( content.Name == newEntry )
+                    {
+                        nameExists = true;
+                        newEntry = $"{entry} ({++idx})";
+                        break;
+                    }
+                }
+            } while ( nameExists );
 
-            if ( entry == "" ) return;
-
-            activeCode.Content[ tabCodeIdx ].Name = entry;
+            activeCode.Content[ tabCodeIdx ].Name = newEntry;
 
             SaveJson();
 
             for ( int i = 0; i < activeCode.Content.Count - 1; i++ )
             {
-                if ( activeCode.Content[ i ].Name == entry )
+                if ( activeCode.Content[ i ].Name == newEntry )
                 {
                     tabCodeIdx = i;
                     tabCodeIdxTemp = i;
+                    break;
                 }
             }
 

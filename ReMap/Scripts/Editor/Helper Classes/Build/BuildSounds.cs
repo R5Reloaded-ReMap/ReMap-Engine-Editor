@@ -61,11 +61,11 @@ namespace Build
                         // Polyline segments
                         for ( int i = script.PolylineSegment.Length - 1 ; i > -1 ; i-- )
                         {
-                            string polylineSegmentEnd = Helper.BuildOriginVector( script.PolylineSegment[i], true ).ToString().Replace(",", "");
+                            string polylineSegmentEnd = Helper.BuildOrigin( script.PolylineSegment[i], true ).ToString().Replace(",", "");
 
                             if ( i != 0 )
                             {
-                                string polylineSegmentStart = Helper.BuildOriginVector( script.PolylineSegment[i-1], true ).ToString().Replace(",", "");
+                                string polylineSegmentStart = Helper.BuildOrigin( script.PolylineSegment[i-1], true ).ToString().Replace(",", "");
 
                                 AppendCode( ref code, $"\"polyline_segment_{i}\" \"({polylineSegmentStart}) ({polylineSegmentEnd})\"" );
                             }

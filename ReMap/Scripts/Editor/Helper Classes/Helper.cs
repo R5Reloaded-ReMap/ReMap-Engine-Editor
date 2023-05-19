@@ -177,24 +177,17 @@ public class Helper
     }
 
     /// <summary>
-    /// Builds correct angles from gameobject
+    /// Builds correct ingame angles from GameObject
     /// </summary>
-    /// <param name="go">Prop Object</param>
-    /// <returns></returns>
     public static string BuildAngles( GameObject go, bool isEntFile = false )
     {
-        string x = ReplaceComma( -WrapAngle( go.transform.eulerAngles.x ) );
-        string y = ReplaceComma( -WrapAngle( go.transform.eulerAngles.y ) );
-        string z = ReplaceComma( WrapAngle( go.transform.eulerAngles.z ) );
-
-        string angles = $"< {x}, {y}, {z} >";
-
-        if ( isEntFile ) angles = $"{x} {y} {z}";
-
-        return angles;
+        return BuildAngles( go.transform.eulerAngles, isEntFile );
     }
 
-    public static string BuildAnglesVector( Vector3 vec, bool isEntFile = false )
+    /// <summary>
+    /// Builds correct ingame angles from Vector3
+    /// </summary>
+    public static string BuildAngles( Vector3 vec, bool isEntFile = false )
     {
         string x = ReplaceComma( -WrapAngle( vec.x ) );
         string y = ReplaceComma( -WrapAngle( vec.y ) );
@@ -235,33 +228,17 @@ public class Helper
     }
 
     /// <summary>
-    /// Builds correct ingame origin from gameobject
+    /// Builds correct ingame origin from GameObject
     /// </summary>
-    /// <param name="go">Prop Object</param>
-    /// <returns></returns>
     public static string BuildOrigin( GameObject go, bool isEntFile = false, bool returnWithOffset = false )
     {
-        float xOffset = UseStartingOffset() && returnWithOffset ? StartingOffset.x : 0;
-        float yOffset = UseStartingOffset() && returnWithOffset ? StartingOffset.y : 0;
-        float zOffset = UseStartingOffset() && returnWithOffset ? StartingOffset.z : 0;
-
-        string x = ReplaceComma( -go.transform.position.z + xOffset );
-        string y = ReplaceComma( go.transform.position.x + yOffset );
-        string z = ReplaceComma( go.transform.position.y + zOffset );
-
-        string origin = $"< {x}, {y}, {z} >";
-
-        if ( isEntFile ) origin = $"{x} {y} {z}";
-
-        return origin;
+        return BuildOrigin( go.transform.position, isEntFile, returnWithOffset );
     }
 
     /// <summary>
-    /// Builds correct ingame origin from vector3
+    /// Builds correct ingame origin from Vector3
     /// </summary>
-    /// <param name="go">Prop Object</param>
-    /// <returns></returns>
-    public static string BuildOriginVector( Vector3 vec, bool isEntFile = false, bool returnWithOffset = false )
+    public static string BuildOrigin( Vector3 vec, bool isEntFile = false, bool returnWithOffset = false )
     {
         float xOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.x;
         float yOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.y;

@@ -207,7 +207,7 @@ namespace Build
             AppendCode( ref code,  "}" );
             AppendCode( ref code,  "{" );
             AppendCode( ref code, $"\"_zipline_rest_point_1\" \"{Helper.BuildOrigin( script.ballon_top.gameObject, true, true )}\"" );
-            AppendCode( ref code, $"\"_zipline_rest_point_0\" \"{Helper.BuildOriginVector( script.ballon_base.position + new Vector3( 2.75f, 64, 2 ), true, true )}\"" );
+            AppendCode( ref code, $"\"_zipline_rest_point_0\" \"{Helper.BuildOrigin( script.ballon_base.position + new Vector3( 2.75f, 64, 2 ), true, true )}\"" );
             AppendCode( ref code, $"\"ZiplineSpeedScale\" \"1\"" );
             AppendCode( ref code, $"\"ZiplinePushOffInDirectionX\" \"0\"" );
             AppendCode( ref code, $"\"ZiplineLengthScale\" \"1\"" );
@@ -224,7 +224,7 @@ namespace Build
             AppendCode( ref code, $"\"DetachEndOnSpawn\" \"0\"" );
             AppendCode( ref code, $"\"scale\" \"1\"" );
             AppendCode( ref code, $"\"angles\" \"{Helper.BuildAngles( script.ballon_base.gameObject, true )}\"" );
-            AppendCode( ref code, $"\"origin\" \"{Helper.BuildOriginVector( script.ballon_base.position + new Vector3( 2.75f, 64, 2 ), true, true )}\"" );
+            AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( script.ballon_base.position + new Vector3( 2.75f, 64, 2 ), true, true )}\"" );
             AppendCode( ref code, $"\"link_to_guid_0\" \"{link_guid_zipline_0}\"" );
             AppendCode( ref code, $"\"link_guid\" \"{link_guid_zipline}\"" );
             AppendCode( ref code, $"\"ZiplineVertical\" \"1\"" );

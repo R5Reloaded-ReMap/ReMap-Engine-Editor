@@ -656,7 +656,7 @@ public class Helper
         CodeViewsWindow.CodeViewsWindow.SendedEntityCount -= value;
     }
 
-    public static bool IsValid( GameObject obj )
+    public static bool IsValid< T >( T obj ) where T : class
     {
         return obj != null;
     }

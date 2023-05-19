@@ -189,36 +189,33 @@ public class Helper
 
         string angles = $"< {x}, {y}, {z} >";
 
-        if( isEntFile )
-            angles = $"{x} {y} {z}";
+        if ( isEntFile ) angles = $"{x} {y} {z}";
 
         return angles;
     }
 
     public static string BuildAnglesVector( Vector3 vec, bool isEntFile = false )
     {
-        string x = ReplaceComma( -WrapAngle(vec.x) );
-        string y = ReplaceComma( -WrapAngle(vec.y) );
-        string z = ReplaceComma( WrapAngle(vec.z) );
+        string x = ReplaceComma( -WrapAngle( vec.x ) );
+        string y = ReplaceComma( -WrapAngle( vec.y ) );
+        string z = ReplaceComma( WrapAngle( vec.z ) );
 
         string angles = $"< {x}, {y}, {z} >";
 
-        if( isEntFile )
-            angles = $"{x} {y} {z}";
+        if ( isEntFile ) angles = $"{x} {y} {z}";
 
         return angles;
     }
 
     public static string BuildRightVector( Vector3 vec, bool isEntFile = false )
     {
-        string x = ReplaceComma( WrapAngle(vec.z) );
-        string y = ReplaceComma( WrapAngle(vec.x) );
-        string z = ReplaceComma( -WrapAngle(vec.y) );
+        string x = ReplaceComma( WrapAngle( vec.z ) );
+        string y = ReplaceComma( WrapAngle( vec.x ) );
+        string z = ReplaceComma( -WrapAngle( vec.y ) );
 
         string angles = $"< {x}, {y}, {z} >";
 
-        if( isEntFile )
-            angles = $"{x} {y} {z}";
+        if ( isEntFile ) angles = $"{x} {y} {z}";
 
         return angles;
     }
@@ -232,8 +229,7 @@ public class Helper
     {
         angle %= 360;
 
-        if( angle > 180 )
-            return angle - 360;
+        if( angle > 180 ) return angle - 360;
  
         return angle;
     }
@@ -255,8 +251,7 @@ public class Helper
 
         string origin = $"< {x}, {y}, {z} >";
 
-        if( isEntFile )
-            origin = $"{x} {y} {z}";
+        if ( isEntFile ) origin = $"{x} {y} {z}";
 
         return origin;
     }
@@ -278,8 +273,7 @@ public class Helper
 
         string origin = $"< {x}, {y}, {z} >";
 
-        if( isEntFile )
-            origin = $"{x} {y} {z}";
+        if ( isEntFile ) origin = $"{x} {y} {z}";
 
         return origin;
     }
@@ -398,12 +392,7 @@ public class Helper
 
     public static string[] GetAllTags()
     {
-        List < string > tags = new List< string > ();
-        foreach ( ObjectType type in GetAllObjectType() )
-        {
-            tags.Add( GetObjTagNameWithEnum( type ) );
-        }
-        return tags.ToArray();
+        return GetAllObjectType().Select( type => GetObjTagNameWithEnum( type ) ).ToArray();
     }
 
     public static GameObject[] GetObjArrayWithEnum( ObjectType objectType )

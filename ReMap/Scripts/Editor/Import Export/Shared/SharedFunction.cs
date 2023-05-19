@@ -37,7 +37,7 @@ namespace ImportExport.Shared
             foreach ( FieldInfo sourceField in sourceFields )
             {
                 // Ignore properties that are in the propertiesToRemove list
-                if ( !string.IsNullOrEmpty( propertiesToRemove ) && propertiesToRemove.Contains( sourceField.Name, StringComparer.OrdinalIgnoreCase ) )
+                if ( propertiesToRemove != null && propertiesToRemove.Contains( sourceField.Name, StringComparer.OrdinalIgnoreCase ) )
                 {
                     continue;
                 }

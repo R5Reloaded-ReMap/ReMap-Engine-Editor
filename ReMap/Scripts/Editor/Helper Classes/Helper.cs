@@ -606,12 +606,6 @@ public class Helper
         return value.ToString().ToLower();
     }
 
-    public static string GetSquirrelSceneNameFunction( bool ext = true )
-    {
-        string extention = ext ? "()" : "";
-        return $"void function {SceneManager.GetActiveScene().name.Replace(" ", "_")}{extention}";
-    }
-
     public static string GetSceneName()
     {
         if ( SceneManager.GetActiveScene().name == "" ) return "Unnamed";

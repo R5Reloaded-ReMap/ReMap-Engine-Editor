@@ -56,20 +56,6 @@ public class UnityInfo
     }
 
     /// <summary>
-    /// Gets total count of a specific object in scene
-    /// </summary>
-    /// <returns></returns>
-    public static int GetSpecificObjectCount( ObjectType objectType )
-    {
-        GameObject[] PropObjects = GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( objectType ) );
-
-        if ( objectType == ObjectType.ZipLine || objectType == ObjectType.LinkedZipline || objectType == ObjectType.VerticalZipLine || objectType == ObjectType.NonVerticalZipLine )
-            return PropObjects.Length * 2;
-
-        return PropObjects.Length;
-    }
-
-    /// <summary>
     /// Get all the models name in the active scene
     /// </summary>
     /// <returns></returns>

@@ -21,7 +21,7 @@ namespace ImportExport.Shared
         /// <summary>
         /// Transfer all TSource values in TDestination
         /// </summary>
-        public static void TransferDataToClass< TSource, TDestination >( TSource source, TDestination destination, List< string > propertiesToRemove = null )
+        public static void TransferDataToClass< TSource, TDestination >( TSource source, TDestination destination, string[] propertiesToRemove = null )
         {
             if ( source == null || destination == null )
             {
@@ -37,7 +37,7 @@ namespace ImportExport.Shared
             foreach ( FieldInfo sourceField in sourceFields )
             {
                 // Ignore properties that are in the propertiesToRemove list
-                if ( propertiesToRemove != null && propertiesToRemove.Contains( sourceField.Name, StringComparer.OrdinalIgnoreCase ) )
+                if ( !string.IsNullOrEmpty( propertiesToRemove ) && propertiesToRemove.Contains( sourceField.Name, StringComparer.OrdinalIgnoreCase ) )
                 {
                     continue;
                 }

@@ -48,10 +48,10 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( bubbleScript, bubbleShieldData, new[] { "Name" }.ToList() );
+                        TransferDataToClass( bubbleScript, bubbleShieldData );
                         bubbleShieldData.Name = UnityInfo.GetObjName( obj );
                     }
-                    else TransferDataToClass( bubbleShieldData, bubbleScript, new[] { "Name" }.ToList() );
+                    else TransferDataToClass( bubbleShieldData, bubbleScript );
                     break;
 
                 case ObjectType.Button:
@@ -71,7 +71,7 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( cameraPathScript, cameraPathData, new[] { "TargetRef", "PathNode" }.ToList() );
+                        TransferDataToClass( cameraPathScript, cameraPathData );
                         cameraPathData.TargetRef = GetSetTransformData( cameraPathScript.targetRef );
                         cameraPathData.PathNode = new List< TransformData >();
                         foreach ( Transform node in obj.transform )
@@ -182,7 +182,7 @@ namespace ImportExport.Json
                         {
                             if ( Helper.IsValid( nodes[i].gameObject ) ) GameObject.DestroyImmediate( nodes[i].gameObject );
                         }
-                        TransferDataToClass( linkedZiplineData, linkedZiplineScript, new[] { "zipline_start", "zipline_end" }.ToList() );
+                        TransferDataToClass( linkedZiplineData, linkedZiplineScript );
                         foreach ( Vector3 nodesPos in linkedZiplineData.Nodes )
                         {
                             GameObject node = Helper.CreateGameObject( "zipline_node", UnityInfo.relativePathCubePrefab );
@@ -221,7 +221,7 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( drawNonVerticalZipline, nonVerticalZipLineData, new[] { "Panels", "Name", "ZiplineStart", "ZiplineEnd" }.ToList() );
+                        TransferDataToClass( drawNonVerticalZipline, nonVerticalZipLineData );
                         nonVerticalZipLineData.Name = UnityInfo.GetObjName( obj );
                         nonVerticalZipLineData.ZiplineStart = GetSetTransformData( obj.transform.Find( "support_start" ).gameObject, nonVerticalZipLineData.ZiplineStart );
                         nonVerticalZipLineData.ZiplineEnd = GetSetTransformData( obj.transform.Find( "support_end" ).gameObject, nonVerticalZipLineData.ZiplineEnd );
@@ -238,7 +238,7 @@ namespace ImportExport.Json
                     }
                     else
                     {
-                        TransferDataToClass( nonVerticalZipLineData, drawNonVerticalZipline, new[] { "Panels", "ShowDevelopersOptions", "zipline", "fence_post_start", "arm_start", "fence_post_end", "arm_end", "rope_start", "rope_end", "helperPlacement_start", "helperPlacement_end" }.ToList() );
+                        TransferDataToClass( nonVerticalZipLineData, drawNonVerticalZipline );
                         GetSetTransformData( obj.transform.Find( "support_start" ).gameObject, nonVerticalZipLineData.ZiplineStart );
                         GetSetTransformData( obj.transform.Find( "support_end" ).gameObject, nonVerticalZipLineData.ZiplineEnd );
 
@@ -284,9 +284,9 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( soundScript, soundData, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
+                        TransferDataToClass( soundScript, soundData );
                     }
-                    else TransferDataToClass( soundData, soundScript, new[] { "ShowDevelopersOptions", "soundModel" }.ToList() );
+                    else TransferDataToClass( soundData, soundScript );
                     break;
 
                 case ObjectType.SpawnPoint:
@@ -306,9 +306,9 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( textInfoPanelScript, textInfoPanelData, new[] { "TextMeshTitle", "TextMeshDescription" }.ToList() );
+                        TransferDataToClass( textInfoPanelScript, textInfoPanelData );
                     }
-                    else TransferDataToClass( textInfoPanelData, textInfoPanelScript, new[] { "TextMeshTitle", "TextMeshDescription" }.ToList() );
+                    else TransferDataToClass( textInfoPanelData, textInfoPanelScript );
                     break;
 
                 case ObjectType.Trigger:
@@ -317,12 +317,12 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( triggerScripting, triggerData, new[] { "HelperData" }.ToList() );
+                        TransferDataToClass( triggerScripting, triggerData );
                         triggerData.HelperData = GetSetTransformData( triggerScripting.Helper.gameObject, triggerData.HelperData );
                     }
                     else
                     {
-                        TransferDataToClass( triggerData, triggerScripting, new[] { "HelperData" }.ToList() );
+                        TransferDataToClass( triggerData, triggerScripting );
                         GetSetTransformData( triggerScripting.Helper.gameObject, triggerData.HelperData );
                     }
                     break;
@@ -344,7 +344,7 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( drawVerticalZipline, verticalZipLineData, new[] { "Panels", "Name" }.ToList() );
+                        TransferDataToClass( drawVerticalZipline, verticalZipLineData );
                         verticalZipLineData.Name = UnityInfo.GetObjName( obj );
                         verticalZipLineData.Panels = new List< VCPanelsClassData >();
                         foreach ( GameObject panel in drawVerticalZipline.Panels )
@@ -359,7 +359,7 @@ namespace ImportExport.Json
                     }
                     else
                     {
-                        TransferDataToClass( verticalZipLineData, drawVerticalZipline, new[] { "Panels", "ShowDevelopersOptions", "zipline", "fence_post", "arm", "rope_start", "rope_end", "helperPlacement" }.ToList() );
+                        TransferDataToClass( verticalZipLineData, drawVerticalZipline );
                         foreach ( VCPanelsClassData panelData in verticalZipLineData.Panels )
                         {
                             GameObject panel = Helper.CreateGameObject( "", $"mdl#{panelData.Model}", PathType.Name );
@@ -379,10 +379,10 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( weaponRackScript, weaponRackData, new[] { "Name" }.ToList() );
+                        TransferDataToClass( weaponRackScript, weaponRackData );
                         weaponRackData.Name = UnityInfo.GetObjName( obj );
                     }
-                    else TransferDataToClass( weaponRackData, weaponRackScript, new[] { "Name" }.ToList() );
+                    else TransferDataToClass( weaponRackData, weaponRackScript );
                     break;
 
                 case ObjectType.ZipLine:
@@ -391,13 +391,13 @@ namespace ImportExport.Json
 
                     if ( getSet == GetSetData.Get )
                     {
-                        TransferDataToClass( drawZipline, ziplineData, new[] { "zipline_start", "zipline_end" }.ToList() );
+                        TransferDataToClass( drawZipline, ziplineData );
                         ziplineData.Zipline_start = drawZipline.zipline_start.position;
                         ziplineData.Zipline_end = drawZipline.zipline_end.position;
                     }
                     else
                     {
-                        TransferDataToClass( ziplineData, drawZipline, new[] { "Zipline_start", "Zipline_end" }.ToList() );
+                        TransferDataToClass( ziplineData, drawZipline );
                         drawZipline.zipline_start.position = ziplineData.Zipline_start;
                         drawZipline.zipline_end.position = ziplineData.Zipline_end;
                     }

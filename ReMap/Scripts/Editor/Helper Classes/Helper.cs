@@ -109,9 +109,9 @@ public class Helper
     public static readonly Dictionary< string, string > ObjectToTag = ObjectToTagDictionaryInit();
 
     // Gen Settings
-    public static Dictionary< string, bool > GenerateObjects = ObjectGenerateDictionaryInit();
+    public static readonly Dictionary< string, bool > GenerateObjects = ObjectGenerateDictionaryInit();
     // Always Hide Unity Only Objects
-    public static ObjectType[] GenerateIgnoreStatic = new ObjectType[]
+    public static readonly ObjectType[] GenerateIgnoreStatic = new ObjectType[]
     {
         ObjectType.LiveMapCodePlayerSpawn
     };
@@ -520,14 +520,7 @@ public class Helper
 
     public static ObjectType[] GetAllObjectType()
     {
-        List< ObjectType > list = new List< ObjectType >();
-
-        foreach ( ObjectType objectType in Enum.GetValues( typeof( ObjectType ) ) )
-        {
-            list.Add( objectType );
-        }
-
-        return list.ToArray();
+        return ( ObjectType[] ) Enum.GetValues( typeof( ObjectType ) );
     }
 
     public static bool GetBoolFromGenerateObjects( ObjectType objectType )
@@ -548,17 +541,12 @@ public class Helper
     /// </summary>
     public static void ForceHideBoolToGenerateObjects( ObjectType[] array, bool forceShow = false )
     {
-        List< ObjectType > objectTypeArray = new List< ObjectType >();
-        if ( forceShow )
-        {
-            foreach ( ObjectType objectType in GetAllObjectType() )
-            {
-                if ( !array.Contains( objectType ) ) objectTypeArray.Add( objectType );
-            }
-        } else objectTypeArray = array.ToList();
+        var objectTypeArray = forceShow ?
+        GetAllObjectType().Where( objectType => !array.Contains( objectType ) ).ToList() :
+        array.ToList();
 
-        objectTypeArray.AddRange( GenerateIgnoreStatic.ToList() );
-
+        objectTypeArray.AddRange( GenerateIgnoreStatic );
+    
         GenerateIgnore = objectTypeArray.ToArray();
     }
 

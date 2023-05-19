@@ -476,35 +476,24 @@ public class Helper
 
     private static Dictionary< string, string > ObjectToTagDictionaryInit()
     {
-        Dictionary< string, string > dictionary = new Dictionary< string, string >();
-
-        foreach ( ObjectType objectType in ObjectToTagPriorities )
-        {
-            dictionary.Add( GetObjRefWithEnum( objectType ), GetObjTagNameWithEnum( objectType ) );
-        }
+        var dictionary = ObjectToTagPriorities.ToDictionary( objectType => GetObjRefWithEnum( objectType ), objectType => GetObjTagNameWithEnum( objectType ) );
 
         foreach ( ObjectType objectType in GetAllObjectType() )
         {
             string key = GetObjRefWithEnum( objectType );
 
-            if ( dictionary.ContainsKey( key ) ) continue;
-
-            dictionary.Add( key, GetObjTagNameWithEnum( objectType ) );
+            if ( !dictionary.ContainsKey( key ) )
+            {
+                dictionary.Add( key, GetObjTagNameWithEnum( objectType ) );
+            }
         }
 
         return dictionary;
     }
 
-    public static Dictionary< string, bool > ObjectGenerateDictionaryInit()
+    private static Dictionary< string, bool > ObjectGenerateDictionaryInit()
     {
-        Dictionary< string, bool > dictionary = new Dictionary< string, bool >();
-
-        foreach ( ObjectType objectType in GetAllObjectType() )
-        {
-            dictionary.Add( GetObjNameWithEnum( objectType ), true );
-        }
-
-        return dictionary;
+        return GetAllObjectType().ToDictionary( objectType => GetObjNameWithEnum( objectType ), objectType => true );
     }
 
     public static ObjectType[] GetAllObjectType()
@@ -558,29 +547,12 @@ public class Helper
 
     public static GameObject[] GetAllObjectTypeWithEnum( ObjectType objectType )
     {
-        List< GameObject > objects = new List< GameObject >();
-
-        foreach ( GameObject obj in UnityInfo.GetAllGameObjectInScene() )
-        {
-            if ( obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-            {
-                objects.Add( obj );
-            }
-        }
-
-        return objects.ToArray();
+        return UnityInfo.GetAllGameObjectInScene().Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) ).ToArray();
     }
 
     public static GameObject[] AppendMultipleObjectType( GameObject[][] objectsArray )
     {
-        List< GameObject > list = new List< GameObject >();
-
-        foreach ( GameObject[] objectArray in objectsArray )
-        {
-            list.AddRange( objectArray.ToList() );
-        }
-
-        return list.ToArray();
+        return objectsArray.SelectMany( objects => objects ).ToArray();
     }
 
     public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )

@@ -192,15 +192,15 @@ namespace CodeViewsWindow
             {
                 case MenuType.Large:
                     space = 2;
-                    labelSpace = 298;
+                    labelSpace = 292;
                     break;
                 case MenuType.Medium:
                     space = 12;
-                    labelSpace = 288;
+                    labelSpace = 282;
                     break; 
                 case MenuType.Small:
                     space = 25;
-                    labelSpace = 275;
+                    labelSpace = 269;
                 break;
             }
 

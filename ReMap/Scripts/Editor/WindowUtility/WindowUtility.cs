@@ -37,8 +37,18 @@ namespace WindowUtility
             return false;
         }
 
+        public static bool CreateCopyButton( string text = "button", string tooltip = "", string copy = "", float width = 0, float height = 0 )
+        {
+            return CreateButton( text, tooltip, () => CopyText( copy ), width, height );
+        }
 
-        public static void CreateTextField( ref string reference, string text = "button", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0, bool fieldOnly = false )
+        private static void CopyText( string text )
+        {
+            GUIUtility.systemCopyBuffer = text;
+        }
+
+
+        public static void CreateTextField( ref string reference, string text = "text field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0, bool fieldOnly = false )
         {
             if ( !fieldOnly ) EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
             reference = EditorGUILayout.TextField( new GUIContent( "", tooltip ), reference, SizeOptions( fieldWidth, height ) );
@@ -47,7 +57,7 @@ namespace WindowUtility
         public static void CreateToggle( ref bool reference, string text = "toggle", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
-            reference = EditorGUILayout.Toggle( "", reference, GUILayout.MaxWidth( 0 ) );
+            reference = EditorGUILayout.Toggle( "", reference, GUILayout.MaxWidth( 20 ) );
         }
 
         public static void CreateIntField( ref int reference, string text = "int field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0 )
@@ -67,6 +77,30 @@ namespace WindowUtility
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
         }
 
+        public static void CreateObjectField( ref UnityEngine.Object obj, string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
+        {
+            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
+            obj = EditorGUILayout.ObjectField( obj, typeof( UnityEngine.Object ), true );
+        }
+
+        public static void Space( float value )
+        {
+            GUILayout.Space( value );
+        }
+
+        public static void FlexibleSpace()
+        {
+            GUILayout.FlexibleSpace();
+        }
+
+        public static void GetEditorWindowSize( EditorWindow editorWindow )
+        {
+            if ( editorWindow != null )
+            {
+                Vector3 windowSize = new Vector2( editorWindow.position.width, editorWindow.position.height );
+                CreateTextInfo( $"Window Size: {windowSize.x} x {windowSize.y}" );
+            }
+        }
 
         private static GUILayoutOption HeightOption( float value )
         {

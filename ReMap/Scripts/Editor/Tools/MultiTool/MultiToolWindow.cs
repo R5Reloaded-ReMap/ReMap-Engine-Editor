@@ -11,10 +11,12 @@ namespace MultiTool
         private enum ToolType
         {
             DistanceMeter,
-            SelectionTool
+            SelectionTool,
+            OffsetTool
         }
         private static MultiToolWindow windowInstance;
         private static ToolType toolTypeSelection = ToolType.DistanceMeter;
+        private static string toolInfo = "";
 
         [ MenuItem( "ReMap/Tools/Multi Tool", false, 0 ) ]
         private static void Init()
@@ -35,6 +37,16 @@ namespace MultiTool
             GUILayout.BeginVertical( "box" );
                 MenuSelector();
             GUILayout.EndVertical();
+
+            GUILayout.BeginVertical( "box" );
+                GUILayout.BeginHorizontal();
+                    CreateTextInfo( toolInfo );
+                    #if ReMapDev
+                        FlexibleSpace();
+                        GetEditorWindowSize( windowInstance );
+                    #endif
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
                 
             ShowTool( toolTypeSelection );
         }
@@ -42,9 +54,9 @@ namespace MultiTool
         private static void MenuSelector()
         {
             GUILayout.BeginHorizontal();
-                CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ), 120, 20 );
-                CreateButton( "Selection", "", () => ChangeToolType( ToolType.SelectionTool ), 120, 20 );
-                GetEditorWindowSize( windowInstance );
+                CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ), 97, 20 );
+                CreateButton( "Selection Tool", "", () => ChangeToolType( ToolType.SelectionTool ), 97, 20 );
+                CreateButton( "Offset Tool", "", () => ChangeToolType( ToolType.OffsetTool ), 97, 20 );
             GUILayout.EndHorizontal();
         }
 
@@ -54,6 +66,7 @@ namespace MultiTool
             {
                 case ToolType.DistanceMeter: DistanceMeter.OnGUI(); break;
                 case ToolType.SelectionTool: SelectionTool.OnGUI(); break;
+                case ToolType.OffsetTool: OffsetTool.OnGUI(); break;
             }
         }
 
@@ -68,12 +81,20 @@ namespace MultiTool
                 case ToolType.DistanceMeter:
                     //windowInstance.minSize = new Vector2( 540, 116 );
                     //windowInstance.maxSize = new Vector2( 540, 116 );
+                    toolInfo = "Distance Meter Tool:";
                     break;
 
                 case ToolType.SelectionTool:
                     //windowInstance.minSize = new Vector2( 600, 240 );
                     //windowInstance.maxSize = new Vector2( 600, 240 );
-                break;
+                    toolInfo = "Selection Tool:";
+                    break;
+                
+                case ToolType.OffsetTool:
+                    //windowInstance.minSize = new Vector2( 600, 240 );
+                    //windowInstance.maxSize = new Vector2( 600, 240 );
+                    toolInfo = "Offset Tool:";
+                    break;
             }
         }
     }

@@ -339,7 +339,7 @@ namespace CodeViewsWindow
 
         private static string[] GetLiveMapCodePlayerSpawnData()
         {
-            GameObject[] obj = Helper.GetObjArrayWithEnum( ObjectType.LiveMapCodePlayerSpawn );
+            GameObject[] obj = Helper.GetAllObjectTypeWithEnum( ObjectType.LiveMapCodePlayerSpawn );
 
             int objLength = obj.Length;
 

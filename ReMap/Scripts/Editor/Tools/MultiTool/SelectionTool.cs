@@ -9,6 +9,9 @@ namespace MultiTool
     internal class SelectionTool
     {
         private static bool selectionOnly = false;
+        
+        private static readonly ObjectType[] ziplibeArray = new ObjectType[] { ObjectType.ZipLine, ObjectType.LinkedZipline, ObjectType.VerticalZipLine, ObjectType.NonVerticalZipLine };
+        private static readonly ObjectType[] doorArray = new ObjectType[] { ObjectType.SingleDoor, ObjectType.DoubleDoor, ObjectType.VerticalDoor, ObjectType.HorzDoor };
         internal static void OnGUI()
         {
             int idx = 0;
@@ -22,24 +25,54 @@ namespace MultiTool
 
                     foreach ( ObjectType objectType in Helper.GetAllObjectType() )
                     {
-                        CreateButton( $"Select all {Helper.GetObjNameWithEnum( objectType )}", "", () => Helper.SelectAllObjectTypeInScene( objectType, selectionOnly ), 194, 20 );
+                        CreateButton( $"Select all {Helper.GetObjNameWithEnum( objectType )}", "", () => Helper.ChangeSelection( Helper.GetAllObjectTypeWithEnum( objectType, selectionOnly ) ), 194, 20 );
 
                         idx++;
 
+                        Verify( idx );
+
                         if ( objectType == ObjectType.NonVerticalZipLine )
                         {
-                            //CreateButton( $"Select all Ziplines Type", "", () => Helper.SelectAllObjectTypeInScene( objectType, selectionOnly ), 194, 20 );
+                            GameObject[][] ziplibeArray = new GameObject[][]
+                            {
+                                Helper.GetAllObjectTypeWithEnum( ObjectType.ZipLine, selectionOnly ),
+                                Helper.GetAllObjectTypeWithEnum( ObjectType.LinkedZipline, selectionOnly ),
+                                Helper.GetAllObjectTypeWithEnum( ObjectType.VerticalZipLine, selectionOnly ),
+                                Helper.GetAllObjectTypeWithEnum( ObjectType.NonVerticalZipLine, selectionOnly )
+                            };
+
+                            CreateButton( $"Select all Ziplines Type", "", () => Helper.ChangeSelection( ziplibeArray ), 194, 20 );
+                            idx++;
                         }
 
-                        if ( idx % 3 == 0 )
+                        if ( objectType == ObjectType.VerticalDoor )
                         {
-                            GUILayout.EndHorizontal();
-                            GUILayout.BeginHorizontal();
+                            GameObject[][] doorArray = new GameObject[][]
+                            {
+                                Helper.GetAllObjectTypeWithEnum( ObjectType.SingleDoor, selectionOnly ),
+                                Helper.GetAllObjectTypeWithEnum( ObjectType.DoubleDoor, selectionOnly ),
+                                Helper.GetAllObjectTypeWithEnum( ObjectType.VerticalDoor, selectionOnly ),
+                                Helper.GetAllObjectTypeWithEnum( ObjectType.HorzDoor, selectionOnly )
+                            };
+
+                            CreateButton( $"Select all Doors Type", "", () => Helper.ChangeSelection( doorArray ), 194, 20 );
+                            idx++;
                         }
+
+                        Verify( idx );
                     }
 
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
+        }
+
+        internal static void Verify( int value )
+        {
+            if ( value % 3 == 0 )
+            {
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+            }
         }
     }
 }

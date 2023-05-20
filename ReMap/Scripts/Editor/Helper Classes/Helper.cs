@@ -372,11 +372,6 @@ public class Helper
         return GetAllObjectType().Select( type => GetObjTagNameWithEnum( type ) ).ToArray();
     }
 
-    public static GameObject[] GetObjArrayWithEnum( ObjectType objectType )
-    {
-        return GameObject.FindGameObjectsWithTag( GetObjTagNameWithEnum( objectType ) );
-    }
-
     public static string GetObjRefWithEnum( ObjectType objectType )
     {
         return Internal_GetStringByEnum( objectType, StringType.ObjectRef );
@@ -505,25 +500,25 @@ public class Helper
         GenerateIgnore = objectTypeArray.ToArray();
     }
 
-    public static GameObject[] GetSelectedObjectWithEnum( ObjectType objectType )
+    public static GameObject[] GetAllObjectTypeWithEnum( ObjectType objectType, bool selectionOnly = false )
     {
-        GameObject[] SelectedObject =
-        Selection.gameObjects.Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-        .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
-        .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-        .Select( child => child.gameObject )
-        .Concat( Selection.gameObjects.Where( obj => obj.transform.childCount > 0 )
-        .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
-        .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-        .Select( child => child.gameObject ) )
-        .Distinct()
-        .ToArray();
+        if ( selectionOnly )
+        {
+            GameObject[] SelectedObject =
+            Selection.gameObjects.Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+            .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
+            .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+            .Select( child => child.gameObject )
+            .Concat( Selection.gameObjects.Where( obj => obj.transform.childCount > 0 )
+            .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
+            .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+            .Select( child => child.gameObject ) )
+            .Distinct()
+            .ToArray();
 
-        return SelectedObject;
-    }
+            return SelectedObject;
+        }
 
-    public static GameObject[] GetAllObjectTypeWithEnum( ObjectType objectType )
-    {
         return UnityInfo.GetAllGameObjectInScene().Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) ).ToArray();
     }
 
@@ -534,7 +529,17 @@ public class Helper
 
     public static void SelectAllObjectTypeInScene( ObjectType objectType, bool selectionOnly = false )
     {
-        Selection.objects = selectionOnly ? GetAllObjectTypeWithEnum( objectType ) : GetSelectedObjectWithEnum( objectType );
+        ChangeSelection( GetAllObjectTypeWithEnum( objectType, selectionOnly ) );
+    }
+
+    public static void ChangeSelection( GameObject[][] array )
+    {
+        ChangeSelection( AppendMultipleObjectType( array ) );
+    }
+
+    public static void ChangeSelection( GameObject[] array )
+    {
+        Selection.objects = array;
     }
 
     public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )

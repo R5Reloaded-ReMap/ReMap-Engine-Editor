@@ -162,10 +162,7 @@ namespace CodeViewsWindow
         public static bool IsHided( ObjectType objectType )
         {
             // Ensure the objectData is not empty
-            GameObject[] objectData;
-            if ( CodeViewsWindow.SelectionEnable() )
-                objectData = Helper.GetSelectedObjectWithEnum( objectType );
-            else objectData = Helper.GetObjArrayWithEnum( objectType );
+            GameObject[] objectData = Helper.GetAllObjectTypeWithEnum( objectType, CodeViewsWindow.SelectionEnable() );
 
             if ( objectData.Length == 0 ) return true;
 

@@ -16,12 +16,6 @@ using static ImportExport.Json.JsonExport;
 
 namespace ImportExport.Json
 {
-    public enum ExportType
-    {
-        All = 0,
-        Selection = 1,
-    }
-
     public enum ExecuteType
     {
         SortList,
@@ -418,7 +412,7 @@ namespace ImportExport.Json
             }
         }
 
-        public static async Task ExecuteJson( ObjectType objectType, ExecuteType executeType, ExportType exportType = ExportType.All )
+        public static async Task ExecuteJson( ObjectType objectType, ExecuteType executeType, bool selectionOnly = false )
         {
             switch ( objectType )
             {
@@ -427,7 +421,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.BubbleShields, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.BubbleShields ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.BubbleShields, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.BubbleShields, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.Button:
@@ -435,7 +429,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.Buttons, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.Buttons ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Buttons, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Buttons, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.CameraPath:
@@ -443,7 +437,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.CameraPaths, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.CameraPaths ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.CameraPaths, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.CameraPaths, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.DoubleDoor:
@@ -451,7 +445,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.DoubleDoors, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.DoubleDoors ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.DoubleDoors, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.DoubleDoors, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.FuncWindowHint:
@@ -459,7 +453,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.FuncWindowHints, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.FuncWindowHints ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.FuncWindowHints, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.FuncWindowHints, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.HorzDoor:
@@ -467,7 +461,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.HorzDoors, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.HorzDoors ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.HorzDoors, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.HorzDoors, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.Jumppad:
@@ -475,7 +469,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.Jumppads, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.Jumppads ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Jumppads, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Jumppads, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.JumpTower:
@@ -483,7 +477,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.JumpTowers, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.JumpTowers ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.JumpTowers, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.JumpTowers, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.LinkedZipline:
@@ -491,7 +485,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.LinkedZiplines, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.LinkedZiplines ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.LinkedZiplines, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.LinkedZiplines, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.LootBin:
@@ -499,7 +493,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.LootBins, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.LootBins ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.LootBins, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.LootBins, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.NewLocPair:
@@ -507,7 +501,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.NewLocPairs, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.NewLocPairs ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.NewLocPairs, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.NewLocPairs, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.NonVerticalZipLine:
@@ -515,7 +509,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.NonVerticalZipLines, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.NonVerticalZipLines ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.NonVerticalZipLines, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.NonVerticalZipLines, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.Prop:
@@ -523,7 +517,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.Props, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.Props ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Props, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Props, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.SingleDoor:
@@ -531,7 +525,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.SingleDoors, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.SingleDoors ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.SingleDoors, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.SingleDoors, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.Sound:
@@ -539,7 +533,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.Sounds, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.Sounds ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Sounds, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Sounds, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.SpawnPoint:
@@ -547,7 +541,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.SpawnPoints, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.SpawnPoints ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.SpawnPoints, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.SpawnPoints, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.TextInfoPanel:
@@ -555,7 +549,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.TextInfoPanels, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.TextInfoPanels ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.TextInfoPanels, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.TextInfoPanels, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.Trigger:
@@ -563,7 +557,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.Triggers, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.Triggers ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Triggers, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Triggers, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.VerticalDoor:
@@ -571,7 +565,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.VerticalDoors, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.VerticalDoors ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.VerticalDoors, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.VerticalDoors, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.VerticalZipLine:
@@ -579,7 +573,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.VerticalZipLines, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.VerticalZipLines ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.VerticalZipLines, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.VerticalZipLines, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.WeaponRack:
@@ -587,7 +581,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.WeaponRacks, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.WeaponRacks ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.WeaponRacks, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.WeaponRacks, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.ZipLine:
@@ -595,7 +589,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.Ziplines, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.Ziplines ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Ziplines, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.Ziplines, selectionOnly ); break;
                     }
                     break;
                 case ObjectType.LiveMapCodePlayerSpawn:
@@ -603,7 +597,7 @@ namespace ImportExport.Json
                     {
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.PlayerSpawns, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.PlayerSpawns ); break;
-                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.PlayerSpawns, exportType ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.PlayerSpawns, selectionOnly ); break;
                     }
                     break;
 

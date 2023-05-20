@@ -59,7 +59,7 @@ namespace ImportExport.Json
 
             foreach ( ObjectType objectType in Helper.GetAllObjectType() )
             {
-                await ExecuteJson( objectType, ExecuteType.Export, ExportType.Selection );
+                await ExecuteJson( objectType, ExecuteType.Export, true );
             }
 
             ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
@@ -72,17 +72,11 @@ namespace ImportExport.Json
         }
 
 
-        internal static async Task ExportObjectsWithEnum< T >( ObjectType objectType, List< T > listType, ExportType exportType = ExportType.All ) where T : GlobalClassData
+        internal static async Task ExportObjectsWithEnum< T >( ObjectType objectType, List< T > listType, bool selectionOnly = false ) where T : GlobalClassData
         {
-            int i = 0; int j = 1; GameObject[] objectsData;
-
-            switch ( exportType )
-            {
-                case ExportType.All: objectsData = Helper.GetObjArrayWithEnum( objectType ); break;
-                case ExportType.Selection: objectsData = Helper.GetSelectedObjectWithEnum( objectType ); break;
-
-                default: return;
-            }
+            int i = 0; int j = 1;
+            
+            GameObject[] objectsData = Helper.GetAllObjectTypeWithEnum( objectType, selectionOnly );
 
             int objectsCount = objectsData.Length;
             string objType = Helper.GetObjNameWithEnum( objectType );

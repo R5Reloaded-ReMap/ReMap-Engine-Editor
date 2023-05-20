@@ -27,10 +27,7 @@ namespace Build
         {
             StringBuilder code = new StringBuilder();
 
-            GameObject[] objectData;
-
-            if ( selection ) objectData = Helper.GetSelectedObjectWithEnum( objectType );
-            else objectData = Helper.GetObjArrayWithEnum( objectType );
+            GameObject[] objectData = Helper.GetAllObjectTypeWithEnum( objectType, selection );
 
             // Does not generate if the type of object are flaged hide
             if ( IsHided( objectType ) ) return "";

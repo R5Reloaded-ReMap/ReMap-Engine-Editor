@@ -13,10 +13,10 @@ namespace MultiTool
         {
             GUILayout.BeginVertical( "box" );
                 GUILayout.BeginHorizontal();
-                    CreateVector3Field( ref offset, "Offset:", "", 96, 300, 20 );
+                    CreateVector3Field( ref offset, "Offset:", "", 120, 0, 20 );
                 GUILayout.EndHorizontal();
  
-                CreateButton( "Apply Offset", "", () => ApplyOffset(), 400, 20 );
+                CreateButton( "Apply Offset", "", () => ApplyOffset(), 0, 20 );
             GUILayout.EndVertical();
         }
 

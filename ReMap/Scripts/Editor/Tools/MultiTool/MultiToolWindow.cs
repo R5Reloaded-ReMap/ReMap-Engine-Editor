@@ -12,7 +12,8 @@ namespace MultiTool
         {
             DistanceMeter,
             SelectionTool,
-            OffsetTool
+            OffsetTool,
+            ModelSwap
         }
         private static MultiToolWindow windowInstance;
         private static ToolType toolTypeSelection = ToolType.DistanceMeter;
@@ -54,9 +55,10 @@ namespace MultiTool
         private static void MenuSelector()
         {
             GUILayout.BeginHorizontal();
-                CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ), 97, 20 );
-                CreateButton( "Selection Tool", "", () => ChangeToolType( ToolType.SelectionTool ), 97, 20 );
-                CreateButton( "Offset Tool", "", () => ChangeToolType( ToolType.OffsetTool ), 97, 20 );
+                CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ) );
+                CreateButton( "Selection Tool", "", () => ChangeToolType( ToolType.SelectionTool ) );
+                CreateButton( "Offset Tool", "", () => ChangeToolType( ToolType.OffsetTool ) );
+                CreateButton( "Model Swap Tool", "", () => ChangeToolType( ToolType.ModelSwap ) );
             GUILayout.EndHorizontal();
         }
 
@@ -67,6 +69,7 @@ namespace MultiTool
                 case ToolType.DistanceMeter: DistanceMeter.OnGUI(); break;
                 case ToolType.SelectionTool: SelectionTool.OnGUI(); break;
                 case ToolType.OffsetTool: OffsetTool.OnGUI(); break;
+                case ToolType.ModelSwap: ModelSwap.OnGUI(); break;
             }
         }
 
@@ -95,6 +98,12 @@ namespace MultiTool
                     //windowInstance.maxSize = new Vector2( 600, 240 );
                     toolInfo = "Offset Tool:";
                     break;
+
+                case ToolType.ModelSwap:
+                    //windowInstance.minSize = new Vector2( 600, 240 );
+                    //windowInstance.maxSize = new Vector2( 600, 240 );
+                    toolInfo = "Model Swap Tool:";
+                break;
             }
         }
     }

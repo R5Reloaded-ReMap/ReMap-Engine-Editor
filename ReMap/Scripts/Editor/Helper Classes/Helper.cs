@@ -350,7 +350,7 @@ public class Helper
         return code.ToString();
     }
 
-    public static void ApplyComponentScriptData< T >( T target, T source ) where T : Component
+    public static void ApplyComponentScriptData< T >( T source, T target ) where T : Component
     {
         Type type = typeof( T );
         FieldInfo[] fields = type.GetFields( BindingFlags.Public | BindingFlags.Instance );
@@ -360,6 +360,16 @@ public class Helper
             object value = field.GetValue( source );
             field.SetValue( target, value );
         }
+    }
+
+    public static void ApplyTransformData( GameObject source, GameObject target )
+    {
+        if ( !IsValid( source ) || !IsValid( target ) ) return;
+
+        target.transform.position = source.transform.position;
+        target.transform.eulerAngles = source.transform.eulerAngles;
+        target.transform.localScale = source.transform.localScale;
+        target.transform.parent = FindParent( source );
     }
 
     public static string GetRandomGUIDForEnt()
@@ -606,6 +616,50 @@ public class Helper
     public static bool IsValid< T >( T obj ) where T : class
     {
         return obj != null;
+    }
+
+    public static bool IsValid< T >( T [] array ) where T : class
+    {
+        return array != null && array.All( item => item != null );
+    }
+
+    public static void RemoveNull< T >( ref T [] array ) where T : class
+    {
+        array = array.Where(x => x != null).ToArray();
+    }
+
+    public static void ArrayResize< T >( ref T [] array, int value ) where T : class
+    {
+        if ( array.Length + value >= 0 )
+        {
+            Array.Resize( ref array, array.Length + value );
+        }
+        else
+        {
+            Array.Resize( ref array, array.Length - array.Length );
+        }
+    }
+
+    public static void ArrayAppend< T >( ref T [] array, T obj ) where T : class
+    {
+        int currentLength = array.Length;
+        ArrayResize( ref array, currentLength + 1 );
+        array[ currentLength ] = obj;
+    }
+
+    public static Transform FindParent( Transform go )
+    {
+        return FindParent( go.gameObject );
+    }
+
+    public static Transform FindParent( GameObject go )
+    {
+        return go.transform.parent;
+    }
+
+    public static bool CoinFlip()
+    {
+        return UnityEngine.Random.Range( 0, 2 ) != 0;
     }
 
     public static void OverideWindowSize( float x, float y, float size )

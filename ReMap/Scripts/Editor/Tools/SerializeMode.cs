@@ -211,7 +211,7 @@ public class SerializeTool : EditorWindow
             obj.gameObject.transform.localScale = go.transform.lossyScale;
 
             PropScript scriptInstance = obj.GetComponent<PropScript>();
-            Helper.ApplyComponentScriptData<PropScript>( scriptInstance, script );
+            Helper.ApplyComponentScriptData<PropScript>( script, scriptInstance );
 
             obj.transform.SetParent(go.transform.parent);
 

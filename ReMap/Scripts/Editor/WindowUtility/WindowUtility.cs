@@ -9,6 +9,8 @@ namespace WindowUtility
 
     public class WindowUtility
     {
+        private static Color GUI_SettingsColor = new Color( 255f, 255f, 255f );
+
         public static bool CreateButton( string text = "button", string tooltip = "", float width = 0, float height = 0 )
         {
             return CreateButton( text, tooltip, ( FunctionRef[] ) null, width, height );
@@ -48,10 +50,10 @@ namespace WindowUtility
         }
 
 
-        public static void CreateTextField( ref string reference, string text = "text field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0, bool fieldOnly = false )
+        public static string CreateTextField( ref string reference, string text = "text field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0, bool fieldOnly = false )
         {
             if ( !fieldOnly ) EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
-            reference = EditorGUILayout.TextField( new GUIContent( "", tooltip ), reference, SizeOptions( fieldWidth, height ) );
+            return EditorGUILayout.TextField( new GUIContent( "", tooltip ), reference, SizeOptions( fieldWidth, height ) );
         }
 
         public static void CreateToggle( ref bool reference, string text = "toggle", string tooltip = "", float labelWidth = 0, float height = 0 )
@@ -86,6 +88,13 @@ namespace WindowUtility
         public static void Space( float value )
         {
             GUILayout.Space( value );
+        }
+
+        internal static void Separator( float width = 0, float height = 4 )
+        {
+            GUI.backgroundColor = GUI_SettingsColor;
+            GUILayout.Box( "", SizeOptions( width, height ) );
+            GUI.backgroundColor = Color.white;
         }
 
         public static void FlexibleSpace()

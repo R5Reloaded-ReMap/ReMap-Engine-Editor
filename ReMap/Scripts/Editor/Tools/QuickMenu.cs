@@ -76,8 +76,6 @@ public class QuickMenu : EditorWindow
                 SetRealmIds.Init();
             if (GUILayout.Button("Serialize Tool", GUILayout.ExpandWidth(true)))
                 SerializeTool.Init();
-            if (GUILayout.Button("Measure Distance Tool", GUILayout.ExpandWidth(true)))
-                ModelDistance.Init();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();

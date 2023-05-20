@@ -97,8 +97,15 @@ namespace WindowUtility
         {
             if ( editorWindow != null )
             {
-                Vector3 windowSize = new Vector2( editorWindow.position.width, editorWindow.position.height );
-                CreateTextInfo( $"Window Size: {windowSize.x} x {windowSize.y}" );
+                CreateTextInfo( $"Window Size: {Helper.ReplaceComma( editorWindow.position.width )} x {Helper.ReplaceComma( editorWindow.position.height )}" );
+            }
+        }
+
+        public static void GetScrollSize( Vector2 scroll )
+        {
+            if ( scroll != null )
+            {
+                CreateTextInfo( $"Scroll Position: {Helper.ReplaceComma( scroll.x )} x {Helper.ReplaceComma( scroll.y )}" );
             }
         }
 

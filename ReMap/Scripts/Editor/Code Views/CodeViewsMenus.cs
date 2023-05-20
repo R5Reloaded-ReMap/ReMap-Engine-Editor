@@ -395,7 +395,7 @@ namespace CodeViewsWindow
         {
             GUILayout.BeginVertical();
 
-            AdditionalCode code = AdditionalCodeWindow.additionalCode;
+            AdditionalCode code = AdditionalCodeWindow.FindAdditionalCode();
 
             OptionalTextInfo( $"Head Code = {CodeViewsWindow.additionalCodeHeadName}", "", null, MenuType.Medium );
             Space( 2 );

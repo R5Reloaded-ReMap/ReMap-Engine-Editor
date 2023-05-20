@@ -57,19 +57,19 @@ namespace MultiTool
                 GameObject sourceObj = source as GameObject;
                 GameObject targetObj = target as GameObject;
 
-                if( axisX )
+                if ( axisX )
                 {
                     sourceOrigin.x = sourceObj.transform.position.x;
                     targetOrigin.x = targetObj.transform.position.x;
                 }
 
-                if( axisY )
+                if ( axisY )
                 {
                     sourceOrigin.y = sourceObj.transform.position.y;
                     targetOrigin.y = targetObj.transform.position.y;
                 }
 
-                if( axisZ )
+                if ( axisZ )
                 {
                     sourceOrigin.z = sourceObj.transform.position.z;
                     targetOrigin.z = targetObj.transform.position.z;
@@ -100,7 +100,7 @@ namespace MultiTool
 
         internal static void ObjectsUpdate()
         {
-            if( Selection.count >= 2 )
+            if ( Selection.count >= 2 )
             {
                 source = Selection.gameObjects[0];
                 target = Selection.gameObjects[1];

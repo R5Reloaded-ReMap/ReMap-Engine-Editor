@@ -10,7 +10,8 @@ namespace MultiTool
     {
         private enum ToolType
         {
-            DistanceMeter
+            DistanceMeter,
+            SelectionTool
         }
         private static MultiToolWindow windowInstance;
         private static ToolType toolTypeSelection = ToolType.DistanceMeter;
@@ -42,6 +43,7 @@ namespace MultiTool
         {
             GUILayout.BeginHorizontal();
                 CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ), 120, 20 );
+                CreateButton( "Selection", "", () => ChangeToolType( ToolType.SelectionTool ), 120, 20 );
                 GetEditorWindowSize( windowInstance );
             GUILayout.EndHorizontal();
         }
@@ -51,6 +53,7 @@ namespace MultiTool
             switch ( toolTypeSelection )
             {
                 case ToolType.DistanceMeter: DistanceMeter.OnGUI(); break;
+                case ToolType.SelectionTool: SelectionTool.OnGUI(); break;
             }
         }
 
@@ -58,11 +61,18 @@ namespace MultiTool
         {
             toolTypeSelection = toolType;
 
+            if ( !Helper.IsValid( windowInstance ) ) windowInstance = ( MultiToolWindow ) EditorWindow.GetWindow( typeof( MultiToolWindow ), false, "Multi Tool");
+
             switch ( toolTypeSelection )
             {
                 case ToolType.DistanceMeter:
-                    windowInstance.minSize = new Vector2( 540, 116 );
-                    windowInstance.maxSize = new Vector2( 540, 116 );
+                    //windowInstance.minSize = new Vector2( 540, 116 );
+                    //windowInstance.maxSize = new Vector2( 540, 116 );
+                    break;
+
+                case ToolType.SelectionTool:
+                    //windowInstance.minSize = new Vector2( 600, 240 );
+                    //windowInstance.maxSize = new Vector2( 600, 240 );
                 break;
             }
         }

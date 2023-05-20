@@ -33,7 +33,6 @@ namespace CodeViewsWindow
         internal static string[] toolbarSubTabOtherCode = new[] { "Camera Path" };
         internal static Vector2 scroll;
         internal static Vector2 scrollSettings;
-        internal static Vector2 windowSize;
         internal static int tab = 0;
         internal static int tab_temp = 0;
         internal static int tabEnt = 0;
@@ -130,7 +129,7 @@ namespace CodeViewsWindow
         {
             MainTab();
 
-            GetEditorWindowSize(); ShortCut();
+            ShortCut();
 
             if( tab != tab_temp || tabEnt != tabEnt_temp || tabOther != tabOther_temp || objectTypeInSceneCount != objectTypeInSceneCount_temp )
             {
@@ -315,8 +314,8 @@ namespace CodeViewsWindow
                         if ( MenuInit.IsEnable( CodeViewsWindow.DevMenuDebugInfo ) )
                         {
                             CodeViewsMenu.Space( 10 );
-                            GUILayout.Label( $"Window Size: {CodeViewsWindow.windowSize.x} x {CodeViewsWindow.windowSize.y}" );
-                            GUILayout.Label( $"Scroll Position: {Helper.ReplaceComma( CodeViewsWindow.scroll.x )} x {Helper.ReplaceComma( CodeViewsWindow.scroll.y )}" );
+                            WindowUtility.WindowUtility.GetEditorWindowSize( windowInstance );
+                            WindowUtility.WindowUtility.GetScrollSize( scroll );
                         }
 
                         GUILayout.FlexibleSpace();
@@ -455,15 +454,6 @@ namespace CodeViewsWindow
             Event currentEvent = Event.current;
 
             if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
-        } 
-
-        private static void GetEditorWindowSize()
-        {
-            EditorWindow editorWindow = windowInstance;
-            if ( editorWindow != null )
-            {
-                windowSize = new Vector2( editorWindow.position.width, editorWindow.position.height );
-            }
         }
 
         private static async void GenerateCorrectCode()
@@ -582,9 +572,9 @@ namespace CodeViewsWindow
 
         internal static void AppendAdditionalCode( AdditionalCodeType type, ref StringBuilder code, string codeToAdd, bool verify = true )
         {
-            if ( !verify && string.IsNullOrEmpty( codeToAdd ) ) return;
+            if ( !verify || string.IsNullOrEmpty( codeToAdd ) ) return;
 
-            string precache = CodeViewsWindow.ShowPrecacheEnable() ? "_Init()" : "";
+            string precache = CodeViewsWindow.ShowPrecacheEnable() ? "_Init" : "";
 
             codeToAdd = codeToAdd.Replace( "#FUNCTION_NAME", CodeViewsWindow.functionName + precache );
             

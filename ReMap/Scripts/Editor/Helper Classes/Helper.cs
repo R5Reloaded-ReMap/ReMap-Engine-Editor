@@ -500,12 +500,24 @@ public class Helper
         GenerateIgnore = objectTypeArray.ToArray();
     }
 
+    public static GameObject[] GetAllObjectTypeWithEnum( ObjectType[] objectTypes, bool selectionOnly = false )
+    {
+        List< GameObject > list = new List< GameObject >();
+
+        foreach ( ObjectType objectType in objectTypes )
+        {
+            list.AddRange( GetAllObjectTypeWithEnum( objectType, selectionOnly ).ToList() );
+        }
+
+        return list.ToArray();
+    }
+
     public static GameObject[] GetAllObjectTypeWithEnum( ObjectType objectType, bool selectionOnly = false )
     {
         if ( selectionOnly )
         {
-            GameObject[] SelectedObject =
-            Selection.gameObjects.Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+            GameObject[] SelectedObject = Selection.gameObjects
+            .Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
             .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
             .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
             .Select( child => child.gameObject )
@@ -513,8 +525,7 @@ public class Helper
             .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
             .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
             .Select( child => child.gameObject ) )
-            .Distinct()
-            .ToArray();
+            .Distinct().ToArray();
 
             return SelectedObject;
         }

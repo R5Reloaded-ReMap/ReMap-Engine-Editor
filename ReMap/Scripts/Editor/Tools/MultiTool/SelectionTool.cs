@@ -33,29 +33,13 @@ namespace MultiTool
 
                         if ( objectType == ObjectType.NonVerticalZipLine )
                         {
-                            GameObject[][] ziplibeArray = new GameObject[][]
-                            {
-                                Helper.GetAllObjectTypeWithEnum( ObjectType.ZipLine, selectionOnly ),
-                                Helper.GetAllObjectTypeWithEnum( ObjectType.LinkedZipline, selectionOnly ),
-                                Helper.GetAllObjectTypeWithEnum( ObjectType.VerticalZipLine, selectionOnly ),
-                                Helper.GetAllObjectTypeWithEnum( ObjectType.NonVerticalZipLine, selectionOnly )
-                            };
-
-                            CreateButton( $"Select all Ziplines Type", "", () => Helper.ChangeSelection( ziplibeArray ), 194, 20 );
+                            CreateButton( $"Select all Ziplines Type", "", () => Helper.ChangeSelection( Helper.GetAllObjectTypeWithEnum( ziplibeArray, selectionOnly ) ), 194, 20 );
                             idx++;
                         }
 
                         if ( objectType == ObjectType.VerticalDoor )
                         {
-                            GameObject[][] doorArray = new GameObject[][]
-                            {
-                                Helper.GetAllObjectTypeWithEnum( ObjectType.SingleDoor, selectionOnly ),
-                                Helper.GetAllObjectTypeWithEnum( ObjectType.DoubleDoor, selectionOnly ),
-                                Helper.GetAllObjectTypeWithEnum( ObjectType.VerticalDoor, selectionOnly ),
-                                Helper.GetAllObjectTypeWithEnum( ObjectType.HorzDoor, selectionOnly )
-                            };
-
-                            CreateButton( $"Select all Doors Type", "", () => Helper.ChangeSelection( doorArray ), 194, 20 );
+                            CreateButton( $"Select all Doors Type", "", () => Helper.ChangeSelection( Helper.GetAllObjectTypeWithEnum( doorArray, selectionOnly ) ), 194, 20 );
                             idx++;
                         }
 

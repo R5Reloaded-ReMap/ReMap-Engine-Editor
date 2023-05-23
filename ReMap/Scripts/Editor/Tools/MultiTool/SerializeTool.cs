@@ -330,13 +330,13 @@ namespace MultiTool
         {
             if ( selectedMethod == 0 )
             {
-                MultiToolWindow.windowInstance.minSize = new Vector2( 600, 226 );
-                MultiToolWindow.windowInstance.maxSize = new Vector2( 600, 226 );
+                MultiToolWindow.windowInstance.minSize = new Vector2( 600, 246 );
+                MultiToolWindow.windowInstance.maxSize = new Vector2( 600, 246 );
             }
             else
             {
-                MultiToolWindow.windowInstance.minSize = new Vector2( 600, 308 );
-                MultiToolWindow.windowInstance.maxSize = new Vector2( 600, 308 );
+                MultiToolWindow.windowInstance.minSize = new Vector2( 600, 328 );
+                MultiToolWindow.windowInstance.maxSize = new Vector2( 600, 328 );
             }
         }
 

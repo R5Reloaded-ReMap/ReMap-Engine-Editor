@@ -95,43 +95,43 @@ namespace MultiTool
             switch ( toolTypeSelection )
             {
                 case ToolType.DistanceMeter:
-                    //windowInstance.minSize = new Vector2( 600, 166 );
-                    //windowInstance.maxSize = new Vector2( 600, 166 );
+                    windowInstance.minSize = new Vector2( 600, 186 );
+                    windowInstance.maxSize = new Vector2( 600, 186 );
                     toolInfo = "Distance Meter Tool:";
                     break;
 
                 case ToolType.SelectionTool:
-                    //windowInstance.minSize = new Vector2( 600, 322 );
-                    //windowInstance.maxSize = new Vector2( 600, 322 );
+                    windowInstance.minSize = new Vector2( 600, 342 );
+                    windowInstance.maxSize = new Vector2( 600, 342 );
                     toolInfo = "Selection Tool:";
                     break;
                 
                 case ToolType.OffsetTool:
-                    //windowInstance.minSize = new Vector2( 600, 132 );
-                    //windowInstance.maxSize = new Vector2( 600, 132 );
+                    windowInstance.minSize = new Vector2( 600, 152 );
+                    windowInstance.maxSize = new Vector2( 600, 152 );
                     toolInfo = "Offset Tool:";
                     break;
 
                 case ToolType.ModelSwap:
-                    //windowInstance.minSize = new Vector2( 600, 276 );
-                    //windowInstance.maxSize = new Vector2( 600, 276 );
+                    windowInstance.minSize = new Vector2( 600, 296 );
+                    windowInstance.maxSize = new Vector2( 600, 296 );
                     toolInfo = "Model Swap Tool:";
                     break;
                 
                 case ToolType.Serialize:
-                    //SerializeTool.ChangeWindowSize();
+                    SerializeTool.ChangeWindowSize();
                     toolInfo = "Serialize Tool:";
                     break;
 
                 case ToolType.ObjectInfo:
-                    //windowInstance.minSize = new Vector2( 600, 430 );
-                    //windowInstance.maxSize = new Vector2( 600, 430 );
+                    windowInstance.minSize = new Vector2( 600, 450 );
+                    windowInstance.maxSize = new Vector2( 600, 450 );
                     toolInfo = "Object Info:";
                     break;
 
                 case ToolType.ComponentTransfer:
-                    //windowInstance.minSize = new Vector2( 600, 430 );
-                    //windowInstance.maxSize = new Vector2( 600, 430 );
+                    windowInstance.minSize = new Vector2( 600, 360 );
+                    windowInstance.maxSize = new Vector2( 600, 360 );
                     toolInfo = "Component Transfer Tool:";
                 break;
             }

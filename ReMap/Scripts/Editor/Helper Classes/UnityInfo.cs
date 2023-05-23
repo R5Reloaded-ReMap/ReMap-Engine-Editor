@@ -82,7 +82,8 @@ public class UnityInfo
     {
         string ext = extension ? ".prefab" : "";
         modelName = modelName.Replace( '#', '/' ).Replace( ".rmdl", "" ).Replace( ".prefab", "" );
-        return modelName.Substring( modelName.IndexOf( "mdl/" ) ).Replace( '/', '#' ) + ext;
+        if ( modelName.IndexOf( "mdl/" ) != -1 ) modelName = modelName.Substring( modelName.IndexOf( "mdl/" ) );
+        return modelName.Replace( '/', '#' ) + ext;
     }
 
     /// <summary>
@@ -104,6 +105,11 @@ public class UnityInfo
     public static void Printt( string str )
     {
         UnityEngine.Debug.Log( str );
+    }
+
+    public static string GetObjName( string name )
+    {
+        return name.Split( char.Parse( " " ) )[0];
     }
 
     public static string GetObjName( GameObject obj )
@@ -128,6 +134,11 @@ public class UnityInfo
         //Get model path from guid and load it
         UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof( UnityEngine.Object ) ) as GameObject;
         return loadedPrefabResource;
+    }
+
+    public static bool PrefabExist( string name )
+    {
+        return AssetDatabase.FindAssets( name, new [] {$"{UnityInfo.relativePathPrefabs}"} ).Any( guid => AssetDatabase.GUIDToAssetPath( guid ).EndsWith( name + ".prefab" ) );
     }
 
     /// <summary>

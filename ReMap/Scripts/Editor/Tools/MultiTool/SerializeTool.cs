@@ -49,14 +49,6 @@ namespace MultiTool
 
         internal static void OnGUI()
         {
-            //GUIStyle centeredStyle = new GUIStyle( GUI.skin.label );
-            //centeredStyle.alignment = TextAnchor.MiddleCenter;
-            //centeredStyle.fontSize = 18;
-
-            //GUILayout.Label( "Amount of props selected: " + Selection.count.ToString(), centeredStyle, GUILayout.ExpandWidth( true ) );
-
-            //Space( 6 );
-
             if ( selectedMethod != selectedMethod_temp )
             {
                 ChangeWindowSize();
@@ -338,13 +330,13 @@ namespace MultiTool
         {
             if ( selectedMethod == 0 )
             {
-                MultiToolWindow.windowInstance.minSize = new Vector2( 600, 206 );
-                MultiToolWindow.windowInstance.maxSize = new Vector2( 600, 206 );
+                MultiToolWindow.windowInstance.minSize = new Vector2( 600, 226 );
+                MultiToolWindow.windowInstance.maxSize = new Vector2( 600, 226 );
             }
             else
             {
-                MultiToolWindow.windowInstance.minSize = new Vector2( 600, 288 );
-                MultiToolWindow.windowInstance.maxSize = new Vector2( 600, 288 );
+                MultiToolWindow.windowInstance.minSize = new Vector2( 600, 308 );
+                MultiToolWindow.windowInstance.maxSize = new Vector2( 600, 308 );
             }
         }
 

@@ -22,6 +22,12 @@ public enum StartingOriginType
     Function = 1
 }
 
+public enum VectorType
+{
+    Unity = 0,
+    Apex = 1
+}
+
 public enum StringType
 {
     ObjectRef = 0,
@@ -176,10 +182,15 @@ public class Helper
         return "";
     }
 
+    public static string BuildAngles( GameObject go, VectorType vectorType )
+    {
+        return BuildAngles( go.transform.eulerAngles, false, vectorType );
+    }
+
     /// <summary>
     /// Builds correct ingame angles from GameObject
     /// </summary>
-    public static string BuildAngles( GameObject go, bool isEntFile = false )
+    public static string BuildAngles( GameObject go, bool isEntFile = false, VectorType vectorType = VectorType.Apex )
     {
         return BuildAngles( go.transform.eulerAngles, isEntFile );
     }
@@ -187,11 +198,22 @@ public class Helper
     /// <summary>
     /// Builds correct ingame angles from Vector3
     /// </summary>
-    public static string BuildAngles( Vector3 vec, bool isEntFile = false )
+    public static string BuildAngles( Vector3 vec, bool isEntFile = false, VectorType vectorType = VectorType.Apex )
     {
-        string x = ReplaceComma( -WrapAngle( vec.x ) );
-        string y = ReplaceComma( -WrapAngle( vec.y ) );
-        string z = ReplaceComma( WrapAngle( vec.z ) );
+        string x, y, z = "";
+
+        if ( vectorType == VectorType.Unity )
+        {
+            x = ReplaceComma( WrapAngle( vec.x ) );
+            y = ReplaceComma( WrapAngle( vec.y ) );
+            z = ReplaceComma( WrapAngle( vec.z ) );
+        }
+        else
+        {
+            x = ReplaceComma( -WrapAngle( vec.x ) );
+            y = ReplaceComma( -WrapAngle( vec.y ) );
+            z = ReplaceComma( WrapAngle( vec.z ) );
+        }
 
         string angles = $"< {x}, {y}, {z} >";
 
@@ -200,7 +222,7 @@ public class Helper
         return angles;
     }
 
-    public static string BuildRightVector( Vector3 vec, bool isEntFile = false )
+    public static string BuildRightVector( Vector3 vec, bool isEntFile = false, VectorType vectorType = VectorType.Apex )
     {
         string x = ReplaceComma( WrapAngle( vec.z ) );
         string y = ReplaceComma( WrapAngle( vec.x ) );
@@ -227,10 +249,15 @@ public class Helper
         return angle;
     }
 
+    public static string BuildOrigin( GameObject go, VectorType vectorType )
+    {
+        return BuildOrigin( go.transform.position, false, false, vectorType );
+    }
+
     /// <summary>
     /// Builds correct ingame origin from GameObject
     /// </summary>
-    public static string BuildOrigin( GameObject go, bool isEntFile = false, bool returnWithOffset = false )
+    public static string BuildOrigin( GameObject go, bool isEntFile = false, bool returnWithOffset = false, VectorType vectorType = VectorType.Apex )
     {
         return BuildOrigin( go.transform.position, isEntFile, returnWithOffset );
     }
@@ -238,7 +265,7 @@ public class Helper
     /// <summary>
     /// Builds correct ingame origin from Vector3
     /// </summary>
-    public static string BuildOrigin( Vector3 vec, bool isEntFile = false, bool returnWithOffset = false )
+    public static string BuildOrigin( Vector3 vec, bool isEntFile = false, bool returnWithOffset = false, VectorType vectorType = VectorType.Apex )
     {
         float xOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.x;
         float yOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.y;
@@ -247,6 +274,19 @@ public class Helper
         string x = ReplaceComma( -vec.z + xOffset );
         string y = ReplaceComma( vec.x + yOffset );
         string z = ReplaceComma( vec.y + zOffset );
+
+        if ( vectorType == VectorType.Unity )
+        {
+            x = ReplaceComma( vec.x + xOffset );
+            y = ReplaceComma( vec.y + yOffset );
+            z = ReplaceComma( vec.z + zOffset );
+        }
+        else
+        {
+            x = ReplaceComma( -vec.z + xOffset );
+            y = ReplaceComma( vec.x + yOffset );
+            z = ReplaceComma( vec.y + zOffset );
+        }
 
         string origin = $"< {x}, {y}, {z} >";
 
@@ -613,6 +653,21 @@ public class Helper
         CodeViewsWindow.CodeViewsWindow.SendedEntityCount -= value;
     }
 
+    public static bool IsObjectFromTag( GameObject obj, ObjectType objectType )
+    {
+        return obj.CompareTag( GetObjTagNameWithEnum( objectType ) );
+    }
+
+    public static bool IsObjectFromTag( GameObject obj, ObjectType[] objectTypes )
+    {
+        return objectTypes.Any( objectType => obj.CompareTag( GetObjTagNameWithEnum( objectType ) ) );
+    }
+
+    public static ObjectType GetTypeFromObject( GameObject obj )
+    {
+        return GetAllObjectType().FirstOrDefault( t => obj.CompareTag( GetObjTagNameWithEnum( t ) ) );
+    }
+
     public static bool IsValid< T >( T obj ) where T : class
     {
         return obj != null;
@@ -621,6 +676,11 @@ public class Helper
     public static bool IsValid< T >( T [] array ) where T : class
     {
         return array != null && array.All( item => item != null );
+    }
+
+    public static bool IsEmpty< T >( T [] obj ) where T : class
+    {
+        return obj.Length == 0;
     }
 
     public static void RemoveNull< T >( ref T [] array ) where T : class

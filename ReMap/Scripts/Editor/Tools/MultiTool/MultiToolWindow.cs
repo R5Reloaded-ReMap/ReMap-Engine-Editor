@@ -14,7 +14,8 @@ namespace MultiTool
             SelectionTool,
             OffsetTool,
             ModelSwap,
-            Serialize
+            Serialize,
+            ObjectInfo
         }
         internal protected static MultiToolWindow windowInstance;
         private static ToolType toolTypeSelection = ToolType.DistanceMeter;
@@ -56,11 +57,14 @@ namespace MultiTool
         private static void MenuSelector()
         {
             GUILayout.BeginHorizontal();
-                CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ) );
-                CreateButton( "Selection Tool", "", () => ChangeToolType( ToolType.SelectionTool ) );
-                CreateButton( "Offset Tool", "", () => ChangeToolType( ToolType.OffsetTool ) );
-                CreateButton( "Model Swap Tool", "", () => ChangeToolType( ToolType.ModelSwap ) );
-                CreateButton( "Serialize Tool", "", () => ChangeToolType( ToolType.Serialize ) );
+                CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ), 194 );
+                CreateButton( "Selection Tool", "", () => ChangeToolType( ToolType.SelectionTool ), 194 );
+                CreateButton( "Offset Tool", "", () => ChangeToolType( ToolType.OffsetTool ), 194 );
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+                CreateButton( "Model Swap Tool", "", () => ChangeToolType( ToolType.ModelSwap ), 194 );
+                CreateButton( "Serialize Tool", "", () => ChangeToolType( ToolType.Serialize ), 194 );
+                CreateButton( "Object Info", "", () => ChangeToolType( ToolType.ObjectInfo ), 194 );
             GUILayout.EndHorizontal();
         }
 
@@ -73,6 +77,7 @@ namespace MultiTool
                 case ToolType.OffsetTool: OffsetTool.OnGUI(); break;
                 case ToolType.ModelSwap: ModelSwap.OnGUI(); break;
                 case ToolType.Serialize: SerializeTool.OnGUI(); break;
+                case ToolType.ObjectInfo: ObjectInfo.OnGUI(); break;
             }
         }
 
@@ -85,32 +90,38 @@ namespace MultiTool
             switch ( toolTypeSelection )
             {
                 case ToolType.DistanceMeter:
-                    windowInstance.minSize = new Vector2( 600, 144 );
-                    windowInstance.maxSize = new Vector2( 600, 144 );
+                    windowInstance.minSize = new Vector2( 600, 166 );
+                    windowInstance.maxSize = new Vector2( 600, 166 );
                     toolInfo = "Distance Meter Tool:";
                     break;
 
                 case ToolType.SelectionTool:
-                    windowInstance.minSize = new Vector2( 600, 302 );
-                    windowInstance.maxSize = new Vector2( 600, 302 );
+                    windowInstance.minSize = new Vector2( 600, 322 );
+                    windowInstance.maxSize = new Vector2( 600, 322 );
                     toolInfo = "Selection Tool:";
                     break;
                 
                 case ToolType.OffsetTool:
-                    windowInstance.minSize = new Vector2( 600, 112 );
-                    windowInstance.maxSize = new Vector2( 600, 112 );
+                    windowInstance.minSize = new Vector2( 600, 132 );
+                    windowInstance.maxSize = new Vector2( 600, 132 );
                     toolInfo = "Offset Tool:";
                     break;
 
                 case ToolType.ModelSwap:
-                    windowInstance.minSize = new Vector2( 600, 256 );
-                    windowInstance.maxSize = new Vector2( 600, 256 );
+                    windowInstance.minSize = new Vector2( 600, 276 );
+                    windowInstance.maxSize = new Vector2( 600, 276 );
                     toolInfo = "Model Swap Tool:";
                     break;
                 
                 case ToolType.Serialize:
                     SerializeTool.ChangeWindowSize();
                     toolInfo = "Serialize Tool:";
+                    break;
+
+                case ToolType.ObjectInfo:
+                    windowInstance.minSize = new Vector2( 600, 430 );
+                    windowInstance.maxSize = new Vector2( 600, 430 );
+                    toolInfo = "Object Info:";
                 break;
             }
         }

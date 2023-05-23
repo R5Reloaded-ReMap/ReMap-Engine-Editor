@@ -253,6 +253,16 @@ namespace LibrarySorter
             return libraryData;
         }
 
+        internal static RpakData FindAllModel()
+        {
+            foreach ( RpakData data in libraryData.RpakList )
+            {
+                if ( data.Name == allModelsDataName ) return data;
+            }
+
+            return null;
+        }
+
         private static RpakData NewRpakData()
         {
             RpakData data = new RpakData();

@@ -24,6 +24,7 @@ namespace LibrarySorter
     public class LibrarySorterWindow : EditorWindow
     {
         internal static LibraryData libraryData;
+        internal static RpakData all_model;
         internal static List< PrefabOffset > prefabOffset;
         internal static bool checkExist = false;
         Vector2 scrollPos = Vector2.zero;
@@ -51,6 +52,7 @@ namespace LibrarySorter
         private void OnEnable()
         {
             libraryData = RpakManagerWindow.FindLibraryDataFile();
+            all_model = RpakManagerWindow.FindAllModel();
             prefabOffset = OffsetManagerWindow.FindPrefabOffsetFile();
         }
 
@@ -122,7 +124,7 @@ namespace LibrarySorter
                             {
                                 foreach ( string prefab in searchResult )
                                 {
-                                    string prefabName = Path.GetFileNameWithoutExtension( prefab );
+                                    string prefabName = UnityInfo.GetUnityModelName( prefab );
                                     WindowUtility.WindowUtility.CreateButton( $"{prefabName}", "", () => AwaitTask( TaskType.FixSpecificPrefabData, prefabName ) );
                                 }
                             }
@@ -183,9 +185,11 @@ namespace LibrarySorter
                         await SortFolder( _data );
                         await SetModelLabels( _data.Name );
                     }
+                    RpakManagerWindow.SaveJson();
                     break;
 
                 case TaskType.FixSpecificPrefabData:
+                    checkExist = true;
                     await FixPrefab( arg );
                     await SetModelLabels( arg );
                 break;
@@ -292,8 +296,6 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
 
             data.Update = DateTime.UtcNow.ToString();
-
-            RpakManagerWindow.SaveJson();
 
             return Task.CompletedTask;
         }
@@ -611,23 +613,12 @@ namespace LibrarySorter
 
         private static void SearchPrefabs( string search = "" )
         {
-            string[] prefabs = AssetDatabase.FindAssets("t:prefab", new string[] {"Assets/Prefabs"});
-            searchResult = new List<string>();
-    
-            foreach ( string prefab in prefabs )
+            foreach ( string prefab in all_model.Data )
             {
-                string path = AssetDatabase.GUIDToAssetPath( prefab );
-
-                if( !path.Contains("mdl#") )
+                if( search != "" && !prefab.Contains( search ) )
                     continue;
     
-                if( !path.Contains("all_models") )
-                    continue;
-    
-                if( search != "" && !path.Contains( search ) )
-                    continue;
-    
-                searchResult.Add( path );
+                searchResult.Add( prefab );
             }
         }
 

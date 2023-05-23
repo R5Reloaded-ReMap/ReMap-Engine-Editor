@@ -12,6 +12,7 @@ namespace MultiTool
     {
         private static GameObject selectedObject;
         private static Component objectComponent;
+        private static ObjectType objectType;
         private static bool objectIsValid = false;
         private static float w, d, h;
 
@@ -133,7 +134,7 @@ namespace MultiTool
 
             GUILayout.BeginVertical( "box" );
 
-                CreateTextInfo( "Object Parameters: (Read Only)", "" );
+                CreateTextInfo( $"Object Parameters: (Read Only) - Type: {Helper.GetObjNameWithEnum( objectType )}", "" );
 
                 FieldInfo[] fields = objectComponent.GetType().GetFields( BindingFlags.Public | BindingFlags.Instance );
 
@@ -178,9 +179,11 @@ namespace MultiTool
 
                 if ( objectIsValid )
                 {
+                    objectType = Helper.GetTypeFromObject( selectedObject );
+
                     foreach ( Component component in selectedObject.GetComponents< Component >() )
                     {
-                        if ( Helper.IsValid( component ) && component == Helper.GetComponentByEnum( selectedObject, Helper.GetTypeFromObject( selectedObject ) ) )
+                        if ( Helper.IsValid( component ) && component == Helper.GetComponentByEnum( selectedObject, objectType ) )
                         {
                             objectComponent = component;
 

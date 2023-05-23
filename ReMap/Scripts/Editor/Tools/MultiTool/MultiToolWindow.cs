@@ -15,7 +15,8 @@ namespace MultiTool
             OffsetTool,
             ModelSwap,
             Serialize,
-            ObjectInfo
+            ObjectInfo,
+            ComponentTransfer
         }
         internal protected static MultiToolWindow windowInstance;
         private static ToolType toolTypeSelection = ToolType.DistanceMeter;
@@ -66,6 +67,9 @@ namespace MultiTool
                 CreateButton( "Serialize Tool", "", () => ChangeToolType( ToolType.Serialize ), 194 );
                 CreateButton( "Object Info", "", () => ChangeToolType( ToolType.ObjectInfo ), 194 );
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+                CreateButton( "Component Transfer Tool", "", () => ChangeToolType( ToolType.ComponentTransfer ), 194 );
+            GUILayout.EndHorizontal();
         }
 
         private static void ShowTool( ToolType toolType )
@@ -78,6 +82,7 @@ namespace MultiTool
                 case ToolType.ModelSwap: ModelSwap.OnGUI(); break;
                 case ToolType.Serialize: SerializeTool.OnGUI(); break;
                 case ToolType.ObjectInfo: ObjectInfo.OnGUI(); break;
+                case ToolType.ComponentTransfer: ComponentTransfer.OnGUI(); break;
             }
         }
 
@@ -90,38 +95,44 @@ namespace MultiTool
             switch ( toolTypeSelection )
             {
                 case ToolType.DistanceMeter:
-                    windowInstance.minSize = new Vector2( 600, 166 );
-                    windowInstance.maxSize = new Vector2( 600, 166 );
+                    //windowInstance.minSize = new Vector2( 600, 166 );
+                    //windowInstance.maxSize = new Vector2( 600, 166 );
                     toolInfo = "Distance Meter Tool:";
                     break;
 
                 case ToolType.SelectionTool:
-                    windowInstance.minSize = new Vector2( 600, 322 );
-                    windowInstance.maxSize = new Vector2( 600, 322 );
+                    //windowInstance.minSize = new Vector2( 600, 322 );
+                    //windowInstance.maxSize = new Vector2( 600, 322 );
                     toolInfo = "Selection Tool:";
                     break;
                 
                 case ToolType.OffsetTool:
-                    windowInstance.minSize = new Vector2( 600, 132 );
-                    windowInstance.maxSize = new Vector2( 600, 132 );
+                    //windowInstance.minSize = new Vector2( 600, 132 );
+                    //windowInstance.maxSize = new Vector2( 600, 132 );
                     toolInfo = "Offset Tool:";
                     break;
 
                 case ToolType.ModelSwap:
-                    windowInstance.minSize = new Vector2( 600, 276 );
-                    windowInstance.maxSize = new Vector2( 600, 276 );
+                    //windowInstance.minSize = new Vector2( 600, 276 );
+                    //windowInstance.maxSize = new Vector2( 600, 276 );
                     toolInfo = "Model Swap Tool:";
                     break;
                 
                 case ToolType.Serialize:
-                    SerializeTool.ChangeWindowSize();
+                    //SerializeTool.ChangeWindowSize();
                     toolInfo = "Serialize Tool:";
                     break;
 
                 case ToolType.ObjectInfo:
-                    windowInstance.minSize = new Vector2( 600, 430 );
-                    windowInstance.maxSize = new Vector2( 600, 430 );
+                    //windowInstance.minSize = new Vector2( 600, 430 );
+                    //windowInstance.maxSize = new Vector2( 600, 430 );
                     toolInfo = "Object Info:";
+                    break;
+
+                case ToolType.ComponentTransfer:
+                    //windowInstance.minSize = new Vector2( 600, 430 );
+                    //windowInstance.maxSize = new Vector2( 600, 430 );
+                    toolInfo = "Component Transfer Tool:";
                 break;
             }
         }

@@ -79,6 +79,14 @@ namespace WindowUtility
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
         }
 
+        public static void CreateTextInfoCentered(string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
+        {
+            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+
+            EditorGUILayout.LabelField( new GUIContent(text, tooltip), labelStyle, SizeOptions( labelWidth, height ) );
+        }
+
         public static void CreateObjectField( ref UnityEngine.Object obj, string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );

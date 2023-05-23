@@ -65,7 +65,8 @@ namespace MultiTool
 
             GUILayout.BeginVertical( "box" );
                 if ( Helper.IsEmpty( selection ) )
-                {   GUIStyle labelStyle = new GUIStyle( EditorStyles.label );
+                {
+                    GUIStyle labelStyle = new GUIStyle( EditorStyles.label );
                     labelStyle.alignment = TextAnchor.MiddleCenter;
 
                     EditorGUILayout.LabelField( $"Select at least 1 type object: {Helper.GetObjNameWithEnum( objectType )}", labelStyle, GUILayout.ExpandWidth( true ), GUILayout.Height( 20 ) );

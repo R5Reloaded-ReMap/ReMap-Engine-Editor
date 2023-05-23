@@ -37,7 +37,10 @@ namespace MultiTool
             if ( Helper.IsEmpty( Selection.gameObjects ) ) 
             {
                 GUILayout.BeginVertical( "box" );
-                    CreateTextInfo( "No object selected.", "" );
+                    FlexibleSpace();
+
+                        CreateTextInfoCentered( "No object selected." );
+
                     FlexibleSpace();
                 GUILayout.EndVertical();
 
@@ -50,7 +53,10 @@ namespace MultiTool
 
                 if ( !Helper.IsValid( selectedObject ) || !objectIsValid )
                 {
-                    CreateTextInfo( "The selected object is not valid.", "" );
+                    FlexibleSpace();
+
+                        CreateTextInfoCentered( "The selected object is not valid." );
+
                     FlexibleSpace();
                     GUILayout.EndVertical();
 

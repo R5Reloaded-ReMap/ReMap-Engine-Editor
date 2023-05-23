@@ -175,6 +175,7 @@ namespace LibrarySorter
                     CheckExisting();
                     await SortFolder( data );
                     await SetModelLabels( data.Name );
+                    RpakManagerWindow.SaveJson();
                     break;
 
                 case TaskType.FixAllPrefabsData:

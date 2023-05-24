@@ -28,7 +28,7 @@ namespace WindowUtility
 
             if( GUILayout.Button( new GUIContent( text, tooltip ), buttonStyle, SizeOptions( width, height ) ) )
             {
-                if ( functionRefs != null )
+                if ( Helper.IsValid( functionRefs ) )
                 {
                     foreach ( var functionRef in functionRefs ) functionRef();
                 }
@@ -112,7 +112,7 @@ namespace WindowUtility
 
         public static void GetEditorWindowSize( EditorWindow editorWindow )
         {
-            if ( editorWindow != null )
+            if ( Helper.IsValid( editorWindow ) )
             {
                 CreateTextInfo( $"Window Size: {Helper.ReplaceComma( editorWindow.position.width )} x {Helper.ReplaceComma( editorWindow.position.height )}" );
             }
@@ -120,10 +120,7 @@ namespace WindowUtility
 
         public static void GetScrollSize( Vector2 scroll )
         {
-            if ( scroll != null )
-            {
-                CreateTextInfo( $"Scroll Position: {Helper.ReplaceComma( scroll.x )} x {Helper.ReplaceComma( scroll.y )}" );
-            }
+            CreateTextInfo( $"Scroll Position: {Helper.ReplaceComma( scroll.x )} x {Helper.ReplaceComma( scroll.y )}" );
         }
 
         private static GUILayoutOption HeightOption( float value )

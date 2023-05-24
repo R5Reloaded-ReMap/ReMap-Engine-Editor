@@ -30,7 +30,23 @@ namespace MultiTool
             if ( !Helper.IsValid( source ) || !Helper.IsValid( objectComponent ) )
             {
                 GUILayout.BeginVertical( "box" );
-                    CreateTextInfo( "Source is not valid", "" );
+                    FlexibleSpace();
+                        CreateTextInfoCentered( $"Source is not valid" );
+                    FlexibleSpace();
+                GUILayout.EndVertical();
+
+                return;
+            }
+
+            FieldInfo[] fields = objectComponent.GetType().GetFields( BindingFlags.Public | BindingFlags.Instance );
+
+            string objName = Helper.GetObjNameWithEnum( objectType );
+
+            if ( Helper.IsEmpty( fields ) )
+            {
+                GUILayout.BeginVertical( "box" );
+                    FlexibleSpace();
+                        CreateTextInfoCentered( $"{objName} Objects does not contain any parameters" );
                     FlexibleSpace();
                 GUILayout.EndVertical();
 
@@ -39,11 +55,7 @@ namespace MultiTool
 
             GUILayout.BeginVertical( "box" );
 
-                CreateTextInfo( $"Object Parameters: (Read Only) - Type: {Helper.GetObjNameWithEnum( objectType )}", "" );
-
-                FieldInfo[] fields = objectComponent.GetType().GetFields( BindingFlags.Public | BindingFlags.Instance );
-
-                if ( Helper.IsEmpty( fields ) ) CreateTextInfo( "// None.", "" );
+                CreateTextInfo( $"Object Parameters: (Read Only) - Type: {objName}", "" );
 
                 scroll = EditorGUILayout.BeginScrollView( scroll );
 
@@ -66,10 +78,7 @@ namespace MultiTool
             GUILayout.BeginVertical( "box" );
                 if ( Helper.IsEmpty( selection ) )
                 {
-                    GUIStyle labelStyle = new GUIStyle( EditorStyles.label );
-                    labelStyle.alignment = TextAnchor.MiddleCenter;
-
-                    EditorGUILayout.LabelField( $"Select at least 1 type object: {Helper.GetObjNameWithEnum( objectType )}", labelStyle, GUILayout.ExpandWidth( true ), GUILayout.Height( 20 ) );
+                    CreateTextInfoCentered( $"Select at least 1 type object: {objName}" );
                 }
                 else
                 {
@@ -94,7 +103,7 @@ namespace MultiTool
                             field.SetValue( component, value );
                         }
 
-                        continue;
+                        break;
                     }
                 }
             }

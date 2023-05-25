@@ -744,9 +744,7 @@ public class Helper
 
     public static string RemoveSpacesAfterChars( string str )
     {
-        string output = Regex.Replace( str, @"([(<>,])\s+", "$1" ); // replace spaces after (, <, >, or ,
-        output = Regex.Replace( output, @"\s+([)>])", "$1" ); // replace spaces before ) or ]
-        return output;
+        return Regex.Replace( str, @"\s*([\[\](),<>])\s*", "$1"); // replace spaces around [, (, <, >, ), ] or ,
     }
 
     public static string GetSceneName()

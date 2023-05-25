@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 using static Build.Build;
-using static ImportExport.Shared.SharedFunction;
+using static ImportExport.SharedFunction;
 
 namespace Build
 {

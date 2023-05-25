@@ -11,11 +11,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-using ImportExport.Shared;
-using static ImportExport.Shared.SharedFunction;
 using Build;
+using ImportExport;
 using static Build.Build;
 using static CodeViewsWindow.CodeViewsWindow;
+using static ImportExport.SharedFunction;
 
 public enum StartingOriginType
 {

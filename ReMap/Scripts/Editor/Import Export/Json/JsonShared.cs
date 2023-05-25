@@ -9,8 +9,7 @@ using UnityEditor;
 using UnityEngine;
 
 // Internal
-using ImportExport.Shared;
-using static ImportExport.Shared.SharedFunction;
+using static ImportExport.SharedFunction;
 using static ImportExport.Json.JsonImport;
 using static ImportExport.Json.JsonExport;
 

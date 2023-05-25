@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -739,6 +740,13 @@ public class Helper
     public static string BoolToLower( bool value )
     {
         return value.ToString().ToLower();
+    }
+
+    public static string RemoveSpacesAfterChars( string str )
+    {
+        string output = Regex.Replace( str, @"([(<>,])\s+", "$1" ); // replace spaces after (, <, >, or ,
+        output = Regex.Replace( output, @"\s+([)>])", "$1" ); // replace spaces before ) or ]
+        return output;
     }
 
     public static string GetSceneName()

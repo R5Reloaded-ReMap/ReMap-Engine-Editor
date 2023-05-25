@@ -114,6 +114,7 @@ namespace CodeViewsWindow
 
         public static void AddToGameQueue( string command )
         {
+            command = Helper.RemoveSpacesAfterChars( command );
             ReMapConsole.Log( $"[LiveCode] Adding Command: \"{command}\"", ReMapConsole.LogType.Info );
             Commands.Add( command );
         }

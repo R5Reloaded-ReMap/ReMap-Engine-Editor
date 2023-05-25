@@ -46,17 +46,16 @@ namespace Build
                 LinkedZiplineScript script = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, ObjectType.LinkedZipline );
                 if ( script == null ) continue;
 
+                string function = "";
+                string smoothType = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
+                string nodes = MakeLinkedZiplineNodeArray( obj );
+
+                if ( script.EnableSmoothing ) function = $"{smoothType}( {nodes}, {script.SmoothAmount} )";
+                else function = $"{nodes}";
+
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        
-                        string function = "";
-                        string smoothType = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
-                        string nodes = MakeLinkedZiplineNodeArray( obj );
-
-                        if ( script.EnableSmoothing ) function = $"{smoothType}( {nodes}, {script.SmoothAmount} )";
-                        else function = $"{nodes}";
-
                         AppendCode( ref code, $"    MapEditor_CreateLinkedZipline( {function} )" );
                         break;
 
@@ -73,14 +72,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        string function2 = "";
-                        string smoothType2 = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
-                        string nodes2 = MakeLinkedZiplineNodeArray( obj );
-
-                        if ( script.EnableSmoothing ) function = $"{smoothType2}( {nodes2}, {script.SmoothAmount} )";
-                        else function2 = $"{nodes2}";
-
-                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateLinkedZipline( {function2}, true )");
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script MapEditor_CreateLinkedZipline( {function}, true )" );
                     break;
                 }
             }

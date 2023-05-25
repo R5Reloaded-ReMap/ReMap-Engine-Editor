@@ -436,7 +436,7 @@ public class Helper
     {
         foreach ( ObjectType objectType in GetAllObjectType() )
         {
-            if ( Helper.GetObjNameWithEnum( objectType ) == searchTerm ) return objectType;
+            if ( GetObjNameWithEnum( objectType ) == searchTerm ) return objectType;
         }
 
         return null;

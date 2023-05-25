@@ -687,7 +687,7 @@ public class Helper
     {
         string str = value.ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
-        if ( !str.Contains('.') && forceComma ) str += ".0";
+        if ( forceComma && !str.Contains('.')  ) str += ".0";
 
         return str;
     }

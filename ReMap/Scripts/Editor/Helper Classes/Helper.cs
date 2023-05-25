@@ -228,7 +228,7 @@ public class Helper
     {
         angle %= 360;
 
-        if( angle > 180 ) return angle - 360;
+        if ( angle > 180 ) return angle - 360;
  
         return angle;
     }
@@ -255,9 +255,9 @@ public class Helper
 
         bool isUnity = vectorType == VectorType.Unity;
 
-        string x = ReplaceComma( isUnity ? vec.x : -vec.z + xOffset );
-        string y = ReplaceComma( isUnity ? vec.y :  vec.x + yOffset );
-        string z = ReplaceComma( isUnity ? vec.z :  vec.y + zOffset );
+        string x = ReplaceComma( isUnity ? vec.x : -vec.z + offset.x );
+        string y = ReplaceComma( isUnity ? vec.y :  vec.x + offset.y );
+        string z = ReplaceComma( isUnity ? vec.z :  vec.y + offset.z );
 
         return isEntFile ? $"{x} {y} {z}" : $"< {x}, {y}, {z} >";
     }

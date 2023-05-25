@@ -201,39 +201,22 @@ public class Helper
     /// </summary>
     public static string BuildAngles( Vector3 vec, bool isEntFile = false, VectorType vectorType = VectorType.Apex )
     {
-        string x, y, z = "";
+        bool isUnity = vectorType == VectorType.Unity;
 
-        if ( vectorType == VectorType.Unity )
-        {
-            x = ReplaceComma( WrapAngle( vec.x ) );
-            y = ReplaceComma( WrapAngle( vec.y ) );
-            z = ReplaceComma( WrapAngle( vec.z ) );
-        }
-        else
-        {
-            x = ReplaceComma( -WrapAngle( vec.x ) );
-            y = ReplaceComma( -WrapAngle( vec.y ) );
-            z = ReplaceComma( WrapAngle( vec.z ) );
-        }
+        string x = ReplaceComma( isUnity ? WrapAngle( vec.x ) : -WrapAngle( vec.x ) );
+        string y = ReplaceComma( isUnity ? WrapAngle( vec.y ) : -WrapAngle( vec.y ) );
+        string z = ReplaceComma( isUnity ? WrapAngle( vec.z ) :  WrapAngle( vec.z ) );
 
-        string angles = $"< {x}, {y}, {z} >";
-
-        if ( isEntFile ) angles = $"{x} {y} {z}";
-
-        return angles;
+        return isEntFile ? $"{x} {y} {z}" : $"< {x}, {y}, {z} >";
     }
 
     public static string BuildRightVector( Vector3 vec, bool isEntFile = false, VectorType vectorType = VectorType.Apex )
     {
-        string x = ReplaceComma( WrapAngle( vec.z ) );
-        string y = ReplaceComma( WrapAngle( vec.x ) );
+        string x = ReplaceComma(  WrapAngle( vec.z ) );
+        string y = ReplaceComma(  WrapAngle( vec.x ) );
         string z = ReplaceComma( -WrapAngle( vec.y ) );
 
-        string angles = $"< {x}, {y}, {z} >";
-
-        if ( isEntFile ) angles = $"{x} {y} {z}";
-
-        return angles;
+        return isEntFile ? $"{x} {y} {z}" : $"< {x}, {y}, {z} >";
     }
 
     /// <summary>
@@ -260,7 +243,7 @@ public class Helper
     /// </summary>
     public static string BuildOrigin( GameObject go, bool isEntFile = false, bool returnWithOffset = false, VectorType vectorType = VectorType.Apex )
     {
-        return BuildOrigin( go.transform.position, isEntFile, returnWithOffset );
+        return BuildOrigin( go.transform.position, isEntFile, returnWithOffset, vectorType );
     }
 
     /// <summary>
@@ -268,32 +251,15 @@ public class Helper
     /// </summary>
     public static string BuildOrigin( Vector3 vec, bool isEntFile = false, bool returnWithOffset = false, VectorType vectorType = VectorType.Apex )
     {
-        float xOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.x;
-        float yOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.y;
-        float zOffset = UseStartingOffset() && returnWithOffset ? 0 : StartingOffset.z;
+        Vector3 offset = UseStartingOffset() && returnWithOffset ? StartingOffset : Vector3.zero;
 
-        string x = ReplaceComma( -vec.z + xOffset );
-        string y = ReplaceComma( vec.x + yOffset );
-        string z = ReplaceComma( vec.y + zOffset );
+        bool isUnity = vectorType == VectorType.Unity;
 
-        if ( vectorType == VectorType.Unity )
-        {
-            x = ReplaceComma( vec.x + xOffset );
-            y = ReplaceComma( vec.y + yOffset );
-            z = ReplaceComma( vec.z + zOffset );
-        }
-        else
-        {
-            x = ReplaceComma( -vec.z + xOffset );
-            y = ReplaceComma( vec.x + yOffset );
-            z = ReplaceComma( vec.y + zOffset );
-        }
+        string x = ReplaceComma( isUnity ? vec.x : -vec.z + xOffset );
+        string y = ReplaceComma( isUnity ? vec.y :  vec.x + yOffset );
+        string z = ReplaceComma( isUnity ? vec.z :  vec.y + zOffset );
 
-        string origin = $"< {x}, {y}, {z} >";
-
-        if ( isEntFile ) origin = $"{x} {y} {z}";
-
-        return origin;
+        return isEntFile ? $"{x} {y} {z}" : $"< {x}, {y}, {z} >";
     }
 
     /// <summary>
@@ -393,13 +359,11 @@ public class Helper
 
     public static void ApplyComponentScriptData< T >( T source, T target ) where T : Component
     {
-        Type type = typeof( T );
-        FieldInfo[] fields = type.GetFields( BindingFlags.Public | BindingFlags.Instance );
+        var fields = typeof( T ).GetFields( BindingFlags.Public | BindingFlags.Instance );
 
-        foreach ( FieldInfo field in fields )
+        foreach ( var field in fields )
         {
-            object value = field.GetValue( source );
-            field.SetValue( target, value );
+            field.SetValue( target, field.GetValue( source ) );
         }
     }
 
@@ -553,14 +517,7 @@ public class Helper
 
     public static GameObject[] GetAllObjectTypeWithEnum( ObjectType[] objectTypes, bool selectionOnly = false )
     {
-        List< GameObject > list = new List< GameObject >();
-
-        foreach ( ObjectType objectType in objectTypes )
-        {
-            list.AddRange( GetAllObjectTypeWithEnum( objectType, selectionOnly ).ToList() );
-        }
-
-        return list.ToArray();
+        return objectTypes.SelectMany( objectType => GetAllObjectTypeWithEnum( objectType, selectionOnly ) ).ToArray();
     }
 
     public static GameObject[] GetAllObjectTypeWithEnum( ObjectType objectType, bool selectionOnly = false )
@@ -605,12 +562,10 @@ public class Helper
     }
 
     public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )
-    {
-        GameObject obj = null;
-        
-        if ( path == "" ) path = UnityInfo.relativePathEmptyPrefab;
+    {        
+        if ( string.IsNullOrEmpty( path ) ) path = UnityInfo.relativePathEmptyPrefab;
 
-        UnityEngine.Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject;
+        UnityEngine.Object loadedPrefabResource;
 
         switch ( pathType )
         {
@@ -625,11 +580,11 @@ public class Helper
             default: return null;
         }
 
-        if ( loadedPrefabResource == null ) return null;
+        if ( IsValid( loadedPrefabResource ) ) return null;
         
-        obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
+        var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
 
-        if ( name != "" ) obj.name = name;
+        if ( !string.IsNullOrEmpty( name ) ) obj.name = name;
 
         return obj;
     }
@@ -749,9 +704,7 @@ public class Helper
 
     public static string GetSceneName()
     {
-        if ( SceneManager.GetActiveScene().name == "" ) return "Unnamed";
-
-        return $"{SceneManager.GetActiveScene().name.Replace(" ", "_")}";
+        return (SceneManager.GetActiveScene().name?.Replace(" ", "_") ?? "Unnamed");
     }
 
     public static string ReMapCredit( bool noSpace = false )

@@ -641,7 +641,7 @@ public class Helper
 
     public static void RemoveNull< T >( ref T [] array ) where T : class
     {
-        array = array.Where(x => x != null).ToArray();
+        array = array.Where( x => x != null ).ToArray();
     }
 
     public static void ArrayResize< T >( ref T [] array, int value ) where T : class
@@ -687,7 +687,7 @@ public class Helper
     {
         string str = value.ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
-        if ( forceComma && !str.Contains('.')  ) str += ".0";
+        if ( forceComma && !str.Contains( '.' )  ) str += ".0";
 
         return str;
     }

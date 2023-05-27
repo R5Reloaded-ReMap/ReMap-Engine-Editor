@@ -223,6 +223,11 @@ public class Helper
         return isEntFile ? $"{x} {y} {z}" : $"< {x}, {y}, {z} >";
     }
 
+    public static Vector3 ConvertApexAnglesToUnity( Vector3 vec )
+    {
+        return new Vector3( vec.x, vec.y, -vec.z );
+    }
+
     /// <summary>
     /// Wraps Angles that are above 180
     /// </summary>
@@ -264,6 +269,11 @@ public class Helper
         string z = ReplaceComma( isUnity ? vec.z :  vec.y + offset.z );
 
         return isEntFile ? $"{x} {y} {z}" : $"< {x}, {y}, {z} >";
+    }
+
+    public static Vector3 ConvertApexOriginToUnity( Vector3 vec )
+    {
+        return new Vector3( vec.y, vec.z, -vec.x );
     }
 
     /// <summary>

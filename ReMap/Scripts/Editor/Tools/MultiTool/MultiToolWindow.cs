@@ -16,7 +16,8 @@ namespace MultiTool
             ModelSwap,
             Serialize,
             ObjectInfo,
-            ComponentTransfer
+            ComponentTransfer,
+            ModelPosition
         }
         internal protected static MultiToolWindow windowInstance;
         private static ToolType toolTypeSelection = ToolType.DistanceMeter;
@@ -69,6 +70,7 @@ namespace MultiTool
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
                 CreateButton( "Component Transfer Tool", "", () => ChangeToolType( ToolType.ComponentTransfer ), 194 );
+                CreateButton( "Model Position Tool", "", () => ChangeToolType( ToolType.ModelPosition ), 194 );
             GUILayout.EndHorizontal();
         }
 
@@ -83,6 +85,7 @@ namespace MultiTool
                 case ToolType.Serialize: SerializeTool.OnGUI(); break;
                 case ToolType.ObjectInfo: ObjectInfo.OnGUI(); break;
                 case ToolType.ComponentTransfer: ComponentTransfer.OnGUI(); break;
+                case ToolType.ModelPosition: ModelPosition.OnGUI(); break;
             }
         }
 
@@ -133,6 +136,12 @@ namespace MultiTool
                     windowInstance.minSize = new Vector2( 600, 360 );
                     windowInstance.maxSize = new Vector2( 600, 360 );
                     toolInfo = "Component Transfer Tool:";
+                    break;
+
+                case ToolType.ModelPosition:
+                    windowInstance.minSize = new Vector2( 600, 200 );
+                    windowInstance.maxSize = new Vector2( 600, 200 );
+                    toolInfo = "Model Position Tool:";
                 break;
             }
         }

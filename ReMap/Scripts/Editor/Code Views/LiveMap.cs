@@ -31,6 +31,8 @@ namespace CodeViewsWindow
         public static List< String > Commands;
         public static bool IsSending = false;
         static IntPtr m_hEngine;
+        public static Vector3 PlayerInfoOrigin;
+        public static Vector3 PlayerInfoAngles;
 
         public static int commandDelay = 50;
 
@@ -59,6 +61,11 @@ namespace CodeViewsWindow
         public static bool ApexProcessIsActive()
         {
             return m_hEngine != IntPtr.Zero;
+        }
+
+        public static void External_FindApexWindow()
+        {
+            m_hEngine = FindApexWindow();
         }
 
         public static void SendCommandToApex(string command)
@@ -249,7 +256,12 @@ namespace CodeViewsWindow
             return code.ToString();
         }
 
-        internal static async void GetApexPlayerInfo( PageType pageType = PageType.SQUIRREL )
+        internal static void GetApexPlayerInfo( bool ignoreCodeViews )
+        {
+            GetApexPlayerInfo( PageType.SQUIRREL, ignoreCodeViews );
+        }
+
+        internal static async void GetApexPlayerInfo( PageType pageType = PageType.SQUIRREL, bool ignoreCodeViews = false )
         {
             m_hEngine = FindApexWindow();
             if ( !ApexProcessIsActive() )
@@ -299,15 +311,22 @@ namespace CodeViewsWindow
 
                 if ( float.TryParse( value[0].Replace( ".", "," ), out x ) && float.TryParse( value[1].Replace( ".", "," ), out y ) && float.TryParse( value[2].Replace( ".", "," ), out z ) )
                 {
-                    switch ( pageType )
+                    if ( !ignoreCodeViews )
                     {
-                        case PageType.SQUIRREL:
-                            CodeViewsWindow.StartingOffset = new Vector3( x, y, z );
-                            break;
+                        switch ( pageType )
+                        {
+                            case PageType.SQUIRREL:
+                                CodeViewsWindow.StartingOffset = new Vector3( x, y, z );
+                                break;
 
-                        case PageType.ENT:
-                            CodeViewsWindow.InfoPlayerStartOrigin  = new Vector3( x, y, z );
-                        break;
+                            case PageType.ENT:
+                                CodeViewsWindow.InfoPlayerStartOrigin  = new Vector3( x, y, z );
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        PlayerInfoOrigin = new Vector3( x, y, z );
                     }
                 }
 
@@ -315,14 +334,21 @@ namespace CodeViewsWindow
 
                 if ( float.TryParse( value[0].Replace( ".", "," ), out x ) && float.TryParse( value[1].Replace( ".", "," ), out y ) && float.TryParse( value[2].Replace( ".", "," ), out z ) )
                 {
-                    switch ( pageType )
+                    if ( !ignoreCodeViews )
                     {
-                        case PageType.SQUIRREL:
-                            break;
+                        switch ( pageType )
+                        {
+                            case PageType.SQUIRREL:
+                                break;
 
-                        case PageType.ENT:
-                            CodeViewsWindow.InfoPlayerStartAngles = new Vector3( x, y, z );
-                        break;
+                            case PageType.ENT:
+                                CodeViewsWindow.InfoPlayerStartAngles = new Vector3( x, y, z );
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        PlayerInfoAngles = new Vector3( x, y, z );
                     }
                 }
 

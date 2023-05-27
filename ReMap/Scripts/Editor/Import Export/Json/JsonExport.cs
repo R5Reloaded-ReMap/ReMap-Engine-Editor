@@ -149,6 +149,8 @@ namespace ImportExport.Json
             jsonData.Sounds = new List< SoundClassData >();
             jsonData.CameraPaths = new List< CameraPathClassData >();
             jsonData.PlayerSpawns = new List< UOPlayerSpawnClassData >();
+            jsonData.RespawnableHeals = new List< RespawnableHealClassData >();
+            jsonData.SpeedBoosts = new List< SpeedBoostClassData >();
         }
     }
 }

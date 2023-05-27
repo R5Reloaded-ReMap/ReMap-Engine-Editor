@@ -407,6 +407,29 @@ namespace ImportExport.Json
                     else TransferDataToClass( UOPlayerSpawnData, UOPlayerSpawnScript );
                     break;
 
+                case ObjectType.RespawnableHeal:
+                    RespawnableHealClassData respawnableHealData = ( RespawnableHealClassData )( object ) scriptData;
+                    RespawnableHealScript respawnableHealScript = ( RespawnableHealScript ) Helper.GetComponentByEnum( obj, objectType );
+                    respawnableHealData.Name = UnityInfo.GetObjName( obj );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( respawnableHealScript, respawnableHealData );
+                    }
+                    else TransferDataToClass( respawnableHealData, respawnableHealScript );
+                    break;
+
+                case ObjectType.SpeedBoost:
+                    SpeedBoostClassData speedBoostData = ( SpeedBoostClassData )( object ) scriptData;
+                    SpeedBoostScript speedBoostScript = ( SpeedBoostScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( speedBoostScript, speedBoostData );
+                    }
+                    else TransferDataToClass( speedBoostData, speedBoostScript );
+                    break;
+
                 default: return;
             }
         }
@@ -597,6 +620,22 @@ namespace ImportExport.Json
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.PlayerSpawns, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.PlayerSpawns ); break;
                         case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.PlayerSpawns, selectionOnly ); break;
+                    }
+                    break;
+                case ObjectType.RespawnableHeal:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.RespawnableHeals, x => x.PathString ); break;
+                        case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.RespawnableHeals ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.RespawnableHeals, selectionOnly ); break;
+                    }
+                    break;
+                case ObjectType.SpeedBoost:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.SpeedBoosts, x => x.PathString ); break;
+                        case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.SpeedBoosts ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.SpeedBoosts, selectionOnly ); break;
                     }
                     break;
 

@@ -33,6 +33,8 @@ namespace ImportExport
         public List< SoundClassData > Sounds;
         public List< CameraPathClassData > CameraPaths;
         public List< UOPlayerSpawnClassData > PlayerSpawns;
+        public List< RespawnableHealClassData > RespawnableHeals;
+        public List< SpeedBoostClassData > SpeedBoosts;
     }
 
     /// <summary>
@@ -308,6 +310,31 @@ namespace ImportExport
 
     [Serializable]
     public class UOPlayerSpawnClassData : GlobalClassData
+    {
+        // Stub script
+    }
+
+    [Serializable]
+    public class RespawnableHealClassData : GlobalClassData
+    {
+        public string Name;
+        public float RespawnTime;
+        public float HealDuration;
+        public bool Progressive;
+    }
+
+    [Serializable]
+    public class SpeedBoostClassData : GlobalClassData
+    {
+        public Color32 Color;
+        public float RespawnTime;
+        public float Strengh;
+        public float Duration;
+        public float FadeTime;
+    }
+
+    [Serializable]
+    public class EmptyClassData : GlobalClassData
     {
         // Stub script
     }

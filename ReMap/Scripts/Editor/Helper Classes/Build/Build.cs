@@ -73,6 +73,9 @@ namespace Build
                 case ObjectType.Prop:
                     AppendCode( ref code, await BuildProp.BuildPropObjects( objectData, buildType ), 0 );
                     break;
+                case ObjectType.RespawnableHeal:
+                    AppendCode( ref code, await BuildRespawnableHeal.BuildRespawnableHealObjects( objectData, buildType ), 0 );
+                    break;
                 case ObjectType.SingleDoor:
                     AppendCode( ref code, await BuildSingleDoor.BuildSingleDoorObjects( objectData, buildType ), 0 );
                     break;
@@ -84,6 +87,9 @@ namespace Build
                     break;
                 case ObjectType.SpawnPoint:
                     AppendCode( ref code, await BuildSpawnPoint.BuildSpawnPointObjects( objectData, buildType ), 0 );
+                    break;
+                case ObjectType.SpeedBoost:
+                    AppendCode( ref code, await BuildSpeedBoost.BuildSpeedBoostObjects( objectData, buildType ), 0 );
                     break;
                 case ObjectType.TextInfoPanel:
                     AppendCode( ref code, await BuildTextInfoPanel.BuildTextInfoPanelObjects( objectData, buildType ), 0 );

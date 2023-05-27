@@ -97,6 +97,7 @@ namespace ImportExport.Json
                 case NonVerticalZipLineClassData data: return data.Name;
                 case WeaponRackClassData data: return data.Name;
                 case BubbleShieldClassData data: return data.Name;
+                case RespawnableHealClassData data: return data.Name;
             }
 
             return Helper.GetObjRefWithEnum( objectType );

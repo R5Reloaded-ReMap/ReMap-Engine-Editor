@@ -60,6 +60,8 @@ public enum ObjectType
     LootBin,
     WeaponRack,
     Trigger,
+    RespawnableHeal,
+    SpeedBoost,
     BubbleShield,
     NewLocPair,
     SpawnPoint,
@@ -91,9 +93,11 @@ public class Helper
         { ObjectType.NewLocPair,             new ObjectTypeData( new[] { "custom_new_loc_pair",          "NewLocPair",         "New Loc Pair"         }, typeof( NewLocPairScript ),       typeof( NewLocPairClassData ) ) },
         { ObjectType.NonVerticalZipLine,     new ObjectTypeData( new[] { "_non_vertical_zipline",        "NonVerticalZipLine", "Non Vertical ZipLine" }, typeof( DrawNonVerticalZipline ), typeof( NonVerticalZipLineClassData ) ) },
         { ObjectType.Prop,                   new ObjectTypeData( new[] { "mdl",                          "Prop",               "Prop"                 }, typeof( PropScript ),             typeof( PropClassData ) ) },
+        { ObjectType.RespawnableHeal,        new ObjectTypeData( new[] { "custom_respawnable_heal_",     "RespawnableHeal",    "Respawnable Heal"     }, typeof( RespawnableHealScript ),  typeof( RespawnableHealClassData ) ) },
         { ObjectType.SingleDoor,             new ObjectTypeData( new[] { "custom_single_door",           "SingleDoor",         "Single Door"          }, typeof( DoorScript ),             typeof( SingleDoorClassData ) ) },
         { ObjectType.Sound,                  new ObjectTypeData( new[] { "custom_sound",                 "Sound",              "Sound"                }, typeof( SoundScript ),            typeof( SoundClassData ) ) },
         { ObjectType.SpawnPoint,             new ObjectTypeData( new[] { "custom_info_spawnpoint_human", "SpawnPoint",         "Spawn Point"          }, typeof( SpawnPointScript ),       typeof( SpawnPointClassData ) ) },
+        { ObjectType.SpeedBoost,             new ObjectTypeData( new[] { "custom_speed_boost",           "SpeedBoost",         "Speed Boost"          }, typeof( SpeedBoostScript ),       typeof( SpeedBoostClassData ) ) },
         { ObjectType.TextInfoPanel,          new ObjectTypeData( new[] { "custom_text_info_panel",       "TextInfoPanel",      "Text Info Panel"      }, typeof( TextInfoPanelScript ),    typeof( TextInfoPanelClassData ) ) },
         { ObjectType.Trigger,                new ObjectTypeData( new[] { "trigger_cylinder",             "Trigger",            "Trigger"              }, typeof( TriggerScripting ),       typeof( TriggerClassData ) ) },
         { ObjectType.VerticalDoor,           new ObjectTypeData( new[] { "custom_vertical_door",         "VerticalDoor",       "Vertical Door"        }, typeof( VerticalDoorScript ),     typeof( VerticalDoorClassData ) ) },
@@ -580,7 +584,7 @@ public class Helper
             default: return null;
         }
 
-        if ( IsValid( loadedPrefabResource ) ) return null;
+        if ( !IsValid( loadedPrefabResource ) ) return null;
         
         var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
 

@@ -161,8 +161,15 @@ namespace Build
                     break;
 
                 case ObjectType.JumpTower:
+                case ObjectType.SpeedBoost:
 
                     objectDataLength = objectDataLength * 4;
+
+                    break;
+
+                case ObjectType.RespawnableHeal:
+
+                    objectDataLength = objectDataLength * 6;
 
                     break;
 

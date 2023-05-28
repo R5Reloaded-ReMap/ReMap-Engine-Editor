@@ -51,7 +51,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    ReMapCreateRespawnableHeal( {Helper.BuildOrigin( obj )}, {healType}, {Helper.ReplaceComma( script.RespawnTime )}, {Helper.ReplaceComma( script.HealDuration )}, {Helper.BoolToLower( script.Progressive )} )" );
+                        AppendCode( ref code, $"    ReMapCreateRespawnableHeal( {Helper.BuildOrigin( obj )}, {healType}, {Helper.ReplaceComma( script.RespawnTime )}, {Helper.ReplaceComma( script.HealDuration )}, {Helper.ReplaceComma( script.HealAmount )}, {Helper.BoolToLower( script.Progressive )} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -67,7 +67,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapCreateRespawnableHeal( {Helper.BuildOrigin( obj, false, true )}, {healType}, {Helper.ReplaceComma( script.RespawnTime )}, {Helper.ReplaceComma( script.HealDuration )}, {Helper.BoolToLower( script.Progressive )}, true )" );
+                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapCreateRespawnableHeal( {Helper.BuildOrigin( obj, false, true )}, {healType}, {Helper.ReplaceComma( script.RespawnTime )}, {Helper.ReplaceComma( script.HealDuration )}, {Helper.ReplaceComma( script.HealAmount )}, {Helper.BoolToLower( script.Progressive )}, true )" );
                     break;
                 }
             }
@@ -105,8 +105,10 @@ namespace Build
         {
             switch ( UnityInfo.GetObjName( obj.name ) )
             {
-                case "custom_respawnable_heal_medkit": return "eReMapHealType.Heal";
+                case "custom_respawnable_heal_medkit":  return "eReMapHealType.Heal";
+                case "custom_respawnable_heal_seringe": return "eReMapHealType.HealSmall";
                 case "custom_respawnable_heal_battery": return "eReMapHealType.Shield";
+                case "custom_respawnable_heal_cell":    return "eReMapHealType.ShieldSmall";
                 case "custom_respawnable_heal_phoenix": return "eReMapHealType.Both";
             }
 

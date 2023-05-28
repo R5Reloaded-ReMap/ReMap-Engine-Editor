@@ -320,6 +320,7 @@ namespace ImportExport
         public string Name;
         public float RespawnTime;
         public float HealDuration;
+        public int HealAmount;
         public bool Progressive;
     }
 

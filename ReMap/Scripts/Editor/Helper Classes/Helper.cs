@@ -529,6 +529,11 @@ public class Helper
         GenerateIgnore = objectTypeArray.ToArray();
     }
 
+    public static GameObject[] GetAllObjectTypeInScene( bool selection = false )
+    {
+        return Helper.GetAllObjectTypeWithEnum( Helper.GetAllObjectType(), selection );
+    }
+
     public static GameObject[] GetAllObjectTypeWithEnum( ObjectType[] objectTypes, bool selectionOnly = false )
     {
         return objectTypes.SelectMany( objectType => GetAllObjectTypeWithEnum( objectType, selectionOnly ) ).ToArray();

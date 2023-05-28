@@ -106,7 +106,7 @@ namespace CodeViewsWindow
             AddToGameQueue( $"sv_cheats 1" );
             AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999" );
             AddToGameQueue( $"cl_quota_stringCmdsPerSecond 9999999" );
-            AddToGameQueue( $"script ReMapRemoveAllEnts()" );
+            AddToGameQueue( $"script External_ReMapRemoveAllEnts()" );
 
             CodeViewsWindow.SendedEntityCount = 0;
 
@@ -274,7 +274,7 @@ namespace CodeViewsWindow
 
             ResetCommandList();
 
-            AddToGameQueue( $"script ReMapWritePlayerInfoToFile()" );
+            AddToGameQueue( $"script External_ReMapWritePlayerInfoToFile()" );
 
             SendCommands();
 
@@ -359,9 +359,9 @@ namespace CodeViewsWindow
         public static void RespawnPlayers()
         {
             string[] data = GetLiveMapCodePlayerSpawnData();
-            AddToGameQueue( $"script ReMapSetVectorArray01( {data[0]} )" );
-            AddToGameQueue( $"script ReMapSetVectorArray02( {data[1]} )" );
-            AddToGameQueue( $"script ReMapTeleportToMap()" );
+            AddToGameQueue( $"script External_ReMapSetVectorArray01( {data[0]} )" );
+            AddToGameQueue( $"script External_ReMapSetVectorArray02( {data[1]} )" );
+            AddToGameQueue( $"script External_ReMapTeleportToMap()" );
         }
 
         private static string[] GetLiveMapCodePlayerSpawnData()

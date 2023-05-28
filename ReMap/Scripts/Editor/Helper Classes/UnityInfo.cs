@@ -8,7 +8,7 @@ using UnityEngine;
 public class UnityInfo
 {
     public static string ReMapVersion = "Version 1.0.2";
-    public static string JsonVersion = "1.0.4";
+    public static string JsonVersion = "1.0.5";
 
     // Path Utility
     public static string currentDirectoryPath =        Directory.GetCurrentDirectory().Replace("\\","/");

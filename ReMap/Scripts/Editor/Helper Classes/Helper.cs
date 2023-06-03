@@ -132,8 +132,8 @@ public class Helper
 
     private static readonly Dictionary< string, string > LocalizedString = new Dictionary< string, string >
     {
-        { "#FUNCTION_NAME", CodeViews.CodeViewsWindow.functionName },
         { "#FUNCTION_NAME_PRECACHE", $"{CodeViews.CodeViewsWindow.functionName}_Init" },
+        { "#FUNCTION_NAME", CodeViews.CodeViewsWindow.functionName }
     };
 
     public static readonly Dictionary< string, ( string SearchTerm, Func< GameObject, string > ReplacementFunc ) > LocalizedStringTrigger = new Dictionary< string, ( string, Func< GameObject, string > ) >

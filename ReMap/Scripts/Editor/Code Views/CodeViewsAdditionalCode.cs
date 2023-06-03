@@ -57,7 +57,7 @@ namespace CodeViews
 
         void OnGUI()
         {
-            if ( additionalCode == null ) return;
+            if ( !Helper.IsValid( additionalCode ) ) return;
 
             bool isEmptyCode = true;
 
@@ -110,9 +110,15 @@ namespace CodeViews
 
         internal static void AddNewCode()
         {
-            activeCode.Content.Add( NewAdditionalCodeContent() );
+            AdditionalCodeContent newContent = NewAdditionalCodeContent();
 
-            tabCodeIdx = toolbarCodeTab.Length - 1;
+            activeCode.Content.Add( newContent );
+
+            int position = activeCode.Content.IndexOf( newContent ) - 1;
+
+            if ( position != -1 ) tabCodeIdx = position;
+
+            UnityInfo.Printt( position.ToString() );
 
             SaveJson();
         }
@@ -132,21 +138,7 @@ namespace CodeViews
         {
             if ( string.IsNullOrEmpty( entry ) ) return;
 
-            string newEntry = entry; int idx = 1; bool nameExists;
-
-            do
-            {
-                nameExists = false;
-                foreach ( AdditionalCodeContent content in activeCode.Content )
-                {
-                    if ( content.Name == newEntry )
-                    {
-                        nameExists = true;
-                        newEntry = $"{entry} ({++idx})";
-                        break;
-                    }
-                }
-            } while ( nameExists );
+            string newEntry = FindUniqueName( entry );
 
             activeCode.Content[ tabCodeIdx ].Name = newEntry;
 
@@ -163,6 +155,27 @@ namespace CodeViews
             }
 
             entry = "";
+        }
+
+        private static string FindUniqueName( string name )
+        {
+            string newEntry = name; int idx = 1; bool nameExists;
+
+            do
+            {
+                nameExists = false;
+                foreach ( AdditionalCodeContent content in activeCode.Content )
+                {
+                    if ( content.Name == newEntry )
+                    {
+                        nameExists = true;
+                        newEntry = $"{name} ({++idx})";
+                        break;
+                    }
+                }
+            } while ( nameExists );
+
+            return newEntry;
         }
 
         public static AdditionalCode FindAdditionalCode()
@@ -210,7 +223,7 @@ namespace CodeViews
         {
             AdditionalCodeContent content = new AdditionalCodeContent();
 
-            content.Name = "unnamed";
+            content.Name = FindUniqueName( "unnamed" );
             content.Code = "";
 
             return content;
@@ -218,7 +231,7 @@ namespace CodeViews
 
         internal static void SaveJson()
         {
-            if ( additionalCode == null ) return;
+            if ( !Helper.IsValid( additionalCode ) ) return;
 
             string json = JsonUtility.ToJson( additionalCode );
             System.IO.File.WriteAllText( relativePathAdditionalCode, json );

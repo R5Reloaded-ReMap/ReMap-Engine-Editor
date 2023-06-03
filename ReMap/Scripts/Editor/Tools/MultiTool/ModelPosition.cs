@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
 
-using static CodeViewsWindow.LiveMap;
+using static CodeViews.LiveMap;
 using static WindowUtility.WindowUtility;
 
 namespace MultiTool

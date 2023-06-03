@@ -12,7 +12,7 @@ using static Build.Build;
 
 using WindowUtility;
 
-namespace CodeViewsWindow
+namespace CodeViews
 {
     internal enum PageType
     {

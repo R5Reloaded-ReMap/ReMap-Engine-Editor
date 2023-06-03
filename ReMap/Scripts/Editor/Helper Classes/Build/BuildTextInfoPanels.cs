@@ -65,7 +65,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateTextInfoPanel(\"{script.Title}\",\"{script.Description}\",{Helper.BuildOrigin( obj, false, true )},{Helper.BuildAngles( obj )},{Helper.BoolToLower( script.showPIN )},{Helper.ReplaceComma( script.Scale )})");
+                        CodeViews.LiveMap.AddToGameQueue($"script MapEditor_CreateTextInfoPanel(\"{script.Title}\",\"{script.Description}\",{Helper.BuildOrigin( obj, false, true )},{Helper.BuildAngles( obj )},{Helper.BoolToLower( script.showPIN )},{Helper.ReplaceComma( script.Scale )})");
                     break;
                 }
             }

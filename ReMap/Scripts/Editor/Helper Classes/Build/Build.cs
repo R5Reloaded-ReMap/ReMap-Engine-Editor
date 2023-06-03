@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-using static CodeViewsWindow.CodeViewsWindow;
+using static CodeViews.CodeViewsWindow;
 
 namespace Build
 {

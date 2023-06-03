@@ -13,13 +13,6 @@ namespace Build
 {
     public class BuildTrigger
     {
-        private enum LocalizationType
-        {
-            Origin,
-            Angles,
-            Offset
-        }
-
         public static async Task< StringBuilder > BuildTriggerObjects( GameObject[] objectData, BuildType buildType )
         {
             StringBuilder code = new StringBuilder(); int idx = 0;
@@ -67,9 +60,7 @@ namespace Build
 
                         if ( TEnterCallback != "" )
                         {
-                            ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Origin );
-                            ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Angles );
-                            ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Offset );
+                            ChangeLocalization( ref TEnterCallback, helper );
                             AppendCode( ref code, $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)" );
                             AppendCode( ref code,  "    {" );
                             AppendCode( ref code, $"    {TEnterCallback}" );
@@ -78,9 +69,7 @@ namespace Build
 
                         if ( TLeaveCallback != "" )
                         {
-                            ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Origin );
-                            ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Angles );
-                            ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Offset );
+                            ChangeLocalization( ref TLeaveCallback, helper );
                             AppendCode( ref code, $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)" );
                             AppendCode( ref code,  "    {" );
                             AppendCode( ref code, $"    {TLeaveCallback}" );
@@ -139,33 +128,23 @@ namespace Build
             return code;
         }
 
-        private static void ChangeLocalization( ref string callback, GameObject obj, LocalizationType type )
+        private static void ChangeLocalization( ref string callback, GameObject obj )
         {
-            string searchTerm = "";
-            string replacedString = "";
-
-            switch ( type )
+            foreach ( string key in Helper.LocalizedStringTrigger.Keys )
             {
-                case LocalizationType.Origin:
-                    searchTerm = "#HO";
-                    replacedString = obj != null && obj.activeSelf ? Helper.BuildOrigin( obj ) : "< 0, 0, 0 >";
-                    break;
-                case LocalizationType.Angles:
-                    searchTerm = "#HA";
-                    replacedString = obj != null && obj.activeSelf ? Helper.BuildOrigin( obj ) : "< 0, 0, 0 >";
-                    break;
-                case LocalizationType.Offset:
-                    searchTerm = "#HF";
-                    replacedString = "+ startingorg";
-                break;
-            }
+                if ( Helper.LocalizedStringTrigger.TryGetValue( key, out var mapping ) )
+                {
+                    string searchTerm = mapping.SearchTerm;
+                    string replacedString = mapping.ReplacementFunc( obj );
 
-            int index = callback.IndexOf( searchTerm );
+                    int index = callback.IndexOf( searchTerm );
 
-            while ( index >= 0 )
-            {
-                callback = callback.Substring(0, index) + replacedString + callback.Substring(index + searchTerm.Length);
-                index = callback.IndexOf(searchTerm, index + replacedString.Length);
+                    while ( index >= 0 )
+                    {
+                        callback = callback.Substring( 0, index ) + replacedString + callback.Substring( index + searchTerm.Length );
+                        index = callback.IndexOf( searchTerm, index + replacedString.Length );
+                    }
+                }
             }
         }
     }

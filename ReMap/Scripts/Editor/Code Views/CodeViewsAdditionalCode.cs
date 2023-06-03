@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 using WindowUtility;
 using static WindowUtility.WindowUtility;
 
-namespace CodeViewsWindow
+namespace CodeViews
 {
     public class AdditionalCodeWindow : EditorWindow
     {

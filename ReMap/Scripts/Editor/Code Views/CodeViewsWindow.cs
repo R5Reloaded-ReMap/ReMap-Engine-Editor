@@ -14,7 +14,7 @@ using Build;
 using static Build.Build;
 using WindowUtility;
 
-namespace CodeViewsWindow
+namespace CodeViews
 {
     internal enum AdditionalCodeType
     {
@@ -370,20 +370,21 @@ namespace CodeViewsWindow
 
         private static void ObjectCount()
         {
-            string info;
+            string info = "Entity Count";
 
             switch ( tab )
             {
-                case 2:
+                case 2: // Precache Code
                     info = "Models Precached Count";
                     break;
 
-                case 4:
-                    info = "Total Paths Count";
-                    break;
-
-                default:
-                    info = "Entity Count";
+                case 4: // Other Code
+                    switch ( tabOther )
+                    {
+                        case 0: // Camera Path Code
+                            info = "Paths Count";
+                        break;
+                    }
                 break;
             }
 
@@ -571,9 +572,15 @@ namespace CodeViewsWindow
         {
             if ( !verify || string.IsNullOrEmpty( codeToAdd ) ) return;
 
-            string precache = CodeViewsWindow.ShowPrecacheEnable() ? "_Init" : "";
+            string codeToAdd_ = codeToAdd;
 
-            codeToAdd = codeToAdd.Replace( "#FUNCTION_NAME", CodeViewsWindow.functionName + precache );
+            Helper.ReplaceLocalizedString( ref codeToAdd_ );
+
+            codeToAdd = codeToAdd_;
+
+            //string precache = CodeViewsWindow.ShowPrecacheEnable() ? "_Init" : "";
+
+            //codeToAdd = codeToAdd.Replace( "#FUNCTION_NAME", CodeViewsWindow.functionName + precache );
             
             switch ( type )
             {

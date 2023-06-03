@@ -72,7 +72,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script MapEditor_CreateLinkedZipline( {function}, true )" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script MapEditor_CreateLinkedZipline( {function}, true )" );
                     break;
                 }
             }

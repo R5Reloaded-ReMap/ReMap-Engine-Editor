@@ -22,7 +22,7 @@ public class FileWrite
 
             if ( !File.Exists( output ) ) File.Create( output );
 
-            string file = await CodeViewsWindow.LiveMap.BuildScriptFile();
+            string file = await CodeViews.LiveMap.BuildScriptFile();
 
             File.WriteAllText( output, file );
         }

@@ -14,7 +14,7 @@ using UnityEngine.SceneManagement;
 using Build;
 using ImportExport;
 using static Build.Build;
-using static CodeViewsWindow.CodeViewsWindow;
+using static CodeViews.CodeViewsWindow;
 using static ImportExport.SharedFunction;
 
 public enum StartingOriginType
@@ -121,29 +121,60 @@ public class Helper
 
     // Gen Settings
     public static readonly Dictionary< string, bool > GenerateObjects = ObjectGenerateDictionaryInit();
+
     // Always Hide Unity Only Objects
     public static readonly ObjectType[] GenerateIgnoreStatic = new ObjectType[]
     {
         ObjectType.LiveMapCodePlayerSpawn
     };
+
     public static ObjectType[] GenerateIgnore = new ObjectType[0];
+
+    private static readonly Dictionary< string, string > LocalizedString = new Dictionary< string, string >
+    {
+        { "#FUNCTION_NAME", CodeViews.CodeViewsWindow.functionName },
+        { "#FUNCTION_NAME_PRECACHE", $"{CodeViews.CodeViewsWindow.functionName}_Init" },
+    };
+
+    public static readonly Dictionary< string, ( string SearchTerm, Func< GameObject, string > ReplacementFunc ) > LocalizedStringTrigger = new Dictionary< string, ( string, Func< GameObject, string > ) >
+    {
+        ["#TRIGGER_H_ORIGIN"] = ( "#TRIGGER_H_ORIGIN", obj => obj != null && obj.activeSelf ? Helper.BuildOrigin( obj ) : "< 0, 0, 0 >" ),
+        ["#TRIGGER_H_ANGLES"] = ( "#TRIGGER_H_ANGLES", obj => obj != null && obj.activeSelf ? Helper.BuildAngles( obj ) : "< 0, 0, 0 >" ),
+        ["#TRIGGER_H_OFFSET"] = ( "#TRIGGER_H_OFFSET", obj => "+ startingorg" )
+    };
 
     public static bool UseStartingOffset()
     {
-        return CodeViewsWindow.MenuInit.IsEnable( CodeViewsWindow.CodeViewsWindow.OffsetMenuOffset );
+        return CodeViews.MenuInit.IsEnable( CodeViews.CodeViewsWindow.OffsetMenuOffset );
     }
     public static bool ShowStartingOffset()
     {
-        return CodeViewsWindow.MenuInit.IsEnable( CodeViewsWindow.CodeViewsWindow.OffsetMenuShowOffset );
+        return CodeViews.MenuInit.IsEnable( CodeViews.CodeViewsWindow.OffsetMenuShowOffset );
     }
 
     public static void SetUseStartingOffset( bool value )
     {
-        CodeViewsWindow.MenuInit.SetBool( CodeViewsWindow.CodeViewsWindow.OffsetMenuOffset, value );
+        CodeViews.MenuInit.SetBool( CodeViews.CodeViewsWindow.OffsetMenuOffset, value );
     }
     public static void SetShowStartingOffset( bool value )
     {
-        CodeViewsWindow.MenuInit.SetBool( CodeViewsWindow.CodeViewsWindow.OffsetMenuShowOffset, value );
+        CodeViews.MenuInit.SetBool( CodeViews.CodeViewsWindow.OffsetMenuShowOffset, value );
+    }
+
+    public static void ReplaceLocalizedString( ref StringBuilder code )
+    {
+        foreach ( string key in LocalizedString.Keys )
+        {
+            code = code.Replace( key, LocalizedString[ key ] );
+        }
+    }
+
+    public static void ReplaceLocalizedString( ref string code )
+    {
+        foreach ( string key in LocalizedString.Keys )
+        {
+            code = code.Replace( key, LocalizedString[ key ] );
+        }
     }
 
     public struct NewDataTable
@@ -610,22 +641,22 @@ public class Helper
 
     public static void IncrementEntityCount( int value = 1 )
     {
-        CodeViewsWindow.CodeViewsWindow.EntityCount += value;
+        CodeViews.CodeViewsWindow.EntityCount += value;
     }
 
     public static void RemoveEntityCount( int value = 1 )
     {
-        CodeViewsWindow.CodeViewsWindow.EntityCount -= value;
+        CodeViews.CodeViewsWindow.EntityCount -= value;
     }
 
     public static void IncrementSendedEntityCount( int value = 1 )
     {
-        CodeViewsWindow.CodeViewsWindow.SendedEntityCount += value;
+        CodeViews.CodeViewsWindow.SendedEntityCount += value;
     }
 
     public static void RemoveSendedEntityCount( int value = 1 )
     {
-        CodeViewsWindow.CodeViewsWindow.SendedEntityCount -= value;
+        CodeViews.CodeViewsWindow.SendedEntityCount -= value;
     }
 
     public static bool IsObjectFromTag( GameObject obj, ObjectType objectType )

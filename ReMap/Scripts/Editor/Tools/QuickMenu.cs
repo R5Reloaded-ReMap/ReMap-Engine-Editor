@@ -3,7 +3,7 @@ using UnityEditor;
 using ThemesPlugin;
 
 using AssetLibraryManager;
-using CodeViewsWindow;
+using CodeViews;
 using ImportExport.Json;
 
 public class QuickMenu : EditorWindow
@@ -34,7 +34,7 @@ public class QuickMenu : EditorWindow
         if (utilfold)
         {
             if (GUILayout.Button("Code Views", GUILayout.ExpandWidth(true)))
-                CodeViewsWindow.CodeViewsWindow.Init();
+                CodeViews.CodeViewsWindow.Init();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
         GUILayout.EndVertical();

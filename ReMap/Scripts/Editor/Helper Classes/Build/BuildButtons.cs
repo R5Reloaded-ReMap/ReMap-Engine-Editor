@@ -65,7 +65,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue($"script AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + " { }, true)");
+                        CodeViews.LiveMap.AddToGameQueue($"script AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + " { }, true)");
                     break;
                 }
             }

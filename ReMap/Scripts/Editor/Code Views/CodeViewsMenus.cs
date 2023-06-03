@@ -4,7 +4,7 @@ using UnityEngine;
 
 using WindowUtility;
 
-namespace CodeViewsWindow
+namespace CodeViews
 {
     public enum MenuType
     {

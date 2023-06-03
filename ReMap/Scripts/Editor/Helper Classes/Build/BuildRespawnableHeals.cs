@@ -67,7 +67,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script ReMapCreateRespawnableHeal( {Helper.BuildOrigin( obj, false, true )}, {healType}, {Helper.ReplaceComma( script.RespawnTime )}, {Helper.ReplaceComma( script.HealDuration )}, {Helper.ReplaceComma( script.HealAmount )}, {Helper.BoolToLower( script.Progressive )}, true )" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script ReMapCreateRespawnableHeal( {Helper.BuildOrigin( obj, false, true )}, {healType}, {Helper.ReplaceComma( script.RespawnTime )}, {Helper.ReplaceComma( script.HealDuration )}, {Helper.ReplaceComma( script.HealAmount )}, {Helper.BoolToLower( script.Progressive )}, true )" );
                     break;
                 }
             }

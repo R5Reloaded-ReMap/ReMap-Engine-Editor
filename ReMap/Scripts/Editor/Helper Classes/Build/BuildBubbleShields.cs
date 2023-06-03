@@ -71,7 +71,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\", true )");
+                        CodeViews.LiveMap.AddToGameQueue($"script MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\", true )");
                     break;
                 }
             }

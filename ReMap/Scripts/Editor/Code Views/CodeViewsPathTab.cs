@@ -13,7 +13,7 @@ using Build;
 using static Build.Build;
 using WindowUtility;
 
-namespace CodeViewsWindow
+namespace CodeViews
 {
     public class CameraPathTab
     {

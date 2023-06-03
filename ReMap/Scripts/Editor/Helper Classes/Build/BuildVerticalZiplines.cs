@@ -119,15 +119,15 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapSetOrigin({Helper.BuildOrigin(script.rope_start.gameObject, false, true)}, {Helper.BuildOrigin(script.rope_end.gameObject, false, true)})" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapSetAngles({Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildAngles(script.rope_start.gameObject)})" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapSetBool([true,{Helper.BoolToLower( script.RestPoint )},{Helper.BoolToLower( script.IsMoving )}])" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapSetFloat([{Helper.ReplaceComma( script.FadeDistance, true )},{Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )},{Helper.ReplaceComma( script.AutoDetachStart )},{Helper.ReplaceComma( script.AutoDetachEnd )},{PanelTimerMin}, {PanelTimerMax}])" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapSetInt([{PreserveVelocity},{DropToBottom},{PushOffInDirectionX},{DetachEndOnSpawn},{DetachEndOnUse},{PanelMaxUse}])" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapSetVectorArray01({PanelOrigin})" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapSetVectorArray02({PanelAngles})" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapSetAssetArray01({PanelModels})" );
-                        CodeViewsWindow.LiveMap.AddToGameQueue( $"script External_ReMapCreateZiplineWithSettings()" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapSetOrigin({Helper.BuildOrigin(script.rope_start.gameObject, false, true)}, {Helper.BuildOrigin(script.rope_end.gameObject, false, true)})" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapSetAngles({Helper.BuildAngles(script.rope_start.gameObject)}, {Helper.BuildAngles(script.rope_start.gameObject)})" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapSetBool([true,{Helper.BoolToLower( script.RestPoint )},{Helper.BoolToLower( script.IsMoving )}])" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapSetFloat([{Helper.ReplaceComma( script.FadeDistance, true )},{Helper.ReplaceComma( script.Scale )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.SpeedScale )}, {Helper.ReplaceComma( script.LengthScale )},{Helper.ReplaceComma( script.AutoDetachStart )},{Helper.ReplaceComma( script.AutoDetachEnd )},{PanelTimerMin}, {PanelTimerMax}])" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapSetInt([{PreserveVelocity},{DropToBottom},{PushOffInDirectionX},{DetachEndOnSpawn},{DetachEndOnUse},{PanelMaxUse}])" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapSetVectorArray01({PanelOrigin})" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapSetVectorArray02({PanelAngles})" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapSetAssetArray01({PanelModels})" );
+                        CodeViews.LiveMap.AddToGameQueue( $"script External_ReMapCreateZiplineWithSettings()" );
                     break;
                 }
             }

@@ -113,7 +113,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViewsWindow.LiveMap.AddToGameQueue($"script MapEditor_CreateLootBin( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {skin}, true )");
+                        CodeViews.LiveMap.AddToGameQueue($"script MapEditor_CreateLootBin( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {skin}, true )");
                     break;
                 }
             }

@@ -83,7 +83,7 @@ public class UnityInfo
         string ext = extension ? ".prefab" : "";
         modelName = modelName.Replace( '#', '/' ).Replace( ".rmdl", "" ).Replace( ".prefab", "" );
         if ( modelName.IndexOf( "mdl/" ) != -1 ) modelName = modelName.Substring( modelName.IndexOf( "mdl/" ) );
-        return modelName.Replace( '/', '#' ) + ext;
+        return Helper.DeleteNewLine( modelName.Replace( '/', '#' ) ) + ext;
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public class UnityInfo
         string ext = extension ? ".rmdl" : "";
         modelName = modelName.Replace( '#', '/' ).Replace( ".rmdl", "" ).Replace( ".prefab", "" );
         if ( modelName.IndexOf( "mdl/" ) == -1 ) modelName = "mdl/" + modelName;
-        return modelName.Substring( modelName.IndexOf( "mdl/" ) ) + ext;
+        return Helper.DeleteNewLine( modelName.Substring( modelName.IndexOf( "mdl/" ) ) ) + ext;
     }
 
     /// <summary>

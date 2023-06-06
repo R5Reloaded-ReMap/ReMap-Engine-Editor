@@ -749,12 +749,17 @@ public class Helper
 
     public static string RemoveSpacesAfterChars( string str )
     {
-        return Regex.Replace( str, @"\s*([\[\](),<>])\s*", "$1"); // replace spaces around [, (, <, >, ), ] or ,
+        return Regex.Replace( str, @"\s*([\[\](),<>])\s*", "$1" ); // replace spaces around [, (, <, >, ), ] or ,
+    }
+
+    public static string DeleteNewLine( string str )
+    {
+        return str.Replace( "\r", "" ).Replace( "\n", "" );
     }
 
     public static string GetSceneName()
     {
-        return (SceneManager.GetActiveScene().name?.Replace(" ", "_") ?? "Unnamed");
+        return ( SceneManager.GetActiveScene().name ? .Replace( " ", "_" ) ?? "Unnamed" );
     }
 
     public static string ReMapCredit( bool noSpace = false )

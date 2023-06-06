@@ -577,10 +577,6 @@ namespace CodeViews
             Helper.ReplaceLocalizedString( ref codeToAdd_ );
 
             codeToAdd = codeToAdd_;
-
-            //string precache = CodeViewsWindow.ShowPrecacheEnable() ? "_Init" : "";
-
-            //codeToAdd = codeToAdd.Replace( "#FUNCTION_NAME", CodeViewsWindow.functionName + precache );
             
             switch ( type )
             {

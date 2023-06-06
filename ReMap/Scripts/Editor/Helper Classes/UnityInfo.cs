@@ -11,20 +11,22 @@ public class UnityInfo
     public static string JsonVersion = "1.0.5";
 
     // Path Utility
-    public static string currentDirectoryPath =        Directory.GetCurrentDirectory().Replace("\\","/");
-    public static string relativePathLods =            $"Assets/ReMap/Lods - Dont use these";
-    public static string relativePathLodsUtility =     $"{relativePathLods}/Utility";
-    public static string relativePathEmptyPrefab =     $"{relativePathLodsUtility}/EmptyPrefab.prefab";
-    public static string relativePathCubePrefab =      $"{relativePathLodsUtility}/Cube.prefab";
-    public static string relativePathModel =           $"{relativePathLods}/Models";
-    public static string relativePathMaterials =       $"{relativePathLods}/Materials";
-    public static string relativePathPrefabs =         $"Assets/Prefabs";
-    public static string relativePathAdditionalCode =  $"Assets/ReMap/Resources/AdditionalCode/additionalCode.json";
-    public static string relativePathRpakManager =     $"Assets/ReMap/Resources/RpakManager";
-    public static string relativePathRpakManagerList = $"{relativePathRpakManager}/rpakManagerList.json";
-    public static string relativePathJsonOffset =      $"{relativePathRpakManager}/prefabOffsetList.json";
-    public static string relativePathR5RPlayerInfo =    "\\platform\\scripts\\player_info.txt";
-    public static string relativePathR5RScripts =       "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
+    public static string currentDirectoryPath =            Directory.GetCurrentDirectory().Replace("\\","/");
+    public static string relativePathLods =                $"Assets/ReMap/Lods - Dont use these";
+    public static string relativePathLodsUtility =         $"{relativePathLods}/Utility";
+    public static string relativePathEmptyPrefab =         $"{relativePathLodsUtility}/EmptyPrefab.prefab";
+    public static string relativePathCubePrefab =          $"{relativePathLodsUtility}/Cube.prefab";
+    public static string relativePathModel =               $"{relativePathLods}/Models";
+    public static string relativePathMaterials =           $"{relativePathLods}/Materials";
+    public static string relativePathPrefabs =             $"Assets/Prefabs";
+    public static string relativePathAdditionalCode =      $"Assets/ReMap/Resources/AdditionalCode";
+    public static string relativePathAdditionalCodeJson =  $"{relativePathAdditionalCode}/additionalCode.json";
+    public static string relativePathAdditionalCodeInfo =  $"{relativePathAdditionalCode}/additionalCodeInfo.txt";
+    public static string relativePathRpakManager =         $"Assets/ReMap/Resources/RpakManager";
+    public static string relativePathRpakManagerList =     $"{relativePathRpakManager}/rpakManagerList.json";
+    public static string relativePathJsonOffset =          $"{relativePathRpakManager}/prefabOffsetList.json";
+    public static string relativePathR5RPlayerInfo =       "\\platform\\scripts\\player_info.txt";
+    public static string relativePathR5RScripts =          "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
 
 
     /// <summary>

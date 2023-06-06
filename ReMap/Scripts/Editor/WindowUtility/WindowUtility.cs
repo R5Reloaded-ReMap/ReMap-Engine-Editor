@@ -33,6 +33,8 @@ namespace WindowUtility
                     foreach ( var functionRef in functionRefs ) functionRef();
                 }
 
+                GUI.FocusControl( null );
+
                 return true;
             }
 

@@ -15,11 +15,18 @@ namespace LibrarySorter
         internal static string entry = "";
         internal static string allModelsDataName = "all_models";
         internal static LibraryData libraryData;
-        internal static string[] rpakTab = new string[0];
+        internal static string[][] rpakTab = new string[0][];
         internal static int tabIdx = 0;
         internal static int tabIdxTemp = 0;
         internal static int modelCount = 0;
         Vector2 scrollPos = Vector2.zero;
+
+        // Tab
+        private static int tabPerLine = 5;
+
+        // Page
+        private int itemsPerPage = 200;
+        private int currentPage = 0;
 
         public static void Init()
         {
@@ -45,17 +52,41 @@ namespace LibrarySorter
 
             if ( libraryData.RpakList[ tabIdx ].Name != allModelsDataName ) isAllModels = false;
 
-            GUILayout.BeginVertical( "box" );
-                tabIdx = GUILayout.Toolbar( tabIdx, rpakTab );
+            int start = currentPage * itemsPerPage;
+            int end = start + itemsPerPage;
+            int idx = 0;
 
-                if( tabIdx != tabIdxTemp )
+            GUILayout.BeginVertical( "box" );
+                GUILayout.BeginHorizontal();
+                    foreach ( RpakData data in libraryData.RpakList )
+                    {
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { tabIdx = idx; } );
+                        if ( idx == idx % 1 )
+                        {
+                            GUILayout.EndHorizontal();
+                            GUILayout.BeginHorizontal();
+                        }
+                        idx++;
+                    }
+                GUILayout.EndHorizontal();
+
+                if ( tabIdx != tabIdxTemp )
                 {
                     Refresh();
                     tabIdxTemp = tabIdx;
+
+                    if ( end > libraryData.RpakList[ tabIdx ].Data.Count ) currentPage = libraryData.RpakList[ tabIdx ].Data.Count / itemsPerPage;
                 }
 
                 GUILayout.BeginHorizontal();
-                    GUILayout.Label( $"Models: {modelCount}" );
+                    WindowUtility.WindowUtility.CreateTextInfo( $"Models: {modelCount}", "", 80 );
+
+                    WindowUtility.WindowUtility.CreateButton( "Previous Page", "", () => { if ( currentPage > 0 ) currentPage--; }, 100 );
+
+                    WindowUtility.WindowUtility.CreateTextInfo( $"Page {currentPage + 1}", "", 48 );
+
+                    WindowUtility.WindowUtility.CreateButton( "Next Page", "", () => { if ( end < libraryData.RpakList[ tabIdx ].Data.Count ) currentPage++; }, 100 );
+
                     GUILayout.FlexibleSpace();
                     WindowUtility.WindowUtility.CreateButton( "Add Rpak", "", () => AddNewRpakList(), 100 );
                     if ( !isAllModels ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100 );
@@ -68,12 +99,15 @@ namespace LibrarySorter
 
                 GUILayout.Space( 6 );
 
-                foreach ( string model in libraryData.RpakList[ tabIdx ].Data )
+                for (int i = start; i < end && i < libraryData.RpakList[tabIdx].Data.Count; i++)
                 {
-                    GUILayout.BeginHorizontal( "box" );
-                        GUILayout.Label( model );
-                        if( !isAllModels )
-                        if( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveModel( model ), 100 ) )
+                    string model = libraryData.RpakList[tabIdx].Data[i];
+
+                    GUILayout.BeginHorizontal("box");
+                        GUILayout.Label(model);
+                        WindowUtility.WindowUtility.CreateCopyButton( "Copy", "", model, 100 );
+                        if (!isAllModels)
+                        if (WindowUtility.WindowUtility.CreateButton("Remove", "", () => RemoveModel(model), 100))
                         {
                             GUILayout.EndHorizontal();
                             GUILayout.EndScrollView();
@@ -100,7 +134,7 @@ namespace LibrarySorter
         {
             libraryData.RpakList.Add( NewRpakData() );
 
-            tabIdx = rpakTab.Length;
+            tabIdx = rpakTab.Length - 1;
 
             SaveJson();
         }
@@ -277,14 +311,27 @@ namespace LibrarySorter
         {
             UnityInfo.SortListByKey( libraryData.RpakList, x => x.Name );
 
-            List< string > pages = new List< string >();
+            List< List< string > > arrays = new List< List< string > >();
+
+            List< string > tab = new List< string> ();
 
             foreach ( RpakData data in libraryData.RpakList )
             {
-                pages.Add( data.Name );
+                if ( tab.Count == tabPerLine )
+                {
+                    arrays.Add( tab );
+                    tab = new List< string >();
+                }
+
+                tab.Add( data.Name );
             }
 
-            rpakTab = pages.ToArray();
+            if ( tab.Count > 0 )
+            {
+                arrays.Add( tab );
+            }
+
+            rpakTab = arrays.Select( a => a.ToArray() ).ToArray();
 
             modelCount = libraryData.RpakList[ tabIdx ].Data.Count;
         }

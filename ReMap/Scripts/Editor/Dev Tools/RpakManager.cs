@@ -61,7 +61,7 @@ namespace LibrarySorter
                     foreach ( RpakData data in libraryData.RpakList )
                     {
                         WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { tabIdx = idx; } );
-                        if ( idx == idx % 1 )
+                        if ( idx == idx % tabPerLine )
                         {
                             GUILayout.EndHorizontal();
                             GUILayout.BeginHorizontal();

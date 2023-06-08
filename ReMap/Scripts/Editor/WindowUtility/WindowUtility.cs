@@ -70,10 +70,10 @@ namespace WindowUtility
             reference = EditorGUILayout.IntField( "", reference, SizeOptions( fieldWidth, height ) );
         }
 
-        public static void CreateVector3Field( ref Vector3 reference, string text = "vector3 field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0 )
+        public static Vector3 CreateVector3Field( ref Vector3 reference, string text = "vector3 field", string tooltip = "", float labelWidth = 0, float fieldWidth = 0, float height = 0 )
         {
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
-            reference = EditorGUILayout.Vector3Field( "", reference, SizeOptions( fieldWidth, height ) );
+            return reference = EditorGUILayout.Vector3Field( "", reference, SizeOptions( fieldWidth, height ) );
         }
 
         public static void CreateTextInfo( string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )

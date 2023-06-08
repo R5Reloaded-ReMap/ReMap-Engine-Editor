@@ -41,7 +41,7 @@ namespace LibrarySorter
             public static void Init()
             {
                 libraryData = RpakManagerWindow.FindLibraryDataFile();
-                prefabOffset = OffsetManagerWindow.FindPrefabOffsetFile();
+                prefabOffset = OffsetManagerWindow.GetPrefabOffsetList();
 
                 LibrarySorterWindow window = ( LibrarySorterWindow )GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Fix Manager" );
                 window.minSize = new Vector2( 650, 600 );
@@ -53,7 +53,7 @@ namespace LibrarySorter
         {
             libraryData = RpakManagerWindow.FindLibraryDataFile();
             all_model = RpakManagerWindow.FindAllModel();
-            prefabOffset = OffsetManagerWindow.FindPrefabOffsetFile();
+            prefabOffset = OffsetManagerWindow.GetPrefabOffsetList();
         }
 
         void OnGUI()

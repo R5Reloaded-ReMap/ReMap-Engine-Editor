@@ -12,22 +12,27 @@ namespace LibrarySorter
     public class OffsetManagerWindow : EditorWindow
     {
         static Vector2 scrollPos = Vector2.zero;
-        string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
+        static string json;
         static PrefabOffsetList offsetlist;
-        static PrefabOffsetList newOffsetlist;
         static List< PrefabOffset > offsets;
 
         static GameObject prefabToAdd = null;
         static string search = "";
         static bool searchEnable = false;
 
-        public static Dictionary<string, Vector3> dictionary = new Dictionary<string, Vector3>();
+        // Page
+        private static int itemStart = 0;
+        private static int itemEnd = 0;
+        private int itemsPerPage = 100;
+        private int currentPage = 0;
+        private int maxPage = 0;
 
         public static void Init()
         {
-            OffsetManagerWindow window = ( OffsetManagerWindow )GetWindow( typeof( OffsetManagerWindow ), false, "Prefab Offset Manager" );
-            window.minSize = new Vector2( 800, 400 ); // new Vector2( 888, 700 );
-            //window.maxSize = new Vector2( 888, 700 );
+            json = ReadOffsetFile();
+
+            OffsetManagerWindow window = ( OffsetManagerWindow ) GetWindow( typeof( OffsetManagerWindow ), false, "Prefab Offset Manager" );
+            window.minSize = new Vector2( 800, 400 );
             window.Show(); RefreshPage();
         }
 
@@ -38,58 +43,89 @@ namespace LibrarySorter
 
         void OnGUI()
         {
+            itemStart = currentPage * itemsPerPage;
+            itemEnd = itemStart + itemsPerPage;
+
+            searchEnable = search.Length >= 3;
+
+            offsets = searchEnable ? GetSearchResult() : GetPrefabOffsetList();
+
+            maxPage = offsets.Count == 0 ? 1 : offsets.Count / itemsPerPage + 1;
+
             GUIStyle labelStyle = new GUIStyle();
             labelStyle.normal.textColor = Color.white;
 
-            EditorGUILayout.Space( 2 );
+            EditorGUILayout.BeginVertical( "box" );
 
-            searchEnable = false;
+                TabInfo();
 
-            EditorGUILayout.BeginHorizontal();
-                GUILayout.Label( "Search", GUILayout.Width( 50 ) );
-                search = EditorGUILayout.TextField( "", search );
-                if ( search.Length >= 3 ) searchEnable = true;
-                if ( GUILayout.Button( "Refresh Page", GUILayout.Width( 200 ) ) ) RefreshPage();
-            EditorGUILayout.EndHorizontal();
+                scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
 
-            scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
+                for ( int i = itemStart; i < itemEnd && i < offsets.Count; i++ )
+                {
+                    PrefabOffset offset = offsets[ i ];
 
-            foreach ( PrefabOffset offset in offsets )
-            {
-                if ( searchEnable && !offset.ModelName.Contains( search ) ) continue;
+                    GUILayout.BeginHorizontal("box");
+                        WindowUtility.WindowUtility.CreateTextInfo( offset.ModelName, "" );
 
-                EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField( $"{offset.ModelName}", labelStyle );
-                    offset.Rotation = EditorGUILayout.Vector3Field( "", offset.Rotation, GUILayout.Width( 280 ) );
-                    if ( GUILayout.Button( "Remove", GUILayout.Width( 100 ) ) )
-                    {
-                        RemoveOffsetFromList( offset );
-                        EditorGUILayout.EndHorizontal();
-                        GUILayout.EndScrollView();
-                        return;
-                    }
-                    if ( GUILayout.Button( "Fix Prefab", GUILayout.Width( 100 ) ) ) LibrarySorterWindow.AwaitTask( TaskType.FixSpecificPrefabData, UnityInfo.GetUnityModelName( offset.ModelName ) );
-                EditorGUILayout.EndHorizontal();
+                        offset.Rotation = EditorGUILayout.Vector3Field( "", offset.Rotation, GUILayout.Width( 280 ) );
+                        //offset.Rotation = WindowUtility.WindowUtility.CreateVector3Field( ref offset.Rotation, "", "", 0, 280 );
+
+                        if ( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveOffsetFromList( offset ), 100 ) )
+                        {
+                            EditorGUILayout.EndHorizontal();
+                            GUILayout.EndScrollView();
+                            EditorGUILayout.EndVertical();
+                            return;
+                        }
+
+                        WindowUtility.WindowUtility.CreateButton( "Fix Prefab", "", () => LibrarySorterWindow.AwaitTask( TaskType.FixSpecificPrefabData, UnityInfo.GetUnityModelName( offset.ModelName ) ), 100 );
+
+                    GUILayout.EndHorizontal();
+                }
 
                 if ( Input.GetKeyDown( KeyCode.Return ) || Input.GetKeyDown( KeyCode.Tab ) || Event.current.type == EventType.MouseDown )
                 {
                     GUI.FocusControl( "" ); // remove focus from current control
                 }
-            }
 
-            GUILayout.EndScrollView();
+                GUILayout.EndScrollView();
 
-            EditorGUILayout.BeginHorizontal();
-                prefabToAdd = EditorGUILayout.ObjectField( prefabToAdd, typeof( UnityEngine.Object ), true ) as GameObject;
-                if ( GUILayout.Button( "Add Prefab", GUILayout.Width( 100 ) ) && prefabToAdd != null ) AddPrefabToList( prefabToAdd );
-            EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                    prefabToAdd = EditorGUILayout.ObjectField( prefabToAdd, typeof( UnityEngine.Object ), true ) as GameObject;
+                    if ( GUILayout.Button( "Add Prefab", GUILayout.Width( 100 ) ) && prefabToAdd != null ) AddPrefabToList( prefabToAdd );
+                EditorGUILayout.EndHorizontal();
 
-            if ( GUILayout.Button( "Save Json" ) ) SaveJson();
+                if ( GUILayout.Button( "Save Json" ) ) SaveJson();
+
+            EditorGUILayout.EndVertical();
+        }
+
+        private void TabInfo()
+        {
+            GUILayout.BeginVertical();
+                GUILayout.BeginHorizontal();
+
+                    WindowUtility.WindowUtility.CreateTextInfo( $"Total Models: {offsets.Count} | Page {currentPage + 1} / {maxPage}", "", 200 );
+
+                    GUILayout.FlexibleSpace();
+
+                    WindowUtility.WindowUtility.CreateButton( "Previous Page", "", () => { if ( currentPage > 0 ) currentPage--; }, 100 );
+
+                    WindowUtility.WindowUtility.CreateButton( "Next Page", "", () => { if ( itemEnd < offsets.Count ) currentPage++; }, 100 );
+
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                    WindowUtility.WindowUtility.CreateTextField( ref search, "Search", "", 50 );
+                    WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => RefreshPage(), 100 );
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
 
         internal static void AddPrefabToList( GameObject prefabToAdd )
         {
-            string rpakPath = prefabToAdd.name.Replace( '#', '/' ) + ".rmdl";
+            string rpakPath = UnityInfo.GetApexModelName( prefabToAdd.name, true );
             if ( PrefabOffsetExist( rpakPath ) ) return;
 
             PrefabOffset newOffset = new PrefabOffset();
@@ -111,6 +147,7 @@ namespace LibrarySorter
 
         internal static void SaveJson()
         {
+            PrefabOffsetList newOffsetlist;
             newOffsetlist = new PrefabOffsetList();
             newOffsetlist.List = new List< PrefabOffset >();
 
@@ -135,11 +172,11 @@ namespace LibrarySorter
 
         internal static void RefreshPage()
         {
-            string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
-            offsetlist = JsonUtility.FromJson< PrefabOffsetList >( json );
-            offsets = offsetlist.List;
+            offsets = searchEnable ? GetSearchResult() : GetPrefabOffsetList();
 
-            UnityInfo.SortListByKey(offsets, x => x.ModelName);
+            UnityInfo.SortListByKey( offsets, x => x.ModelName );
+
+            SaveJson();
         }
 
         internal static bool PrefabOffsetExist( string name )
@@ -150,10 +187,44 @@ namespace LibrarySorter
             return false;
         }
 
-        internal static List< PrefabOffset > FindPrefabOffsetFile()
+        internal static PrefabOffsetList GetPrefabOffset()
         {
-            string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
-            return JsonUtility.FromJson< PrefabOffsetList >( json ).List;
+            return JsonUtility.FromJson< PrefabOffsetList >( ReadOffsetFile() );
+        }
+
+        internal static List< PrefabOffset > GetPrefabOffsetList()
+        {
+            return JsonUtility.FromJson< PrefabOffsetList >( ReadOffsetFile() ).List;
+        }
+
+        private static string ReadOffsetFile()
+        {
+            return json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
+        }
+
+        private static List < PrefabOffset > GetSearchResult()
+        {
+            List < PrefabOffset > list = new List < PrefabOffset >();
+
+            foreach ( PrefabOffset offset in offsets )
+            {
+                string[] terms = search.ToLower().Replace( " ", "" ).Split( ";" );
+
+                bool found = false;
+
+                foreach ( string term in terms )
+                {
+                    if ( offset.ModelName.ToLower().Contains( term ) )
+                    {
+                        //UnityInfo.Printt( term );
+                        found = true; break;
+                    }
+                }
+
+                if ( found ) list.Add( offset );
+            }
+
+            return list;
         }
     }
 }

@@ -37,7 +37,6 @@ namespace LibrarySorter
         // Page
         private int itemsPerPage = 100;
         private int currentPage = 0;
-        private int currentPageEntry = 0;
         private int maxPage = 0;
 
         public static void Init()

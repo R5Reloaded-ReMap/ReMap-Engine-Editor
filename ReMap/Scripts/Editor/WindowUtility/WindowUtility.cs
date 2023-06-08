@@ -83,10 +83,10 @@ namespace WindowUtility
 
         public static void CreateTextInfoCentered(string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
-            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+            GUIStyle labelStyle = new GUIStyle( EditorStyles.label );
             labelStyle.alignment = TextAnchor.MiddleCenter;
 
-            EditorGUILayout.LabelField( new GUIContent(text, tooltip), labelStyle, SizeOptions( labelWidth, height ) );
+            EditorGUILayout.LabelField( new GUIContent( text, tooltip ), labelStyle, SizeOptions( labelWidth, height ) );
         }
 
         public static void CreateObjectField( ref UnityEngine.Object obj, string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
@@ -98,6 +98,11 @@ namespace WindowUtility
         public static void Space( float value )
         {
             GUILayout.Space( value );
+        }
+
+        internal static void SeparatorAutoWidth( EditorWindow editorWindow, float width = 0, float height = 4 )
+        {
+            Separator( ( float ) editorWindow.position.width + width, height );
         }
 
         internal static void Separator( float width = 0, float height = 4 )

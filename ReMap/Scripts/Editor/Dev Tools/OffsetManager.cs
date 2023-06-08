@@ -12,7 +12,6 @@ namespace LibrarySorter
     public class OffsetManagerWindow : EditorWindow
     {
         static Vector2 scrollPos = Vector2.zero;
-        static string json;
         static PrefabOffsetList offsetlist;
         static List< PrefabOffset > offsets;
 
@@ -29,8 +28,6 @@ namespace LibrarySorter
 
         public static void Init()
         {
-            json = ReadOffsetFile();
-
             OffsetManagerWindow window = ( OffsetManagerWindow ) GetWindow( typeof( OffsetManagerWindow ), false, "Prefab Offset Manager" );
             window.minSize = new Vector2( 800, 400 );
             window.Show(); RefreshPage();
@@ -47,8 +44,6 @@ namespace LibrarySorter
             itemEnd = itemStart + itemsPerPage;
 
             searchEnable = search.Length >= 3;
-
-            offsets = searchEnable ? GetSearchResult() : GetPrefabOffsetList();
 
             maxPage = offsets.Count == 0 ? 1 : offsets.Count / itemsPerPage + 1;
 
@@ -68,10 +63,9 @@ namespace LibrarySorter
                     GUILayout.BeginHorizontal("box");
                         WindowUtility.WindowUtility.CreateTextInfo( offset.ModelName, "" );
 
-                        offset.Rotation = EditorGUILayout.Vector3Field( "", offset.Rotation, GUILayout.Width( 280 ) );
-                        //offset.Rotation = WindowUtility.WindowUtility.CreateVector3Field( ref offset.Rotation, "", "", 0, 280 );
+                        WindowUtility.WindowUtility.CreateVector3Field( ref offset.Rotation, "", "", 0, 280 );
 
-                        if ( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveOffsetFromList( offset ), 100 ) )
+                        if ( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => { SaveJson(); RemoveOffsetFromList( offset ); }, 100 ) )
                         {
                             EditorGUILayout.EndHorizontal();
                             GUILayout.EndScrollView();
@@ -79,14 +73,14 @@ namespace LibrarySorter
                             return;
                         }
 
-                        WindowUtility.WindowUtility.CreateButton( "Fix Prefab", "", () => LibrarySorterWindow.AwaitTask( TaskType.FixSpecificPrefabData, UnityInfo.GetUnityModelName( offset.ModelName ) ), 100 );
+                        WindowUtility.WindowUtility.CreateButton( "Fix Prefab", "", () => { SaveJson(); LibrarySorterWindow.AwaitTask( TaskType.FixSpecificPrefabData, UnityInfo.GetUnityModelName( offset.ModelName ) ); }, 100 );
 
                     GUILayout.EndHorizontal();
-                }
 
-                if ( Input.GetKeyDown( KeyCode.Return ) || Input.GetKeyDown( KeyCode.Tab ) || Event.current.type == EventType.MouseDown )
-                {
-                    GUI.FocusControl( "" ); // remove focus from current control
+                    if ( Input.GetKeyDown( KeyCode.Return ) || Input.GetKeyDown( KeyCode.Tab ) || Event.current.type == EventType.MouseDown )
+                    {
+                        GUI.FocusControl( "" ); // remove focus from current control
+                    }
                 }
 
                 GUILayout.EndScrollView();
@@ -199,14 +193,14 @@ namespace LibrarySorter
 
         private static string ReadOffsetFile()
         {
-            return json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
+            return System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
         }
 
         private static List < PrefabOffset > GetSearchResult()
         {
             List < PrefabOffset > list = new List < PrefabOffset >();
 
-            foreach ( PrefabOffset offset in offsets )
+            foreach ( PrefabOffset offset in GetPrefabOffsetList() )
             {
                 string[] terms = search.ToLower().Replace( " ", "" ).Split( ";" );
 

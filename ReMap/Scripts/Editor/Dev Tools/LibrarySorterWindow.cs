@@ -25,7 +25,6 @@ namespace LibrarySorter
     {
         internal static LibraryData libraryData;
         internal static RpakData all_model;
-        internal static List< PrefabOffset > prefabOffset;
         internal static bool checkExist = false;
         Vector2 scrollPos = Vector2.zero;
         Vector2 scrollPosSearchPrefabs = Vector2.zero;
@@ -41,7 +40,6 @@ namespace LibrarySorter
             public static void Init()
             {
                 libraryData = RpakManagerWindow.FindLibraryDataFile();
-                prefabOffset = OffsetManagerWindow.GetPrefabOffsetList();
 
                 LibrarySorterWindow window = ( LibrarySorterWindow )GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Fix Manager" );
                 window.minSize = new Vector2( 650, 600 );
@@ -53,7 +51,6 @@ namespace LibrarySorter
         {
             libraryData = RpakManagerWindow.FindLibraryDataFile();
             all_model = RpakManagerWindow.FindAllModel();
-            prefabOffset = OffsetManagerWindow.GetPrefabOffsetList();
         }
 
         void OnGUI()
@@ -211,8 +208,6 @@ namespace LibrarySorter
             GameObject prefabToAdd; GameObject prefabInstance;
             GameObject objectToAdd; GameObject objectInstance;
 
-            if ( prefabOffset == null ) prefabOffset = FindPrefabOffsetFile();
-
             int i = 0; int total = data.Data.Count;
             foreach ( string model in data.Data )
             {
@@ -254,7 +249,7 @@ namespace LibrarySorter
 
                         objectInstance.transform.parent = prefabInstance.transform;
                         objectInstance.transform.position = Vector3.zero;
-                        objectInstance.transform.eulerAngles = FindAnglesOffset( model, prefabOffset );
+                        objectInstance.transform.eulerAngles = FindAnglesOffset( model );
                         objectInstance.transform.localScale = new Vector3(1, 1, 1);
 
                         prefabInstance.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
@@ -281,7 +276,7 @@ namespace LibrarySorter
 
                         loadedPrefabResource.transform.position = Vector3.zero;
                         loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-                        child.transform.eulerAngles = FindAnglesOffset( model, prefabOffset );
+                        child.transform.eulerAngles = FindAnglesOffset( model );
                         child.transform.position = Vector3.zero;
 
                         CheckBoxColliderComponent( loadedPrefabResource );
@@ -301,11 +296,11 @@ namespace LibrarySorter
             return Task.CompletedTask;
         }
 
-        private static Vector3 FindAnglesOffset( string searchTerm, List< PrefabOffset > list )
+        private static Vector3 FindAnglesOffset( string searchTerm )
         {
             Vector3 returnedVector = new Vector3( 0, -90, 0 );
 
-            PrefabOffset offset = list.Find( o => o.ModelName == searchTerm );
+            PrefabOffset offset = FindPrefabOffsetFile().Find( o => o.ModelName == searchTerm );
             if ( offset != null )
             {
                 returnedVector = offset.Rotation;
@@ -521,8 +516,6 @@ namespace LibrarySorter
         {
             string[] prefabs = AssetDatabase.FindAssets( prefabName, new [] { UnityInfo.relativePathPrefabs } );
 
-            if ( prefabOffset == null ) prefabOffset = FindPrefabOffsetFile();
-
             int i = 0; int total = prefabs.Length;
             foreach ( string prefab in prefabs )
             {
@@ -544,7 +537,7 @@ namespace LibrarySorter
 
                 loadedPrefabResource.transform.position = Vector3.zero;
                 loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-                child.transform.eulerAngles = FindAnglesOffset( rpakName, prefabOffset );
+                child.transform.eulerAngles = FindAnglesOffset( rpakName );
                 child.transform.position = Vector3.zero;
 
                 PrefabUtility.SavePrefabAsset( loadedPrefabResource );
@@ -614,6 +607,8 @@ namespace LibrarySorter
 
         private static void SearchPrefabs( string search = "" )
         {
+            searchResult = new List< string >();
+
             foreach ( string prefab in all_model.Data )
             {
                 if( search != "" && !prefab.Contains( search ) )

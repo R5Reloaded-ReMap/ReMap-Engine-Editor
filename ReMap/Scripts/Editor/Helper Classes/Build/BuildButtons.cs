@@ -49,7 +49,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n" );
+                        AppendCode( ref code, $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity ent, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n" );
                         break;
 
                     case BuildType.EntFile:
@@ -65,7 +65,8 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViews.LiveMap.AddToGameQueue($"script AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity user, int input)" + " { }, true)");
+                        // Remove 1 to the counter since we don't support this object for live map code
+                        Helper.RemoveSendedEntityCount();
                     break;
                 }
             }

@@ -17,6 +17,7 @@ namespace LibrarySorter
 
         static GameObject prefabToAdd = null;
         static string search = "";
+        static int searchLenght = 0;
         static bool searchEnable = false;
 
         // Page
@@ -44,6 +45,12 @@ namespace LibrarySorter
             itemEnd = itemStart + itemsPerPage;
 
             searchEnable = search.Length >= 3;
+
+            if ( searchLenght != search.Length )
+            {
+                searchLenght = search.Length;
+                RefreshPage( false );
+            }
 
             maxPage = offsets.Count == 0 ? 1 : offsets.Count / itemsPerPage + 1;
 
@@ -134,6 +141,8 @@ namespace LibrarySorter
 
         internal static void RemoveOffsetFromList( PrefabOffset offset )
         {
+            if ( !LibrarySorterWindow.CheckDialog( "Remove PrefabOffset", $"Are you sure you want delete {offset.ModelName} ?" ) ) return;
+
             offsets.Remove( offset );
             SaveJson();
             RefreshPage();
@@ -164,13 +173,13 @@ namespace LibrarySorter
             if ( index != -1 ) scrollPos = new Vector2( 0, index * EditorGUIUtility.singleLineHeight );
         }
 
-        internal static void RefreshPage()
+        internal static void RefreshPage( bool save = true )
         {
             offsets = searchEnable ? GetSearchResult() : GetPrefabOffsetList();
 
             UnityInfo.SortListByKey( offsets, x => x.ModelName );
 
-            SaveJson();
+            if ( save ) SaveJson();
         }
 
         internal static bool PrefabOffsetExist( string name )

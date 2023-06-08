@@ -26,8 +26,6 @@ namespace LibrarySorter
         List< string > dataContent = new List< string >();
 
         private static bool isAllModels = true;
-        private static int itemStart = 0;
-        private static int itemEnd = 0;
 
         private static bool searchMode = false;
 
@@ -35,6 +33,8 @@ namespace LibrarySorter
         private static int maxTabPerLine = 5;
 
         // Page
+        private static int itemStart = 0;
+        private static int itemEnd = 0;
         private int itemsPerPage = 100;
         private int currentPage = 0;
         private int maxPage = 0;

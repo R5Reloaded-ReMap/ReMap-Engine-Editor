@@ -338,8 +338,12 @@ namespace CodeViews
                     itemEnd = itemStart + maxBuildLine;
                     int end = itemEnd > codeSplit.Length ? codeSplit.Length : itemEnd;
 
+                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
                     GUILayout.BeginHorizontal();
-                        WindowUtility.WindowUtility.CreateTextInfo( $"Page {currentPage + 1} / {maxPage} ( {itemStart} - {end} lines )", "", 400 );
+                        //WindowUtility.WindowUtility.CreateTextInfo( $"// Page {currentPage + 1} / {maxPage} ( {itemStart} - {end} lines )", "", 400 );
+
+                        GUILayout.Label( $" // Page {currentPage + 1} / {maxPage} ( {itemStart} - {end} lines )", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
 
                         WindowUtility.WindowUtility.FlexibleSpace();
 

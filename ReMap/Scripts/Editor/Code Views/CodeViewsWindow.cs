@@ -27,6 +27,7 @@ namespace CodeViews
     {
         internal static CodeViewsWindow windowInstance;
         internal static string code = "";
+        internal static string[] codeSplit = new string[0];
         internal static string functionName = "Unnamed";
         internal static string[] toolbarTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code", "Other Code" };
         internal static string[] toolbarSubTabEntCode = new[] { "script.ent", "snd.ent", "spawn.ent" };
@@ -98,6 +99,14 @@ namespace CodeViews
         public static int greenPropCount = 1500;
         public static int yellowPropCount = 3000;
 
+        // Page utility
+        internal static bool maxLength = false;
+        internal static int maxBuildLine = 800;
+        private static int itemStart = 0;
+        private static int itemEnd = 0;
+        private static int currentPage = 0;
+        private static int maxPage = 0;
+
 
         [ MenuItem( "ReMap/Code Views", false, 25 ) ]
         public static void Init()
@@ -131,7 +140,7 @@ namespace CodeViews
 
             ShortCut();
 
-            if( tab != tab_temp || tabEnt != tabEnt_temp || tabOther != tabOther_temp || objectTypeInSceneCount != objectTypeInSceneCount_temp )
+            if ( tab != tab_temp || tabEnt != tabEnt_temp || tabOther != tabOther_temp || objectTypeInSceneCount != objectTypeInSceneCount_temp )
             {
                 GetFunctionName();
                 Refresh( false );
@@ -194,6 +203,7 @@ namespace CodeViews
             if ( reSetScroll ) SetScrollView( scroll );
             if ( AdditionalCodeWindow.windowInstance != null ) AdditionalCodeWindow.Refresh();
             if ( AdditionalCodeWindow.additionalCode == null ) AdditionalCodeWindow.AdditionalCodeInit();
+            if ( itemEnd > codeSplit.Length ) currentPage = codeSplit.Length / maxBuildLine;
         }
 
         internal static void CopyCode()
@@ -321,6 +331,23 @@ namespace CodeViews
                         if ( tab == 0 ) AdditionalCodeButton();
                         SettingsMenuButton();
                 GUILayout.EndHorizontal();
+
+                if ( maxLength && !GenerationIsActive )
+                {
+                    itemStart = currentPage * maxBuildLine;
+                    itemEnd = itemStart + maxBuildLine;
+                    int end = itemEnd > codeSplit.Length ? codeSplit.Length : itemEnd;
+
+                    GUILayout.BeginHorizontal();
+                        WindowUtility.WindowUtility.CreateTextInfo( $"Page {currentPage + 1} / {maxPage} ( {itemStart} - {end} lines )", "", 400 );
+
+                        WindowUtility.WindowUtility.FlexibleSpace();
+
+                        WindowUtility.WindowUtility.CreateButton( "Previous Page", "", () => { if ( currentPage > 0 ) currentPage--; }, 100 );
+
+                        WindowUtility.WindowUtility.CreateButton( "Next Page", "", () => { if ( itemEnd < codeSplit.Length ) currentPage++; }, 100 );
+                    GUILayout.EndHorizontal();
+                }
             GUILayout.EndVertical();
         }
 
@@ -435,7 +462,19 @@ namespace CodeViews
             style.wordWrap = false;
 
             scroll = EditorGUILayout.BeginScrollView( scroll );
-                GUILayout.TextArea( code, style, GUILayout.ExpandHeight( true ) );
+                if ( maxLength )
+                {
+                    List< string > list = new List< string >();
+                    for ( int i = itemStart; i < itemEnd && i < codeSplit.Length; i++ )
+                    {
+                        list.Add( codeSplit[ i ] );
+                    }
+                    GUILayout.TextArea( $"\n{string.Join( "\n", list ).ToString()}\n", style, GUILayout.ExpandHeight( true ) );
+                }
+                else
+                {
+                    GUILayout.TextArea( $"\n{code}", style, GUILayout.ExpandHeight( true ) );
+                }
             EditorGUILayout.EndScrollView();
         }
 
@@ -499,6 +538,12 @@ namespace CodeViews
                     }
                 break;
             }
+
+            maxLength = code.Split( "\n" ).Length > maxBuildLine;
+            codeSplit = code.Split( "\n" );
+            maxPage = codeSplit.Length == 0 ? 1 : codeSplit.Length / maxBuildLine + 1;
+
+            CodeViewsMenu.VerifyGenerateObjects();
 
             GenerationIsActive = false;
         }

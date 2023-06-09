@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -358,21 +359,12 @@ namespace CodeViews
                     WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 156 );
                 GUILayout.EndHorizontal();
 
-                int idx = 0;
-
-                foreach ( string key in Helper.GenerateObjects.Keys )
+                foreach ( string key in Helper.GenerateObjectsVerified )
                 {
-                    ObjectType? type = Helper.GetObjectTypeByObjName( key );
-                    ObjectType typed = ( ObjectType ) type;
-
-                    if ( CodeViewsWindow.IsHided( typed ) ) continue;
-
                     GUILayout.BeginHorizontal();
                         bool value = Helper.GenerateObjects[key];
                         OptionalToggle( ref value, $"Build {key}", value ? $"Disable {key}" : $"Enable {key}" );
                     GUILayout.EndHorizontal();
-
-                    if ( value ) idx++;
 
                     if ( Helper.GenerateObjects[key] != value )
                     {
@@ -386,9 +378,30 @@ namespace CodeViews
                     }
                 }
 
-                CodeViewsWindow.objectTypeInSceneCount = idx;
-
             GUILayout.EndVertical();
+        }
+
+        internal static void VerifyGenerateObjects()
+        {
+            int idx = 0;
+
+            List< string > list = new List< string >();
+
+            foreach ( string key in Helper.GenerateObjects.Keys )
+            {
+                ObjectType? type = Helper.GetObjectTypeByObjName( key );
+                ObjectType typed = ( ObjectType ) type;
+
+                if ( CodeViewsWindow.IsHided( typed ) ) continue;
+
+                if ( Helper.GenerateObjects[key] ) idx++;
+
+                list.Add( key );
+            }
+
+            Helper.GenerateObjectsVerified = list.ToArray();
+
+            CodeViewsWindow.objectTypeInSceneCount = idx;
         }
 
         internal static void OptionalAdditionalCodeOption()

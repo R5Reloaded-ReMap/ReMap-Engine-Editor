@@ -119,15 +119,19 @@ namespace LibrarySorter
                             GUILayout.Space( 10 );
                             if ( searchEntry.Length >= 3 )
                             {
-                                foreach ( string prefab in searchResult )
+                                if ( searchResult.Count != 0 )
                                 {
-                                    string prefabName = UnityInfo.GetUnityModelName( prefab );
-                                    WindowUtility.WindowUtility.CreateButton( $"{prefabName}", "", () => AwaitTask( TaskType.FixSpecificPrefabData, prefabName ) );
+                                    foreach ( string prefab in searchResult )
+                                    {
+                                        string prefabName = UnityInfo.GetUnityModelName( prefab );
+                                        WindowUtility.WindowUtility.CreateButton( $"{prefabName}", "", () => AwaitTask( TaskType.FixSpecificPrefabData, prefabName ) );
+                                    }
                                 }
+                                else WindowUtility.WindowUtility.CreateTextInfoCentered( "No results.", "" );
                             }
-                            else
+                            else if ( searchEntry.Length != 0 )
                             {
-                                //WindowUtility.WindowUtility.CreateTextInfo( "Search must be at least 3 characters long.", "" );
+                                WindowUtility.WindowUtility.CreateTextInfoCentered( "Search must be at least 3 characters long.", "" );
                             }
 
                         GUILayout.EndScrollView();
@@ -312,28 +316,22 @@ namespace LibrarySorter
 
         private static void CheckBoxColliderComponent( GameObject go )
         {
-            BoxCollider collider = go.GetComponent<BoxCollider>();
+            BoxCollider collider = go.GetComponent< BoxCollider >();
 
-            if( collider == null ) collider = go.AddComponent<BoxCollider>();
+            if( Helper.IsValid( collider ) ) collider = go.AddComponent< BoxCollider >();
 
-            Bounds bounds = new Bounds();
+            float x = 0, y = 0, z = 0;
 
-            foreach(Renderer renderer in go.GetComponentsInChildren<Renderer>())
+            foreach( Renderer o in go.GetComponentsInChildren< Renderer >() )
             {
-                bounds.Encapsulate(renderer.bounds);
+                if( o.bounds.size.x > x ) x = o.bounds.size.x;
 
-                BoxCollider BoxColliderChild = renderer.GetComponent<BoxCollider>();
+                if( o.bounds.size.y > y ) y = o.bounds.size.y;
 
-                if(BoxColliderChild != null) DestroyImmediate(BoxColliderChild, true);
+                if( o.bounds.size.z > z ) z = o.bounds.size.z;
             }
 
-            foreach(Renderer renderer in go.GetComponentsInChildren<SkinnedMeshRenderer>())
-            {
-                bounds.Encapsulate(renderer.bounds);
-            }
-
-            collider.center = bounds.center;
-            collider.size = bounds.size;
+            collider.size = new Vector3( x, y, z );
         }
 
         internal static Task SetModelLabels( string specificModelOrFolderOrnull = null )

@@ -122,6 +122,8 @@ public class Helper
     // Gen Settings
     public static readonly Dictionary< string, bool > GenerateObjects = ObjectGenerateDictionaryInit();
 
+    public static string[] GenerateObjectsVerified = new string[0];
+
     // Always Hide Unity Only Objects
     public static readonly ObjectType[] GenerateIgnoreStatic = new ObjectType[]
     {

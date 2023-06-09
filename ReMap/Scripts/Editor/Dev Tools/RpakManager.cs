@@ -110,6 +110,16 @@ namespace LibrarySorter
                     return;
                 }
 
+                if ( modelCount == 0 )
+                {
+                    WindowUtility.WindowUtility.FlexibleSpace();
+                        WindowUtility.WindowUtility.CreateTextInfoCentered( "No results." );
+                    WindowUtility.WindowUtility.FlexibleSpace();
+                    GUILayout.EndScrollView();
+                    GUILayout.EndVertical();
+                    return;
+                }
+
                 for ( int i = itemStart; i < itemEnd && i < dataContent.Count; i++ )
                 {
                     string model = dataContent[ i ];
@@ -188,7 +198,9 @@ namespace LibrarySorter
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
 
-                    WindowUtility.WindowUtility.CreateTextInfo( $"Total Models: {modelCount} | Page {currentPage + 1} / {maxPage}", "", 200 );
+                    int end = itemEnd > dataContent.Count ? dataContent.Count : itemEnd;
+
+                    WindowUtility.WindowUtility.CreateTextInfo( $"Total Models: {modelCount} | Page {currentPage + 1} / {maxPage} ( {itemStart} - {end} )", "", 300 );
 
                     GUILayout.FlexibleSpace();
 
@@ -467,6 +479,8 @@ namespace LibrarySorter
 
                 foreach ( string term in terms )
                 {
+                    if ( string.IsNullOrEmpty( term ) ) continue;
+
                     if ( model.Contains( term ) )
                     {
                         found = true; break;

@@ -95,6 +95,12 @@ namespace WindowUtility
             obj = EditorGUILayout.ObjectField( obj, typeof( UnityEngine.Object ), true );
         }
 
+        public static void CreateObjectField( ref GameObject obj, string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
+        {
+            UnityEngine.Object uobj = ( UnityEngine.Object ) obj;
+            CreateObjectField( ref uobj, text, tooltip, labelWidth, height );
+        }
+
         public static void Space( float value )
         {
             GUILayout.Space( value );

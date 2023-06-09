@@ -12,7 +12,6 @@ namespace LibrarySorter
     public class OffsetManagerWindow : EditorWindow
     {
         static Vector2 scrollPos = Vector2.zero;
-        static PrefabOffsetList offsetlist;
         static List< PrefabOffset > offsets;
 
         static GameObject prefabToAdd = null;
@@ -94,7 +93,7 @@ namespace LibrarySorter
 
                 EditorGUILayout.BeginHorizontal();
                     prefabToAdd = EditorGUILayout.ObjectField( prefabToAdd, typeof( UnityEngine.Object ), true ) as GameObject;
-                    if ( GUILayout.Button( "Add Prefab", GUILayout.Width( 100 ) ) && prefabToAdd != null ) AddPrefabToList( prefabToAdd );
+                    WindowUtility.WindowUtility.CreateButton( "Add Prefab", "", () => AddPrefabToList( prefabToAdd ), 100 );
                 EditorGUILayout.EndHorizontal();
 
                 if ( GUILayout.Button( "Save Json" ) ) SaveJson();
@@ -107,7 +106,9 @@ namespace LibrarySorter
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
 
-                    WindowUtility.WindowUtility.CreateTextInfo( $"Total Models: {offsets.Count} | Page {currentPage + 1} / {maxPage}", "", 200 );
+                    int end = itemEnd > offsets.Count ? offsets.Count : itemEnd;
+
+                    WindowUtility.WindowUtility.CreateTextInfo( $"Total Models: {offsets.Count} | Page {currentPage + 1} / {maxPage} ( {itemStart} - {end} )", "", 300 );
 
                     GUILayout.FlexibleSpace();
 
@@ -126,6 +127,8 @@ namespace LibrarySorter
 
         internal static void AddPrefabToList( GameObject prefabToAdd )
         {
+            if ( !Helper.IsValid( prefabToAdd ) ) return;
+
             string rpakPath = UnityInfo.GetApexModelName( prefabToAdd.name, true );
             if ( PrefabOffsetExist( rpakPath ) ) return;
 
@@ -197,7 +200,7 @@ namespace LibrarySorter
 
         internal static List< PrefabOffset > GetPrefabOffsetList()
         {
-            return JsonUtility.FromJson< PrefabOffsetList >( ReadOffsetFile() ).List;
+            return GetPrefabOffset().List;
         }
 
         private static string ReadOffsetFile()
@@ -217,6 +220,8 @@ namespace LibrarySorter
 
                 foreach ( string term in terms )
                 {
+                    if ( string.IsNullOrEmpty( term ) ) continue;
+
                     if ( offset.ModelName.ToLower().Contains( term ) )
                     {
                         //UnityInfo.Printt( term );

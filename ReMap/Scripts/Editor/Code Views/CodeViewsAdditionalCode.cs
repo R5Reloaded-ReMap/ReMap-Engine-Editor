@@ -20,7 +20,7 @@ namespace CodeViews
 
         // Info
         private static bool showInfo = false;
-        private static string textInfo = File.ReadAllText( UnityInfo.relativePathAdditionalCodeInfo );
+        private static string textInfo = File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeInfo}" );
         private static string textInfoTemp = textInfo;
 
         internal static AdditionalCode additionalCode;

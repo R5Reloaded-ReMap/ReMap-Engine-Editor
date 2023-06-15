@@ -44,9 +44,6 @@ namespace CodeViews
         internal static int objectTypeInSceneCount_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
 
-        internal static string additionalCodeHeadName = "Empty Code";
-        internal static string additionalCodeInBlockName = "Empty Code";
-        internal static string additionalCodeBelowName = "Empty Code";
         internal static string additionalCodeHead = "";
         internal static string additionalCodeInBlock = "";
         internal static string additionalCodeBelow = "";
@@ -85,6 +82,8 @@ namespace CodeViews
         //
 
         internal static bool GenerationIsActive = false;
+
+        internal static AdditionalCode additionalCode = AdditionalCodeWindow.FindAdditionalCode();
 
         public static bool SendingObjects = false;
         internal static int EntityCount = 0;

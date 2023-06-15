@@ -27,7 +27,9 @@ namespace CodeViews
         private static AdditionalCodeClass[] additionalCodeArray;
         private static AdditionalCodeClass activeCode;
         private static string entry = "";
-        private static string emptyContentStr = "Empty Code";
+        internal static string emptyContentStr = "Empty Code";
+
+        internal static string[] contentType = new[] { "HeadContent", "InBlockContent", "BelowContent",};
 
         public static void Init()
         {

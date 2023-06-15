@@ -70,6 +70,10 @@ namespace CodeViews
         internal static void SharedFunctions()
         {
             #if ReMapDev
+                GUILayout.BeginHorizontal();
+                    Space( 2 ); Separator( 314 );
+                GUILayout.EndHorizontal();
+
                 CreateMenu( CodeViewsWindow.DevMenu, DevMenu, MenuType.Large, "Dev Menu", "Dev Menu", "" );
                 CreateMenu( "LargeFieldPreview", LargeFieldPreview, MenuType.Large, "Field Preview", "Field Preview", "" );
             #endif

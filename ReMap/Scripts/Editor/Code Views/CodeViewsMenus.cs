@@ -98,9 +98,8 @@ namespace CodeViews
 
             if ( !condition ) return menu;
 
-            menu.EnableSeparator = enableSeparator;
-
-            if ( isButton ) menu.EnableSeparator = false;
+            menu.EnableSeparator = menu.IsButton ? false : enableSeparator;
+            menu.IsButton = isButton;
 
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
@@ -118,20 +117,20 @@ namespace CodeViews
             {
                 menu.IsOpen = !menu.IsOpen;
 
-                if ( isButton ) Internal_FunctionInit( menu );
+                if ( menu.IsButton ) Internal_FunctionInit( menu );
 
                 if ( refresh ) CodeViewsWindow.Refresh();
             }
             GUILayout.EndHorizontal();
 
-            if ( !isButton ) Internal_FunctionInit( menu );
+            if ( !menu.IsButton ) Internal_FunctionInit( menu );
 
             return menu;
         }
 
         internal static void Internal_FunctionInit( MenuInit menu )
         {
-            if ( menu.Content.Length != 0 && menu.IsOpen )
+            if ( menu.Content.Length != 0 && menu.IsOpen || menu.IsButton )
             {
                 foreach ( FunctionRef functionRef in menu.Content ) functionRef();
 
@@ -473,6 +472,15 @@ namespace CodeViews
 
         private static void AdditionalCodeBoolChange( string name, string type, ref string codeRef, List< AdditionalCodeContent > contents )
         {
+            if ( contents.Count == 1 )
+            {
+                MenuInit umenu = MenuInit.Find( $"{name}_{type}" );
+
+                if ( Helper.IsValid( umenu ) ) umenu.IsOpen = true;
+
+                return;
+            }
+
             foreach ( AdditionalCodeContent content in contents )
             {
                 MenuInit menu = MenuInit.Find( $"{content.Name}_{type}" );
@@ -515,6 +523,7 @@ namespace CodeViews
         public static List < MenuInit > MenuArray = new List< MenuInit >();
         public string Name { get; set; }
         public bool IsOpen { get; set; }
+        public bool IsButton { get; set; }
         public bool EnableSeparator { get; set; }
         public FunctionRef[] Content { get; set; }
         public MenuType MenuType { get; set; }

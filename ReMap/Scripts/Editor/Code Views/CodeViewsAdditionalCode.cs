@@ -24,7 +24,7 @@ namespace CodeViews
         private static string textInfoTemp = textInfo;
 
         internal static AdditionalCode additionalCode;
-        private static AdditionalCodeClass[] additionalCodeArray;
+        internal static AdditionalCodeClass[] additionalCodeArray;
         private static AdditionalCodeClass activeCode;
         private static string entry = "";
         internal static string emptyContentStr = "Empty Code";

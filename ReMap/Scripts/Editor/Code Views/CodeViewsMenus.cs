@@ -420,7 +420,7 @@ namespace CodeViews
 
         internal static void OptionalAdditionalCodeOption()
         {
-            if ( !Helper.IsValid( CodeViewsWindow.additionalCode ) ) CodeViewsWindow.additionalCode = AdditionalCodeWindow.FindAdditionalCode();
+            if ( !Helper.IsValid( AdditionalCodeWindow.additionalCode ) ) AdditionalCodeWindow.additionalCode = AdditionalCodeWindow.FindAdditionalCode();
 
             GUILayout.BeginVertical();
                 
@@ -429,9 +429,9 @@ namespace CodeViews
 
                 if ( CodeViewsWindow.ShowFunctionEnable() )
                 {
-                    foreach ( AdditionalCodeContent content in CodeViewsWindow.additionalCode.HeadContent.Content )
+                    foreach ( AdditionalCodeContent content in AdditionalCodeWindow.additionalCode.HeadContent.Content )
                     {
-                        CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, CodeViewsWindow.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                        CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeWindow.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                     }
                 } else OptionalTextInfo( $"\"Show Squirrel Function\" is disable", "", null, MenuType.Small );
 
@@ -439,9 +439,9 @@ namespace CodeViews
                 OptionalTextInfo( $"In-Block Code", "", null, MenuType.Medium );
                 Space( 2 );
 
-                foreach ( AdditionalCodeContent content in CodeViewsWindow.additionalCode.InBlockContent.Content )
+                foreach ( AdditionalCodeContent content in AdditionalCodeWindow.additionalCode.InBlockContent.Content )
                 {
-                    CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, CodeViewsWindow.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                    CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeWindow.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                 }
 
                 Space( 1 );
@@ -450,9 +450,9 @@ namespace CodeViews
 
                 if ( CodeViewsWindow.ShowFunctionEnable() )
                 {
-                    foreach ( AdditionalCodeContent content in CodeViewsWindow.additionalCode.BelowContent.Content )
+                    foreach ( AdditionalCodeContent content in AdditionalCodeWindow.additionalCode.BelowContent.Content )
                     {
-                        CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, CodeViewsWindow.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                        CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeWindow.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                     }
                 } else OptionalTextInfo( $"\"Show Squirrel Function\" is disable", "", null, MenuType.Small );
 

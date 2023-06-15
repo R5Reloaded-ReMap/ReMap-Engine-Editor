@@ -83,8 +83,6 @@ namespace CodeViews
 
         internal static bool GenerationIsActive = false;
 
-        internal static AdditionalCode additionalCode = AdditionalCodeWindow.FindAdditionalCode();
-
         public static bool SendingObjects = false;
         internal static int EntityCount = 0;
         internal static int SendedEntityCount = 0;
@@ -112,7 +110,7 @@ namespace CodeViews
         {
             TagHelper.CheckAndCreateTags(); tab = 0; tabEnt = 0;
 
-            if ( AdditionalCodeWindow.additionalCode == null ) AdditionalCodeWindow.AdditionalCodeInit();
+            if ( Helper.IsValid( AdditionalCodeWindow.additionalCode ) ) AdditionalCodeWindow.AdditionalCodeInit();
 
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
             windowInstance.minSize = new Vector2( 1230, 500 );
@@ -200,8 +198,7 @@ namespace CodeViews
         {
             EntityCount = 0; GenerateCorrectCode();
             if ( reSetScroll ) SetScrollView( scroll );
-            if ( AdditionalCodeWindow.windowInstance != null ) AdditionalCodeWindow.Refresh();
-            if ( AdditionalCodeWindow.additionalCode == null ) AdditionalCodeWindow.AdditionalCodeInit();
+            AdditionalCodeWindow.AdditionalCodeInit();
             if ( itemEnd > codeSplit.Length ) currentPage = codeSplit.Length / maxBuildLine;
         }
 

@@ -29,7 +29,7 @@ namespace CodeViews
         private static string entry = "";
         internal static string emptyContentStr = "Empty Code";
 
-        internal static string[] contentType = new[] { "HeadContent", "InBlockContent", "BelowContent",};
+        internal static string[] contentType = new[] { "HeadContent", "InBlockContent", "BelowContent" };
 
         public static void Init()
         {
@@ -161,6 +161,8 @@ namespace CodeViews
 
         private static string FindUniqueName( string name )
         {
+            if ( !Helper.IsValid( activeCode ) ) return "";
+
             string newEntry = name; int idx = 1; bool nameExists;
 
             do
@@ -182,13 +184,13 @@ namespace CodeViews
 
         public static AdditionalCode FindAdditionalCode()
         {
-            if ( !File.Exists( UnityInfo.relativePathAdditionalCodeJson ) )
+            if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeJson}" ) )
             {
                 CreateNewJsonAdditionalCode();
             }
             else
             {
-                string json = System.IO.File.ReadAllText( UnityInfo.relativePathAdditionalCodeJson );
+                string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeJson}" );
                 additionalCode = JsonUtility.FromJson< AdditionalCode >( json );
             }
 
@@ -243,6 +245,8 @@ namespace CodeViews
 
         internal static void Refresh( bool refreshCodeView = false )
         {
+            if ( !Helper.IsValid( additionalCode ) ) return;
+
             activeCode = additionalCodeArray[ additionalCode.tabIdx ];
 
             if ( activeCode.tabCodeIdx > activeCode.Content.Count - 1 )
@@ -288,7 +292,7 @@ namespace CodeViews
             if ( CodeViewsWindow.windowInstance != null && refreshCodeView ) CodeViewsWindow.Refresh();
 
             #if ReMapDev
-                textInfo = File.ReadAllText( UnityInfo.relativePathAdditionalCodeInfo );
+                textInfo = File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeInfo}" );
             #endif
 
             activeCode.toolbarCodeTab = pages.ToArray();

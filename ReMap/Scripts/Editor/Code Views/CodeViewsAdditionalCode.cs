@@ -63,6 +63,8 @@ namespace CodeViews
 
             if ( activeCode.Content[ activeCode.tabCodeIdx ].Name != emptyContentStr ) isEmptyCode = false;
 
+            CodeViewsWindow.ShortCut();
+
             GUILayout.BeginVertical( "box" );
 
                 GUILayout.BeginHorizontal();
@@ -302,12 +304,25 @@ namespace CodeViews
         {
             additionalCode = FindAdditionalCode();
 
+            if ( !Helper.IsValid( additionalCode ) ) return;
+
             additionalCodeArray = new AdditionalCodeClass[]
             {
                 additionalCode.HeadContent,
                 additionalCode.InBlockContent,
                 additionalCode.BelowContent
             };
+
+            activeCode = additionalCode.HeadContent;
+
+            additionalCode.tabIdx = 0;
+            additionalCode.tabIdxTemp = 0;
+
+            foreach ( AdditionalCodeClass additionalCodeClass in additionalCodeArray )
+            {
+                additionalCodeClass.tabCodeIdx = 0;
+                additionalCodeClass.tabCodeIdxTemp = 0;
+            }
 
             Refresh();
         }

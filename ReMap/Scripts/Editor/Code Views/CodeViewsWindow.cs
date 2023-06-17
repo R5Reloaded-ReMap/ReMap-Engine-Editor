@@ -486,7 +486,7 @@ namespace CodeViews
         //  ╚██████╔╝██║     ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
         //   ╚═════╝ ╚═╝      ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
 
-        private static void ShortCut()
+        internal static void ShortCut()
         {
             Event currentEvent = Event.current;
 

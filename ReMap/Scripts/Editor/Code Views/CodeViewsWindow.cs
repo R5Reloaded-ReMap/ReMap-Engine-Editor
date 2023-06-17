@@ -31,6 +31,7 @@ namespace CodeViews
 
             SubTab = new Dictionary< int, string[] >()
             {
+                //{ 0, new[] { "Script", "Additional Code" } },
                 { 3, new[] { "script.ent", "snd.ent", "spawn.ent" } },
                 { 4, new[] { "Camera Path" } }
             },
@@ -38,112 +39,118 @@ namespace CodeViews
             SubTabGUI = new Dictionary< Tuple< int, int >, GUIStruct >()
             {
                 // Squirrel Code
+                {
+                    WindowStruct.NewTuple( 0, 0 ),
+                    new GUIStruct()
                     {
-                        WindowStruct.NewTuple( 0, 0 ),
-                        new GUIStruct()
-                        {
-                            OnGUI = new FunctionRef[] { () => ScriptTab.OnGUISettingsTab() },
+                        OnGUI = new FunctionRef[] { () => ScriptTab.OnGUISettingsTab() },
 
-                            OnStartGUI = () =>
-                            {
-                                functionName = Helper.GetSceneName();
-                                fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
-                            }
+                        OnStartGUI = () =>
+                        {
+                            functionName = Helper.GetSceneName();
+                            fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
+                            GenerateCorrectCode( () => ScriptTab.GenerateCode() );
                         }
-                    },
+                    }
+                },
 
                 // DataTable Code
+                {
+                    WindowStruct.NewTuple( 1, 0 ),
+                    new GUIStruct()
                     {
-                        WindowStruct.NewTuple( 1, 0 ),
-                        new GUIStruct()
-                        {
-                            OnGUI = new FunctionRef[] { () => DataTableTab.OnGUISettingsTab() },
+                        OnGUI = new FunctionRef[] { () => DataTableTab.OnGUISettingsTab() },
 
-                            OnStartGUI = () =>
-                            {
-                                functionName = "remap_datatable";
-                                fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
-                            }
+                        OnStartGUI = () =>
+                        {
+                            functionName = "remap_datatable";
+                            fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
+                            GenerateCorrectCode( () => DataTableTab.GenerateCode() );
                         }
-                    },
+                    }
+                },
 
                 // Precache Code
+                {
+                    WindowStruct.NewTuple( 2, 0 ),
+                    new GUIStruct()
                     {
-                        WindowStruct.NewTuple( 2, 0 ),
-                        new GUIStruct()
-                        {
-                            OnGUI = new FunctionRef[] { () => PrecacheTab.OnGUISettingsTab() },
+                        OnGUI = new FunctionRef[] { () => PrecacheTab.OnGUISettingsTab() },
 
-                            OnStartGUI = () =>
-                            {
-                                functionName = $"{Helper.GetSceneName()}_Precache";
-                                fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
-                            }
+                        OnStartGUI = () =>
+                        {
+                            functionName = $"{Helper.GetSceneName()}_Precache";
+                            fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
+                            GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
                         }
-                    },
+                    }
+                },
 
                 // Ent Code
+                {
                     // Script Code
+                    WindowStruct.NewTuple( 3, 0 ),
+                    new GUIStruct()
                     {
-                        WindowStruct.NewTuple( 3, 0 ),
-                        new GUIStruct()
-                        {
-                            OnGUI = new FunctionRef[] { () => ScriptEntTab.OnGUISettingsTab() },
+                        OnGUI = new FunctionRef[] { () => ScriptEntTab.OnGUISettingsTab() },
 
-                            OnStartGUI = () =>
-                            {
-                                functionName = "mp_rr_remap_script";
-                                fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                            }
+                        OnStartGUI = () =>
+                        {
+                            functionName = "mp_rr_remap_script";
+                            fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                            GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
                         }
-                    },
+                    }
+                },
                 
+                {
                     // Sound Code
+                    WindowStruct.NewTuple( 3, 1 ),
+                    new GUIStruct()
                     {
-                        WindowStruct.NewTuple( 3, 1 ),
-                        new GUIStruct()
-                        {
-                            OnGUI = new FunctionRef[] { () => SoundEntTab.OnGUISettingsTab() },
+                        OnGUI = new FunctionRef[] { () => SoundEntTab.OnGUISettingsTab() },
 
-                            OnStartGUI = () =>
-                            {
-                                functionName = "mp_rr_remap_snd";
-                                fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                            }
+                        OnStartGUI = () =>
+                        {
+                            functionName = "mp_rr_remap_snd";
+                            fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                            GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
                         }
-                    },
+                    }
+                },
                 
+                {
                     // Spawn Code
+                    WindowStruct.NewTuple( 3, 2 ),
+                    new GUIStruct()
                     {
-                        WindowStruct.NewTuple( 3, 2 ),
-                        new GUIStruct()
-                        {
-                            OnGUI = new FunctionRef[] { () => SpawnEntTab.OnGUISettingsTab() },
+                        OnGUI = new FunctionRef[] { () => SpawnEntTab.OnGUISettingsTab() },
 
-                            OnStartGUI = () =>
-                            {
-                                functionName = "mp_rr_remap_spawn";
-                                fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                            }
+                        OnStartGUI = () =>
+                        {
+                            functionName = "mp_rr_remap_spawn";
+                            fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                            GenerateCorrectCode( () => SpawnEntTab.GenerateCode() );
                         }
-                    },
+                    }
+                },
 
                 // Other Code
+                {
                     // Camera Path Code
+                    WindowStruct.NewTuple( 4, 0 ),
+                    new GUIStruct()
                     {
-                        WindowStruct.NewTuple( 4, 0 ),
-                        new GUIStruct()
-                        {
-                            OnGUI = new FunctionRef[] { () => CameraPathTab.OnGUISettingsTab() },
+                        OnGUI = new FunctionRef[] { () => CameraPathTab.OnGUISettingsTab() },
 
-                            OnStartGUI = () =>
-                            {
-                                functionName = "remap_camera_path";
-                                fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
-                            }
+                        OnStartGUI = () =>
+                        {
+                            functionName = "remap_camera_path";
+                            fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
+                            GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
                         }
-                    },
-                //
+                    }
+                },
             },
 
             RefreshCallback = () =>
@@ -172,7 +179,7 @@ namespace CodeViews
         // Show / Hide Settings Menu
         internal static bool ShowSettingsMenu = false;
 
-        // Menu Names
+        // Menu Settings Names
         internal static string SquirrelMenu = "SquirrelMenu";
         internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
         internal static string SquirrelMenuShowPrecacheCode = "SquirrelMenuPrecache";
@@ -305,7 +312,6 @@ namespace CodeViews
         //   ╚═════╝ ╚═╝     ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
         internal static void Refresh( bool reSetScroll = true )
         {
-            EntityCount = 0; GenerateCorrectCode();
             if ( reSetScroll ) SetScrollView( scroll );
             AdditionalCodeWindow.AdditionalCodeInit();
             if ( itemEnd > codeSplit.Length ) currentPage = codeSplit.Length / maxBuildLine;
@@ -511,51 +517,15 @@ namespace CodeViews
             if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
         }
 
-        private static async void GenerateCorrectCode()
+        private static async void GenerateCorrectCode( FunctionRefAsyncString functionRef )
         {
+            EntityCount = 0;
+
             code = "";
 
             GenerationIsActive = true;
 
-            switch ( windowStruct.MainTabIdx )
-            {
-                case 0: // Squirrel Code
-                    code += await ScriptTab.GenerateCode();
-                    break;
-
-                case 1: // DataTable Code
-                    code += await DataTableTab.GenerateCode();
-                    break;
-
-                case 2: // Precache Code
-                    code += await PrecacheTab.GenerateCode();
-                    break;
-
-                case 3: // Ent Code
-                    switch ( windowStruct.SubTabIdx )
-                    {
-                        case 0: // Script Code
-                            code += await ScriptEntTab.GenerateCode();
-                            break;
-
-                        case 1: // Sound Code
-                            code += await SoundEntTab.GenerateCode();
-                            break;
-                        case 2:  // Spawn Code
-                            code += await SpawnEntTab.GenerateCode();
-                        break;
-                    }
-                    break;
-
-                case 4: // Other Code
-                    switch ( windowStruct.SubTabIdx )
-                    {
-                        case 0: // Camera Path Code
-                            code += await CameraPathTab.GenerateCode();
-                        break;
-                    }
-                break;
-            }
+            code += await functionRef();
 
             maxLength = code.Split( "\n" ).Length > maxBuildLine;
             codeSplit = code.Split( "\n" );

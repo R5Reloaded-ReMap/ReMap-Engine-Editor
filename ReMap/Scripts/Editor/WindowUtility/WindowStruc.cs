@@ -62,9 +62,9 @@ namespace WindowUtility
         {
             SubTabIdxTemp = SubTabIdx;
 
-            if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();
-
             Tuple< int, int > index = NewTuple( MainTabIdx, SubTabIdx );
+
+            if ( !SubTabGUI.ContainsKey( index ) ) return;
 
             GUIStruct str = SubTabGUI[ index ];
 
@@ -72,6 +72,8 @@ namespace WindowUtility
             {
                 if ( Helper.IsValid( str.OnStartGUI ) ) str.OnStartGUI();
             }
+
+            if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();
         }
 
         public void ShowFunc( int idx = 0 )

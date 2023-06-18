@@ -12,6 +12,7 @@ namespace WindowUtility
         public Dictionary< Tuple< int, int >, GUIStruct > SubTabGUI { get; set; }
         public FunctionRef MainTabCallback { get; set; }
         public FunctionRef SubTabCallback { get; set; }
+        public FunctionRef PostRefreshCallback { get; set; }
         public FunctionRef RefreshCallback { get; set; }
 
         public int MainTabIdx = 0;
@@ -51,6 +52,8 @@ namespace WindowUtility
 
             if ( MainTabIdx != MainTabIdxTemp )
             {
+                if ( Helper.IsValid( PostRefreshCallback ) ) PostRefreshCallback();
+
                 SavePageIdx();
                 MainTabIdxTemp = MainTabIdx;
                 LoadPageIdx();
@@ -108,6 +111,21 @@ namespace WindowUtility
             return SubTabGUI.ContainsKey( currentTabIdx ) ? SubTabGUI[ currentTabIdx ] : null;
         }
 
+        public void StoreInfo( string name, object value )
+        {
+            GUIStruct GUIStr = GetGUIStruct( NewTuple( MainTabIdxTemp, SubTabIdx ) );
+            if ( Helper.IsValid( GUIStr ) ) GUIStr.StoredInfo[ name ] = value;
+        }
+
+        public void ReStoreInfo< T >( ref T obj, string name ) where T : class
+        {
+            GUIStruct GUIStr = GetGUIStruct();
+            if ( Helper.IsValid( GUIStr ) && Helper.IsValid( obj ) && GUIStr.StoredInfo.ContainsKey( name ) )
+            {
+                obj = GUIStr.StoredInfo[ name ] as T;
+            }
+        }
+
         public bool OnWindowChange()
         {
             return WindowChange;
@@ -135,5 +153,6 @@ namespace WindowUtility
         public string Name { get; set; }
         public FunctionRef[] OnGUI { get; set; }
         public FunctionRef OnStartGUI { get; set; }
+        public Dictionary< string, object > StoredInfo = new Dictionary< string, object >();
     }
 }

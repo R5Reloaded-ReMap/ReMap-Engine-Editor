@@ -298,8 +298,14 @@ namespace CodeViews
                 WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => Refresh( false ), 100 );
             },
 
+            PostRefreshCallback = () =>
+            {
+                windowStruct.StoreInfo( "FuncName", functionName );
+            },
+
             RefreshCallback = () =>
             {
+                windowStruct.ReStoreInfo( ref functionName, "FuncName" );
                 Refresh( false );
             }
         };
@@ -410,6 +416,8 @@ namespace CodeViews
         {
             if ( reSetScroll ) SetScrollView( scroll );
             if ( itemEnd > codeSplit.Length ) currentPage = codeSplit.Length / maxBuildLine;
+
+            GUI.FocusControl( null );
 
             windowStruct.SubTabGUI[ windowStruct.GetCurrentTabIdx() ].OnStartGUI();
         }

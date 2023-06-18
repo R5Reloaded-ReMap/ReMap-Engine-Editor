@@ -9,7 +9,7 @@ namespace WindowUtility
     {
         public string[] MainTab { get; set; }
         public Dictionary< int, string[] > SubTab { get; set; }
-        public Dictionary< Tuple< int, int >, GUIStruct > SubTabGUI  { get; set; }
+        public Dictionary< Tuple< int, int >, GUIStruct > SubTabGUI { get; set; }
         public FunctionRef MainTabCallback { get; set; }
         public FunctionRef SubTabCallback { get; set; }
         public FunctionRef RefreshCallback { get; set; }
@@ -18,6 +18,8 @@ namespace WindowUtility
         public int SubTabIdx = 0;
         private int MainTabIdxTemp = 0;
         private int SubTabIdxTemp = 0;
+
+        private Dictionary< int, int > SavedSubTabIdx = new Dictionary< int, int >();
 
         public void ShowTab()
         {
@@ -47,9 +49,10 @@ namespace WindowUtility
 
             if ( MainTabIdx != MainTabIdxTemp )
             {
+                SavePageIdx();
                 MainTabIdxTemp = MainTabIdx;
-                SubTabIdx = 0;
                 CommonChanges();
+                LoadPageIdx();
             }
 
             if ( SubTabIdx != SubTabIdxTemp )
@@ -58,10 +61,22 @@ namespace WindowUtility
             }
         }
 
+        public void ShowFunc( int idx = 0 )
+        {
+            Tuple< int, int > index = NewTuple( MainTabIdx, SubTabIdx );
+
+            if ( !SubTabGUI.ContainsKey( index ) ) return;
+
+            GUIStruct str = SubTabGUI[ index ];
+
+            if ( Helper.IsValid( str ) )
+            {
+                if ( Helper.IsValid( str.OnGUI[ idx ] ) ) str.OnGUI[ idx ]();
+            }
+        }
+
         private void CommonChanges()
         {
-            SubTabIdxTemp = SubTabIdx;
-
             Tuple< int, int > index = NewTuple( MainTabIdx, SubTabIdx );
 
             if ( !SubTabGUI.ContainsKey( index ) ) return;
@@ -76,18 +91,36 @@ namespace WindowUtility
             if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();
         }
 
-        public void ShowFunc( int idx = 0 )
+        private void SavePageIdx()
         {
-            Tuple< int, int > index = NewTuple( MainTabIdx, SubTabIdx );
-
-            GUIStruct str = SubTabGUI[ index ];
-
-            if ( Helper.IsValid( str ) )
+            if ( !SavedSubTabIdx.ContainsKey( MainTabIdxTemp ) )
             {
-                if ( Helper.IsValid( str.OnGUI[ idx ] ) ) str.OnGUI[ idx ]();
+                SavedSubTabIdx.Add( MainTabIdxTemp, SubTabIdx );
+            }
+            else
+            {
+                SavedSubTabIdx[ MainTabIdxTemp ] = SubTabIdx;
             }
         }
 
+        private void LoadPageIdx()
+        {
+            if ( !SavedSubTabIdx.ContainsKey( MainTabIdx ) )
+            {
+                SubTabIdx = 0;
+                SubTabIdxTemp = 0;
+            }
+            else
+            {
+                SubTabIdx = SavedSubTabIdx[ MainTabIdx ];
+                SubTabIdxTemp = SavedSubTabIdx[ MainTabIdx ];
+            }
+        }
+
+        public Tuple< int, int > GetCurrentTabIdx()
+        {
+            return NewTuple( MainTabIdx, SubTabIdx );
+        }
 
         public static Tuple< int, int > NewTuple( int i, int j )
         {

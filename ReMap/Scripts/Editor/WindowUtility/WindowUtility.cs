@@ -83,7 +83,7 @@ namespace WindowUtility
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
         }
 
-        public static void CreateTextInfoCentered(string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
+        public static void CreateTextInfoCentered( string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
             GUIStyle labelStyle = new GUIStyle( EditorStyles.label );
             labelStyle.alignment = TextAnchor.MiddleCenter;
@@ -129,13 +129,13 @@ namespace WindowUtility
         {
             if ( Helper.IsValid( editorWindow ) )
             {
-                CreateTextInfo( $"Window Size: {Helper.ReplaceComma( editorWindow.position.width )} x {Helper.ReplaceComma( editorWindow.position.height )}" );
+                CreateTextInfo( $"Window Size: {Helper.ReplaceComma( editorWindow.position.width )} x {Helper.ReplaceComma( editorWindow.position.height )}", "", 152 );
             }
         }
 
         public static void GetScrollSize( Vector2 scroll )
         {
-            CreateTextInfo( $"Scroll Position: {Helper.ReplaceComma( scroll.x )} x {Helper.ReplaceComma( scroll.y )}" );
+            CreateTextInfo( $"Scroll Position: {Helper.ReplaceComma( scroll.x )} x {Helper.ReplaceComma( scroll.y )}", "", 152 );
         }
 
         private static GUILayoutOption HeightOption( float value )

@@ -31,7 +31,7 @@ namespace CodeViews
 
             SubTab = new Dictionary< int, string[] >()
             {
-                //{ 0, new[] { "Script", "Additional Code" } },
+                { 0, new[] { "Script", "Additional Code" } },
                 { 3, new[] { "script.ent", "snd.ent", "spawn.ent" } },
                 { 4, new[] { "Camera Path" } }
             },
@@ -40,6 +40,7 @@ namespace CodeViews
             {
                 // Squirrel Code
                 {
+                    // Script
                     WindowStruct.NewTuple( 0, 0 ),
                     new GUIStruct()
                     {
@@ -50,6 +51,23 @@ namespace CodeViews
                             functionName = Helper.GetSceneName();
                             fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
                             GenerateCorrectCode( () => ScriptTab.GenerateCode() );
+                            isAdditionalCodeWindow = false;
+                            AdditionalCodeTab.AdditionalCodeInit();
+                        }
+                    }
+                },
+
+                {
+                    // Additional Code
+                    WindowStruct.NewTuple( 0, 1 ),
+                    new GUIStruct()
+                    {
+                        OnStartGUI = () =>
+                        {
+                            functionName = Helper.GetSceneName();
+                            fileInfo = new[] { "", "", "", "" };
+                            isAdditionalCodeWindow = true;
+                            AdditionalCodeTab.AdditionalCodeInit();
                         }
                     }
                 },
@@ -66,6 +84,7 @@ namespace CodeViews
                             functionName = "remap_datatable";
                             fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
                             GenerateCorrectCode( () => DataTableTab.GenerateCode() );
+                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -82,6 +101,7 @@ namespace CodeViews
                             functionName = $"{Helper.GetSceneName()}_Precache";
                             fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
                             GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
+                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -99,6 +119,7 @@ namespace CodeViews
                             functionName = "mp_rr_remap_script";
                             fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
+                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -115,6 +136,7 @@ namespace CodeViews
                             functionName = "mp_rr_remap_snd";
                             fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
+                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -131,6 +153,7 @@ namespace CodeViews
                             functionName = "mp_rr_remap_spawn";
                             fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             GenerateCorrectCode( () => SpawnEntTab.GenerateCode() );
+                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -148,9 +171,15 @@ namespace CodeViews
                             functionName = "remap_camera_path";
                             fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
                             GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
+                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
+            },
+
+            MainTabCallback = () =>
+            {
+                WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => Refresh( false ), 100 );
             },
 
             RefreshCallback = () =>
@@ -168,6 +197,8 @@ namespace CodeViews
         internal static int objectTypeInSceneCount = 0;
         internal static int objectTypeInSceneCount_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
+
+        private static bool isAdditionalCodeWindow = false;
 
         internal static string additionalCodeHead = "";
         internal static string additionalCodeInBlock = "";
@@ -237,8 +268,6 @@ namespace CodeViews
         {
             TagHelper.CheckAndCreateTags();
 
-            if ( Helper.IsValid( AdditionalCodeWindow.additionalCode ) ) AdditionalCodeWindow.AdditionalCodeInit();
-
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
             windowInstance.minSize = new Vector2( 1230, 500 );
             windowInstance.Show();
@@ -248,6 +277,8 @@ namespace CodeViews
 
         void OnEnable()
         {
+            windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
+
             EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
             EditorSceneManager.sceneSaved += EditorSceneManager_sceneSaved;
 
@@ -263,22 +294,47 @@ namespace CodeViews
 
             ShortCut();
 
-            GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal();
+            if ( isAdditionalCodeWindow )
+            {
+                GUILayout.BeginVertical( "box" );
+                    scroll = EditorGUILayout.BeginScrollView( scroll );
+                        if ( AdditionalCodeTab.showInfo )
+                        {
+                            AdditionalCodeTab.textInfoTemp = AdditionalCodeTab.textInfo;
+                            EditorGUILayout.TextArea( AdditionalCodeTab.textInfoTemp, GUILayout.ExpandHeight( true ) );
+                        }
+                        else if ( !AdditionalCodeTab.isEmptyCode )
+                        {
+                            AdditionalCodeTab.activeCode.Content[ AdditionalCodeTab.windowStruct.SubTabIdx ].Code = EditorGUILayout.TextArea( AdditionalCodeTab.activeCode.Content[ AdditionalCodeTab.windowStruct.SubTabIdx ].Code, GUILayout.ExpandHeight( true ) );
+                        }
+                        else
+                        {
+                            WindowUtility.WindowUtility.FlexibleSpace();
+                                WindowUtility.WindowUtility.CreateTextInfoCentered( "Empty Code Reference" );
+                            WindowUtility.WindowUtility.FlexibleSpace();
+                        }
+                    EditorGUILayout.EndScrollView();
+                GUILayout.EndVertical();
+            }
+            else
+            {
+                GUILayout.BeginVertical( "box" );
+                    GUILayout.BeginHorizontal();
 
-                    CodeOutput();
+                        CodeOutput();
                     
-                    if ( ShowSettingsMenu )
-                    {
-                        GUILayout.BeginVertical( "box", GUILayout.Width( 340 ) );
-                            windowStruct.ShowFunc();
-                        GUILayout.EndVertical();
-                    }
+                        if ( ShowSettingsMenu )
+                        {
+                            GUILayout.BeginVertical( "box", GUILayout.Width( 340 ) );
+                                windowStruct.ShowFunc();
+                            GUILayout.EndVertical();
+                        }
 
-                GUILayout.EndHorizontal();
+                    GUILayout.EndHorizontal();
         
-                if ( GUILayout.Button( "Copy To Clipboard" ) ) CopyCode();
-            GUILayout.EndVertical();
+                    if ( GUILayout.Button( "Copy To Clipboard" ) ) CopyCode();
+                GUILayout.EndVertical();
+            }
         }
 
         public static bool IsHided( ObjectType objectType )
@@ -313,8 +369,9 @@ namespace CodeViews
         internal static void Refresh( bool reSetScroll = true )
         {
             if ( reSetScroll ) SetScrollView( scroll );
-            AdditionalCodeWindow.AdditionalCodeInit();
             if ( itemEnd > codeSplit.Length ) currentPage = codeSplit.Length / maxBuildLine;
+
+            windowStruct.SubTabGUI[ windowStruct.GetCurrentTabIdx() ].OnStartGUI();
         }
 
         internal static void CopyCode()
@@ -380,6 +437,16 @@ namespace CodeViews
 
                 GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
+                if ( isAdditionalCodeWindow )
+                {
+                    AdditionalCodeTab.windowStruct.ShowTab();
+
+                    AdditionalCodeTab.MainTab();
+
+                    GUILayout.EndVertical();
+                    return;
+                }
+
                 GUILayout.BeginHorizontal();
                         ObjectCount();
 
@@ -390,10 +457,9 @@ namespace CodeViews
                             WindowUtility.WindowUtility.GetScrollSize( scroll );
                         }
 
-                        GUILayout.FlexibleSpace();
+                        WindowUtility.WindowUtility.FlexibleSpace();
 
                         ExportButton();
-                        if ( windowStruct.MainTabIdx == 0 ) AdditionalCodeButton();
                         SettingsMenuButton();
                 GUILayout.EndHorizontal();
 
@@ -467,11 +533,6 @@ namespace CodeViews
         private static void ExportButton( string text = "Export Code", string tooltip = "Export current code" )
         {
             if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 100 ) ) ) ExportFunction();
-        }
-
-        private static void AdditionalCodeButton( string text = "Additional Code", string tooltip = "Open Additional Code Window" )
-        {
-            if ( GUILayout.Button( new GUIContent( text, tooltip ), GUILayout.Width( 120 ) ) ) AdditionalCodeWindow.Init();
         }
 
         private static void SettingsMenuButton( string text = "Settings", string tooltip = "Show settings" )

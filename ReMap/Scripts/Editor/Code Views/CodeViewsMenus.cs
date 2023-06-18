@@ -420,7 +420,7 @@ namespace CodeViews
 
         internal static void OptionalAdditionalCodeOption()
         {
-            if ( !Helper.IsValid( AdditionalCodeWindow.additionalCode ) ) AdditionalCodeWindow.additionalCode = AdditionalCodeWindow.FindAdditionalCode();
+            if ( !Helper.IsValid( AdditionalCodeTab.additionalCode ) ) AdditionalCodeTab.additionalCode = AdditionalCodeTab.FindAdditionalCode();
 
             GUILayout.BeginVertical();
                 
@@ -429,9 +429,9 @@ namespace CodeViews
 
                 if ( CodeViewsWindow.ShowFunctionEnable() )
                 {
-                    foreach ( AdditionalCodeContent content in AdditionalCodeWindow.additionalCode.HeadContent.Content )
+                    foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.HeadContent.Content )
                     {
-                        CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeWindow.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                        CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeTab.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                     }
                 } else OptionalTextInfo( $"\"Show Squirrel Function\" is disable", "", null, MenuType.Small );
 
@@ -439,9 +439,9 @@ namespace CodeViews
                 OptionalTextInfo( $"In-Block Code", "", null, MenuType.Medium );
                 Space( 2 );
 
-                foreach ( AdditionalCodeContent content in AdditionalCodeWindow.additionalCode.InBlockContent.Content )
+                foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.InBlockContent.Content )
                 {
-                    CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeWindow.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                    CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeTab.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                 }
 
                 Space( 1 );
@@ -450,9 +450,9 @@ namespace CodeViews
 
                 if ( CodeViewsWindow.ShowFunctionEnable() )
                 {
-                    foreach ( AdditionalCodeContent content in AdditionalCodeWindow.additionalCode.BelowContent.Content )
+                    foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.BelowContent.Content )
                     {
-                        CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeWindow.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                        CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeTab.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                     }
                 } else OptionalTextInfo( $"\"Show Squirrel Function\" is disable", "", null, MenuType.Small );
 
@@ -462,9 +462,24 @@ namespace CodeViews
             {
                 isFirstOpen = false;
 
-                foreach ( string type in AdditionalCodeWindow.contentType )
+                foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.HeadContent.Content )
                 {
-                    MenuInit menu = MenuInit.Find( $"{AdditionalCodeWindow.emptyContentStr}_{type}" );
+                    CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeTab.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                }
+
+                foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.InBlockContent.Content )
+                {
+                    CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeTab.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                }
+
+                foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.BelowContent.Content )
+                {
+                    CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeTab.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                }
+
+                foreach ( string type in AdditionalCodeTab.contentType )
+                {
+                    MenuInit menu = MenuInit.Find( $"{AdditionalCodeTab.emptyContentStr}_{type}" );
 
                     if ( Helper.IsValid( menu ) )
                     {
@@ -474,7 +489,7 @@ namespace CodeViews
             }
         }
 
-        private static void AdditionalCodeBoolChange( string name, string type, ref string codeRef, List< AdditionalCodeContent > contents )
+        private static void AdditionalCodeBoolChange( string name, string type, ref string codeRef, List< AdditionalCodeContent_ > contents )
         {
             if ( contents.Count == 1 )
             {
@@ -485,7 +500,7 @@ namespace CodeViews
                 return;
             }
 
-            foreach ( AdditionalCodeContent content in contents )
+            foreach ( AdditionalCodeContent_ content in contents )
             {
                 MenuInit menu = MenuInit.Find( $"{content.Name}_{type}" );
 

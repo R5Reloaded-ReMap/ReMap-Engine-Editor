@@ -51,20 +51,19 @@ namespace WindowUtility
             {
                 SavePageIdx();
                 MainTabIdxTemp = MainTabIdx;
-                CommonChanges();
                 LoadPageIdx();
+                CommonChanges();
             }
 
             if ( SubTabIdx != SubTabIdxTemp )
             {
                 CommonChanges();
-                SubTabIdxTemp = SubTabIdx;
             }
         }
 
         public void ShowFunc( int idx = 0 )
         {
-            Tuple< int, int > index = NewTuple( MainTabIdx, SubTabIdx );
+            Tuple< int, int > index = GetCurrentTabIdx();
 
             if ( !SubTabGUI.ContainsKey( index ) ) return;
 
@@ -78,7 +77,7 @@ namespace WindowUtility
 
         private void CommonChanges()
         {
-            Tuple< int, int > index = NewTuple( MainTabIdx, SubTabIdx );
+            Tuple< int, int > index = GetCurrentTabIdx();
 
             if ( !SubTabGUI.ContainsKey( index ) ) return;
 

@@ -37,6 +37,8 @@ namespace CodeViews
 
         private static bool isAdditionalCodeWindow = false;
 
+        private static string infoCount = "Entity Count";
+
         internal static string additionalCodeHead = "";
         internal static string additionalCodeInBlock = "";
         internal static string additionalCodeBelow = "";
@@ -123,6 +125,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             functionName = Helper.GetSceneName();
+                            infoCount = "Entity Count";
                             fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
                             GenerateCorrectCode( () => ScriptTab.GenerateCode() );
                             isAdditionalCodeWindow = false;
@@ -139,6 +142,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             functionName = Helper.GetSceneName();
+                            infoCount = "Entity Count";
                             fileInfo = new[] { "", "", "", "" };
                             isAdditionalCodeWindow = true;
                             AdditionalCodeTab.AdditionalCodeInit();
@@ -156,6 +160,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             functionName = "remap_datatable";
+                            infoCount = "Entity Count";
                             fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
                             GenerateCorrectCode( () => DataTableTab.GenerateCode() );
                             isAdditionalCodeWindow = false;
@@ -173,6 +178,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             functionName = $"{Helper.GetSceneName()}_Precache";
+                            infoCount = "Models Precached Count";
                             fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
                             GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
                             isAdditionalCodeWindow = false;
@@ -191,6 +197,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             functionName = "mp_rr_remap_script";
+                            infoCount = "Entity Count";
                             fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
                             isAdditionalCodeWindow = false;
@@ -208,6 +215,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             functionName = "mp_rr_remap_snd";
+                            infoCount = "Entity Count";
                             fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
                             isAdditionalCodeWindow = false;
@@ -225,6 +233,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             functionName = "mp_rr_remap_spawn";
+                            infoCount = "Entity Count";
                             fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             GenerateCorrectCode( () => SpawnEntTab.GenerateCode() );
                             isAdditionalCodeWindow = false;
@@ -243,6 +252,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             functionName = "remap_camera_path";
+                            infoCount = "Paths Count";
                             fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
                             GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
                             isAdditionalCodeWindow = false;
@@ -485,24 +495,6 @@ namespace CodeViews
 
         private static void ObjectCount()
         {
-            string info = "Entity Count";
-
-            switch ( windowStruct.MainTabIdx )
-            {
-                case 2: // Precache Code
-                    info = "Models Precached Count";
-                    break;
-
-                case 4: // Other Code
-                    switch ( windowStruct.SubTabIdx )
-                    {
-                        case 0: // Camera Path Code
-                            info = "Paths Count";
-                        break;
-                    }
-                break;
-            }
-
             GUILayout.BeginHorizontal();
 
                 if ( GenerationIsActive )
@@ -512,7 +504,7 @@ namespace CodeViews
                 else
                 {
                     SetCorrectColor( EntityCount );
-                    GUILayout.Label( $" // {info}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
+                    GUILayout.Label( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
                     GUI.contentColor = Color.white;
                 }
 

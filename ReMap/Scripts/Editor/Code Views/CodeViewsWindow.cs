@@ -25,6 +25,80 @@ namespace CodeViews
 
     public class CodeViewsWindow : EditorWindow
     {
+        internal static CodeViewsWindow windowInstance;
+        internal static string code = "";
+        internal static string[] codeSplit = new string[0];
+        internal static string functionName = "Unnamed";
+        internal static Vector2 scroll;
+        internal static Vector2 scrollSettings;
+        internal static int objectTypeInSceneCount = 0;
+        internal static int objectTypeInSceneCount_temp = 0;
+        internal static Vector3 StartingOffset = Vector3.zero;
+
+        private static bool isAdditionalCodeWindow = false;
+
+        internal static string additionalCodeHead = "";
+        internal static string additionalCodeInBlock = "";
+        internal static string additionalCodeBelow = "";
+
+        private static string[] fileInfo = new string[4];
+
+        // Menus
+        // Show / Hide Settings Menu
+        internal static bool ShowSettingsMenu = false;
+
+        // Menu Settings Names
+        internal static string SquirrelMenu = "SquirrelMenu";
+        internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
+        internal static string SquirrelMenuShowPrecacheCode = "SquirrelMenuPrecache";
+        internal static string SquirrelMenuShowAdditionalCode = "SquirrelMenuInBlockAdditionalCode";
+
+        internal static string OffsetMenu = "OffsetMenu";
+        internal static string OffsetMenuOffset = "OffsetMenuOffset";
+        internal static string OffsetMenuShowOffset = "OffsetMenuShowOffset";
+
+        internal static string SelectionMenu = "SelectionMenu";
+
+        internal static string LiveCodeMenu = "LiveCodeMenu";
+        internal static string LiveCodeMenuRespawn = "LiveCodeMenuRespawn";
+        internal static string LiveCodeMenuTeleportation = "LiveCodeMenuTeleportation";
+        internal static string LiveCodeMenuAutoSend = "LiveCodeMenuAutoSend";
+        internal static string LiveCodeMenuAdvanced = "LiveCodeMenuAdvanced";
+
+        internal static string AdditionalCodeMenu = "AdditionalCodeMenu";
+
+        internal static string AdvancedMenu = "AdvancedMenu";
+
+        internal static string FullFileEntMenu = "FullFileEntMenu";
+        internal static string FullFileEntSubMenu = "FullFileEntSubMenu";
+
+        internal static string DevMenu = "DevMenu";
+        internal static string DevMenuDebugInfo = "DevMenuDebugInfo";
+        //
+
+        internal static bool GenerationIsActive = false;
+
+        public static bool SendingObjects = false;
+        internal static int EntityCount = 0;
+        internal static int SendedEntityCount = 0;
+        internal static int EntFileID = 27;
+        internal static Vector3 InfoPlayerStartOrigin = Vector3.zero;
+        internal static Vector3 InfoPlayerStartAngles = Vector3.zero;
+
+        internal static Texture2D enableLogo;
+        internal static Texture2D disableLogo;
+
+        public static int greenPropCount = 1500;
+        public static int yellowPropCount = 3000;
+
+        // Page utility
+        internal static bool maxLength = false;
+        internal static int maxBuildLine = 800;
+        private static int itemStart = 0;
+        private static int itemEnd = 0;
+        private static int currentPage = 0;
+        private static int maxPage = 0;
+
         private static WindowStruct windowStruct = new WindowStruct()
         {
             MainTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code", "Other Code" },
@@ -187,81 +261,7 @@ namespace CodeViews
                 Refresh( false );
             }
         };
-
-        internal static CodeViewsWindow windowInstance;
-        internal static string code = "";
-        internal static string[] codeSplit = new string[0];
-        internal static string functionName = "Unnamed";
-        internal static Vector2 scroll;
-        internal static Vector2 scrollSettings;
-        internal static int objectTypeInSceneCount = 0;
-        internal static int objectTypeInSceneCount_temp = 0;
-        internal static Vector3 StartingOffset = Vector3.zero;
-
-        private static bool isAdditionalCodeWindow = false;
-
-        internal static string additionalCodeHead = "";
-        internal static string additionalCodeInBlock = "";
-        internal static string additionalCodeBelow = "";
-
-        private static string[] fileInfo = new string[4];
-
-        // Menus
-        // Show / Hide Settings Menu
-        internal static bool ShowSettingsMenu = false;
-
-        // Menu Settings Names
-        internal static string SquirrelMenu = "SquirrelMenu";
-        internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
-        internal static string SquirrelMenuShowPrecacheCode = "SquirrelMenuPrecache";
-        internal static string SquirrelMenuShowAdditionalCode = "SquirrelMenuInBlockAdditionalCode";
-
-        internal static string OffsetMenu = "OffsetMenu";
-        internal static string OffsetMenuOffset = "OffsetMenuOffset";
-        internal static string OffsetMenuShowOffset = "OffsetMenuShowOffset";
-
-        internal static string SelectionMenu = "SelectionMenu";
-
-        internal static string LiveCodeMenu = "LiveCodeMenu";
-        internal static string LiveCodeMenuRespawn = "LiveCodeMenuRespawn";
-        internal static string LiveCodeMenuTeleportation = "LiveCodeMenuTeleportation";
-        internal static string LiveCodeMenuAutoSend = "LiveCodeMenuAutoSend";
-        internal static string LiveCodeMenuAdvanced = "LiveCodeMenuAdvanced";
-
-        internal static string AdditionalCodeMenu = "AdditionalCodeMenu";
-
-        internal static string AdvancedMenu = "AdvancedMenu";
-
-        internal static string FullFileEntMenu = "FullFileEntMenu";
-        internal static string FullFileEntSubMenu = "FullFileEntSubMenu";
-
-        internal static string DevMenu = "DevMenu";
-        internal static string DevMenuDebugInfo = "DevMenuDebugInfo";
-        //
-
-        internal static bool GenerationIsActive = false;
-
-        public static bool SendingObjects = false;
-        internal static int EntityCount = 0;
-        internal static int SendedEntityCount = 0;
-        internal static int EntFileID = 27;
-        internal static Vector3 InfoPlayerStartOrigin = Vector3.zero;
-        internal static Vector3 InfoPlayerStartAngles = Vector3.zero;
-
-        internal static Texture2D enableLogo;
-        internal static Texture2D disableLogo;
-
-        public static int greenPropCount = 1500;
-        public static int yellowPropCount = 3000;
-
-        // Page utility
-        internal static bool maxLength = false;
-        internal static int maxBuildLine = 800;
-        private static int itemStart = 0;
-        private static int itemEnd = 0;
-        private static int currentPage = 0;
-        private static int maxPage = 0;
-
+        
 
         [ MenuItem( "ReMap/Code Views", false, 25 ) ]
         public static void Init()
@@ -277,8 +277,6 @@ namespace CodeViews
 
         void OnEnable()
         {
-            windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
-
             EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
             EditorSceneManager.sceneSaved += EditorSceneManager_sceneSaved;
 

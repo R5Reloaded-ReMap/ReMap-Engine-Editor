@@ -80,8 +80,6 @@ namespace WindowUtility
         {
             Tuple< int, int > index = NewTuple( MainTabIdx, SubTabIdx );
 
-            UnityInfo.Printt( index.ToString() );
-
             if ( !SubTabGUI.ContainsKey( index ) ) return;
 
             GUIStruct str = SubTabGUI[ index ];

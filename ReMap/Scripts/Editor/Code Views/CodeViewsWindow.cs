@@ -126,7 +126,7 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                functionName = Helper.GetSceneName();
+                                ResetFunctionName();
                                 infoCount = "Entity Count";
                                 fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
                                 isAdditionalCodeWindow = false;
@@ -134,6 +134,11 @@ namespace CodeViews
 
                             GenerateCorrectCode( () => ScriptTab.GenerateCode() );
                             AdditionalCodeTab.AdditionalCodeInit();
+                        },
+
+                        InitCallback = () =>
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName(), WindowStruct.NewTuple( 0, 0 ) );
                         }
                     }
                 },
@@ -147,13 +152,18 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                functionName = Helper.GetSceneName();
+                                ResetFunctionName();
                                 infoCount = "Entity Count";
                                 fileInfo = new[] { "", "", "", "" };
                                 isAdditionalCodeWindow = true;
                             }
 
                             AdditionalCodeTab.AdditionalCodeInit();
+                        },
+
+                        InitCallback = () =>
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName(), WindowStruct.NewTuple( 0, 1 ) );
                         }
                     }
                 },
@@ -169,13 +179,18 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                functionName = "remap_datatable";
+                                ResetFunctionName();
                                 infoCount = "Entity Count";
                                 fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
                                 isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => DataTableTab.GenerateCode() );
+                        },
+
+                        InitCallback = () =>
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", "remap_datatable", WindowStruct.NewTuple( 1, 0 ) );
                         }
                     }
                 },
@@ -191,13 +206,18 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                functionName = $"{Helper.GetSceneName()}_Precache";
+                                ResetFunctionName();
                                 infoCount = "Models Precached Count";
                                 fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
                                 isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
+                        },
+
+                        InitCallback = () =>
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", $"{Helper.GetSceneName()}_Precache", WindowStruct.NewTuple( 2, 0 ) );
                         }
                     }
                 },
@@ -214,13 +234,18 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                functionName = "mp_rr_remap_script";
+                                ResetFunctionName();
                                 infoCount = "Entity Count";
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                                 isAdditionalCodeWindow = false;
                             }
                             
                             GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
+                        },
+
+                        InitCallback = () =>
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_script", WindowStruct.NewTuple( 3, 0 ) );
                         }
                     }
                 },
@@ -236,13 +261,18 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                functionName = "mp_rr_remap_snd";
+                                ResetFunctionName();
                                 infoCount = "Entity Count";
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                                 isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
+                        },
+
+                        InitCallback = () =>
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_snd", WindowStruct.NewTuple( 3, 1 ) );
                         }
                     }
                 },
@@ -258,13 +288,18 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                functionName = "mp_rr_remap_spawn";
+                                ResetFunctionName();
                                 infoCount = "Entity Count";
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                                 isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => SpawnEntTab.GenerateCode() );
+                        },
+
+                        InitCallback = () =>
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_spawn", WindowStruct.NewTuple( 3, 2 ) );
                         }
                     }
                 },
@@ -281,13 +316,18 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                functionName = "remap_camera_path";
+                                ResetFunctionName();
                                 infoCount = "Paths Count";
                                 fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
                                 isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
+                        },
+
+                        InitCallback = () =>
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", "remap_camera_path", WindowStruct.NewTuple( 4, 0 ) );
                         }
                     }
                 },
@@ -308,6 +348,7 @@ namespace CodeViews
                 windowStruct.ReStoreInfo( ref functionName, "FuncName" );
                 Refresh( false );
             }
+
         };
         
 
@@ -321,6 +362,8 @@ namespace CodeViews
             windowInstance.Show();
 
             Helper.SetShowStartingOffset( true );
+
+            windowStruct.Awake();
         }
 
         void OnEnable()
@@ -330,8 +373,8 @@ namespace CodeViews
 
             enableLogo = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
             disableLogo = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
-
-            Refresh();
+            
+            windowStruct.Awake();
         }
 
         void OnGUI()
@@ -606,6 +649,11 @@ namespace CodeViews
             Event currentEvent = Event.current;
 
             if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
+        }
+
+        internal static void ResetFunctionName()
+        {
+            windowStruct.ReStoreInfo( ref functionName, "FuncNameBase" );
         }
 
         private static async void GenerateCorrectCode( FunctionRefAsyncString functionRef )

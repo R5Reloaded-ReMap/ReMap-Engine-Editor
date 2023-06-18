@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace WindowUtility
         private int SubTabIdxTemp = 0;
 
         private bool WindowChange = false;
+        private bool ForceChange = false;
 
         private Dictionary< int, int > SavedSubTabIdx = new Dictionary< int, int >();
 
@@ -118,9 +120,26 @@ namespace WindowUtility
             return SubTabGUI.ContainsKey( currentTabIdx ) ? SubTabGUI[ currentTabIdx ] : null;
         }
 
-        public void StoreInfo( string name, object value )
+        public async void Awake()
         {
-            GUIStruct GUIStr = GetGUIStruct( NewTuple( MainTabIdxTemp, SubTabIdxTemp ) ); // Put thiss 
+            await Task.Delay( 200 ); // 200 ms
+
+            ForceChange = true;
+                foreach ( GUIStruct GUIStr in SubTabGUI.Values )
+                {
+                    if ( Helper.IsValid( GUIStr ) )
+                    {
+                        if ( Helper.IsValid( GUIStr.InitCallback ) ) GUIStr.InitCallback();
+                    }
+                }
+            ForceChange = false;
+
+            if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();
+        }
+
+        public void StoreInfo( string name, object value, Tuple< int, int > index = null )
+        {
+            GUIStruct GUIStr = GetGUIStruct( Helper.IsValid( index ) ? index : NewTuple( MainTabIdxTemp, SubTabIdxTemp ) );
             if ( Helper.IsValid( GUIStr ) ) GUIStr.StoredInfo[ name ] = value;
         }
 
@@ -135,7 +154,7 @@ namespace WindowUtility
 
         public bool OnWindowChange()
         {
-            return WindowChange;
+            return WindowChange || ForceChange;
         }
 
         public string GetGUIStructName( Tuple< int, int > index = null )
@@ -161,5 +180,7 @@ namespace WindowUtility
         public FunctionRef[] OnGUI { get; set; }
         public FunctionRef OnStartGUI { get; set; }
         public Dictionary< string, object > StoredInfo = new Dictionary< string, object >();
+
+        public FunctionRef InitCallback { get; set; }
     }
 }

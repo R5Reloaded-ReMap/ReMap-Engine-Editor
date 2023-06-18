@@ -724,6 +724,11 @@ public class Helper
         array[ currentLength ] = obj;
     }
 
+    public static void Ping( string str = "Ping!" )
+    {
+        UnityInfo.Printt( str );
+    }
+
     public static Transform FindParent( Transform go )
     {
         return FindParent( go.gameObject );

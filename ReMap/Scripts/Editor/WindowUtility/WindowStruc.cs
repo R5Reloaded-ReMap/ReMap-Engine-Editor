@@ -19,6 +19,8 @@ namespace WindowUtility
         private int MainTabIdxTemp = 0;
         private int SubTabIdxTemp = 0;
 
+        private bool WindowChange = false;
+
         private Dictionary< int, int > SavedSubTabIdx = new Dictionary< int, int >();
 
         public void ShowTab()
@@ -78,7 +80,9 @@ namespace WindowUtility
 
             if ( Helper.IsValid( GUIStr ) )
             {
+                WindowChange = true;
                 if ( Helper.IsValid( GUIStr.OnStartGUI ) ) GUIStr.OnStartGUI();
+                WindowChange = false;
             }
 
             if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();
@@ -102,6 +106,11 @@ namespace WindowUtility
         {
             var currentTabIdx = Helper.IsValid( index ) ? index : GetCurrentTabIdx();
             return SubTabGUI.ContainsKey( currentTabIdx ) ? SubTabGUI[ currentTabIdx ] : null;
+        }
+
+        public bool OnWindowChange()
+        {
+            return WindowChange;
         }
 
         public string GetGUIStructName( Tuple< int, int > index = null )

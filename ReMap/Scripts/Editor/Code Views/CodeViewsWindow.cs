@@ -124,11 +124,15 @@ namespace CodeViews
 
                         OnStartGUI = () =>
                         {
-                            functionName = Helper.GetSceneName();
-                            infoCount = "Entity Count";
-                            fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                functionName = Helper.GetSceneName();
+                                infoCount = "Entity Count";
+                                fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
+                                isAdditionalCodeWindow = false;
+                            }
+
                             GenerateCorrectCode( () => ScriptTab.GenerateCode() );
-                            isAdditionalCodeWindow = false;
                             AdditionalCodeTab.AdditionalCodeInit();
                         }
                     }
@@ -141,10 +145,14 @@ namespace CodeViews
                     {
                         OnStartGUI = () =>
                         {
-                            functionName = Helper.GetSceneName();
-                            infoCount = "Entity Count";
-                            fileInfo = new[] { "", "", "", "" };
-                            isAdditionalCodeWindow = true;
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                functionName = Helper.GetSceneName();
+                                infoCount = "Entity Count";
+                                fileInfo = new[] { "", "", "", "" };
+                                isAdditionalCodeWindow = true;
+                            }
+
                             AdditionalCodeTab.AdditionalCodeInit();
                         }
                     }
@@ -159,11 +167,15 @@ namespace CodeViews
 
                         OnStartGUI = () =>
                         {
-                            functionName = "remap_datatable";
-                            infoCount = "Entity Count";
-                            fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                functionName = "remap_datatable";
+                                infoCount = "Entity Count";
+                                fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
+                                isAdditionalCodeWindow = false;
+                            }
+
                             GenerateCorrectCode( () => DataTableTab.GenerateCode() );
-                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -177,11 +189,15 @@ namespace CodeViews
 
                         OnStartGUI = () =>
                         {
-                            functionName = $"{Helper.GetSceneName()}_Precache";
-                            infoCount = "Models Precached Count";
-                            fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                functionName = $"{Helper.GetSceneName()}_Precache";
+                                infoCount = "Models Precached Count";
+                                fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
+                                isAdditionalCodeWindow = false;
+                            }
+
                             GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
-                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -196,11 +212,15 @@ namespace CodeViews
 
                         OnStartGUI = () =>
                         {
-                            functionName = "mp_rr_remap_script";
-                            infoCount = "Entity Count";
-                            fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                functionName = "mp_rr_remap_script";
+                                infoCount = "Entity Count";
+                                fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                                isAdditionalCodeWindow = false;
+                            }
+                            
                             GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
-                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -214,11 +234,15 @@ namespace CodeViews
 
                         OnStartGUI = () =>
                         {
-                            functionName = "mp_rr_remap_snd";
-                            infoCount = "Entity Count";
-                            fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                functionName = "mp_rr_remap_snd";
+                                infoCount = "Entity Count";
+                                fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                                isAdditionalCodeWindow = false;
+                            }
+
                             GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
-                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -232,11 +256,15 @@ namespace CodeViews
 
                         OnStartGUI = () =>
                         {
-                            functionName = "mp_rr_remap_spawn";
-                            infoCount = "Entity Count";
-                            fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                functionName = "mp_rr_remap_spawn";
+                                infoCount = "Entity Count";
+                                fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
+                                isAdditionalCodeWindow = false;
+                            }
+
                             GenerateCorrectCode( () => SpawnEntTab.GenerateCode() );
-                            isAdditionalCodeWindow = false;
                         }
                     }
                 },
@@ -251,11 +279,15 @@ namespace CodeViews
 
                         OnStartGUI = () =>
                         {
-                            functionName = "remap_camera_path";
-                            infoCount = "Paths Count";
-                            fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                functionName = "remap_camera_path";
+                                infoCount = "Paths Count";
+                                fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
+                                isAdditionalCodeWindow = false;
+                            }
+
                             GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
-                            isAdditionalCodeWindow = false;
                         }
                     }
                 },

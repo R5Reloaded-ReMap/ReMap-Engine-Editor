@@ -57,35 +57,28 @@ namespace WindowUtility
 
             if ( SubTabIdx != SubTabIdxTemp )
             {
+                LoadPageIdx( true );
                 CommonChanges();
             }
         }
 
         public void ShowFunc( int idx = 0 )
         {
-            Tuple< int, int > index = GetCurrentTabIdx();
+            GUIStruct GUIStr = GetGUIStruct();
 
-            if ( !SubTabGUI.ContainsKey( index ) ) return;
-
-            GUIStruct str = SubTabGUI[ index ];
-
-            if ( Helper.IsValid( str ) )
+            if ( Helper.IsValid( GUIStr ) )
             {
-                if ( Helper.IsValid( str.OnGUI[ idx ] ) ) str.OnGUI[ idx ]();
+                if ( Helper.IsValid( GUIStr.OnGUI[ idx ] ) ) GUIStr.OnGUI[ idx ]();
             }
         }
 
         private void CommonChanges()
         {
-            Tuple< int, int > index = GetCurrentTabIdx();
+            GUIStruct GUIStr = GetGUIStruct();
 
-            if ( !SubTabGUI.ContainsKey( index ) ) return;
-
-            GUIStruct str = SubTabGUI[ index ];
-
-            if ( Helper.IsValid( str ) )
+            if ( Helper.IsValid( GUIStr ) )
             {
-                if ( Helper.IsValid( str.OnStartGUI ) ) str.OnStartGUI();
+                if ( Helper.IsValid( GUIStr.OnStartGUI ) ) GUIStr.OnStartGUI();
             }
 
             if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();
@@ -96,10 +89,25 @@ namespace WindowUtility
             SavedSubTabIdx[ MainTabIdxTemp ] = SubTabIdx;
         }
 
-        private void LoadPageIdx()
+        private void LoadPageIdx( bool isSubTab = false )
         {
-            SubTabIdx = SavedSubTabIdx.ContainsKey( MainTabIdx ) ? SavedSubTabIdx[ MainTabIdx ] : 0;
+            if ( !isSubTab )
+            {
+                SubTabIdx = SavedSubTabIdx.ContainsKey( MainTabIdx ) ? SavedSubTabIdx[ MainTabIdx ] : 0;
+            }
             SubTabIdxTemp = SubTabIdx;
+        }
+
+        private GUIStruct GetGUIStruct( Tuple< int, int > index = null )
+        {
+            var currentTabIdx = Helper.IsValid( index ) ? index : GetCurrentTabIdx();
+            return SubTabGUI.ContainsKey( currentTabIdx ) ? SubTabGUI[ currentTabIdx ] : null;
+        }
+
+        public string GetGUIStructName( Tuple< int, int > index = null )
+        {
+            GUIStruct GUIStr = GetGUIStruct( index );
+            return Helper.IsValid( GUIStr ) ? GUIStr.Name : null;
         }
 
         public Tuple< int, int > GetCurrentTabIdx()

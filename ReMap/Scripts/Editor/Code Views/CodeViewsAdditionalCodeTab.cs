@@ -15,8 +15,8 @@ namespace CodeViews
 {
     public class AdditionalCodeTab : EditorWindow
     {
-        private static readonly string    jsonPath    = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeJson}";
-        private static readonly string    infoPath    = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeInfo}";
+        private  static readonly string   jsonPath    = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeJson}";
+        private  static readonly string   infoPath    = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeInfo}";
         internal static readonly string[] contentType = new[] { "HeadContent", "InBlockContent", "BelowContent" };
 
         internal static readonly string emptyContentStr = "Empty Code";
@@ -246,8 +246,6 @@ namespace CodeViews
 
         internal static void Refresh( bool refreshCodeView = false )
         {
-            //AdditionalCodeInit();
-
             if ( !Helper.IsValid( additionalCode ) ) return;
 
             activeCode = additionalCodeArray[ windowStruct.MainTabIdx ];
@@ -284,7 +282,7 @@ namespace CodeViews
             if ( CodeViewsWindow.windowInstance != null && refreshCodeView ) CodeViewsWindow.Refresh();
 
             #if ReMapDev
-                textInfo = File.ReadAllText( jsonPath );
+                textInfo = File.ReadAllText( infoPath );
             #endif
 
             windowStruct.SubTab[ windowStruct.MainTabIdx ] = pages.ToArray();

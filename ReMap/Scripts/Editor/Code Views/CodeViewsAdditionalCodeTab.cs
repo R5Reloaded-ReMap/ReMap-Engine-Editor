@@ -27,9 +27,9 @@ namespace CodeViews
         internal static string textInfo     = File.ReadAllText( infoPath );
         internal static string textInfoTemp = textInfo;
 
-        internal static AdditionalCode_ additionalCode;
-        internal static AdditionalCodeClass_[] additionalCodeArray;
-        internal static AdditionalCodeClass_ activeCode;
+        internal static AdditionalCode additionalCode;
+        internal static AdditionalCodeClass[] additionalCodeArray;
+        internal static AdditionalCodeClass activeCode;
 
         internal static WindowStruct windowStruct = new WindowStruct()
         {
@@ -112,7 +112,7 @@ namespace CodeViews
 
             if ( !Helper.IsValid( additionalCode ) ) return;
 
-            additionalCodeArray = new AdditionalCodeClass_[]
+            additionalCodeArray = new AdditionalCodeClass[]
             {
                 additionalCode.HeadContent,
                 additionalCode.InBlockContent,
@@ -124,7 +124,7 @@ namespace CodeViews
             Refresh();
         }
 
-        internal static AdditionalCode_ FindAdditionalCode()
+        internal static AdditionalCode FindAdditionalCode()
         {
             if ( !File.Exists( jsonPath ) )
             {
@@ -133,7 +133,7 @@ namespace CodeViews
             else
             {
                 string json = System.IO.File.ReadAllText( jsonPath );
-                additionalCode = JsonUtility.FromJson< AdditionalCode_ >( json );
+                additionalCode = JsonUtility.FromJson< AdditionalCode >( json );
             }
 
             return additionalCode;
@@ -141,7 +141,7 @@ namespace CodeViews
 
         internal static void AddNewCode()
         {
-            AdditionalCodeContent_ newContent = NewAdditionalCodeContent();
+            AdditionalCodeContent newContent = NewAdditionalCodeContent();
 
             activeCode.Content.Add( newContent );
 
@@ -187,21 +187,21 @@ namespace CodeViews
 
         internal static void CreateNewJsonAdditionalCode()
         {
-            additionalCode = new AdditionalCode_();
+            additionalCode = new AdditionalCode();
 
-            additionalCode.HeadContent = new AdditionalCodeClass_();
+            additionalCode.HeadContent = new AdditionalCodeClass();
             additionalCode.HeadContent.Name = "Head Code";
-            additionalCode.HeadContent.Content = new List< AdditionalCodeContent_ >();
+            additionalCode.HeadContent.Content = new List< AdditionalCodeContent >();
 
-            additionalCode.InBlockContent = new AdditionalCodeClass_();
+            additionalCode.InBlockContent = new AdditionalCodeClass();
             additionalCode.InBlockContent.Name = "In-Block Code";
-            additionalCode.InBlockContent.Content = new List< AdditionalCodeContent_ >();
+            additionalCode.InBlockContent.Content = new List< AdditionalCodeContent >();
 
-            additionalCode.BelowContent = new AdditionalCodeClass_();
+            additionalCode.BelowContent = new AdditionalCodeClass();
             additionalCode.BelowContent.Name = "Below Code";
-            additionalCode.BelowContent.Content = new List< AdditionalCodeContent_ >();
+            additionalCode.BelowContent.Content = new List< AdditionalCodeContent >();
 
-            AdditionalCodeContent_ emptyContent = NewAdditionalCodeContent();
+            AdditionalCodeContent emptyContent = NewAdditionalCodeContent();
             emptyContent.Name = emptyContentStr;
 
             additionalCode.HeadContent.Content.Add( emptyContent );
@@ -211,9 +211,9 @@ namespace CodeViews
             SaveJson();
         }
 
-        internal static AdditionalCodeContent_ NewAdditionalCodeContent()
+        internal static AdditionalCodeContent NewAdditionalCodeContent()
         {
-            AdditionalCodeContent_ content = new AdditionalCodeContent_();
+            AdditionalCodeContent content = new AdditionalCodeContent();
 
             content.Name = FindUniqueName( "unnamed" );
             content.Code = "";
@@ -230,7 +230,7 @@ namespace CodeViews
             do
             {
                 nameExists = false;
-                foreach ( AdditionalCodeContent_ content in activeCode.Content )
+                foreach ( AdditionalCodeContent content in activeCode.Content )
                 {
                     if ( content.Name == newEntry )
                     {
@@ -262,7 +262,7 @@ namespace CodeViews
 
             for ( int i = 0; i < activeCode.Content.Count; i++ )
             {
-                AdditionalCodeContent_ content = activeCode.Content[ i ];
+                AdditionalCodeContent content = activeCode.Content[ i ];
                 pages.Add( content.Name );
 
                 if ( content.Name == emptyContentStr )
@@ -273,7 +273,7 @@ namespace CodeViews
 
             if ( targetIndex != -1 )
             {
-                AdditionalCodeContent_ targetContent = activeCode.Content[ targetIndex ];
+                AdditionalCodeContent targetContent = activeCode.Content[ targetIndex ];
                 activeCode.Content.RemoveAt( targetIndex );
                 activeCode.Content.Insert( 0, targetContent );
 
@@ -302,22 +302,22 @@ namespace CodeViews
     }
 
     [Serializable]
-    public class AdditionalCode_
+    public class AdditionalCode
     {
-        public AdditionalCodeClass_ HeadContent;
-        public AdditionalCodeClass_ InBlockContent;
-        public AdditionalCodeClass_ BelowContent;
+        public AdditionalCodeClass HeadContent;
+        public AdditionalCodeClass InBlockContent;
+        public AdditionalCodeClass BelowContent;
     }
 
     [Serializable]
-    public class AdditionalCodeClass_
+    public class AdditionalCodeClass
     {
         public string Name;
-        public List < AdditionalCodeContent_ > Content;
+        public List < AdditionalCodeContent > Content;
     }
 
     [Serializable]
-    public class AdditionalCodeContent_
+    public class AdditionalCodeContent
     {
         public string Name;
         public string Code;

@@ -58,6 +58,7 @@ namespace WindowUtility
             if ( SubTabIdx != SubTabIdxTemp )
             {
                 CommonChanges();
+                SubTabIdxTemp = SubTabIdx;
             }
         }
 
@@ -78,6 +79,8 @@ namespace WindowUtility
         private void CommonChanges()
         {
             Tuple< int, int > index = NewTuple( MainTabIdx, SubTabIdx );
+
+            UnityInfo.Printt( index.ToString() );
 
             if ( !SubTabGUI.ContainsKey( index ) ) return;
 

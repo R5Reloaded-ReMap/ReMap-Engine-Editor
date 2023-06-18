@@ -429,7 +429,7 @@ namespace CodeViews
 
                 if ( CodeViewsWindow.ShowFunctionEnable() )
                 {
-                    foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.HeadContent.Content )
+                    foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.HeadContent.Content )
                     {
                         CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeTab.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                     }
@@ -439,7 +439,7 @@ namespace CodeViews
                 OptionalTextInfo( $"In-Block Code", "", null, MenuType.Medium );
                 Space( 2 );
 
-                foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.InBlockContent.Content )
+                foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.InBlockContent.Content )
                 {
                     CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeTab.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                 }
@@ -450,7 +450,7 @@ namespace CodeViews
 
                 if ( CodeViewsWindow.ShowFunctionEnable() )
                 {
-                    foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.BelowContent.Content )
+                    foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.BelowContent.Content )
                     {
                         CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeTab.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                     }
@@ -462,17 +462,17 @@ namespace CodeViews
             {
                 isFirstOpen = false;
 
-                foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.HeadContent.Content )
+                foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.HeadContent.Content )
                 {
                     CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeTab.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                 }
 
-                foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.InBlockContent.Content )
+                foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.InBlockContent.Content )
                 {
                     CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeTab.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                 }
 
-                foreach ( AdditionalCodeContent_ content in AdditionalCodeTab.additionalCode.BelowContent.Content )
+                foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.BelowContent.Content )
                 {
                     CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeTab.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
                 }
@@ -489,7 +489,7 @@ namespace CodeViews
             }
         }
 
-        private static void AdditionalCodeBoolChange( string name, string type, ref string codeRef, List< AdditionalCodeContent_ > contents )
+        private static void AdditionalCodeBoolChange( string name, string type, ref string codeRef, List< AdditionalCodeContent > contents )
         {
             if ( contents.Count == 1 )
             {
@@ -500,7 +500,7 @@ namespace CodeViews
                 return;
             }
 
-            foreach ( AdditionalCodeContent_ content in contents )
+            foreach ( AdditionalCodeContent content in contents )
             {
                 MenuInit menu = MenuInit.Find( $"{content.Name}_{type}" );
 

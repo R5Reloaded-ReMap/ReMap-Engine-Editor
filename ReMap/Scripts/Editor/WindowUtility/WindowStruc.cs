@@ -125,11 +125,13 @@ namespace WindowUtility
             await Task.Delay( 200 ); // 200 ms
 
             ForceChange = true;
-                foreach ( GUIStruct GUIStr in SubTabGUI.Values )
+                foreach ( var tuple in SubTabGUI.Keys )
                 {
-                    if ( Helper.IsValid( GUIStr ) )
+                    if ( Helper.IsValid( SubTabGUI[ tuple ] ) )
                     {
-                        if ( Helper.IsValid( GUIStr.InitCallback ) ) GUIStr.InitCallback();
+                        MainTabIdxTemp = tuple.Item1;
+                        SubTabIdxTemp = tuple.Item2;
+                        if ( Helper.IsValid( SubTabGUI[ tuple ].InitCallback ) ) SubTabGUI[ tuple ].InitCallback();
                     }
                 }
             ForceChange = false;
@@ -139,8 +141,7 @@ namespace WindowUtility
 
         public void StoreInfo( string name, object value, Tuple< int, int > index = null )
         {
-            GUIStruct GUIStr = GetGUIStruct( Helper.IsValid( index ) ? index : NewTuple( MainTabIdxTemp, SubTabIdxTemp ) );
-            if ( Helper.IsValid( GUIStr ) ) GUIStr.StoredInfo[ name ] = value;
+            GetGUIStruct( index ?? NewTuple( MainTabIdxTemp, SubTabIdxTemp ) ).StoredInfo[ name ] = value;
         }
 
         public void ReStoreInfo< T >( ref T obj, string name ) where T : class

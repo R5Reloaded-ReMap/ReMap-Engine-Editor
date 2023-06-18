@@ -138,7 +138,7 @@ namespace CodeViews
 
                         InitCallback = () =>
                         {
-                            windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName(), WindowStruct.NewTuple( 0, 0 ) );
+                            windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName() );
                         }
                     }
                 },
@@ -163,7 +163,7 @@ namespace CodeViews
 
                         InitCallback = () =>
                         {
-                            windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName(), WindowStruct.NewTuple( 0, 1 ) );
+                            windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName() );
                         }
                     }
                 },
@@ -190,7 +190,7 @@ namespace CodeViews
 
                         InitCallback = () =>
                         {
-                            windowStruct.StoreInfo( "FuncNameBase", "remap_datatable", WindowStruct.NewTuple( 1, 0 ) );
+                            windowStruct.StoreInfo( "FuncNameBase", "remap_datatable" );
                         }
                     }
                 },
@@ -217,7 +217,7 @@ namespace CodeViews
 
                         InitCallback = () =>
                         {
-                            windowStruct.StoreInfo( "FuncNameBase", $"{Helper.GetSceneName()}_Precache", WindowStruct.NewTuple( 2, 0 ) );
+                            windowStruct.StoreInfo( "FuncNameBase", $"{Helper.GetSceneName()}_Precache" );
                         }
                     }
                 },
@@ -245,7 +245,7 @@ namespace CodeViews
 
                         InitCallback = () =>
                         {
-                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_script", WindowStruct.NewTuple( 3, 0 ) );
+                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_script" );
                         }
                     }
                 },
@@ -272,7 +272,7 @@ namespace CodeViews
 
                         InitCallback = () =>
                         {
-                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_snd", WindowStruct.NewTuple( 3, 1 ) );
+                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_snd" );
                         }
                     }
                 },
@@ -299,7 +299,7 @@ namespace CodeViews
 
                         InitCallback = () =>
                         {
-                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_spawn", WindowStruct.NewTuple( 3, 2 ) );
+                            windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_spawn" );
                         }
                     }
                 },
@@ -327,7 +327,7 @@ namespace CodeViews
 
                         InitCallback = () =>
                         {
-                            windowStruct.StoreInfo( "FuncNameBase", "remap_camera_path", WindowStruct.NewTuple( 4, 0 ) );
+                            windowStruct.StoreInfo( "FuncNameBase", "remap_camera_path" );
                         }
                     }
                 },

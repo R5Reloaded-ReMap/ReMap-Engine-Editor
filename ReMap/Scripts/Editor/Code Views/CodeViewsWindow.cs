@@ -556,7 +556,7 @@ namespace CodeViews
                 }
                 else
                 {
-                    GUILayout.TextArea( $"\n{code}", style, GUILayout.ExpandHeight( true ) );
+                    GUILayout.TextArea( code, style, GUILayout.ExpandHeight( true ) );
                 }
             EditorGUILayout.EndScrollView();
         }

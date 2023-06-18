@@ -381,8 +381,6 @@ namespace CodeViews
         {
             MainTab();
 
-            ShortCut();
-
             if ( isAdditionalCodeWindow )
             {
                 GUILayout.BeginVertical( "box" );
@@ -407,6 +405,8 @@ namespace CodeViews
             }
             else
             {
+                ShortCut();
+                
                 GUILayout.BeginVertical( "box" );
                     GUILayout.BeginHorizontal();
 

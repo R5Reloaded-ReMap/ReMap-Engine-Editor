@@ -93,28 +93,13 @@ namespace WindowUtility
 
         private void SavePageIdx()
         {
-            if ( !SavedSubTabIdx.ContainsKey( MainTabIdxTemp ) )
-            {
-                SavedSubTabIdx.Add( MainTabIdxTemp, SubTabIdx );
-            }
-            else
-            {
-                SavedSubTabIdx[ MainTabIdxTemp ] = SubTabIdx;
-            }
+            SavedSubTabIdx[ MainTabIdxTemp ] = SubTabIdx;
         }
 
         private void LoadPageIdx()
         {
-            if ( !SavedSubTabIdx.ContainsKey( MainTabIdx ) )
-            {
-                SubTabIdx = 0;
-                SubTabIdxTemp = 0;
-            }
-            else
-            {
-                SubTabIdx = SavedSubTabIdx[ MainTabIdx ];
-                SubTabIdxTemp = SavedSubTabIdx[ MainTabIdx ];
-            }
+            SubTabIdx = SavedSubTabIdx.ContainsKey( MainTabIdx ) ? SavedSubTabIdx[ MainTabIdx ] : 0;
+            SubTabIdxTemp = SubTabIdx;
         }
 
         public Tuple< int, int > GetCurrentTabIdx()
@@ -130,6 +115,7 @@ namespace WindowUtility
 
     public class GUIStruct
     {
+        public string Name { get; set; }
         public FunctionRef[] OnGUI { get; set; }
         public FunctionRef OnStartGUI { get; set; }
     }

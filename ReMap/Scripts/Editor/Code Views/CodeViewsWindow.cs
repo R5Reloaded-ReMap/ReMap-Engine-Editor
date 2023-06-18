@@ -222,7 +222,7 @@ namespace CodeViews
                         }
                     }
                 },
-                
+
                 {
                     // Spawn Code
                     WindowStruct.NewTuple( 3, 2 ),

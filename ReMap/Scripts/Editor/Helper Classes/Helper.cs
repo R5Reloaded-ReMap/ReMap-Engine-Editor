@@ -140,9 +140,18 @@ public class Helper
 
     public static readonly Dictionary< string, ( string SearchTerm, Func< GameObject, string > ReplacementFunc ) > LocalizedStringTrigger = new Dictionary< string, ( string, Func< GameObject, string > ) >
     {
-        ["#TRIGGER_H_ORIGIN"] = ( "#TRIGGER_H_ORIGIN", obj => obj != null && obj.activeSelf ? Helper.BuildOrigin( obj ) : "< 0, 0, 0 >" ),
-        ["#TRIGGER_H_ANGLES"] = ( "#TRIGGER_H_ANGLES", obj => obj != null && obj.activeSelf ? Helper.BuildAngles( obj ) : "< 0, 0, 0 >" ),
-        ["#TRIGGER_H_OFFSET"] = ( "#TRIGGER_H_OFFSET", obj => "+ startingorg" )
+        [ "#TRIGGER_H_ORIGIN" ] = ( "#TRIGGER_H_ORIGIN", obj => obj != null && obj.activeSelf ? Helper.BuildOrigin( obj ) : "< 0, 0, 0 >" ),
+        [ "#TRIGGER_H_ANGLES" ] = ( "#TRIGGER_H_ANGLES", obj => obj != null && obj.activeSelf ? Helper.BuildAngles( obj ) : "< 0, 0, 0 >" ),
+        [ "#TRIGGER_H_OFFSET" ] = ( "#TRIGGER_H_OFFSET", obj => "+ startingorg" )
+    };
+
+    public static readonly Dictionary< string, string > BadChars = new Dictionary< string, string >
+    {
+        { "/" , "" }, { "\\", "" }, { "\r", "" }, { "\n", "" }, { "-" , "_" }, { "[", "" }, { "]", "" },  { "{", "" }, { "}", "" }, { "(", "" },
+        { ")", "" },  { "!", "" },  { "@", "" },  { "#", "" },  { "$", "" },   { "%", "" }, { "^", "" },  { "&", "" }, { "*", "" }, { "=", "" },
+        { "+", "" },  { "?", "" },  { "<", "" },  { ">", "" },  { ",", "" },   { ".", "" }, { "\"", "" }, { "'", "" }, { ";", "" }, { ":", "" },
+        { "`", "" },  { "~", "" },  { "é", "" },  { "è", "" },  { "ê", "" },   { "á", "" }, { "à", "" },  { "â", "" }, { "í", "" }, { "ì", "" },
+        { "î", "" }
     };
 
     public static bool UseStartingOffset()
@@ -762,6 +771,15 @@ public class Helper
     public static string GetSceneName()
     {
         return ( SceneManager.GetActiveScene().name ? .Replace( " ", "_" ) ?? "Unnamed" );
+    }
+
+    public static string ReplaceBadCharacters( string name )
+    {
+        foreach ( string value in BadChars.Keys )
+        {
+            name = name.Replace( value, BadChars[ value ] );
+        }
+        return name;
     }
 
     public static string ReMapCredit( bool noSpace = false )

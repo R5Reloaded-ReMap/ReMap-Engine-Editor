@@ -50,19 +50,26 @@ namespace WindowUtility
                 }
             }
 
-            if ( MainTabIdx != MainTabIdxTemp )
+            if ( MainTabIdx != MainTabIdxTemp || SubTabIdx != SubTabIdxTemp )
             {
-                if ( Helper.IsValid( PostRefreshCallback ) ) PostRefreshCallback();
+                if ( Helper.IsValid( PostRefreshCallback ) )
+                {
+                    PostRefreshCallback();
+                }
 
-                SavePageIdx();
-                MainTabIdxTemp = MainTabIdx;
-                LoadPageIdx();
-                CommonChanges();
-            }
+                if ( MainTabIdx != MainTabIdxTemp )
+                {
+                    SavePageIdx();
+                    MainTabIdxTemp = MainTabIdx;
+                    LoadPageIdx();
+                    
+                }
 
-            if ( SubTabIdx != SubTabIdxTemp )
-            {
-                LoadPageIdx( true );
+                if ( SubTabIdx != SubTabIdxTemp )
+                {
+                    LoadPageIdx( true );
+                }
+
                 CommonChanges();
             }
         }
@@ -113,7 +120,7 @@ namespace WindowUtility
 
         public void StoreInfo( string name, object value )
         {
-            GUIStruct GUIStr = GetGUIStruct( NewTuple( MainTabIdxTemp, SubTabIdx ) );
+            GUIStruct GUIStr = GetGUIStruct( NewTuple( MainTabIdxTemp, SubTabIdxTemp ) ); // Put thiss 
             if ( Helper.IsValid( GUIStr ) ) GUIStr.StoredInfo[ name ] = value;
         }
 

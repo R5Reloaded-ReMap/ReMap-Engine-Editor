@@ -614,6 +614,8 @@ namespace CodeViews
 
             code = "";
 
+            functionName = Helper.ReplaceBadCharacters( functionName );
+
             GenerationIsActive = true;
 
             code += await functionRef();

@@ -133,7 +133,7 @@ namespace CodeViews
                             AdditionalCodeTab.AdditionalCodeInit();
                         },
 
-                        InitCallback = () =>
+                        InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName() );
                         }
@@ -156,7 +156,7 @@ namespace CodeViews
                             AdditionalCodeTab.AdditionalCodeInit();
                         },
 
-                        InitCallback = () =>
+                        InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName() );
                         }
@@ -180,7 +180,7 @@ namespace CodeViews
                             GenerateCorrectCode( () => DataTableTab.GenerateCode() );
                         },
 
-                        InitCallback = () =>
+                        InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "remap_datatable" );
                         }
@@ -205,7 +205,7 @@ namespace CodeViews
                             GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
                         },
 
-                        InitCallback = () =>
+                        InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", $"{Helper.GetSceneName()}_Precache" );
                         }
@@ -230,7 +230,7 @@ namespace CodeViews
                             GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
                         },
 
-                        InitCallback = () =>
+                        InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_script" );
                         }
@@ -254,7 +254,7 @@ namespace CodeViews
                             GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
                         },
 
-                        InitCallback = () =>
+                        InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_snd" );
                         }
@@ -278,7 +278,7 @@ namespace CodeViews
                             GenerateCorrectCode( () => SpawnEntTab.GenerateCode() );
                         },
 
-                        InitCallback = () =>
+                        InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_spawn" );
                         }
@@ -304,7 +304,7 @@ namespace CodeViews
                             GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
                         },
 
-                        InitCallback = () =>
+                        InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "remap_camera_path" );
                         }
@@ -326,7 +326,7 @@ namespace CodeViews
                 isAdditionalCodeWindow = false;
             },
 
-            InitCallback = () =>
+            InitCallback = () => // Load on start
             {
                 windowStruct.StoreInfo( "FuncName", functionName );
                 ResetFunctionName();

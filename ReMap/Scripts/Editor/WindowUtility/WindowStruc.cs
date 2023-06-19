@@ -15,6 +15,7 @@ namespace WindowUtility
         public FunctionRef SubTabCallback { get; set; }
         public FunctionRef PostRefreshCallback { get; set; }
         public FunctionRef RefreshCallback { get; set; }
+        public FunctionRef InitCallback { get; set; }
 
         public int MainTabIdx = 0;
         public int SubTabIdx = 0;
@@ -134,6 +135,8 @@ namespace WindowUtility
                         if ( Helper.IsValid( SubTabGUI[ tuple ].InitCallback ) ) SubTabGUI[ tuple ].InitCallback();
                     }
                 }
+                
+                if ( Helper.IsValid( InitCallback ) ) InitCallback();
             ForceChange = false;
 
             if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();

@@ -126,10 +126,7 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                ResetFunctionName();
-                                infoCount = "Entity Count";
                                 fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
-                                isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => ScriptTab.GenerateCode() );
@@ -152,8 +149,6 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                ResetFunctionName();
-                                infoCount = "Entity Count";
                                 fileInfo = new[] { "", "", "", "" };
                                 isAdditionalCodeWindow = true;
                             }
@@ -179,10 +174,7 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                ResetFunctionName();
-                                infoCount = "Entity Count";
                                 fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
-                                isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => DataTableTab.GenerateCode() );
@@ -206,10 +198,8 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                ResetFunctionName();
                                 infoCount = "Models Precached Count";
                                 fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
-                                isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
@@ -234,10 +224,7 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                ResetFunctionName();
-                                infoCount = "Entity Count";
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                                isAdditionalCodeWindow = false;
                             }
                             
                             GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
@@ -261,10 +248,7 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                ResetFunctionName();
-                                infoCount = "Entity Count";
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                                isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
@@ -288,10 +272,7 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                ResetFunctionName();
-                                infoCount = "Entity Count";
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                                isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => SpawnEntTab.GenerateCode() );
@@ -316,10 +297,8 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                ResetFunctionName();
                                 infoCount = "Paths Count";
                                 fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
-                                isAdditionalCodeWindow = false;
                             }
 
                             GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
@@ -338,9 +317,21 @@ namespace CodeViews
                 WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => Refresh( false ), 100 );
             },
 
+            // PostRefresh is executed first, then OnStartGUI of the window, then Refresh.
             PostRefreshCallback = () =>
             {
                 windowStruct.StoreInfo( "FuncName", functionName );
+                ResetFunctionName();
+                infoCount = "Entity Count";
+                isAdditionalCodeWindow = false;
+            },
+
+            InitCallback = () =>
+            {
+                windowStruct.StoreInfo( "FuncName", functionName );
+                ResetFunctionName();
+                infoCount = "Entity Count";
+                isAdditionalCodeWindow = false;
             },
 
             RefreshCallback = () =>
@@ -505,12 +496,12 @@ namespace CodeViews
 
         private void EditorSceneManager_sceneSaved( UnityEngine.SceneManagement.Scene arg0 )
         {
-            Refresh();
+            windowStruct.Awake();
         }
 
         private void EditorSceneManager_sceneOpened( UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode )
         {
-            Refresh();
+            windowStruct.Awake();
         }
 
 

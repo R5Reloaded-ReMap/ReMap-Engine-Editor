@@ -554,7 +554,7 @@ namespace CodeViews
                     GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
                     GUILayout.BeginHorizontal();
-                        GUILayout.Label( $" // Page {currentPage + 1} / {maxPage} ( {itemStart} - {end} lines )", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+                        WindowUtility.WindowUtility.ShowPageInfo( currentPage, maxPage, itemStart, end, " // Page", "line" );
 
                         WindowUtility.WindowUtility.FlexibleSpace();
 

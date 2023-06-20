@@ -108,7 +108,7 @@ namespace LibrarySorter
 
                     int end = itemEnd > offsets.Count ? offsets.Count : itemEnd;
 
-                    WindowUtility.WindowUtility.CreateTextInfo( $"Total Models: {offsets.Count} | Page {currentPage + 1} / {maxPage} ( {itemStart} - {end} )", "", 300 );
+                    WindowUtility.WindowUtility.ShowPageInfo( currentPage, maxPage, itemStart, end, $"Total Models: {offsets.Count} | Page" );
 
                     GUILayout.FlexibleSpace();
 

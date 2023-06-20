@@ -133,6 +133,11 @@ namespace WindowUtility
             }
         }
 
+        public static void ShowPageInfo( int currentPage, int maxPage, int itemStart, int itemEnd, string info = "Page", string type = "" )
+        {
+            GUILayout.Label( $"{info} {currentPage + 1} / {maxPage} ( {itemStart} - {itemEnd} {type} )", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+        }
+
         public static void GetScrollSize( Vector2 scroll )
         {
             CreateTextInfo( $"Scroll Position: {Helper.ReplaceComma( scroll.x )} x {Helper.ReplaceComma( scroll.y )}", "", 152 );

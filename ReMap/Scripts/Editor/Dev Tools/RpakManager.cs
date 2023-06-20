@@ -146,13 +146,14 @@ namespace LibrarySorter
                         WindowUtility.WindowUtility.CreateCopyButton( "Copy", "", model, 100 );
                         if ( !isAllModels )
                         {
-                        if ( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveModel( model ), 100 ) )
-                        {
-                            GUILayout.EndHorizontal();
-                            GUILayout.EndScrollView();
-                            GUILayout.EndVertical();
-                            return;
-                        }}
+                            if ( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveModel( model ), 100 ) )
+                            {
+                                GUILayout.EndHorizontal();
+                                GUILayout.EndScrollView();
+                                GUILayout.EndVertical();
+                                return;
+                            }
+                        }
                     GUILayout.EndHorizontal();
                 }
 

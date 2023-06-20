@@ -52,8 +52,6 @@ namespace LibrarySorter
 
         private void OnEnable()
         {
-            windowInstance = ( RpakManagerWindow ) GetWindow( typeof( RpakManagerWindow ), false, "Rpak Manager" );
-
             libraryData = FindLibraryDataFile();
 
             Refresh();

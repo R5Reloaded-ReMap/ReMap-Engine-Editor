@@ -103,10 +103,10 @@ namespace CodeViews
 
             ResetCommandList();
 
-            AddToGameQueue( $"sv_cheats 1" );
-            AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999" );
-            AddToGameQueue( $"cl_quota_stringCmdsPerSecond 9999999" );
-            AddToGameQueue( $"script External_ReMapRemoveAllEnts()" );
+            AddToGameQueue( $"sv_cheats 1", false );
+            AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999", false );
+            AddToGameQueue( $"cl_quota_stringCmdsPerSecond 9999999", false );
+            AddToGameQueue( $"External_ReMapRemoveAllEnts()" );
 
             CodeViewsWindow.SendedEntityCount = 0;
 
@@ -119,11 +119,11 @@ namespace CodeViews
             IsSending = false;
         }
 
-        public static void AddToGameQueue( string command )
+        public static void AddToGameQueue( string command, bool isScript = true )
         {
-            command = Helper.RemoveSpacesAfterChars( command );
-            ReMapConsole.Log( $"[LiveCode] Adding Command: \"{command}\"", ReMapConsole.LogType.Info );
-            Commands.Add( command );
+            command = Helper.RemoveSpacesAfterChars($"{( isScript ? "script " : "" )}{command}");
+            ReMapConsole.Log($"[LiveCode] Adding Command: \"{command}\"", ReMapConsole.LogType.Info);
+            Commands.Add(command);
         }
 
         public static void SendCommands()
@@ -181,7 +181,7 @@ namespace CodeViews
 
                 File.WriteAllText( path, code );
 
-                if ( !reset ) SendCommandToApex( $"script GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
+                if ( !reset ) SendCommandToApex( $"GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
             }
         }
 
@@ -274,7 +274,7 @@ namespace CodeViews
 
             ResetCommandList();
 
-            AddToGameQueue( $"script External_ReMapWritePlayerInfoToFile()" );
+            AddToGameQueue( $"External_ReMapWritePlayerInfoToFile()" );
 
             SendCommands();
 
@@ -359,9 +359,9 @@ namespace CodeViews
         public static void RespawnPlayers()
         {
             string[] data = GetLiveMapCodePlayerSpawnData();
-            AddToGameQueue( $"script External_ReMapSetVectorArray01( {data[0]} )" );
-            AddToGameQueue( $"script External_ReMapSetVectorArray02( {data[1]} )" );
-            AddToGameQueue( $"script External_ReMapTeleportToMap()" );
+            AddToGameQueue( $"External_ReMapSetVectorArray01( {data[0]} )" );
+            AddToGameQueue( $"External_ReMapSetVectorArray02( {data[1]} )" );
+            AddToGameQueue( $"External_ReMapTeleportToMap()" );
         }
 
         private static string[] GetLiveMapCodePlayerSpawnData()

@@ -65,7 +65,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViews.LiveMap.AddToGameQueue($"script ReMapCreateJumpTower({Helper.BuildOrigin(obj, false, true)},{Helper.BuildAngles(obj)},{Helper.ReplaceComma( script.Height )},true)");
+                        CodeViews.LiveMap.AddToGameQueue( $"ReMapCreateJumpTower({Helper.BuildOrigin(obj, false, true)},{Helper.BuildAngles(obj)},{Helper.ReplaceComma( script.Height )},true)" );
                     break;
                 }
             }

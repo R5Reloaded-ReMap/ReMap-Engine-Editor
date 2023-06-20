@@ -67,7 +67,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViews.LiveMap.AddToGameQueue( $"script ReMapCreateSpeedBoost( {Helper.BuildOrigin( obj, false, true )}, {BoostColor}, {Helper.ReplaceComma( script.RespawnTime )}, {Helper.ReplaceComma( script.Strengh )}, {Helper.ReplaceComma( script.Duration )}, {Helper.ReplaceComma( script.FadeTime )}, true )" );
+                        CodeViews.LiveMap.AddToGameQueue( $"ReMapCreateSpeedBoost( {Helper.BuildOrigin( obj, false, true )}, {BoostColor}, {Helper.ReplaceComma( script.RespawnTime )}, {Helper.ReplaceComma( script.Strengh )}, {Helper.ReplaceComma( script.Duration )}, {Helper.ReplaceComma( script.FadeTime )}, true )" );
                     break;
                 }
             }

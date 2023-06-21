@@ -84,6 +84,7 @@ namespace LibrarySorter
                 {
                     Refresh();
                     tabIdxTemp = tabIdx;
+                    currentPage = 0;
                 }
 
                 if ( itemEnd > dataContent.Count ) currentPage = dataContent.Count / itemsPerPage;

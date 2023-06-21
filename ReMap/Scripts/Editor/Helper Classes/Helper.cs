@@ -174,18 +174,12 @@ public class Helper
 
     public static void ReplaceLocalizedString( ref StringBuilder code )
     {
-        foreach ( string key in LocalizedString.Keys )
-        {
-            code = code.Replace( key, LocalizedString[ key ] );
-        }
+        code = LocalizedString.Aggregate( code, ( current, pair ) => current.Replace( pair.Key, pair.Value ) );
     }
 
     public static void ReplaceLocalizedString( ref string code )
     {
-        foreach ( string key in LocalizedString.Keys )
-        {
-            code = code.Replace( key, LocalizedString[ key ] );
-        }
+        code = LocalizedString.Aggregate( code, ( current, pair ) => current.Replace( pair.Key, pair.Value ) );
     }
 
     public struct NewDataTable
@@ -208,23 +202,14 @@ public class Helper
     /// <returns></returns>
     public static string ShouldAddStartingOrg( StartingOriginType type = StartingOriginType.Function, float x = 0, float y = 0, float z = 0, bool addSpace = true )
     {
-        string vector = $"< {ReplaceComma( x )}, {ReplaceComma( y )}, {ReplaceComma( z )} >";
+        string vector = $"< {ReplaceComma(x)}, {ReplaceComma(y)}, {ReplaceComma(z)} >";
         string space = addSpace ? "    " : "";
 
-        switch ( type )
-        {
-            case StartingOriginType.SquirrelFunction:
-                if ( UseStartingOffset() && ShowStartingOffset() )
-                return $"{space}//Starting Origin, Change this to a origin in a map \n{space}vector startingorg = {vector}" + "\n\n";
-                break;
+        if ( type == StartingOriginType.SquirrelFunction && UseStartingOffset() && ShowStartingOffset() )
+            return $"{space}//Starting Origin, Change this to a origin in a map \n{space}vector startingorg = {vector}\n\n";
 
-            case StartingOriginType.Function:
-                if ( UseStartingOffset() )
-                return " + startingorg";
-                break;
-
-            default: break;
-        }
+        if ( type == StartingOriginType.Function && UseStartingOffset() )
+            return " + startingorg";
 
         return "";
     }
@@ -402,25 +387,24 @@ public class Helper
     /// <returns>Map Code as string</returns>
     public static async Task< string > BuildMapCode( BuildType buildType = BuildType.Script, bool Selection = false )
     {
-        // Order of importance
-        StringBuilder code = new StringBuilder();
+        var code = new StringBuilder();
 
-        foreach ( ObjectType objectType in GetAllObjectType() )
-        {
-            if ( GetBoolFromGenerateObjects( objectType ) ) AppendCode( ref code, await BuildObjectsWithEnum( objectType, buildType, Selection ), 0 );
-        }
+        var objectTasks = GetAllObjectType().Where( GetBoolFromGenerateObjects ).Select
+        (
+            async objectType => AppendCode( ref code, await BuildObjectsWithEnum( objectType, buildType, Selection ), 0 )
+        );
+
+        await Task.WhenAll( objectTasks );
 
         return code.ToString();
     }
 
     public static void ApplyComponentScriptData< T >( T source, T target ) where T : Component
     {
-        var fields = typeof( T ).GetFields( BindingFlags.Public | BindingFlags.Instance );
-
-        foreach ( var field in fields )
-        {
-            field.SetValue( target, field.GetValue( source ) );
-        }
+        typeof( T ).GetFields( BindingFlags.Public | BindingFlags.Instance ).ToList().ForEach
+        (
+            f => f.SetValue( target, f.GetValue( source ) )
+        );
     }
 
     public static void ApplyTransformData( GameObject source, GameObject target )
@@ -460,42 +444,23 @@ public class Helper
 
     private static string Internal_GetStringByEnum( ObjectType objectType, StringType stringType )
     {
-        if ( _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && objectTypeData != null )
-        {
-            return objectTypeData.StringData[ ( int ) stringType ];
-        }
-
-        throw new ArgumentOutOfRangeException( nameof( objectType ), objectType, "This ObjectType does not exist." );
+        return _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && IsValid( objectTypeData ) ? objectTypeData.StringData[ ( int ) stringType ] : string.Empty;
     }
 
-    public static Component GetComponentByEnum( GameObject obj, ObjectType objectType )
+    public static Component GetComponentByEnum( GameObject obj, ObjectType objectType ) 
     {
-        if ( _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && objectTypeData != null )
-        {
-            return obj.GetComponent( objectTypeData.ComponentType );
-        }
-
-        return null;
+        return _objectTypeData.TryGetValue( objectType, out var objectTypeData ) ? obj.GetComponent( objectTypeData.ComponentType ) : null;
     }
+
 
     public static Type GetImportExportClassByEnum( ObjectType objectType )
     {
-        if ( _objectTypeData.TryGetValue( objectType, out ObjectTypeData objectTypeData ) && objectTypeData != null )
-        {
-            return objectTypeData.ImportExportClass;
-        }
-
-        return null;
+        return _objectTypeData.TryGetValue( objectType, out var objectTypeData ) ? objectTypeData.ImportExportClass : null;
     }
 
     public static ObjectType? GetObjectTypeByObjName( string searchTerm )
     {
-        foreach ( ObjectType objectType in GetAllObjectType() )
-        {
-            if ( GetObjNameWithEnum( objectType ) == searchTerm ) return objectType;
-        }
-
-        return null;
+        return GetAllObjectType().FirstOrDefault( objectType => GetObjNameWithEnum( objectType ) == searchTerm );
     }
 
     private class ObjectTypeData
@@ -519,19 +484,11 @@ public class Helper
 
     private static Dictionary< string, string > ObjectToTagDictionaryInit()
     {
-        var dictionary = ObjectToTagPriorities.ToDictionary( objectType => GetObjRefWithEnum( objectType ), objectType => GetObjTagNameWithEnum( objectType ) );
-
-        foreach ( ObjectType objectType in GetAllObjectType() )
-        {
-            string key = GetObjRefWithEnum( objectType );
-
-            if ( !dictionary.ContainsKey( key ) )
-            {
-                dictionary.Add( key, GetObjTagNameWithEnum( objectType ) );
-            }
-        }
-
-        return dictionary;
+        return GetAllObjectType().ToDictionary
+        (
+            objectType => GetObjRefWithEnum( objectType ), 
+            objectType => GetObjTagNameWithEnum( objectType )
+        );
     }
 
     private static Dictionary< string, bool > ObjectGenerateDictionaryInit()
@@ -624,26 +581,18 @@ public class Helper
 
     public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )
     {        
-        if ( string.IsNullOrEmpty( path ) ) path = UnityInfo.relativePathEmptyPrefab;
+        path = string.IsNullOrEmpty( path ) ? UnityInfo.relativePathEmptyPrefab : path;
 
-        UnityEngine.Object loadedPrefabResource;
-
-        switch ( pathType )
+        UnityEngine.Object loadedPrefabResource = pathType switch
         {
-            case PathType.Path:
-                loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject;
-                break;
-
-            case PathType.Name:
-                loadedPrefabResource = UnityInfo.FindPrefabFromName( path );
-                break;
-
-            default: return null;
-        }
+            PathType.Path => AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject,
+            PathType.Name => UnityInfo.FindPrefabFromName( path ),
+            _ => null
+        };
 
         if ( !IsValid( loadedPrefabResource ) ) return null;
-        
-        var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
+
+        var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource ) as GameObject;
 
         if ( !string.IsNullOrEmpty( name ) ) obj.name = name;
 
@@ -753,9 +702,7 @@ public class Helper
     {
         string str = value.ToString( "F4" ).TrimEnd( '0' ).Replace( ',', '.' ).TrimEnd( '.' );
 
-        if ( forceComma && !str.Contains( '.' )  ) str += ".0";
-
-        return str;
+        return str.Contains( '.' ) || !forceComma ? str : $"{str}.0";
     }
 
     public static string BoolToLower( bool value )
@@ -781,11 +728,7 @@ public class Helper
 
     public static string ReplaceBadCharacters( string name )
     {
-        foreach ( string value in BadChars.Keys )
-        {
-            name = name.Replace( value, BadChars[ value ] );
-        }
-        return name;
+        return BadChars.Aggregate( name, ( current, badChar ) => current.Replace( badChar.Key, badChar.Value ) );
     }
 
     public static string ReMapCredit( bool noSpace = false )

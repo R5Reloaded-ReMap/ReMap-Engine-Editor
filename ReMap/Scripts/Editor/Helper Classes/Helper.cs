@@ -775,7 +775,8 @@ public class Helper
 
     public static string GetSceneName()
     {
-        return ( SceneManager.GetActiveScene().name ? .Replace( " ", "_" ) ?? "Unnamed" );
+        var scene = SceneManager.GetActiveScene().name;
+        return ( string.IsNullOrEmpty( scene ) ? "Unnamed" : scene.Replace( " ", "_" ) );
     }
 
     public static string ReplaceBadCharacters( string name )

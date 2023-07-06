@@ -551,7 +551,7 @@ public class Helper
             }
         }
 
-        return false; // si aucun GameObject correspondant n'a été trouvé
+        return false;
     }
 
     public static GameObject[] GetAllObjectTypeInScene( bool selection = false )

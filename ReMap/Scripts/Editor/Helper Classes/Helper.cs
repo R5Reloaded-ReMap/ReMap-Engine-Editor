@@ -528,6 +528,32 @@ public class Helper
         GenerateIgnore = objectTypeArray.ToArray();
     }
 
+    public static bool IsObjectTypeExistInScene( ObjectType objectType, bool selectionOnly = false )
+    {
+        string tag = Helper.GetObjTagNameWithEnum( objectType );
+        if ( selectionOnly )
+        {
+            foreach ( var obj in Selection.gameObjects )
+            {
+                if ( obj.CompareTag( tag ) ) return true;
+
+                foreach (var child in obj.GetComponentsInChildren< Transform >( true ) )
+                {
+                    if ( child.gameObject.CompareTag( tag ) ) return true;
+                }
+            }
+        }
+        else
+        {
+            foreach ( var obj in GetAllObjectTypeInScene() )
+            {
+                if ( obj.CompareTag( tag ) ) return true;
+            }
+        }
+
+        return false; // si aucun GameObject correspondant n'a été trouvé
+    }
+
     public static GameObject[] GetAllObjectTypeInScene( bool selection = false )
     {
         return Helper.GetAllObjectTypeWithEnum( Helper.GetAllObjectType(), selection );
@@ -542,18 +568,18 @@ public class Helper
     {
         if ( selectionOnly )
         {
-            GameObject[] SelectedObject = Selection.gameObjects
-            .Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+            var tag = Helper.GetObjTagNameWithEnum( objectType );
+
+            GameObject[] selectedObject = Selection.gameObjects
             .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
-            .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-            .Select( child => child.gameObject )
             .Concat( Selection.gameObjects.Where( obj => obj.transform.childCount > 0 )
-            .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) )
-            .Where( child => child.gameObject.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
-            .Select( child => child.gameObject ) )
+            .SelectMany( obj => obj.GetComponentsInChildren< Transform >( true ) ) )
+            .Distinct()
+            .Where( child => child.gameObject.CompareTag( tag ) )
+            .Select( child => child.gameObject )
             .Distinct().ToArray();
 
-            return SelectedObject;
+            return selectedObject;
         }
 
         return UnityInfo.GetAllGameObjectInScene().Where( obj => obj.CompareTag( Helper.GetObjTagNameWithEnum( objectType ) ) ).ToArray();
@@ -673,8 +699,14 @@ public class Helper
         array[ currentLength ] = obj;
     }
 
-    public static void Ping( string str = "Ping!" )
+    public static void Ping()
     {
+        Ping< string >( null );
+    }
+
+    public static void Ping< T >( T arg = null ) where T : class
+    {
+        string str = IsValid( arg ) ? arg.ToString() : "Ping!";
         UnityInfo.Printt( str );
     }
 

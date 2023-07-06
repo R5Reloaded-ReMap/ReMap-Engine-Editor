@@ -124,6 +124,8 @@ namespace CodeViews
                 if ( menu.IsButton ) Internal_FunctionInit( menu );
 
                 if ( refresh ) CodeViewsWindow.Refresh();
+
+                GUI.FocusControl( null );
             }
             GUILayout.EndHorizontal();
 
@@ -353,7 +355,7 @@ namespace CodeViews
             GUILayout.BeginHorizontal();
                 Space( space );
 
-                WindowUtility.WindowUtility.CreateButton( text, tooltip, functionRef, labelSpace, 20 );
+                if ( WindowUtility.WindowUtility.CreateButton( text, tooltip, functionRef, labelSpace, 20 ) && refresh ) CodeViewsWindow.Refresh();
             GUILayout.EndHorizontal();
         }
 

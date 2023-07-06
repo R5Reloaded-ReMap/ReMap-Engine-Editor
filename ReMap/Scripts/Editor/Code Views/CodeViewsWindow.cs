@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -419,18 +420,12 @@ namespace CodeViews
 
         public static bool IsHided( ObjectType objectType )
         {
+            return
             // Ensure the objectData is not empty
-            GameObject[] objectData = Helper.GetAllObjectTypeWithEnum( objectType, CodeViewsWindow.SelectionEnable() );
-
-            if ( objectData.Length == 0 ) return true;
+            !Helper.IsObjectTypeExistInScene( objectType, CodeViewsWindow.SelectionEnable() ) || // Ensure the objectData is not empty
 
             // Check if objectType are flaged hide
-            foreach ( ObjectType hidedObjectType in Helper.GenerateIgnore )
-            {
-                if ( hidedObjectType == objectType ) return true;
-            }
-
-            return false;
+            Helper.GenerateIgnore.Any( o => o == objectType );
         }
 
         //  ██╗███╗   ██╗████████╗███████╗██████╗ ███╗   ██╗ █████╗ ██╗         ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗

@@ -81,9 +81,9 @@ namespace WindowUtility
         {
             GUIStruct GUIStr = GetGUIStruct();
 
-            if ( Helper.IsValid( GUIStr ) )
+            if ( Helper.IsValid( GUIStr ) && Helper.IsValid( GUIStr.OnGUI[ idx ] ) )
             {
-                if ( Helper.IsValid( GUIStr.OnGUI[ idx ] ) ) GUIStr.OnGUI[ idx ]();
+                GUIStr.OnGUI[ idx ]();
             }
         }
 
@@ -144,16 +144,30 @@ namespace WindowUtility
 
         public void StoreInfo( string name, object value, Tuple< int, int > index = null )
         {
-            GetGUIStruct( index ?? NewTuple( MainTabIdxTemp, SubTabIdxTemp ) ).StoredInfo[ name ] = value;
+            GetGUIStruct( index ?? GetCurrentTabIdxTemp() ).StoredInfo[ name ] = value;
         }
 
-        public void ReStoreInfo< T >( ref T obj, string name ) where T : class
+        public void ReStoreInfo< T >( ref T obj, string name, Tuple< int, int > index = null ) where T : class
         {
-            GUIStruct GUIStr = GetGUIStruct();
+            GUIStruct GUIStr = GetGUIStruct( index );
             if ( Helper.IsValid( GUIStr ) && Helper.IsValid( obj ) && GUIStr.StoredInfo.ContainsKey( name ) )
             {
                 obj = GUIStr.StoredInfo[ name ] as T;
             }
+        }
+
+        public void RemoveStoredInfo( string name, Tuple< int, int > index = null )
+        {
+            GUIStruct GUIStr = GetGUIStruct( index );
+            if ( Helper.IsValid( GUIStr ) && GUIStr.StoredInfo.ContainsKey( name ) )
+            {
+                GUIStr.StoredInfo.Remove( name );
+            }
+        }
+
+        public T GetStoredInfo< T >( string name, Tuple< int, int > index = null ) where T : class
+        {
+            return GetGUIStruct( index ).StoredInfo[ name ] as T;
         }
 
         public bool OnWindowChange()
@@ -170,6 +184,11 @@ namespace WindowUtility
         public Tuple< int, int > GetCurrentTabIdx()
         {
             return NewTuple( MainTabIdx, SubTabIdx );
+        }
+
+        public Tuple< int, int > GetCurrentTabIdxTemp()
+        {
+            return NewTuple( MainTabIdxTemp, SubTabIdxTemp );
         }
 
         public static Tuple< int, int > NewTuple( int i, int j )

@@ -699,14 +699,9 @@ public class Helper
         array[ currentLength ] = obj;
     }
 
-    public static void Ping()
+    public static void Ping( params object[] args )
     {
-        Ping< string >( null );
-    }
-
-    public static void Ping< T >( T arg = null ) where T : class
-    {
-        UnityInfo.Printt( IsValid( arg ) ? arg.ToString() : "Ping!" );
+        UnityInfo.Printt( args.Length > 0 ? string.Join( " ", args.Select( arg => arg.ToString() ) ) : "Ping!" );
     }
 
     public static Transform FindParent( Transform go )

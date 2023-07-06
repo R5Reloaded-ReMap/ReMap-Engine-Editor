@@ -706,8 +706,7 @@ public class Helper
 
     public static void Ping< T >( T arg = null ) where T : class
     {
-        string str = IsValid( arg ) ? arg.ToString() : "Ping!";
-        UnityInfo.Printt( str );
+        UnityInfo.Printt( IsValid( arg ) ? arg.ToString() : "Ping!" );
     }
 
     public static Transform FindParent( Transform go )

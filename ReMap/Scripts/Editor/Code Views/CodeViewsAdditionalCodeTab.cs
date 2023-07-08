@@ -42,11 +42,11 @@ namespace CodeViews
                 { 2, new[] { "" } }
             },
 
-            SubTabGUI = new Dictionary< Tuple< int, int >, GUIStruct >()
+            SubTabGUI = new Dictionary< ( int, int ), GUIStruct >()
             {
                 // Head Code
                 {
-                    WindowStruct.NewTuple( 0, 0 ),
+                    ( 0, 0 ),
                     new GUIStruct()
                     {
                         OnStartGUI = () => SaveJson()
@@ -55,7 +55,7 @@ namespace CodeViews
 
                 // In-Block Code
                 {
-                    WindowStruct.NewTuple( 1, 0 ),
+                    ( 1, 0 ),
                     new GUIStruct()
                     {
                         OnStartGUI = () => SaveJson()
@@ -64,7 +64,7 @@ namespace CodeViews
 
                 // Below Code
                 {
-                    WindowStruct.NewTuple( 2, 0 ),
+                    ( 2, 0 ),
                     new GUIStruct()
                     {
                         OnStartGUI = () => SaveJson()

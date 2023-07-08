@@ -113,12 +113,12 @@ namespace CodeViews
                 { 4, new[] { "Camera Path" } }
             },
 
-            SubTabGUI = new Dictionary< Tuple< int, int >, GUIStruct >()
+            SubTabGUI = new Dictionary< ( int, int ), GUIStruct >()
             {
                 // Squirrel Code
                 {
                     // Script
-                    WindowStruct.NewTuple( 0, 0 ),
+                    ( 0, 0 ),
                     new GUIStruct()
                     {
                         OnGUI = new FunctionRef[] { () => ScriptTab.OnGUISettingsTab() },
@@ -143,7 +143,7 @@ namespace CodeViews
 
                 {
                     // Additional Code
-                    WindowStruct.NewTuple( 0, 1 ),
+                    ( 0, 1 ),
                     new GUIStruct()
                     {
                         OnStartGUI = () =>
@@ -166,7 +166,7 @@ namespace CodeViews
 
                 // DataTable Code
                 {
-                    WindowStruct.NewTuple( 1, 0 ),
+                    ( 1, 0 ),
                     new GUIStruct()
                     {
                         OnGUI = new FunctionRef[] { () => DataTableTab.OnGUISettingsTab() },
@@ -190,7 +190,7 @@ namespace CodeViews
 
                 // Precache Code
                 {
-                    WindowStruct.NewTuple( 2, 0 ),
+                    ( 2, 0 ),
                     new GUIStruct()
                     {
                         OnGUI = new FunctionRef[] { () => PrecacheTab.OnGUISettingsTab() },
@@ -216,7 +216,7 @@ namespace CodeViews
                 // Ent Code
                 {
                     // Script Code
-                    WindowStruct.NewTuple( 3, 0 ),
+                    ( 3, 0 ),
                     new GUIStruct()
                     {
                         OnGUI = new FunctionRef[] { () => ScriptEntTab.OnGUISettingsTab() },
@@ -240,7 +240,7 @@ namespace CodeViews
                 
                 {
                     // Sound Code
-                    WindowStruct.NewTuple( 3, 1 ),
+                    ( 3, 1 ),
                     new GUIStruct()
                     {
                         OnGUI = new FunctionRef[] { () => SoundEntTab.OnGUISettingsTab() },
@@ -264,7 +264,7 @@ namespace CodeViews
 
                 {
                     // Spawn Code
-                    WindowStruct.NewTuple( 3, 2 ),
+                    ( 3, 2 ),
                     new GUIStruct()
                     {
                         OnGUI = new FunctionRef[] { () => SpawnEntTab.OnGUISettingsTab() },
@@ -289,7 +289,7 @@ namespace CodeViews
                 // Other Code
                 {
                     // Camera Path Code
-                    WindowStruct.NewTuple( 4, 0 ),
+                    ( 4, 0 ),
                     new GUIStruct()
                     {
                         OnGUI = new FunctionRef[] { () => CameraPathTab.OnGUISettingsTab() },
@@ -329,10 +329,7 @@ namespace CodeViews
 
             InitCallback = () => // Load on start
             {
-                windowStruct.StoreInfo( "FuncName", functionName );
-                ResetFunctionName();
-                infoCount = "Entity Count";
-                isAdditionalCodeWindow = false;
+                windowStruct.PostRefreshCallback();
             },
 
             RefreshCallback = () =>

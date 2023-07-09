@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace WindowUtility
         public string[] MainTab { get; set; }
         public Dictionary< int, string[] > SubTab { get; set; }
         public Dictionary< ( int, int ), GUIStruct > SubTabGUI { get; set; }
+        public GUIStruct ActiveGUIStruct  { get; set; }
         public FunctionRef MainTabCallback { get; set; }
         public FunctionRef SubTabCallback { get; set; }
         public FunctionRef PostRefreshCallback { get; set; }
@@ -79,22 +81,20 @@ namespace WindowUtility
 
         public void ShowFunc( int idx = 0 )
         {
-            GUIStruct GUIStr = GetGUIStruct();
-
-            if ( Helper.IsValid( GUIStr ) && Helper.IsValid( GUIStr.OnGUI[ idx ] ) )
+            if ( Helper.IsValid( ActiveGUIStruct ) && Helper.IsValid( ActiveGUIStruct.OnGUI[ idx ] ) )
             {
-                GUIStr.OnGUI[ idx ]();
+                ActiveGUIStruct.OnGUI[ idx ]();
             }
         }
 
         private void CommonChanges()
         {
-            GUIStruct GUIStr = GetGUIStruct();
+            ActiveGUIStruct = GetGUIStruct();
 
-            if ( Helper.IsValid( GUIStr ) )
+            if ( Helper.IsValid( ActiveGUIStruct ) )
             {
                 WindowChange = true;
-                if ( Helper.IsValid( GUIStr.OnStartGUI ) ) GUIStr.OnStartGUI();
+                if ( Helper.IsValid( ActiveGUIStruct.OnStartGUI ) ) ActiveGUIStruct.OnStartGUI();
                 WindowChange = false;
             }
 
@@ -132,13 +132,18 @@ namespace WindowUtility
             ForceChange = true;
                 foreach ( var tuple in SubTabGUI.Keys )
                 {
-                    if ( Helper.IsValid( SubTabGUI[ tuple ] ) )
+                    GUIStruct GUIStr = GetGUIStruct( tuple );
+                    if ( Helper.IsValid( GUIStr ) && Helper.IsValid( GUIStr.InitCallback ) )
                     {
-                        MainTabIdxTemp = tuple.Item1;
-                        SubTabIdxTemp = tuple.Item2;
-                        if ( Helper.IsValid( SubTabGUI[ tuple ].InitCallback ) ) SubTabGUI[ tuple ].InitCallback();
+                        ActiveGUIStruct = GUIStr;
+
+                        GUIStr.InitCallback();
                     }
                 }
+
+                var firstItem = SubTabGUI.First();
+                ( int, int ) firstKey = firstItem.Key;
+                ActiveGUIStruct = firstItem.Value;
                 
                 if ( Helper.IsValid( InitCallback ) ) InitCallback();
             ForceChange = false;
@@ -148,23 +153,35 @@ namespace WindowUtility
 
         public void StoreInfo( string name, object value )
         {
-            GetGUIStruct( GetCurrentTabIdxTemp() ).StoredInfo[ name ] = value;
+            if ( Helper.IsValid( ActiveGUIStruct ) )
+            {
+                Helper.Ping( "StoreInfo()", ActiveGUIStruct.Name, "|", name, "=", value );
+                ActiveGUIStruct.StoredInfo[ name ] = value;
+            }
         }
 
         public void StoreInfo( string name, object value, ( int, int ) index )
         {
-            GetGUIStruct( index ).StoredInfo[ name ] = value;
+            GUIStruct GUIStr = GetGUIStruct( index );
+            if ( Helper.IsValid( GUIStr ) && GUIStr.StoredInfo.ContainsKey( name ) )
+            {
+                GUIStr.StoredInfo[ name ] = value;
+            }
         }
 
         public void ReStoreInfo< T >( ref T obj, string name ) where T : class
         {
-            ReStoreInfo( ref obj, name, GetCurrentTabIdx() );
+            if ( Helper.IsValid( ActiveGUIStruct ) && ActiveGUIStruct.StoredInfo.ContainsKey( name ) )
+            {
+                obj = ActiveGUIStruct.StoredInfo[ name ] as T;
+                Helper.Ping( "ReStoreInfo()", ActiveGUIStruct.Name, "|", name, "=", obj );
+            }
         }
 
-        public void ReStoreInfo< T >( ref T obj, string name, ( int, int ) index = default ) where T : class
+        public void ReStoreInfo< T >( ref T obj, string name, ( int, int ) index ) where T : class
         {
             GUIStruct GUIStr = GetGUIStruct( index );
-            if ( Helper.IsValid( GUIStr ) && Helper.IsValid( obj ) && GUIStr.StoredInfo.ContainsKey( name ) )
+            if ( Helper.IsValid( GUIStr ) && GUIStr.StoredInfo.ContainsKey( name ) )
             {
                 obj = GUIStr.StoredInfo[ name ] as T;
             }
@@ -190,12 +207,17 @@ namespace WindowUtility
 
         public T GetStoredInfo< T >( string name ) where T : class
         {
-            return GetGUIStruct().StoredInfo[ name ] as T;
+            return ActiveGUIStruct.StoredInfo[ name ] as T;
         }
 
         public T GetStoredInfo< T >( string name, ( int, int ) index = default ) where T : class
         {
-            return GetGUIStruct( index ).StoredInfo[ name ] as T;
+            GUIStruct GUIStr = GetGUIStruct( index );
+            if ( Helper.IsValid( GUIStr ) && GUIStr.StoredInfo.ContainsKey( name ) )
+            {
+                return GUIStr.StoredInfo[ name ] as T;
+            }
+            else return default( T );
         }
 
         public bool OnWindowChange()
@@ -206,7 +228,7 @@ namespace WindowUtility
         public string GetGUIStructName( ( int, int ) index = default )
         {
             GUIStruct GUIStr = GetGUIStruct( index );
-            return Helper.IsValid( GUIStr ) ? GUIStr.Name : null;
+            return Helper.IsValid( GUIStr ) ? GUIStr.Name : "NoName";
         }
 
         public ( int, int ) GetCurrentTabIdx()

@@ -87,8 +87,11 @@ namespace CodeViews
             GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
             GUILayout.BeginHorizontal();
-                if ( !isEmptyCode ) CreateTextField( ref entry, "", "", 1, 200, 20, true );
-                if ( !isEmptyCode ) CreateButton( "Rename", "", () => RenameTab(), 100, 20 );
+                if ( !isEmptyCode )
+                {
+                    CreateTextField( ref entry, "", "", 1, 200, 20, true );
+                    CreateButton( "Rename", "", () => RenameTab(), 100, 20 );
+                }
 
                 if ( MenuInit.IsEnable( CodeViewsWindow.DevMenuDebugInfo ) )
                 {

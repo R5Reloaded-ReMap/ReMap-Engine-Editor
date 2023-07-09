@@ -121,6 +121,8 @@ namespace CodeViews
                     ( 0, 0 ),
                     new GUIStruct()
                     {
+                        Name = "Squirrel Code",
+
                         OnGUI = new FunctionRef[] { () => ScriptTab.OnGUISettingsTab() },
 
                         OnStartGUI = () =>
@@ -137,6 +139,8 @@ namespace CodeViews
                         InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName() );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
+                            windowStruct.ReStoreInfo( ref functionName, "FuncName" );
                         }
                     }
                 },
@@ -146,6 +150,8 @@ namespace CodeViews
                     ( 0, 1 ),
                     new GUIStruct()
                     {
+                        Name = "Additional Code",
+
                         OnStartGUI = () =>
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
@@ -160,6 +166,7 @@ namespace CodeViews
                         InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", Helper.GetSceneName() );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
                         }
                     }
                 },
@@ -169,6 +176,8 @@ namespace CodeViews
                     ( 1, 0 ),
                     new GUIStruct()
                     {
+                        Name = "DataTable Code",
+
                         OnGUI = new FunctionRef[] { () => DataTableTab.OnGUISettingsTab() },
 
                         OnStartGUI = () =>
@@ -184,6 +193,7 @@ namespace CodeViews
                         InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "remap_datatable" );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
                         }
                     }
                 },
@@ -193,6 +203,8 @@ namespace CodeViews
                     ( 2, 0 ),
                     new GUIStruct()
                     {
+                        Name = "Precache Code",
+
                         OnGUI = new FunctionRef[] { () => PrecacheTab.OnGUISettingsTab() },
 
                         OnStartGUI = () =>
@@ -209,6 +221,7 @@ namespace CodeViews
                         InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", $"{Helper.GetSceneName()}_Precache" );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
                         }
                     }
                 },
@@ -219,6 +232,8 @@ namespace CodeViews
                     ( 3, 0 ),
                     new GUIStruct()
                     {
+                        Name = "Script Ent Code",
+
                         OnGUI = new FunctionRef[] { () => ScriptEntTab.OnGUISettingsTab() },
 
                         OnStartGUI = () =>
@@ -234,6 +249,7 @@ namespace CodeViews
                         InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_script" );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
                         }
                     }
                 },
@@ -243,6 +259,8 @@ namespace CodeViews
                     ( 3, 1 ),
                     new GUIStruct()
                     {
+                        Name = "Sound Ent Code",
+
                         OnGUI = new FunctionRef[] { () => SoundEntTab.OnGUISettingsTab() },
 
                         OnStartGUI = () =>
@@ -258,6 +276,7 @@ namespace CodeViews
                         InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_snd" );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
                         }
                     }
                 },
@@ -267,6 +286,8 @@ namespace CodeViews
                     ( 3, 2 ),
                     new GUIStruct()
                     {
+                        Name = "Spawn Ent Code",
+
                         OnGUI = new FunctionRef[] { () => SpawnEntTab.OnGUISettingsTab() },
 
                         OnStartGUI = () =>
@@ -282,6 +303,7 @@ namespace CodeViews
                         InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "mp_rr_remap_spawn" );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
                         }
                     }
                 },
@@ -292,6 +314,8 @@ namespace CodeViews
                     ( 4, 0 ),
                     new GUIStruct()
                     {
+                        Name = "Camera Path Code",
+
                         OnGUI = new FunctionRef[] { () => CameraPathTab.OnGUISettingsTab() },
 
                         OnStartGUI = () =>
@@ -308,6 +332,7 @@ namespace CodeViews
                         InitCallback = () => // Load on start
                         {
                             windowStruct.StoreInfo( "FuncNameBase", "remap_camera_path" );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
                         }
                     }
                 },
@@ -322,7 +347,6 @@ namespace CodeViews
             PostRefreshCallback = () =>
             {
                 windowStruct.StoreInfo( "FuncName", functionName );
-                ResetFunctionName();
                 infoCount = "Entity Count";
                 isAdditionalCodeWindow = false;
             },

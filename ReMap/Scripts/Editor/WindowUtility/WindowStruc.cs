@@ -141,9 +141,7 @@ namespace WindowUtility
                     }
                 }
 
-                var firstItem = SubTabGUI.First();
-                ( int, int ) firstKey = firstItem.Key;
-                ActiveGUIStruct = firstItem.Value;
+                ActiveGUIStruct = SubTabGUI.First().Value;
                 
                 if ( Helper.IsValid( InitCallback ) ) InitCallback();
             ForceChange = false;

@@ -155,7 +155,6 @@ namespace WindowUtility
         {
             if ( Helper.IsValid( ActiveGUIStruct ) )
             {
-                Helper.Ping( "StoreInfo()", ActiveGUIStruct.Name, "|", name, "=", value );
                 ActiveGUIStruct.StoredInfo[ name ] = value;
             }
         }
@@ -174,7 +173,6 @@ namespace WindowUtility
             if ( Helper.IsValid( ActiveGUIStruct ) && ActiveGUIStruct.StoredInfo.ContainsKey( name ) )
             {
                 obj = ActiveGUIStruct.StoredInfo[ name ] as T;
-                Helper.Ping( "ReStoreInfo()", ActiveGUIStruct.Name, "|", name, "=", obj );
             }
         }
 

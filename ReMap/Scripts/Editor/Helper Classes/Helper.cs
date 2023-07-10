@@ -769,4 +769,9 @@ public class Helper
 
         return credit.ToString();
     }
+
+    public static string GetScopeName( [ System.Runtime.CompilerServices.CallerMemberName ] string memberName = "" )
+    {
+        return memberName;
+    }
 }

@@ -368,24 +368,22 @@ namespace CodeViews
         [ MenuItem( "ReMap/Code Views", false, 25 ) ]
         public static void Init()
         {
-            TagHelper.CheckAndCreateTags();
-
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
             windowInstance.minSize = new Vector2( 1230, 500 );
             windowInstance.Show();
-
-            Helper.SetShowStartingOffset( true );
-
-            windowStruct.Awake();
         }
 
         void OnEnable()
         {
+            TagHelper.CheckAndCreateTags();
+
             EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
             EditorSceneManager.sceneSaved += EditorSceneManager_sceneSaved;
 
             enableLogo = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
             disableLogo = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
+
+            Helper.SetShowStartingOffset( true );
             
             windowStruct.Awake();
         }

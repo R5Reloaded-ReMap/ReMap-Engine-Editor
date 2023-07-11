@@ -73,11 +73,12 @@ namespace ImportExport
     [Serializable]
     public class PropClassData : GlobalClassData
     {
-        // If any changes are made here, do the same for JumppadClassData ( except string Name )
+        // If any changes are made here, do the same for JumppadClassData ( except string Name && bool ClientSide )
         public string Name;
         public bool AllowMantle;
         public float FadeDistance;
         public int RealmID;
+        public bool ClientSide;
         public PropScriptOptions Option;
     }
 

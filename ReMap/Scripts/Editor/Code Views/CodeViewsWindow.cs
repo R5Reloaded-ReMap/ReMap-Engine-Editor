@@ -108,7 +108,7 @@ namespace CodeViews
 
             SubTab = new Dictionary< int, string[] >()
             {
-                { 0, new[] { "Script", "Additional Code" } },
+                { 0, new[] { "Server Script", "Client Script", "Additional Code" } },
                 { 3, new[] { "script.ent", "snd.ent", "spawn.ent" } },
                 { 4, new[] { "Camera Path" } }
             },
@@ -117,11 +117,11 @@ namespace CodeViews
             {
                 // Squirrel Code
                 {
-                    // Script
+                    // Server Script
                     ( 0, 0 ),
                     new GUIStruct()
                     {
-                        Name = "Squirrel Code",
+                        Name = "Squirrel Code (Server)",
 
                         OnGUI = new FunctionRef[] { () => ScriptTab.OnGUISettingsTab() },
 
@@ -129,7 +129,7 @@ namespace CodeViews
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
                             {
-                                fileInfo = new[] { "Squirrel Code Export", "", $"{functionName}.nut", "nut" };
+                                fileInfo = new[] { "Squirrel Server Code Export", "", $"{functionName}.nut", "nut" };
                             }
 
                             GenerateCorrectCode( () => ScriptTab.GenerateCode() );
@@ -146,8 +146,35 @@ namespace CodeViews
                 },
 
                 {
-                    // Additional Code
+                    // Client Script
                     ( 0, 1 ),
+                    new GUIStruct()
+                    {
+                        Name = "Squirrel Code (Client)",
+
+                        OnGUI = new FunctionRef[] { () => ScriptClientTab.OnGUISettingsTab() },
+
+                        OnStartGUI = () =>
+                        {
+                            if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
+                            {
+                                fileInfo = new[] { "Squirrel Client Code Export", "", $"CL_{functionName}.nut", "nut" };
+                            }
+
+                            GenerateCorrectCode( () => ScriptClientTab.GenerateCode() );
+                        },
+
+                        InitCallback = () => // Load on start
+                        {
+                            windowStruct.StoreInfo( "FuncNameBase", $"CL_{Helper.GetSceneName()}" );
+                            windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
+                        }
+                    }
+                },
+
+                {
+                    // Additional Code
+                    ( 0, 2 ),
                     new GUIStruct()
                     {
                         Name = "Additional Code",

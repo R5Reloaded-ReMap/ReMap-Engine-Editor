@@ -205,6 +205,28 @@ namespace Build
             return code;
         }
 
+        public static async Task< StringBuilder > BuildClientPropObjects( bool selection )
+        {
+            GameObject[] objectData = Helper.GetAllObjectTypeWithEnum( ObjectType.Prop, selection );
+
+            StringBuilder code = new StringBuilder();
+
+            // Build the code
+            foreach ( GameObject obj in objectData )
+            {
+                PropScript script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
+                if ( script == null || !script.ClientSide ) continue;
+
+                string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
+
+                AppendCode( ref code, $"    CreateClientSidePropDynamic( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, $\"{model}\"" );
+            }
+
+            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+
+            return code;
+        }
+
         private static bool ObjHavePropScriptOptions( GameObject[] objectData, PropScriptOptions option )
         {
             foreach ( GameObject obj in objectData )

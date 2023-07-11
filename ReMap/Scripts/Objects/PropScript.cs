@@ -15,9 +15,10 @@ public enum PropScriptOptions
 
 public class PropScript : MonoBehaviour
 {
-    [Header("Settings:")]
+    [ Header( "Settings:" ) ]
     public bool AllowMantle = true;
     public float FadeDistance = 50000;
     public int RealmID = -1;
+    public bool ClientSide = false;
     public PropScriptOptions Option = PropScriptOptions.NoOption;
 }

@@ -148,10 +148,10 @@ public class Helper
 
     public static readonly Dictionary< string, string > BadChars = new Dictionary< string, string >
     {
-        { "/" , "" }, { "\\", "" }, { "\r", "" }, { "\n", "" }, { "-" , "_" }, { "[", "" }, { "]", "" },  { "{", "" }, { "}", "" }, { "(", "" },
-        { ")", "" },  { "!", "" },  { "@", "" },  { "#", "" },  { "$", "" },   { "%", "" }, { "^", "" },  { "&", "" }, { "*", "" }, { "=", "" },
-        { "+", "" },  { "?", "" },  { "<", "" },  { ">", "" },  { ",", "" },   { ".", "" }, { "\"", "" }, { "'", "" }, { ";", "" }, { ":", "" },
-        { "`", "" },  { "~", "" },  { "é", "" },  { "è", "" },  { "ê", "" },   { "á", "" }, { "à", "" },  { "â", "" }, { "í", "" }, { "ì", "" },
+        { "/", "" }, { "\\", "" }, { "\r", "" }, { "\n", "" }, { "-" , "_" }, { "[", "" }, { "]",  "" }, { "{", "" }, { "}", "" }, { "(", "" },
+        { ")", "" }, { "!",  "" }, { "@",  "" }, { "#",  "" }, { "$",  ""  }, { "%", "" }, { "^",  "" }, { "&", "" }, { "*", "" }, { "=", "" },
+        { "+", "" }, { "?",  "" }, { "<",  "" }, { ">",  "" }, { ",",  ""  }, { ".", "" }, { "\"", "" }, { "'", "" }, { ";", "" }, { ":", "" },
+        { "`", "" }, { "~",  "" }, { "é",  "" }, { "è",  "" }, { "ê",  ""  }, { "á", "" }, { "à",  "" }, { "â", "" }, { "í", "" }, { "ì", "" },
         { "î", "" }
     };
 
@@ -159,6 +159,7 @@ public class Helper
     {
         return CodeViews.MenuInit.IsEnable( CodeViews.CodeViewsWindow.OffsetMenuOffset );
     }
+    
     public static bool ShowStartingOffset()
     {
         return CodeViews.MenuInit.IsEnable( CodeViews.CodeViewsWindow.OffsetMenuShowOffset );
@@ -168,6 +169,7 @@ public class Helper
     {
         CodeViews.MenuInit.SetBool( CodeViews.CodeViewsWindow.OffsetMenuOffset, value );
     }
+
     public static void SetShowStartingOffset( bool value )
     {
         CodeViews.MenuInit.SetBool( CodeViews.CodeViewsWindow.OffsetMenuShowOffset, value );
@@ -773,5 +775,17 @@ public class Helper
     public static string GetScopeName( [ System.Runtime.CompilerServices.CallerMemberName ] string memberName = "" )
     {
         return memberName;
+    }
+
+    public static Stopwatch CreateStopwatch()
+    {
+        Stopwatch stopwatch = new ();
+        stopwatch.Start();
+        return stopwatch;
+    }
+
+    public static void StopStopwatch( ref Stopwatch stopwatch )
+    {
+        stopwatch.Stop(); Helper.Ping( "Time Elapsed:", stopwatch.ElapsedMilliseconds, "ms" );
     }
 }

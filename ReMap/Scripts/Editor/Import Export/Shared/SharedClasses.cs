@@ -35,6 +35,7 @@ namespace ImportExport
         public List< UOPlayerSpawnClassData > PlayerSpawns;
         public List< RespawnableHealClassData > RespawnableHeals;
         public List< SpeedBoostClassData > SpeedBoosts;
+        public List< AnimatedCameraClassData > AnimatedCameras;
     }
 
     /// <summary>
@@ -333,6 +334,16 @@ namespace ImportExport
         public float Strengh;
         public float Duration;
         public float FadeTime;
+    }
+
+    [Serializable]
+    public class AnimatedCameraClassData : GlobalClassData
+    {
+        public float AngleOffset;
+        public float MaxLeft;
+        public float MaxRight;
+        public float RotationTime;
+        public float TransitionTime;
     }
 
     [Serializable]

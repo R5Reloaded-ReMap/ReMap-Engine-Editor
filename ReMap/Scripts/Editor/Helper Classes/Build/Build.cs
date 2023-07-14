@@ -37,6 +37,9 @@ namespace Build
 
             switch ( objectType )
             {
+                case ObjectType.AnimatedCamera:
+                    AppendCode( ref code, await BuildAnimatedCamera.BuildAnimatedCameraObjects( objectData, buildType ), 0 );
+                    break;
                 case ObjectType.BubbleShield:
                     AppendCode( ref code, await BuildBubbleShield.BuildBubbleShieldObjects( objectData, buildType ), 0 );
                     break;

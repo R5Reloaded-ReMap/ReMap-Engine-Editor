@@ -217,13 +217,13 @@ namespace LibrarySorter
             {
                 modelName = Path.GetFileNameWithoutExtension( model );
 
-                if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName + "_LOD0.fbx"}" ) )
+                if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx" ) )
                 {
                     modelReplacePath = model.Replace("/", "#").Replace(".rmdl", ".prefab");
 
                     EditorUtility.DisplayProgressBar( $"Sorting {data.Name} Folder {i}/{total}", $"Sorting: {modelReplacePath}", ( i + 1 ) / ( float )total );
 
-                    if (!File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{data.Name}/{modelReplacePath}" ) )
+                    if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{data.Name}/{modelReplacePath}" ) )
                     {
                         prefabToAdd = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathEmptyPrefab}", typeof( UnityEngine.Object ) ) as GameObject;
                         objectToAdd = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", typeof( UnityEngine.Object ) ) as GameObject;
@@ -267,7 +267,7 @@ namespace LibrarySorter
                     }
                     else
                     {
-                        if( !checkExist ) continue;
+                        if ( !checkExist ) continue;
 
                         UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}", typeof( UnityEngine.Object ) ) as GameObject;
                         if ( loadedPrefabResource == null )
@@ -318,7 +318,7 @@ namespace LibrarySorter
         {
             BoxCollider collider = go.GetComponent< BoxCollider >();
 
-            if( Helper.IsValid( collider ) ) collider = go.AddComponent< BoxCollider >();
+            if ( !Helper.IsValid( collider ) ) collider = go.AddComponent< BoxCollider >();
 
             float x = 0, y = 0, z = 0;
 

@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class UnityInfo
 {
-    public static string ReMapVersion = "Version 1.0.2";
-    public static string JsonVersion = "1.0.6";
+    public static string ReMapVersion = "Version 1.0.3";
+    public static string JsonVersion = "1.0.7";
 
     // Path Utility
     public static string currentDirectoryPath =            Directory.GetCurrentDirectory().Replace("\\","/");
@@ -88,6 +88,11 @@ public class UnityInfo
         return Helper.DeleteNewLine( modelName.Replace( '/', '#' ) ) + ext;
     }
 
+    public static string GetUnityModelName( GameObject go, bool extension = false )
+    {
+        return GetUnityModelName( go.name, extension );
+    }
+
     /// <summary>
     /// Returns the model name as a Apex path
     /// </summary>
@@ -98,6 +103,11 @@ public class UnityInfo
         modelName = modelName.Replace( '#', '/' ).Replace( ".rmdl", "" ).Replace( ".prefab", "" );
         if ( modelName.IndexOf( "mdl/" ) == -1 ) modelName = "mdl/" + modelName;
         return Helper.DeleteNewLine( modelName.Substring( modelName.IndexOf( "mdl/" ) ) ) + ext;
+    }
+
+    public static string GetApexModelName( GameObject go, bool extension = false )
+    {
+        return GetApexModelName( go.name, extension );
     }
 
     /// <summary>

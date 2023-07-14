@@ -63,6 +63,7 @@ public enum ObjectType
     Trigger,
     RespawnableHeal,
     SpeedBoost,
+    AnimatedCamera,
     BubbleShield,
     NewLocPair,
     SpawnPoint,
@@ -81,6 +82,7 @@ public class Helper
 
     private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new Dictionary< ObjectType, ObjectTypeData >
     {
+        { ObjectType.AnimatedCamera,         new ObjectTypeData( new[] { "animated_camera",              "AnimatedCamera",     "Animated Camera"      }, typeof( AnimatedCameraScript ),   typeof( AnimatedCameraClassData ) ) },
         { ObjectType.BubbleShield,           new ObjectTypeData( new[] { "mdl#fx#bb_shield",             "BubbleShield",       "Bubble Shield"        }, typeof( BubbleScript ),           typeof( BubbleShieldClassData ) ) },
         { ObjectType.Button,                 new ObjectTypeData( new[] { "custom_button",                "Button",             "Button"               }, typeof( ButtonScripting ),        typeof( ButtonClassData ) ) },
         { ObjectType.CameraPath,             new ObjectTypeData( new[] { "custom_camera_path",           "CameraPath",         "Camera Path"          }, typeof( PathScript ),             typeof( CameraPathClassData ) ) },

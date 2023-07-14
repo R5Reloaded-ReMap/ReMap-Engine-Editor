@@ -430,6 +430,17 @@ namespace ImportExport.Json
                     else TransferDataToClass( speedBoostData, speedBoostScript );
                     break;
 
+                case ObjectType.AnimatedCamera:
+                    AnimatedCameraClassData animatedCameraData = ( AnimatedCameraClassData )( object ) scriptData;
+                    AnimatedCameraScript animatedCameraScript = ( AnimatedCameraScript ) Helper.GetComponentByEnum( obj, objectType );
+
+                    if ( getSet == GetSetData.Get )
+                    {
+                        TransferDataToClass( animatedCameraScript, animatedCameraData );
+                    }
+                    else TransferDataToClass( animatedCameraData, animatedCameraScript );
+                    break;
+
                 default: return;
             }
         }
@@ -636,6 +647,15 @@ namespace ImportExport.Json
                         case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.SpeedBoosts, x => x.PathString ); break;
                         case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.SpeedBoosts ); break;
                         case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.SpeedBoosts, selectionOnly ); break;
+                    }
+                    break;
+
+                case ObjectType.AnimatedCamera:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList: UnityInfo.SortListByKey( jsonData.AnimatedCameras, x => x.PathString ); break;
+                        case ExecuteType.Import: await ImportObjectsWithEnum( objectType, jsonData.AnimatedCameras ); break;
+                        case ExecuteType.Export: await ExportObjectsWithEnum( objectType, jsonData.AnimatedCameras, selectionOnly ); break;
                     }
                     break;
 

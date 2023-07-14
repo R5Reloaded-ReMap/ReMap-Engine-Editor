@@ -151,6 +151,7 @@ namespace ImportExport.Json
             jsonData.PlayerSpawns = new List< UOPlayerSpawnClassData >();
             jsonData.RespawnableHeals = new List< RespawnableHealClassData >();
             jsonData.SpeedBoosts = new List< SpeedBoostClassData >();
+            jsonData.AnimatedCameras = new List< AnimatedCameraClassData >();
         }
     }
 }

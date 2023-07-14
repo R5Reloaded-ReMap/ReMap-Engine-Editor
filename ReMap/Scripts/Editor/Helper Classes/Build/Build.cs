@@ -163,6 +163,12 @@ namespace Build
 
                     break;
 
+                case ObjectType.AnimatedCamera:
+
+                    objectDataLength = objectDataLength * 3;
+
+                    break;
+
                 case ObjectType.JumpTower:
                 case ObjectType.SpeedBoost:
 

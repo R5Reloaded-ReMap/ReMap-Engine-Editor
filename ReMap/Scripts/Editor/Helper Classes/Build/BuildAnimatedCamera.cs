@@ -49,7 +49,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    ReMapCreateCamera( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.AngleOffset )}, {Helper.ReplaceComma( script.MaxLeft )}, {Helper.ReplaceComma( script.MaxRight )}, {Helper.ReplaceComma( script.RotationTime )}, {Helper.ReplaceComma( script.TransitionTime )}, true )" );
+                        AppendCode( ref code, $"    ReMapCreateCamera( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.AngleOffset )}, {Helper.ReplaceComma( script.MaxLeft )}, {Helper.ReplaceComma( script.MaxRight )}, {Helper.ReplaceComma( script.RotationTime )}, {Helper.ReplaceComma( script.TransitionTime )}, true )" );
                         break;
 
                     case BuildType.EntFile:

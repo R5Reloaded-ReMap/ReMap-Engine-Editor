@@ -34,6 +34,9 @@ namespace CodeViews
         public static Vector3 PlayerInfoOrigin;
         public static Vector3 PlayerInfoAngles;
 
+        public static bool GettingInfo = false;
+        public static bool GetApexInfoOnSend = false;
+
         public static int commandDelay = 50;
 
         [ DllImport( "user32.dll" ) ]
@@ -99,6 +102,13 @@ namespace CodeViews
                 MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
                 SendConfirmation( ConfirmationType.ERROR );
                 return;
+            }
+
+            if ( GetApexInfoOnSend )
+            {
+                GetApexPlayerInfo();
+
+                while ( GettingInfo ) await Task.Delay( 100 ); // 100 ms
             }
 
             ResetCommandList();
@@ -263,12 +273,15 @@ namespace CodeViews
 
         internal static async void GetApexPlayerInfo( PageType pageType = PageType.SQUIRREL, bool ignoreCodeViews = false )
         {
+            GettingInfo = true;
+
             m_hEngine = FindApexWindow();
             if ( !ApexProcessIsActive() )
             {
                 IsSending = false;
                 MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
                 SendConfirmation( ConfirmationType.ERROR );
+                GettingInfo = false;
                 return;
             }
 
@@ -288,6 +301,7 @@ namespace CodeViews
             if ( !processFound )
             {
                 SendConfirmation( ConfirmationType.ERROR );
+                GettingInfo = false;
                 return;
             }
 
@@ -354,6 +368,8 @@ namespace CodeViews
 
                 CodeViewsWindow.Refresh();
             }
+
+            GettingInfo = false;
         }
 
         public static void RespawnPlayers()

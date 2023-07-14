@@ -63,6 +63,7 @@ namespace CodeViews
         internal static string SelectionMenu = "SelectionMenu";
 
         internal static string LiveCodeMenu = "LiveCodeMenu";
+        internal static string LiveCodeMenuGetApexInfo = "LiveCodeMenuGetApexInfo";
         internal static string LiveCodeMenuRespawn = "LiveCodeMenuRespawn";
         internal static string LiveCodeMenuTeleportation = "LiveCodeMenuTeleportation";
         internal static string LiveCodeMenuAutoSend = "LiveCodeMenuAutoSend";

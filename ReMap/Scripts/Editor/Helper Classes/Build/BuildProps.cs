@@ -200,7 +200,7 @@ namespace Build
                 break;
             }
             
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }
@@ -222,7 +222,7 @@ namespace Build
                 AppendCode( ref code, $"    CreateClientSidePropDynamic( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, $\"{model}\"" );
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

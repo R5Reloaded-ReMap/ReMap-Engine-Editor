@@ -61,7 +61,7 @@ namespace ImportExport.Json
             {
                 ProcessImportClassData( objData, DetermineDataName( objData, objectType ), objectType, i, j, objectsCount );
 
-                await Task.Delay( TimeSpan.FromSeconds( 0.001 ) ); i++; j++;
+                await Helper.Wait(); i++; j++;
             }
         }
 

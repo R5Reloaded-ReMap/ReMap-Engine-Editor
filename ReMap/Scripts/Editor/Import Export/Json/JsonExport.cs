@@ -107,7 +107,7 @@ namespace ImportExport.Json
 
                 if ( IsValidPath( objPath ) ) listType.Add( classData );
 
-                await Task.Delay( TimeSpan.FromSeconds( 0.001 ) ); i++; j++;
+                await Helper.Wait(); i++; j++;
             }
         }
 

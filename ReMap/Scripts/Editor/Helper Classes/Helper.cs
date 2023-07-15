@@ -790,4 +790,9 @@ public class Helper
     {
         stopwatch.Stop(); Helper.Ping( "Time Elapsed:", stopwatch.ElapsedMilliseconds, "ms" );
     }
+
+    public static async Task Wait()
+    {
+        await Task.Delay( TimeSpan.FromSeconds( 0.00001 ) );
+    } 
 }

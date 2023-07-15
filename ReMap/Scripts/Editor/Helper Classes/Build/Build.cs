@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace Build
         public static async Task< string > BuildObjectsWithEnum( ObjectType objectType, BuildType buildType, bool selection = false )
         {
             // Does not generate if the type of object are flaged hide
-            if ( IsHided( objectType ) ) return "";
+            if ( !Helper.GenerateObjectsVerified.Contains( Helper.GetObjNameWithEnum( objectType ) ) ) return "";
             
             StringBuilder code = new StringBuilder();
 

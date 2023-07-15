@@ -467,12 +467,15 @@ namespace CodeViews
 
         public static bool IsHided( ObjectType objectType )
         {
-            return
-            // Ensure the objectData is not empty
-            !Helper.IsObjectTypeExistInScene( objectType, CodeViewsWindow.SelectionEnable() ) || // Ensure the objectData is not empty
-
             // Check if objectType are flaged hide
-            Helper.GenerateIgnore.Any( o => o == objectType );
+            if ( Helper.GenerateIgnore.Any( o => o == objectType ) )
+                return true;
+
+            // Ensure the objectData is not empty
+            if ( !Helper.IsObjectTypeExistInScene( objectType, CodeViewsWindow.SelectionEnable() ) )
+                return true;
+            
+            return false;
         }
 
         //  ██╗███╗   ██╗████████╗███████╗██████╗ ███╗   ██╗ █████╗ ██╗         ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
@@ -695,6 +698,8 @@ namespace CodeViews
 
             code = "";
 
+            CodeViewsMenu.VerifyGenerateObjects();
+
             functionName = Helper.ReplaceBadCharacters( functionName );
 
             GenerationIsActive = true;
@@ -704,8 +709,6 @@ namespace CodeViews
             maxLength = code.Split( "\n" ).Length > maxBuildLine;
             codeSplit = code.Split( "\n" );
             maxPage = codeSplit.Length == 0 ? 1 : codeSplit.Length / maxBuildLine + 1;
-
-            CodeViewsMenu.VerifyGenerateObjects();
 
             GenerationIsActive = false;
         }

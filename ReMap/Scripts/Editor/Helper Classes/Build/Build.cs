@@ -25,12 +25,12 @@ namespace Build
 
         public static async Task< string > BuildObjectsWithEnum( ObjectType objectType, BuildType buildType, bool selection = false )
         {
+            // Does not generate if the type of object are flaged hide
+            if ( IsHided( objectType ) ) return "";
+            
             StringBuilder code = new StringBuilder();
 
             GameObject[] objectData = Helper.GetAllObjectTypeWithEnum( objectType, selection );
-
-            // Does not generate if the type of object are flaged hide
-            if ( IsHided( objectType ) ) return "";
             
             // Dynamic Counter
             if ( !IgnoreCounter ) IncrementToCounter( objectType, buildType, objectData );

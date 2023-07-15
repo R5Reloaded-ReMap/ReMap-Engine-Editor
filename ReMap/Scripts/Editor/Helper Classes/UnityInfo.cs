@@ -33,9 +33,9 @@ public class UnityInfo
     /// Gets total GameObject in scene
     /// </summary>
     /// <returns></returns>
-    public static GameObject[] GetAllGameObjectInScene()
+    public static GameObject[] GetAllGameObjectInScene( bool selection = false )
     {
-        return UnityEngine.Object.FindObjectsOfType< GameObject >();
+        return selection ? Selection.gameObjects : UnityEngine.Object.FindObjectsOfType< GameObject >();
     }
 
     /// <summary>

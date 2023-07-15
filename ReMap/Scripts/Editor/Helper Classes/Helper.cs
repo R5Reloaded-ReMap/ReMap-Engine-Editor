@@ -535,25 +535,11 @@ public class Helper
 
     public static bool IsObjectTypeExistInScene( ObjectType objectType, bool selectionOnly = false )
     {
-        string tag = Helper.GetObjTagNameWithEnum( objectType );
-        if ( selectionOnly )
-        {
-            foreach ( var obj in Selection.gameObjects )
-            {
-                if ( obj.CompareTag( tag ) ) return true;
+        string nameRef = Helper.GetObjRefWithEnum( objectType );
 
-                foreach (var child in obj.GetComponentsInChildren< Transform >( true ) )
-                {
-                    if ( child.gameObject.CompareTag( tag ) ) return true;
-                }
-            }
-        }
-        else
+        foreach ( var obj in UnityInfo.GetAllGameObjectInScene( selectionOnly ) )
         {
-            foreach ( var obj in GetAllObjectTypeInScene() )
-            {
-                if ( obj.CompareTag( tag ) ) return true;
-            }
+            if ( obj.name.Contains( nameRef ) ) return true;
         }
 
         return false;
@@ -791,8 +777,8 @@ public class Helper
         stopwatch.Stop(); Helper.Ping( "Time Elapsed:", stopwatch.ElapsedMilliseconds, "ms" );
     }
 
-    public static async Task Wait()
+    public static async Task Wait( double value = 0.00001 )
     {
-        await Task.Delay( TimeSpan.FromSeconds( 0.00001 ) );
+        await Task.Delay( TimeSpan.FromSeconds( value ) );
     } 
 }

@@ -404,9 +404,8 @@ namespace CodeViews
             foreach ( string key in Helper.GenerateObjects.Keys )
             {
                 ObjectType? type = Helper.GetObjectTypeByObjName( key );
-                ObjectType typed = ( ObjectType ) type;
 
-                if ( CodeViewsWindow.IsHided( typed ) ) continue;
+                if ( CodeViewsWindow.IsHided( ( ObjectType ) type ) ) continue;
 
                 if ( Helper.GenerateObjects[key] ) idx++;
 

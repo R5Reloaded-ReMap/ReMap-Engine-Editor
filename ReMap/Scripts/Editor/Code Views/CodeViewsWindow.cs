@@ -500,7 +500,7 @@ namespace CodeViews
 
             GUI.FocusControl( null );
 
-            windowStruct.SubTabGUI[ windowStruct.GetCurrentTabIdx() ].OnStartGUI();
+            windowStruct.OnStartGUICallback();
         }
 
         internal static void CopyCode()
@@ -700,11 +700,11 @@ namespace CodeViews
 
             code = "";
 
-            CodeViewsMenu.VerifyGenerateObjects();
-
             functionName = Helper.ReplaceBadCharacters( functionName );
 
             GenerationIsActive = true;
+
+            CodeViewsMenu.VerifyGenerateObjects();
 
             code += await functionRef();
 
@@ -719,10 +719,10 @@ namespace CodeViews
 
         private static string SetCorrectEntityLabel( int count )
         {
-            if( count < greenPropCount )
+            if ( count < greenPropCount )
                 return "Status: Safe";
 
-            else if( ( count < yellowPropCount ) ) 
+            else if ( ( count < yellowPropCount ) ) 
                 return "Status: Safe";
 
             else return "Status: Warning! Game could crash!";
@@ -730,10 +730,10 @@ namespace CodeViews
 
         private static void SetCorrectColor( int count )
         {
-            if( count < greenPropCount )
+            if ( count < greenPropCount )
                 GUI.contentColor = Color.green;
 
-            else if( count < yellowPropCount ) 
+            else if ( count < yellowPropCount ) 
                 GUI.contentColor = Color.yellow;
 
             else GUI.contentColor = Color.red;

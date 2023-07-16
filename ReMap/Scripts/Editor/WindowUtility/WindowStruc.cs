@@ -87,6 +87,11 @@ namespace WindowUtility
             }
         }
 
+        public void OnStartGUICallback()
+        {
+            this.SubTabGUI[ GetCurrentTabIdx() ].OnStartGUI();
+        }
+
         private void CommonChanges()
         {
             ActiveGUIStruct = GetGUIStruct();

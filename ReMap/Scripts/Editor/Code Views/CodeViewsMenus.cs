@@ -373,16 +373,19 @@ namespace CodeViews
                     WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 156 );
                 GUILayout.EndHorizontal();
 
-                foreach ( string key in Helper.GenerateObjectsVerified )
+                foreach ( ObjectType objectType in Helper.ObjectsToHide.Keys )
                 {
+                    if ( !Helper.GetBoolFromObjectsToHide( objectType ) ) continue;
+
                     GUILayout.BeginHorizontal();
-                        bool value = Helper.GenerateObjects[key];
-                        OptionalToggle( ref value, $"Build {key}", value ? $"Disable {key}" : $"Enable {key}" );
+                        bool value = Helper.GenerateObjects[ objectType ];
+                        string name = Helper.GetObjNameWithEnum( objectType );
+                        OptionalToggle( ref value, $"Build {name}", value ? $"Disable {name}" : $"Enable {name}" );
                     GUILayout.EndHorizontal();
 
-                    if ( Helper.GenerateObjects[key] != value )
+                    if ( Helper.GenerateObjects[ objectType ] != value )
                     {
-                        Helper.GenerateObjects[key] = value;
+                        Helper.GenerateObjects[ objectType ] = value;
                         CodeViewsWindow.Refresh();
                         
                         GUILayout.EndHorizontal();
@@ -399,20 +402,17 @@ namespace CodeViews
         {
             int idx = 0;
 
-            List< string > list = new List< string >();
-
-            foreach ( string key in Helper.GenerateObjects.Keys )
+            foreach ( ObjectType objectType in Helper.GenerateObjects.Keys )
             {
-                ObjectType? type = Helper.GetObjectTypeByObjName( key );
+                if ( CodeViewsWindow.IsHided( objectType ) )
+                {
+                    Helper.ObjectsToHide[ objectType ] = false;
+                    continue;
+                }
+                else Helper.ObjectsToHide[ objectType ] = true;
 
-                if ( CodeViewsWindow.IsHided( ( ObjectType ) type ) ) continue;
-
-                if ( Helper.GenerateObjects[key] ) idx++;
-
-                list.Add( key );
+                if ( Helper.GenerateObjects[ objectType ] ) idx++;
             }
-
-            Helper.GenerateObjectsVerified = list.ToArray();
 
             CodeViewsWindow.objectTypeInSceneCount = idx;
         }

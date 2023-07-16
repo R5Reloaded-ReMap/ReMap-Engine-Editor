@@ -85,18 +85,16 @@ namespace CodeViews
             GUILayout.EndVertical();
         }
 
+        private static readonly ObjectType[] forceHide = new ObjectType[]
+        {
+            ObjectType.Sound,
+            ObjectType.SpawnPoint,
+            ObjectType.CameraPath,
+        };
+
         internal static async Task< string > GenerateCode()
         {
-            
-            ObjectType[] forceHide = new ObjectType[]
-            {
-                ObjectType.Sound,
-                ObjectType.SpawnPoint,
-                ObjectType.CameraPath,
-            };
-
             Helper.ForceHideBoolToGenerateObjects( forceHide );
-
 
             StringBuilder code = new StringBuilder();
 

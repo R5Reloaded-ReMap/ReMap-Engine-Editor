@@ -27,7 +27,7 @@ namespace Build
         public static async Task< string > BuildObjectsWithEnum( ObjectType objectType, BuildType buildType, bool selection = false )
         {
             // Does not generate if the type of object are flaged hide
-            if ( !Helper.GenerateObjectsVerified.Contains( Helper.GetObjNameWithEnum( objectType ) ) ) return "";
+            if ( !Helper.GetBoolFromObjectsToHide( objectType ) ) return "";
             
             StringBuilder code = new StringBuilder();
 

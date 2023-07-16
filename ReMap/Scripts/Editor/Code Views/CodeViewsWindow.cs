@@ -103,6 +103,9 @@ namespace CodeViews
         private static int currentPage = 0;
         private static int maxPage = 0;
 
+        // Empty ObjectType[]
+        internal static readonly ObjectType[] EmptyObjectType = new ObjectType[0];
+
         private static WindowStruct windowStruct = new WindowStruct()
         {
             MainTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code", "Other Code" },
@@ -494,7 +497,6 @@ namespace CodeViews
         internal static void Refresh( bool reSetScroll = true )
         {
             if ( reSetScroll ) SetScrollView( scroll );
-            if ( itemEnd > codeSplit.Length ) currentPage = codeSplit.Length / maxBuildLine;
 
             GUI.FocusControl( null );
 
@@ -709,6 +711,8 @@ namespace CodeViews
             maxLength = code.Split( "\n" ).Length > maxBuildLine;
             codeSplit = code.Split( "\n" );
             maxPage = codeSplit.Length == 0 ? 1 : codeSplit.Length / maxBuildLine + 1;
+
+            if ( currentPage + 1 > maxPage ) currentPage = maxPage - 1;
 
             GenerationIsActive = false;
         }

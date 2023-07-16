@@ -45,8 +45,7 @@ namespace CodeViews
 
         internal static async Task< string > GenerateCode()
         {
-            Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
-
+            Helper.ForceHideBoolToGenerateObjects( CodeViewsWindow.EmptyObjectType );
 
             StringBuilder code = new StringBuilder();
 

@@ -57,16 +57,14 @@ namespace CodeViews
             GUILayout.EndVertical();
         }
 
+        private static readonly ObjectType[] forceShow = new ObjectType[]
+        {
+            ObjectType.CameraPath,
+        };
+
         internal static async Task< string > GenerateCode()
         {
-            
-            ObjectType[] forceShow = new ObjectType[]
-            {
-                ObjectType.CameraPath,
-            };
-
             Helper.ForceHideBoolToGenerateObjects( forceShow, true );
-
 
             StringBuilder code = new StringBuilder();
 

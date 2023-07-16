@@ -56,10 +56,14 @@ namespace CodeViews
             GUILayout.EndVertical();
         }
 
+        private static readonly ObjectType[] forceShow = new ObjectType[]
+        {
+            ObjectType.SpawnPoint
+        };
+
         internal static async Task< string > GenerateCode()
         {
-            Helper.ForceHideBoolToGenerateObjects( new ObjectType[] { ObjectType.SpawnPoint }, true );
-
+            Helper.ForceHideBoolToGenerateObjects( forceShow, true );
 
             StringBuilder code = new StringBuilder();
 

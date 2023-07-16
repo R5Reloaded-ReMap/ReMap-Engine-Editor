@@ -123,17 +123,17 @@ public class Helper
     public static readonly Dictionary< string, string > ObjectToTag = ObjectToTagDictionaryInit();
 
     // Gen Settings
-    public static readonly Dictionary< string, bool > GenerateObjects = ObjectGenerateDictionaryInit();
+    public static readonly Dictionary< ObjectType, bool > GenerateObjects = ObjectGenerateDictionaryInit();
+    public static readonly Dictionary< ObjectType, bool > ObjectsToHide = new Dictionary< ObjectType, bool >( GenerateObjects );
 
-    public static string[] GenerateObjectsVerified = new string[0];
+    // All ObjectType Inside This [] Will Not Be Generated
+    public static ObjectType[] GenerateIgnore = new ObjectType[0];
 
     // Always Hide Unity Only Objects
     public static readonly ObjectType[] GenerateIgnoreStatic = new ObjectType[]
     {
         ObjectType.LiveMapCodePlayerSpawn
     };
-
-    public static ObjectType[] GenerateIgnore = new ObjectType[0];
 
     private static readonly Dictionary< string, string > LocalizedString = new Dictionary< string, string >
     {
@@ -496,9 +496,9 @@ public class Helper
         );
     }
 
-    private static Dictionary< string, bool > ObjectGenerateDictionaryInit()
+    private static Dictionary< ObjectType, bool > ObjectGenerateDictionaryInit()
     {
-        return GetAllObjectType().ToDictionary( objectType => GetObjNameWithEnum( objectType ), objectType => true );
+        return GetAllObjectType().ToDictionary( objectType => objectType, objectType => true );
     }
 
     public static ObjectType[] GetAllObjectType()
@@ -508,14 +508,19 @@ public class Helper
 
     public static bool GetBoolFromGenerateObjects( ObjectType objectType )
     {
-        return GenerateObjects[ GetObjNameWithEnum( objectType ) ];
+        return GenerateObjects[ objectType ];
+    }
+
+    public static bool GetBoolFromObjectsToHide( ObjectType objectType )
+    {
+        return ObjectsToHide[ objectType ];
     }
 
     public static void ForceSetBoolToGenerateObjects( ObjectType[] array, bool value )
     {
         foreach ( ObjectType objectType in array )
         {
-            GenerateObjects[ GetObjNameWithEnum( objectType ) ] = value;
+            GenerateObjects[ objectType ] = value;
         }
     }
 

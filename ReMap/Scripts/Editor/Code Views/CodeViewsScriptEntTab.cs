@@ -69,23 +69,23 @@ namespace CodeViews
             GUILayout.EndVertical();
         }
 
+        private static readonly ObjectType[] forceShow = new ObjectType[]
+        {
+            ObjectType.Prop,
+            ObjectType.VerticalZipLine,
+            ObjectType.NonVerticalZipLine,
+            ObjectType.SingleDoor,
+            ObjectType.DoubleDoor,
+            ObjectType.HorzDoor,
+            ObjectType.VerticalDoor,
+          //ObjectType.JumpTower,
+            ObjectType.LootBin,
+            ObjectType.FuncWindowHint
+        };
+
         internal static async Task< string > GenerateCode()
         {
-            ObjectType[] showOnly = new ObjectType[]
-            {
-                ObjectType.Prop,
-                ObjectType.VerticalZipLine,
-                ObjectType.NonVerticalZipLine,
-                ObjectType.SingleDoor,
-                ObjectType.DoubleDoor,
-                ObjectType.HorzDoor,
-                ObjectType.VerticalDoor,
-              //ObjectType.JumpTower,
-                ObjectType.LootBin,
-                ObjectType.FuncWindowHint
-            };
-
-            Helper.ForceHideBoolToGenerateObjects( showOnly, true );
+            Helper.ForceHideBoolToGenerateObjects( forceShow, true );
 
             Vector3 IPSAngles = CodeViewsWindow.InfoPlayerStartAngles;
             Vector3 IPSOrigin = CodeViewsWindow.InfoPlayerStartOrigin;

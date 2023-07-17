@@ -135,6 +135,9 @@ public class Helper
         ObjectType.LiveMapCodePlayerSpawn
     };
 
+    // When Refreshing, Get All GameObjects In Scene
+    public static GameObject[] ObjectsInScene = new GameObject[0];
+
     private static readonly Dictionary< string, string > LocalizedString = new Dictionary< string, string >
     {
         { "#FUNCTION_NAME_PRECACHE", $"{CodeViews.CodeViewsWindow.functionName}_Init" },
@@ -542,12 +545,7 @@ public class Helper
     {
         string nameRef = Helper.GetObjRefWithEnum( objectType );
 
-        foreach ( var obj in UnityInfo.GetAllGameObjectInScene( selectionOnly ) )
-        {
-            if ( obj.name.Contains( nameRef ) ) return true;
-        }
-
-        return false;
+        return Helper.ObjectsInScene.Any( obj => obj.name.Contains( nameRef ) );
     }
 
     public static GameObject[] GetAllObjectTypeInScene( bool selection = false )
@@ -619,6 +617,11 @@ public class Helper
         if ( !string.IsNullOrEmpty( name ) ) obj.name = name;
 
         return obj;
+    }
+
+    public static void GetObjectsInScene()
+    {
+        ObjectsInScene = UnityInfo.GetAllGameObjectInScene();
     }
 
     public static void IncrementEntityCount( int value = 1 )

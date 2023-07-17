@@ -400,19 +400,26 @@ namespace CodeViews
 
         internal static void VerifyGenerateObjects()
         {
-            int idx = 0;
+            int idx = 0; float progress = 0.0f;
+            int min = 0; int max = Helper.GenerateObjects.Keys.Count;
 
             foreach ( ObjectType objectType in Helper.GenerateObjects.Keys )
             {
+                EditorUtility.DisplayProgressBar( $"Object Verification {min}/{max}", $"Processing... ({Helper.GetObjNameWithEnum( objectType )})", progress );
+
+                progress += 1.0f / max;
+
                 if ( CodeViewsWindow.IsHided( objectType ) )
                 {
                     Helper.ObjectsToHide[ objectType ] = false;
                     continue;
                 }
                 else Helper.ObjectsToHide[ objectType ] = true;
-
+                
                 if ( Helper.GenerateObjects[ objectType ] ) idx++;
             }
+
+            EditorUtility.ClearProgressBar();
 
             CodeViewsWindow.objectTypeInSceneCount = idx;
         }

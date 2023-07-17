@@ -390,6 +390,7 @@ namespace CodeViews
             RefreshCallback = () =>
             {
                 windowStruct.ReStoreInfo( ref functionName, "FuncName" );
+                Helper.GetObjectsInScene();
                 Refresh( false );
             }
 
@@ -665,7 +666,7 @@ namespace CodeViews
                     {
                         list.Add( codeSplit[ i ] );
                     }
-                    GUILayout.TextArea( $"\n{string.Join( "\n", list ).ToString()}\n", style, GUILayout.ExpandHeight( true ) );
+                    GUILayout.TextArea( $"{string.Join( "\n", list ).ToString()}", style, GUILayout.ExpandHeight( true ) );
                 }
                 else
                 {
@@ -706,7 +707,9 @@ namespace CodeViews
 
             CodeViewsMenu.VerifyGenerateObjects();
 
-            code += await functionRef();
+            EditorUtility.DisplayProgressBar( $"Generating Code", $"Processing...", 0.0f );
+                code += await functionRef();
+            EditorUtility.ClearProgressBar();
 
             maxLength = code.Split( "\n" ).Length > maxBuildLine;
             codeSplit = code.Split( "\n" );

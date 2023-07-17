@@ -96,14 +96,14 @@ namespace WindowUtility
         {
             ActiveGUIStruct = GetGUIStruct();
 
+            if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();
+
             if ( Helper.IsValid( ActiveGUIStruct ) )
             {
                 WindowChange = true;
                 if ( Helper.IsValid( ActiveGUIStruct.OnStartGUI ) ) ActiveGUIStruct.OnStartGUI();
                 WindowChange = false;
             }
-
-            if ( Helper.IsValid( RefreshCallback ) ) RefreshCallback();
         }
 
         private void SavePageIdx()

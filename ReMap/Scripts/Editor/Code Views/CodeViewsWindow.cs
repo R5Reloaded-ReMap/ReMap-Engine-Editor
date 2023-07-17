@@ -476,7 +476,7 @@ namespace CodeViews
                 return true;
 
             // Ensure the objectData is not empty
-            if ( !Helper.IsObjectTypeExistInScene( objectType, CodeViewsWindow.SelectionEnable() ) )
+            if ( !Helper.IsObjectTypeExistInScene( objectType ) )
                 return true;
             
             return false;

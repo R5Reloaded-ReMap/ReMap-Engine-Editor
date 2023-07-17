@@ -541,7 +541,7 @@ public class Helper
         GenerateIgnore = objectTypeArray.ToArray();
     }
 
-    public static bool IsObjectTypeExistInScene( ObjectType objectType, bool selectionOnly = false )
+    public static bool IsObjectTypeExistInScene( ObjectType objectType )
     {
         string nameRef = Helper.GetObjRefWithEnum( objectType );
 
@@ -621,7 +621,7 @@ public class Helper
 
     public static void GetObjectsInScene()
     {
-        ObjectsInScene = UnityInfo.GetAllGameObjectInScene();
+        ObjectsInScene = UnityInfo.GetAllGameObjectInScene( SelectionEnable() );
     }
 
     public static void IncrementEntityCount( int value = 1 )

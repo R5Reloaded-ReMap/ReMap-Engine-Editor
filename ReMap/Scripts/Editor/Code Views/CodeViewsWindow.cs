@@ -390,7 +390,6 @@ namespace CodeViews
             RefreshCallback = () =>
             {
                 windowStruct.ReStoreInfo( ref functionName, "FuncName" );
-                Helper.GetObjectsInScene();
                 Refresh( false );
             }
 
@@ -623,20 +622,19 @@ namespace CodeViews
                 {
                     GUILayout.Label( $" // Generating code...", EditorStyles.boldLabel );
                 }
-                else
-                {
-                    SetCorrectColor( EntityCount );
-                    GUILayout.Label( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
-                    GUI.contentColor = Color.white;
-                }
-
-                if ( SendingObjects )
+                else if ( SendingObjects )
                 {
                     if ( LiveMap.ApexProcessIsActive() )
                     {
                         GUILayout.Label( $"|| Sending {SendedEntityCount} Objects to the game", EditorStyles.boldLabel );
                     }
                     else GUILayout.Label( $"|| Game not found !", EditorStyles.boldLabel );
+                }
+                else
+                {
+                    SetCorrectColor( EntityCount );
+                    GUILayout.Label( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
+                    GUI.contentColor = Color.white;
                 }
 
             GUILayout.EndHorizontal();
@@ -697,9 +695,11 @@ namespace CodeViews
 
         private static async void GenerateCorrectCode( FunctionRefAsyncString functionRef )
         {
-            EntityCount = 0;
+            EditorUtility.DisplayProgressBar( $"Generating Code", $"Getting objects in scene...", 100.0f );
+                Helper.GetObjectsInScene();
+            EditorUtility.ClearProgressBar();
 
-            code = "";
+            EntityCount = 0; code = "";
 
             functionName = Helper.ReplaceBadCharacters( functionName );
 
@@ -707,7 +707,7 @@ namespace CodeViews
 
             CodeViewsMenu.VerifyGenerateObjects();
 
-            EditorUtility.DisplayProgressBar( $"Generating Code", $"Processing...", 0.0f );
+            EditorUtility.DisplayProgressBar( $"Generating Code", $"Processing...", 100.0f );
                 code += await functionRef();
             EditorUtility.ClearProgressBar();
 

@@ -106,7 +106,9 @@ namespace CodeViews
 
             if ( GetApexInfoOnSend )
             {
-                GetApexPlayerInfo();
+                EditorUtility.DisplayProgressBar( $"Live Map Code", $"Getting Player Info...", 0.0f );
+                    GetApexPlayerInfo();
+                EditorUtility.ClearProgressBar();
 
                 while ( GettingInfo ) await Task.Delay( 100 ); // 100 ms
             }
@@ -139,16 +141,21 @@ namespace CodeViews
         public static void SendCommands()
         {
             ReMapConsole.Log( $"[LiveCode] Sending Commands", ReMapConsole.LogType.Success );
+            int min = 0; int max = Commands.Count; float progress = 0.0f;
             
             foreach ( string command in Commands )
             {
-                SendCommandToApex( command );
+                EditorUtility.DisplayProgressBar( $"Live Map Code", $"Sending Map Code... ({min++}/{max})", progress );
+
+                SendCommandToApex( command ); progress += 1.0f / max;
 
                 for ( int i = 0; i < commandDelay * 100000; i++ ) 
                 {
                     ;;;;;
                 }
             }
+
+            EditorUtility.ClearProgressBar();
         }
 
         public static void ResetCommandList()

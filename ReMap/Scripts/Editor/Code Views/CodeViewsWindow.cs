@@ -622,19 +622,20 @@ namespace CodeViews
                 {
                     GUILayout.Label( $" // Generating code...", EditorStyles.boldLabel );
                 }
-                else if ( SendingObjects )
+                else
+                {
+                    SetCorrectColor( EntityCount );
+                    GUILayout.Label( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
+                    GUI.contentColor = Color.white;
+                }
+
+                if ( SendingObjects )
                 {
                     if ( LiveMap.ApexProcessIsActive() )
                     {
                         GUILayout.Label( $"|| Sending {SendedEntityCount} Objects to the game", EditorStyles.boldLabel );
                     }
                     else GUILayout.Label( $"|| Game not found !", EditorStyles.boldLabel );
-                }
-                else
-                {
-                    SetCorrectColor( EntityCount );
-                    GUILayout.Label( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
-                    GUI.contentColor = Color.white;
                 }
 
             GUILayout.EndHorizontal();

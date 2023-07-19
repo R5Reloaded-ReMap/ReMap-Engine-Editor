@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -311,6 +312,27 @@ public class Helper
         return new Vector3( vec.y, vec.z, -vec.x );
     }
 
+    public static Vector3 ExtractVector3(string line)
+    {
+        var matches = Regex.Matches(line, "<\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)\\s*>");
+        if (matches.Count == 0)
+        {
+            throw new FormatException("No Vector3 found.");
+        }
+
+        var match = matches[0]; // Get the first match.
+        var values = match.ToString().Replace( "<", "" ).Replace( ">", "" ).Split( "," );
+
+        float x = 0, y = 0, z = 0;
+        float.TryParse(values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out x);
+        float.TryParse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out y);
+        float.TryParse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out z);
+
+        Ping( new Vector3( x, y, z ) );
+
+        return new Vector3( x, y, z );
+    }
+
     /// <summary>
     /// Tags Custom Prefabs so users cant wrongly tag a item
     /// </summary>
@@ -599,6 +621,11 @@ public class Helper
         Selection.objects = array;
     }
 
+    public static void ChangeSelection( GameObject obj )
+    {
+        Selection.objects = new GameObject[] { obj  };
+    }
+
     public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )
     {        
         path = string.IsNullOrEmpty( path ) ? UnityInfo.relativePathEmptyPrefab : path;
@@ -617,6 +644,11 @@ public class Helper
         if ( !string.IsNullOrEmpty( name ) ) obj.name = name;
 
         return obj;
+    }
+
+    public static GameObject[] FindGameObjectInSphere( Vector3 position, float radius = 0.0001f )
+    {
+        return Physics.OverlapSphere( position, radius ).Select( collider => collider.gameObject ).ToArray();
     }
 
     public static void GetObjectsInScene()

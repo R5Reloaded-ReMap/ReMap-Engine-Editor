@@ -707,37 +707,24 @@ namespace CodeViews
 
         private static void CodeOutput()
         {
-            GUIStyle style = new GUIStyle( GUI.skin.textArea );
-            style.fontSize = 12;
-            style.wordWrap = false;
-            style.richText = true;
+            GUIStyle style = new GUIStyle( GUI.skin.textArea )
+            {
+                fontSize = 12,
+                wordWrap = false,
+                richText = true
+            };
 
             scroll = EditorGUILayout.BeginScrollView( scroll );
-                List< string > list = new List< string >();
-                if ( maxLength )
-                {
-                    for ( int i = itemStart; i < itemEnd && i < codeSplit.Length; i++ )
-                    {
-                        if ( i == CodeViewsSearchWindow.SearchedString )
-                        {
-                            list.Add( "<color=green>" + codeSplit[ i ] + "</color>" );
-                        }
-                        else list.Add( codeSplit[ i ] );
-                    }
-                    EditorGUILayout.TextArea( string.Join( "\n", list ), style, GUILayout.ExpandHeight( true ) );
-                }
-                else
-                {
-                    for ( int i = 0; i < codeSplit.Length; i++ )
-                    {
-                        if ( i == CodeViewsSearchWindow.SearchedString )
-                        {
-                            list.Add( "<color=green>" + codeSplit[ i ] + "</color>" );
-                        }
-                        else list.Add( codeSplit[ i ] );
-                    }
-                    EditorGUILayout.TextArea( string.Join( "\n", list ), style, GUILayout.ExpandHeight( true ) );
-                }
+
+            var startIndex = maxLength ? itemStart : 0;
+            var endIndex = maxLength ? Math.Min( itemEnd, codeSplit.Length ) : codeSplit.Length;
+            var lines = codeSplit.Skip( startIndex ).Take( endIndex - startIndex ).Select
+            (
+                ( line, index ) => index == CodeViewsSearchWindow.SearchedString ? $"<color=green>{line}</color>" : line
+            );
+
+            EditorGUILayout.TextArea( string.Join( "\n", lines ), style, GUILayout.ExpandHeight( true ) );
+
             EditorGUILayout.EndScrollView();
         }
 

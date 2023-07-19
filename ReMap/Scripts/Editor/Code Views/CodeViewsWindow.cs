@@ -385,6 +385,9 @@ namespace CodeViews
             InitCallback = () => // Load on start
             {
                 windowStruct.PostRefreshCallback();
+                #if ReMapDev
+                    ShowSettingsMenu = true;
+                #endif
             },
 
             RefreshCallback = () =>
@@ -501,6 +504,8 @@ namespace CodeViews
             GUI.FocusControl( null );
 
             windowStruct.OnStartGUICallback();
+
+            CodeViewsSearchWindow.Refresh();
         }
 
         internal static void CopyCode()
@@ -685,7 +690,18 @@ namespace CodeViews
         {
             Event currentEvent = Event.current;
 
-            if ( currentEvent.type == EventType.KeyDown && currentEvent.keyCode == KeyCode.R ) Refresh();
+            if ( currentEvent.type == EventType.KeyDown )
+            {
+                if ( currentEvent.keyCode == KeyCode.R && currentEvent.control )
+                {
+                    Refresh(); // Press Ctrl + R for Refresh the page
+                }
+
+                if ( currentEvent.keyCode == KeyCode.F && currentEvent.control )
+                {
+                    CodeViewsSearchWindow.Init(); // Press Ctrl + F for Search some code
+                }
+            }
         }
 
         internal static void ResetFunctionName()

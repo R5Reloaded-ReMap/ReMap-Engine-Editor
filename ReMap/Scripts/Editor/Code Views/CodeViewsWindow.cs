@@ -513,6 +513,55 @@ namespace CodeViews
             GUIUtility.systemCopyBuffer = code;
         }
 
+        internal static void GoToPage(int idx)
+        {
+            if ( idx < 0 || idx >= codeSplit.Length )
+            {
+                Debug.LogWarning("Index out of range"); return;
+            }
+
+            // Determine the page where the index is located
+            int targetPage = idx / maxBuildLine;
+
+            // Set the current page to the target page
+            currentPage = targetPage;
+
+            // Update the start and end items
+            itemStart = currentPage * maxBuildLine;
+            itemEnd = itemStart + maxBuildLine;
+            if ( itemEnd > codeSplit.Length ) 
+            {
+                itemEnd = codeSplit.Length;
+            }
+
+            // Estimate scroll position, +60f every 4 lines
+            // Modulo idx to keep the index below maxBuildLine
+            scroll.y = ( float ) 60 * ( idx % maxBuildLine / 4 );
+
+            HighlightString( currentPage, idx );
+        }
+
+        private static async void HighlightString( int page, int idx )
+        {
+            float time = 0.0f; CodeViewsSearchWindow.SearchedString = idx; bool verify = true;
+
+            while ( true )
+            {
+                verify = ( page == currentPage && CodeViewsSearchWindow.SearchedString == idx );
+
+                if ( !verify || time >= 4.0f ) break;
+
+                await Task.Delay( TimeSpan.FromSeconds( 0.1 ) );
+
+                time += 0.1f;
+            }
+
+            if ( verify )
+            {
+                CodeViewsSearchWindow.SearchedString = -1;
+            }
+        }
+
         internal static async void SetScrollView( Vector2 scroll )
         {
             // Hack: As long as the code generation is not finished, then do not continue the script
@@ -660,20 +709,33 @@ namespace CodeViews
             GUIStyle style = new GUIStyle( GUI.skin.textArea );
             style.fontSize = 12;
             style.wordWrap = false;
+            style.richText = true;
 
             scroll = EditorGUILayout.BeginScrollView( scroll );
+                List< string > list = new List< string >();
                 if ( maxLength )
                 {
-                    List< string > list = new List< string >();
                     for ( int i = itemStart; i < itemEnd && i < codeSplit.Length; i++ )
                     {
-                        list.Add( codeSplit[ i ] );
+                        if ( i == CodeViewsSearchWindow.SearchedString )
+                        {
+                            list.Add( "<color=green>" + codeSplit[ i ] + "</color>" );
+                        }
+                        else list.Add( codeSplit[ i ] );
                     }
-                    GUILayout.TextArea( $"{string.Join( "\n", list ).ToString()}", style, GUILayout.ExpandHeight( true ) );
+                    EditorGUILayout.TextArea( string.Join( "\n", list ), style, GUILayout.ExpandHeight( true ) );
                 }
                 else
                 {
-                    GUILayout.TextArea( code, style, GUILayout.ExpandHeight( true ) );
+                    for ( int i = 0; i < codeSplit.Length; i++ )
+                    {
+                        if ( i == CodeViewsSearchWindow.SearchedString )
+                        {
+                            list.Add( "<color=green>" + codeSplit[ i ] + "</color>" );
+                        }
+                        else list.Add( codeSplit[ i ] );
+                    }
+                    EditorGUILayout.TextArea( string.Join( "\n", list ), style, GUILayout.ExpandHeight( true ) );
                 }
             EditorGUILayout.EndScrollView();
         }

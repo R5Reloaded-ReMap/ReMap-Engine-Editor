@@ -19,7 +19,9 @@ namespace CodeViews
         private static string Entry = "";
         private static string SearchEntry = "";
 
-        private static List< string > Result = new List< string >();
+        internal static int SearchedString = -1;
+
+        private static Dictionary< int, string > Result = new Dictionary< int, string >();
 
         private static int ResultIdx = 0;
         
@@ -38,8 +40,10 @@ namespace CodeViews
                 windowInstance = ( CodeViewsSearchWindow ) GetWindow( typeof( CodeViewsSearchWindow ), false, "Code Search" );
             }
 
+            string maxReach = Result.Count > 200 ? $"|| The number of result displays is reached ( {Result.Count - 200} more )" : "";
+
             EditorGUILayout.BeginHorizontal();
-                CreateTextInfo( $"Results: {ResultIdx}", "" );
+                CreateTextInfo( $"Results: {ResultIdx} {maxReach}", "" );
                 #if ReMapDev
                     GetEditorWindowSize( windowInstance );
                 #endif
@@ -60,13 +64,17 @@ namespace CodeViews
 
                 if ( Result.Count != 0 )
                 {
+                    int resultShowed = 0;
                     Scroll = EditorGUILayout.BeginScrollView( Scroll );
-                    foreach ( string line in Result )
+                    foreach ( var result in Result )
                     {
                         EditorGUILayout.BeginHorizontal();
-                            CreateTextInfo( line, "", windowInstance.position.width - 122 );
-                            CreateButton( "Copy", "", () => CreateCopyButton( line ), 100, 20 );
+                            CreateTextInfo( result.Value, "", windowInstance.position.width - 226 );
+                            CreateButton( "Go To Page", "", () => CodeViewsWindow.GoToPage( result.Key ), 100, 20 );
+                            CreateButton( "Copy", "", () => CreateCopyButton( result.Value ), 100, 20 );
                         EditorGUILayout.EndHorizontal();
+
+                        if ( resultShowed++ == 200 ) break;
                     }
                     EditorGUILayout.EndScrollView();
                 }
@@ -96,14 +104,21 @@ namespace CodeViews
 
         private static void SearchResult( string search )
         {
-            Result = new List< string >();
+            Result = new Dictionary< int, string >(); int i = 0;
+
+            string[] terms = search.Split( ";" );
 
             foreach( string line in CodeViewsWindow.codeSplit )
             {
-                if ( line.Contains( SearchEntry ) )
+                foreach ( string term in terms )
                 {
-                    Result.Add( line );
+                    if ( line.Contains( term, StringComparison.OrdinalIgnoreCase ) && !string.IsNullOrEmpty( term ) && term.Length >= 3 && !Result.ContainsKey( i ) )
+                    {
+                        Result.Add( i, line );
+                    }
                 }
+
+                i++;
             }
 
             ResultIdx = Result.Count;

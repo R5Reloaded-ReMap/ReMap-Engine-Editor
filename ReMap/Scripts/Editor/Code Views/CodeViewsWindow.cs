@@ -418,6 +418,8 @@ namespace CodeViews
             disableLogo = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
 
             Helper.SetShowStartingOffset( true );
+
+            if ( !Helper.IsValid( windowInstance ) ) windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
             
             windowStruct.Awake();
         }
@@ -513,7 +515,7 @@ namespace CodeViews
             GUIUtility.systemCopyBuffer = code;
         }
 
-        internal static void GoToPage(int idx)
+        internal static void GoToPage( int idx )
         {
             if ( idx < 0 || idx >= codeSplit.Length )
             {
@@ -539,6 +541,8 @@ namespace CodeViews
             scroll.y = ( float ) 60 * ( idx % maxBuildLine / 4 );
 
             HighlightString( currentPage, idx );
+
+            windowInstance.Focus();
         }
 
         private static async void HighlightString( int page, int idx )
@@ -761,7 +765,7 @@ namespace CodeViews
 
         private static async void GenerateCorrectCode( FunctionRefAsyncString functionRef )
         {
-            EditorUtility.DisplayProgressBar( $"Generating Code", $"Getting objects in scene...", 100.0f );
+            EditorUtility.DisplayProgressBar( $"Generating Code", $"Getting objects in scene...", 0.0f );
                 Helper.GetObjectsInScene();
             EditorUtility.ClearProgressBar();
 
@@ -773,7 +777,7 @@ namespace CodeViews
 
             CodeViewsMenu.VerifyGenerateObjects();
 
-            EditorUtility.DisplayProgressBar( $"Generating Code", $"Processing...", 100.0f );
+            EditorUtility.DisplayProgressBar( $"Generating Code", $"Processing...", 0.0f );
                 code += await functionRef();
             EditorUtility.ClearProgressBar();
 

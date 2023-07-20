@@ -28,6 +28,12 @@ namespace CodeViews
 
         internal static Color GUI_SettingsColor = new Color( 255f, 255f, 255f );
 
+        internal static FunctionRef[] TipsMenu = new FunctionRef[]
+        {
+            () => OptionalTextInfo( "Ctrl + R = Refresh", "", null, MenuType.Medium ),
+            () => OptionalTextInfo( "Ctrl + F = Search Code Window", "", null, MenuType.Medium )
+        };
+
         internal static FunctionRef[] DevMenu = new FunctionRef[]
         {
             () => CreateMenu( CodeViewsWindow.DevMenuDebugInfo, EmptyFunctionRefArray, MenuType.Medium, "Hide Debug Info", "Show Debug Info", "Get infos from current window" )
@@ -69,6 +75,8 @@ namespace CodeViews
 
         internal static void SharedFunctions()
         {
+            CreateMenu( CodeViewsWindow.TipsMenu, TipsMenu, MenuType.Large, "Tips", "Tips", "" );
+
             #if ReMapDev
                 GUILayout.BeginHorizontal();
                     Space( 2 ); Separator( 314 );

@@ -76,6 +76,8 @@ namespace CodeViews
         internal static string FullFileEntMenu = "FullFileEntMenu";
         internal static string FullFileEntSubMenu = "FullFileEntSubMenu";
 
+        internal static string TipsMenu = "";
+
         internal static string DevMenu = "DevMenu";
         internal static string DevMenuDebugInfo = "DevMenuDebugInfo";
         //

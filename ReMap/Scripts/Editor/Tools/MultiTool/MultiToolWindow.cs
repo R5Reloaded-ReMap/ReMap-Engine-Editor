@@ -104,8 +104,9 @@ namespace MultiTool
                     break;
 
                 case ToolType.SelectionTool:
-                    windowInstance.minSize = new Vector2( 600, 342 );
-                    windowInstance.maxSize = new Vector2( 600, 342 );
+                    int size = 30 * Mathf.CeilToInt( Helper.GetAllObjectType().Length / 3 );
+                    windowInstance.minSize = new Vector2( 600, 130 + size );
+                    windowInstance.maxSize = new Vector2( 600, 130 + size );
                     toolInfo = "Selection Tool:";
                     break;
                 

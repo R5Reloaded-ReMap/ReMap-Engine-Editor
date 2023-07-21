@@ -729,7 +729,15 @@ namespace CodeViews
                 ( line, index ) => index == CodeViewsSearchWindow.SearchedString ? $"<color=green>{line}</color>" : line
             );
 
-            EditorGUILayout.TextArea( string.Join( "\n", lines ), style, GUILayout.ExpandHeight( true ) );
+            var originalText = string.Join( "\n", lines );
+            var resultText = EditorGUILayout.TextArea( originalText, style, GUILayout.ExpandHeight( true ) );
+
+            // Reset Text
+            if ( resultText != originalText )
+            {
+                GUI.FocusControl( null );
+                originalText = resultText;
+            }
 
             EditorGUILayout.EndScrollView();
         }

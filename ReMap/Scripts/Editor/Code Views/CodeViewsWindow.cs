@@ -756,14 +756,18 @@ namespace CodeViews
 
             if ( currentEvent.type == EventType.KeyDown )
             {
-                if ( currentEvent.keyCode == KeyCode.R && currentEvent.control )
+                if ( currentEvent.control ) // Ctrl key is pressed
                 {
-                    Refresh(); // Press Ctrl + R for Refresh the page
-                }
+                    switch ( currentEvent.keyCode )
+                    {
+                        case KeyCode.R:
+                            Refresh(); // Press Ctrl + R for Refresh the page
+                            break;
 
-                if ( currentEvent.keyCode == KeyCode.F && currentEvent.control )
-                {
-                    CodeViewsSearchWindow.Init(); // Press Ctrl + F for Search some code
+                        case KeyCode.F:
+                            CodeViewsSearchWindow.Init(); // Press Ctrl + F for Search some code
+                        break;
+                    }
                 }
             }
         }

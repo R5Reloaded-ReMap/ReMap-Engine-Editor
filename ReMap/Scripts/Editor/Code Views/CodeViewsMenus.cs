@@ -555,7 +555,7 @@ namespace CodeViews
 
     public class MenuInit
     {
-        public static List < MenuInit > MenuArray = new List< MenuInit >();
+        public static Dictionary< string, MenuInit > MenuDictionary = new Dictionary< string, MenuInit >();
         public string Name { get; set; }
         public bool IsOpen { get; set; }
         public bool IsButton { get; set; }
@@ -596,46 +596,29 @@ namespace CodeViews
                 break;
             }
 
-            MenuArray.Add( this );
+            MenuDictionary[ name ] = this;
         }
 
         public static bool Exist( string name )
         {
-            foreach ( MenuInit menu in MenuArray )
-            {
-                if ( menu.Name == name ) return true;
-            }
-
-            return false;
+            return Helper.IsValid( Find( name ) );
         }
 
         public static MenuInit Find( string name )
         {
-            foreach ( MenuInit menu in MenuArray )
-            {
-                if ( menu.Name == name ) return menu;
-            }
-
-            return null;
+            return MenuDictionary.TryGetValue( name, out MenuInit menu ) ? menu : null;
         }
 
         public static bool IsEnable( string name )
         {
-            MenuInit menu = Find( name );
-
-            if ( menu != null )
-            {
-                return menu.IsOpen;
-            }
-
-            return false;
+            return Find( name )?.IsOpen ?? false;
         }
 
         public static void SetBool( string name, bool value )
         {
             MenuInit menu = Find( name );
 
-            if ( menu != null )
+            if ( Helper.IsValid( menu ) )
             {
                 menu.IsOpen = value;
             }

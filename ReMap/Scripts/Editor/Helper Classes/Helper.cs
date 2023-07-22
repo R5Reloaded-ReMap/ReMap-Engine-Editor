@@ -312,23 +312,26 @@ public class Helper
         return new Vector3( vec.y, vec.z, -vec.x );
     }
 
-    public static Vector3 ExtractVector3(string line)
+    public static Vector3 ExtractVector3( string line, bool isEnt = false )
     {
-        var matches = Regex.Matches(line, "<\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)\\s*>");
-        if (matches.Count == 0)
+        string regex = isEnt ? " " : ",";
+        string start = isEnt ? "" : "<";
+        string end = isEnt ? "" : ">";
+        var matches = Regex.Matches( line, $"{start}\\s*(-?\\d+(\\.\\d+)?){regex}\\s*(-?\\d+(\\.\\d+)?){regex}\\s*(-?\\d+(\\.\\d+)?)\\s*{end}" );
+        if ( matches.Count == 0 )
         {
-            throw new FormatException("No Vector3 found.");
+            Ping( "No Vector3 found. Returning ( 0, 0, 0 )" );
+            return Vector3.zero;
         }
 
         var match = matches[0]; // Get the first match.
-        var values = match.ToString().Replace( "<", "" ).Replace( ">", "" ).Split( "," );
+        var replaced = match.ToString().Replace( "<", "" ).Replace( ">", "" );
+        var values = isEnt ? replaced.Split( ' ' ) : replaced.Split( ',' );
 
         float x = 0, y = 0, z = 0;
-        float.TryParse(values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out x);
-        float.TryParse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out y);
-        float.TryParse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out z);
-
-        Ping( new Vector3( x, y, z ) );
+        float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out x );
+        float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out y );
+        float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out z );
 
         return new Vector3( x, y, z );
     }

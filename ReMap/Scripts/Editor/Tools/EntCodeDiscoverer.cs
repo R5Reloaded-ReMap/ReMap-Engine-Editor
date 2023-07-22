@@ -10,6 +10,8 @@ public class EntCodeDiscoverer : EditorWindow
 {
     private static string Code = "";
 
+    private static string OutputParent = "Discovered_Code";
+
     private static Vector2 Scroll = Vector2.zero;
 
     [MenuItem( "ReMap/Tools/Ent Code Discoverer", false, 100 )]
@@ -37,6 +39,8 @@ public class EntCodeDiscoverer : EditorWindow
     private static void ConvertCode()
     {
         string[] codes = Code.Replace( "}", "" ).Split( "{" );
+
+        EntData.EntGlobal = new Dictionary< string, List< EntData > >();
         
         int min = 0; int max = codes.Length; float progress = 0.0f;
 
@@ -49,12 +53,23 @@ public class EntCodeDiscoverer : EditorWindow
             progress += 1.0f / max; min++;
         }
 
+        AddEntsToScene();
+
         EditorUtility.ClearProgressBar();
     }
 
-    public static void AddEntToScene( EntData entData )
+    public static void AddEntsToScene()
     {
-        GameObject obj = Helper.CreateGameObject( entData.ClassName, UnityInfo.relativePathCubePrefab );
+        Helper.CreatePath( OutputParent );
+
+        foreach ( string classtype in EntData.EntGlobal.Keys )
+        {
+            Helper.CreatePath( $"{OutputParent}/{classtype}" );
+        }
+
+
+
+        /* GameObject obj = Helper.CreateGameObject( entData.ClassName, UnityInfo.relativePathCubePrefab );
 
         Vector3 originToVec = Helper.ConvertApexOriginToUnity( Helper.ExtractVector3( entData.GetValue( "origin" ), true ) );
 
@@ -85,7 +100,7 @@ public class EntCodeDiscoverer : EditorWindow
                 }
                 else break;
             }
-        }
+        } */
     }
 
     public static Transform FindParent( EntData entData, Vector3 origin )
@@ -180,7 +195,7 @@ public class EntCodeDiscoverer : EditorWindow
 
 public class EntData
 {
-    public static Dictionary< string, List< EntData > > EntGlobal { get; set; } = new Dictionary< string, List< EntData > >();
+    public static Dictionary< string, List< EntData > > EntGlobal { get; set; }
 
     public Dictionary< string, string > entData { get; set; }
 

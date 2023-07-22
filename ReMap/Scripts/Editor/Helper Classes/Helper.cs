@@ -649,6 +649,34 @@ public class Helper
         return obj;
     }
 
+    public static void CreatePath( string pathString, GameObject obj = null )
+    {
+        if ( string.IsNullOrEmpty( pathString ) ) return;
+
+        string[] pathStrings = pathString.Split( '/' );
+
+        GameObject folder = null; string path = "";
+
+        foreach ( string paths in pathStrings )
+        {
+            if ( string.IsNullOrEmpty( paths ) )
+            {
+                path = $"{paths}";
+            }
+            else path = $"{path}/{paths}";
+
+            GameObject newFolder = GameObject.Find( path );
+
+            if ( !Helper.IsValid( newFolder ) ) newFolder = new GameObject( paths );
+
+            if ( Helper.IsValid( folder ) ) newFolder.transform.SetParent( folder.transform );
+
+            folder = newFolder;
+        }
+
+        if ( Helper.IsValid( folder ) && Helper.IsValid( obj ) ) obj.transform.parent = folder.transform;
+    }
+
     public static GameObject[] FindGameObjectInSphere( Vector3 position, float radius = 0.0001f )
     {
         return Physics.OverlapSphere( position, radius ).Select( collider => collider.gameObject ).ToArray();

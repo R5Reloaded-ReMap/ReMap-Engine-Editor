@@ -300,7 +300,7 @@ namespace LibrarySorter
             return Task.CompletedTask;
         }
 
-        private static Vector3 FindAnglesOffset( string searchTerm )
+        public static Vector3 FindAnglesOffset( string searchTerm )
         {
             Vector3 returnedVector = new Vector3( 0, -90, 0 );
 

@@ -261,7 +261,7 @@ public class Helper
 
     public static Vector3 ConvertApexAnglesToUnity( Vector3 vec )
     {
-        return new Vector3( WrapAngle( vec.x ), WrapAngle( vec.y ), -WrapAngle( vec.z ) );
+        return new Vector3( vec.x, vec.y, -vec.z );
     }
 
     /// <summary>
@@ -320,7 +320,6 @@ public class Helper
         var matches = Regex.Matches( line, $"{start}\\s*(-?\\d+(\\.\\d+)?){regex}\\s*(-?\\d+(\\.\\d+)?){regex}\\s*(-?\\d+(\\.\\d+)?)\\s*{end}" );
         if ( matches.Count == 0 )
         {
-            Ping( "No Vector3 found. Returning ( 0, 0, 0 )" );
             return Vector3.zero;
         }
 
@@ -629,6 +628,15 @@ public class Helper
         Selection.objects = new GameObject[] { obj  };
     }
 
+    public static GameObject CreateGameObject( string name, string path, GameObject parent )
+    {
+        GameObject obj = CreateGameObject( name, path );
+
+        if ( IsValid( obj ) ) obj.transform.parent = parent.transform;
+
+        return obj;
+    }
+
     public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )
     {        
         path = string.IsNullOrEmpty( path ) ? UnityInfo.relativePathEmptyPrefab : path;
@@ -649,9 +657,11 @@ public class Helper
         return obj;
     }
 
-    public static void CreatePath( string pathString, GameObject obj = null )
+    public static GameObject CreatePath( string pathString, GameObject obj = null )
     {
-        if ( string.IsNullOrEmpty( pathString ) ) return;
+        if ( string.IsNullOrEmpty( pathString ) ) return null;
+
+        if ( GameObject.Find( pathString ) ) return GameObject.Find( pathString );
 
         string[] pathStrings = pathString.Split( '/' );
 
@@ -674,7 +684,9 @@ public class Helper
             folder = newFolder;
         }
 
-        if ( Helper.IsValid( folder ) && Helper.IsValid( obj ) ) obj.transform.parent = folder.transform;
+        if ( Helper.IsValid( folder ) && Helper.IsValid( obj ) ) obj.transform.parent.SetParent( folder.transform );
+
+        return folder;
     }
 
     public static GameObject[] FindGameObjectInSphere( Vector3 position, float radius = 0.0001f )

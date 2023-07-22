@@ -154,10 +154,15 @@ public class EntCodeDiscoverer : EditorWindow
 
                 if ( entData.HasKey( "editorclass" ) )
                 {
-                    if ( entData.GetValue( "editorclass" ) == "info_survival_invalid_end_zone" )
+                    float width, height;
+                    switch ( entData.GetValue( "editorclass" ) )
                     {
-                        float width = entData.GetValue< float >( "script_radius" );
-                        transformedObj.localScale = new Vector3( width, 2000, width );
+                        case "info_survival_invalid_end_zone":
+                            width = entData.GetValue< float >( "script_radius" );
+                            transformedObj.localScale = new Vector3( width, 2000, width );
+                            break;
+
+                        default: break;
                     }
                 }
             }

@@ -14,7 +14,7 @@ public class ReMapDebug
     internal static string outputFolder = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativeRMAPDEVfolder}";
     internal static string output = $"{outputFolder}/WriteFile.txt";
 
-    //#if ReMapDev
+    #if ReMapDev
         [ MenuItem( "ReMap Dev Tools/File Write Test", false, 100 ) ]
         public static async void Debug_FileWrite()
         {
@@ -79,43 +79,5 @@ public class ReMapDebug
 
             EditorUtility.ClearProgressBar();
         }
-
-        [MenuItem( "ReMap Dev Tools/Add New Material" )]
-        private static void AddNewMaterial()
-        {
-            foreach ( GameObject obj in UnityInfo.GetAllGameObjectInScene() )
-            {
-                Transform[] childs = obj.GetComponentsInChildren< Transform >( true );
-                int min = 0; int max = childs.Length; float progress = 0.0f;
-                foreach ( Transform child in childs )
-                {
-                    EditorUtility.DisplayProgressBar( $"Adding New Materials", $"Processing... ({min++}/{max})", progress );
-
-                    // Access the MeshRenderer component in the child GameObject
-                    MeshRenderer renderer = child.GetComponent< MeshRenderer >();
-
-                    progress += 1.0f / max;
-
-                    // Continue if there is no MeshRenderer component
-                    if ( renderer == null ) continue;
-
-                    // Get the materials of the MeshRenderer
-                    Material[] materials = renderer.sharedMaterials;
-
-                    if ( !Helper.IsEmpty( materials ) )
-                    {
-                        //string[] guids = AssetDatabase.FindAssets( materials[0].name, new[] {$"{UnityInfo.relativePathPrefabs}/all_models"} );
-
-                        //if ( !Helper.IsEmpty( guids ) )
-                        //{
-                        //    //string assetPath = AssetDatabase.GUIDToAssetPath( guids[0] );
-                        //    //materials[0] = AssetDatabase.LoadAssetAtPath< Material >( assetPath );
-                        //}
-                    }
-                }
-            }
-
-            EditorUtility.ClearProgressBar();
-        }
-    //#endif
+    #endif
 }

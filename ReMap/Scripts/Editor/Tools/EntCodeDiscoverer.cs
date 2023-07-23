@@ -211,15 +211,38 @@ public class EntCodeDiscoverer : EditorWindow
                         else break;
                     }
                 }
+                else if ( classtype == "info_target" )
+                {
+                    if ( entData.HasKey( "scale" ) )
+                    {
+                        float scale = entData.GetValueForKey< float >( "scale" );
+                        transformedObj.localScale = new Vector3( scale, scale, scale );
+                    }
+                }
 
                 if ( entData.IsEditorClass() )
                 {
-                    float width;
+                    float width, height;
                     switch ( entData.EditorClass )
                     {
                         case "info_survival_invalid_end_zone":
                             width = entData.GetValueForKey< float >( "script_radius" );
                             transformedObj.localScale = new Vector3( width, 2000, width );
+                            break;
+                        
+                        case "info_survival_loot_zone":
+                            if ( entData.GetValueForKey( "zone_class" ) == "POI_High" )
+                            {
+                                width = entData.GetValueForKey< float >( "script_radius" );
+                                height = entData.GetValueForKey< float >( "script_height" );
+                                transformedObj.localScale = new Vector3( width, height, width );
+                            }
+                            else if ( entData.GetValueForKey( "zone_class" ) == "POI_Sniper" )
+                            {
+                                width = entData.GetValueForKey< float >( "script_radius" );
+                                height = entData.GetValueForKey< float >( "script_height" );
+                                transformedObj.localScale = new Vector3( width, height, width );
+                            }
                             break;
 
                         default: break;
@@ -268,6 +291,17 @@ public class EntCodeDiscoverer : EditorWindow
                 {
                     return $"{UnityInfo.relativePathLodsUtility}/InvalidEndZoneTrigger.prefab";
                 }
+                else if ( editorclass == "info_survival_loot_zone" )
+                {
+                    if ( entData.GetValueForKey( "zone_class" ) == "POI_High" )
+                    {
+                        return $"{UnityInfo.relativePathLodsUtility}/POI_High.prefab";
+                    }
+                    else if ( entData.GetValueForKey( "zone_class" ) == "POI_Sniper" )
+                    {
+                        return $"{UnityInfo.relativePathLodsUtility}/POI_Sniper.prefab";
+                    }
+                }
                 break;
 
             case "ambient_generic":
@@ -281,6 +315,13 @@ public class EntCodeDiscoverer : EditorWindow
             case "info_spawnpoint_human":
             case "info_spawnpoint_human_start":
                 return $"{UnityInfo.relativePathModel}/mp_spawn_LOD0.fbx";
+
+            case "info_target":
+                if ( entData.GetValueForKey( "script_name" ) == "apex_screen" )
+                {
+                    return $"{UnityInfo.relativePathModel}/survival_modular_flexscreens_04_LOD0.fbx";
+                }
+            break;
         }
 
         return UnityInfo.relativePathCubePrefab;
@@ -299,7 +340,7 @@ public class EntCodeDiscoverer : EditorWindow
                 break;
 
             case "script_ref":
-                if ( entData.IsEditorClass() && entData.EditorClass == "info_survival_invalid_end_zone" )
+                if ( entData.EditorClass == "info_survival_invalid_end_zone" )
                 {
                     color = "InvalidEndZone";
                     break;
@@ -389,6 +430,11 @@ public class EntData
         {
             try
             {
+                if ( typeof( T ) == typeof( float ) )
+                {
+                    return ( T ) ( object ) float.Parse( value, System.Globalization.CultureInfo.InvariantCulture );
+                }
+
                 return ( T ) Convert.ChangeType( value, typeof( T ) );
             }
             catch

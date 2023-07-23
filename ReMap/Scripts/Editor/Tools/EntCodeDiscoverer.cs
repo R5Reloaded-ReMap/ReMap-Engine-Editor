@@ -185,6 +185,32 @@ public class EntCodeDiscoverer : EditorWindow
                         else break;
                     }
                 }
+                else if ( classtype == "ambient_generic" )
+                {
+                    if ( entData.HasKey( "soundName" ) )
+                    {
+                        obj.name = entData.GetValueForKey( "soundName" );
+                    }
+
+                    for ( int i = 0 ; i < 130 ; i++ )
+                    {
+                        string idx = $"polyline_segment_{i}";
+                        GameObject last = obj;
+                        if ( entData.HasKey( idx ) )
+                        {
+                            GameObject polylineSegment = Helper.CreateGameObject( idx, $"{UnityInfo.relativePathModel}/editor_ambient_generic_node_LOD0.fbx" );
+                            if ( Helper.IsValid( polylineSegment ) )
+                            {
+                                string polylineSegmentOriginStr = entData.GetValueForKey( idx ).Split( '(' )[^1].Replace( ")", "" );
+                                Vector3 polylineSegmentOrigin = Helper.ConvertApexOriginToUnity( Helper.ExtractVector3( polylineSegmentOriginStr, true ) );
+                                polylineSegment.transform.position = last.transform.position + polylineSegmentOrigin;
+                                polylineSegment.transform.parent = transformedObj.parent;
+                                last = polylineSegment;
+                            }
+                        }
+                        else break;
+                    }
+                }
 
                 if ( entData.IsEditorClass() )
                 {

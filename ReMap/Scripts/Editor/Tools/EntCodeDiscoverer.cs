@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
@@ -56,7 +57,39 @@ public class EntCodeDiscoverer : EditorWindow
 
         AddEntsToScene();
 
+        //RMAPDEV_GetAllEntType();
+
         EditorUtility.ClearProgressBar();
+    }
+
+    private static void RMAPDEV_GetAllEntType()
+    {
+        StringBuilder file = new();
+
+        string outputFolder = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativeRMAPDEVfolder}";
+        string output = $"{outputFolder}/EntType.txt";
+
+        List< string > editorclass = new();
+
+        foreach ( string classtype in EntData.EntGlobal.Keys )
+        {
+            Build.Build.AppendCode( ref file, $"// {classtype}" );
+
+            foreach ( EntData entData in EntData.EntGlobal[ classtype ] )
+            {
+                if ( entData.IsEditorClass() && !editorclass.Contains( entData.EditorClass ) )
+                {
+                    editorclass.Add( entData.EditorClass );
+                    Build.Build.AppendCode( ref file, $"- {entData.EditorClass}" );
+                }
+            }
+
+            Build.Build.AppendCode( ref file, "" );
+        }
+
+        if ( !Directory.Exists( outputFolder ) ) Directory.CreateDirectory( outputFolder );
+
+        File.WriteAllText( output, file.ToString() );
     }
 
     public static void AddEntsToScene()
@@ -80,29 +113,20 @@ public class EntCodeDiscoverer : EditorWindow
                 string skin = SetSkin( entData );
                 GameObject obj = Helper.CreateGameObject
                 (
-                    entData.IsEditorClass() ? $" {entData.GetValue( "editorclass" )}" : entData.ClassName, skin, parent
+                    entData.IsEditorClass() ? $" {entData.EditorClass}" : entData.ClassName, skin, parent
                 );
-                Vector3 origin = Helper.ConvertApexOriginToUnity( Helper.ExtractVector3( entData.GetValue( "origin" ), true ) );
+                Vector3 origin = Helper.ConvertApexOriginToUnity( Helper.ExtractVector3( entData.GetValueForKey( "origin" ), true ) );
 
                 if ( !Helper.IsValid( obj ) ) continue;
 
                 Transform transformedObj = obj.transform;
                 transformedObj.position = origin;
 
-                if ( entData.HasKey( "angles" ) )
-                {
-                    string model = entData.HasKey( "model" ) ? entData.GetValue( "model" ) : "";
-                    Vector3 offset = LibrarySorter.LibrarySorterWindow.FindAnglesOffset( model );
-                    Vector3 angles = Helper.ConvertApexAnglesToUnity( Helper.ExtractVector3( entData.GetValue( "angles" ), true ) );
-                    
-                    transformedObj.eulerAngles = new Vector3( ( angles.x + offset.x ) % 360, ( angles.y + offset.y ) % 360, ( angles.z + offset.z ) % 360 );
-                }
-
                 if ( skin == UnityInfo.relativePathCubePrefab ) SetColor( obj, entData );
 
                 if ( entData.HasKey( "link_to_guid_0" ) )
                 {
-                    GameObject newParent = Helper.CreatePath( entData.GetValue( "link_to_guid_0" ) );
+                    GameObject newParent = Helper.CreatePath( entData.GetValueForKey( "link_to_guid_0" ) );
                     newParent.transform.SetParent( parent.transform );
                     transformedObj.SetParent( newParent.transform );
 
@@ -126,9 +150,19 @@ public class EntCodeDiscoverer : EditorWindow
                 }
                 else if ( entData.HasKey( "link_guid" ) )
                 {
-                    GameObject newParent = Helper.CreatePath( entData.GetValue( "link_guid" ) );
+                    GameObject newParent = Helper.CreatePath( entData.GetValueForKey( "link_guid" ) );
                     newParent.transform.SetParent( parent.transform );
                     transformedObj.SetParent( newParent.transform );
+                }
+
+                if ( entData.HasKey( "angles" ) && CanBeRotate( classtype ) )
+                {
+                    Vector3 angles = Helper.ConvertApexAnglesToUnity( Helper.ExtractVector3( entData.GetValueForKey( "angles" ), true ) );
+                    GameObject newParent = MoveIntoSubFolder( obj.name, obj );
+                    newParent.transform.position = origin;
+                    newParent.transform.eulerAngles = angles;
+                    transformedObj.position = origin;
+                    transformedObj.localEulerAngles = LibrarySorter.LibrarySorterWindow.FindAnglesOffset( entData.GetValueForModelKey() );
                 }
 
                 if ( classtype == "zipline" )
@@ -141,7 +175,7 @@ public class EntCodeDiscoverer : EditorWindow
                             GameObject restPoint = Helper.CreateGameObject( idx, UnityInfo.relativePathCubePrefab );
                             if ( Helper.IsValid( restPoint ) )
                             {
-                                Vector3 restPointOrigin = Helper.ConvertApexOriginToUnity( Helper.ExtractVector3( entData.GetValue( idx ), true ) );
+                                Vector3 restPointOrigin = Helper.ConvertApexOriginToUnity( Helper.ExtractVector3( entData.GetValueForKey( idx ), true ) );
                                 restPoint.transform.position = restPointOrigin;
                                 restPoint.transform.parent = transformedObj.parent;
 
@@ -152,13 +186,13 @@ public class EntCodeDiscoverer : EditorWindow
                     }
                 }
 
-                if ( entData.HasKey( "editorclass" ) )
+                if ( entData.IsEditorClass() )
                 {
-                    float width, height;
-                    switch ( entData.GetValue( "editorclass" ) )
+                    float width;
+                    switch ( entData.EditorClass )
                     {
                         case "info_survival_invalid_end_zone":
-                            width = entData.GetValue< float >( "script_radius" );
+                            width = entData.GetValueForKey< float >( "script_radius" );
                             transformedObj.localScale = new Vector3( width, 2000, width );
                             break;
 
@@ -167,6 +201,14 @@ public class EntCodeDiscoverer : EditorWindow
                 }
             }
         }
+    }
+
+    private static bool CanBeRotate( string classname )
+    {
+        if ( classname == "zipline" )
+            return false;
+
+        return true;
     }
 
     public static GameObject MoveIntoSubFolder( string name, GameObject obj )
@@ -181,35 +223,26 @@ public class EntCodeDiscoverer : EditorWindow
 
     public static string SetSkin( EntData entData )
     {
-        string classname = entData.ClassName; string editorclass = "";
-
-        bool hasEditorClass = entData.IsEditorClass();
-
-        if ( hasEditorClass ) editorclass = entData.GetValue( "editorclass" );
+        string classname = entData.ClassName;
+        string editorclass = entData.EditorClass;
 
         switch ( classname )
         {
             case "prop_dynamic":
             case "prop_door":
-                if ( entData.HasKey( "model" ) )
+                if ( entData.HasModel() )
                 {
-                    string[] splittedName = entData.GetValue( "model" ).Replace( ".rmdl", "" ).Split( '/' );
-                    return $"{UnityInfo.relativePathModel}/{splittedName[splittedName.Length - 1]}_LOD0.fbx";
+                    string[] splittedName = entData.GetValueForModelKey().Replace( ".rmdl", "" ).Split( '/' );
+                    return $"{UnityInfo.relativePathModel}/{splittedName[^1]}_LOD0.fbx";
                 }
-                else return UnityInfo.relativePathCubePrefab;
+                break;
 
             case "script_ref":
-                if ( hasEditorClass )
+                if ( editorclass == "info_survival_invalid_end_zone" )
                 {
-                    switch ( editorclass )
-                    {
-                        case "info_survival_invalid_end_zone":
-                            return $"{UnityInfo.relativePathLodsUtility}/InvalidEndZoneTrigger.prefab";
-
-                        default: return UnityInfo.relativePathCubePrefab;
-                    }
+                    return $"{UnityInfo.relativePathLodsUtility}/InvalidEndZoneTrigger.prefab";
                 }
-                else return UnityInfo.relativePathCubePrefab;
+                break;
 
             case "ambient_generic":
             case "soundscape_floor":
@@ -222,22 +255,17 @@ public class EntCodeDiscoverer : EditorWindow
             case "info_spawnpoint_human":
             case "info_spawnpoint_human_start":
                 return $"{UnityInfo.relativePathModel}/mp_spawn_LOD0.fbx";
-
-            default: return UnityInfo.relativePathCubePrefab;
         }
+
+        return UnityInfo.relativePathCubePrefab;
     }
 
     public static void SetColor( GameObject obj, EntData entData )
     {
         MeshRenderer renderer = obj.GetComponent< MeshRenderer >();
+        string color;
 
-        string color; string classname = entData.ClassName; string editorclass = "";
-
-        bool hasEditorClass = entData.IsEditorClass();
-
-        if ( hasEditorClass ) editorclass = entData.GetValue( "editorclass" );
-
-        switch ( classname )
+        switch ( entData.ClassName )
         {
             case "zipline":
             case "zipline_end":
@@ -245,28 +273,19 @@ public class EntCodeDiscoverer : EditorWindow
                 break;
 
             case "script_ref":
-                if ( hasEditorClass )
+                if ( entData.IsEditorClass() && entData.EditorClass == "info_survival_invalid_end_zone" )
                 {
-                    switch ( editorclass )
-                    {
-                        case "info_survival_invalid_end_zone":
-                            color = "InvalidEndZone";
-                            break;
-
-                        default:
-                            color = "Grey";
-                        break;
-                    }
+                    color = "InvalidEndZone";
+                    break;
                 }
-                else color = "Grey";
-                break;
+                goto default;
 
             default:
                 color = "Grey";
             break;
         }
 
-        Material newMaterial = AssetDatabase.LoadAssetAtPath< Material >( $"Assets/ReMap/Lods - Dont use these/Utility/Materials/{color}.mat" );
+        Material newMaterial = AssetDatabase.LoadAssetAtPath< Material >( $"{UnityInfo.relativePathLodsUtility}/Materials/{color}.mat" );
 
         if ( Helper.IsValid( newMaterial ) ) renderer.material = newMaterial;
     }
@@ -294,6 +313,7 @@ public class EntData
     public Dictionary< string, string > entData { get; set; }
 
     public string ClassName { get; }
+    public string EditorClass { get; }
 
     public EntData( string codeBlock )
     {
@@ -307,7 +327,8 @@ public class EntData
 
         if ( IsValid( this ) )
         {
-            ClassName = GetValue( "classname" );
+            ClassName = GetValueForKey( "classname" );
+            EditorClass = GetValueForKey( "editorclass" );
             if ( !EntGlobal.ContainsKey( ClassName ) )
             {
                 EntGlobal.Add( ClassName, new List< EntData >() );
@@ -321,17 +342,22 @@ public class EntData
         return this.entData.ContainsKey( key );
     }
 
+    public bool HasModel()
+    {
+        return this.entData.ContainsKey( "model" );
+    }
+
     public bool IsEditorClass()
     {
         return this.entData.ContainsKey( "editorclass" );
     }
 
-    public string GetValue( string key )
+    public string GetValueForKey( string key )
     {
-        return this.entData[ key ];
+        return this.entData.TryGetValue( key, out string value ) ? value : "";
     }
 
-    public T GetValue< T >( string key )
+    public T GetValueForKey< T >( string key )
     {
         if ( this.entData.TryGetValue( key, out string value ) )
         {
@@ -346,6 +372,11 @@ public class EntData
         }
     
         return default( T );
+    }
+
+    public string GetValueForModelKey()
+    {
+        return GetValueForKey( "model" );
     }
 
     public static bool IsValid( EntData entData )

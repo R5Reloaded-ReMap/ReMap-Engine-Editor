@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class ReMapDebug
 {
-    internal static string outputFolder = $"{UnityInfo.currentDirectoryPath}/Assets/ReMap/Resources/DeveloperOnly";
+    internal static string outputFolder = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativeRMAPDEVfolder}";
     internal static string output = $"{outputFolder}/WriteFile.txt";
 
     #if ReMapDev

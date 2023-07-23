@@ -632,7 +632,11 @@ public class Helper
     {
         GameObject obj = CreateGameObject( name, path );
 
-        if ( IsValid( obj ) ) obj.transform.parent = parent.transform;
+        if ( IsValid( obj ) && IsValid( parent ) )
+        {
+            obj.transform.position = parent.transform.position;
+            obj.transform.parent = parent.transform;
+        }
 
         return obj;
     }

@@ -28,6 +28,8 @@ public class UnityInfo
     public static string relativePathR5RPlayerInfo =       "\\platform\\scripts\\player_info.txt";
     public static string relativePathR5RScripts =          "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
 
+    public static string relativeRMAPDEVfolder =           "Assets/ReMap/Resources/DeveloperOnly";
+
 
     /// <summary>
     /// Gets total GameObject in scene

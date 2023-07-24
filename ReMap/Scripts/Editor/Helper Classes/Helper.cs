@@ -261,7 +261,7 @@ public class Helper
 
     public static Vector3 ConvertApexAnglesToUnity( Vector3 vec )
     {
-        return new Vector3( vec.x, vec.y, -vec.z );
+        return new Vector3( -WrapAngle( vec.x ), -WrapAngle( vec.y ), WrapAngle( vec.z ) );
     }
 
     /// <summary>

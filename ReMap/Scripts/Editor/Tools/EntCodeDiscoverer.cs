@@ -158,11 +158,19 @@ public class EntCodeDiscoverer : EditorWindow
                 if ( entData.HasKey( "angles" ) && CanBeRotate( classtype ) )
                 {
                     Vector3 angles = Helper.ConvertApexAnglesToUnity( Helper.ExtractVector3( entData.GetValueForKey( "angles" ), true ) );
-                    GameObject newParent = MoveIntoSubFolder( obj.name, obj );
-                    newParent.transform.position = origin;
-                    newParent.transform.eulerAngles = angles;
-                    transformedObj.position = origin;
-                    transformedObj.localEulerAngles = LibrarySorter.LibrarySorterWindow.FindAnglesOffset( entData.GetValueForModelKey() );
+                    // Idk why apex screen need to ba at ( 0, 0, 0 )
+                    if ( entData.HasKey( "script_name" ) && entData.GetValueForKey( "script_name" ) == "apex_screen" )
+                    {
+                        transformedObj.eulerAngles = angles;
+                    }
+                    else
+                    {
+                        GameObject newParent = MoveIntoSubFolder( obj.name, obj );
+                        newParent.transform.position = origin;
+                        transformedObj.position = origin;
+                        transformedObj.eulerAngles = LibrarySorter.LibrarySorterWindow.FindAnglesOffset( entData.GetValueForModelKey() );
+                        newParent.transform.eulerAngles = angles;
+                    }
                 }
 
                 if ( classtype == "zipline" )

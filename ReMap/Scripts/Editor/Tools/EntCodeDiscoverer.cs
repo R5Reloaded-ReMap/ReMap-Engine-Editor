@@ -158,6 +158,7 @@ public class EntCodeDiscoverer : EditorWindow
                 if ( entData.HasKey( "angles" ) && CanBeRotate( classtype ) )
                 {
                     Vector3 angles = Helper.ConvertApexAnglesToUnity( Helper.ExtractVector3( entData.GetValueForKey( "angles" ), true ) );
+                    string model = entData.GetValueForModelKey();
                     // Idk why apex screen need to ba at ( 0, 0, 0 )
                     if ( entData.HasKey( "script_name" ) && entData.GetValueForKey( "script_name" ) == "apex_screen" )
                     {
@@ -165,10 +166,11 @@ public class EntCodeDiscoverer : EditorWindow
                     }
                     else
                     {
+                        if ( model == "mdl/creatures/flyer/flyer_kingscanyon_animated.rmdl" ) model = model.Replace( "/creatures/", "/Creatures/" );
                         GameObject newParent = MoveIntoSubFolder( obj.name, obj );
                         newParent.transform.position = origin;
                         transformedObj.position = origin;
-                        transformedObj.eulerAngles = LibrarySorter.LibrarySorterWindow.FindAnglesOffset( entData.GetValueForModelKey() );
+                        transformedObj.eulerAngles = LibrarySorter.LibrarySorterWindow.FindAnglesOffset( model );
                         newParent.transform.eulerAngles = angles;
                     }
                 }

@@ -48,18 +48,60 @@ public class EntCodeDiscoverer : EditorWindow
 
         foreach ( string code in codes )
         {
-            EditorUtility.DisplayProgressBar( $"Exploring {min}/{max}", $"Processing...", progress );
+            EditorUtility.DisplayProgressBar( $"Exploring Code", $"Processing... ({min}/{max})", progress );
 
             EntData entData = new EntData( code );
 
             progress += 1.0f / max; min++;
         }
 
-        AddEntsToScene();
-
-        //RMAPDEV_GetAllEntType();
-
         EditorUtility.ClearProgressBar();
+    }
+
+    #if ReMapDev
+    [MenuItem( "ReMap/Tools/Draw On Map", false, 100 )]
+    #endif
+    private static void RMAPDEV_DrawOnMap()
+    {
+        string path = EditorUtility.OpenFilePanel( "Import Ent File", "", "ent" );
+        if ( string.IsNullOrEmpty( path ) )
+            return;
+
+        Code = File.ReadAllText( path );
+
+        ConvertCode();
+
+        GameObject parent = Helper.CreatePath( "info_survival_invalid_end_zone" );
+
+        foreach ( string classtype in EntData.EntGlobal.Keys )
+        {
+            if ( classtype != "script_ref" )
+                continue;
+
+            foreach ( EntData entData in EntData.EntGlobal[ classtype ] )
+            {
+                if ( !entData.IsEditorClass() )
+                    continue;
+
+                if ( entData.EditorClass != "info_survival_invalid_end_zone" )
+                    continue;
+
+                GameObject obj = Helper.CreateGameObject( "info_survival_invalid_end_zone", $"{UnityInfo.relativePathLodsUtility}/InvalidEndZoneTrigger.prefab", parent );
+
+                if ( !Helper.IsValid( obj ) ) continue;
+
+                Vector3 origin = Helper.ConvertApexOriginToUnity( Helper.ExtractVector3( entData.GetValueForKey( "origin" ), true ) );
+                origin.y = 0.0f;
+
+                Transform transformedObj = obj.transform;
+                transformedObj.position = origin;
+
+                float width = entData.GetValueForKey< float >( "script_radius" );
+                transformedObj.localScale = new Vector3( width, 2000, width );
+            }
+        }
+
+        Code = "";
     }
 
     private static void RMAPDEV_GetAllEntType()
@@ -104,12 +146,24 @@ public class EntCodeDiscoverer : EditorWindow
             EntData.EntGlobal.Remove( "zipline_end" );
         }
 
+        int entGlobalCountStart = 1; int entGlobalCount = EntData.EntGlobal.Keys.Count;
+
         foreach ( string classtype in EntData.EntGlobal.Keys )
         {
             GameObject parent = Helper.CreatePath( $"{NamedParent}/{classtype}" );
 
+            int min = 0; int max = EntData.EntGlobal[ classtype ].Count; float progress = 0.0f;
+
             foreach ( EntData entData in EntData.EntGlobal[ classtype ] )
             {
+                EditorUtility.DisplayProgressBar
+                (
+                    $"Adding Entities To Scene ({entGlobalCountStart}/{entGlobalCount})",
+                    $"Processing... ( {classtype} => {min}/{max} )", progress
+                );
+                
+                progress += 1.0f / max; min++;
+
                 string skin = SetSkin( entData );
                 GameObject obj = Helper.CreateGameObject
                 (
@@ -259,7 +313,11 @@ public class EntCodeDiscoverer : EditorWindow
                     }
                 }
             }
+
+            entGlobalCountStart++;
         }
+
+        EditorUtility.ClearProgressBar();
     }
 
     private static bool CanBeRotate( string classname )
@@ -370,7 +428,7 @@ public class EntCodeDiscoverer : EditorWindow
     private static void ImportCode()
     {
         string path = EditorUtility.OpenFilePanel( "Import Ent File", "", "ent" );
-        if ( path.Length == 0 )
+        if ( string.IsNullOrEmpty( path ) )
             return;
 
         NamedParent = $"{OutputParent} ({Path.GetFileNameWithoutExtension( path ).Replace( "mp_rr_", "" )})";
@@ -378,6 +436,10 @@ public class EntCodeDiscoverer : EditorWindow
         Code = File.ReadAllText( path );
 
         ConvertCode();
+
+        AddEntsToScene();
+
+        //RMAPDEV_GetAllEntType();
 
         Code = "";
     }

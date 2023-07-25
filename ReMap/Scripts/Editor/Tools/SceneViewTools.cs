@@ -31,7 +31,15 @@
         if (GUILayout.Button("Copy Map Code"))
             CopyMapCode(true,true);
         GUILayout.EndArea();
-        
+
+        // Get camera position
+        Vector3 cameraPosition = sceneview.camera.transform.position;
+
+        // Set text color to black
+        GUI.contentColor = Color.black;
+
+        // Display camera position
+        GUI.Label( new Rect( 10, 10, 300, 20 ), "Camera Position: " + Helper.BuildOrigin( cameraPosition ) );
  
         Handles.EndGUI();
     }

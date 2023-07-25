@@ -118,10 +118,7 @@ public class EntCodeDiscoverer : EditorWindow
                 progress += 1.0f / max; min++;
 
                 string skin = SetSkin( entity );
-                GameObject obj = Helper.CreateGameObject
-                (
-                    entity.HasEditorClass() ? $" {entity.EditorClass}" : entity.ClassName, skin, parent
-                );
+                GameObject obj = Helper.CreateGameObject( SetName( entity ), skin, parent );
 
                 Vector3 origin = Helper.ConvertApexOriginToUnity( entity.Origin );
 
@@ -259,17 +256,22 @@ public class EntCodeDiscoverer : EditorWindow
                         break;
                         
                     case "info_survival_loot_zone":
-                        if ( entity.GetValueForKey( "zone_class" ) == "POI_High" )
+                        switch ( entity.GetValueForKey( "zone_class" ) )
                         {
-                            width = entity.GetValueForKey< float >( "script_radius" );
-                            height = entity.GetValueForKey< float >( "script_height" );
-                            transformedObj.localScale = new Vector3( width, height, width );
-                        }
-                        else if ( entity.GetValueForKey( "zone_class" ) == "POI_Sniper" )
-                        {
-                            width = entity.GetValueForKey< float >( "script_radius" );
-                            height = entity.GetValueForKey< float >( "script_height" );
-                            transformedObj.localScale = new Vector3( width, height, width );
+                            case "zone_medium":
+                            case "zone_high":
+                            case "zone_hotzone":
+                            case "POI_High":
+                            case "POI_Ultra":
+                            case "POI_sniper":
+
+                                width = entity.GetValueForKey< float >( "script_radius" );
+                                height = entity.GetValueForKey< float >( "script_height" );
+                                transformedObj.localScale = new Vector3( width, height, width );
+
+                                break;
+
+                            default: break;
                         }
                         break;
 
@@ -293,6 +295,17 @@ public class EntCodeDiscoverer : EditorWindow
         return true;
     }
 
+    public static string SetName( EntitiesData entity )
+    {
+        if ( !string.IsNullOrEmpty( entity.GetValueForKey( "script_name" ) ) )
+            return entity.GetValueForKey( "script_name" );
+
+        if ( !string.IsNullOrEmpty( entity.EditorClass ) )
+            return entity.EditorClass;
+        
+        return entity.ClassName;
+    }
+
     public static string SetSkin( EntitiesData entity )
     {
         switch ( entity.ClassName )
@@ -314,15 +327,16 @@ public class EntCodeDiscoverer : EditorWindow
                 }
                 else if ( entity.EditorClass == "info_survival_loot_zone" )
                 {
-                    string zoneClass = entity.GetValueForKey( "zone_class" );
+                    switch ( entity.GetValueForKey( "zone_class" ) )
+                    {
+                        case "zone_medium":  return $"{UnityInfo.relativePathLodsUtility}/Zone_Medium.prefab";
+                        case "zone_high":    return $"{UnityInfo.relativePathLodsUtility}/Zone_High.prefab";
+                        case "zone_hotzone": return $"{UnityInfo.relativePathLodsUtility}/Zone_Hotzone.prefab";
+                        case "POI_High":     return $"{UnityInfo.relativePathLodsUtility}/POI_High.prefab";
+                        case "POI_Ultra":    return $"{UnityInfo.relativePathLodsUtility}/POI_Ultra.prefab";
+                        case "POI_sniper":   return $"{UnityInfo.relativePathLodsUtility}/POI_Sniper.prefab";
 
-                    if ( zoneClass == "POI_High" )
-                    {
-                        return $"{UnityInfo.relativePathLodsUtility}/POI_High.prefab";
-                    }
-                    else if ( zoneClass == "POI_sniper" )
-                    {
-                        return $"{UnityInfo.relativePathLodsUtility}/POI_Sniper.prefab";
+                        default: break;
                     }
                 }
                 break;

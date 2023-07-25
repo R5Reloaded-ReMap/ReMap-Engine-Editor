@@ -314,25 +314,34 @@ public class Helper
 
     public static Vector3 StringToVector3( string line, bool isEnt = false )
     {
-        string regex = isEnt ? " " : ",";
-        string start = isEnt ? "" : "<";
-        string end = isEnt ? "" : ">";
-        var matches = Regex.Matches( line, $"{start}\\s*(-?\\d+(\\.\\d+)?){regex}\\s*(-?\\d+(\\.\\d+)?){regex}\\s*(-?\\d+(\\.\\d+)?)\\s*{end}" );
-        if ( matches.Count == 0 )
+        if ( isEnt )
         {
-            return Vector3.zero;
+            var matches = Regex.Matches( line, @"\s*(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)\s*" );
+            if ( matches.Count == 0 ) return Vector3.zero;
+
+            var values = matches[0].Value.Split( ' ' );
+
+            return new Vector3
+            (
+                float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x ) ? x : 0,
+                float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y ) ? y : 0,
+                float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z ) ? z : 0
+            );
         }
+        else
+        {
+            var matches = Regex.Matches( line, "<\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)\\s*>" );
+            if ( matches.Count == 0 ) return Vector3.zero;
 
-        var match = matches[0]; // Get the first match.
-        var replaced = match.ToString().Replace( "<", "" ).Replace( ">", "" );
-        var values = isEnt ? replaced.Split( ' ' ) : replaced.Split( ',' );
+            var values = matches[0].Value.Replace("<", "").Replace(">", "").Split(',');
 
-        float x = 0, y = 0, z = 0;
-        float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out x );
-        float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out y );
-        float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out z );
-
-        return new Vector3( x, y, z );
+            return new Vector3
+            (
+                float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x ) ? x : 0,
+                float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y ) ? y : 0,
+                float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z ) ? z : 0
+            );
+        }
     }
 
     /// <summary>

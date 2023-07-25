@@ -298,6 +298,7 @@ public class EntCodeDiscoverer : EditorWindow
         switch ( entity.ClassName )
         {
             case "prop_dynamic":
+            case "prop_script":
             case "prop_door":
                 if ( !string.IsNullOrEmpty( entity.Model ) )
                 {

@@ -1,12 +1,13 @@
 
 using System;
-using System.Threading;
-using System.IO;
-using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -32,7 +33,7 @@ public class ImportMPRTModels
                 int header1 = BitConverter.ToInt32(buffer, 0);
                 if (header1 != 0x7472706D) // check if matches with the expected value
                 {
-                    Debug.LogError("Invalid file.");
+                    Helper.Ping("Invalid file.");
                     return;
                 }
 
@@ -81,16 +82,32 @@ public class ImportMPRTModels
                 //EditorUtility.ClearProgressBar();
                 //return;
 
-                // Proceed with the imsplementation of loading the models based on the parsed data...
+                // Proceed with the implementation of loading the models based on the parsed data...
+
+                UnityInfo.SortListByKey( DataList, o => o.name );
+
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
 
                 for (int i = 0; i < DataList.Count; i++)
                 {
+                    if ( i == 200 ) break;
                     CreateMPRTProp(DataList[i]);
 
-                    EditorUtility.DisplayProgressBar( $"Placing Models: {i}/{DataList.Count}", $"", ( i + 1 ) / ( float )DataList.Count );
+                    double progress = (i + 1) / (double)DataList.Count;
+                    double elapsedTime = stopwatch.Elapsed.TotalSeconds;
+                    double estimatedTotalTime = elapsedTime / progress;
+                    double estimatedRemainingTime = estimatedTotalTime - elapsedTime;
+
+                    int remainingMinutes = (int)(estimatedRemainingTime / 60);
+                    int remainingSeconds = (int)(estimatedRemainingTime % 60);
+
+                    EditorUtility.DisplayProgressBar($"Placing Models: {i}/{DataList.Count}", $"Time remaining: {remainingMinutes:D2}:{remainingSeconds:D2} min", (float)progress);
 
                     await Helper.Wait();
                 }
+
+                stopwatch.Stop();
 
                 EditorUtility.ClearProgressBar();
             }

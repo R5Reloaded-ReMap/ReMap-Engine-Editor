@@ -21,14 +21,12 @@ public class LootRepartitionWindow : EditorWindow
     public static void Init()
     {
         windowInstance = ( LootRepartitionWindow ) EditorWindow.GetWindow( typeof( LootRepartitionWindow ), false, "Loot Repartition" );
+        //windowInstance.minSize = new Vector2( 300, 290 );
+        windowInstance.Show();
     }
 
     void OnEnable()
     {
-        //windowInstance = ( LootRepartitionWindow ) EditorWindow.GetWindow( typeof( LootRepartitionWindow ), false, "Loot Repartition" );
-        //windowInstance.minSize = new Vector2( 300, 290 );
-        windowInstance.Show();
-
         string json = System.IO.File.ReadAllText( $"{lootRepartitionPath}/LootRepartition.json" );
         LootData = JsonUtility.FromJson< LootData >( json );
     }

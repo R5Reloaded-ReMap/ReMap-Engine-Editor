@@ -272,6 +272,7 @@ public class EntCodeDiscoverer : EditorWindow
                     case "info_survival_loot_zone":
                         switch ( entity.GetValueForKey( "zone_class" ) )
                         {
+                            case "zone_low":
                             case "zone_medium":
                             case "zone_high":
                             case "zone_hotzone":
@@ -343,6 +344,7 @@ public class EntCodeDiscoverer : EditorWindow
                 {
                     switch ( entity.GetValueForKey( "zone_class" ) )
                     {
+                        case "zone_low":     return $"{UnityInfo.relativePathLodsUtility}/Zone_Low.prefab";
                         case "zone_medium":  return $"{UnityInfo.relativePathLodsUtility}/Zone_Medium.prefab";
                         case "zone_high":    return $"{UnityInfo.relativePathLodsUtility}/Zone_High.prefab";
                         case "zone_hotzone": return $"{UnityInfo.relativePathLodsUtility}/Zone_Hotzone.prefab";

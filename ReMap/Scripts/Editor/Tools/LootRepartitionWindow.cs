@@ -46,8 +46,8 @@ public class LootRepartitionWindow : EditorWindow
             string line;
             while ( ( line = reader.ReadLine() ) != null )
             {
-                if ( line == "\"string\",\"string\",\"string\",\"float\",\"int\",\"int\"" )
-                    break;
+                if ( line == "\"string\",\"string\",\"string\",\"float\",\"int\",\"int\"" || line.Contains( "\u000F" ) )
+                    continue;
 
                 string[] fields = line.Split( ',' );
 
@@ -77,7 +77,8 @@ public class LootRepartitionWindow : EditorWindow
         }
 
         string json = JsonUtility.ToJson( lootData );
-        string path = $"{lootRepartitionPath}/LootRepartition.json";;
+
+        string path = $"{lootRepartitionPath}/LootRepartition.json";
 
         if ( File.Exists( path ) ) File.Delete( path );
 
@@ -85,22 +86,25 @@ public class LootRepartitionWindow : EditorWindow
     }
 }
 
+[Serializable]
 public class Entry
 {
-    public string EntryRef { get; set; }
-    public float EntryDistribution { get; set; }
-    public int GroupTier { get; set; }
-    public int Priority { get; set; }
+    public string EntryRef;
+    public float EntryDistribution;
+    public int GroupTier;
+    public int Priority;
 }
 
+[Serializable]
 public class Group
 {
-    public string FeatureFlag { get; set; }
-    public string GroupRef { get; set; }
-    public List< Entry > Entries { get; set; }
+    public string FeatureFlag;
+    public string GroupRef;
+    public List< Entry > Entries;
 }
 
+[Serializable]
 public class LootData
 {
-    public List< Group > Groups { get; set; }
+    public List< Group > Groups;
 }

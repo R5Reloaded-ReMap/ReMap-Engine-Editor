@@ -128,6 +128,20 @@ public class EntCodeDiscoverer : EditorWindow
                     continue;
                 }
 
+                EntitiesKeyValues entitiesKeyValues = obj.AddComponent< EntitiesKeyValues >();
+
+                foreach ( var keyval in entity.KeyValues )
+                {
+                    entitiesKeyValues.KeyValues.Add
+                    (
+                        new SerializableKeyValue()
+                        {
+                            Key = keyval.Key,
+                            Value = keyval.Value
+                        }
+                    );
+                }
+
                 Transform transformedObj = obj.transform;
                 transformedObj.position = origin;
 

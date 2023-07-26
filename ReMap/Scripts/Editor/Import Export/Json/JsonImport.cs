@@ -16,7 +16,7 @@ namespace ImportExport.Json
 {
     public class JsonImport
     {
-        [ MenuItem( "ReMap/Import/Json", false, 51 ) ]
+        
         public static async void ImportJson()
         {
             var path = EditorUtility.OpenFilePanel( "Json Import", "", "json" );

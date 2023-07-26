@@ -387,7 +387,7 @@ namespace CodeViews
             InitCallback = () => // Load on start
             {
                 windowStruct.PostRefreshCallback();
-                #if ReMapDev
+                #if RMAPDEV
                     ShowSettingsMenu = true;
                 #endif
             },
@@ -400,8 +400,6 @@ namespace CodeViews
 
         };
         
-
-        [ MenuItem( "ReMap/Code Views", false, 25 ) ]
         public static void Init()
         {
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
@@ -729,7 +727,15 @@ namespace CodeViews
                 ( line, index ) => index == CodeViewsSearchWindow.SearchedString ? $"<color=green>{line}</color>" : line
             );
 
-            EditorGUILayout.TextArea( string.Join( "\n", lines ), style, GUILayout.ExpandHeight( true ) );
+            var originalText = string.Join( "\n", lines );
+            var resultText = EditorGUILayout.TextArea( originalText, style, GUILayout.ExpandHeight( true ) );
+
+            // Reset Text
+            if ( resultText != originalText )
+            {
+                GUI.FocusControl( null );
+                originalText = resultText;
+            }
 
             EditorGUILayout.EndScrollView();
         }
@@ -748,14 +754,18 @@ namespace CodeViews
 
             if ( currentEvent.type == EventType.KeyDown )
             {
-                if ( currentEvent.keyCode == KeyCode.R && currentEvent.control )
+                if ( currentEvent.control ) // Ctrl key is pressed
                 {
-                    Refresh(); // Press Ctrl + R for Refresh the page
-                }
+                    switch ( currentEvent.keyCode )
+                    {
+                        case KeyCode.R:
+                            Refresh(); // Press Ctrl + R for Refresh the page
+                            break;
 
-                if ( currentEvent.keyCode == KeyCode.F && currentEvent.control )
-                {
-                    CodeViewsSearchWindow.Init(); // Press Ctrl + F for Search some code
+                        case KeyCode.F:
+                            CodeViewsSearchWindow.Init(); // Press Ctrl + F for Search some code
+                        break;
+                    }
                 }
             }
         }

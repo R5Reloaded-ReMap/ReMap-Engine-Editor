@@ -11,7 +11,6 @@ namespace AssetLibraryManager
         int totalVertices = 0;
         int totalTris = 0;
 
-        [MenuItem("ReMap/Asset Library Manager/Preview Window...", false, 1068)]
         public static void ShowWindow()
         {
             Preview_Window window = GetWindow<Preview_Window>("Preview Window");

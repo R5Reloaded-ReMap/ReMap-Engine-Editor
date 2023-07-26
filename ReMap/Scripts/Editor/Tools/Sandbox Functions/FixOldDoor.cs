@@ -6,7 +6,6 @@ namespace Sandbox
 {
     public class FixOldDoor
     {
-        [MenuItem("ReMap/Sandbox/Fix Old Doors", false, 100)]
         public static void FixOldDoorsInit()
         {
             FixOldDoors();

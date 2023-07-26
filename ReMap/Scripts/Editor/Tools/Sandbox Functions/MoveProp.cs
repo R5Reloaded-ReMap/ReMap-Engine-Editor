@@ -6,7 +6,6 @@ namespace Sandbox
 {
     public class MoveProp
     {
-        [MenuItem("ReMap/Sandbox/Move Prop", false, 100)]
         public static void MovePropInit()
         {
             MoveProps();

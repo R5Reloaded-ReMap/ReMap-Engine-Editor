@@ -16,7 +16,6 @@ namespace ImportExport.Json
 {
     public class JsonExport
     {
-        [ MenuItem( "ReMap/Export/Json", false, 51 ) ]
         public static async void ExportJson()
         {
             Helper.FixPropTags();
@@ -43,7 +42,6 @@ namespace ImportExport.Json
             EditorUtility.ClearProgressBar();
         }
 
-        [ MenuItem( "ReMap/Export Selection/Json", false, 51 ) ]
         public static async void ExportSelectionJson()
         {
             Helper.FixPropTags();

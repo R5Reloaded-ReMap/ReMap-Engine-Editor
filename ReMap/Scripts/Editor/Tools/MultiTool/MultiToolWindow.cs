@@ -23,8 +23,7 @@ namespace MultiTool
         private static ToolType toolTypeSelection = ToolType.DistanceMeter;
         private static string toolInfo = "";
 
-        [ MenuItem( "ReMap/Tools/Multi Tool", false, 0 ) ]
-        private static void Init()
+        public static void Init()
         {
             windowInstance = ( MultiToolWindow ) EditorWindow.GetWindow( typeof( MultiToolWindow ), false, "Multi Tool");
             windowInstance.Show();
@@ -46,7 +45,7 @@ namespace MultiTool
             GUILayout.BeginVertical( "box" );
                 GUILayout.BeginHorizontal();
                     CreateTextInfo( toolInfo );
-                    #if ReMapDev
+                    #if RMAPDEV
                         FlexibleSpace();
                         GetEditorWindowSize( windowInstance );
                     #endif

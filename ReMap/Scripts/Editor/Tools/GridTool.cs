@@ -13,7 +13,6 @@ public class GridTool : EditorWindow
     private float rotz = 0.0f;
     private bool isfloor = true;
 
-    [MenuItem("ReMap/Tools/Grid Tool", false, 100)]
     public static void Init()
     {
         GridTool window = (GridTool)EditorWindow.GetWindow(typeof(GridTool), false, "Grid Tool");

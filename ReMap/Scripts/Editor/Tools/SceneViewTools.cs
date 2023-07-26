@@ -11,13 +11,11 @@
         //SceneView.duringSceneGui += OnSceneGUI;
     }
 
-    [MenuItem("ReMap/Tools/SceneViewGUI/Enable")]
     public static void Enable()
     {
         SceneView.duringSceneGui += OnSceneGUI;
     }
  
-    [MenuItem("ReMap/Tools/SceneViewGUI/Disable")]
     public static void Disable()
     {
         SceneView.duringSceneGui -= OnSceneGUI;

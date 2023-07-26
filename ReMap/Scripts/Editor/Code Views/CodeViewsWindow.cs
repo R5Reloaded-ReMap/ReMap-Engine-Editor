@@ -387,7 +387,7 @@ namespace CodeViews
             InitCallback = () => // Load on start
             {
                 windowStruct.PostRefreshCallback();
-                #if ReMapDev
+                #if RMAPDEV
                     ShowSettingsMenu = true;
                 #endif
             },
@@ -400,8 +400,6 @@ namespace CodeViews
 
         };
         
-
-        [ MenuItem( "ReMap/Code Views", false, 25 ) ]
         public static void Init()
         {
             windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );

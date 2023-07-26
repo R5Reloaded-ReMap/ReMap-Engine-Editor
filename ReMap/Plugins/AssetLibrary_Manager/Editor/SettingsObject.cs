@@ -93,7 +93,6 @@ namespace AssetLibraryManager
 
     public class SelectSettingsObject : EditorWindow
     {
-        [MenuItem("ReMap/Asset Library Manager/Settings...", false, 1100)]
         public static void SelectSettings()
         {
             Selection.activeObject = Resources.Load("AssetLibrary_Settings");

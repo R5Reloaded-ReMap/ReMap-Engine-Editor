@@ -35,17 +35,14 @@ namespace LibrarySorter
         static string search = "";
         static List< string > searchResult = new List< string >();
         
-        #if ReMapDev
-            [ MenuItem( "ReMap Dev Tools/Prefabs Management/Prefab Fix Manager", false, 100 ) ]
-            public static void Init()
-            {
-                libraryData = RpakManagerWindow.FindLibraryDataFile();
+        public static void Init()
+        {
+            libraryData = RpakManagerWindow.FindLibraryDataFile();
 
-                LibrarySorterWindow window = ( LibrarySorterWindow )GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Fix Manager" );
-                window.minSize = new Vector2( 650, 600 );
-                window.Show();
-            }
-        #endif
+            LibrarySorterWindow window = ( LibrarySorterWindow )GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Fix Manager" );
+            window.minSize = new Vector2( 650, 600 );
+            window.Show();
+        }
 
         private void OnEnable()
         {

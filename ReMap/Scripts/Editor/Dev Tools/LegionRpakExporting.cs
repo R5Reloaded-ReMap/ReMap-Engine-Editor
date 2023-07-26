@@ -16,13 +16,10 @@ namespace LibrarySorter
         static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
         static string relativePathRpakManager = UnityInfo.relativePathRpakManager;
 
-        #if ReMapDev
-        [MenuItem("ReMap Dev Tools/Prefabs Management/Legion/Create All Rpak List", false, 100)]
         public static async void RpakListInit()
         {
             await CreateAllRpakList();
         }
-        #endif
 
         public static async Task CreateAllRpakList()
         {

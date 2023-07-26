@@ -19,8 +19,7 @@ public class QuickMenu : EditorWindow
 
     Vector2 scroll;
 
-    [MenuItem("ReMap/Popout Menu", false, 1)]
-    static void Init()
+    public static void Init()
     {
         QuickMenu window = (QuickMenu)EditorWindow.GetWindow(typeof(QuickMenu), false, "Popout Menu");
         window.Show();

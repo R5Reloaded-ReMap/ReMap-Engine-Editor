@@ -6,7 +6,6 @@ public class SetRealmIds : EditorWindow
     private GameObject source;
     private int RealmID = 0;
 
-    [MenuItem("ReMap/Tools/RealmID Tool", false, 100)]
     public static void Init()
     {
         SetRealmIds window = (SetRealmIds)EditorWindow.GetWindow(typeof(SetRealmIds), false, "RealmID Tool");

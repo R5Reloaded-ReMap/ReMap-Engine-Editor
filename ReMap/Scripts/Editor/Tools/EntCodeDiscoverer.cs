@@ -15,9 +15,32 @@ public class EntCodeDiscoverer : EditorWindow
     private static string OutputParent = "Discovered_Code";
     private static string NamedParent = "";
 
+    private static readonly string[] WeaponLocationModel = new []
+    {
+        "mdl/weapons_r5/loot/_master/w_loot_cha_shield_upgrade_body_v1.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_cha_shield_upgrade_head_v1.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_ammo_hc.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_ammo_nrg.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_ammo_sc.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_ammo_shg.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_mods_chip.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_mods_mag_energy_v1.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_mods_mag_v1b.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_mods_mag_v2b.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_mods_mag_v3b.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_mods_optic_cq_hcog_r2.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_mods_optic_cq_hcog_r1.rmdl",
+        "mdl/weapons_r5/loot/_master/w_loot_wep_mods_suppr_v2b.rmdl",
+        "mdl/weapons_r5/loot/w_loot_wep_iso_shield_down_v1.rmdl",
+        "mdl/weapons_r5/loot/w_loot_wep_iso_health_main_large.rmdl",
+        "mdl/weapons_r5/loot/w_loot_wep_iso_health_main_small.rmdl",
+        "mdl/weapons_r5/loot/w_loot_wep_iso_phoenix_kit_v1.rmdl",
+        "mdl/weapons_r5/loot/w_loot_wep_iso_shield_battery_large.rmdl",
+        "mdl/weapons_r5/loot/w_loot_wep_iso_shield_battery_small.rmdl"
+    };
+
     private static Vector2 Scroll = Vector2.zero;
 
-    [MenuItem( "ReMap/Tools/Ent Code Discoverer", false, 100 )]
     public static void Init()
     {
         EntCodeDiscoverer window = ( EntCodeDiscoverer ) EditorWindow.GetWindow( typeof( EntCodeDiscoverer ), false, "Ent Code Discoverer");
@@ -132,14 +155,7 @@ public class EntCodeDiscoverer : EditorWindow
 
                 foreach ( var keyval in entity.KeyValues )
                 {
-                    entitiesKeyValues.KeyValues.Add
-                    (
-                        new SerializableKeyValue()
-                        {
-                            Key = keyval.Key,
-                            Value = keyval.Value
-                        }
-                    );
+                    entitiesKeyValues.KeyValues.Add( $"\"{keyval.Key}\" \"{keyval.Value}\"" );
                 }
 
                 Transform transformedObj = obj.transform;
@@ -164,6 +180,8 @@ public class EntCodeDiscoverer : EditorWindow
                     {
                         string model = entity.Model;
                         if ( model == "mdl/creatures/flyer/flyer_kingscanyon_animated.rmdl" ) model = model.Replace( "/creatures/", "/Creatures/" );
+                        
+                        if ( entity.ScriptName == "static_loot_tick_spawn" ) model = "mdl/robots/drone_frag/drone_frag_loot.rmdl";
 
                         newParent = Helper.MoveGameObject( obj.name, obj, true );
                         newParent.transform.position = origin;
@@ -355,12 +373,23 @@ public class EntCodeDiscoverer : EditorWindow
                         default: break;
                     }
                 }
+                else if ( entity.EditorClass == "info_survival_weapon_location" )
+                {
+                    return SetRandomWeaponSkin( entity );
+                }
                 break;
 
             case "ambient_generic":
             case "soundscape_floor":
             case "trigger_soundscape":
                 return $"{UnityInfo.relativePathModel}/editor_ambient_generic_node_LOD0.fbx";
+
+            case "info_target_clientside":
+                if ( entity.EditorClass == "info_survival_speaker_location" )
+                {
+                    return $"{UnityInfo.relativePathModel}/editor_ambient_generic_node_LOD0.fbx";
+                }
+                break;
 
             case "traverse":
                 return $"{UnityInfo.relativePathModel}/editor_traverse_LOD0.fbx";
@@ -370,14 +399,25 @@ public class EntCodeDiscoverer : EditorWindow
                 return $"{UnityInfo.relativePathModel}/mp_spawn_LOD0.fbx";
 
             case "info_target":
-                if ( entity.ScriptName == "apex_screen" )
+                switch ( entity.ScriptName )
                 {
-                    return $"{UnityInfo.relativePathModel}/survival_modular_flexscreens_04_LOD0.fbx";
+                    case "apex_screen":            return $"{UnityInfo.relativePathModel}/survival_modular_flexscreens_04_LOD0.fbx";
+                    case "static_loot_tick_spawn": return $"{UnityInfo.relativePathModel}/drone_frag_loot_LOD0.fbx";
+
+                    default: break;
                 }
             break;
         }
 
         return UnityInfo.relativePathCubePrefab;
+    }
+
+    private static string SetRandomWeaponSkin( EntitiesData entity )
+    {
+        entity.ChangeModelName( WeaponLocationModel[ UnityEngine.Random.Range( 0, WeaponLocationModel.Length ) ] );
+
+        string[] splittedName = entity.Model.Replace( ".rmdl", "" ).Split( '/' );
+        return $"{UnityInfo.relativePathModel}/{splittedName[^1]}_LOD0.fbx";
     }
 
     public static void SetColor( GameObject obj, EntitiesData entity )
@@ -416,10 +456,7 @@ public class EntCodeDiscoverer : EditorWindow
     //  ██║  ██║██║ ╚═╝ ██║██║  ██║██║     ██████╔╝███████╗ ╚████╔╝ 
     //  ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═════╝ ╚══════╝  ╚═══╝  
 
-    #if ReMapDev
-    [MenuItem( "ReMap/Tools/Draw On Map", false, 100 )]
-    #endif
-    private static void RMAPDEV_DrawOnMap()
+    public static void RMAPDEV_DrawOnMap()
     {
         string path = EditorUtility.OpenFilePanel( "Import Ent File", "", "ent" );
         if ( string.IsNullOrEmpty( path ) )
@@ -506,7 +543,7 @@ public class EntitiesData
     public Vector3 Origin { get; }
     public Vector3 Angles { get; }
     public string ScriptName { get; }
-    public string Model { get; }
+    public string Model { get; private set; }
 
     public EntitiesData( string codeBlock )
     {
@@ -577,6 +614,11 @@ public class EntitiesData
     public string GetValueForModelKey()
     {
         return GetValueForKey( "model" );
+    }
+
+    public void ChangeModelName( string name )
+    {
+        this.Model = name;
     }
 
     public static bool IsValid( EntitiesData entity )

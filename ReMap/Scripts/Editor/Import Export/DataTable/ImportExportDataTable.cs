@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 public class ImportExportDataTable
 {
-    [MenuItem("ReMap/Import/DataTable", false, 50)]
     public async static void ImportDataTable()
     {
         string path = EditorUtility.OpenFilePanel("Datatable Import", "", "csv");

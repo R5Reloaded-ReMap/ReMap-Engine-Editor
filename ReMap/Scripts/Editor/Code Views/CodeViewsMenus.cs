@@ -77,7 +77,7 @@ namespace CodeViews
         {
             CreateMenu( CodeViewsWindow.TipsMenu, TipsMenu, MenuType.Large, "Tips", "Tips", "" );
 
-            #if ReMapDev
+            #if RMAPDEV
                 GUILayout.BeginHorizontal();
                     Space( 2 ); Separator( 314 );
                 GUILayout.EndHorizontal();

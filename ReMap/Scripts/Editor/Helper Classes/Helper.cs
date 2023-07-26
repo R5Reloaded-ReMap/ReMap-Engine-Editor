@@ -312,27 +312,36 @@ public class Helper
         return new Vector3( vec.y, vec.z, -vec.x );
     }
 
-    public static Vector3 ExtractVector3( string line, bool isEnt = false )
+    public static Vector3 StringToVector3( string line, bool isEnt = false )
     {
-        string regex = isEnt ? " " : ",";
-        string start = isEnt ? "" : "<";
-        string end = isEnt ? "" : ">";
-        var matches = Regex.Matches( line, $"{start}\\s*(-?\\d+(\\.\\d+)?){regex}\\s*(-?\\d+(\\.\\d+)?){regex}\\s*(-?\\d+(\\.\\d+)?)\\s*{end}" );
-        if ( matches.Count == 0 )
+        if ( isEnt )
         {
-            return Vector3.zero;
+            var matches = Regex.Matches( line, @"\s*(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)\s*" );
+            if ( matches.Count == 0 ) return Vector3.zero;
+
+            var values = matches[0].Value.Split( ' ' );
+
+            return new Vector3
+            (
+                float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x ) ? x : 0,
+                float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y ) ? y : 0,
+                float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z ) ? z : 0
+            );
         }
+        else
+        {
+            var matches = Regex.Matches( line, "<\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)\\s*>" );
+            if ( matches.Count == 0 ) return Vector3.zero;
 
-        var match = matches[0]; // Get the first match.
-        var replaced = match.ToString().Replace( "<", "" ).Replace( ">", "" );
-        var values = isEnt ? replaced.Split( ' ' ) : replaced.Split( ',' );
+            var values = matches[0].Value.Replace("<", "").Replace(">", "").Split(',');
 
-        float x = 0, y = 0, z = 0;
-        float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out x );
-        float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out y );
-        float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out z );
-
-        return new Vector3( x, y, z );
+            return new Vector3
+            (
+                float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x ) ? x : 0,
+                float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y ) ? y : 0,
+                float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z ) ? z : 0
+            );
+        }
     }
 
     /// <summary>
@@ -628,9 +637,15 @@ public class Helper
         Selection.objects = new GameObject[] { obj  };
     }
 
-    public static GameObject CreateGameObject( string name, string path, GameObject parent )
+    /// <summary>
+    /// Create a GameObject inside an other GameObject.
+    /// </summary>
+    /// <remarks>
+    /// scene/path/path2 => func( "obj", "path/path2" ) => scene/path/path2/obj
+    /// </remarks>
+    public static GameObject CreateGameObject( string name, string modelPath, GameObject parent )
     {
-        GameObject obj = CreateGameObject( name, path );
+        GameObject obj = CreateGameObject( name, modelPath );
 
         if ( IsValid( obj ) && IsValid( parent ) )
         {
@@ -641,14 +656,14 @@ public class Helper
         return obj;
     }
 
-    public static GameObject CreateGameObject( string name = "", string path = "", PathType pathType = PathType.Path )
+    public static GameObject CreateGameObject( string name = "", string modelPath = "", PathType pathType = PathType.Path )
     {        
-        path = string.IsNullOrEmpty( path ) ? UnityInfo.relativePathEmptyPrefab : path;
+        modelPath = string.IsNullOrEmpty( modelPath ) ? UnityInfo.relativePathEmptyPrefab : modelPath;
 
         UnityEngine.Object loadedPrefabResource = pathType switch
         {
-            PathType.Path => AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject,
-            PathType.Name => UnityInfo.FindPrefabFromName( path ),
+            PathType.Path => AssetDatabase.LoadAssetAtPath( $"{modelPath}", typeof( UnityEngine.Object ) ) as GameObject,
+            PathType.Name => UnityInfo.FindPrefabFromName( modelPath ),
             _ => null
         };
 
@@ -661,15 +676,56 @@ public class Helper
         return obj;
     }
 
+    /// <summary>
+    /// Create a GameObject as folder and move the wanted GameObject.
+    /// </summary>
+    /// <remarks>
+    /// scene/obj => func( "newFolder", obj ) => scene/newFolder/obj
+    /// </remarks>
+    public static GameObject MoveGameObject( string name, GameObject obj, bool ignoreFind = false )
+    {
+        GameObject subFolder = null;
+
+        if ( !ignoreFind )
+            subFolder = GameObject.Find( CreatePathString( obj ) );
+        
+        if ( !IsValid( subFolder ) )
+            subFolder = CreateGameObject( name, "", GetParent( obj ) );
+
+        if ( IsValid( subFolder ) )
+        {
+            obj.transform.parent = subFolder.transform;
+        }
+        return subFolder;
+    }
+
+    /// <summary>
+    /// Create a GameObject as folder and move the wanted GameObject in an other path.
+    /// </summary>
+    /// <remarks>
+    /// scene/obj => func( obj, "aFolder/anOtherFolder" ) => scene/aFolder/anOtherFolder/obj
+    /// </remarks>
+    public static GameObject MoveGameObject( GameObject obj, string path )
+    {
+        return Helper.CreatePath( path, obj );
+    }
+
     public static GameObject CreatePath( string pathString, GameObject obj = null )
     {
         if ( string.IsNullOrEmpty( pathString ) ) return null;
 
-        if ( GameObject.Find( pathString ) ) return GameObject.Find( pathString );
+        GameObject folder = GameObject.Find( pathString ); string path = "";
+
+        if ( IsValid( folder ) )
+        {
+            if ( IsValid( obj ) )
+            {
+                obj.transform.SetParent( folder.transform );
+            }
+            return folder;
+        }
 
         string[] pathStrings = pathString.Split( '/' );
-
-        GameObject folder = null; string path = "";
 
         foreach ( string paths in pathStrings )
         {
@@ -681,16 +737,51 @@ public class Helper
 
             GameObject newFolder = GameObject.Find( path );
 
-            if ( !Helper.IsValid( newFolder ) ) newFolder = new GameObject( paths );
+            if ( !IsValid( newFolder ) ) newFolder = new GameObject( paths );
 
-            if ( Helper.IsValid( folder ) ) newFolder.transform.SetParent( folder.transform );
+            if ( IsValid( folder ) ) newFolder.transform.SetParent( folder.transform );
 
             folder = newFolder;
         }
 
-        if ( Helper.IsValid( folder ) && Helper.IsValid( obj ) ) obj.transform.parent.SetParent( folder.transform );
+        if ( IsValid( folder ) && IsValid( obj ) ) obj.transform.SetParent( folder.transform );
 
         return folder;
+    }
+
+    /// <summary>
+    /// Get path string for a GameObject
+    /// </summary>
+    public static string CreatePathString( GameObject obj, bool includeSelf = false )
+    {
+        return FindPathString( obj, includeSelf );
+    }
+
+    public static void SetOriginAndAngles( GameObject obj, Vector3 origin, bool local = false )
+    {
+        SetOriginAndAngles( obj, origin, Vector3.zero, local );
+    }
+
+    public static void SetOriginAndAngles( GameObject obj, Vector3 origin, Vector3 angles, bool local = false )
+    {
+        if ( IsValid( obj ) )
+        {
+            if ( local )
+            {
+                obj.transform.localPosition = origin;
+                obj.transform.localEulerAngles = angles;
+            }
+            else
+            {
+                obj.transform.position = origin;
+                obj.transform.eulerAngles = angles;
+            }
+        }
+    }
+
+    public static GameObject GetParent( GameObject obj )
+    {
+        return obj.transform.parent.gameObject;
     }
 
     public static GameObject[] FindGameObjectInSphere( Vector3 position, float radius = 0.0001f )

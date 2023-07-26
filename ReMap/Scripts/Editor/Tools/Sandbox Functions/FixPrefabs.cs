@@ -7,7 +7,6 @@ namespace Sandbox
 {
     public class FixPrefabs
     {
-        [MenuItem("ReMap/Sandbox/Fix Prefabs", false, 100)]
         public static void FixPrefabsInit()
         {
             FixPrefabsInScene();

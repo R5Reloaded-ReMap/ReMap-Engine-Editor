@@ -284,7 +284,7 @@ namespace CodeViews
 
             if ( CodeViewsWindow.windowInstance != null && refreshCodeView ) CodeViewsWindow.Refresh();
 
-            #if ReMapDev
+            #if RMAPDEV
                 textInfo = File.ReadAllText( infoPath );
             #endif
 

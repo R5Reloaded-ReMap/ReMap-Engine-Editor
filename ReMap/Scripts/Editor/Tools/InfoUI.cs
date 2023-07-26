@@ -3,8 +3,7 @@ using UnityEditor;
 
 public class InfoUI : EditorWindow
 {
-    [MenuItem("ReMap/Info", false, 0)]
-    static void Init()
+    public static void Init()
     {
         InfoUI window = (InfoUI)EditorWindow.GetWindow(typeof(InfoUI), false, "ReMap Info");
         window.minSize = new Vector2(678, 310);

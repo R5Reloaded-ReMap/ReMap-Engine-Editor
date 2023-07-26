@@ -8,7 +8,6 @@ namespace AssetLibraryManager
     {
         private string textField = "Seperate labels with a space...";
 
-        [MenuItem("ReMap/Asset Library Manager/Labels Manager...", false,1080)]
         public static void ShowWindow()
         {
             GetWindow<LabelsManager>("Labels Manager");

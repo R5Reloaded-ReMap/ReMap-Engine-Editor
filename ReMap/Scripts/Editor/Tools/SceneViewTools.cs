@@ -11,13 +11,11 @@
         //SceneView.duringSceneGui += OnSceneGUI;
     }
 
-    [MenuItem("ReMap/Tools/SceneViewGUI/Enable")]
     public static void Enable()
     {
         SceneView.duringSceneGui += OnSceneGUI;
     }
  
-    [MenuItem("ReMap/Tools/SceneViewGUI/Disable")]
     public static void Disable()
     {
         SceneView.duringSceneGui -= OnSceneGUI;
@@ -31,7 +29,15 @@
         if (GUILayout.Button("Copy Map Code"))
             CopyMapCode(true,true);
         GUILayout.EndArea();
-        
+
+        // Get camera position
+        Vector3 cameraPosition = sceneview.camera.transform.position;
+
+        // Set text color to black
+        GUI.contentColor = Color.black;
+
+        // Display camera position
+        GUI.Label( new Rect( 10, 10, 300, 20 ), "Camera Position: " + Helper.BuildOrigin( cameraPosition ) );
  
         Handles.EndGUI();
     }

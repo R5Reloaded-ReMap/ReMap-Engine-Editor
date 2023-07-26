@@ -87,7 +87,7 @@ namespace ImportExport
         /// <summary>
         /// Get path string for a GameObject
         /// </summary>
-        public static string FindPathString( GameObject obj )
+        public static string FindPathString( GameObject obj, bool includeSelf = false )
         {
             List< GameObject > parents = new List< GameObject >();
             string path = "";
@@ -112,6 +112,8 @@ namespace ImportExport
                 }
                 else path = $"{path}/{ReplaceBadCharacters( parent.name )}";
             }
+
+            if ( includeSelf ) path = $"{path}/{ReplaceBadCharacters( obj.name )}";
 
             return path;
         }

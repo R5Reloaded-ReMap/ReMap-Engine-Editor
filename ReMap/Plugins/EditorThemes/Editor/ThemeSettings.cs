@@ -17,9 +17,7 @@ namespace ThemesPlugin
         public List<string> AllThemes = new List<string>();
         public string ThemeName;
         Vector2 scrollPosition;
-        
 
-        [MenuItem("ReMap/Themes", false, 1070)]
         public static void ShowWindow()
         {
             EditorWindow.GetWindow<ThemeSettings>("Theme Settings");

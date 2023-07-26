@@ -44,7 +44,7 @@ namespace CodeViews
 
             EditorGUILayout.BeginHorizontal();
                 CreateTextInfo( $"Results: {ResultIdx} {maxReach}", "" );
-                #if ReMapDev
+                #if RMAPDEV
                     GetEditorWindowSize( windowInstance );
                 #endif
             EditorGUILayout.EndHorizontal();

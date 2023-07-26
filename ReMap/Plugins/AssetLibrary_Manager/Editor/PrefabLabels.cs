@@ -19,8 +19,6 @@ namespace AssetLibraryManager
         public static int searchMethod, oldSearchMethod;
         string[] searchMode = { "ANY", "ALL" };
 
-
-        [MenuItem("ReMap/Asset Library Manager/Prefab Labels...", false, 1066)]
         public static void ShowWindow()
         {
             GetWindow<PrefabLabels>("Prefab Labels");

@@ -21,8 +21,6 @@ namespace AssetLibraryManager
 
         Texture2D placeHolder;
 
-
-        [MenuItem("ReMap/Asset Library Manager/Prefab Viewer...", false, 1067)]
         public static void ShowWindow()
         {
             GetWindow<PrefabViewer>("Prefab Viewer");

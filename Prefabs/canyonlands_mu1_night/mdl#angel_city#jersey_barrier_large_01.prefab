@@ -28,10 +28,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3910211861249056220}
+  - {fileID: 3781596096238764827}
   - {fileID: 3104858027787613986}
   m_Father: {fileID: 6455302222428271334}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3385291367341144933
 GameObject:
@@ -62,7 +62,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3104858027787613986}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3828470068993218859
 GameObject:
@@ -94,7 +94,39 @@ Transform:
   m_Children:
   - {fileID: 2145737870131142724}
   m_Father: {fileID: 8101885877282298928}
-  m_RootOrder: 1
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5070370457091206120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3781596096238764827}
+  m_Layer: 0
+  m_Name: jersey_barrier_large_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3781596096238764827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5070370457091206120}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5677228675003522910}
+  m_Father: {fileID: 8101885877282298928}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5131187839593424218
 GameObject:
@@ -125,8 +157,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3910211861249056220}
-  m_RootOrder: 0
+  m_Father: {fileID: 3781596096238764827}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8665354091953750021
 SkinnedMeshRenderer:
@@ -182,38 +214,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0014648438, y: 0, z: 18.638676}
     m_Extent: {x: 64.15381, y: 18.9668, z: 19.24805}
   m_DirtyAABB: 0
---- !u!1 &6511345282743226451
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3910211861249056220}
-  m_Layer: 0
-  m_Name: jersey_barrier_large_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3910211861249056220
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6511345282743226451}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5677228675003522910}
-  m_Father: {fileID: 8101885877282298928}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7813479628402924946
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 8101885877282298928}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8766807082777587645
 MonoBehaviour:
@@ -263,9 +263,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-4272141046843793798
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 37.93364, y: 38.496117, z: 128.30766}
-  m_Center: {x: 0, y: 18.63868, z: -0.0014724731}
+  m_Size: {x: 37.933628, y: 38.49611, z: 128.30763}
+  m_Center: {x: 0.0000019073486, y: 18.638678, z: -0.0014648438}

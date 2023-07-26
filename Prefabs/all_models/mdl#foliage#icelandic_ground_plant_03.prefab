@@ -29,7 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8748767166949685933}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2482015050991859425
 GameObject:
@@ -61,7 +61,40 @@ Transform:
   m_Children:
   - {fileID: 350352760489924190}
   m_Father: {fileID: 6679062240107079593}
-  m_RootOrder: 1
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3226070518462699163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2874624505960509176}
+  m_Layer: 0
+  m_Name: icelandic_ground_plant_03_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2874624505960509176
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3226070518462699163}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5190833098161559973}
+  - {fileID: 9198933004027711759}
+  m_Father: {fileID: 6679062240107079593}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3305812644069613300
 GameObject:
@@ -92,8 +125,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6108427051006294231}
-  m_RootOrder: 0
+  m_Father: {fileID: 2874624505960509176}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8202068170166275451
 SkinnedMeshRenderer:
@@ -177,10 +210,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6108427051006294231}
+  - {fileID: 2874624505960509176}
   - {fileID: 8748767166949685933}
   m_Father: {fileID: 6918660650546184798}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5961822314520871260
 GameObject:
@@ -214,7 +247,7 @@ Transform:
   m_Children:
   - {fileID: 6679062240107079593}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5395887318733187980
 MonoBehaviour:
@@ -231,9 +264,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &696265461000319455
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -253,8 +284,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 37.32229, y: 35.44436, z: 33.95314}
-  m_Center: {x: 1.0507812, y: 16.676277, z: -1.010746}
+  m_Size: {x: 37.32229, y: 35.44435, z: 33.953133}
+  m_Center: {x: 1.0507832, y: 16.676275, z: -1.0107422}
 --- !u!1 &6780385920422768837
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,8 +315,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6108427051006294231}
-  m_RootOrder: 1
+  m_Father: {fileID: 2874624505960509176}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6419947781024686656
 SkinnedMeshRenderer:
@@ -341,36 +372,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.7421875, y: 1.0507812, z: 15.655277}
     m_Extent: {x: 16.708008, y: 18.661137, z: 8.941408}
   m_DirtyAABB: 0
---- !u!1 &8085161321612609908
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6108427051006294231}
-  m_Layer: 0
-  m_Name: icelandic_ground_plant_03_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6108427051006294231
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085161321612609908}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5190833098161559973}
-  - {fileID: 9198933004027711759}
-  m_Father: {fileID: 6679062240107079593}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

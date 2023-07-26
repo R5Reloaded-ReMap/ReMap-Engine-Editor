@@ -33,6 +33,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -49,33 +53,33 @@ namespace Build
                         break;
 
                     case BuildType.EntFile:
-                        code.Append(  "{\n" );
-                        code.Append( $"\"teamnumber\" \"0\"\n" );
-                        code.Append( $"\"phase_9\" \"0\"\n" );
-                        code.Append( $"\"phase_8\" \"0\"\n" );
-                        code.Append( $"\"phase_7\" \"0\"\n" );
-                        code.Append( $"\"phase_6\" \"0\"\n" );
-                        code.Append( $"\"phase_5\" \"0\"\n" );
-                        code.Append( $"\"phase_4\" \"0\"\n" );
-                        code.Append( $"\"phase_3\" \"0\"\n" );
-                        code.Append( $"\"phase_2\" \"0\"\n" );
-                        code.Append( $"\"phase_1\" \"0\"\n" );
-                        code.Append( $"\"model\" \"mdl/dev/mp_spawn.rmdl\"\n" );
-                        code.Append( $"\"gamemode_tdm\" \"1\"\n" );
-                        code.Append( $"\"gamemode_fw\" \"0\"\n" );
-                        code.Append( $"\"gamemode_freelance\" \"0\"\n" );
-                        code.Append( $"\"gamemode_ffa\" \"1\"\n" );
-                        code.Append( $"\"gamemode_fd\" \"1\"\n" );
-                        code.Append( $"\"gamemode_ctf\" \"1\"\n" );
-                        code.Append( $"\"gamemode_cp\" \"1\"\n" );
-                        code.Append( $"\"gamemode_at\" \"1\"\n" );
-                        code.Append( $"\"control_teamnumber\" \"-1\"\n" );
-                        code.Append( $"\"scale\" \"1\"\n" );
-                        code.Append( $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"\n" );
-                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n" );
-                        code.Append( $"\"link_guid\" \"{Helper.GetRandomGUIDForEnt()}\"\n" );
-                        code.Append( $"\"classname\" \"info_spawnpoint_human\"\n" );
-                        code.Append(  "}\n" );
+                        AppendCode( ref code, "{" );
+                        AppendCode( ref code, $"\"teamnumber\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_9\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_8\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_7\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_6\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_5\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_4\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_3\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_2\" \"0\"" );
+                        AppendCode( ref code, $"\"phase_1\" \"0\"" );
+                        AppendCode( ref code, $"\"model\" \"mdl/dev/mp_spawn.rmdl\"" );
+                        AppendCode( ref code, $"\"gamemode_tdm\" \"1\"" );
+                        AppendCode( ref code, $"\"gamemode_fw\" \"0\"" );
+                        AppendCode( ref code, $"\"gamemode_freelance\" \"0\"" );
+                        AppendCode( ref code, $"\"gamemode_ffa\" \"1\"" );
+                        AppendCode( ref code, $"\"gamemode_fd\" \"1\"" );
+                        AppendCode( ref code, $"\"gamemode_ctf\" \"1\"" );
+                        AppendCode( ref code, $"\"gamemode_cp\" \"1\"" );
+                        AppendCode( ref code, $"\"gamemode_at\" \"1\"" );
+                        AppendCode( ref code, $"\"control_teamnumber\" \"-1\"" );
+                        AppendCode( ref code, $"\"scale\" \"1\"" );
+                        AppendCode( ref code, $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"" );
+                        AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"" );
+                        AppendCode( ref code, $"\"link_guid\" \"{Helper.GetRandomGUIDForEnt()}\"" );
+                        AppendCode( ref code, $"\"classname\" \"info_spawnpoint_human\"" );
+                        AppendCode( ref code,  "}" );
                         break;
 
                     case BuildType.Precache:
@@ -84,6 +88,11 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+    
+                    case BuildType.LiveMap:
+                        // Remove 1 to the counter since we don't support this object for live map code
+                        Helper.RemoveSendedEntityCount();
                     break;
                 }
             }
@@ -105,10 +114,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

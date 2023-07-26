@@ -1,37 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2125229893617453933
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 210028333305908477}
-  m_Layer: 0
-  m_Name: playback_bridge_beam_01_cap_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &210028333305908477
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2125229893617453933}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5765883003459417683}
-  m_Father: {fileID: 5849630041771073320}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3332921328443699518
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +30,39 @@ Transform:
   m_Children:
   - {fileID: 7569458575515797495}
   m_Father: {fileID: 5849630041771073320}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3977108003280659767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7342859038025762332}
+  m_Layer: 0
+  m_Name: playback_bridge_beam_01_cap_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7342859038025762332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3977108003280659767}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5765883003459417683}
+  m_Father: {fileID: 5849630041771073320}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6038806730001469887
 GameObject:
@@ -93,7 +93,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 560364215512436999}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7515502489511154869
 GameObject:
@@ -124,8 +124,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 210028333305908477}
-  m_RootOrder: 0
+  m_Father: {fileID: 7342859038025762332}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7350991323753038368
 SkinnedMeshRenderer:
@@ -210,9 +210,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 560364215512436999}
-  - {fileID: 210028333305908477}
+  - {fileID: 7342859038025762332}
   m_Father: {fileID: 6865228943637752394}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8856028347579162246
 GameObject:
@@ -246,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 5849630041771073320}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &765520059228592459
 MonoBehaviour:
@@ -263,9 +263,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-4772249603182448537
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 35.64553, y: 4.447276, z: 38.47364}
+  m_Size: {x: 35.645527, y: 4.4472713, z: 38.47364}
   m_Center: {x: -0.067871094, y: -2.2236338, z: 0.00048828125}

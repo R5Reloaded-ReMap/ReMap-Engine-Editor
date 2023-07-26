@@ -1,37 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &259612863139993028
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7990730829457057209}
-  m_Layer: 0
-  m_Name: charm_rank_predator_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7990730829457057209
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 259612863139993028}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8137903396794414732}
-  m_Father: {fileID: 4164204879047137375}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &928477522911338218
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 4518955727896021038}
   m_Father: {fileID: 369653314207209815}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1320027729086700350
 GameObject:
@@ -94,7 +62,7 @@ Transform:
   m_Children:
   - {fileID: 5229531487362738186}
   m_Father: {fileID: 952711669842908718}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1793477646101346887
 GameObject:
@@ -125,8 +93,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7990730829457057209}
-  m_RootOrder: 0
+  m_Father: {fileID: 7923549153166638917}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6572330534526871983
 SkinnedMeshRenderer:
@@ -212,10 +180,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7990730829457057209}
+  - {fileID: 7923549153166638917}
   - {fileID: 952711669842908718}
   m_Father: {fileID: 7624858619164180488}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2715458627168418132
 GameObject:
@@ -247,7 +215,7 @@ Transform:
   m_Children:
   - {fileID: 369653314207209815}
   m_Father: {fileID: 4164204879047137375}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3053739722545766657
 GameObject:
@@ -279,7 +247,7 @@ Transform:
   m_Children:
   - {fileID: 2071803764231816751}
   m_Father: {fileID: 4518955727896021038}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3271973239756971738
 GameObject:
@@ -311,7 +279,7 @@ Transform:
   m_Children:
   - {fileID: 3213669420933408266}
   m_Father: {fileID: 5229531487362738186}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6475064405203516306
 GameObject:
@@ -345,7 +313,7 @@ Transform:
   m_Children:
   - {fileID: 4164204879047137375}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2943345155059486896
 MonoBehaviour:
@@ -362,9 +330,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-1624262812897842686
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -384,8 +350,40 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6201181, y: 1.2119149, z: 0.85253954}
-  m_Center: {x: -0.69775414, y: 0.00048846006, z: -0.4252931}
+  m_Size: {x: 1.6201181, y: 1.2119147, z: 0.85253936}
+  m_Center: {x: -0.69775414, y: 0.00048834085, z: -0.42529312}
+--- !u!1 &6998587525965952617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7923549153166638917}
+  m_Layer: 0
+  m_Name: charm_rank_predator_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7923549153166638917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6998587525965952617}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8137903396794414732}
+  m_Father: {fileID: 4164204879047137375}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7387670593879322043
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,5 +413,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3213669420933408266}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

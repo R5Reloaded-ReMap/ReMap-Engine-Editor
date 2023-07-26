@@ -7,104 +7,107 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-public class LegionRpakExporting : EditorWindow
+namespace LibrarySorter
 {
-    static string currentDirectory = Directory.GetCurrentDirectory().Replace("\\","/");
-    static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
-    static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
-    static string relativeRpakFile = LibrarySorterWindow.relativeRpakFile;
-
-    #if ReMapDev
-    [MenuItem("ReMap Dev Tools/Prefabs Management/Legion/Create All Rpak List", false, 100)]
-    public static async void RpakListInit()
+    public class LegionRpakExporting : EditorWindow
     {
-        await CreateAllRpakList();
-    }
-    #endif
+        static string currentDirectory = UnityInfo.currentDirectoryPath;
+        static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
+        static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
+        static string relativePathRpakManager = UnityInfo.relativePathRpakManager;
 
-    public static async Task CreateAllRpakList()
-    {
-        var path = EditorUtility.OpenFolderPanel("Rpak Folder", "", "");
-
-        List<string> rpakFiles = new List<string>();
-
-        foreach ( string rpakPath in Directory.GetFiles(path) )
+        #if ReMapDev
+        [MenuItem("ReMap Dev Tools/Prefabs Management/Legion/Create All Rpak List", false, 100)]
+        public static async void RpakListInit()
         {
-            if ( !IsValidRpakFile( rpakPath ) ) continue;
-
-            rpakFiles.Add( rpakPath );
+            await CreateAllRpakList();
         }
+        #endif
 
-        string[] rpakFilesValid = rpakFiles.ToArray();
-
-
-        float progress = 0.0f;
-
-        int fileIdx = 0; int fileTotalIdx = rpakFilesValid.Length;
-
-        foreach (string rpakPath in rpakFilesValid)
+        public static async Task CreateAllRpakList()
         {
-            string command = $"{currentDirectory}/{relativeLegionPlus}/LegionPlus.exe";
-            string arguments = $"--list \"{rpakPath.Replace("\\","/")}\" --loadmodels --fullpath --nologfile --overwrite";
+            var path = EditorUtility.OpenFolderPanel("Rpak Folder", "", "");
 
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.FileName = command;
-            startInfo.Arguments = arguments;
-            startInfo.UseShellExecute = false;
+            List<string> rpakFiles = new List<string>();
 
-            using (System.Diagnostics.Process process = new System.Diagnostics.Process())
+            foreach ( string rpakPath in Directory.GetFiles(path) )
             {
-                process.StartInfo = startInfo;
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
+                if ( !IsValidRpakFile( rpakPath ) ) continue;
 
-                // Wait for the process to exit
-                await Task.Run(() => process.WaitForExit());
-
-                // Update progress bar
-                progress += 1.0f / fileTotalIdx;
-                EditorUtility.DisplayProgressBar($"Parsing Rpak Files {fileIdx++}/{fileTotalIdx}", $"Processing {Path.GetFileName(rpakPath)}", progress);
+                rpakFiles.Add( rpakPath );
             }
 
-            string exportedFilePath = $"{currentDirectory}/{relativeLegionPlusExportedFiles}/lists/{Path.GetFileNameWithoutExtension(rpakPath)}.txt";
+            string[] rpakFilesValid = rpakFiles.ToArray();
 
-            if ( File.Exists( exportedFilePath ) )
+
+            float progress = 0.0f;
+
+            int fileIdx = 0; int fileTotalIdx = rpakFilesValid.Length;
+
+            foreach (string rpakPath in rpakFilesValid)
             {
-                string exportedFilePathMeta = $"{exportedFilePath}.meta";
-                if ( new FileInfo( exportedFilePath ).Length == 0 )
-                {
-                    File.Delete( exportedFilePath );
+                string command = $"{currentDirectory}/{relativeLegionPlus}/LegionPlus.exe";
+                string arguments = $"--list \"{rpakPath.Replace("\\","/")}\" --loadmodels --fullpath --nologfile --overwrite";
 
-                    if ( File.Exists( exportedFilePathMeta ) ) File.Delete( exportedFilePathMeta );
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                startInfo.FileName = command;
+                startInfo.Arguments = arguments;
+                startInfo.UseShellExecute = false;
+
+                using (System.Diagnostics.Process process = new System.Diagnostics.Process())
+                {
+                    process.StartInfo = startInfo;
+                    process.StartInfo.CreateNoWindow = true;
+                    process.Start();
+
+                    // Wait for the process to exit
+                    await Task.Run(() => process.WaitForExit());
+
+                    // Update progress bar
+                    progress += 1.0f / fileTotalIdx;
+                    EditorUtility.DisplayProgressBar($"Parsing Rpak Files {fileIdx++}/{fileTotalIdx}", $"Processing {Path.GetFileName(rpakPath)}", progress);
                 }
-                else
+
+                string exportedFilePath = $"{currentDirectory}/{relativeLegionPlusExportedFiles}/lists/{Path.GetFileNameWithoutExtension(rpakPath)}.txt";
+
+                if ( File.Exists( exportedFilePath ) )
                 {
-                    // [TODO] merge in one file multiple rpaks ( rpak, rpak(01), rpak(02) ) either by a function
-                    // or most simple would be that Legion supports multiple opening by command argument
+                    string exportedFilePathMeta = $"{exportedFilePath}.meta";
+                    if ( new FileInfo( exportedFilePath ).Length == 0 )
+                    {
+                        File.Delete( exportedFilePath );
 
-                    //if ( Path.GetFileNameWithoutExtension(rpakPath).Contains("(") )
+                        if ( File.Exists( exportedFilePathMeta ) ) File.Delete( exportedFilePathMeta );
+                    }
+                    else
+                    {
+                        // [TODO] merge in one file multiple rpaks ( rpak, rpak(01), rpak(02) ) either by a function
+                        // or most simple would be that Legion supports multiple opening by command argument
 
-                    File.Move( $"{exportedFilePath}", $"{relativeRpakFile}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt" );
-                    if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{relativeRpakFile}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
+                        //if ( Path.GetFileNameWithoutExtension(rpakPath).Contains("(") )
+
+                        File.Move( $"{exportedFilePath}", $"{relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt" );
+                        if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
+                    }
                 }
             }
+
+            EditorUtility.ClearProgressBar();
         }
 
-        EditorUtility.ClearProgressBar();
-    }
+        public static bool IsValidRpakFile( string rpakPath )
+        {
+            string fileName = Path.GetFileName(rpakPath);
 
-    public static bool IsValidRpakFile( string rpakPath )
-    {
-        string fileName = Path.GetFileName(rpakPath);
+            if ( Path.GetExtension(fileName) != ".rpak" )    return false;
 
-        if ( Path.GetExtension(fileName) != ".rpak" )    return false;
+            if ( fileName.Contains( "charm_" ) )             return false;
+            if ( fileName.Contains( "gcard_" ) )             return false;
+            if ( fileName.Contains( "loadscreen" ) )         return false;
+            if ( fileName.Contains( "material_stickers_" ) ) return false;
+            if ( fileName.Contains( "subtitles_" ) )         return false;
 
-        if ( fileName.Contains( "charm_" ) )             return false;
-        if ( fileName.Contains( "gcard_" ) )             return false;
-        if ( fileName.Contains( "loadscreen" ) )         return false;
-        if ( fileName.Contains( "material_stickers_" ) ) return false;
-        if ( fileName.Contains( "subtitles_" ) )         return false;
-
-        return true;
+            return true;
+        }
     }
 }

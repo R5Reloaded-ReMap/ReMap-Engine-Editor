@@ -29,7 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3632874335601274794}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &516722637853903773
 GameObject:
@@ -59,10 +59,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2706992679912871332}
+  - {fileID: 7320400793495160478}
   - {fileID: 3632874335601274794}
   m_Father: {fileID: 5462960919612883000}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5390759239624319224
 GameObject:
@@ -93,8 +93,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2706992679912871332}
-  m_RootOrder: 0
+  m_Father: {fileID: 7320400793495160478}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4921306119772709894
 SkinnedMeshRenderer:
@@ -150,38 +150,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: -0.00048828125, z: 23.977545}
     m_Extent: {x: 243.28516, y: 266.68805, z: 23.977545}
   m_DirtyAABB: 0
---- !u!1 &7274764363819416325
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2706992679912871332}
-  m_Layer: 0
-  m_Name: canyonlands_modular_crater_03_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2706992679912871332
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7274764363819416325}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2852915181248827742}
-  m_Father: {fileID: 7268940433179540293}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7437548294707116637
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,7 +180,39 @@ Transform:
   m_Children:
   - {fileID: 8063598977570640421}
   m_Father: {fileID: 7268940433179540293}
-  m_RootOrder: 1
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8060234147114255856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7320400793495160478}
+  m_Layer: 0
+  m_Name: canyonlands_modular_crater_03_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7320400793495160478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8060234147114255856}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2852915181248827742}
+  m_Father: {fileID: 7268940433179540293}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8827857827906469402
 GameObject:
@@ -246,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 7268940433179540293}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5152101508124435229
 MonoBehaviour:
@@ -263,9 +263,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-8889592608740908318
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 533.37634, y: 47.955223, z: 486.57043}
-  m_Center: {x: -0.00048828125, y: 23.977549, z: 0}
+  m_Size: {x: 533.3763, y: 47.955154, z: 486.57043}
+  m_Center: {x: -0.00048828125, y: 23.977545, z: 0}

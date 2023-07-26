@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &960622356661165158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5701228047924746968}
+  m_Layer: 0
+  m_Name: foliage_ground_plants_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5701228047924746968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960622356661165158}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2573136818989030980}
+  m_Father: {fileID: 5893045064268516355}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1344260398288167648
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,10 +60,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2626158453246952874}
+  - {fileID: 5701228047924746968}
   - {fileID: 3052239092175227792}
   m_Father: {fileID: 6189183860206553811}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4582315591230452251
 GameObject:
@@ -62,8 +94,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2626158453246952874}
-  m_RootOrder: 0
+  m_Father: {fileID: 5701228047924746968}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4934477249074691287
 SkinnedMeshRenderer:
@@ -119,38 +151,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -0.00048828125, z: 2.4389653}
     m_Extent: {x: 16.046387, y: 18.417484, z: 2.924317}
   m_DirtyAABB: 0
---- !u!1 &5277910318989712605
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2626158453246952874}
-  m_Layer: 0
-  m_Name: foliage_ground_plants_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2626158453246952874
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5277910318989712605}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2573136818989030980}
-  m_Father: {fileID: 5893045064268516355}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6929825009926813682
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +180,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3052239092175227792}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7177010670622015425
 GameObject:
@@ -214,7 +214,7 @@ Transform:
   m_Children:
   - {fileID: 5893045064268516355}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8101013579187757014
 MonoBehaviour:
@@ -231,9 +231,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &2426220989958081973
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -253,8 +251,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 36.834984, y: 5.8486443, z: 32.09278}
-  m_Center: {x: -0.00048828125, y: 2.438966, z: 0.00048828125}
+  m_Size: {x: 36.83498, y: 5.8486385, z: 32.09278}
+  m_Center: {x: -0.00048828125, y: 2.4389656, z: 0.00048828125}
 --- !u!1 &8079266995108057407
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ Transform:
   m_Children:
   - {fileID: 1096699389356175092}
   m_Father: {fileID: 5893045064268516355}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -29,8 +29,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6042146440707159362}
-  m_RootOrder: 0
+  m_Father: {fileID: 8841164128134388864}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4011343642094505870
 SkinnedMeshRenderer:
@@ -86,6 +86,38 @@ SkinnedMeshRenderer:
     m_Center: {x: -3.477539, y: -0.00048828125, z: 0.37890625}
     m_Extent: {x: 3.477539, y: 2.5952156, z: 4.1210947}
   m_DirtyAABB: 0
+--- !u!1 &3013178643434009570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8841164128134388864}
+  m_Layer: 0
+  m_Name: lagoon_building_post_hook_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8841164128134388864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3013178643434009570}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6100122102231909576}
+  m_Father: {fileID: 4677841448802615636}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5072797602460990302
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +147,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7172279579002950466}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5240712224698972722
 GameObject:
@@ -147,7 +179,7 @@ Transform:
   m_Children:
   - {fileID: 4896295848983502941}
   m_Father: {fileID: 4677841448802615636}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6827222910335510757
 GameObject:
@@ -178,9 +210,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7172279579002950466}
-  - {fileID: 6042146440707159362}
+  - {fileID: 8841164128134388864}
   m_Father: {fileID: 1457244187887796731}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8814599335693516731
 GameObject:
@@ -214,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 4677841448802615636}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6719706274306824053
 MonoBehaviour:
@@ -231,9 +263,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &8628752188686622397
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -253,37 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.190434, y: 8.242192, z: 6.9550815}
-  m_Center: {x: -0.000487566, y: 0.37890625, z: -3.4775398}
---- !u!1 &9107458813235743760
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6042146440707159362}
-  m_Layer: 0
-  m_Name: lagoon_building_post_hook_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6042146440707159362
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9107458813235743760}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6100122102231909576}
-  m_Father: {fileID: 4677841448802615636}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 5.1904345, y: 8.242191, z: 6.955079}
+  m_Center: {x: -0.0004878044, y: 0.37890625, z: -3.4775395}

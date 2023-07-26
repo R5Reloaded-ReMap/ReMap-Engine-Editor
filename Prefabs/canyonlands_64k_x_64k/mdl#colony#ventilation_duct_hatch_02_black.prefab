@@ -29,8 +29,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6961463511960827260}
-  m_RootOrder: 0
+  m_Father: {fileID: 3271582237154793987}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7328628715287755116
 SkinnedMeshRenderer:
@@ -86,6 +86,38 @@ SkinnedMeshRenderer:
     m_Center: {x: 16, y: -0.00048828125, z: 5.697267}
     m_Extent: {x: 16, y: 31.99952, z: 5.697267}
   m_DirtyAABB: 0
+--- !u!1 &1351510765989212653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3271582237154793987}
+  m_Layer: 0
+  m_Name: ventilation_duct_hatch_02_black_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3271582237154793987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351510765989212653}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6271047520979164343}
+  m_Father: {fileID: 9034559768545614534}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1997066661108006124
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +147,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8377654420019603562}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6117561216473614203
 GameObject:
@@ -146,9 +178,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8377654420019603562}
-  - {fileID: 6961463511960827260}
+  - {fileID: 3271582237154793987}
   m_Father: {fileID: 1449660833960871803}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8187785922783706298
 GameObject:
@@ -180,7 +212,7 @@ Transform:
   m_Children:
   - {fileID: 5724112206386162821}
   m_Father: {fileID: 9034559768545614534}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8285381572146355569
 GameObject:
@@ -214,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 9034559768545614534}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2551358220594109825
 MonoBehaviour:
@@ -231,9 +263,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-1916855821662022699
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -253,37 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 63.99906, y: 11.394552, z: 32.00001}
-  m_Center: {x: -0.00049209595, y: 5.6972685, z: 16.000002}
---- !u!1 &9153352847955298235
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6961463511960827260}
-  m_Layer: 0
-  m_Name: ventilation_duct_hatch_02_black_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6961463511960827260
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9153352847955298235}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6271047520979164343}
-  m_Father: {fileID: 9034559768545614534}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 63.999058, y: 11.394543, z: 32.00001}
+  m_Center: {x: -0.0004901886, y: 5.6972675, z: 16.000002}

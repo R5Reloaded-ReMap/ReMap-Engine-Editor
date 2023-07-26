@@ -29,7 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 170148498837940881}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &729994484857829794
 GameObject:
@@ -60,9 +60,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 170148498837940881}
-  - {fileID: 3663871317201589908}
+  - {fileID: 389277594921430790}
   m_Father: {fileID: 3549996840790573418}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3505626816000867932
 GameObject:
@@ -94,7 +94,7 @@ Transform:
   m_Children:
   - {fileID: 2092460800311120528}
   m_Father: {fileID: 6355731391148614822}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6211818723613635302
 GameObject:
@@ -125,8 +125,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3663871317201589908}
-  m_RootOrder: 0
+  m_Father: {fileID: 389277594921430790}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &9034601969391996055
 SkinnedMeshRenderer:
@@ -182,6 +182,38 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.8354492, y: 0.0029296875, z: 1.1416018}
     m_Extent: {x: 65.19873, y: 65.087906, z: 2.1533208}
   m_DirtyAABB: 0
+--- !u!1 &6305801489895343647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 389277594921430790}
+  m_Layer: 0
+  m_Name: landing_mat_metal_03_large_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &389277594921430790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305801489895343647}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6435367267544106596}
+  m_Father: {fileID: 6355731391148614822}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7179595117481505138
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +246,7 @@ Transform:
   m_Children:
   - {fileID: 6355731391148614822}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1302095799547485354
 MonoBehaviour:
@@ -231,9 +263,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-2214686189395936135
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -253,37 +283,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 130.17587, y: 4.3066735, z: 130.39749}
-  m_Center: {x: 0.0029296875, y: 1.141602, z: -0.8354492}
---- !u!1 &8643993251035152495
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3663871317201589908}
-  m_Layer: 0
-  m_Name: landing_mat_metal_03_large_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3663871317201589908
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8643993251035152495}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6435367267544106596}
-  m_Father: {fileID: 6355731391148614822}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 130.17586, y: 4.306658, z: 130.39749}
+  m_Center: {x: 0.0029296875, y: 1.1416019, z: -0.8354492}

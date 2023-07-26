@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &332386527662292685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9145678177016823328}
+  m_Layer: 0
+  m_Name: pilot_light_ged_m_head_gib_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9145678177016823328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332386527662292685}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5675777852491176680}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2923309919577444777
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,9 +60,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5675777852491176680}
-  - {fileID: 217081309797270318}
+  - {fileID: 643031753701621498}
   m_Father: {fileID: 7928050737810380076}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4391670798177910499
 GameObject:
@@ -62,8 +93,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 217081309797270318}
-  m_RootOrder: 0
+  m_Father: {fileID: 643031753701621498}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4062722322440994596
 SkinnedMeshRenderer:
@@ -112,9 +143,9 @@ SkinnedMeshRenderer:
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -3900071536888142803, guid: d5639d112fbaebe4e91a2102dd548967, type: 3}
   m_Bones:
-  - {fileID: 7533887807389952936}
+  - {fileID: 9145678177016823328}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 7533887807389952936}
+  m_RootBone: {fileID: 9145678177016823328}
   m_AABB:
     m_Center: {x: 0.7294922, y: 5.2314467, z: -0.609375}
     m_Extent: {x: 4.373047, y: 6.8212905, z: 6.583986}
@@ -147,41 +178,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7533887807389952936}
+  - {fileID: 9145678177016823328}
   m_Father: {fileID: 6216200688498752983}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6426078468654737535
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 217081309797270318}
-  m_Layer: 0
-  m_Name: pilot_light_ged_m_head_gib_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &217081309797270318
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6426078468654737535}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4436653695487660840}
-  m_Father: {fileID: 6216200688498752983}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7592464988981238954
 GameObject:
@@ -215,7 +214,7 @@ Transform:
   m_Children:
   - {fileID: 6216200688498752983}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3745079158297349951
 MonoBehaviour:
@@ -232,9 +231,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-4909277581002225538
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -254,9 +251,9 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 13.642586, y: 13.167977, z: 8.7460985}
-  m_Center: {x: 5.231448, y: -0.60937643, z: 0.7294924}
---- !u!1 &8185348647046303021
+  m_Size: {x: 13.642588, y: 13.167975, z: 8.746097}
+  m_Center: {x: 5.2314487, y: -0.6093755, z: 0.7294929}
+--- !u!1 &8728495161852069925
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,7 +261,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7533887807389952936}
+  - component: {fileID: 643031753701621498}
   m_Layer: 0
   m_Name: pilot_light_ged_m_head_gib_LOD0
   m_TagString: Untagged
@@ -272,18 +269,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7533887807389952936
+--- !u!4 &643031753701621498
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8185348647046303021}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 8728495161852069925}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5675777852491176680}
-  m_RootOrder: 0
+  m_Children:
+  - {fileID: 4436653695487660840}
+  m_Father: {fileID: 6216200688498752983}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

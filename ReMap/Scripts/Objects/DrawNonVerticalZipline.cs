@@ -4,17 +4,19 @@ using System.Diagnostics;
 
 public class DrawNonVerticalZipline : MonoBehaviour
 {
+    /*
     [Header("Developer options, do not modify:")]
-    public bool ShowDevelopersOptions = false;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform zipline;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform fence_post_start;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform arm_start;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform fence_post_end;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform arm_end;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_start;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_end;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform helperPlacement_start;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform helperPlacement_end;
+    [ HideInInspector ] public bool ShowDevelopersOptions = false;
+    */
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform zipline;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform fence_post_start;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform arm_start;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform fence_post_end;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform arm_end;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform rope_start;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform rope_end;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform helperPlacement_start;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform helperPlacement_end;
 
     [Header("Unity Settings:")]
     public bool ShowZipline = true;

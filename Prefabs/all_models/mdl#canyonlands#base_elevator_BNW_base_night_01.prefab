@@ -1,5 +1,39 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3652037597734297567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5765271254576461542}
+  m_Layer: 0
+  m_Name: base_elevator_BNW_base_night_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5765271254576461542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3652037597734297567}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8105496502789825628}
+  - {fileID: 6843736650314418332}
+  - {fileID: 6811531655498077803}
+  m_Father: {fileID: 3424028493176127698}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5045298054898860220
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +64,7 @@ Transform:
   m_Children:
   - {fileID: 1125660784597434452}
   m_Father: {fileID: 3424028493176127698}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5228729535895104694
 GameObject:
@@ -64,7 +98,7 @@ Transform:
   m_Children:
   - {fileID: 3424028493176127698}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6835696569015396862
 MonoBehaviour:
@@ -81,9 +115,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-3283102932192083369
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -103,42 +135,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 543.25134, y: 13.326307, z: 543.256}
-  m_Center: {x: 0.0073242188, y: 6.663089, z: -0.0048828125}
---- !u!1 &5491407233757859635
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5049753361991076141}
-  m_Layer: 0
-  m_Name: base_elevator_BNW_base_night_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5049753361991076141
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5491407233757859635}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8105496502789825628}
-  - {fileID: 6843736650314418332}
-  - {fileID: 6811531655498077803}
-  m_Father: {fileID: 3424028493176127698}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 543.2513, y: 13.3262415, z: 543.256}
+  m_Center: {x: 0.0073242188, y: 6.6630883, z: -0.0048828125}
 --- !u!1 &6596773631274207823
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,10 +165,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5049753361991076141}
+  - {fileID: 5765271254576461542}
   - {fileID: 8955041810054586514}
   m_Father: {fileID: 122955563933559992}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8000065401236602656
 GameObject:
@@ -201,8 +199,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5049753361991076141}
-  m_RootOrder: 1
+  m_Father: {fileID: 5765271254576461542}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &728947621427966755
 SkinnedMeshRenderer:
@@ -287,7 +285,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8955041810054586514}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8344107322965150571
 GameObject:
@@ -318,8 +316,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5049753361991076141}
-  m_RootOrder: 2
+  m_Father: {fileID: 5765271254576461542}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &891584966565642430
 SkinnedMeshRenderer:
@@ -404,8 +402,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5049753361991076141}
-  m_RootOrder: 0
+  m_Father: {fileID: 5765271254576461542}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8566285668768938002
 SkinnedMeshRenderer:

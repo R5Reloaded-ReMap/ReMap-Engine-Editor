@@ -29,9 +29,42 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4337195321587257424}
-  - {fileID: 3751468335790819803}
+  - {fileID: 8713180213380999512}
   m_Father: {fileID: 2821216767320847482}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1851641605652201739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8713180213380999512}
+  m_Layer: 0
+  m_Name: loot_bin_01_static_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8713180213380999512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851641605652201739}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1821983041865811919}
+  - {fileID: 8097490211023668427}
+  m_Father: {fileID: 2287752062501186086}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6043032975761605950
 GameObject:
@@ -63,40 +96,7 @@ Transform:
   m_Children:
   - {fileID: 5636103661163252909}
   m_Father: {fileID: 2287752062501186086}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6277546418806605545
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3751468335790819803}
-  m_Layer: 0
-  m_Name: loot_bin_01_static_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3751468335790819803
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6277546418806605545}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1821983041865811919}
-  - {fileID: 8097490211023668427}
-  m_Father: {fileID: 2287752062501186086}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6522814100500400454
 GameObject:
@@ -127,7 +127,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4337195321587257424}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7012805609249093190
 GameObject:
@@ -158,8 +158,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3751468335790819803}
-  m_RootOrder: 0
+  m_Father: {fileID: 8713180213380999512}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3422198911261155048
 SkinnedMeshRenderer:
@@ -244,8 +244,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3751468335790819803}
-  m_RootOrder: 1
+  m_Father: {fileID: 8713180213380999512}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7414285972501180351
 SkinnedMeshRenderer:
@@ -333,7 +333,7 @@ Transform:
   m_Children:
   - {fileID: 2287752062501186086}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3757618740740813924
 MonoBehaviour:
@@ -350,9 +350,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &2694128346626289749
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -372,5 +370,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 158.09969, y: 64.796936, z: 68.34183}
-  m_Center: {x: 0, y: 31.992199, z: -1.8115311}
+  m_Size: {x: 158.0997, y: 64.79691, z: 68.34182}
+  m_Center: {x: 0.0000076293945, y: 31.992199, z: -1.8115234}

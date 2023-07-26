@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 2272707742124917500}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2713944589209659109
 MonoBehaviour:
@@ -49,9 +49,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-1846937307661429498
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,8 +69,40 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.6953754, y: 17.854502, z: 255.98444}
-  m_Center: {x: 0.000030517578, y: 4.489748, z: -127.99124}
+  m_Size: {x: 4.695347, y: 17.854498, z: 255.9844}
+  m_Center: {x: 0.000015735626, y: 4.4897475, z: -127.99123}
+--- !u!1 &2484412342084884656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2958251727443818193}
+  m_Layer: 0
+  m_Name: sewer_wire_black_set_thin_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2958251727443818193
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2484412342084884656}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5917447689197757145}
+  m_Father: {fileID: 2272707742124917500}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3620606419436509925
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +133,7 @@ Transform:
   m_Children:
   - {fileID: 7274919692164322125}
   m_Father: {fileID: 2272707742124917500}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5067683696829238165
 GameObject:
@@ -134,8 +164,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4387414699103878662}
-  m_RootOrder: 0
+  m_Father: {fileID: 2958251727443818193}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2674858988845392385
 SkinnedMeshRenderer:
@@ -191,38 +221,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -127.99121, y: 0, z: 4.489747}
     m_Extent: {x: 127.99219, y: 2.3476567, z: 8.927248}
   m_DirtyAABB: 0
---- !u!1 &8043137995369906893
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4387414699103878662}
-  m_Layer: 0
-  m_Name: sewer_wire_black_set_thin_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4387414699103878662
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8043137995369906893}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5917447689197757145}
-  m_Father: {fileID: 2272707742124917500}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8909470984583059230
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,9 +250,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4862159116874110021}
-  - {fileID: 4387414699103878662}
+  - {fileID: 2958251727443818193}
   m_Father: {fileID: 2844859067315658379}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9195380027357553742
 GameObject:
@@ -285,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4862159116874110021}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

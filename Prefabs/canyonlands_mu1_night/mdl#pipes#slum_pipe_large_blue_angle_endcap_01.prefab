@@ -30,7 +30,40 @@ Transform:
   m_Children:
   - {fileID: 1207491789909647730}
   m_Father: {fileID: 3148627989069818741}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &964488185504850247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5090853087892735423}
+  m_Layer: 0
+  m_Name: slum_pipe_large_blue_angle_endcap_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5090853087892735423
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964488185504850247}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 886119501149559018}
+  - {fileID: 1344281487752119540}
+  m_Father: {fileID: 3148627989069818741}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1588325005523222670
 GameObject:
@@ -61,8 +94,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8219237168537747433}
-  m_RootOrder: 1
+  m_Father: {fileID: 5090853087892735423}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5420666128544136070
 SkinnedMeshRenderer:
@@ -147,9 +180,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2268082247623284752}
-  - {fileID: 8219237168537747433}
+  - {fileID: 5090853087892735423}
   m_Father: {fileID: 3650319923777451477}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3859721262963045072
 GameObject:
@@ -180,8 +213,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8219237168537747433}
-  m_RootOrder: 0
+  m_Father: {fileID: 5090853087892735423}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8671264393292169581
 SkinnedMeshRenderer:
@@ -237,39 +270,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0014648438, y: -0.00048828125, z: 71.70412}
     m_Extent: {x: 57.00537, y: 57.005386, z: 71.70509}
   m_DirtyAABB: 0
---- !u!1 &5973335827272720531
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8219237168537747433}
-  m_Layer: 0
-  m_Name: slum_pipe_large_blue_angle_endcap_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8219237168537747433
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5973335827272720531}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 886119501149559018}
-  - {fileID: 1344281487752119540}
-  m_Father: {fileID: 3148627989069818741}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7794980339686705699
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,7 +302,7 @@ Transform:
   m_Children:
   - {fileID: 3148627989069818741}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7190106691047064248
 MonoBehaviour:
@@ -319,9 +319,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &1605239311958683683
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -341,8 +339,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 114.01083, y: 373.68768, z: 278.10168}
-  m_Center: {x: -0.00048828125, y: 186.84285, z: 82.04689}
+  m_Size: {x: 114.01083, y: 373.68762, z: 278.10162}
+  m_Center: {x: -0.00048065186, y: 186.84283, z: 82.04689}
 --- !u!1 &8340915314152699918
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,5 +370,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2268082247623284752}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

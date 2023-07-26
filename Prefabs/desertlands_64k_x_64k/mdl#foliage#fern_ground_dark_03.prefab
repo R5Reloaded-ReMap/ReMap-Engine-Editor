@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 5347996145981525688}
   m_Father: {fileID: 6306251288225992131}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2101387814998982903
 GameObject:
@@ -61,8 +61,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4061021010315150986}
-  m_RootOrder: 0
+  m_Father: {fileID: 9015835838478153922}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6400954392069566222
 SkinnedMeshRenderer:
@@ -118,6 +118,38 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.6303711, y: -0.016113281, z: 11.95557}
     m_Extent: {x: 22.11084, y: 22.28858, z: 14.809086}
   m_DirtyAABB: 0
+--- !u!1 &3959708190719093458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9015835838478153922}
+  m_Layer: 0
+  m_Name: fern_ground_dark_03_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9015835838478153922
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959708190719093458}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7876584601372982019}
+  m_Father: {fileID: 6306251288225992131}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4183659767810291798
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,42 +178,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4061021010315150986}
+  - {fileID: 9015835838478153922}
   - {fileID: 6308565769116791492}
   m_Father: {fileID: 7988621136792424220}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4288542569544751056
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4061021010315150986}
-  m_Layer: 0
-  m_Name: fern_ground_dark_03_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4061021010315150986
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4288542569544751056}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7876584601372982019}
-  m_Father: {fileID: 6306251288225992131}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4966829925914197741
 GameObject:
@@ -215,7 +215,7 @@ Transform:
   m_Children:
   - {fileID: 6306251288225992131}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &484157660578600639
 MonoBehaviour:
@@ -232,9 +232,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &2159333870956998551
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -254,8 +252,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 44.577183, y: 29.61819, z: 44.2217}
-  m_Center: {x: -0.016113281, y: 11.955573, z: -0.6303749}
+  m_Size: {x: 44.57718, y: 29.618181, z: 44.221687}
+  m_Center: {x: -0.016111374, y: 11.955571, z: -0.6303711}
 --- !u!1 &7132704578364107661
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6308565769116791492}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

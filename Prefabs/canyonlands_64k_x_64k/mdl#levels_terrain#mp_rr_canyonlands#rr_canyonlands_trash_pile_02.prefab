@@ -29,7 +29,40 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7875959885702121199}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1704799345750078750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2656689375038952545}
+  m_Layer: 0
+  m_Name: rr_canyonlands_trash_pile_02_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2656689375038952545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704799345750078750}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1594144699923653085}
+  - {fileID: 8437882531221440564}
+  m_Father: {fileID: 5692605315941912679}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2608127346415268472
 GameObject:
@@ -60,9 +93,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7875959885702121199}
-  - {fileID: 242073125268822604}
+  - {fileID: 2656689375038952545}
   m_Father: {fileID: 5225212479315126703}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2819278938784736637
 GameObject:
@@ -93,8 +126,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 242073125268822604}
-  m_RootOrder: 0
+  m_Father: {fileID: 2656689375038952545}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2898336235907844036
 SkinnedMeshRenderer:
@@ -150,39 +183,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -1.3193359, y: -4.090332, z: 40.317394}
     m_Extent: {x: 254.29785, y: 306.9488, z: 40.317394}
   m_DirtyAABB: 0
---- !u!1 &4017247147397950749
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 242073125268822604}
-  m_Layer: 0
-  m_Name: rr_canyonlands_trash_pile_02_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &242073125268822604
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4017247147397950749}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1594144699923653085}
-  - {fileID: 8437882531221440564}
-  m_Father: {fileID: 5692605315941912679}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4524580214497709110
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,8 +212,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 242073125268822604}
-  m_RootOrder: 1
+  m_Father: {fileID: 2656689375038952545}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4251473790207454089
 SkinnedMeshRenderer:
@@ -301,7 +301,7 @@ Transform:
   m_Children:
   - {fileID: 5692605315941912679}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2487168900339278876
 MonoBehaviour:
@@ -318,9 +318,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &5299702592261198803
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -340,8 +338,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 773.814, y: 80.63498, z: 784.3205}
-  m_Center: {x: -19.507324, y: 40.3174, z: 20.93164}
+  m_Size: {x: 773.81396, y: 80.63487, z: 784.32056}
+  m_Center: {x: -19.507324, y: 40.317394, z: 20.93164}
 --- !u!1 &7844539852976642878
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,5 +370,5 @@ Transform:
   m_Children:
   - {fileID: 4573096667826841871}
   m_Father: {fileID: 5692605315941912679}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

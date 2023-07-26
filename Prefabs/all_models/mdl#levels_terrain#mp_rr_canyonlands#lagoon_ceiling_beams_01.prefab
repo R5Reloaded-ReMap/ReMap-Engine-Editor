@@ -1,38 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &535193465001507333
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7222375987528138408}
-  m_Layer: 0
-  m_Name: lagoon_ceiling_beams_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7222375987528138408
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 535193465001507333}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7978655671201913806}
-  - {fileID: 4734106827932134625}
-  m_Father: {fileID: 5517070768425810939}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &588798464316114733
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 9132931835792720693}
   m_Father: {fileID: 5517070768425810939}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1076642852453946737
 GameObject:
@@ -94,8 +61,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7222375987528138408}
-  m_RootOrder: 0
+  m_Father: {fileID: 1750821521291618842}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7914338104239923396
 SkinnedMeshRenderer:
@@ -151,6 +118,39 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: -0.00048828125, z: -0.00048828125}
     m_Extent: {x: 4, y: 61.03859, z: 35.93409}
   m_DirtyAABB: 0
+--- !u!1 &3857923677851263120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1750821521291618842}
+  m_Layer: 0
+  m_Name: lagoon_ceiling_beams_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1750821521291618842
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3857923677851263120}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7978655671201913806}
+  - {fileID: 4734106827932134625}
+  m_Father: {fileID: 5517070768425810939}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5052779999521004677
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,8 +180,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7222375987528138408}
-  m_RootOrder: 1
+  m_Father: {fileID: 1750821521291618842}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6999088301739698415
 SkinnedMeshRenderer:
@@ -266,7 +266,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2672338504441565964}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8565180686432949234
 GameObject:
@@ -300,7 +300,7 @@ Transform:
   m_Children:
   - {fileID: 5517070768425810939}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &370290829914413593
 MonoBehaviour:
@@ -317,9 +317,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &2455789706346062525
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -339,7 +337,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 122.07721, y: 71.868225, z: 8.000019}
+  m_Size: {x: 122.07722, y: 71.8682, z: 8.000015}
   m_Center: {x: -0.00048828125, y: -0.00048828125, z: 0}
 --- !u!1 &8722663344318058091
 GameObject:
@@ -370,7 +368,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2672338504441565964}
-  - {fileID: 7222375987528138408}
+  - {fileID: 1750821521291618842}
   m_Father: {fileID: 96696230649157156}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

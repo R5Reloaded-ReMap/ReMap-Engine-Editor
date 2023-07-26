@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Double Doors" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Double Doors" );
                     break;
 
                 case BuildType.EntFile:
@@ -33,6 +32,10 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }
@@ -51,32 +54,31 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Double, { Helper.BoolToLower( script.GoldDoor )} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Double, {Helper.BoolToLower( script.GoldDoor )}, {Helper.BoolToLower( script.AppearOpen )} )" );
                         break;
 
                     case BuildType.EntFile:
-                        code.Append(  "{\n" );
-                        code.Append( $"\"only_spawn_in_freelance\" \"0\"\n" );
-                        code.Append( $"\"disableshadows\" \"0\"\n" );
-                        code.Append( $"\"scale\" \"1\"\n" );
-                        code.Append( $"\"angles\" \"{Helper.BuildAngles( script.DoorLeft.gameObject, true )}\"\n" );
-                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( script.DoorLeft.gameObject, true )}\"\n" );
-                        code.Append( $"\"link_to_guid_0\" \"{LinkGuidTo0}\"\n" );
-                        code.Append( $"\"link_guid\" \"{LinkGuid}\"\n" );
-                        code.Append( $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"\n" );
-                        code.Append( $"\"classname\" \"prop_door\"\n" );
-                        code.Append(  "}\n" );
-                        code.Append(  "{\n" );
-                        code.Append( $"\"only_spawn_in_freelance\" \"0\"\n" );
-                        code.Append( $"\"disableshadows\" \"0\"\n" );
-                        code.Append( $"\"scale\" \"1\"\n" );
-                        code.Append( $"\"angles\" \"{Helper.BuildAngles( script.DoorRight.gameObject, true )}\"\n" );
-                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( script.DoorRight.gameObject, true )}\"\n" );
-                        code.Append( $"\"link_guid\" \"{LinkGuidTo0}\"\n" );
-                        code.Append( $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"\n" );
-                        code.Append( $"\"classname\" \"prop_door\"\n" );
-                        code.Append(  "}\n" );
+                        AppendCode( ref code,  "{" );
+                        AppendCode( ref code, $"\"only_spawn_in_freelance\" \"0\"" );
+                        AppendCode( ref code, $"\"disableshadows\" \"0\"" );
+                        AppendCode( ref code, $"\"scale\" \"1\"" );
+                        AppendCode( ref code, $"\"angles\" \"{Helper.BuildAngles( script.DoorLeft.gameObject, true )}\"" );
+                        AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( script.DoorLeft.gameObject, true )}\"" );
+                        AppendCode( ref code, $"\"link_to_guid_0\" \"{LinkGuidTo0}\"" );
+                        AppendCode( ref code, $"\"link_guid\" \"{LinkGuid}\"" );
+                        AppendCode( ref code, $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"" );
+                        AppendCode( ref code, $"\"classname\" \"prop_door\"" );
+                        AppendCode( ref code,  "}" );
+                        AppendCode( ref code,  "{" );
+                        AppendCode( ref code, $"\"only_spawn_in_freelance\" \"0\"" );
+                        AppendCode( ref code, $"\"disableshadows\" \"0\"" );
+                        AppendCode( ref code, $"\"scale\" \"1\"" );
+                        AppendCode( ref code, $"\"angles\" \"{Helper.BuildAngles( script.DoorRight.gameObject, true )}\"" );
+                        AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( script.DoorRight.gameObject, true )}\"" );
+                        AppendCode( ref code, $"\"link_guid\" \"{LinkGuidTo0}\"" );
+                        AppendCode( ref code, $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"" );
+                        AppendCode( ref code, $"\"classname\" \"prop_door\"" );
+                        AppendCode( ref code,  "}" );
                         break;
 
                     case BuildType.Precache:
@@ -85,6 +87,10 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_SpawnDoor( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Double, {Helper.BoolToLower( script.GoldDoor )}, {Helper.BoolToLower( script.AppearOpen )}, true )" );
                     break;
                 }
             }
@@ -93,7 +99,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -106,10 +112,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

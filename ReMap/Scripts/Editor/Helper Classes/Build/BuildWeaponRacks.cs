@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Weapon Racks" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Weapon Racks" );
                     break;
 
                 case BuildType.EntFile:
@@ -33,6 +32,10 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }
@@ -46,8 +49,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -60,6 +62,10 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )}, true )" );
                     break;
                 }
             }
@@ -68,7 +74,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -81,10 +87,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

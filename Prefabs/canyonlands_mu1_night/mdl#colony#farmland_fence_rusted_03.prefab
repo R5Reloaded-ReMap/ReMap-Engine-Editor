@@ -28,10 +28,43 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9000621300316155704}
+  - {fileID: 4186652840201380475}
   - {fileID: 2077657665836701907}
   m_Father: {fileID: 3863486339319208897}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1657435662437865445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4186652840201380475}
+  m_Layer: 0
+  m_Name: farmland_fence_rusted_03_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4186652840201380475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657435662437865445}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8276375563538311093}
+  - {fileID: 4731447416053489141}
+  m_Father: {fileID: 6060845606160160473}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1754123272049477425
 GameObject:
@@ -62,7 +95,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2077657665836701907}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2841775832895179786
 GameObject:
@@ -93,8 +126,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9000621300316155704}
-  m_RootOrder: 0
+  m_Father: {fileID: 4186652840201380475}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3718673310679013961
 SkinnedMeshRenderer:
@@ -150,39 +183,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0063476562, y: -32.000008, z: 54.08595}
     m_Extent: {x: 2.6186523, y: 32.000008, z: 54.08595}
   m_DirtyAABB: 0
---- !u!1 &3189977002771020069
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9000621300316155704}
-  m_Layer: 0
-  m_Name: farmland_fence_rusted_03_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9000621300316155704
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3189977002771020069}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8276375563538311093}
-  - {fileID: 4731447416053489141}
-  m_Father: {fileID: 6060845606160160473}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3657336262515074348
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +213,7 @@ Transform:
   m_Children:
   - {fileID: 5527960187010440453}
   m_Father: {fileID: 6060845606160160473}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6207155326073680635
 GameObject:
@@ -247,7 +247,7 @@ Transform:
   m_Children:
   - {fileID: 6060845606160160473}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6203420555841062515
 MonoBehaviour:
@@ -264,9 +264,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &1625747933491631039
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -286,8 +284,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 64.00003, y: 108.171936, z: 5.237332}
-  m_Center: {x: -32.000015, y: 54.085968, z: 0.0063347816}
+  m_Size: {x: 64.000046, y: 108.17192, z: 5.237313}
+  m_Center: {x: -32.000008, y: 54.08596, z: 0.0063438416}
 --- !u!1 &6374754529175922892
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,8 +315,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9000621300316155704}
-  m_RootOrder: 1
+  m_Father: {fileID: 4186652840201380475}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3330312460383074571
 SkinnedMeshRenderer:

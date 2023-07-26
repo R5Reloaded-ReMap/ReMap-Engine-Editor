@@ -4,11 +4,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ImportExport.Shared
+namespace ImportExport
 {
     [Serializable]
     public class JsonData
     {
+        public string Version;
         public List< PropClassData > Props;
         public List< ZipLineClassData > Ziplines;
         public List< LinkedZipLinesClassData > LinkedZiplines;
@@ -18,6 +19,7 @@ namespace ImportExport.Shared
         public List< DoubleDoorClassData > DoubleDoors;
         public List< HorzDoorClassData > HorzDoors;
         public List< VerticalDoorClassData > VerticalDoors;
+        public List< JumpTowerClassData > JumpTowers;
         public List< ButtonClassData > Buttons;
         public List< JumppadClassData > Jumppads;
         public List< LootBinClassData > LootBins;
@@ -29,6 +31,11 @@ namespace ImportExport.Shared
         public List< TextInfoPanelClassData > TextInfoPanels;
         public List< FuncWindowHintClassData > FuncWindowHints;
         public List< SoundClassData > Sounds;
+        public List< CameraPathClassData > CameraPaths;
+        public List< UOPlayerSpawnClassData > PlayerSpawns;
+        public List< RespawnableHealClassData > RespawnableHeals;
+        public List< SpeedBoostClassData > SpeedBoosts;
+        public List< AnimatedCameraClassData > AnimatedCameras;
     }
 
     /// <summary>
@@ -67,11 +74,12 @@ namespace ImportExport.Shared
     [Serializable]
     public class PropClassData : GlobalClassData
     {
-        // If any changes are made here, do the same for JumppadClassData ( except string Name )
+        // If any changes are made here, do the same for JumppadClassData ( except string Name && bool ClientSide )
         public string Name;
         public bool AllowMantle;
         public float FadeDistance;
         public int RealmID;
+        public bool ClientSide;
         public PropScriptOptions Option;
     }
 
@@ -168,24 +176,34 @@ namespace ImportExport.Shared
     public class SingleDoorClassData : GlobalClassData
     {
         public bool GoldDoor;
+        public bool AppearOpen;
     }
 
     [Serializable]
     public class DoubleDoorClassData : GlobalClassData
     {
         public bool GoldDoor;
+        public bool AppearOpen;
     }
 
     [Serializable]
     public class HorzDoorClassData : GlobalClassData
     {
-        // Stub class
+        public bool AppearOpen;
     }
 
     [Serializable]
     public class VerticalDoorClassData : GlobalClassData
     {
-        // Stub class
+        public bool AppearOpen;
+    }
+
+    [Serializable]
+    public class JumpTowerClassData : GlobalClassData
+    {
+        public bool ShowZipline;
+        public float ShowZiplineDistance;
+        public float Height;
     }
 
     [Serializable]
@@ -273,7 +291,63 @@ namespace ImportExport.Shared
     }
 
     [Serializable]
+    public class CameraPathClassData : GlobalClassData
+    {
+        public bool ShowPath;
+        public float ShowPathDistance;
+        public float SpeedTransition;
+        public float Fov;
+        public bool TrackTarget;
+        public bool EnableSpacing;
+        public float Spacing;
+        public TransformData TargetRef;
+        public List< TransformData > PathNode;
+    }
+
+    [Serializable]
     public class NewLocPairClassData : GlobalClassData
+    {
+        // Stub script
+    }
+
+    [Serializable]
+    public class UOPlayerSpawnClassData : GlobalClassData
+    {
+        // Stub script
+    }
+
+    [Serializable]
+    public class RespawnableHealClassData : GlobalClassData
+    {
+        public string Name;
+        public float RespawnTime;
+        public float HealDuration;
+        public int HealAmount;
+        public bool Progressive;
+    }
+
+    [Serializable]
+    public class SpeedBoostClassData : GlobalClassData
+    {
+        public Color32 Color;
+        public float RespawnTime;
+        public float Strengh;
+        public float Duration;
+        public float FadeTime;
+    }
+
+    [Serializable]
+    public class AnimatedCameraClassData : GlobalClassData
+    {
+        public float AngleOffset;
+        public float MaxLeft;
+        public float MaxRight;
+        public float RotationTime;
+        public float TransitionTime;
+    }
+
+    [Serializable]
+    public class EmptyClassData : GlobalClassData
     {
         // Stub script
     }

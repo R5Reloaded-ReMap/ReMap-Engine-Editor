@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Horizontal Doors" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Horizontal Doors" );
                     break;
 
                 case BuildType.EntFile:
@@ -33,6 +32,10 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }
@@ -46,58 +49,57 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_SpawnDoor( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal, false, {Helper.BoolToLower( script.AppearOpen )} )" );
                         break;
 
                     case BuildType.EntFile:
-                            code.Append(  "{\n" );
-                            code.Append( $"\"SuppressAnimSounds\" \"0\"\n" );
-                            code.Append( $"\"StartDisabled\" \"0\"\n" );
-                            code.Append( $"\"spawnflags\" \"0\"\n" );
-                            code.Append( $"\"solid\" \"6\"\n" );
-                            code.Append( $"\"skin\" \"0\"\n" );
-                            code.Append( $"\"SetBodyGroup\" \"0\"\n" );
-                            code.Append( $"\"rendermode\" \"0\"\n" );
-                            code.Append( $"\"renderfx\" \"0\"\n" );
-                            code.Append( $"\"rendercolor\" \"255 255 255\"\n" );
-                            code.Append( $"\"renderamt\" \"255\"\n" );
-                            code.Append( $"\"RandomAnimation\" \"0\"\n" );
-                            code.Append( $"\"pressuredelay\" \"0\"\n" );
-                            code.Append( $"\"PerformanceMode\" \"0\"\n" );
-                            code.Append( $"\"mingpulevel\" \"0\"\n" );
-                            code.Append( $"\"mincpulevel\" \"0\"\n" );
-                            code.Append( $"\"MinAnimTime\" \"5\"\n" );
-                            code.Append( $"\"maxgpulevel\" \"0\"\n" );
-                            code.Append( $"\"maxcpulevel\" \"0\"\n" );
-                            code.Append( $"\"MaxAnimTime\" \"10\"\n" );
-                            code.Append( $"\"HoldAnimation\" \"0\"\n" );
-                            code.Append( $"\"gamemode_tdm\" \"1\"\n" );
-                            code.Append( $"\"gamemode_sur\" \"1\"\n" );
-                            code.Append( $"\"gamemode_lts\" \"1\"\n" );
-                            code.Append( $"\"gamemode_lh\" \"1\"\n" );
-                            code.Append( $"\"gamemode_fd\" \"1\"\n" );
-                            code.Append( $"\"gamemode_ctf\" \"1\"\n" );
-                            code.Append( $"\"gamemode_cp\" \"1\"\n" );
-                            code.Append( $"\"fadedist\" \"-1\"\n" );
-                            code.Append( $"\"ExplodeRadius\" \"0\"\n" );
-                            code.Append( $"\"ExplodeDamage\" \"0\"\n" );
-                            code.Append( $"\"disableX360\" \"0\"\n" );
-                            code.Append( $"\"disableshadows\" \"0\"\n" );
-                            code.Append( $"\"disablereceiveshadows\" \"0\"\n" );
-                            code.Append( $"\"DisableBoneFollowers\" \"0\"\n" );
-                            code.Append( $"\"DefaultCycle\" \"0\"\n" );
-                            code.Append( $"\"collide_titan\" \"1\"\n" );
-                            code.Append( $"\"collide_ai\" \"1\"\n" );
-                            code.Append( $"\"ClientSide\" \"0\"\n" );
-                            code.Append( $"\"AnimateInStaticShadow\" \"0\"\n" );
-                            code.Append( $"\"scale\" \"1\"\n" );
-                            code.Append( $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"\n" );
-                            code.Append( $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n" );
-                            code.Append( $"\"script_name\" \"survival_door_plain\"\n" );
-                            code.Append( $"\"model\" \"mdl/door/door_256x256x8_elevatorstyle02_animated.rmdl\"\n" );
-                            code.Append( $"\"classname\" \"prop_dynamic\"\n" );
-                            code.Append(  "}\n" );
+                            AppendCode( ref code,  "{" );
+                            AppendCode( ref code, $"\"SuppressAnimSounds\" \"0\"" );
+                            AppendCode( ref code, $"\"StartDisabled\" \"0\"" );
+                            AppendCode( ref code, $"\"spawnflags\" \"0\"" );
+                            AppendCode( ref code, $"\"solid\" \"6\"" );
+                            AppendCode( ref code, $"\"skin\" \"0\"" );
+                            AppendCode( ref code, $"\"SetBodyGroup\" \"0\"" );
+                            AppendCode( ref code, $"\"rendermode\" \"0\"" );
+                            AppendCode( ref code, $"\"renderfx\" \"0\"" );
+                            AppendCode( ref code, $"\"rendercolor\" \"255 255 255\"" );
+                            AppendCode( ref code, $"\"renderamt\" \"255\"" );
+                            AppendCode( ref code, $"\"RandomAnimation\" \"0\"" );
+                            AppendCode( ref code, $"\"pressuredelay\" \"0\"" );
+                            AppendCode( ref code, $"\"PerformanceMode\" \"0\"" );
+                            AppendCode( ref code, $"\"mingpulevel\" \"0\"" );
+                            AppendCode( ref code, $"\"mincpulevel\" \"0\"" );
+                            AppendCode( ref code, $"\"MinAnimTime\" \"5\"" );
+                            AppendCode( ref code, $"\"maxgpulevel\" \"0\"" );
+                            AppendCode( ref code, $"\"maxcpulevel\" \"0\"" );
+                            AppendCode( ref code, $"\"MaxAnimTime\" \"10\"" );
+                            AppendCode( ref code, $"\"HoldAnimation\" \"0\"" );
+                            AppendCode( ref code, $"\"gamemode_tdm\" \"1\"" );
+                            AppendCode( ref code, $"\"gamemode_sur\" \"1\"" );
+                            AppendCode( ref code, $"\"gamemode_lts\" \"1\"" );
+                            AppendCode( ref code, $"\"gamemode_lh\" \"1\"" );
+                            AppendCode( ref code, $"\"gamemode_fd\" \"1\"" );
+                            AppendCode( ref code, $"\"gamemode_ctf\" \"1\"" );
+                            AppendCode( ref code, $"\"gamemode_cp\" \"1\"" );
+                            AppendCode( ref code, $"\"fadedist\" \"-1\"" );
+                            AppendCode( ref code, $"\"ExplodeRadius\" \"0\"" );
+                            AppendCode( ref code, $"\"ExplodeDamage\" \"0\"" );
+                            AppendCode( ref code, $"\"disableX360\" \"0\"" );
+                            AppendCode( ref code, $"\"disableshadows\" \"0\"" );
+                            AppendCode( ref code, $"\"disablereceiveshadows\" \"0\"" );
+                            AppendCode( ref code, $"\"DisableBoneFollowers\" \"0\"" );
+                            AppendCode( ref code, $"\"DefaultCycle\" \"0\"" );
+                            AppendCode( ref code, $"\"collide_titan\" \"1\"" );
+                            AppendCode( ref code, $"\"collide_ai\" \"1\"" );
+                            AppendCode( ref code, $"\"ClientSide\" \"0\"" );
+                            AppendCode( ref code, $"\"AnimateInStaticShadow\" \"0\"" );
+                            AppendCode( ref code, $"\"scale\" \"1\"" );
+                            AppendCode( ref code, $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"" );
+                            AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"" );
+                            AppendCode( ref code, $"\"script_name\" \"survival_door_plain\"" );
+                            AppendCode( ref code, $"\"model\" \"mdl/door/door_256x256x8_elevatorstyle02_animated.rmdl\"" );
+                            AppendCode( ref code, $"\"classname\" \"prop_dynamic\"" );
+                            AppendCode( ref code,  "}" );
                         break;
 
                     case BuildType.Precache:
@@ -106,6 +108,10 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_SpawnDoor( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, eMapEditorDoorType.Horizontal, false, {Helper.BoolToLower( script.AppearOpen )}, true )" );
                     break;
                 }
             }
@@ -114,7 +120,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -127,10 +133,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1345744131767335269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8308970827366792890}
+  m_Layer: 0
+  m_Name: slumcity_pipe_128_corrugated_metal_a_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8308970827366792890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345744131767335269}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2819431681033067424}
+  m_Father: {fileID: 1710928275890758856}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1479655053039045555
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,9 +61,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7225752535668435521}
-  - {fileID: 3773308569764886510}
+  - {fileID: 8308970827366792890}
   m_Father: {fileID: 3270083128958926064}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5099704272764131102
 GameObject:
@@ -65,7 +97,7 @@ Transform:
   m_Children:
   - {fileID: 1710928275890758856}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6910023680547578920
 MonoBehaviour:
@@ -82,9 +114,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-4698676520444905408
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -104,8 +134,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 20.58891, y: 20.588884, z: 128.00003}
-  m_Center: {x: -0.00047302246, y: -0.00048828125, z: -64.000015}
+  m_Size: {x: 20.588896, y: 20.588877, z: 128.00002}
+  m_Center: {x: -0.00048065186, y: -0.00048828125, z: -64.00001}
 --- !u!1 &5326684705280709974
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,8 +165,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3773308569764886510}
-  m_RootOrder: 0
+  m_Father: {fileID: 8308970827366792890}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2327733348384267679
 SkinnedMeshRenderer:
@@ -192,38 +222,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -64, y: -0.00048828125, z: -0.00048828125}
     m_Extent: {x: 64, y: 10.294436, z: 10.294436}
   m_DirtyAABB: 0
---- !u!1 &6530897076727213330
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3773308569764886510}
-  m_Layer: 0
-  m_Name: slumcity_pipe_128_corrugated_metal_a_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3773308569764886510
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6530897076727213330}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2819431681033067424}
-  m_Father: {fileID: 1710928275890758856}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7650087482257358957
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +252,7 @@ Transform:
   m_Children:
   - {fileID: 5169627042163141107}
   m_Father: {fileID: 1710928275890758856}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9034602344848319134
 GameObject:
@@ -285,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7225752535668435521}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

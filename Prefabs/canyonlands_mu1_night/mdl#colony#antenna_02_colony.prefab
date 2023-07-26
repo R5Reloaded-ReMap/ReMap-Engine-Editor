@@ -29,8 +29,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1409534585858452496}
-  m_RootOrder: 0
+  m_Father: {fileID: 1929387800323505831}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3513886809646152031
 SkinnedMeshRenderer:
@@ -86,6 +86,38 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.23583984, y: 11.770512, z: 52.48634}
     m_Extent: {x: 46.81494, y: 28.500008, z: 52.48634}
   m_DirtyAABB: 0
+--- !u!1 &2905014828607618930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1929387800323505831}
+  m_Layer: 0
+  m_Name: antenna_02_colony_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1929387800323505831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2905014828607618930}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9220908039283676163}
+  m_Father: {fileID: 770889632282238555}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4288822604361726716
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,10 +146,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1409534585858452496}
+  - {fileID: 1929387800323505831}
   - {fileID: 5295354215149179307}
   m_Father: {fileID: 1216485096880316316}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5072916296164122700
 GameObject:
@@ -148,39 +180,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5295354215149179307}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6450689720180639561
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1409534585858452496}
-  m_Layer: 0
-  m_Name: antenna_02_colony_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1409534585858452496
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6450689720180639561}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 9220908039283676163}
-  m_Father: {fileID: 770889632282238555}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6456728632639079278
 GameObject:
@@ -214,7 +214,7 @@ Transform:
   m_Children:
   - {fileID: 770889632282238555}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1498702055151064272
 MonoBehaviour:
@@ -231,9 +231,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &7730714415228789106
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -253,8 +251,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 57.000053, y: 104.97272, z: 93.62993}
-  m_Center: {x: 11.770515, y: 52.486347, z: 0.2358284}
+  m_Size: {x: 57.000053, y: 104.9727, z: 93.6299}
+  m_Center: {x: 11.770521, y: 52.486347, z: 0.23583984}
 --- !u!1 &6605253248758196655
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ Transform:
   m_Children:
   - {fileID: 6805333635932945486}
   m_Father: {fileID: 770889632282238555}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

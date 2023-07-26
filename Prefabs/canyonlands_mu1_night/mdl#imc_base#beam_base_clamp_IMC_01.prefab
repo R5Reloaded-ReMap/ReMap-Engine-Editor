@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 7521738472696497692}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2733089062690157701
 MonoBehaviour:
@@ -49,9 +49,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &8113547538480666234
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,8 +69,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 67.99906, y: 71.99907, z: 28.000025}
-  m_Center: {x: -0.00048828125, y: 35.999527, z: -0.000008583069}
+  m_Size: {x: 67.99906, y: 71.999054, z: 28.000011}
+  m_Center: {x: -0.00048446655, y: 35.999523, z: 0}
 --- !u!1 &1137583690222999106
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,8 +100,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7799732490715814621}
-  m_RootOrder: 0
+  m_Father: {fileID: 2595857384982954462}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3910553939653993370
 SkinnedMeshRenderer:
@@ -159,38 +157,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: -0.00048828125, z: 35.99952}
     m_Extent: {x: 14, y: 33.99952, z: 35.99952}
   m_DirtyAABB: 0
---- !u!1 &2298690149481586917
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7799732490715814621}
-  m_Layer: 0
-  m_Name: beam_base_clamp_IMC_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7799732490715814621
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2298690149481586917}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5989151806114882521}
-  m_Father: {fileID: 7521738472696497692}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4287775196332935921
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,7 +186,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7708884187046347749}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6324961457072350940
 GameObject:
@@ -250,10 +216,42 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7799732490715814621}
+  - {fileID: 2595857384982954462}
   - {fileID: 7708884187046347749}
   m_Father: {fileID: 6347190899205747911}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7477314891507125745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2595857384982954462}
+  m_Layer: 0
+  m_Name: beam_base_clamp_IMC_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2595857384982954462
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7477314891507125745}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5989151806114882521}
+  m_Father: {fileID: 7521738472696497692}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7951491450607254113
 GameObject:
@@ -285,5 +283,5 @@ Transform:
   m_Children:
   - {fileID: 9207450607323042493}
   m_Father: {fileID: 7521738472696497692}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

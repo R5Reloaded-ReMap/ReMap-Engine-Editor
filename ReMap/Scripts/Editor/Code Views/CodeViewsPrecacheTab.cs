@@ -1,5 +1,7 @@
+
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -9,30 +11,33 @@ using UnityEngine.UIElements;
 
 using Build;
 using static Build.Build;
+using WindowUtility;
 
-namespace CodeViewsWindow
+namespace CodeViews
 {
     public class PrecacheTab
     {
         static FunctionRef[] SquirrelMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function" )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.Small, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true )
         };
 
-        static FunctionRef[] SelectionMenu = new FunctionRef[0];
+        static FunctionRef[] SquirrelFunction = new FunctionRef[]
+        {
+            () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small ),
+            () => CodeViewsMenu.OptionalButton( "Reset Name", "", () => CodeViewsWindow.ResetFunctionName(), null, MenuType.Small, true )
+        };
 
         internal static void OnGUISettingsTab()
         {
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsMenu.CreateMenu( SquirrelMenu, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", ref CodeViewsWindow.ShowFunction );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenu, SquirrelMenu, MenuType.Large, "Function Menu", "Function Menu", "" );
 
-            CodeViewsMenu.CreateMenu( SelectionMenu, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", ref CodeViewsWindow.EnableSelection );
+            CodeViewsMenu.SelectionMenu();
 
-            #if ReMapDev
-            CodeViewsMenu.CreateMenu( CodeViewsMenu.DevMenu, "Dev Menu", "Dev Menu", "", ref CodeViewsMenu.ShowDevMenu );
-            #endif
+            CodeViewsMenu.SharedFunctions();
             
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
@@ -40,22 +45,22 @@ namespace CodeViewsWindow
 
         internal static async Task< string > GenerateCode()
         {
-            string code = "";
+            Helper.ForceHideBoolToGenerateObjects( CodeViewsWindow.EmptyObjectType );
 
-            if ( CodeViewsWindow.ShowFunction )
+            StringBuilder code = new StringBuilder();
+
+            if ( CodeViewsWindow.ShowFunctionEnable() )
             {
-                code += $"void function {CodeViewsWindow.functionName}()\n";
-                code += "{\n";
-                code += Helper.ReMapCredit();
+                AppendCode( ref code, $"void function {CodeViewsWindow.functionName}()" );
+                AppendCode( ref code, "{" );
+                AppendCode( ref code, Helper.ReMapCredit(), 0 );
             }
 
-            Helper.ForceHideBoolToGenerateObjects( new ObjectType[0] );
+            AppendCode( ref code, await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.SelectionEnable() ), 0 );
 
-            code += await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache, CodeViewsWindow.EnableSelection );
+            if ( CodeViewsWindow.ShowFunctionEnable() ) AppendCode( ref code, "}", 0 );
 
-            if ( CodeViewsWindow.ShowFunction ) code += "}";
-
-            return code;
+            return code.ToString();
         }
     }
 }

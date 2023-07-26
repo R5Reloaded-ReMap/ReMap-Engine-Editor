@@ -29,8 +29,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 89276352264659788}
-  m_RootOrder: 0
+  m_Father: {fileID: 625245528057980309}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7473983356762203978
 SkinnedMeshRenderer:
@@ -86,6 +86,39 @@ SkinnedMeshRenderer:
     m_Center: {x: 322, y: 7.763674, z: 13.45264}
     m_Extent: {x: 34, y: 6.283205, z: 13.45264}
   m_DirtyAABB: 0
+--- !u!1 &3175886680332750223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 625245528057980309}
+  m_Layer: 0
+  m_Name: desertlands_city_train_station_01_arch_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &625245528057980309
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3175886680332750223}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8780554431445065295}
+  - {fileID: 7271773854446598251}
+  m_Father: {fileID: 6736830096262184922}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3699320603804738046
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,8 +148,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 89276352264659788}
-  m_RootOrder: 1
+  m_Father: {fileID: 625245528057980309}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1085407602890664763
 SkinnedMeshRenderer:
@@ -200,43 +233,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 89276352264659788}
+  - {fileID: 625245528057980309}
   - {fileID: 6919565382721016965}
   m_Father: {fileID: 8472388826874288032}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6136349353563144892
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 89276352264659788}
-  m_Layer: 0
-  m_Name: desertlands_city_train_station_01_arch_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &89276352264659788
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6136349353563144892}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8780554431445065295}
-  - {fileID: 7271773854446598251}
-  m_Father: {fileID: 6736830096262184922}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8098918122202128493
 GameObject:
@@ -267,7 +267,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6919565382721016965}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8734637920460876269
 GameObject:
@@ -301,7 +301,7 @@ Transform:
   m_Children:
   - {fileID: 6736830096262184922}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2085182782317701507
 MonoBehaviour:
@@ -318,9 +318,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &8981864671642617026
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -340,8 +338,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 16.000217, y: 462.90942, z: 879.9993}
-  m_Center: {x: 7.999899, y: 231.45471, z: 439.99954}
+  m_Size: {x: 16.000168, y: 462.90936, z: 879.99915}
+  m_Center: {x: 7.999979, y: 231.45468, z: 439.99957}
 --- !u!1 &9091212899274884664
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,5 +370,5 @@ Transform:
   m_Children:
   - {fileID: 1399030065535577530}
   m_Father: {fileID: 6736830096262184922}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

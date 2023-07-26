@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // New Loc Pair" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // New Loc Pair" );
                     break;
 
                 case BuildType.EntFile:
@@ -33,6 +32,10 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }
@@ -46,8 +49,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    NewLocPair( {Helper.BuildOrigin( obj )}, {Helper.BuildAngles( obj )} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    NewLocPair( {Helper.BuildOrigin( obj )}, {Helper.BuildAngles( obj )} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -60,6 +62,11 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        // Remove 1 to the counter since we don't support this object for live map code
+                        Helper.RemoveSendedEntityCount();
                     break;
                 }
             }
@@ -68,7 +75,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -81,10 +88,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1328414288318725511
+--- !u!1 &157544836442249036
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6438951817488406726}
+  - component: {fileID: 8738614324782814149}
   m_Layer: 0
   m_Name: projectile_rocket_LOD0
   m_TagString: Untagged
@@ -16,20 +16,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6438951817488406726
+--- !u!4 &8738614324782814149
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328414288318725511}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 157544836442249036}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6586933418669016803}
-  m_RootOrder: 0
+  m_Children:
+  - {fileID: 260108437749964738}
+  m_Father: {fileID: 4332032000800801343}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3316285500322083043
 GameObject:
@@ -59,9 +60,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6438951817488406726}
+  - {fileID: 2213923717376951195}
   m_Father: {fileID: 4332032000800801343}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4940984128991141938
 GameObject:
@@ -92,8 +93,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7776631181464897480}
-  m_RootOrder: 0
+  m_Father: {fileID: 8738614324782814149}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3514594116580385568
 SkinnedMeshRenderer:
@@ -142,9 +143,9 @@ SkinnedMeshRenderer:
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -3900071536888142803, guid: e50eda502e2796940887f97c680d11fd, type: 3}
   m_Bones:
-  - {fileID: 6438951817488406726}
+  - {fileID: 2213923717376951195}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 6438951817488406726}
+  m_RootBone: {fileID: 2213923717376951195}
   m_AABB:
     m_Center: {x: 0.020507812, y: -0.005859375, z: -0.00048828125}
     m_Extent: {x: 1.8691406, y: 1.8691411, z: 5.202638}
@@ -178,9 +179,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6586933418669016803}
-  - {fileID: 7776631181464897480}
+  - {fileID: 8738614324782814149}
   m_Father: {fileID: 8635361573157644761}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6556437156985115436
 GameObject:
@@ -214,7 +215,7 @@ Transform:
   m_Children:
   - {fileID: 4332032000800801343}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8103812590764046284
 MonoBehaviour:
@@ -231,9 +232,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-2211783011533240170
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -253,9 +252,9 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.7382839, y: 3.7382822, z: 10.405281}
+  m_Size: {x: 3.7382832, y: 3.7382832, z: 10.40528}
   m_Center: {x: -0.020507812, y: -0.005859375, z: 0.00048828125}
---- !u!1 &8505131040089847453
+--- !u!1 &7876300681163003550
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,7 +262,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7776631181464897480}
+  - component: {fileID: 2213923717376951195}
   m_Layer: 0
   m_Name: projectile_rocket_LOD0
   m_TagString: Untagged
@@ -271,19 +270,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7776631181464897480
+--- !u!4 &2213923717376951195
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8505131040089847453}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_GameObject: {fileID: 7876300681163003550}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 260108437749964738}
-  m_Father: {fileID: 4332032000800801343}
-  m_RootOrder: 1
+  m_Children: []
+  m_Father: {fileID: 6586933418669016803}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

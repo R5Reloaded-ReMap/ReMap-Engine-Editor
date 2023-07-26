@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 5079693354061747192}
   m_Father: {fileID: 322964087074859270}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2086366524328679288
 GameObject:
@@ -61,8 +61,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5164944212581385871}
-  m_RootOrder: 0
+  m_Father: {fileID: 6886909870560205312}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6564446580714741294
 SkinnedMeshRenderer:
@@ -118,38 +118,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.09082031, y: 0, z: 20.000004}
     m_Extent: {x: 16.711914, y: 12.000003, z: 20.000004}
   m_DirtyAABB: 0
---- !u!1 &3619689033920720420
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5164944212581385871}
-  m_Layer: 0
-  m_Name: farmland_crate_sm_32x24x40_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5164944212581385871
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3619689033920720420}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7704832784229554356}
-  m_Father: {fileID: 322964087074859270}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5955083363035964970
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,10 +146,42 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5164944212581385871}
+  - {fileID: 6886909870560205312}
   - {fileID: 2597062910351905460}
   m_Father: {fileID: 5004190877029782497}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6913451411462325975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6886909870560205312}
+  m_Layer: 0
+  m_Name: farmland_crate_sm_32x24x40_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6886909870560205312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6913451411462325975}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7704832784229554356}
+  m_Father: {fileID: 322964087074859270}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8619757691282555745
 GameObject:
@@ -215,7 +215,7 @@ Transform:
   m_Children:
   - {fileID: 322964087074859270}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6212706606466509714
 MonoBehaviour:
@@ -232,9 +232,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-4765642724854600415
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -254,8 +252,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 24.00002, y: 40.000027, z: 33.423847}
-  m_Center: {x: 0, y: 20.00001, z: 0.0908165}
+  m_Size: {x: 24.000021, y: 40.000015, z: 33.423836}
+  m_Center: {x: 0.0000019073486, y: 20.000006, z: 0.09082031}
 --- !u!1 &8893025268146601788
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2597062910351905460}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

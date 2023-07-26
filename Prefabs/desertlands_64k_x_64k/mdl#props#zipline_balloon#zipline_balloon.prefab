@@ -29,8 +29,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3483990904954460051}
-  m_RootOrder: 0
+  m_Father: {fileID: 1827538452082501739}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7054670908548055883
 SkinnedMeshRenderer:
@@ -86,6 +86,41 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.010253906, y: -0.8198242, z: 344.81894}
     m_Extent: {x: 197.67822, y: 197.94194, z: 330.56406}
   m_DirtyAABB: 0
+--- !u!1 &999668454551450611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1827538452082501739}
+  m_Layer: 0
+  m_Name: zipline_balloon_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1827538452082501739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999668454551450611}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7538272993244839382}
+  - {fileID: 622167043718081445}
+  - {fileID: 126177365528094898}
+  - {fileID: 572441941469821440}
+  m_Father: {fileID: 7395095876116959362}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1782045182020347955
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,42 +150,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2469187153894926376}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4349215942832137747
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3483990904954460051}
-  m_Layer: 0
-  m_Name: zipline_balloon_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3483990904954460051
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4349215942832137747}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7538272993244839382}
-  - {fileID: 622167043718081445}
-  - {fileID: 126177365528094898}
-  - {fileID: 572441941469821440}
-  m_Father: {fileID: 7395095876116959362}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5423052508110755556
 GameObject:
@@ -181,8 +181,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3483990904954460051}
-  m_RootOrder: 3
+  m_Father: {fileID: 1827538452082501739}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8081283752493205655
 SkinnedMeshRenderer:
@@ -270,7 +270,7 @@ Transform:
   m_Children:
   - {fileID: 7395095876116959362}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7024017638606013743
 MonoBehaviour:
@@ -287,9 +287,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &4588764108332513239
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -309,8 +307,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 395.88406, y: 1266.3357, z: 395.3567}
-  m_Center: {x: -0.8198242, y: 42.215454, z: 0.010177612}
+  m_Size: {x: 395.88412, y: 1266.3354, z: 395.35657}
+  m_Center: {x: -0.81977844, y: 42.215393, z: 0.010253906}
 --- !u!1 &7300215562873076690
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,8 +338,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3483990904954460051}
-  m_RootOrder: 1
+  m_Father: {fileID: 1827538452082501739}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2740488403501599190
 SkinnedMeshRenderer:
@@ -427,7 +425,7 @@ Transform:
   m_Children:
   - {fileID: 4631232938517056985}
   m_Father: {fileID: 7395095876116959362}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8250192267465349006
 GameObject:
@@ -458,8 +456,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3483990904954460051}
-  m_RootOrder: 2
+  m_Father: {fileID: 1827538452082501739}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4329765053523559499
 SkinnedMeshRenderer:
@@ -544,7 +542,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2469187153894926376}
-  - {fileID: 3483990904954460051}
+  - {fileID: 1827538452082501739}
   m_Father: {fileID: 2190528287316896257}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

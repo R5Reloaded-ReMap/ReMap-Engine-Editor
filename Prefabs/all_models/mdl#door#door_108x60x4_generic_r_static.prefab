@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 128580170555492276}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4031707854636448055
 MonoBehaviour:
@@ -49,9 +49,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &7485553068855476024
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,40 +69,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 60.121124, y: 108.03815, z: 6.3027616}
-  m_Center: {x: 30.060562, y: 54.01906, z: -1.428724}
---- !u!1 &989394510033556983
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6826664506080702582}
-  m_Layer: 0
-  m_Name: door_108x60x4_generic_r_static_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6826664506080702582
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 989394510033556983}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2467971109712387092}
-  m_Father: {fileID: 128580170555492276}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 60.121136, y: 108.03813, z: 6.3027425}
+  m_Center: {x: 30.060568, y: 54.01906, z: -1.4287074}
 --- !u!1 &2347312574532196241
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,8 +100,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6826664506080702582}
-  m_RootOrder: 0
+  m_Father: {fileID: 3037602320228615024}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4962665642183330062
 SkinnedMeshRenderer:
@@ -191,6 +157,38 @@ SkinnedMeshRenderer:
     m_Center: {x: -1.4287109, y: 30.060555, z: 54.019054}
     m_Extent: {x: 3.1513672, y: 30.060555, z: 54.019054}
   m_DirtyAABB: 0
+--- !u!1 &3847960803563196883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3037602320228615024}
+  m_Layer: 0
+  m_Name: door_108x60x4_generic_r_static_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3037602320228615024
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3847960803563196883}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2467971109712387092}
+  m_Father: {fileID: 128580170555492276}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4909709354511880103
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,10 +217,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6826664506080702582}
+  - {fileID: 3037602320228615024}
   - {fileID: 1095597981742839710}
   m_Father: {fileID: 9101061769080194624}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7550429733589735207
 GameObject:
@@ -254,7 +252,7 @@ Transform:
   m_Children:
   - {fileID: 3832540870258355425}
   m_Father: {fileID: 128580170555492276}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7642708305788418108
 GameObject:
@@ -285,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1095597981742839710}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

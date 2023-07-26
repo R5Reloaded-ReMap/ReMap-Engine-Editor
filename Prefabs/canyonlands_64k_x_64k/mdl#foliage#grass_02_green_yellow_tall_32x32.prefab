@@ -29,8 +29,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4648066434677744211}
-  m_RootOrder: 0
+  m_Father: {fileID: 5596766490273651543}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1868037600274505827
 SkinnedMeshRenderer:
@@ -86,38 +86,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -1.6557617, y: 0.56640625, z: 18.045902}
     m_Extent: {x: 30.872559, y: 27.599615, z: 18.204105}
   m_DirtyAABB: 0
---- !u!1 &3671747980868967624
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4648066434677744211}
-  m_Layer: 0
-  m_Name: grass_02_green_yellow_tall_32x32_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4648066434677744211
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3671747980868967624}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4854472786204450757}
-  m_Father: {fileID: 1386377455676433797}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6948204837995408067
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,7 +116,39 @@ Transform:
   m_Children:
   - {fileID: 2179859416784506012}
   m_Father: {fileID: 1386377455676433797}
-  m_RootOrder: 1
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7152061413237915952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5596766490273651543}
+  m_Layer: 0
+  m_Name: grass_02_green_yellow_tall_32x32_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5596766490273651543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7152061413237915952}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4854472786204450757}
+  m_Father: {fileID: 1386377455676433797}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7170140979862475823
 GameObject:
@@ -178,10 +178,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4648066434677744211}
+  - {fileID: 5596766490273651543}
   - {fileID: 6205462338659562950}
   m_Father: {fileID: 4950953872765818297}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7885364978362198887
 GameObject:
@@ -215,7 +215,7 @@ Transform:
   m_Children:
   - {fileID: 1386377455676433797}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8894824261752488208
 MonoBehaviour:
@@ -232,9 +232,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-2577962461314457010
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -254,8 +252,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 55.199257, y: 36.408234, z: 61.74514}
-  m_Center: {x: 0.56640625, y: 18.045908, z: -1.6557655}
+  m_Size: {x: 55.199253, y: 36.408222, z: 61.745132}
+  m_Center: {x: 0.56640816, y: 18.045904, z: -1.6557617}
 --- !u!1 &9074356302798483574
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6205462338659562950}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

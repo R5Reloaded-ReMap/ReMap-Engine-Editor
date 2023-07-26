@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1515324102324664436
+--- !u!1 &1618561626433844415
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5007502619314842026}
+  - component: {fileID: 1208801009998098860}
   m_Layer: 0
   m_Name: death_box_01_LOD0
   m_TagString: Untagged
@@ -16,21 +16,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5007502619314842026
+--- !u!4 &1208801009998098860
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515324102324664436}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_GameObject: {fileID: 1618561626433844415}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5687664287490101446}
-  m_Father: {fileID: 255016542056619666}
-  m_RootOrder: 0
+  m_Children: []
+  m_Father: {fileID: 6125041673450045467}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4382310370735915873
 GameObject:
@@ -60,10 +59,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5007502619314842026}
+  - {fileID: 719441482654414638}
   - {fileID: 6125041673450045467}
   m_Father: {fileID: 8066525369968129916}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4400380640583438430
 GameObject:
@@ -97,7 +96,7 @@ Transform:
   m_Children:
   - {fileID: 255016542056619666}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5175029333997921478
 MonoBehaviour:
@@ -114,9 +113,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &4357906998572010359
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -136,8 +133,40 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 55.82132, y: 26.71192, z: 27.469751}
-  m_Center: {x: -0.0053710938, y: 13.35596, z: 0.0073242188}
+  m_Size: {x: 55.821304, y: 26.711926, z: 27.46975}
+  m_Center: {x: -0.0053710938, y: 13.355963, z: 0.00732708}
+--- !u!1 &5536068254198918011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 719441482654414638}
+  m_Layer: 0
+  m_Name: death_box_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &719441482654414638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5536068254198918011}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5687664287490101446}
+  m_Father: {fileID: 255016542056619666}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6750361910336351293
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,8 +196,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5007502619314842026}
-  m_RootOrder: 0
+  m_Father: {fileID: 719441482654414638}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6689404179418782475
 SkinnedMeshRenderer:
@@ -217,44 +246,13 @@ SkinnedMeshRenderer:
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -3900071536888142803, guid: c243b82aeaab1444b9b53305a7deda68, type: 3}
   m_Bones:
-  - {fileID: 6126359588719543733}
+  - {fileID: 1208801009998098860}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 6126359588719543733}
+  m_RootBone: {fileID: 1208801009998098860}
   m_AABB:
     m_Center: {x: 0.0053710938, y: 13.35596, z: -0.0073242188}
     m_Extent: {x: 27.910645, y: 13.35596, z: 13.734866}
   m_DirtyAABB: 0
---- !u!1 &7489851832440916199
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6126359588719543733}
-  m_Layer: 0
-  m_Name: death_box_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6126359588719543733
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7489851832440916199}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6125041673450045467}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8805712991525323055
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +281,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6126359588719543733}
+  - {fileID: 1208801009998098860}
   m_Father: {fileID: 255016542056619666}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

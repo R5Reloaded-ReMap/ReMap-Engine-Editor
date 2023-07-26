@@ -13,13 +13,6 @@ namespace Build
 {
     public class BuildTrigger
     {
-        private enum LocalizationType
-        {
-            Origin,
-            Angles,
-            Offset
-        }
-
         public static async Task< StringBuilder > BuildTriggerObjects( GameObject[] objectData, BuildType buildType )
         {
             StringBuilder code = new StringBuilder(); int idx = 0;
@@ -28,8 +21,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Triggers" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Triggers" );
                     break;
 
                 case BuildType.EntFile:
@@ -41,6 +33,10 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }
@@ -58,33 +54,28 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    entity trigger_{idx} = MapEditor_CreateTrigger( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.Width )}, {Helper.ReplaceComma( script.Height )}, {Helper.BoolToLower( script.Debug )} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    entity trigger_{idx} = MapEditor_CreateTrigger( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.Width / 2 )}, {Helper.ReplaceComma( script.Height )}, {Helper.BoolToLower( script.Debug )} )" );
 
                         GameObject helper = script.Helper.gameObject;
 
                         if ( TEnterCallback != "" )
                         {
-                            ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Origin );
-                            ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Angles );
-                            ChangeLocalization( ref TEnterCallback, helper, LocalizationType.Offset );
-                            code.Append( $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)\n" );
-                            code.Append(  "    {\n" );
-                            code.Append( $"    {TEnterCallback}\n" );
-                            code.Append(  "    })\n" );
+                            ChangeLocalization( ref TEnterCallback, helper );
+                            AppendCode( ref code, $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)" );
+                            AppendCode( ref code,  "    {" );
+                            AppendCode( ref code, $"    {TEnterCallback}" );
+                            AppendCode( ref code,  "    })" );
                         }
 
                         if ( TLeaveCallback != "" )
                         {
-                            ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Origin );
-                            ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Angles );
-                            ChangeLocalization( ref TLeaveCallback, helper, LocalizationType.Offset );
-                            code.Append( $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)\n" );
-                            code.Append(  "    {\n" );
-                            code.Append( $"    {TLeaveCallback}\n" );
-                            code.Append(  "    })\n" );
+                            ChangeLocalization( ref TLeaveCallback, helper );
+                            AppendCode( ref code, $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)" );
+                            AppendCode( ref code,  "    {" );
+                            AppendCode( ref code, $"    {TLeaveCallback}" );
+                            AppendCode( ref code,  "    })" );
                         }
-                        code.Append( $"    DispatchSpawn( trigger_{idx} )\n" );
+                        AppendCode( ref code, $"    DispatchSpawn( trigger_{idx} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -97,6 +88,11 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        // Remove 1 to the counter since we don't support this object for live map code
+                        Helper.RemoveSendedEntityCount();
                     break;
                 }
 
@@ -107,7 +103,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -120,41 +116,35 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }
 
-        private static void ChangeLocalization( ref string callback, GameObject obj, LocalizationType type )
+        private static void ChangeLocalization( ref string callback, GameObject obj )
         {
-            string searchTerm = "";
-            string replacedString = "";
-
-            switch ( type )
+            foreach ( string key in Helper.LocalizedStringTrigger.Keys )
             {
-                case LocalizationType.Origin:
-                    searchTerm = "#HO";
-                    replacedString = obj != null && obj.activeSelf ? Helper.BuildOrigin( obj ) : "< 0, 0, 0 >";
-                    break;
-                case LocalizationType.Angles:
-                    searchTerm = "#HA";
-                    replacedString = obj != null && obj.activeSelf ? Helper.BuildOrigin( obj ) : "< 0, 0, 0 >";
-                    break;
-                case LocalizationType.Offset:
-                    searchTerm = "#HF";
-                    replacedString = "+ startingorg";
-                break;
-            }
+                if ( Helper.LocalizedStringTrigger.TryGetValue( key, out var mapping ) )
+                {
+                    string searchTerm = mapping.SearchTerm;
+                    string replacedString = mapping.ReplacementFunc( obj );
 
-            int index = callback.IndexOf( searchTerm );
+                    int index = callback.IndexOf( searchTerm );
 
-            while ( index >= 0 )
-            {
-                callback = callback.Substring(0, index) + replacedString + callback.Substring(index + searchTerm.Length);
-                index = callback.IndexOf(searchTerm, index + replacedString.Length);
+                    while ( index >= 0 )
+                    {
+                        callback = callback.Substring( 0, index ) + replacedString + callback.Substring( index + searchTerm.Length );
+                        index = callback.IndexOf( searchTerm, index + replacedString.Length );
+                    }
+                }
             }
         }
     }

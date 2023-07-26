@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 using static Build.Build;
-using static ImportExport.Shared.SharedFunction;
+using static ImportExport.SharedFunction;
 
 namespace Build
 {
@@ -18,10 +18,11 @@ namespace Build
         private static Dictionary< PropScriptOptions, string > ArrayName = new Dictionary< PropScriptOptions, string >()
         {
             { PropScriptOptions.PlayerClip, "ClipArray" },
-            { PropScriptOptions.PlayerNoClimb, "NoClimbArray" },
+            { PropScriptOptions.NoClimb, "NoClimbArray" },
             { PropScriptOptions.MakeInvisible, "InvisibleArray" },
-            { PropScriptOptions.PlayerNoGrapple, "NoGrappleArray" },
-            { PropScriptOptions.PlayerNoGrappleNoClimb, "NoGrappleNoClimbArray" },
+            { PropScriptOptions.NoGrapple, "NoGrappleArray" },
+            { PropScriptOptions.PlayerClipInvisibleNoGrappleNoClimb, "ClipInvisibleNoGrappleNoClimbArray" },
+            { PropScriptOptions.PlayerClipNoGrappleNoClimb, "ClipNoGrappleNoClimb" },
             { PropScriptOptions.NoCollision, "NoCollisionArray" }
         };
 
@@ -30,31 +31,33 @@ namespace Build
             StringBuilder code = new StringBuilder(); PrecacheList = new List< String >();
 
             bool ClipArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClip );
-            bool NoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoClimb );
+            bool NoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoClimb );
             bool InvisibleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.MakeInvisible );
-            bool NoGrappleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoGrapple );
-            bool NoGrappleNoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerNoGrappleNoClimb );
+            bool NoGrappleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoGrapple );
+            bool ClipInvisibleNoGrappleNoClimb = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClipInvisibleNoGrappleNoClimb );
+            bool PlayerClipNoGrappleNoClimb = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClipNoGrappleNoClimb );
             bool NoCollisionArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoCollision );
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || NoGrappleNoClimbArrayBool || NoCollisionArrayBool )
+                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || ClipInvisibleNoGrappleNoClimb || PlayerClipNoGrappleNoClimb || NoCollisionArrayBool )
                     {
-                        code.Append( "    // Props Array" ); PageBreak( ref code );
-                        code.Append( "    " );
-                        if ( ClipArrayBool ) code.Append( $"array < entity > ClipArray; " );
-                        if ( NoClimbArrayBool ) code.Append( $"array < entity > NoClimbArray; " );
-                        if ( InvisibleArrayBool ) code.Append( $"array < entity > InvisibleArray; " );
-                        if ( NoGrappleArrayBool ) code.Append( $"array < entity > NoGrappleArray; " );
-                        if ( NoGrappleNoClimbArrayBool ) code.Append( $"array < entity > NoGrappleNoClimbArray; " );
-                        if ( NoCollisionArrayBool ) code.Append( $"array < entity > NoCollisionArray; " );
-                        PageBreak( ref code ); PageBreak( ref code );
+                        AppendCode( ref code, "    // Props Array" );
+                        AppendCode( ref code, "    ", 0 );
+                        if ( ClipArrayBool ) AppendCode( ref code, $"array < entity > ClipArray; ", 0 );
+                        if ( NoClimbArrayBool ) AppendCode( ref code, $"array < entity > NoClimbArray; ", 0 );
+                        if ( InvisibleArrayBool ) AppendCode( ref code, $"array < entity > InvisibleArray; ", 0 );
+                        if ( NoGrappleArrayBool ) AppendCode( ref code, $"array < entity > NoGrappleArray; ", 0 );
+                        if ( ClipInvisibleNoGrappleNoClimb ) AppendCode( ref code, $"array < entity > ClipInvisibleNoGrappleNoClimbArray; ", 0 );
+                        if ( PlayerClipNoGrappleNoClimb ) AppendCode( ref code, $"array < entity > ClipNoGrappleNoClimb; ", 0 );
+                        if ( NoCollisionArrayBool ) AppendCode( ref code, $"array < entity > NoCollisionArray; ", 0 );
+
+                        AppendCode( ref code, "", 2 );
                     }
 
-                    code.Append( "    // Props" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Props" );
                     break;
 
                 case BuildType.EntFile:
@@ -66,8 +69,11 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
-                    code.Append( "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "\"type\",\"origin\",\"angles\",\"scale\",\"fade\",\"mantle\",\"visible\",\"mdl\",\"collection\"" );
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -86,39 +92,40 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    {addToArray}MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ){endFunction}" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    {addToArray}MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ){endFunction}" );
                         break;
 
                     case BuildType.EntFile:
-                        code.Append(  "{\n" );
-                        code.Append(  "\"StartDisabled\" \"0\"\n" );
-                        code.Append(  "\"spawnflags\" \"0\"\n" );
-                        code.Append( $"\"fadedist\" \"{Helper.ReplaceComma( script.FadeDistance )}\"\n" );
-                        code.Append( $"\"collide_titan\" \"1\"\n" );
-                        code.Append( $"\"collide_ai\" \"1\"\n" );
-                        code.Append( $"\"scale\" \"{scale}\"\n" );
-                        code.Append( $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"\n" );
-                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n" );
-                        code.Append(  "\"targetname\" \"ReMapEditorProp\"\n" );
-                        code.Append(  "\"solid\" \"6\"\n" );
-                        code.Append( $"\"model\" \"{model}\"\n" );
-                        code.Append(  "\"ClientSide\" \"0\"\n" );
-                        code.Append(  "\"classname\" \"prop_dynamic\"\n" );
-                        code.Append(  "}\n" );
+                        AppendCode( ref code,  "{" );
+                        AppendCode( ref code,  "\"StartDisabled\" \"0\"" );
+                        AppendCode( ref code,  "\"spawnflags\" \"0\"" );
+                        AppendCode( ref code, $"\"fadedist\" \"{Helper.ReplaceComma( script.FadeDistance )}\"" );
+                        AppendCode( ref code, $"\"collide_titan\" \"1\"" );
+                        AppendCode( ref code, $"\"collide_ai\" \"1\"" );
+                        AppendCode( ref code, $"\"scale\" \"{scale}\"" );
+                        AppendCode( ref code, $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"" );
+                        AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"" );
+                        AppendCode( ref code,  "\"targetname\" \"ReMapEditorProp\"" );
+                        AppendCode( ref code,  "\"solid\" \"6\"" );
+                        AppendCode( ref code, $"\"model\" \"{model}\"" );
+                        AppendCode( ref code,  "\"ClientSide\" \"0\"" );
+                        AppendCode( ref code,  "\"classname\" \"prop_dynamic\"" );
+                        AppendCode( ref code,  "}" );
                         break;
 
                     case BuildType.Precache:
                         if ( PrecacheList.Contains( model ) )
                             continue;
                         PrecacheList.Add( model );
-                        code.Append( $"    PrecacheModel( $\"{model}\" )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    PrecacheModel( $\"{model}\" )" );
                         break;
 
                     case BuildType.DataTable:
-                        code.Append( $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"" );
+                        break;
+
+                    case BuildType.LiveMap:
+                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale}, true )" );
                     break;
                 }
             }
@@ -128,41 +135,52 @@ namespace Build
             {
                 case BuildType.Script:
                 
-                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || NoGrappleNoClimbArrayBool || NoCollisionArrayBool )
+                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || ClipInvisibleNoGrappleNoClimb || PlayerClipNoGrappleNoClimb || NoCollisionArrayBool )
                     {
-                        PageBreak( ref code );
+                        AppendCode( ref code );
+                        
                         if ( ClipArrayBool )
                         {
-                            code.Append( "    foreach ( entity ent in ClipArray )\n" );
-                            code.Append( "    {\n" );
-                            code.Append( "        ent.MakeInvisible()\n" );
-                            code.Append( "        ent.kv.solid = 6\n" );
-                            code.Append( "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n" );
-                            code.Append( "        ent.kv.contents = CONTENTS_PLAYERCLIP\n" );
-                            code.Append( "    }\n" );
+                            AppendCode( ref code, "    foreach ( entity ent in ClipArray )" );
+                            AppendCode( ref code, "    {" );
+                            AppendCode( ref code, "        ent.MakeInvisible()" );
+                            AppendCode( ref code, "        ent.kv.solid = 6" );
+                            AppendCode( ref code, "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER" );
+                            AppendCode( ref code, "        ent.kv.contents = CONTENTS_PLAYERCLIP" );
+                            AppendCode( ref code, "    }" );
                         }
 
-                        if ( NoClimbArrayBool ) code.Append( "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3\n" );
+                        if ( NoClimbArrayBool ) AppendCode( ref code, "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3" );
 
-                        if ( InvisibleArrayBool ) code.Append( "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()\n" );
+                        if ( InvisibleArrayBool ) AppendCode( ref code, "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()" );
 
-                        if ( NoGrappleArrayBool ) code.Append( "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n" );
+                        if ( NoGrappleArrayBool ) AppendCode( ref code, "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" );
 
-                        if ( NoGrappleNoClimbArrayBool )
+                        if ( ClipInvisibleNoGrappleNoClimb )
                         {
-                            code.Append( "    foreach ( entity ent in NoGrappleNoClimbArray )\n" );
-                            code.Append( "    {\n" );
-                            code.Append( "        ent.MakeInvisible()\n" );
-                            code.Append( "        ent.kv.solid = 3\n" );
-                            code.Append( "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER\n" );
-                            code.Append( "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE\n" );
-                            code.Append( "    }\n" );
+                            AppendCode( ref code, "    foreach ( entity ent in ClipInvisibleNoGrappleNoClimbArray )" );
+                            AppendCode( ref code, "    {" );
+                            AppendCode( ref code, "        ent.MakeInvisible()" );
+                            AppendCode( ref code, "        ent.kv.solid = 3" );
+                            AppendCode( ref code, "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER" );
+                            AppendCode( ref code, "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" );
+                            AppendCode( ref code, "    }" );
                         }
 
-                        if ( NoCollisionArrayBool ) code.Append( "    foreach ( entity ent in NoCollisionArray ) ent.kv.solid = 0\n" );
+                        if ( PlayerClipNoGrappleNoClimb )
+                        {
+                            AppendCode( ref code, "    foreach ( entity ent in ClipNoGrappleNoClimb )" );
+                            AppendCode( ref code, "    {" );
+                            AppendCode( ref code, "        ent.kv.solid = 3" );
+                            AppendCode( ref code, "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER" );
+                            AppendCode( ref code, "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" );
+                            AppendCode( ref code, "    }" );
+                        }
+
+                        if ( NoCollisionArrayBool ) AppendCode( ref code, "    foreach ( entity ent in NoCollisionArray ) ent.kv.solid = 0" );
                     }
 
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -174,11 +192,37 @@ namespace Build
                     break;
                     
                 case BuildType.DataTable:
-                    code.Append( "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"" );
+                    AppendCode( ref code, "\"string\",\"vector\",\"vector\",\"float\",\"float\",\"bool\",\"bool\",\"asset\",\"string\"" );
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
             
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
+
+            return code;
+        }
+
+        public static async Task< StringBuilder > BuildClientPropObjects( bool selection )
+        {
+            GameObject[] objectData = Helper.GetAllObjectTypeWithEnum( ObjectType.Prop, selection );
+
+            StringBuilder code = new StringBuilder();
+
+            // Build the code
+            foreach ( GameObject obj in objectData )
+            {
+                PropScript script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
+                if ( script == null || !script.ClientSide ) continue;
+
+                string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
+
+                AppendCode( ref code, $"    CreateClientSidePropDynamic( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, $\"{model}\"" );
+            }
+
+            await Helper.Wait();
 
             return code;
         }

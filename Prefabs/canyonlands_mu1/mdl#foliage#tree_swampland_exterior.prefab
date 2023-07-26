@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &993044658920304734
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6122530060848502743}
+  m_Layer: 0
+  m_Name: tree_swampland_exterior_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6122530060848502743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993044658920304734}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6118541310592054504}
+  - {fileID: 6606806427147489607}
+  m_Father: {fileID: 2559825767128787450}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1058917367968396116
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,7 +65,7 @@ Transform:
   m_Children:
   - {fileID: 2559825767128787450}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2357322021348872562
 MonoBehaviour:
@@ -49,9 +82,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-6796249461223869460
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,8 +102,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1618.3401, y: 2325.3232, z: 1206.072}
-  m_Center: {x: 19.341125, y: 1110.7017, z: -58.993164}
+  m_Size: {x: 1618.3401, y: 2325.3232, z: 1206.0719}
+  m_Center: {x: 19.34137, y: 1110.7015, z: -58.992737}
 --- !u!1 &2115390413405975465
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,8 +133,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2150529480792087240}
-  m_RootOrder: 0
+  m_Father: {fileID: 6122530060848502743}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6339844533862883182
 SkinnedMeshRenderer:
@@ -159,39 +190,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -47.313477, y: -116.57083, z: 935.1218}
     m_Extent: {x: 330.78125, y: 279.76813, z: 987.0818}
   m_DirtyAABB: 0
---- !u!1 &2963432008456090327
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2150529480792087240}
-  m_Layer: 0
-  m_Name: tree_swampland_exterior_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2150529480792087240
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2963432008456090327}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6118541310592054504}
-  - {fileID: 6606806427147489607}
-  m_Father: {fileID: 2559825767128787450}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3926761921704367990
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,9 +219,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2743139796524724125}
-  - {fileID: 2150529480792087240}
+  - {fileID: 6122530060848502743}
   m_Father: {fileID: 1469479692945300588}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4843271384036292537
 GameObject:
@@ -254,7 +252,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2743139796524724125}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4859031199506039709
 GameObject:
@@ -286,7 +284,7 @@ Transform:
   m_Children:
   - {fileID: 1643812057359745048}
   m_Father: {fileID: 2559825767128787450}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7172134546441859571
 GameObject:
@@ -317,8 +315,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2150529480792087240}
-  m_RootOrder: 1
+  m_Father: {fileID: 6122530060848502743}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5339418541755329158
 SkinnedMeshRenderer:

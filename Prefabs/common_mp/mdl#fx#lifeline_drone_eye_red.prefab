@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &226668119143705572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6582453421085338003}
+  m_Layer: 0
+  m_Name: lifeline_drone_eye_red_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6582453421085338003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226668119143705572}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2252922761262024658}
+  m_Father: {fileID: 6529833755884084414}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &853830837766169567
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,8 +61,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8538225264311592062}
-  m_RootOrder: 0
+  m_Father: {fileID: 6582453421085338003}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6568301810517300818
 SkinnedMeshRenderer:
@@ -83,8 +115,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5788301129475736144}
   m_AABB:
-    m_Center: {x: -0.00006835954, y: -0.0000048829243, z: -0.0000048829243}
-    m_Extent: {x: 0.0023535155, y: 0.008666994, z: 0.008247072}
+    m_Center: {x: -0.0068359375, y: -0.00048828125, z: -0.00048828125}
+    m_Extent: {x: 0.23535156, y: 0.8666994, z: 0.8247072}
   m_DirtyAABB: 0
 --- !u!1 &1558678191874861942
 GameObject:
@@ -118,7 +150,7 @@ Transform:
   m_Children:
   - {fileID: 6529833755884084414}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7152149037915954285
 MonoBehaviour:
@@ -135,9 +167,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-1649001875726619310
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -157,8 +187,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.017333994, y: 0.016494151, z: 0.0047070356}
-  m_Center: {x: -0.0000048829243, y: -0.0000048829243, z: -0.00006835954}
+  m_Size: {x: 1.7333994, y: 1.6494149, z: 0.4707034}
+  m_Center: {x: -0.00048828125, y: -0.00048828125, z: -0.0068359375}
 --- !u!1 &4255415928408879850
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +218,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1678969798441402073}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7172551164242518762
 GameObject:
@@ -219,9 +249,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1678969798441402073}
-  - {fileID: 8538225264311592062}
+  - {fileID: 6582453421085338003}
   m_Father: {fileID: 1048661972263207577}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7368085844708845337
 GameObject:
@@ -253,37 +283,5 @@ Transform:
   m_Children:
   - {fileID: 5788301129475736144}
   m_Father: {fileID: 6529833755884084414}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7679279131685644021
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8538225264311592062}
-  m_Layer: 0
-  m_Name: lifeline_drone_eye_red_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8538225264311592062
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7679279131685644021}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2252922761262024658}
-  m_Father: {fileID: 6529833755884084414}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

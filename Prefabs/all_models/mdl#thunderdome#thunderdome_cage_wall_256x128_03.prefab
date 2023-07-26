@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 7575249627667470381}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1921646197354382387
 MonoBehaviour:
@@ -49,9 +49,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-7657162882058374379
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,8 +69,41 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 16.000069, y: 127.57428, z: 255.99911}
-  m_Center: {x: 0, y: 63.787136, z: 0.00047302246}
+  m_Size: {x: 16.000053, y: 127.574265, z: 255.99905}
+  m_Center: {x: 0.0000076293945, y: 63.787132, z: 0.00048828125}
+--- !u!1 &1707587458555870846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6068231993947212334}
+  m_Layer: 0
+  m_Name: thunderdome_cage_wall_256x128_03_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6068231993947212334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707587458555870846}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2061701976495679362}
+  - {fileID: 6469705382365399074}
+  m_Father: {fileID: 7575249627667470381}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2909795709372980158
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,8 +133,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8531812404922516683}
-  m_RootOrder: 1
+  m_Father: {fileID: 6068231993947212334}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5208458996814509888
 SkinnedMeshRenderer:
@@ -189,7 +220,7 @@ Transform:
   m_Children:
   - {fileID: 3718251567318797663}
   m_Father: {fileID: 7575249627667470381}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5560674677543928069
 GameObject:
@@ -220,8 +251,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8531812404922516683}
-  m_RootOrder: 0
+  m_Father: {fileID: 6068231993947212334}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2549625770915706465
 SkinnedMeshRenderer:
@@ -277,39 +308,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -0.00048828125, z: 47.78712}
     m_Extent: {x: 127.99951, y: 7.9995136, z: 47.78712}
   m_DirtyAABB: 0
---- !u!1 &5871337909341299788
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8531812404922516683}
-  m_Layer: 0
-  m_Name: thunderdome_cage_wall_256x128_03_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8531812404922516683
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5871337909341299788}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2061701976495679362}
-  - {fileID: 6469705382365399074}
-  m_Father: {fileID: 7575249627667470381}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7373246591989316201
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +337,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7183406270021156698}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8961853787479289950
 GameObject:
@@ -370,7 +368,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7183406270021156698}
-  - {fileID: 8531812404922516683}
+  - {fileID: 6068231993947212334}
   m_Father: {fileID: 1868027217862527421}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

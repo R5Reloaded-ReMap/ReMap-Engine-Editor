@@ -29,7 +29,40 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4782861616890773615}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1843603612114377671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1064955979881000375}
+  m_Layer: 0
+  m_Name: farmland_bed_frame_01_clean_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1064955979881000375
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843603612114377671}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5494744783626539613}
+  - {fileID: 5745537386435283923}
+  m_Father: {fileID: 618098802190503228}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2186033812049169912
 GameObject:
@@ -60,8 +93,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7819467786970182916}
-  m_RootOrder: 0
+  m_Father: {fileID: 1064955979881000375}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &276411293910212564
 SkinnedMeshRenderer:
@@ -117,39 +150,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 3.109375, y: 23.999517, z: 65.08107}
     m_Extent: {x: 52.890625, y: 23.999517, z: 64.05275}
   m_DirtyAABB: 0
---- !u!1 &3552836411481448760
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7819467786970182916}
-  m_Layer: 0
-  m_Name: farmland_bed_frame_01_clean_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7819467786970182916
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3552836411481448760}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5494744783626539613}
-  - {fileID: 5745537386435283923}
-  m_Father: {fileID: 618098802190503228}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4111651806599889487
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,10 +178,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7819467786970182916}
+  - {fileID: 1064955979881000375}
   - {fileID: 4782861616890773615}
   m_Father: {fileID: 9153107358071075046}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4603165752437848071
 GameObject:
@@ -212,8 +212,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7819467786970182916}
-  m_RootOrder: 1
+  m_Father: {fileID: 1064955979881000375}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6969034636058852610
 SkinnedMeshRenderer:
@@ -301,7 +301,7 @@ Transform:
   m_Children:
   - {fileID: 618098802190503228}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2301728176951336653
 MonoBehaviour:
@@ -318,9 +318,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-3547806163653998084
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -340,8 +338,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 49.999077, y: 129.13387, z: 127.999084}
-  m_Center: {x: 22.999523, y: 64.56692, z: 0.00047302246}
+  m_Size: {x: 49.999077, y: 129.13383, z: 127.99905}
+  m_Center: {x: 22.99953, y: 64.56692, z: 0.00049209595}
 --- !u!1 &6611959626216833927
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,5 +370,5 @@ Transform:
   m_Children:
   - {fileID: 5963497378603685898}
   m_Father: {fileID: 618098802190503228}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

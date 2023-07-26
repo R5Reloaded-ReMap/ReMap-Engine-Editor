@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 4463933318831636655}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6712782914214989388
 MonoBehaviour:
@@ -49,9 +49,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &4959910283915706024
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,8 +69,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.17430677, y: 0.020214897, z: 0.16578129}
-  m_Center: {x: -0.000004887581, y: -0.00039062556, z: 0}
+  m_Size: {x: 17.430674, y: 2.0214872, z: 16.578129}
+  m_Center: {x: -0.00048828125, y: -0.0390625, z: 0}
 --- !u!1 &419826153466966586
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +100,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6144118430578069975}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &612823109979968565
 GameObject:
@@ -133,9 +131,41 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6144118430578069975}
-  - {fileID: 7747847028315965564}
+  - {fileID: 2276038414237609536}
   m_Father: {fileID: 78008790709696236}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1668870054881129438
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2276038414237609536}
+  m_Layer: 0
+  m_Name: jump_pad_rubber_02_vfx_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2276038414237609536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668870054881129438}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4651860942767067044}
+  m_Father: {fileID: 4463933318831636655}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5407800570230690010
 GameObject:
@@ -166,8 +196,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7747847028315965564}
-  m_RootOrder: 0
+  m_Father: {fileID: 2276038414237609536}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6336290291072814037
 SkinnedMeshRenderer:
@@ -220,41 +250,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 9167979757027382490}
   m_AABB:
-    m_Center: {x: 0, y: -0.000004887581, z: -0.00039062556}
-    m_Extent: {x: 0.08289062, y: 0.08715334, z: 0.010107425}
+    m_Center: {x: 0, y: -0.00048828125, z: -0.0390625}
+    m_Extent: {x: 8.2890625, y: 8.715334, z: 1.0107424}
   m_DirtyAABB: 0
---- !u!1 &5544490845554628170
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7747847028315965564}
-  m_Layer: 0
-  m_Name: jump_pad_rubber_02_vfx_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7747847028315965564
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5544490845554628170}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4651860942767067044}
-  m_Father: {fileID: 4463933318831636655}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6343239917909291025
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,5 +283,5 @@ Transform:
   m_Children:
   - {fileID: 9167979757027382490}
   m_Father: {fileID: 4463933318831636655}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

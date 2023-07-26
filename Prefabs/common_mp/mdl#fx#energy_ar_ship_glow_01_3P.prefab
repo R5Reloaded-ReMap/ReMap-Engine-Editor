@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 325536647714281185}
   m_Father: {fileID: 7027393683707095323}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &527457502422926188
 GameObject:
@@ -61,7 +61,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3823390776418281068}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1577957159658728600
 GameObject:
@@ -95,7 +95,7 @@ Transform:
   m_Children:
   - {fileID: 7027393683707095323}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6143278019836310035
 MonoBehaviour:
@@ -112,9 +112,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &6067767899928167259
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -134,8 +132,40 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.026533227, y: 0.051992215, z: 0.056396507}
-  m_Center: {x: -0.0000048866495, y: 0.025996108, z: 0.01521972}
+  m_Size: {x: 2.653323, y: 5.1992207, z: 5.6396494}
+  m_Center: {x: -0.00048816204, y: 2.5996103, z: 1.5219729}
+--- !u!1 &1621607826256048273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5547715587854153342}
+  m_Layer: 0
+  m_Name: energy_ar_ship_glow_01_3P_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5547715587854153342
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621607826256048273}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6610507916646251031}
+  m_Father: {fileID: 7027393683707095323}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3566422538780039030
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,42 +194,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5442286213976042912}
+  - {fileID: 5547715587854153342}
   - {fileID: 3823390776418281068}
   m_Father: {fileID: 7226792461828355098}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6107044903036468466
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5442286213976042912}
-  m_Layer: 0
-  m_Name: energy_ar_ship_glow_01_3P_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5442286213976042912
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6107044903036468466}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6610507916646251031}
-  m_Father: {fileID: 7027393683707095323}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8555435038082371167
 GameObject:
@@ -230,8 +228,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5442286213976042912}
-  m_RootOrder: 0
+  m_Father: {fileID: 5547715587854153342}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3609748214430675082
 SkinnedMeshRenderer:
@@ -284,6 +282,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 325536647714281185}
   m_AABB:
-    m_Center: {x: 0.015219726, y: -0.0000048829243, z: 0.029980477}
-    m_Extent: {x: 0.028198242, y: 0.013266604, z: 0.022011723}
+    m_Center: {x: 1.5219727, y: -0.00048828125, z: 2.9980474}
+    m_Extent: {x: 2.8198242, y: 1.3266605, z: 2.2011724}
   m_DirtyAABB: 0

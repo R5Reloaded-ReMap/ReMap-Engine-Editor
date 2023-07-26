@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 6472308576210772160}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3639075808374719227
 MonoBehaviour:
@@ -49,9 +49,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-2966214006835177234
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,8 +69,41 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 39.99907, y: 511.99927, z: 127.999176}
-  m_Center: {x: -0.00048828125, y: -0.00048828125, z: 0.00048828125}
+  m_Size: {x: 39.999115, y: 511.9992, z: 127.999054}
+  m_Center: {x: -0.00048828125, y: -0.00048828125, z: 0.00049209595}
+--- !u!1 &853428343647656212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6908232714412987492}
+  m_Layer: 0
+  m_Name: highrise_panel_air_unit_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6908232714412987492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853428343647656212}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6406989658728103101}
+  - {fileID: 2180997353038317894}
+  m_Father: {fileID: 6472308576210772160}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1067027116584460196
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +134,7 @@ Transform:
   m_Children:
   - {fileID: 5096849777286370644}
   m_Father: {fileID: 6472308576210772160}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1795782090790212344
 GameObject:
@@ -134,8 +165,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6733809741765701830}
-  m_RootOrder: 1
+  m_Father: {fileID: 6908232714412987492}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4968815028151714885
 SkinnedMeshRenderer:
@@ -219,10 +250,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6733809741765701830}
+  - {fileID: 6908232714412987492}
   - {fileID: 4294280291566672694}
   m_Father: {fileID: 255508882339637807}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2900428567522560569
 GameObject:
@@ -253,7 +284,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4294280291566672694}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5309966891479739797
 GameObject:
@@ -284,8 +315,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6733809741765701830}
-  m_RootOrder: 0
+  m_Father: {fileID: 6908232714412987492}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8052397361215931483
 SkinnedMeshRenderer:
@@ -341,36 +372,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -0.0009765625, z: -0.00048828125}
     m_Extent: {x: 63.99951, y: 14.697269, z: 255.99957}
   m_DirtyAABB: 0
---- !u!1 &6282142973680948294
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6733809741765701830}
-  m_Layer: 0
-  m_Name: highrise_panel_air_unit_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6733809741765701830
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6282142973680948294}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6406989658728103101}
-  - {fileID: 2180997353038317894}
-  m_Father: {fileID: 6472308576210772160}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

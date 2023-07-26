@@ -3,14 +3,16 @@ using UnityEditor;
 
 public class DrawVerticalZipline : MonoBehaviour
 {
+    /*
     [Header("Developer options, do not modify:")]
     public bool ShowDevelopersOptions = false;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform zipline;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform fence_post;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform arm;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_start;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform rope_end;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform helperPlacement;
+    */
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform zipline;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform fence_post;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform arm;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform rope_start;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform rope_end;
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform helperPlacement;
 
     [Header("Unity Settings:")]
     public bool ShowZipline = true;
@@ -52,8 +54,8 @@ public class DrawVerticalZipline : MonoBehaviour
     {
         // Origin && Angles
         // Start
-        GameObject support_start = zipline.transform.Find("support_start").gameObject;
-        GameObject support_end = zipline.transform.Find("support_end").gameObject;
+        GameObject support_start = zipline.transform.Find( "support_start" ).gameObject;
+        GameObject support_end = zipline.transform.Find( "support_end" ).gameObject;
 
         support_start.transform.position = zipline.position;
         support_start.transform.eulerAngles = zipline.eulerAngles;
@@ -64,39 +66,39 @@ public class DrawVerticalZipline : MonoBehaviour
         {
             ShowArmOffset = true;
 
-            fence_post.transform.SetParent(support_start.transform);
-            fence_post.transform.localPosition = new Vector3(0, 0, 0);
-            fence_post.transform.localEulerAngles = new Vector3(0, 0, 0);
-            arm.transform.SetParent(support_start.transform);
-            arm.transform.localPosition = new Vector3((float)0.8, ArmOffset, 1);
-            arm.transform.localEulerAngles = new Vector3(0, 90, 0);
-            rope_start.SetParent(arm.transform);
-            rope_start.localPosition = new Vector3(55, -12, 4);
+            fence_post.transform.SetParent( support_start.transform );
+            fence_post.transform.localPosition = new Vector3( 0, 0, 0 );
+            fence_post.transform.localEulerAngles = new Vector3( 0, 0, 0 );
+            arm.transform.SetParent( support_start.transform );
+            arm.transform.localPosition = new Vector3( ( float ) 0.8, ArmOffset, 1 );
+            arm.transform.localEulerAngles = new Vector3( 0, 90, 0 );
+            rope_start.SetParent( arm.transform );
+            rope_start.localPosition = new Vector3( 55, -12, 4 );
 
-            Quaternion targetRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
-            rope_start.rotation = Quaternion.Euler(targetRotation.x, anglesOffset, targetRotation.z);
+            Quaternion targetRotation = Quaternion.LookRotation( transform.forward, Vector3.up );
+            rope_start.rotation = Quaternion.Euler( targetRotation.x, anglesOffset, targetRotation.z );
             //rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0); // old angle system
 
-            if(ArmOffset < 46) ArmOffset = 46;
-            if(ArmOffset > 300) ArmOffset = 300;
+            if( ArmOffset < 46 ) ArmOffset = 46;
+            if( ArmOffset > 300 ) ArmOffset = 300;
         }
 
         if( fence_post == null && arm != null )
         {
-            arm.transform.SetParent(support_start.transform);
-            arm.transform.localPosition = new Vector3(0, 0, 0);
-            arm.transform.localEulerAngles = new Vector3(0, 90, 0);
-            rope_start.SetParent(arm.transform);
-            rope_start.localPosition = new Vector3(55, -12, 4);
-            rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0);
+            arm.transform.SetParent( support_start.transform) ;
+            arm.transform.localPosition = new Vector3( 0, 0, 0 );
+            arm.transform.localEulerAngles = new Vector3( 0, 90, 0 );
+            rope_start.SetParent( arm.transform );
+            rope_start.localPosition = new Vector3( 55, -12, 4 );
+            rope_start.localEulerAngles = new Vector3( 0, anglesOffset, 0 );
             ArmOffset = 0;
         }
 
         if( arm == null )
         {
-            rope_start.SetParent(support_start.transform);
-            rope_start.localPosition = new Vector3(0, 0, 0);
-            rope_start.localEulerAngles = new Vector3(0, anglesOffset, 0);
+            rope_start.SetParent( support_start.transform );
+            rope_start.localPosition = new Vector3( 0, 0, 0 );
+            rope_start.localEulerAngles = new Vector3( 0, anglesOffset, 0 );
             ArmOffset = 0;
         }
 
@@ -110,7 +112,7 @@ public class DrawVerticalZipline : MonoBehaviour
         GameObject arrow = rope_start.transform.Find("arrow").gameObject;
         arrow.SetActive( PushOffInDirectionX );
 
-        foreach ( GameObject go in Panels)
+        foreach ( GameObject go in Panels )
         {
             if ( go == null ) continue;
 
@@ -123,46 +125,46 @@ public class DrawVerticalZipline : MonoBehaviour
         if ( EnableAutoOffsetDistance )
         {
             RaycastHit hit;
-            if (Physics.Raycast(rope_start.transform.position - new Vector3(0, 1, 0), Vector3.down, out hit, 20000))
+            if ( Physics.Raycast( rope_start.transform.position - new Vector3( 0, 1, 0 ), Vector3.down, out hit, 20000 ) )
             {
-                HeightOffset = -(hit.distance - GroundOffset);
+                HeightOffset = -( hit.distance - GroundOffset );
             }
         }
 
-        if (!ShowZipline)
+        if ( !ShowZipline )
             return;
 
-        float dist = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, rope_start.position);
-        float dist2 = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, rope_end.position);
-        if(dist < ShowZiplineDistance || dist2 < ShowZiplineDistance)
+        float dist = Vector3.Distance( SceneView.currentDrawingSceneView.camera.transform.position, rope_start.position );
+        float dist2 = Vector3.Distance( SceneView.currentDrawingSceneView.camera.transform.position, rope_end.position );
+        if( dist < ShowZiplineDistance || dist2 < ShowZiplineDistance )
         {
             var startPos = rope_start.position;
             var endPos = rope_end.position;
             var thickness = 3;
             float autoDetachLenght = AutoDetachStart + AutoDetachEnd;
 
-            if (rope_start != null && rope_end != null && Vector3.Distance(startPos, endPos) > 10)
+            if ( rope_start != null && rope_end != null && Vector3.Distance( startPos, endPos ) > 10 )
             {
                 // Draws a line from this transform to the target
-                Handles.DrawBezier(startPos, endPos, startPos, endPos, Color.yellow, null, thickness);
+                Handles.DrawBezier( startPos, endPos, startPos, endPos, Color.yellow, null, thickness );
 
-                if(ShowAutoDetachDistance && Vector3.Distance(startPos, endPos) > autoDetachLenght)
+                if( ShowAutoDetachDistance && Vector3.Distance(startPos, endPos) > autoDetachLenght )
                 {
                     // Draw Start Auto Detach
                     var startDir = rope_end.position - rope_start.position;
                     var startDistance = startDir.magnitude;
                     var startDirection = startDir / startDistance;
-                    if(AutoDetachStart < 0) AutoDetachStart = 0;
+                    if( AutoDetachStart < 0 ) AutoDetachStart = 0;
 
-                    if(AutoDetachStart != 0) Handles.DrawBezier(startPos, startPos + startDirection * AutoDetachStart, startPos, startPos + startDirection * AutoDetachStart, Color.red, null, thickness);
+                    if( AutoDetachStart != 0 ) Handles.DrawBezier( startPos, startPos + startDirection * AutoDetachStart, startPos, startPos + startDirection * AutoDetachStart, Color.red, null, thickness );
 
                     // Draw End Auto Detach
                     var endDir = rope_start.position - rope_end.position;
                     var endDistance = endDir.magnitude;
                     var endDirection = endDir / endDistance;
-                    if(AutoDetachEnd < 0) AutoDetachEnd = 0;
+                    if( AutoDetachEnd < 0 ) AutoDetachEnd = 0;
 
-                    if(AutoDetachEnd != 0) Handles.DrawBezier(endPos, endPos + endDirection * AutoDetachEnd, endPos, endPos + endDirection * AutoDetachEnd, Color.red, null, thickness);
+                    if( AutoDetachEnd != 0 ) Handles.DrawBezier( endPos, endPos + endDirection * AutoDetachEnd, endPos, endPos + endDirection * AutoDetachEnd, Color.red, null, thickness );
                 }
             }
         }

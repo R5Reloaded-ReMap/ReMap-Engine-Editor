@@ -142,7 +142,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8138624206838242184}
   - {fileID: 372657104105131692}
@@ -163,13 +163,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Trigger: {fileID: 8138624206838242184}
   Helper: {fileID: 372657104105131692}
+  useWireMesh: 0
+  wireMeshSides: 16
+  color: {r: 1, g: 1, b: 1, a: 1}
   Debug: 0
   Height: 50
   Width: 200
   UseHelperForTP: 0
   EnterCallback: "    if (IsValid(ent)) // ensure the entity is valid\r\n    {\r\n       
     if (ent.IsPlayer() && ent.GetPhysics() != MOVETYPE_NOCLIP) // Noclip players
-    are not affected by the trigger\r\n        {\r\n            ent.SetOrigin(#HO)
+    are not affected by the trigger\r\n        {\r\n            ent.SetOrigin(#TRIGGER_H_ORIGIN)
     // change tp location\r\n        }\r\n    }"
   LeaveCallback: 
 --- !u!1001 &3742601656243856066

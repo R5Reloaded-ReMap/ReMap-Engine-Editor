@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &44901008727073633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6406459512493166018}
+  m_Layer: 0
+  m_Name: lagoon_hut_floor_support_posts_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6406459512493166018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44901008727073633}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4748746068590580381}
+  - {fileID: 4448654039209801232}
+  m_Father: {fileID: 4014165116510404591}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1607124337962861285
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,9 +62,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7667720671453716342}
-  - {fileID: 908206871317518141}
+  - {fileID: 6406459512493166018}
   m_Father: {fileID: 8206384362493941665}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2327508853296172374
 GameObject:
@@ -62,8 +95,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 908206871317518141}
-  m_RootOrder: 1
+  m_Father: {fileID: 6406459512493166018}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1186785526983250242
 SkinnedMeshRenderer:
@@ -119,39 +152,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.35302734, y: -0.00048828125, z: 0}
     m_Extent: {x: 355.0962, y: 4.722169, z: 5.5000014}
   m_DirtyAABB: 0
---- !u!1 &3230713773833814057
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 908206871317518141}
-  m_Layer: 0
-  m_Name: lagoon_hut_floor_support_posts_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &908206871317518141
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3230713773833814057}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4748746068590580381}
-  - {fileID: 4448654039209801232}
-  m_Father: {fileID: 4014165116510404591}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3770537778776761892
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,7 +182,7 @@ Transform:
   m_Children:
   - {fileID: 6613392879148980585}
   m_Father: {fileID: 4014165116510404591}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6577322361642247365
 GameObject:
@@ -216,7 +216,7 @@ Transform:
   m_Children:
   - {fileID: 4014165116510404591}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5899028903094195258
 MonoBehaviour:
@@ -233,9 +233,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-1420667206806605362
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -255,7 +253,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 9.4445095, y: 11.000008, z: 710.8986}
+  m_Size: {x: 9.444426, y: 11.000005, z: 710.8985}
   m_Center: {x: -0.00048828125, y: 0, z: 0}
 --- !u!1 &7183462025110429234
 GameObject:
@@ -286,7 +284,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7667720671453716342}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7587460264584189217
 GameObject:
@@ -317,8 +315,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 908206871317518141}
-  m_RootOrder: 0
+  m_Father: {fileID: 6406459512493166018}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4291162390221265080
 SkinnedMeshRenderer:

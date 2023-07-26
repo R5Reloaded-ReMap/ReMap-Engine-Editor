@@ -3,10 +3,11 @@ using UnityEditor;
 
 public class SoundScript : MonoBehaviour
 {
-
+    /*
     [Header("Developer options, do not modify:")]
     public bool ShowDevelopersOptions = false;
-    [ConditionalHide("ShowDevelopersOptions", true)] public Transform soundModel;
+    */
+    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform soundModel;
 
     [Header("Unity Settings:")]
     public bool ShowPolylineSegments = true;

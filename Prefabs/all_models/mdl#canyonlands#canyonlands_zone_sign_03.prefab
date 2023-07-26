@@ -29,7 +29,43 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6155042687032120607}
-  m_RootOrder: 0
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1786146990375031449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6757425638039486564}
+  m_Layer: 0
+  m_Name: canyonlands_zone_sign_03_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6757425638039486564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786146990375031449}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 980620918967255899}
+  - {fileID: 6770007602723851457}
+  - {fileID: 7390928759257249122}
+  - {fileID: 8399195536729175692}
+  - {fileID: 5949034244938025518}
+  m_Father: {fileID: 7429953755819658072}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2009345801699492711
 GameObject:
@@ -60,8 +96,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1342263471221820292}
-  m_RootOrder: 3
+  m_Father: {fileID: 6757425638039486564}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8335951979622553217
 SkinnedMeshRenderer:
@@ -146,8 +182,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1342263471221820292}
-  m_RootOrder: 0
+  m_Father: {fileID: 6757425638039486564}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2308561136165436552
 SkinnedMeshRenderer:
@@ -233,43 +269,7 @@ Transform:
   m_Children:
   - {fileID: 3650418712385756573}
   m_Father: {fileID: 7429953755819658072}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5171091391547484223
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1342263471221820292}
-  m_Layer: 0
-  m_Name: canyonlands_zone_sign_03_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1342263471221820292
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5171091391547484223}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 980620918967255899}
-  - {fileID: 6770007602723851457}
-  - {fileID: 7390928759257249122}
-  - {fileID: 8399195536729175692}
-  - {fileID: 5949034244938025518}
-  m_Father: {fileID: 7429953755819658072}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6325395685652388759
 GameObject:
@@ -303,7 +303,7 @@ Transform:
   m_Children:
   - {fileID: 7429953755819658072}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5182299079715002119
 MonoBehaviour:
@@ -320,9 +320,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &3193580314777524868
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -342,7 +340,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 623.99927, y: 478.92618, z: 125.90835}
+  m_Size: {x: 623.9993, y: 478.92603, z: 125.908295}
   m_Center: {x: -0.00048828125, y: -6.013672, z: -1.0449219}
 --- !u!1 &7430927525359785872
 GameObject:
@@ -373,8 +371,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1342263471221820292}
-  m_RootOrder: 2
+  m_Father: {fileID: 6757425638039486564}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3427732889571115027
 SkinnedMeshRenderer:
@@ -459,8 +457,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1342263471221820292}
-  m_RootOrder: 4
+  m_Father: {fileID: 6757425638039486564}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &882064084665231500
 SkinnedMeshRenderer:
@@ -545,8 +543,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1342263471221820292}
-  m_RootOrder: 1
+  m_Father: {fileID: 6757425638039486564}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3029811175524043824
 SkinnedMeshRenderer:
@@ -630,8 +628,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1342263471221820292}
+  - {fileID: 6757425638039486564}
   - {fileID: 6155042687032120607}
   m_Father: {fileID: 4598350157090182308}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

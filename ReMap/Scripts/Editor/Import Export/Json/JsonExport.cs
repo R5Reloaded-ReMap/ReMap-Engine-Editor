@@ -9,22 +9,13 @@ using UnityEditor;
 using UnityEngine;
 
 // Internal
-using ImportExport.Shared;
-using static ImportExport.Shared.SharedFunction;
+using static ImportExport.SharedFunction;
 using static ImportExport.Json.JsonShared;
 
 namespace ImportExport.Json
 {
-    public enum ExportType
-    {
-        All = 0,
-        Selection = 1,
-    }
-
     public class JsonExport
     {
-        internal static JsonData jsonData = new JsonData();
-
         [ MenuItem( "ReMap/Export/Json", false, 51 ) ]
         public static async void ExportJson()
         {
@@ -37,26 +28,11 @@ namespace ImportExport.Json
             EditorUtility.DisplayProgressBar( "Starting Export", "" , 0 );
 
             ResetJsonData();
-            await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props );
-            await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines );
-            await ExportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines );
-            await ExportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines );
-            await ExportObjectsWithEnum( ObjectType.NonVerticalZipLine, jsonData.NonVerticalZipLines );
-            await ExportObjectsWithEnum( ObjectType.SingleDoor, jsonData.SingleDoors );
-            await ExportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors );
-            await ExportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors );
-            await ExportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors );
-            await ExportObjectsWithEnum( ObjectType.Button, jsonData.Buttons );
-            await ExportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads );
-            await ExportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins );
-            await ExportObjectsWithEnum( ObjectType.WeaponRack, jsonData.WeaponRacks );
-            await ExportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers );
-            await ExportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields );
-            await ExportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints );
-            await ExportObjectsWithEnum( ObjectType.NewLocPair, jsonData.NewLocPairs );
-            await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels );
-            await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints );
-            await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds );
+
+            foreach ( ObjectType objectType in Helper.GetAllObjectType() )
+            {
+                await ExecuteJson( objectType, ExecuteType.Export );
+            }
 
             ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
             string json = JsonUtility.ToJson( jsonData );
@@ -79,26 +55,11 @@ namespace ImportExport.Json
             EditorUtility.DisplayProgressBar( "Starting Export", "" , 0 );
 
             ResetJsonData();
-            await ExportObjectsWithEnum( ObjectType.Prop, jsonData.Props, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.ZipLine, jsonData.Ziplines, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.LinkedZipline, jsonData.LinkedZiplines, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.VerticalZipLine, jsonData.VerticalZipLines, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.NonVerticalZipLine, jsonData.NonVerticalZipLines, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.SingleDoor, jsonData.SingleDoors, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.DoubleDoor, jsonData.DoubleDoors, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.HorzDoor, jsonData.HorzDoors, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.VerticalDoor, jsonData.VerticalDoors, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.Button, jsonData.Buttons, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.Jumppad, jsonData.Jumppads, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.LootBin, jsonData.LootBins, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.WeaponRack, jsonData.WeaponRacks, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.Trigger, jsonData.Triggers, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.BubbleShield, jsonData.BubbleShields, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.SpawnPoint, jsonData.SpawnPoints, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.NewLocPair, jsonData.NewLocPairs, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.TextInfoPanel, jsonData.TextInfoPanels, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.FuncWindowHint, jsonData.FuncWindowHints, ExportType.Selection );
-            await ExportObjectsWithEnum( ObjectType.Sound, jsonData.Sounds, ExportType.Selection );
+
+            foreach ( ObjectType objectType in Helper.GetAllObjectType() )
+            {
+                await ExecuteJson( objectType, ExecuteType.Export, true );
+            }
 
             ReMapConsole.Log( "[Json Export] Writing to file: " + path, ReMapConsole.LogType.Warning );
             string json = JsonUtility.ToJson( jsonData );
@@ -110,17 +71,11 @@ namespace ImportExport.Json
         }
 
 
-        private static async Task ExportObjectsWithEnum< T >( ObjectType objectType, List< T > listType, ExportType exportType = ExportType.All ) where T : class
+        internal static async Task ExportObjectsWithEnum< T >( ObjectType objectType, List< T > listType, bool selectionOnly = false ) where T : GlobalClassData
         {
-            int i = 0; int j = 1; GameObject[] objectsData;
-
-            switch ( exportType )
-            {
-                case ExportType.All: objectsData = Helper.GetObjArrayWithEnum( objectType ); break;
-                case ExportType.Selection: objectsData = Helper.GetSelectedObjectWithEnum( objectType ); break;
-
-                default: return;
-            }
+            int i = 0; int j = 1;
+            
+            GameObject[] objectsData = Helper.GetAllObjectTypeWithEnum( objectType, selectionOnly );
 
             int objectsCount = objectsData.Length;
             string objType = Helper.GetObjNameWithEnum( objectType );
@@ -148,75 +103,11 @@ namespace ImportExport.Json
 
                 T classData = Activator.CreateInstance( typeof( T ) ) as T;
 
-                switch ( classData )
-                {
-                    case PropClassData data: // Props
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case ZipLineClassData data: // Ziplines
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case LinkedZipLinesClassData data: // Linked Ziplines
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case VerticalZipLineClassData data: // Vertical Ziplines
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case NonVerticalZipLineClassData data: // Non Vertical ZipLines
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case SingleDoorClassData data: // Single Doors
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case DoubleDoorClassData data: // Double Doors
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case HorzDoorClassData data: // Horizontal Doors
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case VerticalDoorClassData data: // Vertical Doors
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case ButtonClassData data: // Bouttons
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case JumppadClassData data: // Jumppads
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case LootBinClassData data: // Loot Bins
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case WeaponRackClassData data: // Weapon Racks
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case TriggerClassData data: // Triggers
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case BubbleShieldClassData data: // Bubbles Shield
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case SpawnPointClassData data: // Spawn Points
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case NewLocPairClassData data: // New Loc Pairs
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case TextInfoPanelClassData data: // Text Info Panels
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case FuncWindowHintClassData data: // Window Hints
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-                    case SoundClassData data: // Sounds
-                        ProcessExportClassData( data, obj, objPath, objectType );
-                        break;
-
-                    default: break;
-                }
+                ProcessExportClassData( classData, obj, objPath, objectType );
 
                 if ( IsValidPath( objPath ) ) listType.Add( classData );
 
-                await Task.Delay( TimeSpan.FromSeconds( 0.001 ) ); i++; j++;
+                await Helper.Wait(); i++; j++;
             }
         }
 
@@ -225,7 +116,7 @@ namespace ImportExport.Json
             classData.PathString = objPath;
             classData.Path = FindPath( obj );
             classData.TransformData = GetSetTransformData( obj, classData.TransformData );
-            GetSetScriptData( obj, classData, objectType, GetSetData.Get );
+            GetSetScriptData( objectType, obj, classData, GetSetData.Get );
         }
 
         /// <summary>
@@ -234,6 +125,7 @@ namespace ImportExport.Json
         private static void ResetJsonData()
         {
             jsonData = new JsonData();
+            jsonData.Version = UnityInfo.JsonVersion;
             jsonData.Props = new List< PropClassData >();
             jsonData.Ziplines = new List< ZipLineClassData >();
             jsonData.LinkedZiplines = new List< LinkedZipLinesClassData >();
@@ -243,6 +135,7 @@ namespace ImportExport.Json
             jsonData.DoubleDoors = new List< DoubleDoorClassData >();
             jsonData.HorzDoors = new List< HorzDoorClassData >();
             jsonData.VerticalDoors = new List< VerticalDoorClassData >();
+            jsonData.JumpTowers = new List< JumpTowerClassData >();
             jsonData.Buttons = new List< ButtonClassData >();
             jsonData.Jumppads = new List< JumppadClassData >();
             jsonData.LootBins = new List< LootBinClassData >();
@@ -254,6 +147,11 @@ namespace ImportExport.Json
             jsonData.TextInfoPanels = new List< TextInfoPanelClassData >();
             jsonData.FuncWindowHints = new List< FuncWindowHintClassData >();
             jsonData.Sounds = new List< SoundClassData >();
+            jsonData.CameraPaths = new List< CameraPathClassData >();
+            jsonData.PlayerSpawns = new List< UOPlayerSpawnClassData >();
+            jsonData.RespawnableHeals = new List< RespawnableHealClassData >();
+            jsonData.SpeedBoosts = new List< SpeedBoostClassData >();
+            jsonData.AnimatedCameras = new List< AnimatedCameraClassData >();
         }
     }
 }

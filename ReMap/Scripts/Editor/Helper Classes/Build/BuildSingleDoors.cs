@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Single Doors" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Single Doors" );
                     break;
 
                 case BuildType.EntFile:
@@ -34,6 +33,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -43,25 +46,22 @@ namespace Build
                 DoorScript script = ( DoorScript ) Helper.GetComponentByEnum( obj, ObjectType.SingleDoor );
                 if ( script == null ) continue;
 
-                if ( script.DoorLeft == null ) continue;
-
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Single, { Helper.BoolToLower( script.GoldDoor )} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Single, {Helper.BoolToLower( script.GoldDoor )}, {Helper.BoolToLower( script.AppearOpen )} )" );
                         break;
 
                     case BuildType.EntFile:
-                        code.Append(  "{\n" );
-                        code.Append( $"\"only_spawn_in_freelance\" \"0\"\n" );
-                        code.Append( $"\"disableshadows\" \"0\"\n" );
-                        code.Append( $"\"scale\" \"1\"\n" );
-                        code.Append( $"\"angles\" \"{Helper.BuildAngles( script.DoorLeft.gameObject, true )}\"\n" );
-                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( script.DoorLeft.gameObject, true )}\"\n" );
-                        code.Append( $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"\n" );
-                        code.Append( $"\"classname\" \"prop_door\"\n" );
-                        code.Append(  "}\n" );
+                        AppendCode( ref code,  "{" );
+                        AppendCode( ref code, $"\"only_spawn_in_freelance\" \"0\"" );
+                        AppendCode( ref code, $"\"disableshadows\" \"0\"" );
+                        AppendCode( ref code, $"\"scale\" \"1\"" );
+                        AppendCode( ref code, $"\"angles\" \"{Helper.BuildAngles( obj, true )}\"" );
+                        AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"" );
+                        AppendCode( ref code, $"\"model\" \"mdl/door/canyonlands_door_single_02.rmdl\"" );
+                        AppendCode( ref code, $"\"classname\" \"prop_door\"" );
+                        AppendCode( ref code,  "}" );
                         break;
 
                     case BuildType.Precache:
@@ -70,6 +70,10 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_SpawnDoor( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Single, {Helper.BoolToLower( script.GoldDoor )}, {Helper.BoolToLower( script.AppearOpen )}, true )" );
                     break;
                 }
             }
@@ -78,7 +82,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -91,10 +95,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

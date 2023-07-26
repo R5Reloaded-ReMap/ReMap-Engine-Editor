@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Func Window Hints" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Func Window Hints" );
                     break;
 
                 case BuildType.EntFile:
@@ -33,6 +32,10 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }
@@ -46,18 +49,17 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj )}, {Helper.ReplaceComma( script.HalfHeight )}, {Helper.ReplaceComma( script.HalfWidth )}, {Helper.BuildRightVector( script.Right )} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj )}, {Helper.ReplaceComma( script.HalfHeight )}, {Helper.ReplaceComma( script.HalfWidth )}, {Helper.BuildRightVector( script.Right )} )" );
                         break;
 
                     case BuildType.EntFile:
-                        code.Append(  "{\n" );
-                        code.Append( $"\"halfheight\" \"{script.HalfHeight}\"\n" );
-                        code.Append( $"\"halfwidth\" \"{script.HalfWidth}\"\n" );
-                        code.Append( $"\"right\" \"{Helper.BuildRightVector( script.Right, true )}\"\n" );
-                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"\n" );
-                        code.Append(  "\"classname\" \"func_window_hint\"\n" );
-                        code.Append(  "}\n" );
+                        AppendCode( ref code,  "{" );
+                        AppendCode( ref code, $"\"halfheight\" \"{script.HalfHeight}\"" );
+                        AppendCode( ref code, $"\"halfwidth\" \"{script.HalfWidth}\"" );
+                        AppendCode( ref code, $"\"right\" \"{Helper.BuildRightVector( script.Right, true )}\"" );
+                        AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( obj, true )}\"" );
+                        AppendCode( ref code,  "\"classname\" \"func_window_hint\"" );
+                        AppendCode( ref code,  "}" );
                         break;
 
                     case BuildType.Precache:
@@ -66,6 +68,10 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateFuncWindowHint( {Helper.BuildOrigin( obj, false, true )}, {Helper.ReplaceComma( script.HalfHeight )}, {Helper.ReplaceComma( script.HalfWidth )}, {Helper.BuildRightVector( script.Right )}, true )" );
                     break;
                 }
             }
@@ -74,7 +80,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -87,10 +93,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

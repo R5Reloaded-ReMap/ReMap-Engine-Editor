@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 3964248110006466409}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7199728453840959441
 MonoBehaviour:
@@ -49,9 +49,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &-2292963680516546424
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,41 +69,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 127.999084, y: 127.999115, z: 4.0000315}
-  m_Center: {x: -0.00048828125, y: 63.999542, z: -2.0000157}
---- !u!1 &1028501751399659435
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7932095702623325207}
-  m_Layer: 0
-  m_Name: farmland_wall_128x128x04_metal_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7932095702623325207
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1028501751399659435}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 409336833099284920}
-  - {fileID: 9147324993105346518}
-  m_Father: {fileID: 3964248110006466409}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 127.9991, y: 127.999084, z: 4.0000157}
+  m_Center: {x: -0.00048065186, y: 63.999535, z: -2.0000002}
 --- !u!1 &2215333263101218655
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +100,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 326924408001882861}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6262053810459347931
 GameObject:
@@ -166,8 +131,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7932095702623325207}
-  m_RootOrder: 0
+  m_Father: {fileID: 3189306359042854049}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4472138616297353002
 SkinnedMeshRenderer:
@@ -223,6 +188,39 @@ SkinnedMeshRenderer:
     m_Center: {x: -2, y: -0.00048828125, z: 63.999527}
     m_Extent: {x: 2, y: 63.999527, z: 63.999527}
   m_DirtyAABB: 0
+--- !u!1 &6346989944496728933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3189306359042854049}
+  m_Layer: 0
+  m_Name: farmland_wall_128x128x04_metal_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3189306359042854049
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6346989944496728933}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 409336833099284920}
+  - {fileID: 9147324993105346518}
+  m_Father: {fileID: 3964248110006466409}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7457091795366263246
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,10 +249,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7932095702623325207}
+  - {fileID: 3189306359042854049}
   - {fileID: 326924408001882861}
   m_Father: {fileID: 8170533154086762181}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8486907493828487687
 GameObject:
@@ -286,7 +284,7 @@ Transform:
   m_Children:
   - {fileID: 4739844869571692828}
   m_Father: {fileID: 3964248110006466409}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9070650849953133286
 GameObject:
@@ -317,8 +315,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7932095702623325207}
-  m_RootOrder: 1
+  m_Father: {fileID: 3189306359042854049}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3307988630430735227
 SkinnedMeshRenderer:

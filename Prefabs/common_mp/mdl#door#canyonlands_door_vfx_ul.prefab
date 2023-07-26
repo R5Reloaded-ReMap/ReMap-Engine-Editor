@@ -29,8 +29,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5759275101686275571}
-  m_RootOrder: 0
+  m_Father: {fileID: 6474497949189288614}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &808460374366457766
 SkinnedMeshRenderer:
@@ -83,9 +83,41 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 4360525763709680983}
   m_AABB:
-    m_Center: {x: 0, y: 0.020439457, z: -0.007578127}
-    m_Extent: {x: 0.02, y: 0.11083987, z: 0.106250025}
+    m_Center: {x: 0, y: 2.0439463, z: -0.7578125}
+    m_Extent: {x: 2, y: 11.083987, z: 10.625003}
   m_DirtyAABB: 0
+--- !u!1 &2368983615147645974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6474497949189288614}
+  m_Layer: 0
+  m_Name: canyonlands_door_vfx_ul_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6474497949189288614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2368983615147645974}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3288065970646692438}
+  m_Father: {fileID: 3910341183697816738}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3308763924593848309
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,10 +146,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5759275101686275571}
+  - {fileID: 6474497949189288614}
   - {fileID: 9034710345983358852}
   m_Father: {fileID: 4336826989296446249}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3418725790350895108
 GameObject:
@@ -151,7 +183,7 @@ Transform:
   m_Children:
   - {fileID: 3910341183697816738}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8358724124051109121
 MonoBehaviour:
@@ -168,9 +200,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &3000076585782222974
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -190,40 +220,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.22167984, y: 0.21250015, z: 0.040000062}
-  m_Center: {x: 0.020439468, y: -0.0075781345, z: 0.0000000018626451}
---- !u!1 &4703953165994243873
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5759275101686275571}
-  m_Layer: 0
-  m_Name: canyonlands_door_vfx_ul_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5759275101686275571
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4703953165994243873}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3288065970646692438}
-  m_Father: {fileID: 3910341183697816738}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 22.167982, y: 21.25001, z: 4.0000033}
+  m_Center: {x: 2.0439463, y: -0.7578125, z: 0.00000023841858}
 --- !u!1 &8386686286529823462
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +252,7 @@ Transform:
   m_Children:
   - {fileID: 4360525763709680983}
   m_Father: {fileID: 3910341183697816738}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8906832710060414863
 GameObject:
@@ -285,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9034710345983358852}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

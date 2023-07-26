@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 using static Build.Build;
-using static ImportExport.Shared.SharedFunction;
+using static ImportExport.SharedFunction;
 
 namespace Build
 {
@@ -22,8 +22,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Ziplines" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Ziplines" );
                     break;
 
                 case BuildType.EntFile:
@@ -35,6 +34,10 @@ namespace Build
                     break;
 
                 case BuildType.DataTable:
+                    // Empty
+                    break;
+
+                case BuildType.LiveMap:
                     // Empty
                 break;
             }
@@ -51,15 +54,22 @@ namespace Build
 
                 foreach ( Transform child in obj.transform )
                 {
-                    if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject );
-                    if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject );
+                    if(buildType == BuildType.LiveMap)
+                    {
+                        if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject, false, true );
+                        if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject, false, true );
+                    }
+                    else
+                    {
+                        if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject );
+                        if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject );
+                    }
                 }
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        code.Append( $"    CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_CreateZipline( {ziplinestart + Helper.ShouldAddStartingOrg()}, {ziplineend + Helper.ShouldAddStartingOrg()} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -72,6 +82,10 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateZipline( {ziplinestart}, {ziplineend}, true )" );
                     break;
                 }
             }
@@ -80,7 +94,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -93,10 +107,14 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

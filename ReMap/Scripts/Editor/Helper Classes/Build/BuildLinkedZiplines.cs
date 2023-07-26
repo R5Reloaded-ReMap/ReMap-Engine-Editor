@@ -20,8 +20,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    code.Append( "    // Linked Ziplines" );
-                    PageBreak( ref code );
+                    AppendCode( ref code, "    // Linked Ziplines" );
                     break;
 
                 case BuildType.EntFile:
@@ -34,6 +33,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -43,19 +46,17 @@ namespace Build
                 LinkedZiplineScript script = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, ObjectType.LinkedZipline );
                 if ( script == null ) continue;
 
+                string function = "";
+                string smoothType = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
+                string nodes = MakeLinkedZiplineNodeArray( obj );
+
+                if ( script.EnableSmoothing ) function = $"{smoothType}( {nodes}, {script.SmoothAmount} )";
+                else function = $"{nodes}";
+
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        
-                        string function = "";
-                        string smoothType = script.SmoothType ? "GetAllPointsOnBezier" : "GetBezierOfPath";
-                        string nodes = MakeLinkedZiplineNodeArray( obj );
-
-                        if ( script.EnableSmoothing ) function = $"{smoothType}( {nodes}, {script.SmoothAmount} )";
-                        else function = $"{nodes}";
-
-                        code.Append( $"    MapEditor_CreateLinkedZipline( {function} )" );
-                        PageBreak( ref code );
+                        AppendCode( ref code, $"    MapEditor_CreateLinkedZipline( {function} )" );
                         break;
 
                     case BuildType.EntFile:
@@ -68,6 +69,10 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateLinkedZipline( {function}, true )" );
                     break;
                 }
             }
@@ -76,7 +81,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    PageBreak( ref code );
+                    AppendCode( ref code );
                     break;
 
                 case BuildType.EntFile:
@@ -89,10 +94,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

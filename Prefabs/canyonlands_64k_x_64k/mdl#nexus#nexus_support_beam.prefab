@@ -1,39 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &146288973979696130
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 993045568094387095}
-  m_Layer: 0
-  m_Name: nexus_support_beam_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &993045568094387095
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146288973979696130}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3106053416541301719}
-  - {fileID: 7916178949374008339}
-  - {fileID: 4020712725298550428}
-  m_Father: {fileID: 6022693613684168743}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &555007362283353496
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 6554402933713303608}
   m_Father: {fileID: 6022693613684168743}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2103139654822740414
 GameObject:
@@ -95,8 +61,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 993045568094387095}
-  m_RootOrder: 1
+  m_Father: {fileID: 4576773640563197303}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7800800343810116626
 SkinnedMeshRenderer:
@@ -181,8 +147,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 993045568094387095}
-  m_RootOrder: 2
+  m_Father: {fileID: 4576773640563197303}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8832493379081715905
 SkinnedMeshRenderer:
@@ -238,6 +204,40 @@ SkinnedMeshRenderer:
     m_Center: {x: -5.902832, y: 0.013183594, z: 61.297867}
     m_Extent: {x: 5.902832, y: 16.073734, z: 61.297867}
   m_DirtyAABB: 0
+--- !u!1 &3342582135288514759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4576773640563197303}
+  m_Layer: 0
+  m_Name: nexus_support_beam_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4576773640563197303
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3342582135288514759}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3106053416541301719}
+  - {fileID: 7916178949374008339}
+  - {fileID: 4020712725298550428}
+  m_Father: {fileID: 6022693613684168743}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6278271479889593644
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +267,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1188674830187679485}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7204972435380537012
 GameObject:
@@ -301,7 +301,7 @@ Transform:
   m_Children:
   - {fileID: 6022693613684168743}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6648463902779656363
 MonoBehaviour:
@@ -318,9 +318,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &4417215634032377465
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -340,8 +338,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 32.14748, y: 122.595764, z: 18.190464}
-  m_Center: {x: 0.013185501, y: 61.29788, z: -9.095232}
+  m_Size: {x: 32.14749, y: 122.59575, z: 18.190435}
+  m_Center: {x: 0.013191223, y: 61.29787, z: -9.095216}
 --- !u!1 &8263530779248266546
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,9 +369,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1188674830187679485}
-  - {fileID: 993045568094387095}
+  - {fileID: 4576773640563197303}
   m_Father: {fileID: 1433649070405152526}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8357147076367369005
 GameObject:
@@ -404,8 +402,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 993045568094387095}
-  m_RootOrder: 0
+  m_Father: {fileID: 4576773640563197303}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1580723944251489974
 SkinnedMeshRenderer:

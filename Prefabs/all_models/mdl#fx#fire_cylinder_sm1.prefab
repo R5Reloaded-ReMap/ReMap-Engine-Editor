@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &837922038239298519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2468163055938436719}
+  m_Layer: 0
+  m_Name: fire_cylinder_sm1_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2468163055938436719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837922038239298519}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3700657618421319408}
+  m_Father: {fileID: 8130227661520236085}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1229534269910645688
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,10 +60,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5144092666310538649}
+  - {fileID: 2468163055938436719}
   - {fileID: 1973828004933987204}
   m_Father: {fileID: 412501241064749823}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5138355836186773627
 GameObject:
@@ -65,7 +97,7 @@ Transform:
   m_Children:
   - {fileID: 8130227661520236085}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5204396654389265986
 MonoBehaviour:
@@ -82,9 +114,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &3393850555536020455
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -104,40 +134,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.009658208, y: 0.010830086, z: 0.011376958}
-  m_Center: {x: 0.004829104, y: -0.0000048843212, z: 0.0000048829243}
---- !u!1 &7746350490124995273
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5144092666310538649}
-  m_Layer: 0
-  m_Name: fire_cylinder_sm1_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5144092666310538649
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7746350490124995273}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3700657618421319408}
-  m_Father: {fileID: 8130227661520236085}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.9658209, y: 1.0830083, z: 1.1376956}
+  m_Center: {x: 0.48291045, y: -0.00048834085, z: 0.00048834085}
 --- !u!1 &7802489028403422737
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +166,7 @@ Transform:
   m_Children:
   - {fileID: 3169886529711636273}
   m_Father: {fileID: 8130227661520236085}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7803577104037886917
 GameObject:
@@ -199,8 +197,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5144092666310538649}
-  m_RootOrder: 0
+  m_Father: {fileID: 2468163055938436719}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1053862671024701958
 SkinnedMeshRenderer:
@@ -253,8 +251,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 3169886529711636273}
   m_AABB:
-    m_Center: {x: 0.0000048829243, y: 0.004902344, z: -0.0000048829243}
-    m_Extent: {x: 0.0056884764, y: 0.00475586, z: 0.0054150405}
+    m_Center: {x: 0.00048828125, y: 0.4902345, z: -0.00048828125}
+    m_Extent: {x: 0.56884766, y: 0.47558606, z: 0.541504}
   m_DirtyAABB: 0
 --- !u!1 &8483050661111515113
 GameObject:
@@ -285,5 +283,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1973828004933987204}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -33,6 +33,10 @@ namespace Build
 
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
@@ -52,32 +56,30 @@ namespace Build
                         break;
 
                     case BuildType.EntFile:
-                        code.Append(  "{\n" );
+                        AppendCode( ref code, "{" );
 
                         // Polyline segments
                         for ( int i = script.PolylineSegment.Length - 1 ; i > -1 ; i-- )
                         {
-                            string polylineSegmentEnd = Helper.BuildOriginVector( script.PolylineSegment[i], true ).ToString().Replace(",", "");
+                            string polylineSegmentEnd = Helper.BuildOrigin( script.PolylineSegment[i], true ).ToString().Replace(",", "");
 
                             if ( i != 0 )
                             {
-                                string polylineSegmentStart = Helper.BuildOriginVector( script.PolylineSegment[i-1], true ).ToString().Replace(",", "");
+                                string polylineSegmentStart = Helper.BuildOrigin( script.PolylineSegment[i-1], true ).ToString().Replace(",", "");
 
-                                code.Append( $"\"polyline_segment_{i}\" \"({polylineSegmentStart}) ({polylineSegmentEnd})\"" );
+                                AppendCode( ref code, $"\"polyline_segment_{i}\" \"({polylineSegmentStart}) ({polylineSegmentEnd})\"" );
                             }
-                            else code.Append( $"\"polyline_segment_{i}\" \"(0 0 0) ({polylineSegmentEnd})\"" );
-
-                            PageBreak( ref code );
+                            else AppendCode( ref code, $"\"polyline_segment_{i}\" \"(0 0 0) ({polylineSegmentEnd})\"" );
                         }
 
-                        code.Append(  "\"radius\" \"0\"\n" );
-                        code.Append(  "\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"\n" );
-                        code.Append( $"\"isWaveAmbient\" \"{isWaveAmbient}\"\n" );
-                        code.Append( $"\"enabled\" \"{enabled}\"\n" );
-                        code.Append( $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"\n" );
-                        code.Append( $"\"soundName\" \"{script.SoundName}\"\n" );
-                        code.Append(  "\"classname\" \"ambient_generic\"\n" );
-                        code.Append(  "}\n" );
+                        AppendCode( ref code,  "\"radius\" \"0\"" );
+                        AppendCode( ref code,  "\"model\" \"mdl/dev/editor_ambient_generic_node.rmdl\"" );
+                        AppendCode( ref code, $"\"isWaveAmbient\" \"{isWaveAmbient}\"" );
+                        AppendCode( ref code, $"\"enabled\" \"{enabled}\"" );
+                        AppendCode( ref code, $"\"origin\" \"{Helper.BuildOrigin( obj, true, true )}\"" );
+                        AppendCode( ref code, $"\"soundName\" \"{script.SoundName}\"" );
+                        AppendCode( ref code,  "\"classname\" \"ambient_generic\"" );
+                        AppendCode( ref code,  "}" );
                         break;
 
                     case BuildType.Precache:
@@ -86,6 +88,11 @@ namespace Build
 
                     case BuildType.DataTable:
                         // Empty
+                        break;
+
+                    case BuildType.LiveMap:
+                        // Remove 1 to the counter since we don't support this object for live map code
+                        Helper.RemoveSendedEntityCount();
                     break;
                 }
             }
@@ -107,10 +114,14 @@ namespace Build
                     
                 case BuildType.DataTable:
                     // Empty
+                    break;
+
+                case BuildType.LiveMap:
+                    // Empty
                 break;
             }
 
-            await Task.Delay( TimeSpan.FromSeconds( 0.001 ) );
+            await Helper.Wait();
 
             return code;
         }

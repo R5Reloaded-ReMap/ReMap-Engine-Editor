@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 41280735278653004}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7422239204448350149
 MonoBehaviour:
@@ -49,9 +49,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &1000655234966523650
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71,8 +69,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 148.54405, y: 55.145546, z: 215.99811}
-  m_Center: {x: -1.0424805, y: 27.572773, z: -1.1132889}
+  m_Size: {x: 148.54404, y: 55.145535, z: 215.9981}
+  m_Center: {x: -1.0424728, y: 27.572767, z: -1.1132812}
 --- !u!1 &3827924001197000160
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,8 +100,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1119524940232941059}
-  m_RootOrder: 1
+  m_Father: {fileID: 9018893196146309061}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1917015360446478566
 SkinnedMeshRenderer:
@@ -159,6 +157,39 @@ SkinnedMeshRenderer:
     m_Center: {x: -1.1132812, y: -1.0424805, z: 38.844246}
     m_Extent: {x: 107.99902, y: 74.27199, z: 16.301273}
   m_DirtyAABB: 0
+--- !u!1 &4944847087679271607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9018893196146309061}
+  m_Layer: 0
+  m_Name: fabric_canopy_01_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9018893196146309061
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4944847087679271607}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8020572695695569395}
+  - {fileID: 3166351324105733864}
+  m_Father: {fileID: 41280735278653004}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6018021680684061328
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,43 +218,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1119524940232941059}
+  - {fileID: 9018893196146309061}
   - {fileID: 4353252499487094134}
   m_Father: {fileID: 6582969644651842382}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6582801630189246365
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1119524940232941059}
-  m_Layer: 0
-  m_Name: fabric_canopy_01_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1119524940232941059
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6582801630189246365}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8020572695695569395}
-  - {fileID: 3166351324105733864}
-  m_Father: {fileID: 41280735278653004}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7398565957278865666
 GameObject:
@@ -255,7 +253,7 @@ Transform:
   m_Children:
   - {fileID: 5535422354447544420}
   m_Father: {fileID: 41280735278653004}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7415211011630881375
 GameObject:
@@ -286,8 +284,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1119524940232941059}
-  m_RootOrder: 0
+  m_Father: {fileID: 9018893196146309061}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1159317398846347639
 SkinnedMeshRenderer:
@@ -372,5 +370,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4353252499487094134}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

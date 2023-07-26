@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-namespace ImportExport.Shared
+namespace ImportExport
 {
     public enum GetSetData
     {
@@ -21,7 +21,7 @@ namespace ImportExport.Shared
         /// <summary>
         /// Transfer all TSource values in TDestination
         /// </summary>
-        public static void TransferDataToClass< TSource, TDestination >( TSource source, TDestination destination, List< string > propertiesToRemove = null )
+        public static void TransferDataToClass< TSource, TDestination >( TSource source, TDestination destination, string[] propertiesToRemove = null )
         {
             if ( source == null || destination == null )
             {
@@ -37,7 +37,7 @@ namespace ImportExport.Shared
             foreach ( FieldInfo sourceField in sourceFields )
             {
                 // Ignore properties that are in the propertiesToRemove list
-                if ( propertiesToRemove != null && propertiesToRemove.Contains( sourceField.Name, StringComparer.OrdinalIgnoreCase ) )
+                if ( Helper.IsValid( propertiesToRemove ) && propertiesToRemove.Contains( sourceField.Name, StringComparer.OrdinalIgnoreCase ) )
                 {
                     continue;
                 }
@@ -45,7 +45,7 @@ namespace ImportExport.Shared
                 FieldInfo destinationField = Array.Find( destinationFields, field => field.Name.Equals( sourceField.Name, StringComparison.OrdinalIgnoreCase ) );
 
                 // Check if the destination field exists and has the same field type as the source field
-                if ( destinationField != null && destinationField.FieldType == sourceField.FieldType )
+                if ( Helper.IsValid( destinationField ) && destinationField.FieldType == sourceField.FieldType )
                 {
                     object value = sourceField.GetValue( source );
                     destinationField.SetValue( destination, value );
@@ -63,7 +63,7 @@ namespace ImportExport.Shared
             GameObject currentParent = obj;
 
             // find all parented game objects
-            while ( currentParent.transform.parent != null )
+            while ( Helper.IsValid( currentParent.transform.parent ) )
             {
                 if ( currentParent != obj ) parents.Add( currentParent );
                 currentParent = currentParent.transform.parent.gameObject;
@@ -94,7 +94,7 @@ namespace ImportExport.Shared
             GameObject currentParent = obj;
 
             // find all parented game objects
-            while ( currentParent.transform.parent != null )
+            while ( Helper.IsValid( currentParent.transform.parent ) )
             {
                 if ( currentParent != obj ) parents.Add( currentParent );
                 currentParent = currentParent.transform.parent.gameObject;
@@ -140,19 +140,19 @@ namespace ImportExport.Shared
 
                 GameObject newFolder = GameObject.Find( path );
 
-                if ( newFolder == null ) newFolder = new GameObject( pathClass.FolderName );
+                if ( !Helper.IsValid( newFolder ) ) newFolder = new GameObject( pathClass.FolderName );
 
                 TransformData transformData = pathClass.TransformData;
                 newFolder.transform.position = transformData.position;
                 newFolder.transform.eulerAngles = transformData.eulerAngles;
                 newFolder.transform.localScale = transformData.localScale;
 
-                if ( folder != null ) newFolder.transform.SetParent( folder.transform );
+                if ( Helper.IsValid( folder ) ) newFolder.transform.SetParent( folder.transform );
 
                 folder = newFolder;
             }
 
-            if ( folder != null ) obj.transform.parent = folder.transform;
+            if ( Helper.IsValid( folder ) ) obj.transform.parent = folder.transform;
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace ImportExport.Shared
         /// </summary>
         public static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
         {
-            if ( data == null ) // if data is null, get the transformation data
+            if ( !Helper.IsValid( data ) ) // if data is null, get the transformation data
             {
                 data = new TransformData();
                 data.position = obj.transform.position;

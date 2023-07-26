@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &114985672823236778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5890179087862250552}
+  m_Layer: 0
+  m_Name: pilot_shield_wall_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5890179087862250552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114985672823236778}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8578087339666726452}
+  m_Father: {fileID: 2789986794451918750}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &338437423752396505
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,8 +61,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4125121832786465272}
-  m_RootOrder: 0
+  m_Father: {fileID: 5890179087862250552}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &846677398146249804
 SkinnedMeshRenderer:
@@ -83,8 +115,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 1967758764300617796}
   m_AABB:
-    m_Center: {x: 0.49231932, y: 0, z: 0.4646241}
-    m_Extent: {x: 0.31988767, y: 0.8270509, z: 0.4587257}
+    m_Center: {x: 49.231934, y: 0, z: 46.462414}
+    m_Extent: {x: 31.98877, y: 82.7051, z: 45.87257}
   m_DirtyAABB: 0
 --- !u!1 &346503912280039174
 GameObject:
@@ -115,7 +147,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3128767950368054659}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1190573856398816244
 GameObject:
@@ -147,7 +179,7 @@ Transform:
   m_Children:
   - {fileID: 1967758764300617796}
   m_Father: {fileID: 2789986794451918750}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1225752696868996926
 GameObject:
@@ -181,7 +213,7 @@ Transform:
   m_Children:
   - {fileID: 2789986794451918750}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4697810993120147034
 MonoBehaviour:
@@ -198,9 +230,7 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
-  playerClip: 0
-  playerNoClimb: 0
-  playerNoCollision: 0
+  Option: 0
 --- !u!65 &7610514204323394632
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -220,40 +250,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6541023, y: 0.9233502, z: 0.8122072}
-  m_Center: {x: -0.00000011920929, y: 0.4616751, z: 0.4061036}
---- !u!1 &6468558032993029971
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4125121832786465272}
-  m_Layer: 0
-  m_Name: pilot_shield_wall_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4125121832786465272
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6468558032993029971}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8578087339666726452}
-  m_Father: {fileID: 2789986794451918750}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 165.41026, y: 92.33501, z: 81.220726}
+  m_Center: {x: 0, y: 46.167503, z: 40.610363}
 --- !u!1 &8473750396187617616
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +281,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3128767950368054659}
-  - {fileID: 4125121832786465272}
+  - {fileID: 5890179087862250552}
   m_Father: {fileID: 9207616968399199006}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

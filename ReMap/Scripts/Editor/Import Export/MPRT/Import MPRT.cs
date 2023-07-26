@@ -12,18 +12,65 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-public class ImportMPRTModels
+public class ImportMPRTModels : EditorWindow
 {
-    public static string mprtPath = "";
-    public static Vector3 coordinates;
-
-
+    public string mprtPath = "";
+    public string mprtName = "";
+    public string filter = "";
+    public int radius = 0;
+    public Vector3 cords;
+    private UnityEngine.Object source;
 
     [ MenuItem( "ReMap/Import/MPRT", false, 51 ) ]
-    private static async void ImportMPRTCode()
+    private static void OpenImportMPRTWindow()
     {
-        var mprtPath = EditorUtility.OpenFilePanel( "MPRT Import", "", "mprt" );
+        Init();
+    }
 
+    public static void Init()
+    {
+        ImportMPRTModels window = (ImportMPRTModels)GetWindow(typeof(ImportMPRTModels), false, "Import MPRT");
+        window.Show();
+    }
+
+    void OnGUI()
+    {
+        GUILayout.BeginHorizontal("box");
+        GUILayout.Label("MPRT File:");
+        GUILayout.TextField(mprtName, GUILayout.Width(400));
+        if (GUILayout.Button("Select File"))
+            SelectMPRTLocation();
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Prefab For Location: (Optional)");
+        source = EditorGUILayout.ObjectField(source, typeof(UnityEngine.Object), true);
+        GUILayout.EndVertical();
+
+        GUILayout.BeginHorizontal("box");
+        GUILayout.Label("Radius: (Optional)");
+        radius = EditorGUILayout.IntField("", radius);
+        GUILayout.EndHorizontal();
+
+        if (GUILayout.Button("Import MPRT"))
+            ImportMPRTCode();
+    }
+
+    public void SelectMPRTLocation()
+    {
+        mprtPath = EditorUtility.OpenFilePanel( "MPRT Import", "", "mprt" );
+
+        string[] splitArray = mprtPath.Split(char.Parse("/"));
+        mprtName = splitArray[splitArray.Length - 1];
+    }
+
+    public async void ImportMPRTCode()
+    {
+        await ImportMPRTCodeAsync();
+    }
+
+    public async Task ImportMPRTCodeAsync()
+    {
         byte[] buffer = new byte[4];
 
             using (BinaryReader reader = new BinaryReader(File.Open(mprtPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
@@ -45,6 +92,8 @@ public class ImportMPRTModels
 
                 reader.Read(buffer, 0, 4);
                 int numObjects = BitConverter.ToInt32(buffer, 0);
+
+                var filterList = filter.Replace(" ", "").Split(',');
                 
                 // Object lists
                 var scaleList = new List<Vector3>();
@@ -71,7 +120,30 @@ public class ImportMPRTModels
                     data.rot = new Vector3(-posRotScale[4], -posRotScale[5], posRotScale[3]);
                     data.scale = new Vector3(posRotScale[6], posRotScale[6], posRotScale[6]);
 
-                    //Debug.Log($"X: {posRotScale[3]}, Y: {posRotScale[4]}, Z:{posRotScale[5]}");
+                    bool skip = false;
+                    if (!string.IsNullOrEmpty(filter))
+                    {
+                        foreach (var x in filterList)
+                        {
+                            if (name.Contains(x))
+                            {
+                                skip = true;
+                            }
+                        }
+                    }
+                    
+                    if (radius != 0 && source != null)
+                    {
+                        GameObject obj = source as GameObject;
+                        float distance = Vector3.Distance(obj.transform.position, data.pos);
+                        if (distance > radius)
+                        {
+                            skip = true;
+                        }
+                    }
+
+                    if(skip)
+                        continue;
 
                     DataList.Add(data);
 
@@ -79,19 +151,13 @@ public class ImportMPRTModels
 
                     await Helper.Wait();
                 }
-                //EditorUtility.ClearProgressBar();
-                //return;
-
-                // Proceed with the implementation of loading the models based on the parsed data...
 
                 UnityInfo.SortListByKey( DataList, o => o.name );
-
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 
                 for (int i = 0; i < DataList.Count; i++)
                 {
-                    if ( i == 200 ) break;
                     CreateMPRTProp(DataList[i]);
 
                     double progress = (i + 1) / (double)DataList.Count;
@@ -113,7 +179,7 @@ public class ImportMPRTModels
             }
     }
 
-    private static void CreateMPRTProp(MPRTData data)
+    private void CreateMPRTProp(MPRTData data)
     {
         GameObject obj = Helper.CreateGameObject( "", data.name, PathType.Name );
 
@@ -129,7 +195,7 @@ public class ImportMPRTModels
             obj.gameObject.transform.parent = parent.transform;
     }
 
-    private static string ReadNullTerminatedString(BinaryReader reader)
+    private string ReadNullTerminatedString(BinaryReader reader)
     {
         List<byte> byteList = new List<byte>();
         byte b;

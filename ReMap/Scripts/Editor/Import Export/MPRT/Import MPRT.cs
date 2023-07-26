@@ -47,13 +47,21 @@ public class ImportMPRTModels : EditorWindow
         source = EditorGUILayout.ObjectField(source, typeof(UnityEngine.Object), true);
         GUILayout.EndVertical();
 
-        GUILayout.BeginHorizontal("box");
+        GUILayout.BeginVertical("box");
         GUILayout.Label("Radius: (Optional)");
         radius = EditorGUILayout.IntField("", radius);
         GUILayout.EndHorizontal();
 
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Filter: (Optional)");
+        GUILayout.Label("Seperate each filter with a comma.");
+        filter = GUILayout.TextField(filter);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginVertical("box");
         if (GUILayout.Button("Import MPRT"))
             ImportMPRTCode();
+        GUILayout.EndHorizontal();
     }
 
     public void SelectMPRTLocation()
@@ -67,6 +75,29 @@ public class ImportMPRTModels : EditorWindow
     public async void ImportMPRTCode()
     {
         await ImportMPRTCodeAsync();
+    }
+
+    void OnFocus() 
+    {
+	    SceneView.duringSceneGui -= this.OnSceneGUI;
+	    SceneView.duringSceneGui += this.OnSceneGUI;
+    }
+
+    void OnDestroy()
+    {
+        SceneView.duringSceneGui -= this.OnSceneGUI;
+    }
+
+    void OnSceneGUI(SceneView sceneView)
+    {
+
+        // Do your drawing here using Handles.
+        if(radius != 0 && source != null)
+        {
+            GameObject obj = source as GameObject;
+            Handles.color = Color.red;
+            Handles.DrawWireDisc(obj.transform.position, Vector3.up, radius, 3.0f );
+        }
     }
 
     public async Task ImportMPRTCodeAsync()
@@ -94,13 +125,6 @@ public class ImportMPRTModels : EditorWindow
                 int numObjects = BitConverter.ToInt32(buffer, 0);
 
                 var filterList = filter.Replace(" ", "").Split(',');
-                
-                // Object lists
-                var scaleList = new List<Vector3>();
-                var posList = new List<Vector3>();
-                var rotList = new List<Vector3>();
-                var nameList = new List<string>();
-
                 var DataList = new List<MPRTData>();
 
                 for (int i = 0; i < numObjects; i++)

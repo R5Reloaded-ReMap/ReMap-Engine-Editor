@@ -19,16 +19,17 @@ public class UnityInfo
     public static string relativePathModel =               $"{relativePathLods}/Models";
     public static string relativePathMaterials =           $"{relativePathLods}/Materials";
     public static string relativePathPrefabs =             $"Assets/Prefabs";
-    public static string relativePathAdditionalCode =      $"Assets/ReMap/Resources/AdditionalCode";
+    public static string relativePathResources =           $"Assets/ReMap/Resources";
+    public static string relativePathAdditionalCode =      $"{relativePathResources}/AdditionalCode";
     public static string relativePathAdditionalCodeJson =  $"{relativePathAdditionalCode}/additionalCode.json";
     public static string relativePathAdditionalCodeInfo =  $"{relativePathAdditionalCode}/additionalCodeInfo.txt";
-    public static string relativePathRpakManager =         $"Assets/ReMap/Resources/RpakManager";
+    public static string relativePathRpakManager =         $"{relativePathResources}/RpakManager";
     public static string relativePathRpakManagerList =     $"{relativePathRpakManager}/rpakManagerList.json";
     public static string relativePathJsonOffset =          $"{relativePathRpakManager}/prefabOffsetList.json";
     public static string relativePathR5RPlayerInfo =       "\\platform\\scripts\\player_info.txt";
     public static string relativePathR5RScripts =          "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
 
-    public static string relativeRMAPDEVfolder =           "Assets/ReMap/Resources/DeveloperOnly";
+    public static string relativeRMAPDEVfolder =           $"{relativePathResources}/DeveloperOnly";
 
 
     /// <summary>

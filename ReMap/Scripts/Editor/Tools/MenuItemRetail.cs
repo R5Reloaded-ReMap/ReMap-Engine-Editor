@@ -106,6 +106,12 @@ public class MenuItemRetail
         EntCodeDiscoverer.Init();
     }
 
+    [ MenuItem( "ReMap/Tools/Loot Repartition", false, 100 ) ]
+    public static void ShowLootRepartitionWindow()
+    {
+        LootRepartitionWindow.Init();
+    }
+
     [ MenuItem( "ReMap/Tools/Grid Tool", false, 100 ) ]
     public static void ShowGridTool()
     {

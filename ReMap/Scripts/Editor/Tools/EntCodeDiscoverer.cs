@@ -44,8 +44,7 @@ public class EntCodeDiscoverer : EditorWindow
     public static void Init()
     {
         EntCodeDiscoverer window = ( EntCodeDiscoverer ) EditorWindow.GetWindow( typeof( EntCodeDiscoverer ), false, "Ent Code Discoverer");
-        //window.minSize = new Vector2(300, 290);
-        //window.maxSize = new Vector2(300, 290);
+        window.minSize = new Vector2( 400, 200 );
         window.Show();
     }
 

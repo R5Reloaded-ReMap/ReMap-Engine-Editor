@@ -39,6 +39,13 @@ public class MenuItemRMAPDEV
             EntCodeDiscoverer.RMAPDEV_DrawOnMap();
         }
 
+        // Utility
+        [ MenuItem( "Dev Menu/Utility/Write Loot Repartition File", false, 100 ) ]
+        public static void WriteLootRepartitionFile()
+        {
+            LootRepartitionWindow.WriteLootRepartitionFile();
+        }
+
         // Debug
         [ MenuItem( "Dev Menu/Debug/File Write Test", false, 100 ) ]
         public static void FileWriteTest()

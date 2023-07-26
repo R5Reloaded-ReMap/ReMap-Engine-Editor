@@ -13,6 +13,7 @@ namespace LibrarySorter
     {
         static Vector2 scrollPos = Vector2.zero;
         static List< PrefabOffset > offsets;
+        static List< PrefabOffset > offsetsSearch;
 
         static GameObject prefabToAdd = null;
         static string search = "";
@@ -45,10 +46,10 @@ namespace LibrarySorter
 
             searchEnable = search.Length >= 3;
 
-            if ( searchLenght != search.Length )
+            if ( searchEnable && searchLenght != search.Length )
             {
                 searchLenght = search.Length;
-                RefreshPage( false );
+                SearchResult(); RefreshPage( false );
             }
 
             maxPage = offsets.Count == 0 ? 1 : offsets.Count / itemsPerPage + 1;
@@ -62,9 +63,11 @@ namespace LibrarySorter
 
                 scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
 
-                for ( int i = itemStart; i < itemEnd && i < offsets.Count; i++ )
+                List< PrefabOffset > offsetToShow = searchEnable ? offsetsSearch : offsets;
+
+                for ( int i = itemStart; i < itemEnd && i < offsetToShow.Count; i++ )
                 {
-                    PrefabOffset offset = offsets[ i ];
+                    PrefabOffset offset = offsetToShow[ i ];
 
                     GUILayout.BeginHorizontal("box");
                         WindowUtility.WindowUtility.CreateTextInfo( offset.ModelName, "" );
@@ -105,16 +108,17 @@ namespace LibrarySorter
         {
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
+                    List< PrefabOffset > offsetToShow = searchEnable ? offsetsSearch : offsets;
 
-                    int end = itemEnd > offsets.Count ? offsets.Count : itemEnd;
+                    int end = itemEnd > offsetToShow.Count ? offsetToShow.Count : itemEnd;
 
-                    WindowUtility.WindowUtility.ShowPageInfo( currentPage, maxPage, itemStart, end, $"Total Models: {offsets.Count} | Page" );
+                    WindowUtility.WindowUtility.ShowPageInfo( currentPage, maxPage, itemStart, end, $"Total Models: {offsetToShow.Count} | Page" );
 
                     GUILayout.FlexibleSpace();
 
                     WindowUtility.WindowUtility.CreateButton( "Previous Page", "", () => { if ( currentPage > 0 ) currentPage--; }, 100 );
 
-                    WindowUtility.WindowUtility.CreateButton( "Next Page", "", () => { if ( itemEnd < offsets.Count ) currentPage++; }, 100 );
+                    WindowUtility.WindowUtility.CreateButton( "Next Page", "", () => { if ( itemEnd < offsetToShow.Count ) currentPage++; }, 100 );
 
                 GUILayout.EndHorizontal();
 
@@ -178,7 +182,7 @@ namespace LibrarySorter
 
         internal static void RefreshPage( bool save = true )
         {
-            offsets = searchEnable ? GetSearchResult() : GetPrefabOffsetList();
+            offsets = GetPrefabOffsetList();
 
             UnityInfo.SortListByKey( offsets, x => x.ModelName );
 
@@ -208,11 +212,11 @@ namespace LibrarySorter
             return System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
         }
 
-        private static List < PrefabOffset > GetSearchResult()
+        private static void SearchResult()
         {
-            List < PrefabOffset > list = new List < PrefabOffset >();
+            offsetsSearch = new List < PrefabOffset >();
 
-            foreach ( PrefabOffset offset in GetPrefabOffsetList() )
+            foreach ( PrefabOffset offset in offsets )
             {
                 string[] terms = search.ToLower().Replace( " ", "" ).Split( ";" );
 
@@ -224,15 +228,12 @@ namespace LibrarySorter
 
                     if ( offset.ModelName.ToLower().Contains( term ) )
                     {
-                        //UnityInfo.Printt( term );
                         found = true; break;
                     }
                 }
 
-                if ( found ) list.Add( offset );
+                if ( found ) offsetsSearch.Add( offset );
             }
-
-            return list;
         }
     }
 }

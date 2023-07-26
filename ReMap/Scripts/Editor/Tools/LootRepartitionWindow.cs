@@ -7,11 +7,16 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+using static WindowUtility.WindowUtility;
+
 public class LootRepartitionWindow : EditorWindow
 {
     private static LootRepartitionWindow windowInstance;
 
     private static string lootRepartitionPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathResources}/LootRepartition";
+    private static Vector2 Scroll = Vector2.zero;
+
+    private static LootData LootData = null;
 
     public static void Init()
     {
@@ -23,11 +28,34 @@ public class LootRepartitionWindow : EditorWindow
         windowInstance = ( LootRepartitionWindow ) EditorWindow.GetWindow( typeof( LootRepartitionWindow ), false, "Loot Repartition" );
         //windowInstance.minSize = new Vector2( 300, 290 );
         windowInstance.Show();
+
+        string json = System.IO.File.ReadAllText( $"{lootRepartitionPath}/LootRepartition.json" );
+        LootData = JsonUtility.FromJson< LootData >( json );
     }
 
     void OnGUI()
     {
-        
+        if ( !Helper.IsValid( LootData ) )
+        {
+            FlexibleSpace();
+                CreateTextInfoCentered( "LootData file not found." );
+            FlexibleSpace();
+            return;
+        }
+
+        Scroll = EditorGUILayout.BeginScrollView( Scroll );
+
+        foreach ( Group group in LootData.Groups )
+        {
+            CreateTextInfo( $"{group.GroupRef}" );
+
+            foreach ( Entry entry in group.Entries )
+            {
+                CreateTextInfo( $"{entry.EntryRef} {entry.EntryDistribution} {entry.GroupTier} {entry.Priority}" );
+            }
+        }
+
+        EditorGUILayout.EndScrollView();
     }
 
     public static void WriteLootRepartitionFile()
@@ -40,8 +68,8 @@ public class LootRepartitionWindow : EditorWindow
 
         using ( var reader = new StreamReader( filePath ) )
         {
-            // Ignore 1 first line
-            reader.ReadLine();
+            // Ignore 2 first line
+            reader.ReadLine(); reader.ReadLine();
 
             string line;
             while ( ( line = reader.ReadLine() ) != null )

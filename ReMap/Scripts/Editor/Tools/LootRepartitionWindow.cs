@@ -25,7 +25,7 @@ public class LootRepartitionWindow : EditorWindow
 
     void OnEnable()
     {
-        windowInstance = ( LootRepartitionWindow ) EditorWindow.GetWindow( typeof( LootRepartitionWindow ), false, "Loot Repartition" );
+        //windowInstance = ( LootRepartitionWindow ) EditorWindow.GetWindow( typeof( LootRepartitionWindow ), false, "Loot Repartition" );
         //windowInstance.minSize = new Vector2( 300, 290 );
         windowInstance.Show();
 

@@ -196,7 +196,7 @@ public class ImportMPRTModels : EditorWindow
 
     private bool RadiusCheck(MPRTData data)
     {
-        if (radius == 0 && source != null)
+        if (radius == 0)
             return false;
         
         if(source == null)
@@ -212,7 +212,7 @@ public class ImportMPRTModels : EditorWindow
 
     private bool FilterCheck(string name, string[] filterList)
     {
-        if (!string.IsNullOrEmpty(filter))
+        if (string.IsNullOrEmpty(filter))
             return false;
 
         foreach (var x in filterList)

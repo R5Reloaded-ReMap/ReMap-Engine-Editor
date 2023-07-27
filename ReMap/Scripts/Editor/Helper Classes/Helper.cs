@@ -844,6 +844,16 @@ public class Helper
         return obj.Length == 0;
     }
 
+    public static bool LOD0_Exist( string name )
+    {
+        return File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{name}_LOD0.fbx" );
+    }
+
+    public static bool Material_Exist( string name )
+    {
+        return File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{name}.dds" );
+    }
+
     public static void RemoveNull< T >( ref T [] array ) where T : class
     {
         array = array.Where( x => x != null ).ToArray();

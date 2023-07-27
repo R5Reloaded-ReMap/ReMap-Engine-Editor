@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,6 +35,13 @@ namespace LibrarySorter
         static string searchEntry = "";
         static string search = "";
         static List< string > searchResult = new List< string >();
+
+        static string currentDirectory = UnityInfo.currentDirectoryPath;
+        static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
+        static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
+        static string relativeLegionExecutive = $"{currentDirectory}/{relativeLegionPlus}/LegionPlus.exe";
+
+        static Process Legion = null;
         
         public static void Init()
         {
@@ -195,17 +203,70 @@ namespace LibrarySorter
             }
         }
 
-        internal static Task SortFolder( RpakData data )
+        internal static async Task SortFolder( RpakData data )
         {
             string rpakPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}";
 
-            if (!Directory.Exists( rpakPath ))
+            if ( !Directory.Exists( rpakPath ) )
             {
                 ReMapConsole.Log( $"[Library Sorter] Creating directory: {UnityInfo.relativePathPrefabs}/{data.Name}", ReMapConsole.LogType.Info );
                 Directory.CreateDirectory( rpakPath );
             }
 
-            string modelName; string modelReplacePath;
+            GameObject parent; GameObject obj; string modelName;
+
+            float progress = 0.0f; int min = 0; int max = data.Data.Count;
+
+            foreach ( string model in data.Data )
+            {
+                modelName = Path.GetFileNameWithoutExtension( model );
+
+                if ( !Helper.LOD0_Exist( modelName ) )
+                {
+                    GUIUtility.systemCopyBuffer = model;
+
+                    if ( !Helper.IsValid( Legion ) ) OpenLegion();
+
+                    string filePath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/{modelName}_LOD0.fbx";
+                    string matsPath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/_images";
+                    string gotoPathModel = $"{currentDirectory}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
+                    string gotoPathMaterial = $"{currentDirectory}/{UnityInfo.relativePathMaterials}";
+
+                    while ( !File.Exists( filePath ) )
+                    {
+                        await Helper.Wait( 1.0 );
+
+                        EditorUtility.DisplayProgressBar( $"Sorting Folder Paused", $"\"{modelName}\" need to be imported.", progress );
+
+                        if ( !Helper.IsValid( Legion ) ) return;
+                    }
+
+                    File.Move( filePath, gotoPathModel );
+                    if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPathModel}.meta" );
+
+                    foreach ( string matsFile in Directory.GetFiles( matsPath ) )
+                    {
+                        string fileName = Path.GetFileNameWithoutExtension( matsFile );
+                        if ( fileName.Contains( "_albedoTexture" ) )
+                        {
+                            if ( !Helper.Material_Exist( fileName ) )
+                            {
+                                File.Move( matsFile, $"{gotoPathMaterial}/{fileName}.dds" );
+                                if ( File.Exists( $"{matsFile}.meta" ) ) File.Move( $"{matsFile}.meta", $"{fileName}.dds.meta" );
+                            }
+                        }
+                    }
+
+                    if ( !Helper.LOD0_Exist( modelName ) ) continue;
+
+                    // Update progress bar
+                    progress += 1.0f / max;
+                    EditorUtility.DisplayProgressBar( $"Sorting Folder ({min++}/{max})", $"Processing... {modelName}", progress );
+                }
+
+            }
+
+            /* string modelName; string modelReplacePath;
             GameObject prefabToAdd; GameObject prefabInstance;
             GameObject objectToAdd; GameObject objectInstance;
 
@@ -288,13 +349,32 @@ namespace LibrarySorter
                     }
                 }
                 i++;
-            }
+            } */
 
             EditorUtility.ClearProgressBar();
 
             data.Update = DateTime.UtcNow.ToString();
 
-            return Task.CompletedTask;
+            return;
+        }
+
+        private static async void OpenLegion()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = relativeLegionExecutive;
+            startInfo.UseShellExecute = false;
+
+            using ( Process process = new Process() )
+            {
+                process.StartInfo = startInfo;
+                process.Start();
+
+                Legion = process;
+
+                await Task.Run( () => Legion.WaitForExit() );
+
+                Legion = null;
+            }
         }
 
         public static Vector3 FindAnglesOffset( string searchTerm )

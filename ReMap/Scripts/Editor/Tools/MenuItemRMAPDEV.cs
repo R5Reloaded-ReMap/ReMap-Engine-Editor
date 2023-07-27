@@ -9,7 +9,7 @@ public class MenuItemRMAPDEV
         [ MenuItem( "Dev Menu/Legion/Create All Rpak List", false, 100 ) ]
         public static void CreateAllRpakList()
         {
-            LibrarySorter.LegionRpakExporting.RpakListInit();
+            LibrarySorter.LegionExporting.RpakListInit();
         }
 
         // Prefab Fix Manager

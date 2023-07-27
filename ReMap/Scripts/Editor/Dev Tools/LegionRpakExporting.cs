@@ -9,12 +9,13 @@ using UnityEngine;
 
 namespace LibrarySorter
 {
-    public class LegionRpakExporting : EditorWindow
+    public class LegionExporting
     {
         static string currentDirectory = UnityInfo.currentDirectoryPath;
         static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
         static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
         static string relativePathRpakManager = UnityInfo.relativePathRpakManager;
+        static string relativeLegionExecutive = $"{currentDirectory}/{relativeLegionPlus}/LegionPlus.exe";
 
         public static async void RpakListInit()
         {
@@ -41,9 +42,9 @@ namespace LibrarySorter
 
             int fileIdx = 0; int fileTotalIdx = rpakFilesValid.Length;
 
-            foreach (string rpakPath in rpakFilesValid)
+            foreach ( string rpakPath in rpakFilesValid )
             {
-                string command = $"{currentDirectory}/{relativeLegionPlus}/LegionPlus.exe";
+                string command = relativeLegionExecutive;
                 string arguments = $"--list \"{rpakPath.Replace("\\","/")}\" --loadmodels --fullpath --nologfile --overwrite";
 
                 System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
@@ -87,6 +88,8 @@ namespace LibrarySorter
                         if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
                     }
                 }
+
+                Directory.Delete( $"{currentDirectory}/{relativeLegionPlusExportedFiles}" );
             }
 
             EditorUtility.ClearProgressBar();

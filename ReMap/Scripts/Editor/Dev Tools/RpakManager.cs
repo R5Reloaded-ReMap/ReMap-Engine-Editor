@@ -438,6 +438,8 @@ namespace LibrarySorter
             }
 
             rpakTab = arrays.Select( a => a.ToArray() ).ToArray();
+
+            LibrarySorterWindow.libraryData = libraryData;
         }
 
         private static void GetModelCount()

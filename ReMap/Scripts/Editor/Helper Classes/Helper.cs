@@ -643,9 +643,9 @@ public class Helper
     /// <remarks>
     /// scene/path/path2 => func( "obj", "path/path2" ) => scene/path/path2/obj
     /// </remarks>
-    public static GameObject CreateGameObject( string name, string modelPath, GameObject parent )
+    public static GameObject CreateGameObject( string name, string modelPath, GameObject parent, PathType pathType = PathType.Path )
     {
-        GameObject obj = CreateGameObject( name, modelPath );
+        GameObject obj = CreateGameObject( name, modelPath, pathType );
 
         if ( IsValid( obj ) && IsValid( parent ) )
         {
@@ -842,6 +842,17 @@ public class Helper
     public static bool IsEmpty< T >( T [] obj ) where T : class
     {
         return obj.Length == 0;
+    }
+
+    public static bool LOD0_Exist( string name )
+    {
+        return File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{name}_LOD0.fbx" );
+    }
+
+    public static bool Material_Exist( string name, bool extention = false )
+    {
+        string ext = extention ? ".dds" : "";
+        return File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{name}{extention}" );
     }
 
     public static void RemoveNull< T >( ref T [] array ) where T : class

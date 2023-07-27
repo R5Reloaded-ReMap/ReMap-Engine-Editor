@@ -36,10 +36,9 @@ namespace LibrarySorter
         static string search = "";
         static List< string > searchResult = new List< string >();
 
-        static string currentDirectory = UnityInfo.currentDirectoryPath;
         static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
         static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
-        static string relativeLegionExecutive = $"{currentDirectory}/{relativeLegionPlus}/LegionPlus.exe";
+        static string relativeLegionExecutive = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlus}/LegionPlus.exe";
 
         static Process Legion = null;
         
@@ -217,28 +216,31 @@ namespace LibrarySorter
 
             float progress = 0.0f; int min = 0; int max = data.Data.Count;
 
+            List< string > modelImporter = new List< string >();
+
             foreach ( string model in data.Data )
             {
                 modelName = Path.GetFileNameWithoutExtension( model );
 
+                string filePath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/{modelName}_LOD0.fbx";
+                string matsPath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/_images";
+                string gotoPathModel = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
+                string gotoPathMaterial = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}";
+
+                // If LOD0 doesn't exist
                 if ( !Helper.LOD0_Exist( modelName ) )
                 {
                     GUIUtility.systemCopyBuffer = model;
 
                     if ( !Helper.IsValid( Legion ) ) OpenLegion();
 
-                    string filePath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/{modelName}_LOD0.fbx";
-                    string matsPath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/_images";
-                    string gotoPathModel = $"{currentDirectory}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
-                    string gotoPathMaterial = $"{currentDirectory}/{UnityInfo.relativePathMaterials}";
-
                     while ( !File.Exists( filePath ) )
                     {
                         await Helper.Wait( 1.0 );
 
-                        EditorUtility.DisplayProgressBar( $"Sorting Folder Paused", $"\"{modelName}\" need to be imported.", progress );
+                        EditorUtility.DisplayProgressBar( $"Sorting Folder Paused ({min}/{max})", $"\"{modelName}\" need to be imported.", progress );
 
-                        if ( !Helper.IsValid( Legion ) ) return;
+                        if ( !Helper.IsValid( Legion ) ) break;
                     }
 
                     File.Move( filePath, gotoPathModel );
@@ -246,110 +248,113 @@ namespace LibrarySorter
 
                     foreach ( string matsFile in Directory.GetFiles( matsPath ) )
                     {
-                        string fileName = Path.GetFileNameWithoutExtension( matsFile );
+                        string fileName = Path.GetFileName( matsFile );
+
                         if ( fileName.Contains( "_albedoTexture" ) )
                         {
-                            if ( !Helper.Material_Exist( fileName ) )
+                            if ( !File.Exists( $"{gotoPathMaterial}/{fileName}" ) )
                             {
-                                File.Move( matsFile, $"{gotoPathMaterial}/{fileName}.dds" );
-                                if ( File.Exists( $"{matsFile}.meta" ) ) File.Move( $"{matsFile}.meta", $"{fileName}.dds.meta" );
+                                File.Move( matsFile, $"{gotoPathMaterial}/{fileName}" );
+                                if ( File.Exists( $"{matsFile}.meta" ) ) File.Move( $"{matsFile}.meta", $"{fileName}.meta" );
                             }
                         }
+                        else
+                        {
+                            File.Delete( matsFile );
+                            if ( File.Exists( $"{matsFile}.meta" ) ) File.Delete( $"{matsFile}.meta" );
+                        }
                     }
 
-                    if ( !Helper.LOD0_Exist( modelName ) ) continue;
+                    string dir = $"{relativeLegionPlusExportedFiles}/models/{modelName}";
+                    if ( Directory.Exists( dir ) )
+                    {
+                        Directory.Delete( dir, true );
 
-                    // Update progress bar
-                    progress += 1.0f / max;
-                    EditorUtility.DisplayProgressBar( $"Sorting Folder ({min++}/{max})", $"Processing... {modelName}", progress );
+                        if ( File.Exists( $"{dir}.meta" ) )
+                        {
+                            File.Delete( $"{dir}.meta" );
+                        }
+                    }
+
+                    modelImporter.Add( $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx" );
                 }
 
+                string unityName = UnityInfo.GetUnityModelName( model );
+
+                if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{data.Name}/{unityName}.prefab" ) )
+                {
+                    parent = Helper.CreateGameObject( unityName );
+                    obj = Helper.CreateGameObject( "", $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", parent );
+
+                    if ( !Helper.IsValid( parent ) || !Helper.IsValid( obj ) )
+                        continue;
+
+                    parent.AddComponent< PropScript >();
+                    parent.transform.position = Vector3.zero;
+                    parent.transform.eulerAngles = Vector3.zero;
+
+                    obj.transform.position = Vector3.zero;
+                    obj.transform.eulerAngles = FindAnglesOffset( model );
+                    obj.transform.localScale = new Vector3(1, 1, 1);
+
+                    parent.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
+
+                    CheckBoxColliderComponent( parent );
+
+                    //AssetDatabase.SetLabels( ( UnityEngine.Object ) parent, new[] { model.Split( '/' )[1] } );
+
+                    PrefabUtility.SaveAsPrefabAsset( parent, $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab" );
+
+                    UnityEngine.Object.DestroyImmediate( parent );
+
+                    ReMapConsole.Log( $"[Library Sorter] Created and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}", ReMapConsole.LogType.Info ); 
+                }
+                else if ( checkExist )
+                {
+                    parent = Helper.CreateGameObject( $"{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab" );
+                    obj = parent.GetComponentsInChildren< Transform >()[1].gameObject;
+                    
+                    if ( !Helper.IsValid( parent ) || !Helper.IsValid( obj ) )
+                        continue;
+
+                    parent.transform.position = Vector3.zero;
+                    parent.transform.eulerAngles = Vector3.zero;
+                    obj.transform.eulerAngles = FindAnglesOffset( model );
+                    obj.transform.position = Vector3.zero;
+
+                    CheckBoxColliderComponent( parent );
+
+                    //AssetDatabase.SetLabels( ( UnityEngine.Object ) parent, new[] { model.Split( '/' )[1] } );
+
+                    PrefabUtility.SavePrefabAsset( parent );
+
+                    ReMapConsole.Log( $"[Library Sorter] Fixed and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}", ReMapConsole.LogType.Success );
+                }
+
+                // Update progress bar
+                progress += 1.0f / max;
+                EditorUtility.DisplayProgressBar( $"Sorting Folder ({min++}/{max})", $"Processing... {modelName}", progress );
             }
 
-            /* string modelName; string modelReplacePath;
-            GameObject prefabToAdd; GameObject prefabInstance;
-            GameObject objectToAdd; GameObject objectInstance;
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
-            int i = 0; int total = data.Data.Count;
-            foreach ( string model in data.Data )
+            min = 0; max = modelImporter.Count; progress = 0.0f;
+            foreach ( string modelPath in modelImporter )
             {
-                modelName = Path.GetFileNameWithoutExtension( model );
-
-                if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx" ) )
+                ModelImporter importer = AssetImporter.GetAtPath( modelPath ) as ModelImporter;
+                if ( Helper.IsValid( importer ) && importer.globalScale != 100 )
                 {
-                    modelReplacePath = model.Replace("/", "#").Replace(".rmdl", ".prefab");
-
-                    EditorUtility.DisplayProgressBar( $"Sorting {data.Name} Folder {i}/{total}", $"Sorting: {modelReplacePath}", ( i + 1 ) / ( float )total );
-
-                    if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{data.Name}/{modelReplacePath}" ) )
-                    {
-                        prefabToAdd = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathEmptyPrefab}", typeof( UnityEngine.Object ) ) as GameObject;
-                        objectToAdd = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", typeof( UnityEngine.Object ) ) as GameObject;
-
-                        if ( prefabToAdd == null || objectToAdd == null )
-                        {
-                            ReMapConsole.Log($"[Library Sorter] Error loading prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
-                            continue;
-                        }
-
-                        prefabInstance = UnityEngine.Object.Instantiate( prefabToAdd ) as GameObject;
-                        objectInstance = UnityEngine.Object.Instantiate( objectToAdd ) as GameObject;
-
-                        if (prefabInstance == null || objectInstance == null)
-                        {
-                            ReMapConsole.Log($"[Library Sorter] Error creating prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
-                            continue;
-                        }
-
-                        prefabInstance.AddComponent< PropScript >();
-
-                        prefabInstance.name = modelReplacePath.Replace(".prefab", "");
-                        objectInstance.name = modelName + "_LOD0";
-
-                        prefabInstance.transform.position = Vector3.zero;
-                        prefabInstance.transform.eulerAngles = Vector3.zero;
-
-                        objectInstance.transform.parent = prefabInstance.transform;
-                        objectInstance.transform.position = Vector3.zero;
-                        objectInstance.transform.eulerAngles = FindAnglesOffset( model );
-                        objectInstance.transform.localScale = new Vector3(1, 1, 1);
-
-                        prefabInstance.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
-
-                        CheckBoxColliderComponent( prefabInstance );
-
-                        PrefabUtility.SaveAsPrefabAsset( prefabInstance, $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}" );
-
-                        UnityEngine.Object.DestroyImmediate( prefabInstance );
-                        ReMapConsole.Log( $"[Library Sorter] Created and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}", ReMapConsole.LogType.Info );
-                    }
-                    else
-                    {
-                        if ( !checkExist ) continue;
-
-                        UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}", typeof( UnityEngine.Object ) ) as GameObject;
-                        if ( loadedPrefabResource == null )
-                        {
-                            ReMapConsole.Log($"[Library Sorter] Error loading prefab: {modelReplacePath}", ReMapConsole.LogType.Error);
-                            continue;
-                        }
-
-                        Transform child = loadedPrefabResource.GetComponentsInChildren< Transform >()[1];
-
-                        loadedPrefabResource.transform.position = Vector3.zero;
-                        loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-                        child.transform.eulerAngles = FindAnglesOffset( model );
-                        child.transform.position = Vector3.zero;
-
-                        CheckBoxColliderComponent( loadedPrefabResource );
-
-                        PrefabUtility.SavePrefabAsset( loadedPrefabResource );
-
-                        ReMapConsole.Log( $"[Library Sorter] Fixed and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{modelReplacePath}", ReMapConsole.LogType.Success );
-                    }
+                    importer.globalScale = 100;
+                    importer.SaveAndReimport();
                 }
-                i++;
-            } */
+                
+                progress += 1.0f / max;
+                EditorUtility.DisplayProgressBar( $"ReImport LOD0", $"Processing... ({min++}/{max})", progress );
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
             EditorUtility.ClearProgressBar();
 
@@ -395,7 +400,11 @@ namespace LibrarySorter
         {
             BoxCollider collider = go.GetComponent< BoxCollider >();
 
-            if ( !Helper.IsValid( collider ) ) collider = go.AddComponent< BoxCollider >();
+            if ( collider == null )
+            {
+                go.AddComponent< BoxCollider >();
+                collider = go.GetComponent< BoxCollider >();
+            }
 
             float x = 0, y = 0, z = 0;
 

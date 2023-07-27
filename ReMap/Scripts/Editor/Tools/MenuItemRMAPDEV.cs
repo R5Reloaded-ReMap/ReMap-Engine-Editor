@@ -58,5 +58,11 @@ public class MenuItemRMAPDEV
         {
             ReMapDebug.Debug_ClearProgressBar();
         }
+
+        [ MenuItem( "Dev Menu/Utility/ReTexture Window", false, 100 ) ]
+        public static void ShowReTextureWindow()
+        {
+            ReTexture.Init();
+        }
     #endif
 }

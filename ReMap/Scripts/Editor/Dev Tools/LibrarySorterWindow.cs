@@ -508,20 +508,48 @@ namespace LibrarySorter
             return Task.CompletedTask;
         }
 
-        internal static async Task CheckTexture()
+        internal static async Task CheckTexture( GameObject objScene = null )
         {
-            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
-
-            float progress = 0.0f; int min = 0; int max = modeltextureGUID.Length;
-
             List< string > textures = new List< string >();
 
-            foreach ( var guid in modeltextureGUID )
-            {
-                string assetPath = AssetDatabase.GUIDToAssetPath( guid );
-                GameObject obj = Helper.CreateGameObject( "", assetPath );
+            float progress = 0.0f; int min = 0; int max;
 
-                foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
+            if ( !Helper.IsValid( objScene ) )
+            {
+                string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
+
+                max = modeltextureGUID.Length;
+            
+                foreach ( var guid in modeltextureGUID )
+                {
+                    string assetPath = AssetDatabase.GUIDToAssetPath( guid );
+                    GameObject obj = Helper.CreateGameObject( "", assetPath );
+
+                    foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
+                    {
+                        if ( renderer != null )
+                        {
+                            foreach ( Material mat in renderer.sharedMaterials )
+                            {
+                                if ( !textures.Contains( mat.name ) ) textures.Add( mat.name );
+                            }
+                        }
+                    }
+
+                    UnityEngine.Object.DestroyImmediate( obj );
+
+                    progress += 1.0f / max;
+
+                    EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Getting Textures ({min++}/{max})", progress );
+                }
+            }
+            else
+            {
+                Renderer[] renderers = objScene.GetComponentsInChildren< Renderer >();
+
+                max = renderers.Length;
+
+                foreach ( Renderer renderer in renderers )
                 {
                     if ( renderer != null )
                     {
@@ -532,14 +560,10 @@ namespace LibrarySorter
                     }
                 }
 
-                UnityEngine.Object.DestroyImmediate( obj );
-
                 progress += 1.0f / max;
 
                 EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Getting Textures ({min++}/{max})", progress );
             }
-
-            progress = 0.0f; min = 0; max = textures.Count;
 
             foreach ( string texture in textures )
             {

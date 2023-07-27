@@ -15,6 +15,7 @@ namespace LibrarySorter
         FixPrefabsTags,
         FixPrefabsLabels,
         DeleteUnusuedTextures,
+        CheckTextures,
         FixLodsScale,
         CreateRpakList,
         FixPrefabsData,
@@ -72,7 +73,8 @@ namespace LibrarySorter
 
                     WindowUtility.WindowUtility.CreateButton( "Check Prefabs Tags", "", () => AwaitTask( TaskType.FixPrefabsTags ) );
                     WindowUtility.WindowUtility.CreateButton( "Check Prefabs Labels", "", () => AwaitTask( TaskType.FixPrefabsLabels ) );
-                    WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
+                    WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
+                    WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.CheckTextures ) );
                     WindowUtility.WindowUtility.CreateButton( "Check Lods Scale", "", () => AwaitTask( TaskType.FixLodsScale ) );
                     WindowUtility.WindowUtility.CreateButton( "Create Rpak List", "", () => AwaitTask( TaskType.CreateRpakList ) );
 
@@ -163,6 +165,11 @@ namespace LibrarySorter
                 case TaskType.DeleteUnusuedTextures:
                     if ( !DoStartTask() ) return;
                     await DeleteNotUsedTexture();
+                    break;
+
+                case TaskType.CheckTextures:
+                    if ( !DoStartTask() ) return;
+                    await CheckTexture();
                     break;
 
                 case TaskType.FixLodsScale:
@@ -499,6 +506,85 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
 
             return Task.CompletedTask;
+        }
+
+        internal static async Task CheckTexture()
+        {
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
+
+            float progress = 0.0f; int min = 0; int max = modeltextureGUID.Length;
+
+            List< string > textures = new List< string >();
+
+            foreach ( var guid in modeltextureGUID )
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath( guid );
+                GameObject obj = Helper.CreateGameObject( "", assetPath );
+
+                foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
+                {
+                    if ( renderer != null )
+                    {
+                        foreach ( Material mat in renderer.sharedMaterials )
+                        {
+                            if ( !textures.Contains( mat.name ) ) textures.Add( mat.name );
+                        }
+                    }
+                }
+
+                UnityEngine.Object.DestroyImmediate( obj );
+
+                progress += 1.0f / max;
+
+                EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Getting Textures ({min++}/{max})", progress );
+            }
+
+            progress = 0.0f; min = 0; max = textures.Count;
+
+            foreach ( string texture in textures )
+            {
+                if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds" ) )
+                {
+                    GUIUtility.systemCopyBuffer = texture;
+
+                    if ( !Helper.IsValid( Legion ) ) OpenLegion();
+
+                    string filePath = $"{relativeLegionPlusExportedFiles}/materials/{texture}/{texture}_albedoTexture.dds";
+                    string gotoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds";
+
+                    EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Processing...", progress );
+
+                    while ( !File.Exists( filePath ) )
+                    {
+                        await Helper.Wait( 1.0 );
+
+                        EditorUtility.DisplayProgressBar( $"Texture Sorter Paused ({min}/{max})", $"\"{texture}\" need to be imported. ( {max - ( min + 1 )} more missing )", progress );
+
+                        if ( !Helper.IsValid( Legion ) ) break;
+                    }
+
+                    // If Legion is closed
+                    if ( !File.Exists( filePath ) ) return;
+
+                    File.Move( filePath, gotoPath );
+                    if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPath}.meta" );
+
+                    string dir = $"{relativeLegionPlusExportedFiles}/materials/{texture}";
+                    if ( Directory.Exists( dir ) )
+                    {
+                        Directory.Delete( dir, true );
+
+                        if ( File.Exists( $"{dir}.meta" ) )
+                        {
+                            File.Delete( $"{dir}.meta" );
+                        }
+                    }
+
+                    min++;
+                }
+            }
+
+            EditorUtility.ClearProgressBar();
         }
 
         internal static Task DeleteNotUsedTexture()

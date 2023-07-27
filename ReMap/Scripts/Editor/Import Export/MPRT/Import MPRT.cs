@@ -260,8 +260,11 @@ public class ImportMPRTModels : EditorWindow
         if(radius != 0 && source != null)
         {
             GameObject obj = source as GameObject;
+            
             Handles.color = Color.red;
-            Handles.DrawWireDisc(obj.transform.position, Vector3.up, radius, 3.0f );
+            Handles.DrawWireDisc(obj.transform.position, Vector3.up, radius, 3.0f);
+            GUI.color = Color.red;
+            Handles.Label(obj.transform.position, "Radius: " + radius.ToString());
         }
     }
 }

@@ -143,7 +143,7 @@ public class UnityInfo
         if( name.Contains( " " ) ) name = name.Split( " " )[0];
 
         //Find Model GUID in Assets
-        string[] results = AssetDatabase.FindAssets( name, new [] {$"{UnityInfo.relativePathPrefabs}"} );
+        string[] results = AssetDatabase.FindAssets( name, new [] {$"{UnityInfo.relativePathPrefabs}/all_models"} );
         if ( results.Length == 0 ) return null;
 
         //Get model path from guid and load it

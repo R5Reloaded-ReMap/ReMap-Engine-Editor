@@ -20,6 +20,8 @@ public class ImportMPRTModels : EditorWindow
     private int radius = 0;
     private UnityEngine.Object source;
 
+    public Dictionary<string, GameObject> objDictionary = new Dictionary<string, GameObject>();
+
     [ MenuItem( "ReMap/Import/MPRT", false, 51 ) ]
     private static void OpenImportMPRTWindow()
     {
@@ -73,6 +75,8 @@ public class ImportMPRTModels : EditorWindow
 
     public async Task ImportMPRTCodeAsync()
     {
+        objDictionary = new Dictionary<string, GameObject>();
+
         byte[] buffer = new byte[4];
         using (BinaryReader reader = new BinaryReader(File.Open(mprtPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
         {
@@ -169,18 +173,30 @@ public class ImportMPRTModels : EditorWindow
 
     private void CreateMPRTProp(MPRTData data)
     {
-        GameObject obj = Helper.CreateGameObject( "", data.name, PathType.Name );
+        //Check If Object Already Exists
+        GameObject obj;
+        if(objDictionary.ContainsKey(data.name))
+            obj = Instantiate(objDictionary[data.name]);
+        else
+            obj = Helper.CreateGameObject( "", data.name, PathType.Name );
 
+        //Check If Object Is Valid
         if ( !Helper.IsValid( obj ) ) return;
 
+        //Set Position, Rotation, Scale
         obj.transform.position = data.pos;
         obj.transform.eulerAngles = data.rot;
         obj.name = data.name;
         obj.gameObject.transform.localScale = data.scale;
 
+        //Set Parent
         GameObject parent = GameObject.Find("Map Assets");
         if (parent != null)
             obj.gameObject.transform.parent = parent.transform;
+
+        //Add To Dictionary
+        if(!objDictionary.ContainsKey(data.name))
+            objDictionary.Add(data.name, obj);
     }
 
     private string ReadNullTerminatedString(BinaryReader reader)
@@ -196,12 +212,15 @@ public class ImportMPRTModels : EditorWindow
 
     private bool RadiusCheck(MPRTData data)
     {
+        //Check If Radius Is Set
         if (radius == 0)
             return false;
         
+        //Check If Source Is Set
         if(source == null)
             return false;
 
+        //Check If Object Is Within Radius
         GameObject obj = source as GameObject;
         float distance = Vector3.Distance(obj.transform.position, data.pos);
         if (distance > radius)
@@ -212,9 +231,11 @@ public class ImportMPRTModels : EditorWindow
 
     private bool FilterCheck(string name, string[] filterList)
     {
+        //Check If Filter Is Set
         if (string.IsNullOrEmpty(filter))
             return false;
 
+        //Check If Object Contains Filter
         foreach (var x in filterList)
             if (name.Contains(x))
                 return true;

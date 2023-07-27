@@ -14,20 +14,14 @@ using UnityEngine;
 
 public class ImportMPRTModels : EditorWindow
 {
-    public string mprtPath = "";
-    public string mprtName = "";
-    public string filter = "";
-    public int radius = 0;
-    public Vector3 cords;
+    private string mprtPath = "";
+    private string mprtName = "";
+    private string filter = "";
+    private int radius = 0;
     private UnityEngine.Object source;
 
     [ MenuItem( "ReMap/Import/MPRT", false, 51 ) ]
     private static void OpenImportMPRTWindow()
-    {
-        Init();
-    }
-
-    public static void Init()
     {
         ImportMPRTModels window = (ImportMPRTModels)GetWindow(typeof(ImportMPRTModels), false, "Import MPRT");
         window.Show();
@@ -80,7 +74,6 @@ public class ImportMPRTModels : EditorWindow
     public async Task ImportMPRTCodeAsync()
     {
         byte[] buffer = new byte[4];
-
         using (BinaryReader reader = new BinaryReader(File.Open(mprtPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
         {
             // Read and validate header
@@ -203,15 +196,16 @@ public class ImportMPRTModels : EditorWindow
 
     private bool RadiusCheck(MPRTData data)
     {
-        if (radius != 0 && source != null)
-        {
-            GameObject obj = source as GameObject;
-            float distance = Vector3.Distance(obj.transform.position, data.pos);
-            if (distance > radius)
-            {
-                return true;
-            }
-        }
+        if (radius == 0 && source != null)
+            return false;
+        
+        if(source == null)
+            return false;
+
+        GameObject obj = source as GameObject;
+        float distance = Vector3.Distance(obj.transform.position, data.pos);
+        if (distance > radius)
+            return true;
 
         return false;
     }
@@ -219,9 +213,11 @@ public class ImportMPRTModels : EditorWindow
     private bool FilterCheck(string name, string[] filterList)
     {
         if (!string.IsNullOrEmpty(filter))
-            foreach (var x in filterList)
-                if (name.Contains(x))
-                    return true;
+            return false;
+
+        foreach (var x in filterList)
+            if (name.Contains(x))
+                return true;
 
         return false;
     }

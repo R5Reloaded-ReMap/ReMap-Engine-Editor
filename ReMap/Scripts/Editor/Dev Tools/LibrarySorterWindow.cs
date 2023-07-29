@@ -612,14 +612,14 @@ namespace LibrarySorter
                                                 string newName = $"{name}_albedoTexture.dds";
                                                 string dirToTexture = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}";
 
-                                                if ( File.Exists( $"{dirToTexture}/{fileName}" ) && !File.Exists( $"{dirToTexture}/{newName}" ) )
+                                                if ( File.Exists( $"{dirToTexture}/{fileName}.dds" ) && !File.Exists( $"{dirToTexture}/{newName}.dds" ) )
                                                 {
-                                                    System.IO.File.Move( $"{dirToTexture}/{fileName}", $"{dirToTexture}/{newName}" );
+                                                    System.IO.File.Move( $"{dirToTexture}/{fileName}.dds", $"{dirToTexture}/{newName}.dds" );
                                                 }
 
-                                                if ( File.Exists( $"{dirToTexture}/{fileName}.meta" ) && !File.Exists( $"{dirToTexture}/{newName}.meta" ) )
+                                                if ( File.Exists( $"{dirToTexture}/{fileName}.dds.meta" ) && !File.Exists( $"{dirToTexture}/{newName}.dds.meta" ) )
                                                 {
-                                                    System.IO.File.Move( $"{dirToTexture}/{fileName}.meta", $"{dirToTexture}/{newName}.meta" );
+                                                    System.IO.File.Move( $"{dirToTexture}/{fileName}.dds.meta", $"{dirToTexture}/{newName}.dds.meta" );
                                                 }
                                             }
                                         }

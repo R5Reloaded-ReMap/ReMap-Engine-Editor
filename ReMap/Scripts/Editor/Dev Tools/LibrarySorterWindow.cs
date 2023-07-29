@@ -40,14 +40,12 @@ namespace LibrarySorter
         static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
         static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
         static string relativeLegionExecutive = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlus}/LegionPlus.exe";
-
-        static Process Legion = null;
         
         public static void Init()
         {
             libraryData = RpakManagerWindow.FindLibraryDataFile();
 
-            LibrarySorterWindow window = ( LibrarySorterWindow )GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Fix Manager" );
+            LibrarySorterWindow window = ( LibrarySorterWindow ) GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Fix Manager" );
             window.minSize = new Vector2( 650, 600 );
             window.Show();
         }
@@ -185,6 +183,7 @@ namespace LibrarySorter
                 case TaskType.FixPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
+                    if ( LegionExporting.GetValidRpakPaths() ) return;
                     await SortFolder( data );
                     await SetModelLabels( data.Name );
                     RpakManagerWindow.SaveJson();
@@ -193,6 +192,7 @@ namespace LibrarySorter
                 case TaskType.FixAllPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
+                    if ( LegionExporting.GetValidRpakPaths() ) return;
                     foreach ( RpakData _data in libraryData.RpakList )
                     {
                         await SortFolder( _data );
@@ -237,21 +237,33 @@ namespace LibrarySorter
                 // If LOD0 doesn't exist
                 if ( !Helper.LOD0_Exist( modelName ) )
                 {
-                    GUIUtility.systemCopyBuffer = model;
+                    string loading = "";
+                    int loadingCount = 0;
 
-                    if ( !Helper.IsValid( Legion ) ) OpenLegion();
+                    Task legionTask = LegionExporting.ExtractModelFromLegion( modelName );
 
-                    while ( !File.Exists( filePath ) )
+                    while ( !legionTask.IsCompleted )
                     {
+                        loading = new string( '.', loadingCount++ % 4 );
+                        EditorUtility.DisplayProgressBar( $"Sorting Folder Paused ({min}/{max})", $"Trying to export \"{modelName}\"{loading}", progress );
+
                         await Helper.Wait( 1.0 );
-
-                        EditorUtility.DisplayProgressBar( $"Sorting Folder Paused ({min}/{max})", $"\"{modelName}\" need to be imported.", progress );
-
-                        if ( !Helper.IsValid( Legion ) ) break;
                     }
 
-                    File.Move( filePath, gotoPathModel );
-                    if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPathModel}.meta" );
+                    if ( !File.Exists( filePath ) )
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        File.Move( filePath, gotoPathModel );
+                        if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPathModel}.meta" );
+
+                        await Helper.Wait( 1.0 );
+
+                        AssetDatabase.SaveAssets();
+                        AssetDatabase.Refresh();
+                    }
 
                     foreach ( string matsFile in Directory.GetFiles( matsPath ) )
                     {
@@ -366,8 +378,6 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
 
             data.Update = DateTime.UtcNow.ToString();
-
-            return;
         }
 
         private static async void OpenLegion()
@@ -381,11 +391,7 @@ namespace LibrarySorter
                 process.StartInfo = startInfo;
                 process.Start();
 
-                Legion = process;
-
-                await Task.Run( () => Legion.WaitForExit() );
-
-                Legion = null;
+                await Task.Run( () => process.WaitForExit() );
             }
         }
 
@@ -510,6 +516,8 @@ namespace LibrarySorter
 
         internal static async Task CheckTexture( GameObject objScene = null )
         {
+            if ( LegionExporting.GetValidRpakPaths() ) return;
+
             List< string > textures = new List< string >();
 
             float progress = 0.0f; int min = 0; int max;
@@ -569,22 +577,22 @@ namespace LibrarySorter
             {
                 if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds" ) )
                 {
-                    GUIUtility.systemCopyBuffer = texture;
-
-                    if ( !Helper.IsValid( Legion ) ) OpenLegion();
-
                     string filePath = $"{relativeLegionPlusExportedFiles}/materials/{texture}/{texture}_albedoTexture.dds";
                     string gotoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds";
 
                     EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Processing...", progress );
 
-                    while ( !File.Exists( filePath ) )
+                    string loading = "";
+                    int loadingCount = 0;
+
+                    Task legionTask = LegionExporting.ExtractModelFromLegion( texture );
+
+                    while ( !legionTask.IsCompleted )
                     {
+                        loading = new string( '.', loadingCount++ % 4 );
+                        EditorUtility.DisplayProgressBar( $"Sorting Folder Paused ({min}/{max})", $"Trying to export \"{texture}\"{loading}", progress );
+
                         await Helper.Wait( 1.0 );
-
-                        EditorUtility.DisplayProgressBar( $"Texture Sorter Paused ({min}/{max})", $"\"{texture}\" need to be imported. ( {max - ( min + 1 )} more missing )", progress );
-
-                        if ( !Helper.IsValid( Legion ) ) break;
                     }
 
                     // If Legion is closed

@@ -11,12 +11,11 @@ namespace LibrarySorter
 {
     public class LegionExporting
     {
-        internal static string ValidPathArg = "";
-
-        private static readonly string[] ValidRpakFile = new []
-        {
-            "common_mp", "common_early", "root_lgnd_", "startup", "mp_lobby", "mp_rr_"
-        };
+        static string currentDirectory = UnityInfo.currentDirectoryPath;
+        static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
+        static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
+        static string relativePathRpakManager = UnityInfo.relativePathRpakManager;
+        static string relativeLegionExecutive = $"{currentDirectory}/{relativeLegionPlus}/LegionPlus.exe";
 
         public static async void RpakListInit()
         {
@@ -45,15 +44,15 @@ namespace LibrarySorter
 
             foreach ( string rpakPath in rpakFilesValid )
             {
-                string command = UnityInfo.relativePathLegionExecutive;
+                string command = relativeLegionExecutive;
                 string arguments = $"--list \"{rpakPath.Replace("\\","/")}\" --loadmodels --fullpath --nologfile --overwrite";
 
-                ProcessStartInfo startInfo = new ProcessStartInfo();
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
                 startInfo.FileName = command;
                 startInfo.Arguments = arguments;
                 startInfo.UseShellExecute = false;
 
-                using ( Process process = new Process())
+                using (System.Diagnostics.Process process = new System.Diagnostics.Process())
                 {
                     process.StartInfo = startInfo;
                     process.StartInfo.CreateNoWindow = true;
@@ -67,7 +66,7 @@ namespace LibrarySorter
                     EditorUtility.DisplayProgressBar($"Parsing Rpak Files {fileIdx++}/{fileTotalIdx}", $"Processing {Path.GetFileName(rpakPath)}", progress);
                 }
 
-                string exportedFilePath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionPlusExportedFiles}/lists/{Path.GetFileNameWithoutExtension(rpakPath)}.txt";
+                string exportedFilePath = $"{currentDirectory}/{relativeLegionPlusExportedFiles}/lists/{Path.GetFileNameWithoutExtension(rpakPath)}.txt";
 
                 if ( File.Exists( exportedFilePath ) )
                 {
@@ -85,12 +84,12 @@ namespace LibrarySorter
 
                         //if ( Path.GetFileNameWithoutExtension(rpakPath).Contains("(") )
 
-                        File.Move( $"{exportedFilePath}", $"{UnityInfo.relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt" );
-                        if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{UnityInfo.relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
+                        File.Move( $"{exportedFilePath}", $"{relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt" );
+                        if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
                     }
                 }
 
-                Directory.Delete( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionPlusExportedFiles}" );
+                Directory.Delete( $"{currentDirectory}/{relativeLegionPlusExportedFiles}" );
             }
 
             EditorUtility.ClearProgressBar();
@@ -109,50 +108,6 @@ namespace LibrarySorter
             if ( fileName.Contains( "subtitles_" ) )         return false;
 
             return true;
-        }
-
-        public static async Task ExtractModelFromLegion( string name )
-        {
-            if ( string.IsNullOrEmpty( ValidPathArg ) || string.IsNullOrEmpty( name ) ) return;
-
-            string launchArgs = $"--loadPaks \"{ValidPathArg}\" --assetName \"{name}\" --loadmodels --loadmaterials --mdlfmt fbx --nologfile";
-
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = $"\"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionExecutive}\"";
-            startInfo.Arguments = launchArgs;
-            startInfo.UseShellExecute = false;
-
-            using ( Process process = new Process() )
-            {
-                process.StartInfo = startInfo;
-                process.Start();
-
-                await Task.Run( () => process.WaitForExit() );
-            }
-        }
-
-        internal static bool GetValidRpakPaths()
-        {
-            ValidPathArg = "";
-
-            var rpakRetailPath = EditorUtility.OpenFolderPanel( "Rpak Path", "Select rpak folder", "" );
-
-            if ( string.IsNullOrEmpty( rpakRetailPath ) ) return false;
-
-            foreach ( string files in Directory.GetFiles( rpakRetailPath ) )
-            {
-                string file = Path.GetFileName( files );
-
-                foreach ( string match in ValidRpakFile )
-                {
-                    if ( file.Contains( match ) && Path.GetExtension( file ) == ".rpak" && !file.Contains( "_loadscreen" ) ) // Ignore loadscreens
-                    {
-                        ValidPathArg += $"{rpakRetailPath}/{file},";
-                    }
-                }
-            }
-
-            return string.IsNullOrEmpty( ValidPathArg );
         }
     }
 }

@@ -111,15 +111,14 @@ namespace LibrarySorter
             return true;
         }
 
-        public static async Task ExtractModelFromLegion( string name )
+        public static async Task ExtractModelFromLegion( string assetList )
         {
-            if ( string.IsNullOrEmpty( ValidPathArg ) || string.IsNullOrEmpty( name ) ) return;
-
-            string launchArgs = $"--loadPaks \"{ValidPathArg}\" --assetName \"{name}\" --loadmodels --loadmaterials --mdlfmt fbx --nologfile";
+            if ( string.IsNullOrEmpty( ValidPathArg ) || string.IsNullOrEmpty( assetList ) ) return;
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = $"\"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionExecutive}\"";
-            startInfo.Arguments = launchArgs;
+            startInfo.Arguments = $"--loadPaks \"{ValidPathArg}\" --assetsToExport \"{assetList}\" --loadmodels --loadmaterials --mdlfmt fbx --imgfmt dds --nologfile";
+
             startInfo.UseShellExecute = false;
 
             using ( Process process = new Process() )
@@ -151,6 +150,8 @@ namespace LibrarySorter
                     }
                 }
             }
+
+            ValidPathArg = ValidPathArg.TrimEnd( ',' );
 
             return string.IsNullOrEmpty( ValidPathArg );
         }

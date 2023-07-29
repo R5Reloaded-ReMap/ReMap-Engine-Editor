@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -225,7 +226,53 @@ namespace LibrarySorter
 
             List< string > modelImporter = new List< string >();
 
+            List< string > lod0List = new List< string >();
+
+            StringBuilder assets = new StringBuilder();
+
+            // Check if LOD0 doesn't exist
             foreach ( string model in data.Data )
+            {
+                modelName = Path.GetFileNameWithoutExtension( model );
+
+                EditorUtility.DisplayProgressBar( $"Checking LOD0 ({min}/{max})", $"Processing... ({modelName})", progress );
+
+                if ( !Helper.LOD0_Exist( modelName ) )
+                {
+                    assets.Append( $"{modelName}," );
+                    lod0List.Add( modelName );
+                }
+
+                progress += 1.0f / max; min++;
+            }
+
+            // Reset progress bar
+            progress = 0.0f; min = 0; max = lod0List.Count;
+
+            if ( assets.Length > 0 )
+            {
+                // Remove last ','
+                assets.Remove( assets.Length - 1, 1 );
+
+                string loading = "";
+                int loadingCount = 0;
+
+                Task legionTask = LegionExporting.ExtractModelFromLegion( assets.ToString() );
+
+                while ( !legionTask.IsCompleted )
+                {
+                    EditorUtility.DisplayProgressBar( $"Legion Extraction", $"Extracting files{loading}", progress );
+
+                    loading = new string('.', loadingCount++ % 4);
+
+                    await Helper.Wait( 1.0 );
+                }
+            }
+
+            // Reset progress bar
+            progress = 0.0f; min = 0;
+
+            foreach ( string model in lod0List )
             {
                 modelName = Path.GetFileNameWithoutExtension( model );
 
@@ -234,70 +281,58 @@ namespace LibrarySorter
                 string gotoPathModel = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
                 string gotoPathMaterial = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}";
 
-                // If LOD0 doesn't exist
-                if ( !Helper.LOD0_Exist( modelName ) )
+                EditorUtility.DisplayProgressBar( $"Checking New LOD0", $"Processing... ({min++}/{max})", progress );
+                progress += 1.0f / max;
+
+                if ( !File.Exists( filePath ) )
                 {
-                    string loading = "";
-                    int loadingCount = 0;
+                    continue;
+                }
+                else
+                {
+                    File.Move( filePath, gotoPathModel );
+                    if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPathModel}.meta" );
+                }
 
-                    Task legionTask = LegionExporting.ExtractModelFromLegion( modelName );
+                foreach ( string matsFile in Directory.GetFiles( matsPath ) )
+                {
+                    string fileName = Path.GetFileName( matsFile );
 
-                    while ( !legionTask.IsCompleted )
+                    if ( fileName.Contains( "_albedoTexture" ) )
                     {
-                        loading = new string( '.', loadingCount++ % 4 );
-                        EditorUtility.DisplayProgressBar( $"Sorting Folder Paused ({min}/{max})", $"Trying to export \"{modelName}\"{loading}", progress );
-
-                        await Helper.Wait( 1.0 );
-                    }
-
-                    if ( !File.Exists( filePath ) )
-                    {
-                        continue;
+                        if ( !File.Exists( $"{gotoPathMaterial}/{fileName}" ) )
+                        {
+                            File.Move( matsFile, $"{gotoPathMaterial}/{fileName}" );
+                            if ( File.Exists( $"{matsFile}.meta" ) ) File.Move( $"{matsFile}.meta", $"{fileName}.meta" );
+                        }
                     }
                     else
                     {
-                        File.Move( filePath, gotoPathModel );
-                        if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPathModel}.meta" );
-
-                        await Helper.Wait( 1.0 );
-
-                        AssetDatabase.SaveAssets();
-                        AssetDatabase.Refresh();
+                        File.Delete( matsFile );
+                        if ( File.Exists( $"{matsFile}.meta" ) ) File.Delete( $"{matsFile}.meta" );
                     }
-
-                    foreach ( string matsFile in Directory.GetFiles( matsPath ) )
-                    {
-                        string fileName = Path.GetFileName( matsFile );
-
-                        if ( fileName.Contains( "_albedoTexture" ) )
-                        {
-                            if ( !File.Exists( $"{gotoPathMaterial}/{fileName}" ) )
-                            {
-                                File.Move( matsFile, $"{gotoPathMaterial}/{fileName}" );
-                                if ( File.Exists( $"{matsFile}.meta" ) ) File.Move( $"{matsFile}.meta", $"{fileName}.meta" );
-                            }
-                        }
-                        else
-                        {
-                            File.Delete( matsFile );
-                            if ( File.Exists( $"{matsFile}.meta" ) ) File.Delete( $"{matsFile}.meta" );
-                        }
-                    }
-
-                    string dir = $"{relativeLegionPlusExportedFiles}/models/{modelName}";
-                    if ( Directory.Exists( dir ) )
-                    {
-                        Directory.Delete( dir, true );
-
-                        if ( File.Exists( $"{dir}.meta" ) )
-                        {
-                            File.Delete( $"{dir}.meta" );
-                        }
-                    }
-
-                    modelImporter.Add( $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx" );
                 }
 
+                string dir = $"{relativeLegionPlusExportedFiles}/models/{modelName}";
+                if ( Directory.Exists( dir ) )
+                {
+                    Directory.Delete( dir, true );
+
+                    if ( File.Exists( $"{dir}.meta" ) )
+                    {
+                        File.Delete( $"{dir}.meta" );
+                    }
+                }
+
+                modelImporter.Add( $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx" );
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            foreach ( string model in data.Data )
+            {
+                modelName = Path.GetFileNameWithoutExtension( model );
                 string unityName = UnityInfo.GetUnityModelName( model );
 
                 if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{data.Name}/{unityName}.prefab" ) )
@@ -518,6 +553,10 @@ namespace LibrarySorter
         {
             if ( LegionExporting.GetValidRpakPaths() ) return;
 
+            StringBuilder arg = new StringBuilder();
+
+            List< string > argList = new List< string >();
+
             List< string > textures = new List< string >();
 
             float progress = 0.0f; int min = 0; int max;
@@ -539,7 +578,53 @@ namespace LibrarySorter
                         {
                             foreach ( Material mat in renderer.sharedMaterials )
                             {
-                                if ( !textures.Contains( mat.name ) ) textures.Add( mat.name );
+                                // if ( !textures.Contains( mat.name ) )
+                                // {
+                                //     arg.Append( $"{mat.name}," );
+
+                                //     if ( arg.Length > 5000 )
+                                //     {
+                                //         arg.Remove( arg.Length - 1, 1 );
+
+                                //         argList.Add( arg.ToString() );
+
+                                //         arg = new ();
+                                //     }
+                                // }
+
+                                if ( mat != null )
+                                {
+                                    string name = mat.name;
+
+                                    // Obtain the name of the main map albedo
+                                    if( mat.HasProperty( "_MainTex" ) )
+                                    {
+                                        Texture mainTexture = mat.mainTexture;
+
+                                        string texturePath = AssetDatabase.GetAssetPath( mainTexture );
+
+                                        if ( !string.IsNullOrEmpty( texturePath ) )
+                                        {
+                                            string fileName = Path.GetFileNameWithoutExtension( texturePath );
+
+                                            if ( fileName.StartsWith( "0x" ) )
+                                            {
+                                                string newName = $"{name}_albedoTexture.dds";
+                                                string dirToTexture = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}";
+
+                                                if ( File.Exists( $"{dirToTexture}/{fileName}.dds" ) && !File.Exists( $"{dirToTexture}/{newName}.dds" ) )
+                                                {
+                                                    System.IO.File.Move( $"{dirToTexture}/{fileName}.dds", $"{dirToTexture}/{newName}.dds" );
+                                                }
+
+                                                if ( File.Exists( $"{dirToTexture}/{fileName}.dds.meta" ) && !File.Exists( $"{dirToTexture}/{newName}.dds.meta" ) )
+                                                {
+                                                    System.IO.File.Move( $"{dirToTexture}/{fileName}.dds.meta", $"{dirToTexture}/{newName}.dds.meta" );
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -550,6 +635,8 @@ namespace LibrarySorter
 
                     EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Getting Textures ({min++}/{max})", progress );
                 }
+
+                AssetDatabase.Refresh();
             }
             else
             {
@@ -563,7 +650,19 @@ namespace LibrarySorter
                     {
                         foreach ( Material mat in renderer.sharedMaterials )
                         {
-                            if ( !textures.Contains( mat.name ) ) textures.Add( mat.name );
+                            if ( !textures.Contains( mat.name ) )
+                            {
+                                arg.Append( $"{mat.name}," );
+
+                                if ( arg.Length > 5000 )
+                                {
+                                    arg.Remove( arg.Length - 1, 1 );
+
+                                    argList.Add( arg.ToString() );
+
+                                    arg = new ();
+                                }
+                            }
                         }
                     }
                 }
@@ -573,47 +672,60 @@ namespace LibrarySorter
                 EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Getting Textures ({min++}/{max})", progress );
             }
 
+            if ( arg.Length > 0 || argList.Count > 0 )
+            {
+                arg.Remove( arg.Length - 1, 1 );
+                argList.Add( arg.ToString() );
+
+                string loading = "";
+                int loadingCount = 0;
+
+                // foreach ( string argument in argList )
+                // {
+                //     Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
+
+                //     while ( !legionTask.IsCompleted )
+                //     {
+                //         EditorUtility.DisplayProgressBar( $"Legion Extraction", $"Extracting files{loading}", 0.0f );
+
+                //         loading = new string( '.', loadingCount++ % 4 );
+
+                //         await Helper.Wait( 1.0 );
+                //     }
+                // }
+            }
+
+            min = 0; max = textures.Count; progress = 0.0f;
+
             foreach ( string texture in textures )
             {
-                if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds" ) )
+                string filePath = $"{relativeLegionPlusExportedFiles}/materials/{texture}/{texture}_albedoTexture.dds";
+                string gotoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds";
+
+                EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Checking Textures... ({min++}/{max})", progress );
+
+                progress += 1.0f / max;
+
+                if ( !File.Exists( filePath ) )
                 {
-                    string filePath = $"{relativeLegionPlusExportedFiles}/materials/{texture}/{texture}_albedoTexture.dds";
-                    string gotoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds";
-
-                    EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Processing...", progress );
-
-                    string loading = "";
-                    int loadingCount = 0;
-
-                    Task legionTask = LegionExporting.ExtractModelFromLegion( texture );
-
-                    while ( !legionTask.IsCompleted )
-                    {
-                        loading = new string( '.', loadingCount++ % 4 );
-                        EditorUtility.DisplayProgressBar( $"Sorting Folder Paused ({min}/{max})", $"Trying to export \"{texture}\"{loading}", progress );
-
-                        await Helper.Wait( 1.0 );
-                    }
-
-                    // If Legion is closed
-                    if ( !File.Exists( filePath ) ) return;
-
-                    File.Move( filePath, gotoPath );
-                    if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPath}.meta" );
-
-                    string dir = $"{relativeLegionPlusExportedFiles}/materials/{texture}";
-                    if ( Directory.Exists( dir ) )
-                    {
-                        Directory.Delete( dir, true );
-
-                        if ( File.Exists( $"{dir}.meta" ) )
-                        {
-                            File.Delete( $"{dir}.meta" );
-                        }
-                    }
-
-                    min++;
+                    min++; continue;
                 }
+
+                File.Move( filePath, gotoPath );
+                if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPath}.meta" );
+
+                string dir = $"{relativeLegionPlusExportedFiles}/materials/{texture}";
+                if ( Directory.Exists( dir ) )
+                {
+                    Directory.Delete( dir, true );
+
+                    if ( File.Exists( $"{dir}.meta" ) )
+                    {
+                        File.Delete( $"{dir}.meta" );
+                    }
+                }
+
+                min++;
             }
 
             EditorUtility.ClearProgressBar();

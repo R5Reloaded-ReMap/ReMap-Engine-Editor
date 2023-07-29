@@ -75,4 +75,20 @@ public class ReMapDebug
 
         EditorUtility.ClearProgressBar();
     }
+
+    [MenuItem("Dev Menu/i")]
+    public static void Oups()
+    {
+        foreach( string file in Directory.GetFiles( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}" ) )
+        {
+            if ( file.Contains( ".dds.dds" ) )
+            {
+                string i = Path.GetFileNameWithoutExtension( file );            
+
+                if ( File.Exists( $"{file}" ) && !File.Exists( $"{file.Replace( ".dds.dds", ".dds" )}" ) )File.Move( $"{file}", $"{file.Replace( ".dds.dds", ".dds" )}" );
+
+                if ( File.Exists( $"{file}.meta" ) && !File.Exists( $"{file.Replace( ".dds.dds", ".dds" )}.meta" ) ) File.Move( $"{file}.meta", $"{file.Replace( ".dds.dds", ".dds" )}.meta" );
+            }
+        }
+    }
 }

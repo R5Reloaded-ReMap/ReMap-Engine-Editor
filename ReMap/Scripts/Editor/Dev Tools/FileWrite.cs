@@ -75,4 +75,12 @@ public class ReMapDebug
 
         EditorUtility.ClearProgressBar();
     }
+
+    public static void DeleteMultipleFormats()
+    {
+        foreach ( string file in Directory.GetFiles( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}" ) )
+        {
+            if ( file.Contains( ".dds.dds" ) ) File.Delete( file );
+        }
+    }
 }

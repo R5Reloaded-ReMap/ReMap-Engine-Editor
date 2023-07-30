@@ -18,6 +18,12 @@ namespace LibrarySorter
 
         internal static async Task ExtractMissingModels()
         {
+            if ( LegionExporting.GetValidRpakPaths() )
+            {
+                Helper.Ping( "No valid path for LegionPlus." );
+                return;
+            }
+
             Dictionary< string, string > missingModelList = new Dictionary< string, string >();
 
             foreach ( string modelName in LibrarySorterWindow.all_model.Data )
@@ -72,8 +78,12 @@ namespace LibrarySorter
                     await Helper.Wait( 1.0 );
                 }
 
+                min++;
+
                 MoveModels( missingModelList );
             }
+
+            Helper.DeleteDirectory( extractedModelDirectory, false );
 
             EditorUtility.ClearProgressBar();
         }
@@ -184,10 +194,10 @@ namespace LibrarySorter
                 {
                     string textureName = Path.GetFileName( texture );
 
-                    if ( !textureName.StartsWith( "0x" ) || !textureName.EndsWith( "_albedoTexture" ) )
+                    if ( !textureName.Contains( "0x" ) && !textureName.Contains( "_albedoTexture" ) )
                         continue;
 
-                    Helper.MoveFile( texture, $"{modelDirectory}/{Path.GetFileName( texture )}", false );
+                    Helper.MoveFile( texture, $"{modelDirectory}/{textureName}", false );
                 }
 
                 Directory.Delete( modelDir, true );

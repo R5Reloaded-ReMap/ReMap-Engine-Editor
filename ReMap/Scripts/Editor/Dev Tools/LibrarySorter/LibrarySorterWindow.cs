@@ -88,7 +88,7 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
 
                     WindowUtility.WindowUtility.CreateButton( "Extract Missing Models", "", () => AwaitTask( TaskType.ExtractMissingModels ) );
-                    WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.CheckTextures ) );
+                    //WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.CheckTextures ) );
                     WindowUtility.WindowUtility.CreateButton( "Update Materials List", "", () => AwaitTask( TaskType.CreateMaterialsList ) );
                     WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
                     
@@ -184,7 +184,6 @@ namespace LibrarySorter
 
                 case TaskType.ExtractMissingModels:
                     if ( !DoStartTask() ) return;
-                    if ( LegionExporting.GetValidRpakPaths() ) return;
                     await Models.ExtractMissingModels();
                     break;
 
@@ -211,7 +210,6 @@ namespace LibrarySorter
                 case TaskType.FixPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
-                    if ( LegionExporting.GetValidRpakPaths() ) return;
                     await SortFolder( data );
                     await SetModelLabels( data.Name );
                     RpakManagerWindow.SaveJson();
@@ -220,7 +218,6 @@ namespace LibrarySorter
                 case TaskType.FixAllPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
-                    if ( LegionExporting.GetValidRpakPaths() ) return;
                     foreach ( RpakData _data in libraryData.RpakList )
                     {
                         await SortFolder( _data );
@@ -610,8 +607,6 @@ namespace LibrarySorter
 
         internal static async Task CheckTextures( GameObject objScene = null )
         {
-            if ( LegionExporting.GetValidRpakPaths() ) return;
-
             existingTextures = await GetAllTextures();
 
             missingTextures = new List< string >();
@@ -641,7 +636,7 @@ namespace LibrarySorter
                         string assetPath = AssetDatabase.GUIDToAssetPath( guid );
                         GameObject obj = Helper.CreateGameObject( "", assetPath );
 
-                        SetMaterialsToObject( obj, assetPath );
+                        await Materials.SetMaterialsToObject( obj );
 
                         UnityEngine.Object.DestroyImmediate( obj );
 
@@ -652,7 +647,7 @@ namespace LibrarySorter
                 }
                 else
                 {
-                    SetMaterialsToObject( objScene, AssetDatabase.GetAssetPath( PrefabUtility.GetCorrespondingObjectFromSource( objScene ) ) );
+                    await Materials.SetMaterialsToObject( objScene );
                 }
 
                 if ( i == 0 && CheckDialog( $"Texture Checker", $"{missingTextures.Count} Missing. Do you want extract them ?" ) )
@@ -828,68 +823,6 @@ namespace LibrarySorter
             await Helper.Wait();
 
             return dictionary;
-        }
-
-        internal static void SetMaterialsToObject( GameObject obj, string assetPath )
-        {
-            foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
-            {
-                if ( Helper.IsValid( renderer ) )
-                {
-                    foreach ( Material mat in renderer.sharedMaterials )
-                    {
-                        if ( !Helper.IsValid( mat ) || !mat.HasProperty( "_MainTex" ) )
-                            continue;
-                            
-                        string name = mat.name;
-
-                        if ( existingTextures.ContainsKey( name ) )
-                        {
-                            mat.mainTexture = existingTextures[ name ];
-                        }
-                        else
-                        {
-                            missingTextures.Add( name );
-                        }
-                    }
-                }
-            }
-
-            if ( !string.IsNullOrEmpty( assetPath ) )
-            {
-                PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
-            }
-        }
-
-        internal static async Task CreateMaterials()
-        {
-            string[] textureGUID = AssetDatabase.FindAssets( "t:texture", new [] { UnityInfo.relativePathMaterials } );
-
-            foreach ( var guid in textureGUID )
-            {
-                string assetPath = AssetDatabase.GUIDToAssetPath( guid );
-
-                if ( !assetPath.Contains( "_albedoTexture" ) )
-                    continue;
-
-                string materialPath =  assetPath.Replace( ".dds", ".mat" );
-
-                if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{materialPath}" ) )
-                    continue;
-
-                Texture2D texture = AssetDatabase.LoadAssetAtPath< Texture2D >( assetPath );
-
-                Material newMaterial = new Material( Shader.Find( "Standard" ) );
-
-                newMaterial.mainTexture = texture;
-
-                AssetDatabase.CreateAsset( newMaterial, materialPath );
-            }
-
-            await Helper.Wait();
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
         }
 
         internal static Task DeleteNotUsedTexture()

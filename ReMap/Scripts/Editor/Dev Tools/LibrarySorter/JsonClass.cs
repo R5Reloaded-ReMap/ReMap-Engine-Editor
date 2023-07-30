@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LibrarySorter
@@ -37,6 +38,17 @@ namespace LibrarySorter
     public class MaterialData
     {
         public List< MaterialClass > MaterialList;
+
+        public bool ContainsName( string name )
+        {
+            return this.MaterialList.Any( material => material.Name == name );
+        }
+
+        public string GetPath( string name )
+        {
+            MaterialClass material = this.MaterialList.FirstOrDefault( m => m.Name == name );
+            return material != null ? material.Path : null;
+        }
     }
 
     [Serializable]

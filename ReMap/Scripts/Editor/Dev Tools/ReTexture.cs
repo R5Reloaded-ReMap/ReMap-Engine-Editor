@@ -25,7 +25,7 @@ public class ReTexture : EditorWindow
     {
         if ( Helper.IsValid( obj ) )
         {
-            await LibrarySorter.LibrarySorterWindow.CheckTextures( ( GameObject ) obj );
+            await LibrarySorter.Materials.SetMaterialsToObject( ( GameObject ) obj );
         }
 
         await Helper.Wait();

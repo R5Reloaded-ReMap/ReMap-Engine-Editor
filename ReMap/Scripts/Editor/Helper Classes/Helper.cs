@@ -934,6 +934,23 @@ public class Helper
         }
     }
 
+    public static void DeleteDirectory( string path, bool addDir = true )
+    {
+        try
+        {
+            path = addDir ? $"{UnityInfo.currentDirectoryPath}/{path}" : path;
+
+            if ( Directory.Exists( path ) )
+            {
+                Directory.Delete( path, true );
+            }
+        }
+        catch ( Exception msg )
+        {
+            Ping( msg );
+        }
+    }
+
     public static void RemoveNull< T >( ref T [] array ) where T : class
     {
         array = array.Where( x => x != null ).ToArray();

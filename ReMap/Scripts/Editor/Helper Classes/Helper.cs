@@ -916,6 +916,16 @@ public class Helper
         return false;
     }
 
+    public static void CreateDirectory( string path, bool addDir = true )
+    {
+        path = addDir ? $"{UnityInfo.currentDirectoryPath}/{path}" : path;
+
+        if ( !Directory.Exists( path ) )
+        {
+            Directory.CreateDirectory( path );
+        }
+    }
+
     public static void RemoveNull< T >( ref T [] array ) where T : class
     {
         array = array.Where( x => x != null ).ToArray();

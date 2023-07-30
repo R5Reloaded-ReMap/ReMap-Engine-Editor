@@ -32,4 +32,17 @@ namespace LibrarySorter
         public string ModelName;
         public Vector3 Rotation;
     }
+
+    [Serializable]
+    public class MaterialData
+    {
+        public List< MaterialClass > MaterialList;
+    }
+
+    [Serializable]
+    public class MaterialClass
+    {
+        public string Name;
+        public string Path;
+    }
 }

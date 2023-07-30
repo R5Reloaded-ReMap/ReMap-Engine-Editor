@@ -18,7 +18,7 @@ namespace LibrarySorter
         DeleteUnusuedTextures,
         RenameTextures,
         CheckTextures,
-        CreateMaterials,
+        CreateMaterialsList,
         FixLodsScale,
         CreateRpakList,
         FixPrefabsData,
@@ -43,12 +43,12 @@ namespace LibrarySorter
         static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
         static string relativeLegionExecutive = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlus}/LegionPlus.exe";
 
-        internal static Dictionary< string, Texture2D > ExistingTextures = new Dictionary< string, Texture2D >();
+        internal static Dictionary< string, Texture2D > existingTextures = new Dictionary< string, Texture2D >();
 
-        internal static List< string > MissingTextures = new List< string >();
+        internal static List< string > missingTextures = new List< string >();
 
-        internal static StringBuilder LegionArgument = new StringBuilder();
-        internal static List< string > LegionArguments = new List< string >();
+        internal static StringBuilder legionArgument = new StringBuilder();
+        internal static List< string > legionArguments = new List< string >();
         
         public static void Init()
         {
@@ -89,7 +89,7 @@ namespace LibrarySorter
 
                     WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.CheckTextures ) );
                     //WindowUtility.WindowUtility.CreateButton( "Rename Textures", "", () => AwaitTask( TaskType.RenameTextures ) );
-                    //WindowUtility.WindowUtility.CreateButton( "Create Materials", "", () => AwaitTask( TaskType.CreateMaterials ) );
+                    WindowUtility.WindowUtility.CreateButton( "Update Materials List", "", () => AwaitTask( TaskType.CreateMaterialsList ) );
                     WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
 
                 GUILayout.EndHorizontal();
@@ -191,9 +191,9 @@ namespace LibrarySorter
                     await CheckTextures();
                     break;
                 
-                case TaskType.CreateMaterials:
+                case TaskType.CreateMaterialsList:
                     if ( !DoStartTask() ) return;
-                    await CreateMaterials();
+                    await Materials.CreateMaterialData();
                     break;
 
                 case TaskType.FixLodsScale:
@@ -648,9 +648,9 @@ namespace LibrarySorter
         {
             if ( LegionExporting.GetValidRpakPaths() ) return;
 
-            ExistingTextures = await GetAllTextures();
+            existingTextures = await GetAllTextures();
 
-            MissingTextures = new List< string >();
+            missingTextures = new List< string >();
 
             for ( int i = 0 ; i < 2; i++ )
             {
@@ -661,7 +661,7 @@ namespace LibrarySorter
 
                 if ( i == 1 )
                 {
-                    ExistingTextures = await GetAllTextures();
+                    existingTextures = await GetAllTextures();
                 }
 
                 if ( !Helper.IsValid( objScene ) )
@@ -691,7 +691,7 @@ namespace LibrarySorter
                     SetMaterialsToObject( objScene, AssetDatabase.GetAssetPath( PrefabUtility.GetCorrespondingObjectFromSource( objScene ) ) );
                 }
 
-                if ( i == 0 && CheckDialog( $"Texture Checker", $"{MissingTextures.Count} Missing. Do you want extract them ?" ) )
+                if ( i == 0 && CheckDialog( $"Texture Checker", $"{missingTextures.Count} Missing. Do you want extract them ?" ) )
                 {
                     await ExportMissingTextures();
                 }
@@ -702,36 +702,36 @@ namespace LibrarySorter
 
         internal static async Task ExportMissingTextures()
         {
-            if ( Helper.IsEmpty( MissingTextures ) )
+            if ( Helper.IsEmpty( missingTextures ) )
                 return;
 
             // Legion Launch Arguments
-            LegionArgument = new StringBuilder();
-            LegionArguments = new List< string >();
+            legionArgument = new StringBuilder();
+            legionArguments = new List< string >();
 
-            foreach ( string arg in MissingTextures )
+            foreach ( string arg in missingTextures )
             {
-                LegionArgument.Append( $"{arg}," );
+                legionArgument.Append( $"{arg}," );
 
                 // Executive launch args can't be more long than 8191 characters
-                if ( LegionArgument.Length > 5000 )
+                if ( legionArgument.Length > 5000 )
                 {
                     // Remove last ','
-                    LegionArgument.Remove( LegionArgument.Length - 1, 1 );
+                    legionArgument.Remove( legionArgument.Length - 1, 1 );
 
-                    LegionArguments.Add( LegionArgument.ToString() );
+                    legionArguments.Add( legionArgument.ToString() );
 
-                    LegionArgument = new ();
+                    legionArgument = new ();
                 }
             }
 
-            LegionArgument.Remove( LegionArgument.Length - 1, 1 );
-            LegionArguments.Add( LegionArgument.ToString() );
+            legionArgument.Remove( legionArgument.Length - 1, 1 );
+            legionArguments.Add( legionArgument.ToString() );
 
             string loading = ""; int loadingCount = 0;
-            int min = 1; int max = LegionArguments.Count; float progress = 0.0f;
+            int min = 1; int max = legionArguments.Count; float progress = 0.0f;
 
-            foreach ( string argument in LegionArguments )
+            foreach ( string argument in legionArguments )
             {
                 Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
 
@@ -755,17 +755,17 @@ namespace LibrarySorter
                         
                     }
 
-                    if ( MissingTextures.Contains( name ) ) MissingTextures.Remove( name );
+                    if ( missingTextures.Contains( name ) ) missingTextures.Remove( name );
                 }
 
                 min++;
             }
 
-            min = 0; max = MissingTextures.Count; progress = 0.0f;
+            min = 0; max = missingTextures.Count; progress = 0.0f;
 
             string dir;
 
-            foreach ( string texture in MissingTextures )
+            foreach ( string texture in missingTextures )
             {
                 string filePath = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials/{texture}/{texture}_albedoTexture.dds";
                 string gotoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds";
@@ -879,13 +879,13 @@ namespace LibrarySorter
                             
                         string name = mat.name;
 
-                        if ( ExistingTextures.ContainsKey( name ) )
+                        if ( existingTextures.ContainsKey( name ) )
                         {
-                            mat.mainTexture = ExistingTextures[ name ];
+                            mat.mainTexture = existingTextures[ name ];
                         }
                         else
                         {
-                            MissingTextures.Add( name );
+                            missingTextures.Add( name );
                         }
                     }
                 }

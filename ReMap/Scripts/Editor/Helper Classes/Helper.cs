@@ -852,7 +852,63 @@ public class Helper
     public static bool Material_Exist( string name, bool extention = false )
     {
         string ext = extention ? ".dds" : "";
-        return File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{name}{extention}" );
+        return File.Exists($"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{name}{extention}");
+    }
+
+    public static bool MoveFile( string origin, string target, bool addDir = true )
+    {
+        string originPath = addDir ? $"{UnityInfo.currentDirectoryPath}/" : "";
+        string targetPath = addDir ? $"{UnityInfo.currentDirectoryPath}/" : "";
+
+        originPath += $"{origin}";
+        targetPath += $"{target}";
+
+        if ( File.Exists( originPath ) )
+        {
+            if ( File.Exists( targetPath ) )
+            {
+                File.Delete( originPath );
+            }
+            else
+            {
+                File.Move( originPath, targetPath );
+            }
+
+            if ( File.Exists( $"{originPath}.meta" ) )
+            {
+                if ( File.Exists( $"{targetPath}.meta" ) )
+                {
+                    File.Delete(  $"{originPath}.meta" );
+                }
+                else
+                {
+                    File.Move( originPath, targetPath );
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool DeleteFile( string filePath, bool addDir = true )
+    {
+        filePath = addDir ? $"{UnityInfo.currentDirectoryPath}/{filePath}" : filePath;
+
+        if ( File.Exists( filePath ) )
+        {
+            File.Delete( filePath );
+
+            if ( File.Exists( $"{filePath}.meta" ) )
+            {
+                File.Delete(  $"{filePath}.meta" );
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public static void RemoveNull< T >( ref T [] array ) where T : class

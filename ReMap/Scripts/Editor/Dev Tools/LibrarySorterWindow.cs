@@ -83,7 +83,7 @@ namespace LibrarySorter
 
                     WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.CheckTextures ) );
                     WindowUtility.WindowUtility.CreateButton( "Rename Textures", "", () => AwaitTask( TaskType.RenameTextures ) );
-                    WindowUtility.WindowUtility.CreateButton( "Create Materials", "", () => AwaitTask( TaskType.CreateMaterials ) );
+                    //WindowUtility.WindowUtility.CreateButton( "Create Materials", "", () => AwaitTask( TaskType.CreateMaterials ) );
                     WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
 
                 GUILayout.EndHorizontal();
@@ -247,7 +247,9 @@ namespace LibrarySorter
 
             List< string > lod0List = new List< string >();
 
+            // Legion Launch Arguments
             StringBuilder assets = new StringBuilder();
+            List< string > assetsList = new List< string >();
 
             // Check if LOD0 doesn't exist
             foreach ( string model in data.Data )
@@ -256,9 +258,21 @@ namespace LibrarySorter
 
                 EditorUtility.DisplayProgressBar( $"Checking LOD0 ({min}/{max})", $"Processing... ({modelName})", progress );
 
+                // If the .fbx doesn't exist in Asset/ReMap/.../Models
                 if ( !Helper.LOD0_Exist( modelName ) )
                 {
                     assets.Append( $"{modelName}," );
+
+                    // Executive launch args can't be more long than 8191 characters
+                    if ( assets.Length > 5000 )
+                    {
+                        assets.Remove( assets.Length - 1, 1 );
+
+                        assetsList.Add( assets.ToString() );
+
+                        assets = new ();
+                    }
+
                     lod0List.Add( modelName );
                 }
 
@@ -268,71 +282,73 @@ namespace LibrarySorter
             // Reset progress bar
             progress = 0.0f; min = 0; max = lod0List.Count;
 
-            if ( assets.Length > 0 )
+            if ( assets.Length > 0 || assetsList.Count > 0 )
             {
                 // Remove last ','
                 assets.Remove( assets.Length - 1, 1 );
+                assetsList.Add( assets.ToString() );
 
                 string loading = "";
                 int loadingCount = 0;
 
-                Task legionTask = LegionExporting.ExtractModelFromLegion( assets.ToString() );
+                int i = 1; int j = assetsList.Count;
 
-                while ( !legionTask.IsCompleted )
+                // Try to export missing .fbx file using Legion
+                foreach ( string argument in assetsList )
                 {
-                    EditorUtility.DisplayProgressBar( $"Legion Extraction", $"Extracting files{loading}", progress );
+                    Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
 
-                    loading = new string('.', loadingCount++ % 4);
+                    string count = j > 1 ? $" ({i}/{j})" : "";
 
-                    await Helper.Wait( 1.0 );
+                    while ( !legionTask.IsCompleted )
+                    {
+                        EditorUtility.DisplayProgressBar( $"Legion Extraction{count}", $"Extracting files{loading}", 0.0f );
+
+                        loading = new string( '.', loadingCount++ % 4 );
+
+                        await Helper.Wait( 1.0 );
+                    }
+
+                    i++;
                 }
             }
 
             // Reset progress bar
             progress = 0.0f; min = 0;
 
+            // Try to get new .fbx files and its textures and move it
             foreach ( string model in lod0List )
             {
                 modelName = Path.GetFileNameWithoutExtension( model );
 
-                string filePath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/{modelName}_LOD0.fbx";
-                string matsPath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/_images";
-                string gotoPathModel = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
-                string gotoPathMaterial = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}";
+                string rFilePath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/{modelName}_LOD0.fbx";
+                string rMatsPath = $"{relativeLegionPlusExportedFiles}/models/{modelName}/_images";
+                string rGotoPathModel = $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
+                string rGotoPathMaterial = $"{UnityInfo.relativePathMaterials}";
 
                 EditorUtility.DisplayProgressBar( $"Checking New LOD0", $"Processing... ({min++}/{max})", progress );
                 progress += 1.0f / max;
 
-                if ( !File.Exists( filePath ) )
+                if ( !Helper.MoveFile( rFilePath, rGotoPathModel ) )
                 {
                     continue;
                 }
-                else
-                {
-                    File.Move( filePath, gotoPathModel );
-                    if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPathModel}.meta" );
-                }
 
-                foreach ( string matsFile in Directory.GetFiles( matsPath ) )
+                foreach ( string matsFile in Directory.GetFiles( rMatsPath ) )
                 {
                     string fileName = Path.GetFileName( matsFile );
 
-                    if ( fileName.Contains( "_albedoTexture" ) )
+                    if ( fileName.Contains( "_albedoTexture" ) || fileName.Contains( "0x" ) )
                     {
-                        if ( !File.Exists( $"{gotoPathMaterial}/{fileName}" ) )
-                        {
-                            File.Move( matsFile, $"{gotoPathMaterial}/{fileName}" );
-                            if ( File.Exists( $"{matsFile}.meta" ) ) File.Move( $"{matsFile}.meta", $"{fileName}.meta" );
-                        }
+                        Helper.MoveFile( matsFile, $"{UnityInfo.currentDirectoryPath}/{rGotoPathMaterial}/{fileName}", false );
                     }
                     else
                     {
-                        File.Delete( matsFile );
-                        if ( File.Exists( $"{matsFile}.meta" ) ) File.Delete( $"{matsFile}.meta" );
+                        Helper.DeleteFile( matsFile, false );
                     }
                 }
 
-                string dir = $"{relativeLegionPlusExportedFiles}/models/{modelName}";
+                string dir = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/models/{modelName}";
                 if ( Directory.Exists( dir ) )
                 {
                     Directory.Delete( dir, true );
@@ -343,12 +359,13 @@ namespace LibrarySorter
                     }
                 }
 
-                modelImporter.Add( $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx" );
+                modelImporter.Add( rGotoPathModel );
             }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
+            // Fix or Create Models in Prefabs/'rpakName'
             foreach ( string model in data.Data )
             {
                 modelName = Path.GetFileNameWithoutExtension( model );
@@ -412,6 +429,7 @@ namespace LibrarySorter
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
+            // Set Scale 100 to .fbx files
             min = 0; max = modelImporter.Count; progress = 0.0f;
             foreach ( string modelPath in modelImporter )
             {

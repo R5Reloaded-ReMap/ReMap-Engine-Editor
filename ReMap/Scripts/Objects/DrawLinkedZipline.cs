@@ -6,6 +6,7 @@ public class DrawLinkedZipline : MonoBehaviour
 {
     [Header("Settings:")]
     public bool ShowZipline = true;
+    public bool ShowSmoothedZipline = true;
     public float ShowZiplineDistance = 8000;
     
     void OnDrawGizmos()
@@ -41,7 +42,8 @@ public class DrawLinkedZipline : MonoBehaviour
                 if(i == Children.Count - 2)
                     points.Add(endPos);
 
-                Handles.DrawBezier(startPos, endPos, startPos, endPos, Color.yellow, null, thickness);
+                Handles.color = Color.yellow;
+                Handles.DrawPolyLine(new Vector3[]{startPos, endPos});
             }
 
             i++;
@@ -50,15 +52,13 @@ public class DrawLinkedZipline : MonoBehaviour
         if(!script.EnableSmoothing)
             return;
 
-        Vector3[] drawpoints;
-
         if(script.SmoothType)
-            drawpoints = GetAllPointsOnBezier(points.ToArray(), script.SmoothAmount);
+            GetAllPointsOnBezier(points.ToArray(), script.SmoothAmount);
         else
             GetBezierOfPath(points.ToArray(), script.SmoothAmount);
     }
 
-    Vector3[] GetAllPointsOnBezier( Vector3[] points, int numSegments, bool draw = true )
+    Vector3[] GetAllPointsOnBezier( Vector3[] points, int numSegments)
     {
         if(points.Length < 3)
             return points;
@@ -71,7 +71,7 @@ public class DrawLinkedZipline : MonoBehaviour
             newPoints.Add( GetSinglePointOnBezier( points, t ) );
         }
         
-        if(draw)
+        if(ShowSmoothedZipline)
         {
             for ( int i = 0; i < newPoints.Count - 1; i++ )
             {
@@ -112,12 +112,11 @@ public class DrawLinkedZipline : MonoBehaviour
             path[ idx_cur + 1 ],
             path[ idx_cur + 2 ]
             };
-            Vector3[] bezierPoints = GetAllPointsOnBezier( a, numSegments, false );
+            Vector3[] bezierPoints = GetAllPointsOnBezier( a, numSegments );
 
-            for ( int i = 0; i < bezierPoints.Length - 1; i++ )
-            {
-                Handles.DrawBezier(bezierPoints[i], bezierPoints[i + 1], bezierPoints[i], bezierPoints[i + 1], Color.blue, null, 3);
-            }
+            if(ShowSmoothedZipline)
+                for ( int i = 0; i < bezierPoints.Length - 1; i++ )
+                    Handles.DrawBezier(bezierPoints[i], bezierPoints[i + 1], bezierPoints[i], bezierPoints[i + 1], Color.blue, null, 3);
         }
     }
 }

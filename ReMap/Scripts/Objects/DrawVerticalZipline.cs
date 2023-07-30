@@ -140,13 +140,13 @@ public class DrawVerticalZipline : MonoBehaviour
         {
             var startPos = rope_start.position;
             var endPos = rope_end.position;
-            var thickness = 3;
             float autoDetachLenght = AutoDetachStart + AutoDetachEnd;
 
             if ( rope_start != null && rope_end != null && Vector3.Distance( startPos, endPos ) > 10 )
             {
                 // Draws a line from this transform to the target
-                Handles.DrawBezier( startPos, endPos, startPos, endPos, Color.yellow, null, thickness );
+                Handles.color = Color.yellow;
+                Handles.DrawPolyLine(new Vector3[]{startPos, endPos});
 
                 if( ShowAutoDetachDistance && Vector3.Distance(startPos, endPos) > autoDetachLenght )
                 {
@@ -156,7 +156,11 @@ public class DrawVerticalZipline : MonoBehaviour
                     var startDirection = startDir / startDistance;
                     if( AutoDetachStart < 0 ) AutoDetachStart = 0;
 
-                    if( AutoDetachStart != 0 ) Handles.DrawBezier( startPos, startPos + startDirection * AutoDetachStart, startPos, startPos + startDirection * AutoDetachStart, Color.red, null, thickness );
+                    if( AutoDetachStart != 0 )
+                    { 
+                        Handles.color = Color.red;
+                        Handles.DrawPolyLine(new Vector3[]{startPos, startPos + startDirection * AutoDetachStart});
+                    }
 
                     // Draw End Auto Detach
                     var endDir = rope_start.position - rope_end.position;
@@ -164,7 +168,11 @@ public class DrawVerticalZipline : MonoBehaviour
                     var endDirection = endDir / endDistance;
                     if( AutoDetachEnd < 0 ) AutoDetachEnd = 0;
 
-                    if( AutoDetachEnd != 0 ) Handles.DrawBezier( endPos, endPos + endDirection * AutoDetachEnd, endPos, endPos + endDirection * AutoDetachEnd, Color.red, null, thickness );
+                    if( AutoDetachEnd != 0 )
+                    {
+                        Handles.color = Color.red;
+                        Handles.DrawPolyLine(new Vector3[]{endPos, endPos + endDirection * AutoDetachEnd});
+                    }
                 }
             }
         }

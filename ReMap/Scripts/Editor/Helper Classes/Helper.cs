@@ -844,6 +844,11 @@ public class Helper
         return obj.Length == 0;
     }
 
+    public static bool IsEmpty< T >( List< T > obj ) where T : class
+    {
+        return obj.Count == 0;
+    }
+
     public static bool LOD0_Exist( string name )
     {
         return File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{name}_LOD0.fbx" );

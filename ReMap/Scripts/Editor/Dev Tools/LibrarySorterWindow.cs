@@ -650,113 +650,173 @@ namespace LibrarySorter
 
             ExistingTextures = await GetAllTextures();
 
-            // Legion Launch Arguments
-            LegionArgument = new StringBuilder();
-            LegionArguments = new List< string >();
-
             MissingTextures = new List< string >();
 
-            if ( !Helper.IsValid( objScene ) )
+            for ( int i = 0 ; i < 2; i++ )
             {
-                string[] modeltextureGUID = AssetDatabase.FindAssets( "t:prefab", new [] { $"{UnityInfo.relativePathPrefabs}" } );
-
-                int min = 0; int max = modeltextureGUID.Length; float progress = 0.0f;
-            
-                foreach ( var guid in modeltextureGUID )
+                if ( i == 1 && !CheckDialog( $"Texture Checker", $"Do you want try to set missings materials ?" ) )
                 {
-                    EditorUtility.DisplayProgressBar( $"Texture Checker", $"Checking Textures... ({min++}/{max})", progress );
-
-                    string assetPath = AssetDatabase.GUIDToAssetPath( guid );
-                    GameObject obj = Helper.CreateGameObject( "", assetPath );
-
-                    SetMaterialsToObject( obj, assetPath );
-
-                    UnityEngine.Object.DestroyImmediate( obj );
-
-                    progress += 1.0f / max;
+                    break;
                 }
 
-                AssetDatabase.Refresh();
+                if ( i == 1 )
+                {
+                    ExistingTextures = await GetAllTextures();
+                }
+
+                if ( !Helper.IsValid( objScene ) )
+                {
+                    string[] modeltextureGUID = AssetDatabase.FindAssets( "t:prefab", new [] { $"{UnityInfo.relativePathPrefabs}" } );
+
+                    int min = 0; int max = modeltextureGUID.Length; float progress = 0.0f;
+                
+                    foreach ( var guid in modeltextureGUID )
+                    {
+                        EditorUtility.DisplayProgressBar( $"Texture Checker", $"Checking Textures... ({min++}/{max})", progress );
+
+                        string assetPath = AssetDatabase.GUIDToAssetPath( guid );
+                        GameObject obj = Helper.CreateGameObject( "", assetPath );
+
+                        SetMaterialsToObject( obj, assetPath );
+
+                        UnityEngine.Object.DestroyImmediate( obj );
+
+                        progress += 1.0f / max;
+                    }
+
+                    AssetDatabase.Refresh();
+                }
+                else
+                {
+                    SetMaterialsToObject( objScene, AssetDatabase.GetAssetPath( PrefabUtility.GetCorrespondingObjectFromSource( objScene ) ) );
+                }
+
+                if ( i == 0 && CheckDialog( $"Texture Checker", $"{MissingTextures.Count} Missing. Do you want extract them ?" ) )
+                {
+                    await ExportMissingTextures();
+                }
             }
-            else
-            {
-                SetMaterialsToObject( objScene, AssetDatabase.GetAssetPath( objScene ) );
-            }
-
-            if ( CheckDialog( $"Texture Checker", $"{MissingTextures.Count} Missing. Do you want extract them ?" ) )
-            {
-                await ExportMissingTextures();
-            }
-
-            // if ( arg.Length > 0 || argList.Count > 0 )
-            // {
-            //     arg.Remove( arg.Length - 1, 1 );
-            //     argList.Add( arg.ToString() );
-
-            //     string loading = "";
-            //     int loadingCount = 0;
-
-            //     foreach ( string argument in argList )
-            //     {
-            //         Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
-
-            //         while ( !legionTask.IsCompleted )
-            //         {
-            //             EditorUtility.DisplayProgressBar( $"Legion Extraction", $"Extracting files{loading}", 0.0f );
-
-            //             loading = new string( '.', loadingCount++ % 4 );
-
-            //             await Helper.Wait( 1.0 );
-            //         }
-            //     }
-            // }
-
-            // min = 0; max = texturesList.Count; progress = 0.0f;
-
-            // foreach ( string texture in texturesList )
-            // {
-            //     string filePath = $"{relativeLegionPlusExportedFiles}/materials/{texture}/{texture}_albedoTexture.dds";
-            //     string gotoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds";
-
-            //     EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Checking Textures... ({min++}/{max})", progress );
-
-            //     progress += 1.0f / max;
-
-            //     if ( !File.Exists( filePath ) )
-            //     {
-            //         min++; continue;
-            //     }
-
-            //     File.Move( filePath, gotoPath );
-            //     if ( File.Exists( $"{filePath}.meta" ) ) File.Move( $"{filePath}.meta", $"{gotoPath}.meta" );
-
-            //     string dir = $"{relativeLegionPlusExportedFiles}/materials/{texture}";
-            //     if ( Directory.Exists( dir ) )
-            //     {
-            //         Directory.Delete( dir, true );
-
-            //         if ( File.Exists( $"{dir}.meta" ) )
-            //         {
-            //             File.Delete( $"{dir}.meta" );
-            //         }
-            //     }
-
-            //     min++;
-            // }
 
             EditorUtility.ClearProgressBar();
         }
 
         internal static async Task ExportMissingTextures()
         {
-            await Helper.Wait();
+            if ( Helper.IsEmpty( MissingTextures ) )
+                return;
+
+            // Legion Launch Arguments
+            LegionArgument = new StringBuilder();
+            LegionArguments = new List< string >();
+
+            foreach ( string arg in MissingTextures )
+            {
+                LegionArgument.Append( $"{arg}," );
+
+                // Executive launch args can't be more long than 8191 characters
+                if ( LegionArgument.Length > 5000 )
+                {
+                    // Remove last ','
+                    LegionArgument.Remove( LegionArgument.Length - 1, 1 );
+
+                    LegionArguments.Add( LegionArgument.ToString() );
+
+                    LegionArgument = new ();
+                }
+            }
+
+            LegionArgument.Remove( LegionArgument.Length - 1, 1 );
+            LegionArguments.Add( LegionArgument.ToString() );
+
+            string loading = ""; int loadingCount = 0;
+            int min = 1; int max = LegionArguments.Count; float progress = 0.0f;
+
+            foreach ( string argument in LegionArguments )
+            {
+                Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
+
+                string count = max > 1 ? $" ({min}/{max})" : "";
+
+                while ( !legionTask.IsCompleted )
+                {
+                    EditorUtility.DisplayProgressBar( $"Legion Extraction{count}", $"Extracting files{loading}", 0.0f );
+
+                    loading = new string( '.', loadingCount++ % 4 );
+
+                    await Helper.Wait( 1.0 );
+                }
+
+                foreach ( string folder in Directory.GetDirectories( $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials" ) )
+                {
+                    string name = Path.GetFileName( folder );
+
+                    if ( !Helper.MoveFile( $"{folder}/{name}_albedoTexture.dds", $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{name}_albedoTexture.dds" ) )
+                    {
+                        
+                    }
+
+                    if ( MissingTextures.Contains( name ) ) MissingTextures.Remove( name );
+                }
+
+                min++;
+            }
+
+            min = 0; max = MissingTextures.Count; progress = 0.0f;
+
+            string dir;
+
+            foreach ( string texture in MissingTextures )
+            {
+                string filePath = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials/{texture}/{texture}_albedoTexture.dds";
+                string gotoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds";
+
+                EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Checking Textures... ({min++}/{max})", progress );
+
+                progress += 1.0f / max;
+
+                if ( !Helper.MoveFile( filePath, gotoPath, false ) )
+                {
+                    foreach ( string file in Directory.GetFiles( $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials/{texture}" ) )
+                    {
+                        string fileName = Path.GetFileName( file );
+
+                        Helper.MoveFile( file, $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{fileName}", false );
+                    }
+                }
+
+                dir = $"{relativeLegionPlusExportedFiles}/materials/{texture}";
+                if ( Directory.Exists( dir ) )
+                {
+                    Directory.Delete( dir, true );
+
+                    if ( File.Exists( $"{dir}.meta" ) )
+                    {
+                        File.Delete( $"{dir}.meta" );
+                    }
+                }
+
+                min++;
+            }
+
+            dir = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials";
+            if ( Directory.Exists( dir ) )
+            {
+                Directory.Delete( dir, true );
+
+                if ( File.Exists( $"{dir}.meta" ) )
+                {
+                    File.Delete( $"{dir}.meta" );
+                }
+            }
+
+            await DeleteNotUsedTexture();
         }
 
         internal static async Task< Dictionary< string, Texture2D > > GetAllTextures()
         {
             Dictionary< string, Texture2D > dictionary = new Dictionary< string, Texture2D >();
 
-            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { $"{UnityInfo.relativePathModel}/all_models" } );
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
 
             float progress = 0.0f; int min = 0; int max = modeltextureGUID.Length;
             
@@ -800,6 +860,8 @@ namespace LibrarySorter
 
                 progress += 1.0f / max; min++;
             }
+            
+            await Helper.Wait();
 
             return dictionary;
         }
@@ -829,7 +891,10 @@ namespace LibrarySorter
                 }
             }
 
-            PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
+            if ( !string.IsNullOrEmpty( assetPath ) )
+            {
+                PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
+            }
         }
 
         internal static async Task CreateMaterials()
@@ -867,7 +932,7 @@ namespace LibrarySorter
         {
             List< string > texturesList = new List< string >();
 
-            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel, $"{UnityInfo.relativePathLods}/Developer_Lods" } );
 
             int i = 0; int total = modeltextureGUID.Length;
             foreach ( var guid in modeltextureGUID )

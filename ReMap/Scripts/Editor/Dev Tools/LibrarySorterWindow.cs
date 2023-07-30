@@ -39,10 +39,16 @@ namespace LibrarySorter
         static string searchEntry = "";
         static string search = "";
         static List< string > searchResult = new List< string >();
-
         static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
         static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
         static string relativeLegionExecutive = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlus}/LegionPlus.exe";
+
+        internal static Dictionary< string, Texture2D > ExistingTextures = new Dictionary< string, Texture2D >();
+
+        internal static List< string > MissingTextures = new List< string >();
+
+        internal static StringBuilder LegionArgument = new StringBuilder();
+        internal static List< string > LegionArguments = new List< string >();
         
         public static void Init()
         {
@@ -82,7 +88,7 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
 
                     WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.CheckTextures ) );
-                    WindowUtility.WindowUtility.CreateButton( "Rename Textures", "", () => AwaitTask( TaskType.RenameTextures ) );
+                    //WindowUtility.WindowUtility.CreateButton( "Rename Textures", "", () => AwaitTask( TaskType.RenameTextures ) );
                     //WindowUtility.WindowUtility.CreateButton( "Create Materials", "", () => AwaitTask( TaskType.CreateMaterials ) );
                     WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
 
@@ -571,6 +577,7 @@ namespace LibrarySorter
             return Task.CompletedTask;
         }
 
+        // We keep this func but don't use it lol
         internal static async Task RenameTextures()
         {
             string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
@@ -641,156 +648,44 @@ namespace LibrarySorter
         {
             if ( LegionExporting.GetValidRpakPaths() ) return;
 
-            StringBuilder arg = new StringBuilder();
+            ExistingTextures = await GetAllTextures();
 
-            List< string > argList = new List< string >();
+            // Legion Launch Arguments
+            LegionArgument = new StringBuilder();
+            LegionArguments = new List< string >();
 
-            List< string > texturesList = new List< string >();
-
-            float progress = 0.0f; int min = 0; int max;
-
-            Dictionary< string, Texture2D > textureCollection = new Dictionary< string, Texture2D >();
+            MissingTextures = new List< string >();
 
             if ( !Helper.IsValid( objScene ) )
             {
-                string[] modeltextureGUID = AssetDatabase.FindAssets( "t:prefab", new [] { $"{UnityInfo.relativePathPrefabs}/all_models" } );
+                string[] modeltextureGUID = AssetDatabase.FindAssets( "t:prefab", new [] { $"{UnityInfo.relativePathPrefabs}" } );
 
-                max = modeltextureGUID.Length;
+                int min = 0; int max = modeltextureGUID.Length; float progress = 0.0f;
             
                 foreach ( var guid in modeltextureGUID )
                 {
+                    EditorUtility.DisplayProgressBar( $"Texture Checker", $"Checking Textures... ({min++}/{max})", progress );
+
                     string assetPath = AssetDatabase.GUIDToAssetPath( guid );
                     GameObject obj = Helper.CreateGameObject( "", assetPath );
 
-                    foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
-                    {
-                        if ( Helper.IsValid( renderer ) )
-                        {
-                            foreach ( Material mat in renderer.sharedMaterials )
-                            {
-                                if ( Helper.IsValid( mat ) )
-                                {
-                                    string name = mat.name;
-
-                                    if ( mat.HasProperty( "_MainTex" ) )
-                                    {
-                                        Texture mainTexture = mat.mainTexture;
-
-                                        string texturePath = AssetDatabase.GetAssetPath( mainTexture );
-
-                                        if ( string.IsNullOrEmpty( texturePath ) || texturePath != $"{UnityInfo.relativePathMaterials}/{name}_albedoTexture.mat"  )
-                                        {
-                                            texturePath = $"{UnityInfo.relativePathMaterials}/{name}_albedoTexture.mat";
-                                            string fullpath = $"{UnityInfo.currentDirectoryPath}/{texturePath}";
-
-                                            if ( textureCollection.ContainsKey( name ) )
-                                            {
-                                                mat.mainTexture = textureCollection[ name ];
-
-                                                PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
-                                            }
-                                            else if ( File.Exists( fullpath ) )
-                                            {
-                                                Texture2D textureLoad = AssetDatabase.LoadAssetAtPath< Texture2D >( texturePath );
-                                                mat.mainTexture = textureLoad;
-
-                                                textureCollection.Add( name, textureLoad );
-
-                                                PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
-                                            }
-                                            else if ( !texturesList.Contains( name ) )
-                                            {
-                                                arg.Append( $"{name}," );
-
-                                                if ( arg.Length > 5000 )
-                                                {
-                                                    arg.Remove( arg.Length - 1, 1 );
-
-                                                    argList.Add( arg.ToString() );
-
-                                                    arg = new ();
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    SetMaterialsToObject( obj, assetPath );
 
                     UnityEngine.Object.DestroyImmediate( obj );
 
                     progress += 1.0f / max;
-
-                    EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Getting Textures ({min++}/{max})", progress );
                 }
 
                 AssetDatabase.Refresh();
             }
             else
             {
-                Renderer[] renderers = objScene.GetComponentsInChildren< Renderer >();
-                GameObject prefab = PrefabUtility.GetCorrespondingObjectFromSource( objScene ) as GameObject;
+                SetMaterialsToObject( objScene, AssetDatabase.GetAssetPath( objScene ) );
+            }
 
-                max = renderers.Length;
-
-                foreach ( Renderer renderer in renderers )
-                {
-                    if ( Helper.IsValid( renderer ) )
-                    {
-                        foreach ( Material mat in renderer.sharedMaterials )
-                        {
-                            if ( Helper.IsValid( mat ) )
-                            {
-                                string name = mat.name;
-
-                                if ( mat.HasProperty( "_MainTex" ) )
-                                {
-                                    Texture mainTexture = mat.mainTexture;
-
-                                    string texturePath = AssetDatabase.GetAssetPath( mainTexture );
-
-                                    if ( string.IsNullOrEmpty( texturePath ) || texturePath != $"{UnityInfo.relativePathMaterials}/{name}_albedoTexture.dds"  )
-                                    {
-                                        texturePath = $"{UnityInfo.relativePathMaterials}/{name}_albedoTexture.dds";
-                                        string fullpath = $"{UnityInfo.currentDirectoryPath}/{texturePath}";
-
-                                        if ( textureCollection.ContainsKey( name ) )
-                                        {
-                                            mat.mainTexture = textureCollection[ name ];
-                                        }
-                                        else if ( File.Exists( fullpath ) )
-                                        {
-                                            Texture2D textureLoad = AssetDatabase.LoadAssetAtPath< Texture2D >( texturePath );
-                                            mat.mainTexture = textureLoad;
-
-                                            textureCollection.Add( name, textureLoad );
-                                        }
-                                        else if ( !texturesList.Contains( name ) )
-                                        {
-                                            arg.Append( $"{name}," );
-
-                                            if ( arg.Length > 5000 )
-                                            {
-                                                arg.Remove( arg.Length - 1, 1 );
-
-                                                argList.Add( arg.ToString() );
-
-                                                arg = new ();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                PrefabUtility.SaveAsPrefabAsset( objScene, AssetDatabase.GetAssetPath( prefab ) );
-
-                progress += 1.0f / max;
-
-                EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Getting Textures ({min++}/{max})", progress );
+            if ( CheckDialog( $"Texture Checker", $"{MissingTextures.Count} Missing. Do you want extract them ?" ) )
+            {
+                await ExportMissingTextures();
             }
 
             // if ( arg.Length > 0 || argList.Count > 0 )
@@ -850,6 +745,91 @@ namespace LibrarySorter
             // }
 
             EditorUtility.ClearProgressBar();
+        }
+
+        internal static async Task ExportMissingTextures()
+        {
+            await Helper.Wait();
+        }
+
+        internal static async Task< Dictionary< string, Texture2D > > GetAllTextures()
+        {
+            Dictionary< string, Texture2D > dictionary = new Dictionary< string, Texture2D >();
+
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { $"{UnityInfo.relativePathModel}/all_models" } );
+
+            float progress = 0.0f; int min = 0; int max = modeltextureGUID.Length;
+            
+            foreach ( var guid in modeltextureGUID )
+            {
+                EditorUtility.DisplayProgressBar( $"Getting Textures", $"Processing... ({min}/{max})", progress );
+
+                string assetPath = AssetDatabase.GUIDToAssetPath( guid );
+                GameObject obj = Helper.CreateGameObject( "", assetPath );
+
+                foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
+                {
+                    if ( !Helper.IsValid( renderer ) )
+                        continue;
+
+                    foreach ( Material mat in renderer.sharedMaterials )
+                    {
+                        if ( !Helper.IsValid( mat ) || !mat.HasProperty( "_MainTex" ) )
+                            continue;
+
+                        string name = mat.name;
+
+                        if ( dictionary.ContainsKey( name ) )
+                            continue;
+
+                        // Obtain the name of the main map albedo
+                        Texture mainTexture = mat.mainTexture;
+
+                        string texturePath = AssetDatabase.GetAssetPath( mainTexture );
+
+                        if ( !string.IsNullOrEmpty( texturePath ) )
+                        {
+                            Texture2D texture = AssetDatabase.LoadAssetAtPath< Texture2D >( texturePath );
+
+                            dictionary.Add( name, texture );
+                        }
+                    }
+                }
+
+                UnityEngine.Object.DestroyImmediate( obj );
+
+                progress += 1.0f / max; min++;
+            }
+
+            return dictionary;
+        }
+
+        internal static void SetMaterialsToObject( GameObject obj, string assetPath )
+        {
+            foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
+            {
+                if ( Helper.IsValid( renderer ) )
+                {
+                    foreach ( Material mat in renderer.sharedMaterials )
+                    {
+                        if ( !Helper.IsValid( mat ) || !mat.HasProperty( "_MainTex" ) )
+                            continue;
+                            
+                        string name = mat.name;
+
+                        if ( ExistingTextures.ContainsKey( name ) )
+                        {
+                            mat.mainTexture = ExistingTextures[ name ];
+                        }
+                        else
+                        {
+                            MissingTextures.Add( name );
+                        }
+                    }
+                }
+            }
+
+            PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
         }
 
         internal static async Task CreateMaterials()

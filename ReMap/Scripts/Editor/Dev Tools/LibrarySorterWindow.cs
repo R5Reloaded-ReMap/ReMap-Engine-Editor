@@ -452,21 +452,6 @@ namespace LibrarySorter
             data.Update = DateTime.UtcNow.ToString();
         }
 
-        private static async void OpenLegion()
-        {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = relativeLegionExecutive;
-            startInfo.UseShellExecute = false;
-
-            using ( Process process = new Process() )
-            {
-                process.StartInfo = startInfo;
-                process.Start();
-
-                await Task.Run( () => process.WaitForExit() );
-            }
-        }
-
         public static Vector3 FindAnglesOffset( string searchTerm )
         {
             Vector3 returnedVector = new Vector3( 0, -90, 0 );

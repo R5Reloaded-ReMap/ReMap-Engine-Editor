@@ -186,7 +186,7 @@ public class EntCodeDiscoverer : EditorWindow
                         newParent.transform.position = origin;
                         newParent.transform.eulerAngles = angles;
                         transformedObj.localPosition = Vector3.zero;
-                        transformedObj.localEulerAngles = LibrarySorter.LibrarySorterWindow.FindAnglesOffset( model );
+                        transformedObj.localEulerAngles = LibrarySorter.Models.FindAnglesOffset( model );
                     }
                 }
 

@@ -182,7 +182,7 @@ namespace LibrarySorter
 
         internal static void RefreshPage( bool save = true )
         {
-            offsets = GetPrefabOffsetList();
+            offsets = FindPrefabOffsetFile();
 
             UnityInfo.SortListByKey( offsets, x => x.ModelName );
 
@@ -197,14 +197,14 @@ namespace LibrarySorter
             return false;
         }
 
+        internal static List< PrefabOffset > FindPrefabOffsetFile()
+        {
+            return GetPrefabOffset().List;
+        }
+
         internal static PrefabOffsetList GetPrefabOffset()
         {
             return JsonUtility.FromJson< PrefabOffsetList >( ReadOffsetFile() );
-        }
-
-        internal static List< PrefabOffset > GetPrefabOffsetList()
-        {
-            return GetPrefabOffset().List;
         }
 
         private static string ReadOffsetFile()

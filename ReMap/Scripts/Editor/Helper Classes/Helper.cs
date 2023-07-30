@@ -865,33 +865,32 @@ public class Helper
         string originPath = addDir ? $"{UnityInfo.currentDirectoryPath}/" : "";
         string targetPath = addDir ? $"{UnityInfo.currentDirectoryPath}/" : "";
 
-        originPath += $"{origin}";
-        targetPath += $"{target}";
+        originPath += $"{origin}".Replace( "\\", "/" );
+        targetPath += $"{target}".Replace( "\\", "/" );
 
-        if ( File.Exists( originPath ) )
+        try
         {
-            if ( File.Exists( targetPath ) )
+            if ( File.Exists( originPath ) )
             {
-                File.Delete( originPath );
-            }
-            else
-            {
-                File.Move( originPath, targetPath );
-            }
-
-            if ( File.Exists( $"{originPath}.meta" ) )
-            {
-                if ( File.Exists( $"{targetPath}.meta" ) )
-                {
-                    File.Delete(  $"{originPath}.meta" );
-                }
-                else
+                if ( !File.Exists( targetPath ) )
                 {
                     File.Move( originPath, targetPath );
                 }
-            }
 
-            return true;
+                if ( File.Exists( $"{originPath}.meta" ) )
+                {
+                    if ( !File.Exists( $"{targetPath}.meta" ) )
+                    {
+                        File.Move( originPath, targetPath );
+                    }
+                }
+
+                return true;
+            }
+        }
+        catch ( Exception msg )
+        {
+            Ping( msg );
         }
 
         return false;
@@ -901,16 +900,25 @@ public class Helper
     {
         filePath = addDir ? $"{UnityInfo.currentDirectoryPath}/{filePath}" : filePath;
 
-        if ( File.Exists( filePath ) )
+        filePath = filePath.Replace( "\\", "/" );
+
+        try
         {
-            File.Delete( filePath );
-
-            if ( File.Exists( $"{filePath}.meta" ) )
+            if ( File.Exists( filePath ) )
             {
-                File.Delete(  $"{filePath}.meta" );
-            }
+                File.Delete( filePath );
 
-            return true;
+                if ( File.Exists( $"{filePath}.meta" ) )
+                {
+                    File.Delete(  $"{filePath}.meta" );
+                }
+
+                return true;
+            }
+        }
+        catch ( Exception msg )
+        {
+            Ping( msg );
         }
 
         return false;

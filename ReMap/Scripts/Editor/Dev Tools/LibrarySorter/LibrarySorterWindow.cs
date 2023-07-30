@@ -16,7 +16,7 @@ namespace LibrarySorter
         FixPrefabsTags,
         FixPrefabsLabels,
         DeleteUnusuedTextures,
-        RenameTextures,
+        ExtractMissingModels,
         CheckTextures,
         CreateMaterialsList,
         FixLodsScale,
@@ -87,10 +87,11 @@ namespace LibrarySorter
 
                 GUILayout.BeginHorizontal();
 
+                    WindowUtility.WindowUtility.CreateButton( "Extract Missing Models", "", () => AwaitTask( TaskType.ExtractMissingModels ) );
                     WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.CheckTextures ) );
-                    //WindowUtility.WindowUtility.CreateButton( "Rename Textures", "", () => AwaitTask( TaskType.RenameTextures ) );
                     WindowUtility.WindowUtility.CreateButton( "Update Materials List", "", () => AwaitTask( TaskType.CreateMaterialsList ) );
                     WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
+                    
 
                 GUILayout.EndHorizontal();
 
@@ -181,9 +182,10 @@ namespace LibrarySorter
                     await DeleteNotUsedTexture();
                     break;
 
-                case TaskType.RenameTextures:
+                case TaskType.ExtractMissingModels:
                     if ( !DoStartTask() ) return;
-                    await RenameTextures();
+                    if ( LegionExporting.GetValidRpakPaths() ) return;
+                    await Models.ExtractMissingModels();
                     break;
 
                 case TaskType.CheckTextures:
@@ -229,7 +231,7 @@ namespace LibrarySorter
 
                 case TaskType.FixSpecificPrefabData:
                     checkExist = true;
-                    await FixPrefab( arg );
+                    await Models.FixPrefab( arg );
                     await SetModelLabels( arg );
                 break;
             }
@@ -390,12 +392,12 @@ namespace LibrarySorter
                     parent.transform.eulerAngles = Vector3.zero;
 
                     obj.transform.position = Vector3.zero;
-                    obj.transform.eulerAngles = FindAnglesOffset( model );
+                    obj.transform.eulerAngles = Models.FindAnglesOffset( model );
                     obj.transform.localScale = new Vector3(1, 1, 1);
 
                     parent.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
 
-                    CheckBoxColliderComponent( parent );
+                    Models.CheckBoxColliderComponent( parent );
 
                     //AssetDatabase.SetLabels( ( UnityEngine.Object ) parent, new[] { model.Split( '/' )[1] } );
 
@@ -415,10 +417,10 @@ namespace LibrarySorter
 
                     parent.transform.position = Vector3.zero;
                     parent.transform.eulerAngles = Vector3.zero;
-                    obj.transform.eulerAngles = FindAnglesOffset( model );
+                    obj.transform.eulerAngles = Models.FindAnglesOffset( model );
                     obj.transform.position = Vector3.zero;
 
-                    CheckBoxColliderComponent( parent );
+                    Models.CheckBoxColliderComponent( parent );
 
                     //AssetDatabase.SetLabels( ( UnityEngine.Object ) parent, new[] { model.Split( '/' )[1] } );
 
@@ -456,44 +458,6 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
 
             data.Update = DateTime.UtcNow.ToString();
-        }
-
-        public static Vector3 FindAnglesOffset( string searchTerm )
-        {
-            Vector3 returnedVector = new Vector3( 0, -90, 0 );
-
-            PrefabOffset offset = FindPrefabOffsetFile().Find( o => o.ModelName == searchTerm );
-            if ( Helper.IsValid( offset ) )
-            {
-                returnedVector = offset.Rotation;
-                ReMapConsole.Log( $"[Library Sorter] Angle override found for {searchTerm}, setting angles to: {returnedVector}", ReMapConsole.LogType.Info );
-            }
-
-            return returnedVector;
-        }
-
-        private static void CheckBoxColliderComponent( GameObject go )
-        {
-            BoxCollider collider = go.GetComponent< BoxCollider >();
-
-            if ( collider == null )
-            {
-                go.AddComponent< BoxCollider >();
-                collider = go.GetComponent< BoxCollider >();
-            }
-
-            float x = 0, y = 0, z = 0;
-
-            foreach( Renderer o in go.GetComponentsInChildren< Renderer >() )
-            {
-                if( o.bounds.size.x > x ) x = o.bounds.size.x;
-
-                if( o.bounds.size.y > y ) y = o.bounds.size.y;
-
-                if( o.bounds.size.z > z ) z = o.bounds.size.z;
-            }
-
-            collider.size = new Vector3( x, y, z );
         }
 
         internal static Task SetModelLabels( string specificModelOrFolderOrnull = null )
@@ -1021,50 +985,6 @@ namespace LibrarySorter
             AssetDatabase.Refresh();
 
             return Task.CompletedTask;
-        }
-
-        internal static Task FixPrefab( string prefabName )
-        {
-            string[] prefabs = AssetDatabase.FindAssets( prefabName, new [] { UnityInfo.relativePathPrefabs } );
-
-            int i = 0; int total = prefabs.Length;
-            foreach ( string prefab in prefabs )
-            {
-                string file = AssetDatabase.GUIDToAssetPath( prefab );
-                string rpakName = UnityInfo.GetApexModelName( prefabName, true );
-
-                EditorUtility.DisplayProgressBar( $"Fixing Prefabs {i}/{total}", $"Prefab: {prefab}", ( i + 1 ) / ( float )total );
-
-                UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath( file, typeof( UnityEngine.Object ) ) as GameObject;
-                if ( loadedPrefabResource == null )
-                {
-                    ReMapConsole.Log($"[Library Sorter] Error loading prefab: {file}", ReMapConsole.LogType.Error );
-                    continue;
-                }
-
-                Transform child = loadedPrefabResource.GetComponentsInChildren< Transform >()[1];
-
-                CheckBoxColliderComponent( loadedPrefabResource );
-
-                loadedPrefabResource.transform.position = Vector3.zero;
-                loadedPrefabResource.transform.eulerAngles = Vector3.zero;
-                child.transform.eulerAngles = FindAnglesOffset( rpakName );
-                child.transform.position = Vector3.zero;
-
-                PrefabUtility.SavePrefabAsset( loadedPrefabResource );
-
-                ReMapConsole.Log( $"[Library Sorter] Fixed and saved prefab: {file}", ReMapConsole.LogType.Success ); i++;
-            }
-
-            EditorUtility.ClearProgressBar();
-
-            return Task.CompletedTask;
-        }
-
-        internal static List< PrefabOffset > FindPrefabOffsetFile()
-        {
-            string json = System.IO.File.ReadAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathJsonOffset}" );
-            return JsonUtility.FromJson< PrefabOffsetList >( json ).List;
         }
 
         private static Task CreateRpakList()

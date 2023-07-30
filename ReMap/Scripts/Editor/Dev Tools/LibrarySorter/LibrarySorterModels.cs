@@ -36,6 +36,9 @@ namespace LibrarySorter
                 if ( !HasValidName( lod0Name ) )
                     continue;
 
+                if ( !missingModelList.ContainsKey( modelName ) )
+                    continue;
+
                 missingModelList.Add( modelName, lod0Name );
             }
 
@@ -84,6 +87,25 @@ namespace LibrarySorter
             }
 
             Helper.DeleteDirectory( extractedModelDirectory, false );
+
+            // Set Scale 100 to .fbx files
+            min = 0; max = missingModelList.Count; float progress = 0.0f;
+            foreach ( string modelName in missingModelList.Values )
+            {
+                string modelPath = $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
+                ModelImporter importer = AssetImporter.GetAtPath( modelPath ) as ModelImporter;
+                if ( Helper.IsValid( importer ) && importer.globalScale != 100 )
+                {
+                    importer.globalScale = 100;
+                    importer.SaveAndReimport();
+                }
+                
+                progress += 1.0f / max;
+                EditorUtility.DisplayProgressBar( $"ReImport LOD0", $"Processing... ({min++}/{max})", progress );
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
             EditorUtility.ClearProgressBar();
         }

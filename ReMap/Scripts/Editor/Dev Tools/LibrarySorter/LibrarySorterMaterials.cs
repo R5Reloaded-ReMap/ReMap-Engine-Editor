@@ -57,6 +57,8 @@ namespace LibrarySorter
 
                 Renderer[] renderers = obj.GetComponentsInChildren< Renderer >(); rmax = renderers.Length;
 
+                rmin = 0;
+
                 foreach ( Renderer renderer in renderers )
                 {
                     rmin++;
@@ -176,10 +178,10 @@ namespace LibrarySorter
                 {
                     string textureName = Path.GetFileName( texture );
 
-                    if ( !textureName.Contains( "0x" ) && !textureName.Contains( "_albedoTexture" ) )
-                        continue;
-
-                    Helper.MoveFile( texture, $"{materialDirectory}/{textureName}", false );
+                    if ( textureName.Contains( "0x" ) || textureName.Contains( "_albedoTexture" ) )
+                    {
+                        Helper.MoveFile( texture, $"{materialDirectory}/{textureName}", false );
+                    }
                 }
             }
         }
@@ -188,7 +190,7 @@ namespace LibrarySorter
         {
             if ( !Helper.IsValid( MaterialData ) ) MaterialData = GetMaterialData();
 
-            List< string > missingTextures = new List< string >(); int total = 0;
+            List< string > missingTextures = new List< string >();
 
             foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
             {
@@ -205,12 +207,10 @@ namespace LibrarySorter
                         {
                             mat.mainTexture = AssetDatabase.LoadAssetAtPath< Texture2D >( MaterialData.GetPath( name ) );
                         }
-                        else
+                        else if ( !missingTextures.Contains( name ) )
                         {
                             missingTextures.Add( name );
                         }
-
-                        total++;
                     }
                 }
             }
@@ -222,7 +222,7 @@ namespace LibrarySorter
                 PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
             }
 
-            if ( LibrarySorterWindow.CheckDialog( $"Texture Checker", $"{missingTextures.Count}/{total} Materials Missing. Do you want try to extract them ?" ) )
+            if ( LibrarySorterWindow.CheckDialog( $"Texture Checker", $"{missingTextures.Count} Materials Missing. Do you want try to extract them ?" ) )
             {
                 await ExtractMissingMaterials( missingTextures );
             }

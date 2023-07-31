@@ -117,7 +117,7 @@ namespace LibrarySorter
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = $"\"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionExecutive}\"";
-            startInfo.Arguments = $"--loadPaks \"{ValidPathArg}\" --assetsToExport \"{assetList}\" --loadmodels --loadmaterials --loadshadersets --mdlfmt fbx --imgfmt dds --nologfile --usetxtrguids";
+            startInfo.Arguments = $"--loadPaks \"{ValidPathArg}\" --assetsToExport \"{assetList}\" --loadmodels --loadmaterials --loadshadersets --mdlfmt fbx --imgfmt dds --nologfile --usetxtrguids --overwrite";
             GUIUtility.systemCopyBuffer = startInfo.Arguments;
             startInfo.UseShellExecute = false;
 

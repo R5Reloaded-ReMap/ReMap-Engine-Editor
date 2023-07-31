@@ -870,19 +870,13 @@ public class Helper
 
         try
         {
-            if ( File.Exists( originPath ) )
+            if ( File.Exists( originPath ) && !File.Exists( targetPath ) )
             {
-                if ( !File.Exists( targetPath ) )
-                {
-                    File.Move( originPath, targetPath );
-                }
+                File.Move( originPath, targetPath );
 
-                if ( File.Exists( $"{originPath}.meta" ) )
+                if ( File.Exists( $"{originPath}.meta" ) && !File.Exists( $"{targetPath}.meta" ) )
                 {
-                    if ( !File.Exists( $"{targetPath}.meta" ) )
-                    {
-                        File.Move( originPath, targetPath );
-                    }
+                    File.Move( $"{originPath}.meta", $"{targetPath}.meta" );
                 }
 
                 return true;

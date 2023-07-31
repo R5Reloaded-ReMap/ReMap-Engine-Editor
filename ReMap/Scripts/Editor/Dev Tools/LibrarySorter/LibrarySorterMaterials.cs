@@ -157,6 +157,8 @@ namespace LibrarySorter
 
                 min++;
 
+                EditorUtility.ClearProgressBar();
+
                 await AppendNewTexture( missingMaterialList );
 
                 //MoveMaterials( missingMaterialList );
@@ -199,7 +201,6 @@ namespace LibrarySorter
                 else
                 {
                     await MaterialWindow.ShowWindow( materialDir, materialName );
-                    return;
                 }
             }
         }
@@ -337,7 +338,7 @@ namespace LibrarySorter
 
                 if ( GUILayout.Button( textureName.Replace( ".dds", "" ), GUILayout.Height( previewHeight ) ) )
                 {
-                    if ( Helper.MoveFile( texture.Key.Replace( "\\", "/" ), $"{Materials.materialDirectory}/{textureName}".Replace( "\\", "/" ), false ) )
+                    if ( Helper.MoveFile( $"{UnityInfo.currentDirectoryPath}/{texture.Key.Replace( "\\", "/" )}", $"{Materials.materialDirectory}/{textureName}".Replace( "\\", "/" ), false ) )
                     {
                         Materials.MaterialData.MaterialList.Add
                         (
@@ -349,6 +350,7 @@ namespace LibrarySorter
                         );
 
                         windowInstance.Close();
+                        windowInstance = null;
 
                         Materials.SaveMaterialData();
                     }
@@ -364,12 +366,17 @@ namespace LibrarySorter
 
             EditorGUILayout.EndScrollView();
 
+            GUILayout.EndVertical();
+
+            WindowUtility.WindowUtility.FlexibleSpace();
+
             if ( GUILayout.Button( "Ignore Texture" ) )
             {
                 windowInstance.Close();
+                windowInstance = null;
             }
 
-            GUILayout.EndVertical();
+            WindowUtility.WindowUtility.Space( 4f );
         }
 
         private static void RefreshMaterialWindow( string path )

@@ -210,7 +210,7 @@ namespace LibrarySorter
                 case TaskType.FixPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
-                    await SortFolder( data );
+                    await Models.FixFolder( data );
                     await SetModelLabels( data.Name );
                     RpakManagerWindow.SaveJson();
                     break;
@@ -220,7 +220,7 @@ namespace LibrarySorter
                     CheckExisting();
                     foreach ( RpakData _data in libraryData.RpakList )
                     {
-                        await SortFolder( _data );
+                        await Models.FixFolder( _data );
                         await SetModelLabels( _data.Name );
                     }
                     RpakManagerWindow.SaveJson();
@@ -232,91 +232,6 @@ namespace LibrarySorter
                     await SetModelLabels( arg );
                 break;
             }
-        }
-
-        internal static async Task SortFolder( RpakData data )
-        {
-            string rpakPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}";
-
-            if ( !Directory.Exists( rpakPath ) )
-            {
-                ReMapConsole.Log( $"[Library Sorter] Creating directory: {UnityInfo.relativePathPrefabs}/{data.Name}", ReMapConsole.LogType.Info );
-                Directory.CreateDirectory( rpakPath );
-            }
-
-            GameObject parent; GameObject obj; string modelName;
-
-            float progress = 0.0f; int min = 0; int max = data.Data.Count;
-
-            // Fix or Create Models in Prefabs/'rpakName'
-            foreach ( string model in data.Data )
-            {
-                modelName = Path.GetFileNameWithoutExtension( model );
-                string unityName = UnityInfo.GetUnityModelName( model );
-
-                if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{data.Name}/{unityName}.prefab" ) )
-                {
-                    parent = Helper.CreateGameObject( unityName );
-                    obj = Helper.CreateGameObject( "", $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", parent );
-
-                    if ( !Helper.IsValid( parent ) || !Helper.IsValid( obj ) )
-                        continue;
-
-                    parent.AddComponent< PropScript >();
-                    parent.transform.position = Vector3.zero;
-                    parent.transform.eulerAngles = Vector3.zero;
-
-                    obj.transform.position = Vector3.zero;
-                    obj.transform.eulerAngles = Models.FindAnglesOffset( model );
-                    obj.transform.localScale = new Vector3(1, 1, 1);
-
-                    parent.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
-
-                    Models.CheckBoxColliderComponent( parent );
-
-                    //AssetDatabase.SetLabels( ( UnityEngine.Object ) parent, new[] { model.Split( '/' )[1] } );
-
-                    PrefabUtility.SaveAsPrefabAsset( parent, $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab" );
-
-                    UnityEngine.Object.DestroyImmediate( parent );
-
-                    ReMapConsole.Log( $"[Library Sorter] Created and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}", ReMapConsole.LogType.Info ); 
-                }
-                else if ( checkExist )
-                {
-                    parent = Helper.CreateGameObject( $"{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab" );
-                    obj = parent.GetComponentsInChildren< Transform >()[1].gameObject;
-                    
-                    if ( !Helper.IsValid( parent ) || !Helper.IsValid( obj ) )
-                        continue;
-
-                    parent.transform.position = Vector3.zero;
-                    parent.transform.eulerAngles = Vector3.zero;
-                    obj.transform.eulerAngles = Models.FindAnglesOffset( model );
-                    obj.transform.position = Vector3.zero;
-
-                    Models.CheckBoxColliderComponent( parent );
-
-                    //AssetDatabase.SetLabels( ( UnityEngine.Object ) parent, new[] { model.Split( '/' )[1] } );
-
-                    PrefabUtility.SavePrefabAsset( parent );
-
-                    ReMapConsole.Log( $"[Library Sorter] Fixed and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}", ReMapConsole.LogType.Success );
-                }
-
-                // Update progress bar
-                progress += 1.0f / max;
-                EditorUtility.DisplayProgressBar( $"Sorting Folder ({min++}/{max})", $"Processing... {modelName}", progress );
-            }
-
-            await Helper.Wait();
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-
-            EditorUtility.ClearProgressBar();
-
-            data.Update = DateTime.UtcNow.ToString();
         }
 
         internal static Task SetModelLabels( string specificModelOrFolderOrnull = null )

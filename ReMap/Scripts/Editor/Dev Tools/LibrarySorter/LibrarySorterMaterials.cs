@@ -178,11 +178,10 @@ namespace LibrarySorter
                 {
                     string textureName = Path.GetFileName( texture );
 
-                    // wtf why it don't work
-                    //if ( !textureName.Contains( "0x" ) && !textureName.Contains( "_albedoTexture" ) )
-                    //    continue;
-
-                    Helper.MoveFile( texture, $"{materialDirectory}/{textureName}", false );
+                    if ( textureName.Contains( "0x" ) || textureName.Contains( "_albedoTexture" ) )
+                    {
+                        Helper.MoveFile( texture, $"{materialDirectory}/{textureName}", false );
+                    }
                 }
             }
         }

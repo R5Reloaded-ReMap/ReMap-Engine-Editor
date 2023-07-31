@@ -928,7 +928,7 @@ public class Helper
         }
     }
 
-    public static void DeleteDirectory( string path, bool addDir = true )
+    public static void DeleteDirectory( string path, bool addDir = true, bool self = true )
     {
         try
         {
@@ -936,7 +936,24 @@ public class Helper
 
             if ( Directory.Exists( path ) )
             {
-                Directory.Delete( path, true );
+                if ( self )
+                {
+                    Directory.Delete( path, true );
+                }
+                else
+                {
+                    DirectoryInfo dirInfo = new DirectoryInfo( path );
+                    
+                    foreach (FileInfo file in dirInfo.GetFiles())
+                    {
+                        file.Delete(); 
+                    }
+
+                    foreach (DirectoryInfo dir in dirInfo.GetDirectories())
+                    {
+                        dir.Delete( true ); 
+                    }
+                }
             }
         }
         catch ( Exception msg )

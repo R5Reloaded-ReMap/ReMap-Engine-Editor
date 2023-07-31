@@ -86,7 +86,7 @@ namespace LibrarySorter
                 MoveModels( missingModelList );
             }
 
-            Helper.DeleteDirectory( extractedModelDirectory, false );
+            Helper.DeleteDirectory( extractedModelDirectory, false, false );
 
             // Set Scale 100 to .fbx files
             min = 0; max = missingModelList.Count; float progress = 0.0f;

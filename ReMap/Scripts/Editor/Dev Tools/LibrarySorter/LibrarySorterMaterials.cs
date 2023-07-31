@@ -166,16 +166,20 @@ namespace LibrarySorter
                 //MoveMaterials( missingMaterialList );
             }
 
-            Helper.DeleteDirectory( extractedMaterialDirectory, false );
+            Helper.DeleteDirectory( extractedMaterialDirectory, false, false );
 
             EditorUtility.ClearProgressBar();
         }
 
         internal static async Task AppendNewTexture( List< string > missingMaterialList )
         {
-            foreach ( string materialDir in Directory.GetDirectories( extractedMaterialDirectory ) )
+            string[] directories = Directory.GetDirectories( extractedMaterialDirectory );
+
+            int i = 0; int j = directories.Length;
+
+            foreach ( string materialDir in directories )
             {
-                string materialName = Path.GetFileName( materialDir.Replace( "\\", "/" ) );
+                string materialName = Path.GetFileName( materialDir.Replace( "\\", "/" ) ); i++;
 
                 if ( !missingMaterialList.Contains( materialName ) )
                     continue;
@@ -202,7 +206,7 @@ namespace LibrarySorter
                 }
                 else if ( checkNonAlbedoTexture )
                 {
-                    await MaterialWindow.ShowWindow( materialDir, materialName );
+                    await MaterialWindow.ShowWindow( materialDir, materialName, i, j );
                 }
             }
         }
@@ -228,16 +232,24 @@ namespace LibrarySorter
             }
         }
 
-        internal static async Task SetMaterialsToObject( GameObject obj )
+        internal static async Task SetMaterialsToObject( GameObject obj, bool reset = false )
         {
             MaterialData = GetMaterialData();
 
             List< string > missingTextures = new List< string >();
 
-            foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
+            Renderer[] renderers = obj.GetComponentsInChildren< Renderer >();
+
+            Texture2D textureDefault = AssetDatabase.LoadAssetAtPath< Texture2D >( MaterialData.GetPath( "dev_grey_512" ) );
+
+            int min = 1; int max = renderers.Length; float progress = 0.0f;
+
+            foreach ( Renderer renderer in renderers )
             {
                 if ( Helper.IsValid( renderer ) )
                 {
+                    EditorUtility.DisplayProgressBar( $"Material Setter", $"Processing... ( {renderer.name} => {min}/{max} )", progress );
+
                     foreach ( Material mat in renderer.sharedMaterials )
                     {
                         if ( !Helper.IsValid( mat ) || !mat.HasProperty( "_MainTex" ) )
@@ -251,11 +263,17 @@ namespace LibrarySorter
                         }
                         else if ( !missingTextures.Contains( name ) )
                         {
+                            mat.mainTexture = textureDefault;
+
                             missingTextures.Add( name );
                         }
                     }
                 }
+
+                min++; progress += 1.0f / max;
             }
+
+            EditorUtility.ClearProgressBar();
 
             string assetPath = AssetDatabase.GetAssetPath( PrefabUtility.GetCorrespondingObjectFromSource( obj ) );
 
@@ -264,12 +282,27 @@ namespace LibrarySorter
                 PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
             }
 
+            if ( reset )
+                return;
+
             if ( LibrarySorterWindow.CheckDialog( $"Texture Checker", $"{missingTextures.Count} Materials Missing. Do you want try to extract them ?" ) )
             {
                 checkNonAlbedoTexture = LibrarySorterWindow.CheckDialog( $"Texture Checker", $"Do you want to manually choose the textures not found or ignore them ?" );
 
+                bool resetTextures = LibrarySorterWindow.CheckDialog( $"Texture Checker", $"Do you want apply textures once extracted ?" );
+
                 await ExtractMissingMaterials( missingTextures );
+
+                if ( resetTextures )
+                {
+                    ReSetMaterialsToObject( obj );
+                }
             }
+        }
+
+        internal static async void ReSetMaterialsToObject( GameObject obj )
+        {
+            await SetMaterialsToObject( obj, true );
         }
 
         internal static void SaveMaterialData()
@@ -294,12 +327,16 @@ namespace LibrarySorter
         static Dictionary< string, Texture2D > ddsTextures = new Dictionary< string, Texture2D >();
         static Vector2 scroll = Vector2.zero;
         static MaterialWindow windowInstance;
+        static int min = 0;
+        static int max = 0;
 
-        public static async Task ShowWindow( string path, string matName )
+        public static async Task ShowWindow( string path, string matName, int idx, int total )
         {
             materialName = matName;
 
             RefreshMaterialWindow( path );
+
+            min = idx; max = total;
 
             windowInstance = GetWindow< MaterialWindow >( "MaterialWindow" );
 
@@ -313,7 +350,7 @@ namespace LibrarySorter
 
         private void OnGUI()
         {
-            WindowUtility.WindowUtility.CreateTextInfoCentered( $"\"{materialName}\" Albedo texture not found, please select the texture", "", 0, 20 );
+            WindowUtility.WindowUtility.CreateTextInfoCentered( $"\"{materialName}\" Albedo texture not found, please select the texture ({min}/{max} checked)", "", 0, 20 );
 
             scroll = EditorGUILayout.BeginScrollView( scroll );
 
@@ -334,8 +371,8 @@ namespace LibrarySorter
                 }
                 else
                 {
-                    previewWidth = 200;
-                    previewHeight = 200;
+                    previewWidth = 100;
+                    previewHeight = 100;
                 }
 
                 GUILayout.BeginHorizontal();
@@ -357,6 +394,10 @@ namespace LibrarySorter
                         windowInstance = null;
 
                         Materials.SaveMaterialData();
+
+                        GUILayout.EndHorizontal();
+                        EditorGUILayout.EndScrollView();
+                        GUILayout.EndVertical();
                     }
                 }
 
@@ -374,11 +415,23 @@ namespace LibrarySorter
 
             WindowUtility.WindowUtility.FlexibleSpace();
 
+            GUILayout.BeginHorizontal();
+
             if ( GUILayout.Button( "Ignore Texture" ) )
             {
                 windowInstance.Close();
                 windowInstance = null;
             }
+
+            if ( GUILayout.Button( "Exit", GUILayout.Width( 100 ) ) )
+            {
+                Materials.checkNonAlbedoTexture = false;
+
+                windowInstance.Close();
+                windowInstance = null;
+            }
+
+            GUILayout.EndHorizontal();
 
             WindowUtility.WindowUtility.Space( 4f );
         }

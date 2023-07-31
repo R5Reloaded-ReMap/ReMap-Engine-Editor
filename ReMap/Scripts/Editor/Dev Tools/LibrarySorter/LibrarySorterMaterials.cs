@@ -228,7 +228,7 @@ namespace LibrarySorter
 
         internal static async Task SetMaterialsToObject( GameObject obj )
         {
-            if ( !Helper.IsValid( MaterialData ) ) MaterialData = GetMaterialData();
+            MaterialData = GetMaterialData();
 
             List< string > missingTextures = new List< string >();
 

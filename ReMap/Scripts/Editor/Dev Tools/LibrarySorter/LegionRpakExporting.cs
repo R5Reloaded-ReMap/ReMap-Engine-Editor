@@ -146,13 +146,13 @@ namespace LibrarySorter
                 {
                     if ( file.Contains( match ) && Path.GetExtension( file ) == ".rpak" && !file.Contains( "_loadscreen" ) ) // Ignore loadscreens
                     {
-                        ValidPathArg += $"{rpakRetailPath}/{file},";
+                        ValidPathArg += $"{file},";
                     }
                 }
             }
 
-            ValidPathArg = ValidPathArg.TrimEnd( ',' );
-
+            ValidPathArg = $"{rpakRetailPath}=>{ValidPathArg.TrimEnd( ',' )}";
+            
             return string.IsNullOrEmpty( ValidPathArg );
         }
     }

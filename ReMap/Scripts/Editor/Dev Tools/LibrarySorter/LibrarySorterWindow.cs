@@ -17,7 +17,6 @@ namespace LibrarySorter
         FixPrefabsLabels,
         DeleteUnusuedTextures,
         ExtractMissingModels,
-        CheckTextures,
         CreateMaterialsList,
         FixLodsScale,
         CreateRpakList,
@@ -88,7 +87,6 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
 
                     WindowUtility.WindowUtility.CreateButton( "Extract Missing Models", "", () => AwaitTask( TaskType.ExtractMissingModels ) );
-                    //WindowUtility.WindowUtility.CreateButton( "Check Textures", "", () => AwaitTask( TaskType.CheckTextures ) );
                     WindowUtility.WindowUtility.CreateButton( "Update Materials List", "", () => AwaitTask( TaskType.CreateMaterialsList ) );
                     WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
                     
@@ -185,11 +183,6 @@ namespace LibrarySorter
                 case TaskType.ExtractMissingModels:
                     if ( !DoStartTask() ) return;
                     await Models.ExtractMissingModels();
-                    break;
-
-                case TaskType.CheckTextures:
-                    if ( !DoStartTask() ) return;
-                    await CheckTextures();
                     break;
                 
                 case TaskType.CreateMaterialsList:
@@ -380,226 +373,6 @@ namespace LibrarySorter
             await Helper.Wait();
 
             AssetDatabase.Refresh();
-        }
-
-        internal static async Task CheckTextures( GameObject objScene = null )
-        {
-            existingTextures = await GetAllTextures();
-
-            missingTextures = new List< string >();
-
-            for ( int i = 0 ; i < 2; i++ )
-            {
-                if ( i == 1 && !CheckDialog( $"Texture Checker", $"Do you want try to set missings materials ?" ) )
-                {
-                    break;
-                }
-
-                if ( i == 1 )
-                {
-                    existingTextures = await GetAllTextures();
-                }
-
-                if ( !Helper.IsValid( objScene ) )
-                {
-                    string[] modeltextureGUID = AssetDatabase.FindAssets( "t:prefab", new [] { $"{UnityInfo.relativePathPrefabs}" } );
-
-                    int min = 0; int max = modeltextureGUID.Length; float progress = 0.0f;
-                
-                    foreach ( var guid in modeltextureGUID )
-                    {
-                        EditorUtility.DisplayProgressBar( $"Texture Checker", $"Checking Textures... ({min++}/{max})", progress );
-
-                        string assetPath = AssetDatabase.GUIDToAssetPath( guid );
-                        GameObject obj = Helper.CreateGameObject( "", assetPath );
-
-                        await Materials.SetMaterialsToObject( obj );
-
-                        UnityEngine.Object.DestroyImmediate( obj );
-
-                        progress += 1.0f / max;
-                    }
-
-                    AssetDatabase.Refresh();
-                }
-                else
-                {
-                    await Materials.SetMaterialsToObject( objScene );
-                }
-
-                if ( i == 0 && CheckDialog( $"Texture Checker", $"{missingTextures.Count} Missing. Do you want extract them ?" ) )
-                {
-                    await ExportMissingTextures();
-                }
-            }
-
-            EditorUtility.ClearProgressBar();
-        }
-
-        internal static async Task ExportMissingTextures()
-        {
-            if ( Helper.IsEmpty( missingTextures ) )
-                return;
-
-            // Legion Launch Arguments
-            legionArgument = new StringBuilder();
-            legionArguments = new List< string >();
-
-            foreach ( string arg in missingTextures )
-            {
-                legionArgument.Append( $"{arg}," );
-
-                // Executive launch args can't be more long than 8191 characters
-                if ( legionArgument.Length > 5000 )
-                {
-                    // Remove last ','
-                    legionArgument.Remove( legionArgument.Length - 1, 1 );
-
-                    legionArguments.Add( legionArgument.ToString() );
-
-                    legionArgument = new ();
-                }
-            }
-
-            legionArgument.Remove( legionArgument.Length - 1, 1 );
-            legionArguments.Add( legionArgument.ToString() );
-
-            string loading = ""; int loadingCount = 0;
-            int min = 1; int max = legionArguments.Count; float progress = 0.0f;
-
-            foreach ( string argument in legionArguments )
-            {
-                Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
-
-                string count = max > 1 ? $" ({min}/{max})" : "";
-
-                while ( !legionTask.IsCompleted )
-                {
-                    EditorUtility.DisplayProgressBar( $"Legion Extraction{count}", $"Extracting files{loading}", 0.0f );
-
-                    loading = new string( '.', loadingCount++ % 4 );
-
-                    await Helper.Wait( 1.0 );
-                }
-
-                foreach ( string folder in Directory.GetDirectories( $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials" ) )
-                {
-                    string name = Path.GetFileName( folder );
-
-                    if ( !Helper.MoveFile( $"{folder}/{name}_albedoTexture.dds", $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{name}_albedoTexture.dds" ) )
-                    {
-                        
-                    }
-
-                    if ( missingTextures.Contains( name ) ) missingTextures.Remove( name );
-                }
-
-                min++;
-            }
-
-            min = 0; max = missingTextures.Count; progress = 0.0f;
-
-            string dir;
-
-            foreach ( string texture in missingTextures )
-            {
-                string filePath = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials/{texture}/{texture}_albedoTexture.dds";
-                string gotoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{texture}_albedoTexture.dds";
-
-                EditorUtility.DisplayProgressBar( $"Texture Sorter", $"Checking Textures... ({min++}/{max})", progress );
-
-                progress += 1.0f / max;
-
-                if ( !Helper.MoveFile( filePath, gotoPath, false ) )
-                {
-                    foreach ( string file in Directory.GetFiles( $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials/{texture}" ) )
-                    {
-                        string fileName = Path.GetFileName( file );
-
-                        Helper.MoveFile( file, $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{fileName}", false );
-                    }
-                }
-
-                dir = $"{relativeLegionPlusExportedFiles}/materials/{texture}";
-                if ( Directory.Exists( dir ) )
-                {
-                    Directory.Delete( dir, true );
-
-                    if ( File.Exists( $"{dir}.meta" ) )
-                    {
-                        File.Delete( $"{dir}.meta" );
-                    }
-                }
-
-                min++;
-            }
-
-            dir = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlusExportedFiles}/materials";
-            if ( Directory.Exists( dir ) )
-            {
-                Directory.Delete( dir, true );
-
-                if ( File.Exists( $"{dir}.meta" ) )
-                {
-                    File.Delete( $"{dir}.meta" );
-                }
-            }
-
-            await DeleteNotUsedTexture();
-        }
-
-        internal static async Task< Dictionary< string, Texture2D > > GetAllTextures()
-        {
-            Dictionary< string, Texture2D > dictionary = new Dictionary< string, Texture2D >();
-
-            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
-
-            float progress = 0.0f; int min = 0; int max = modeltextureGUID.Length;
-            
-            foreach ( var guid in modeltextureGUID )
-            {
-                EditorUtility.DisplayProgressBar( $"Getting Textures", $"Processing... ({min}/{max})", progress );
-
-                string assetPath = AssetDatabase.GUIDToAssetPath( guid );
-                GameObject obj = Helper.CreateGameObject( "", assetPath );
-
-                foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
-                {
-                    if ( !Helper.IsValid( renderer ) )
-                        continue;
-
-                    foreach ( Material mat in renderer.sharedMaterials )
-                    {
-                        if ( !Helper.IsValid( mat ) || !mat.HasProperty( "_MainTex" ) )
-                            continue;
-
-                        string name = mat.name;
-
-                        if ( dictionary.ContainsKey( name ) )
-                            continue;
-
-                        // Obtain the name of the main map albedo
-                        Texture mainTexture = mat.mainTexture;
-
-                        string texturePath = AssetDatabase.GetAssetPath( mainTexture );
-
-                        if ( !string.IsNullOrEmpty( texturePath ) )
-                        {
-                            Texture2D texture = AssetDatabase.LoadAssetAtPath< Texture2D >( texturePath );
-
-                            dictionary.Add( name, texture );
-                        }
-                    }
-                }
-
-                UnityEngine.Object.DestroyImmediate( obj );
-
-                progress += 1.0f / max; min++;
-            }
-            
-            await Helper.Wait();
-
-            return dictionary;
         }
 
         internal static Task DeleteNotUsedTexture()

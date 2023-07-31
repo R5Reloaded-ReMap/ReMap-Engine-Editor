@@ -58,5 +58,17 @@ public class MenuItemRMAPDEV
         {
             ReMapDebug.Debug_ClearProgressBar();
         }
+
+        [ MenuItem( "Dev Menu/Utility/ReTexture Window", false, 100 ) ]
+        public static void ShowReTextureWindow()
+        {
+            ReTexture.Init();
+        }
+
+        [ MenuItem( "Dev Menu/Utility/Delete Multiple Formats", false, 100 ) ]
+        public static void DeleteMultipleFormats()
+        {
+            ReMapDebug.DeleteMultipleFormats();
+        }
     #endif
 }

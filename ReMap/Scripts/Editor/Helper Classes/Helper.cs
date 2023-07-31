@@ -844,6 +844,11 @@ public class Helper
         return obj.Length == 0;
     }
 
+    public static bool IsEmpty< T >( List< T > obj ) where T : class
+    {
+        return obj.Count == 0;
+    }
+
     public static bool LOD0_Exist( string name )
     {
         return File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{name}_LOD0.fbx" );
@@ -852,7 +857,109 @@ public class Helper
     public static bool Material_Exist( string name, bool extention = false )
     {
         string ext = extention ? ".dds" : "";
-        return File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{name}{extention}" );
+        return File.Exists($"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}/{name}{extention}");
+    }
+
+    public static bool MoveFile( string origin, string target, bool addDir = true )
+    {
+        string originPath = addDir ? $"{UnityInfo.currentDirectoryPath}/" : "";
+        string targetPath = addDir ? $"{UnityInfo.currentDirectoryPath}/" : "";
+
+        originPath += $"{origin}".Replace( "\\", "/" );
+        targetPath += $"{target}".Replace( "\\", "/" );
+
+        try
+        {
+            if ( File.Exists( originPath ) && !File.Exists( targetPath ) )
+            {
+                File.Move( originPath, targetPath );
+
+                if ( File.Exists( $"{originPath}.meta" ) && !File.Exists( $"{targetPath}.meta" ) )
+                {
+                    File.Move( $"{originPath}.meta", $"{targetPath}.meta" );
+                }
+
+                return true;
+            }
+        }
+        catch ( Exception msg )
+        {
+            Ping( msg );
+        }
+
+        return false;
+    }
+
+    public static bool DeleteFile( string filePath, bool addDir = true )
+    {
+        filePath = addDir ? $"{UnityInfo.currentDirectoryPath}/{filePath}" : filePath;
+
+        filePath = filePath.Replace( "\\", "/" );
+
+        try
+        {
+            if ( File.Exists( filePath ) )
+            {
+                File.Delete( filePath );
+
+                if ( File.Exists( $"{filePath}.meta" ) )
+                {
+                    File.Delete(  $"{filePath}.meta" );
+                }
+
+                return true;
+            }
+        }
+        catch ( Exception msg )
+        {
+            Ping( msg );
+        }
+
+        return false;
+    }
+
+    public static void CreateDirectory( string path, bool addDir = true )
+    {
+        path = addDir ? $"{UnityInfo.currentDirectoryPath}/{path}" : path;
+
+        if ( !Directory.Exists( path ) )
+        {
+            Directory.CreateDirectory( path );
+        }
+    }
+
+    public static void DeleteDirectory( string path, bool addDir = true, bool self = true )
+    {
+        try
+        {
+            path = addDir ? $"{UnityInfo.currentDirectoryPath}/{path}" : path;
+
+            if ( Directory.Exists( path ) )
+            {
+                if ( self )
+                {
+                    Directory.Delete( path, true );
+                }
+                else
+                {
+                    DirectoryInfo dirInfo = new DirectoryInfo( path );
+                    
+                    foreach (FileInfo file in dirInfo.GetFiles())
+                    {
+                        file.Delete(); 
+                    }
+
+                    foreach (DirectoryInfo dir in dirInfo.GetDirectories())
+                    {
+                        dir.Delete( true ); 
+                    }
+                }
+            }
+        }
+        catch ( Exception msg )
+        {
+            Ping( msg );
+        }
     }
 
     public static void RemoveNull< T >( ref T [] array ) where T : class

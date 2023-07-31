@@ -20,6 +20,8 @@ namespace LibrarySorter
         internal static readonly string materialDirectory = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}";
         internal static readonly string extractedMaterialDirectory = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionPlusExportedFiles}/materials";
 
+        internal static bool checkNonAlbedoTexture = false;
+
         internal static MaterialData GetMaterialData()
         {
             MaterialData materialData;
@@ -198,7 +200,7 @@ namespace LibrarySorter
                         SaveMaterialData();
                     }
                 }
-                else
+                else if ( checkNonAlbedoTexture )
                 {
                     await MaterialWindow.ShowWindow( materialDir, materialName );
                 }
@@ -264,6 +266,8 @@ namespace LibrarySorter
 
             if ( LibrarySorterWindow.CheckDialog( $"Texture Checker", $"{missingTextures.Count} Materials Missing. Do you want try to extract them ?" ) )
             {
+                checkNonAlbedoTexture = LibrarySorterWindow.CheckDialog( $"Texture Checker", $"Do you want to manually choose the textures not found or ignore them ?" );
+
                 await ExtractMissingMaterials( missingTextures );
             }
         }

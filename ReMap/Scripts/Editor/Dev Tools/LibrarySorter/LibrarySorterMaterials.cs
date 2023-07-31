@@ -190,6 +190,11 @@ namespace LibrarySorter
 
                 if ( Helper.IsValid( fileToMove ) )
                 {
+                    if ( !TextureConverter.IsDXT1( fileToMove ) )
+                    {
+                        await TextureConverter.ConvertDDSToDXT1( fileToMove );
+                    }
+
                     if ( Helper.MoveFile( fileToMove, $"{materialDirectory}/{Path.GetFileName( fileToMove )}", false ) )
                     {
                         MaterialData.MaterialList.Add
@@ -273,14 +278,16 @@ namespace LibrarySorter
                 min++; progress += 1.0f / max;
             }
 
-            EditorUtility.ClearProgressBar();
-
             string assetPath = AssetDatabase.GetAssetPath( PrefabUtility.GetCorrespondingObjectFromSource( obj ) );
 
             if ( !string.IsNullOrEmpty( assetPath ) )
             {
+                EditorUtility.DisplayProgressBar( $"Saving Prefab", $"Processing...", progress );
+
                 PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
             }
+
+            EditorUtility.ClearProgressBar();
 
             if ( reset )
                 return;
@@ -334,7 +341,9 @@ namespace LibrarySorter
         {
             materialName = matName;
 
-            RefreshMaterialWindow( path );
+            GUIUtility.systemCopyBuffer = materialName;
+
+            await RefreshMaterialWindow( path );
 
             min = idx; max = total;
 
@@ -390,8 +399,11 @@ namespace LibrarySorter
                             }
                         );
 
-                        windowInstance.Close();
-                        windowInstance = null;
+                        if ( Helper.IsValid( windowInstance ) )
+                        {
+                            windowInstance.Close();
+                            windowInstance = null;
+                        }
 
                         Materials.SaveMaterialData();
 
@@ -419,16 +431,22 @@ namespace LibrarySorter
 
             if ( GUILayout.Button( "Ignore Texture" ) )
             {
-                windowInstance.Close();
-                windowInstance = null;
+                if ( Helper.IsValid( windowInstance ) )
+                {
+                    windowInstance.Close();
+                    windowInstance = null;
+                }
             }
 
             if ( GUILayout.Button( "Exit", GUILayout.Width( 100 ) ) )
             {
                 Materials.checkNonAlbedoTexture = false;
 
-                windowInstance.Close();
-                windowInstance = null;
+                if ( Helper.IsValid( windowInstance ) )
+                {
+                    windowInstance.Close();
+                    windowInstance = null;
+                }
             }
 
             GUILayout.EndHorizontal();
@@ -436,7 +454,7 @@ namespace LibrarySorter
             WindowUtility.WindowUtility.Space( 4f );
         }
 
-        private static void RefreshMaterialWindow( string path )
+        private static async Task RefreshMaterialWindow( string path )
         {
             ddsTextures.Clear();
 
@@ -446,10 +464,20 @@ namespace LibrarySorter
             var info = new DirectoryInfo( path );
             var fileInfo = info.GetFiles();
 
+            int min = 1; int max = fileInfo.Count(); float progress = 0.0f;
+
             foreach ( var file in fileInfo )
             {
                 if ( file.Extension.ToLower() == ".dds" )
                 {
+                    Helper.Ping( $"{path}/{file.Name}" );
+                    if ( !TextureConverter.IsDXT1( $"{path}/{file.Name}" ) )
+                    {
+                        EditorUtility.DisplayProgressBar( $"Converting File", $"Processing... ({min}/{max})", progress );
+                        await TextureConverter.ConvertDDSToDXT1( $"{path}/{file.Name}" );
+                        EditorUtility.ClearProgressBar();
+                    }
+
                     var assetPath = $"{Materials.GetAssetPath( path )}/{file.Name}";
                     var texture = AssetDatabase.LoadAssetAtPath< Texture2D >( assetPath );
 
@@ -458,6 +486,8 @@ namespace LibrarySorter
                         ddsTextures.Add( assetPath, texture );
                     }
                 }
+
+                min++; progress += 1.0f / max;
             }
         }
     }

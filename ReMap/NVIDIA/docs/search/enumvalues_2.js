@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['edgefixup_5faverage_605',['EdgeFixup_Average',['../namespacenvtt.html#acffe2adb946ca4eeae692ef547d57ca6a424f99e9f5ca67b49765dec421c8c27f',1,'nvtt']]],
+  ['edgefixup_5fnone_606',['EdgeFixup_None',['../namespacenvtt.html#acffe2adb946ca4eeae692ef547d57ca6affcf62e8e27e7351dce5c92908419767',1,'nvtt']]],
+  ['edgefixup_5fstretch_607',['EdgeFixup_Stretch',['../namespacenvtt.html#acffe2adb946ca4eeae692ef547d57ca6aeda3d9a01b5bcf73994c5ebcc52c62d5',1,'nvtt']]],
+  ['edgefixup_5fwarp_608',['EdgeFixup_Warp',['../namespacenvtt.html#acffe2adb946ca4eeae692ef547d57ca6abbcabb8211cceed5c1074b98d8575e4b',1,'nvtt']]],
+  ['encodeflags_5fopaque_609',['EncodeFlags_Opaque',['../namespacenvtt.html#a88aa620b06c95f24957941e3bf64519ba29d2523dd83ce311a5184da0b625ebcd',1,'nvtt']]],
+  ['encodeflags_5foutputtogpumem_610',['EncodeFlags_OutputToGPUMem',['../namespacenvtt.html#a88aa620b06c95f24957941e3bf64519ba2488c64c79e82ba5d3f8ebc2ff22d1dc',1,'nvtt']]],
+  ['encodeflags_5fusegpu_611',['EncodeFlags_UseGPU',['../namespacenvtt.html#a88aa620b06c95f24957941e3bf64519ba81edab19a33ab5c3de43b8fd16517dbb',1,'nvtt']]],
+  ['error_5fcudaerror_612',['Error_CudaError',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36a61ea8e163d282921fbb20d9c6d165c6a',1,'nvtt']]],
+  ['error_5ffileopen_613',['Error_FileOpen',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36a050e9ac65add6839c261409762f63e60',1,'nvtt']]],
+  ['error_5ffilewrite_614',['Error_FileWrite',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36a272b79737f04552ad274898397e73f45',1,'nvtt']]],
+  ['error_5finvalidinput_615',['Error_InvalidInput',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36a7ae62389be2e2e29a7a1690b8721c105',1,'nvtt']]],
+  ['error_5fmessaging_616',['Error_Messaging',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36a543f509e1a5e4b9955640b587d0533e4',1,'nvtt']]],
+  ['error_5fnone_617',['Error_None',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36a6a363ba70afc161ff85a7a52c3d92bbb',1,'nvtt']]],
+  ['error_5foutofdevicememory_618',['Error_OutOfDeviceMemory',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36adab9e4b4c47bbf76ceddb32a23c99361',1,'nvtt']]],
+  ['error_5foutofhostmemory_619',['Error_OutOfHostMemory',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36aff7d46df90c539ac4e5b3e644e369dda',1,'nvtt']]],
+  ['error_5foutputwrite_620',['Error_OutputWrite',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36ac0464ea6704860307af9193e8f490d67',1,'nvtt']]],
+  ['error_5funknown_621',['Error_Unknown',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36aeb5d8ad9e386b13229cabf5ba1405475',1,'nvtt']]],
+  ['error_5funsupportedfeature_622',['Error_UnsupportedFeature',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36a0c76f5e3b3d2b2ab2dae1c3b7bd291e6',1,'nvtt']]],
+  ['error_5funsupportedoutputformat_623',['Error_UnsupportedOutputFormat',['../namespacenvtt.html#ad1b50bb1a5bd8c44ab56092b30b9cd36aab5dbcdd40172c02fce91bf18ac46f36',1,'nvtt']]]
+];

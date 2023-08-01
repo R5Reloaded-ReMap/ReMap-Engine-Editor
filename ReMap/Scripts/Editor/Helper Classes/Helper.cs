@@ -868,20 +868,25 @@ public class Helper
         originPath += $"{origin}".Replace( "\\", "/" );
         targetPath += $"{target}".Replace( "\\", "/" );
 
-        if ( File.Exists( targetPath ) ) return true;
-
         try
         {
             if ( File.Exists( originPath ) )
             {
+                if ( File.Exists( targetPath ) )
+                {
+                    File.Delete( targetPath );
+                }
+
                 File.Move( originPath, targetPath );
 
                 if ( File.Exists( $"{originPath}.meta" ) )
                 {
-                    if ( !File.Exists( $"{targetPath}.meta" ) )
+                    if ( File.Exists( $"{targetPath}.meta" ) )
                     {
-                        File.Move( $"{originPath}.meta", $"{targetPath}.meta" );
+                        File.Delete( $"{targetPath}.meta" );
                     }
+
+                    File.Move( $"{originPath}.meta", $"{targetPath}.meta" );
                 }
 
                 return true;

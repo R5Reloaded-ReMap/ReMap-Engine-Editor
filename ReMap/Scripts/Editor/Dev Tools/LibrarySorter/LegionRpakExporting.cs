@@ -13,6 +13,8 @@ namespace LibrarySorter
     {
         internal static string ValidPathArg = "";
 
+        internal static string RpakPath = "";
+
         private static readonly string[] ValidRpakFile = new []
         {
             "common_mp", "common_early", "root_lgnd_", "startup", "mp_lobby", "mp_rr_"
@@ -141,11 +143,11 @@ namespace LibrarySorter
         {
             ValidPathArg = "";
 
-            var rpakRetailPath = EditorUtility.OpenFolderPanel( "Rpak Path", "Select rpak folder", "" );
+            if ( string.IsNullOrEmpty( RpakPath ) ) ChangeRpakPaths();
 
-            if ( string.IsNullOrEmpty( rpakRetailPath ) ) return false;
+            if ( string.IsNullOrEmpty( RpakPath ) ) return false;
 
-            foreach ( string files in Directory.GetFiles( rpakRetailPath ) )
+            foreach ( string files in Directory.GetFiles( RpakPath ) )
             {
                 string file = Path.GetFileName( files );
 
@@ -158,9 +160,14 @@ namespace LibrarySorter
                 }
             }
 
-            ValidPathArg = $"{rpakRetailPath}=>{ValidPathArg.TrimEnd( ',' )}";
+            ValidPathArg = $"{RpakPath}=>{ValidPathArg.TrimEnd( ',' )}";
             
             return string.IsNullOrEmpty( ValidPathArg );
+        }
+
+        internal static void ChangeRpakPaths()
+        {
+            RpakPath = EditorUtility.OpenFolderPanel( "Rpak Path", "Select rpak folder", "" );
         }
     }
 }

@@ -70,5 +70,11 @@ public class MenuItemRMAPDEV
         {
             ReMapDebug.DeleteMultipleFormats();
         }
+
+        [ MenuItem( "Dev Menu/Material Manager", false, 100 ) ]
+        public static void OpenMaterialManagerWindow()
+        {
+            LibrarySorter.MaterialManagerWindow.Init();
+        }
     #endif
 }

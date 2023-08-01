@@ -49,6 +49,11 @@ namespace LibrarySorter
             MaterialClass material = this.MaterialList.FirstOrDefault( m => m.Name == name );
             return material != null ? material.Path : null;
         }
+
+        public void RemoveMaterial( string name )
+        {
+            this.MaterialList.RemoveAll( material => material.Name == name );
+        }
     }
 
     [Serializable]

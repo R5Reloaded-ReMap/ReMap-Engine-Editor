@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -104,8 +105,7 @@ namespace LibrarySorter
 
             Helper.CreateDirectory( UnityInfo.relativePathTextureData );
 
-            string jsonData = JsonUtility.ToJson( materialData );
-            System.IO.File.WriteAllText( UnityInfo.relativePathTextureDataList, jsonData );
+            SaveMaterialData( materialData );
             
             await Helper.Wait();
         }
@@ -177,6 +177,8 @@ namespace LibrarySorter
 
             int i = 0; int j = directories.Length;
 
+            await CheckDXT1Format( directories );
+
             foreach ( string materialDir in directories )
             {
                 string materialName = Path.GetFileName( materialDir.Replace( "\\", "/" ) ); i++;
@@ -213,6 +215,50 @@ namespace LibrarySorter
                 {
                     await MaterialWindow.ShowWindow( materialDir, materialName, i, j );
                 }
+            }
+        }
+
+        internal static async Task CheckDXT1Format( string[] directories )
+        {
+            int dirIdx = 0; 
+            int dirCount = directories.Length; 
+            float progress = 0.0f;
+
+            var semaphore = new SemaphoreSlim( 10 );
+
+            foreach ( string path in directories )
+            {
+                var info = new DirectoryInfo( path );
+                var fileInfo = info.GetFiles();
+
+                int fileIdx = 0;
+                int fileCount = fileInfo.Length;
+
+                var tasks = fileInfo.Select( file => ProcessFileWithSemaphore( file, path, dirIdx, dirCount, fileIdx++, fileCount, progress, semaphore ) ).ToArray();
+
+                await Task.WhenAll( tasks );
+
+                dirIdx++; 
+                progress += 1.0f / fileCount;
+            }
+        }
+
+        private static async Task ProcessFileWithSemaphore( FileInfo file, string path, int dirIdx, int dirCount, int fileIdx, int fileCount, float progress, SemaphoreSlim semaphore )
+        {
+            await semaphore.WaitAsync();
+
+            try
+            {
+                EditorUtility.DisplayProgressBar( $"DXT1 Format Checker", $"Processing... ({dirIdx}/{dirCount}) => ({fileIdx}/{fileCount})", progress );
+
+                if ( file.Extension.ToLower() == ".dds" && !TextureConverter.IsDXT1( $"{path}/{file.Name}" ) )
+                {
+                    await TextureConverter.ConvertDDSToDXT1( $"{path}/{file.Name}" );
+                }
+            }
+            finally
+            {
+                semaphore.Release();
             }
         }
 
@@ -280,7 +326,7 @@ namespace LibrarySorter
 
             string assetPath = AssetDatabase.GetAssetPath( PrefabUtility.GetCorrespondingObjectFromSource( obj ) );
 
-            if ( !string.IsNullOrEmpty( assetPath ) )
+            if ( !string.IsNullOrEmpty( assetPath ) && Path.GetExtension( assetPath ) == ".prefab" )
             {
                 EditorUtility.DisplayProgressBar( $"Saving Prefab", $"Processing...", progress );
 
@@ -312,9 +358,13 @@ namespace LibrarySorter
             await SetMaterialsToObject( obj, true );
         }
 
-        internal static void SaveMaterialData()
+        internal static void SaveMaterialData( MaterialData data = null )
         {
-            string jsonData = JsonUtility.ToJson( MaterialData );
+            MaterialData materialData = Helper.IsValid( data ) ? data : MaterialData;
+
+            UnityInfo.SortListByKey( materialData.MaterialList, x => x.Name );
+
+            string jsonData = JsonUtility.ToJson( materialData );
             System.IO.File.WriteAllText( UnityInfo.relativePathTextureDataList, jsonData );
 
             MaterialData = GetMaterialData();
@@ -470,14 +520,6 @@ namespace LibrarySorter
             {
                 if ( file.Extension.ToLower() == ".dds" )
                 {
-                    Helper.Ping( $"{path}/{file.Name}" );
-                    if ( !TextureConverter.IsDXT1( $"{path}/{file.Name}" ) )
-                    {
-                        EditorUtility.DisplayProgressBar( $"Converting File", $"Processing... ({min}/{max})", progress );
-                        await TextureConverter.ConvertDDSToDXT1( $"{path}/{file.Name}" );
-                        EditorUtility.ClearProgressBar();
-                    }
-
                     var assetPath = $"{Materials.GetAssetPath( path )}/{file.Name}";
                     var texture = AssetDatabase.LoadAssetAtPath< Texture2D >( assetPath );
 
@@ -489,6 +531,8 @@ namespace LibrarySorter
 
                 min++; progress += 1.0f / max;
             }
+
+            await Helper.Wait();
         }
     }
 }

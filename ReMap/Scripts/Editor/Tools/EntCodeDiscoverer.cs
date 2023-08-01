@@ -271,7 +271,7 @@ public class EntCodeDiscoverer : EditorWindow
                 }
                 else if ( classtype == "info_target" )
                 {
-                    if ( entity.HasKey( "scale" ) )
+                    if ( entity.HasKey( "scale" ) && skin != UnityInfo.relativePathCubePrefab )
                     {
                         float scale = entity.GetValueForKey< float >( "scale" );
                         transformedObj.localScale = new Vector3( scale, scale, scale );
@@ -402,6 +402,7 @@ public class EntCodeDiscoverer : EditorWindow
                 {
                     case "apex_screen":            return $"{UnityInfo.relativePathModel}/survival_modular_flexscreens_04_LOD0.fbx";
                     case "static_loot_tick_spawn": return $"{UnityInfo.relativePathModel}/drone_frag_loot_LOD0.fbx";
+                    case "nfx_loch_point":         return $"{UnityInfo.relativePathModel}/nessy_doll_LOD0.fbx";
 
                     default: break;
                 }

@@ -121,19 +121,28 @@ namespace LibrarySorter
             startInfo.FileName = $"\"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionExecutive}\"";
             startInfo.Arguments = $"--loadPaks \"{ValidPathArg}\" --assetsToExport \"{assetList}\" --loadmodels --loadmaterials --loadshadersets --mdlfmt fbx --imgfmt dds --nologfile --usetxtrguids --overwrite";
             startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
+
+            #if RMAPDEV
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+            #endif
 
             using ( Process process = new Process() )
             {
                 process.StartInfo = startInfo;
-                process.OutputDataReceived += ( sender, args ) => Helper.Ping( "LegionPlus [O] =>", args.Data );
-                process.ErrorDataReceived +=  ( sender, args ) => Helper.Ping( "LegionPlus [E] =>", args.Data );
+                process.StartInfo.CreateNoWindow = true;
+
+                #if RMAPDEV
+                    process.OutputDataReceived += ( sender, args ) => Helper.Ping( "LegionPlus [O] =>", args.Data );
+                    process.ErrorDataReceived +=  ( sender, args ) => Helper.Ping( "LegionPlus [E] =>", args.Data );
+                #endif
 
                 process.Start();
 
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
+                #if RMAPDEV
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+                #endif
 
                 await Task.Run( () => process.WaitForExit() );
             }

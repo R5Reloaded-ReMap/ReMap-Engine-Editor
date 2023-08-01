@@ -52,7 +52,18 @@ namespace LibrarySorter
 
         public void RemoveMaterial( string name )
         {
-            this.MaterialList.RemoveAll( material => material.Name == name );
+            if ( this.ContainsName( name ) )
+            {
+                this.MaterialList.RemoveAll( material => material.Name == name );
+            }
+        }
+
+        public void Add( MaterialClass materialClass )
+        {
+            if ( !this.ContainsName( materialClass.Name ) )
+            {
+                this.MaterialList.Add( materialClass );
+            }
         }
     }
 

@@ -14,7 +14,7 @@ namespace LibrarySorter
 {
     public class Materials
     {
-        internal static MaterialData MaterialData;
+        internal static MaterialData MaterialData = GetMaterialData();
 
         private static string MaterialDataJsonPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathTextureDataList}";
 
@@ -161,7 +161,7 @@ namespace LibrarySorter
 
                 EditorUtility.ClearProgressBar();
 
-                await AppendNewTexture( missingMaterialList );
+                AppendNewTexture( missingMaterialList );
 
                 Helper.DeleteDirectory( extractedMaterialDirectory, false, false );
 
@@ -173,22 +173,24 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
         }
 
-        internal static async Task AppendNewTexture( List< string > missingMaterialList )
+        internal static async void AppendNewTexture( List< string > missingMaterialList, bool byPassCheck = false )
         {
             string[] directories = Directory.GetDirectories( extractedMaterialDirectory );
 
             int i = 0; int j = directories.Length;
 
-            CheckDXT1Format( directories );
+            await CheckDXT1Format( directories );
 
             foreach ( string materialDir in directories )
             {
-                string materialName = Path.GetFileName( materialDir.Replace( "\\", "/" ) ); i++;
+                string rmaterialDir = materialDir.Replace( "\\", "/" );
+
+                string materialName = Path.GetFileName( rmaterialDir ); i++;
 
                 if ( !missingMaterialList.Contains( materialName ) )
                     continue;
 
-                string[] files = Directory.GetFiles( $"{materialDir.Replace( "\\", "/" )}" );
+                string[] files = Directory.GetFiles( $"{rmaterialDir}" );
 
                 var fileToMove = files.FirstOrDefault( f => f.Contains( "_albedoTexture" ) || f.Contains( "_albedo2Texture" ) );
 
@@ -208,14 +210,14 @@ namespace LibrarySorter
                         SaveMaterialData();
                     }
                 }
-                else if ( checkNonAlbedoTexture )
+                else if ( checkNonAlbedoTexture || byPassCheck )
                 {
-                    await MaterialWindow.ShowWindow( materialDir, materialName, i, j );
+                    MaterialWindowSelector.AddNewMaterialSelection( rmaterialDir );
                 }
             }
         }
 
-        internal static async void CheckDXT1Format( string[] directories )
+        internal static async Task CheckDXT1Format( string[] directories )
         {
             int dirIdx = 0; 
             int dirCount = directories.Length; 
@@ -228,19 +230,20 @@ namespace LibrarySorter
                 var info = new DirectoryInfo( path );
                 var fileInfo = info.GetFiles();
 
-                int fileIdx = 0;
-                int fileCount = fileInfo.Length;
+                EditorUtility.DisplayProgressBar( $"DXT1 Format Checker", $"Patching DDS Files => ({dirIdx}/{dirCount})", 0.0f );
 
-                var tasks = fileInfo.Select( file => ProcessFileWithSemaphore( file, path, dirIdx, dirCount, fileIdx++, fileCount, progress, semaphore ) ).ToArray();
+                var tasks = fileInfo.Select( file => ProcessFileWithSemaphore( file, path, semaphore ) ).ToArray();
 
                 await Task.WhenAll( tasks );
 
                 dirIdx++; 
-                progress += 1.0f / fileCount;
+                progress += 1.0f / dirCount;
             }
+
+            EditorUtility.ClearProgressBar();
         }
 
-        private static async Task ProcessFileWithSemaphore( FileInfo file, string path, int dirIdx, int dirCount, int fileIdx, int fileCount, float progress, SemaphoreSlim semaphore )
+        private static async Task ProcessFileWithSemaphore( FileInfo file, string path, SemaphoreSlim semaphore )
         {
             await semaphore.WaitAsync();
 
@@ -373,162 +376,156 @@ namespace LibrarySorter
     }
 
 
-    public class MaterialWindow : EditorWindow
+    public class MaterialWindowSelector : EditorWindow
     {
-        static string materialName = "";
-        static Dictionary< string, Texture2D > ddsTextures = new Dictionary< string, Texture2D >();
-        static Vector2 scroll = Vector2.zero;
-        static MaterialWindow windowInstance;
-        static int min = 0;
-        static int max = 0;
-        static int scale = 256;
+        private static MaterialWindowSelector windowInstance;
+        private static Dictionary< string, List< Texture2D > > materialList = new Dictionary< string, List< Texture2D > >();
+        private static Vector2 scroll = Vector2.zero;
+        private static int scale = 256;
 
-        public static async Task ShowWindow( string path, string matName, int idx, int total )
+        public static void AddNewMaterialSelection( string directoryPath )
         {
-            materialName = matName;
-
-            GUIUtility.systemCopyBuffer = materialName;
-
-            await RefreshMaterialWindow( path );
-
-            min = idx; max = total;
-
-            windowInstance = GetWindow< MaterialWindow >( "MaterialWindow" );
-
-            scroll = Vector2.zero;
-
-            while ( windowInstance != null && windowInstance )
+            if ( !Helper.IsValid( materialList ) )
             {
-                await Helper.Wait( 1.0 );
+                materialList = new Dictionary< string, List< Texture2D > >();
             }
+
+            if ( !materialList.ContainsKey( directoryPath ) )
+            {
+                materialList.Add( directoryPath, GetTexturesInPath( directoryPath ) );
+            }
+
+            if ( !Helper.IsValid( windowInstance ) )
+            {
+                windowInstance = GetWindow< MaterialWindowSelector >( "Material Selector Window" );
+                windowInstance.minSize = new Vector2( 1060, 800 );
+                windowInstance.maxSize = new Vector2( 1060, 800 );
+            }
+        }
+
+        private static List< Texture2D > GetTexturesInPath( string path )
+        {
+            List< Texture2D > list = new List< Texture2D >();
+
+            var info = new DirectoryInfo( path );
+            var fileInfo = info.GetFiles();
+
+            foreach ( var file in fileInfo )
+            {
+                if ( file.Extension.ToLower() != ".dds" )
+                    continue;
+
+                var assetPath = $"{Materials.GetAssetPath( path )}/{file.Name}";
+                Texture2D texture = AssetDatabase.LoadAssetAtPath< Texture2D >( assetPath );
+
+                if ( !Helper.IsValid( texture ) )
+                    continue;
+
+                list.Add( texture );
+            }
+
+            return list;
         }
 
         private void OnGUI()
         {
-            WindowUtility.WindowUtility.CreateTextInfoCentered( $"\"{materialName}\" Albedo texture not found, please select the texture ({min}/{max} checked)", "", 0, 20 );
-
-            scroll = EditorGUILayout.BeginScrollView( scroll );
+            int remainingTexture = materialList.Count;
 
             GUILayout.BeginVertical();
 
-            foreach ( var texture in ddsTextures )
+            WindowUtility.WindowUtility.CreateTextInfoCentered( $"Model Queued: {remainingTexture}" );
+
+            WindowUtility.WindowUtility.GetEditorWindowSize( windowInstance );
+
+            scroll = EditorGUILayout.BeginScrollView( scroll );
+
+            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
+
+            int loopLimit = Math.Min( remainingTexture, 10 ); // Show only 10 maximum textures settings for performances
+
+            for ( int i = 0; i < loopLimit; i++ )
             {
-                string textureName = Path.GetFileName( texture.Key );
+                string path = materialList.Keys.ElementAt( i );
 
-                Texture2D preview = AssetPreview.GetAssetPreview( texture.Value );
+                string textureName = Path.GetFileNameWithoutExtension( path );
 
-                int previewWidth, previewHeight;
+                int idx = 0;
+                GUILayout.BeginVertical( "box" );
 
-                if ( Helper.IsValid( preview ) )
-                {
-                    previewWidth = preview.width;
-                    previewHeight = preview.height;
-                }
-                else
-                {
-                    previewWidth = 100;
-                    previewHeight = 100;
-                }
+                WindowUtility.WindowUtility.CreateTextInfoCentered( $"{textureName}" );
 
                 GUILayout.BeginHorizontal();
 
-                if ( GUILayout.Button( textureName.Replace( ".dds", "" ), GUILayout.Height( previewHeight ) ) )
+                foreach ( Texture2D texture in materialList[path] )
                 {
-                    if ( Helper.MoveFile( $"{UnityInfo.currentDirectoryPath}/{texture.Key.Replace( "\\", "/" )}", $"{Materials.materialDirectory}/{textureName}".Replace( "\\", "/" ), false ) )
+                    if ( idx % 4 == 0 )
                     {
-                        Materials.MaterialData.MaterialList.Add
-                        (
-                            new MaterialClass()
-                            {
-                                Name = materialName,
-                                Path = Materials.GetAssetPath( $"{Materials.materialDirectory}/{textureName}" )
-                            }
-                        );
-
-                        if ( Helper.IsValid( windowInstance ) )
-                        {
-                            windowInstance.Close();
-                            windowInstance = null;
-                        }
-
-                        Materials.SaveMaterialData();
-
                         GUILayout.EndHorizontal();
-                        EditorGUILayout.EndScrollView();
-                        GUILayout.EndVertical();
+                        GUILayout.BeginHorizontal();
                     }
-                }
 
-                if ( Helper.IsValid( preview ) )
-                {
-                    GUILayout.Label( preview, GUILayout.Width( previewWidth ), GUILayout.Height( previewHeight ) );
+                    GUIContent buttonContent = new GUIContent( texture );
+
+                    if ( GUILayout.Button( buttonContent, GUILayout.Width( scale ), GUILayout.Height( scale ) ) )
+                    {
+                        if ( Event.current.button == 1 ) // Right click
+                        {
+                            MaterialManagerPreview.ShowPreview( texture );
+                        }
+                        else if ( Event.current.button == 0 ) // Left click
+                        {
+                            string filePath = $"{UnityInfo.currentDirectoryPath}/{AssetDatabase.GetAssetPath( texture )}";
+                            string fileName = Path.GetFileName( filePath );
+
+                            // #TOFIX
+                            if ( Helper.MoveFile( filePath, $"{Materials.materialDirectory}/{fileName}", false ) )
+                            {
+                                Materials.MaterialData.RemoveMaterial( textureName );
+
+                                Materials.MaterialData.Add
+                                (
+                                    new MaterialClass()
+                                    {
+                                        Name = textureName,
+                                        Path = Materials.GetAssetPath( $"{Materials.materialDirectory}/{fileName}" )
+                                    }
+                                );
+
+                                Materials.SaveMaterialData();
+
+                                GUILayout.EndHorizontal();
+                                GUILayout.EndVertical();
+                                EditorGUILayout.EndScrollView();
+                                GUILayout.EndVertical();
+
+                                materialList.Remove( path );
+
+                                MaterialManagerWindow.Refresh();
+
+                                //Helper.DeleteDirectory( $"{Path.GetDirectoryName( path ).Replace( "\\", "/" )}/{textureName}" );
+
+                                return;
+                            }
+                        }
+                    }
+
+                    idx++;
                 }
 
                 GUILayout.EndHorizontal();
+
+                if ( GUILayout.Button( "Ignore Texture", buttonStyle ) )
+                {
+                    materialList.Remove( path );
+                }
+
+                GUILayout.EndVertical();
             }
 
             EditorGUILayout.EndScrollView();
 
             GUILayout.EndVertical();
-
-            WindowUtility.WindowUtility.FlexibleSpace();
-
-            GUILayout.BeginHorizontal();
-
-            if ( GUILayout.Button( "Ignore Texture" ) )
-            {
-                if ( Helper.IsValid( windowInstance ) )
-                {
-                    windowInstance.Close();
-                    windowInstance = null;
-                }
-            }
-
-            if ( GUILayout.Button( "Exit", GUILayout.Width( 100 ) ) )
-            {
-                Materials.checkNonAlbedoTexture = false;
-
-                if ( Helper.IsValid( windowInstance ) )
-                {
-                    windowInstance.Close();
-                    windowInstance = null;
-                }
-            }
-
-            GUILayout.EndHorizontal();
-
-            WindowUtility.WindowUtility.Space( 4f );
-        }
-
-        private static async Task RefreshMaterialWindow( string path )
-        {
-            ddsTextures.Clear();
-
-            if ( !Directory.Exists( path ) || string.IsNullOrEmpty( path ) )
-                return;
-
-            var info = new DirectoryInfo( path );
-            var fileInfo = info.GetFiles();
-
-            int min = 1; int max = fileInfo.Count(); float progress = 0.0f;
-
-            foreach ( var file in fileInfo )
-            {
-                if ( file.Extension.ToLower() == ".dds" )
-                {
-                    var assetPath = $"{Materials.GetAssetPath( path )}/{file.Name}";
-                    var texture = AssetDatabase.LoadAssetAtPath< Texture2D >( assetPath );
-
-                    if ( Helper.IsValid( texture ) )
-                    {
-                        ddsTextures.Add( assetPath, texture );
-                    }
-                }
-
-                min++; progress += 1.0f / max;
-            }
-
-            await Helper.Wait();
         }
     }
 
@@ -600,7 +597,7 @@ namespace LibrarySorter
 
                 if ( GUILayout.Button( $"ReImport {texture.Key}", buttonStyle, GUILayout.Height( scale / 2 ) ) )
                 {
-                    
+                    ReImportMaterial( texture.Key );
                 }
 
                 GUILayout.EndVertical();
@@ -622,14 +619,21 @@ namespace LibrarySorter
 
         private static async void ReImportMaterial( string materialName )
         {
+            if ( LegionExporting.GetValidRpakPaths() )
+            {
+                Helper.Ping( "No valid path for LegionPlus." );
+                return;
+            }
+
             List< string > singleMaterialList = new List< string > { materialName };
 
-            await LegionExporting.ExtractModelFromLegion( materialName );
+            // #TOFIX
+            //await LegionExporting.ExtractModelFromLegion( materialName );
 
-            await Materials.AppendNewTexture( singleMaterialList );
+            Materials.AppendNewTexture( singleMaterialList, true );
         }
 
-        private static void Refresh()
+        internal static void Refresh()
         {
             texturesDictionary = LoadTextures();
         }

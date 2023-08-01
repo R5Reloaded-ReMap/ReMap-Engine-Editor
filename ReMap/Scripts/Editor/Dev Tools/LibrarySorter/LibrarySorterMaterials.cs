@@ -163,6 +163,8 @@ namespace LibrarySorter
 
                 await AppendNewTexture( missingMaterialList );
 
+                Helper.DeleteDirectory( extractedMaterialDirectory, false, false );
+
                 //MoveMaterials( missingMaterialList );
             }
 
@@ -177,7 +179,7 @@ namespace LibrarySorter
 
             int i = 0; int j = directories.Length;
 
-            await CheckDXT1Format( directories );
+            CheckDXT1Format( directories );
 
             foreach ( string materialDir in directories )
             {
@@ -218,7 +220,7 @@ namespace LibrarySorter
             }
         }
 
-        internal static async Task CheckDXT1Format( string[] directories )
+        internal static async void CheckDXT1Format( string[] directories )
         {
             int dirIdx = 0; 
             int dirCount = directories.Length; 
@@ -249,8 +251,6 @@ namespace LibrarySorter
 
             try
             {
-                EditorUtility.DisplayProgressBar( $"DXT1 Format Checker", $"Processing... ({dirIdx}/{dirCount}) => ({fileIdx}/{fileCount})", progress );
-
                 if ( file.Extension.ToLower() == ".dds" && !TextureConverter.IsDXT1( $"{path}/{file.Name}" ) )
                 {
                     await TextureConverter.ConvertDDSToDXT1( $"{path}/{file.Name}" );

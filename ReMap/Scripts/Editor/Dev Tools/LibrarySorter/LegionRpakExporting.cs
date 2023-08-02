@@ -134,7 +134,7 @@ namespace LibrarySorter
 
                 #if RMAPDEV
                     process.OutputDataReceived += ( sender, args ) => Helper.Ping( "LegionPlus [O] =>", args.Data );
-                    process.ErrorDataReceived +=  ( sender, args ) => Helper.Ping( "LegionPlus [E] =>", args.Data );
+                    process.ErrorDataReceived  += ( sender, args ) => Helper.Ping( "LegionPlus [E] =>", args.Data );
                 #endif
 
                 process.Start();

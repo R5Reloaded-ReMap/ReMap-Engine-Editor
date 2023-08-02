@@ -173,6 +173,10 @@ namespace LibrarySorter
         static Vector2 scroll = Vector2.zero;
         
         static int scale = 256;
+        static int page = 0;
+        static int itemsPerPage = 20;
+        static string search = "";
+
         public static void Init()
         {
             GetWindow< MaterialManagerWindow >( "Material Manager" );
@@ -185,23 +189,26 @@ namespace LibrarySorter
 
         private void OnGUI()
         {
+            GUILayout.BeginHorizontal( "box" );
+
+            WindowUtility.WindowUtility.CreateTextField( ref search, 0, 20 );
+            WindowUtility.WindowUtility.CreateButton( "Page-", "", () => { if ( page > 0 ) page--; }, 100, 20 );
+            WindowUtility.WindowUtility.CreateButton( "Page+", "", () => { if ( ( page * itemsPerPage ) < texturesDictionary.Count ) page++; }, 100, 20 );
+
+            GUILayout.EndHorizontal();
+
             scroll = EditorGUILayout.BeginScrollView( scroll );
 
             GUILayout.BeginVertical();
 
-            int i = 0;
+            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            foreach ( var texture in texturesDictionary )
+            int loopLimit = Math.Min(texturesDictionary.Count, (page * itemsPerPage) + itemsPerPage);
+
+            for ( int i = page * itemsPerPage; i < loopLimit; i++ )
             {
-                if ( i == 40 )
-                {
-                    GUILayout.EndVertical();
-                    EditorGUILayout.EndScrollView();
-                    return;
-                }
-
-                GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-                buttonStyle.alignment = TextAnchor.MiddleCenter;
+                var texture = texturesDictionary.ElementAt( i );
 
                 GUIContent buttonContent = new GUIContent( texture.Value );
 
@@ -245,7 +252,7 @@ namespace LibrarySorter
 
                 GUILayout.EndVertical();
 
-                GUILayout.EndHorizontal(); i++;
+                GUILayout.EndHorizontal();
             }
 
             EditorGUILayout.EndScrollView();

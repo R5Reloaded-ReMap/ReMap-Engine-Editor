@@ -29,9 +29,9 @@ namespace LibrarySorter
         {
             var path = EditorUtility.OpenFolderPanel("Rpak Folder", "", "");
 
-            List<string> rpakFiles = new List<string>();
+            List< string > rpakFiles = new List< string >();
 
-            foreach ( string rpakPath in Directory.GetFiles(path) )
+            foreach ( string rpakPath in Directory.GetFiles( path ) )
             {
                 if ( !IsValidRpakFile( rpakPath ) ) continue;
 
@@ -55,18 +55,18 @@ namespace LibrarySorter
                 startInfo.Arguments = arguments;
                 startInfo.UseShellExecute = false;
 
-                using ( Process process = new Process())
+                using ( Process process = new Process() )
                 {
                     process.StartInfo = startInfo;
                     process.StartInfo.CreateNoWindow = true;
                     process.Start();
 
                     // Wait for the process to exit
-                    await Task.Run(() => process.WaitForExit());
+                    await Task.Run( () => process.WaitForExit() );
 
                     // Update progress bar
                     progress += 1.0f / fileTotalIdx;
-                    EditorUtility.DisplayProgressBar($"Parsing Rpak Files {fileIdx++}/{fileTotalIdx}", $"Processing {Path.GetFileName(rpakPath)}", progress);
+                    EditorUtility.DisplayProgressBar( $"Parsing Rpak Files {fileIdx++}/{fileTotalIdx}", $"Processing {Path.GetFileName( rpakPath )}", progress );
                 }
 
                 string exportedFilePath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionPlusExportedFiles}/lists/{Path.GetFileNameWithoutExtension(rpakPath)}.txt";

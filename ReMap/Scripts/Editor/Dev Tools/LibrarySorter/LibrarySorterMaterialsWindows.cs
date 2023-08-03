@@ -204,7 +204,7 @@ namespace LibrarySorter
             GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            int loopLimit = Math.Min(texturesDictionary.Count, (page * itemsPerPage) + itemsPerPage);
+            int loopLimit = Math.Min( texturesDictionary.Count, ( page * itemsPerPage ) + itemsPerPage );
 
             for ( int i = page * itemsPerPage; i < loopLimit; i++ )
             {
@@ -224,8 +224,8 @@ namespace LibrarySorter
 
                 if ( GUILayout.Button( $"Remove {texture.Key}", buttonStyle, GUILayout.Height( scale / 2 ) ) )
                 {
-                    materialData.RemoveMaterial( texture.Key );
-                    Materials.SaveMaterialData( materialData );
+                    Materials.MaterialData.RemoveMaterial( texture.Key );
+                    Materials.SaveMaterialData();
                     Refresh();
 
                     Helper.DeleteFile( path );
@@ -270,8 +270,11 @@ namespace LibrarySorter
 
             List< string > singleMaterialList = new List< string > { materialName };
 
-            // #TOFIX
-            //await LegionExporting.ExtractModelFromLegion( materialName );
+            EditorUtility.DisplayProgressBar( $"Material Manager", $"Try Exporting \"{materialName}\"...", 0.0f );
+
+            await LegionExporting.ExtractModelFromLegion( materialName );
+
+            EditorUtility.ClearProgressBar();
 
             Materials.AppendNewTexture( singleMaterialList, true );
         }
@@ -285,17 +288,25 @@ namespace LibrarySorter
         {
             Dictionary< string, Texture2D > textureToLoad = new Dictionary< string, Texture2D >();
 
-            materialData = Materials.GetMaterialData();
+            Materials.MaterialData = Materials.GetMaterialData();
 
-            foreach ( MaterialClass material in materialData.MaterialList )
+            int min = 0; int max = Materials.MaterialData.MaterialList.Count; float progress = 0.0f;
+
+            foreach ( MaterialClass material in Materials.MaterialData.MaterialList )
             {
+                EditorUtility.DisplayProgressBar( $"Material Manager ({min++}/{max})", $"Processing... {material.Name}", progress );
+
                 Texture2D texture = AssetDatabase.LoadAssetAtPath< Texture2D >( material.Path );
+
+                progress += 1.0f / max;
 
                 if ( !Helper.IsValid( texture ) || textureToLoad.ContainsKey( material.Name ) )
                     continue;
 
                 textureToLoad.Add( material.Name, texture );
             }
+
+            EditorUtility.ClearProgressBar();
 
             return textureToLoad;
         }

@@ -26,7 +26,7 @@ namespace LibrarySorter
 
             Dictionary< string, string > missingModelList = new Dictionary< string, string >();
 
-            foreach ( string modelName in LibrarySorterWindow.all_model.Data )
+            foreach ( string modelName in RpakManagerWindow.FindAllModel().Data )
             {
                 string lod0Name = Path.GetFileNameWithoutExtension( modelName );
 
@@ -36,8 +36,10 @@ namespace LibrarySorter
                 if ( !HasValidName( lod0Name ) )
                     continue;
 
-                if ( !missingModelList.ContainsKey( modelName ) )
+                if ( missingModelList.ContainsKey( modelName ) )
                     continue;
+
+                Helper.Ping( modelName );
 
                 missingModelList.Add( modelName, lod0Name );
             }
@@ -60,8 +62,11 @@ namespace LibrarySorter
                 }
             }
 
-            legionArgument.Remove( legionArgument.Length - 1, 1 );
-            legionArguments.Add( legionArgument.ToString() );
+            if ( legionArgument.Length > 1 )
+            {
+                legionArgument.Remove( legionArgument.Length - 1, 1 );
+                legionArguments.Add( legionArgument.ToString() );
+            }
 
             string loading = ""; int loadingCount = 0;
             int min = 1; int max = legionArguments.Count;
@@ -81,9 +86,9 @@ namespace LibrarySorter
                     await Helper.Wait( 1.0 );
                 }
 
-                min++;
+                await MoveModels( missingModelList );
 
-                MoveModels( missingModelList );
+                min++;
             }
 
             Helper.DeleteDirectory( extractedModelDirectory, false, false );
@@ -286,11 +291,13 @@ namespace LibrarySorter
             return returnedVector;
         }
 
-        internal static void MoveModels( Dictionary< string, string > checker )
+        internal static async Task MoveModels( Dictionary< string, string > checker )
         {
             foreach ( string modelDir in Directory.GetDirectories( extractedModelDirectory ) )
             {
                 string modelName = Path.GetFileName( modelDir );
+
+                EditorUtility.DisplayProgressBar( $"Legion Extraction", $"Moving File '{modelDir}'", 0.0f );
 
                 if ( !checker.ContainsValue( modelName ) )
                     continue;
@@ -304,7 +311,7 @@ namespace LibrarySorter
                     if ( !textureName.Contains( "0x" ) && !textureName.Contains( "_albedoTexture" ) )
                         continue;
 
-                    Helper.MoveFile( texture, $"{modelDirectory}/{textureName}", false );
+                    Helper.MoveFile( texture, $"{Materials.materialDirectory}/{textureName}", false );
                 }
 
                 Directory.Delete( modelDir, true );

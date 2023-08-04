@@ -31,12 +31,9 @@ namespace LibrarySorter
                 materialList.Add( directoryPath, GetTexturesInPath( directoryPath ) );
             }
 
-            if ( !Helper.IsValid( windowInstance ) )
-            {
-                windowInstance = GetWindow< MaterialWindowSelector >( "Material Selector Window" );
-                windowInstance.minSize = new Vector2( 1060, 800 );
-                windowInstance.maxSize = new Vector2( 1060, 800 );
-            }
+            windowInstance = GetWindow< MaterialWindowSelector >( "Material Selector Window" );
+            windowInstance.minSize = new Vector2( 1060, 800 );
+            windowInstance.maxSize = new Vector2( 1060, 800 );
         }
 
         private static List< Texture2D > GetTexturesInPath( string path )

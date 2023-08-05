@@ -420,13 +420,13 @@ namespace CodeViews
             {
                 case ConfirmationType.ERROR:
                     ReMapConsole.Log( $"[LiveCode] Game not found", ReMapConsole.LogType.Error );
-                    InfoMessage.AddToQueueMessage( 1, "Game not found !", 6, true, Color.red );
+                    CodeViewsWindow.infoList[ 1 ].AddToQueueMessage( "LiveMap_GameNotFound", "Game not found !", 6, true, Color.red );
                     await Task.Delay( 1000 * 6 ); // Show the message while 6 seconds
                     break;
 
                 case ConfirmationType.OPTIMAL:
                     SendCommands();
-                    InfoMessage.AddToQueueMessage( 1, $"Sending {CodeViewsWindow.SendedEntityCount} Objects to the game", 2, true, Color.white );
+                    CodeViewsWindow.infoList[ 1 ].AddToQueueMessage( "LiveMap_SendCompleted", $"Sending {CodeViewsWindow.SendedEntityCount} Objects to the game", 2, true, Color.white );
                     await Task.Delay( 1000 * 2 ); // Show the message while 2 seconds
                 break;
             }

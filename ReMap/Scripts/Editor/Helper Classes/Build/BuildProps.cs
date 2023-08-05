@@ -226,6 +226,12 @@ namespace Build
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
 
+                if ( !libraryData.IsR5ReloadedModels( model ) )
+                {
+                    CodeViews.CodeViewsWindow.NotExitingModel++;
+                    continue;
+                }
+
                 AppendCode( ref code, $"    CreateClientSidePropDynamic( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, $\"{model}\"" );
             }
 

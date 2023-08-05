@@ -46,7 +46,7 @@ namespace CodeViews
 
         private static string[] fileInfo = new string[4];
 
-        private static List< InfoMessage > infoList = InfoMessage.CreateInfoSerialized( 2 );
+        internal static List< InfoMessage > infoList = InfoMessage.CreateInfoSerialized( 2 );
 
         // Menus
         // Show / Hide Settings Menu
@@ -779,7 +779,7 @@ namespace CodeViews
 
             functionName = Helper.ReplaceBadCharacters( functionName );
 
-            InfoMessage.SetInfoMessage( 0, $" // Generating code...", true );
+            infoList[ 0 ].SetInfoMessage( $" // Generating code...", true );
 
             CodeViewsMenu.VerifyGenerateObjects();
 
@@ -793,7 +793,13 @@ namespace CodeViews
 
             if ( currentPage + 1 > maxPage ) currentPage = maxPage - 1;
 
-            InfoMessage.SetInfoMessage( 0, $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", true, SetCorrectColor( EntityCount ) );
+            infoList[ 0 ].SetInfoMessage( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", true, SetCorrectColor( EntityCount ) );
+
+            if ( NotExitingModel != 0 )
+            {
+                infoList[ 1 ].RemoveToQueue( "NotExitingModelMessage" );
+                infoList[ 1 ].AddToQueueMessage( "NotExitingModelMessage", $"{NotExitingModel} Models don't exist and are not generated", 6, true, new Color( 254, 156, 84 ) );
+            }
         }
 
         private static string SetCorrectEntityLabel( int count )
@@ -879,9 +885,9 @@ namespace CodeViews
 
     internal class InfoMessage
     {
-        private static Dictionary< int, InfoMessage > infoDictionary = new Dictionary< int, InfoMessage >();
+         public static readonly int simultaneousDisplay = 2;
 
-        public static readonly int simultaneousDisplay = 2;
+        public string name = "InfoMessage";
 
         public string message = "";
         public bool bold = false;
@@ -894,43 +900,53 @@ namespace CodeViews
 
         public static List< InfoMessage > CreateInfoSerialized( int num )
         {
-            int actualCount = infoDictionary.Count;
-
             List< InfoMessage > list = new List< InfoMessage >();
 
-            for ( int i = actualCount; i < actualCount + num; i++ )
+            for ( int i = 0; i < num; i++ )
             {
-                InfoMessage infoMessage = new InfoMessage();
-                infoDictionary.Add( i, infoMessage );
-                list.Add( infoMessage );
+                list.Add( new InfoMessage() );
             }
 
             return list;
         }
 
-        public static void SetInfoMessage( int idx, string msg, bool bold = false, Color color = default )
+        public void SetInfoMessage( string msg, bool bold = false, Color color = default )
         {
-            InfoMessage update = infoDictionary[ idx ];
-            update.message = msg;
-            update.bold = bold;
-            update.color = color;
+            this.message = msg;
+            this.bold = bold;
+            this.color = color;
         }
 
-        public static void AddToQueueMessage( int idx, string msg, int duration, bool bold = false, Color color = default )
+        public void AddToQueueMessage( string name, string msg, int duration, bool bold = false, Color color = default )
         {
+            if ( this.Exists( name ) )
+                return;
+
             InfoMessage infoMessage = new InfoMessage();
+            infoMessage.name = name;
             infoMessage.message = msg;
             infoMessage.bold = bold;
             infoMessage.duration = duration;
             infoMessage.color = color;
 
-            if ( infoDictionary[ idx ].QueueIsEmpty() )
+            if ( this.QueueIsEmpty() )
             {
-                infoDictionary[ idx ].message = infoMessage.message;
+                this.message = infoMessage.message;
                 infoMessage.showDuration = DateTime.Now.AddSeconds( duration );
             }
 
-            infoDictionary[ idx ].queue.Add( infoMessage );
+            this.queue.Add( infoMessage );
+        }
+
+        public void RemoveToQueue( string name )
+        {
+            for ( int i = 0; i < this.queue.Count; i++ )
+            {
+                if ( this.queue[ i ].name == name )
+                {
+                    this.queue.RemoveAt( i );
+                }
+            }
         }
 
         public void ShowMessage()
@@ -941,11 +957,11 @@ namespace CodeViews
             }
             else if ( !this.QueueIsEmpty() )
             {
-                if ( DateTime.Now > this.queue[0].showDuration )
+                if ( this.QueueCount() >= 1 && DateTime.Now > this.queue[0].showDuration )
                 {
                     this.queue.RemoveAt( 0 );
                     this.MessageClear();
-
+        
                     if ( this.QueueIsEmpty() )
                         return;
 
@@ -984,6 +1000,11 @@ namespace CodeViews
         public int QueueCount()
         {
             return this.queue.Count;
+        }
+
+        public bool Exists( string name )
+        {
+            return this.queue.Any( m => m.name == name );
         }
     }
 }

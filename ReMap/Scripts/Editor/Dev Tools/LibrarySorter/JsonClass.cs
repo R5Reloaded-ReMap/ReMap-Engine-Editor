@@ -10,6 +10,26 @@ namespace LibrarySorter
     public class LibraryData
     {
         public List< RpakData > RpakList;
+
+        public RpakData AllModels()
+        {
+            return GetRpakData( RpakManagerWindow.allModelsDataName );
+        }
+
+        public RpakData R5ReloadedList()
+        {
+            return GetRpakData( RpakManagerWindow.r5reloadedDataName );
+        }
+
+        public RpakData GetRpakData( string name )
+        {
+            return this.RpakList.FirstOrDefault( data => data.Name == name );
+        }
+
+        public bool IsR5ReloadedModels( string model )
+        {
+            return this.R5ReloadedList().Data.Contains( model );
+        }
     }
 
     [Serializable]
@@ -17,6 +37,8 @@ namespace LibrarySorter
     {
         public string Name;
         public List< string > Data;
+        public bool IsRetail;
+        public bool IsHidden;
         public string Update;
     }
 

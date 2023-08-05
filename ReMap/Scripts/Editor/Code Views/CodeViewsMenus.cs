@@ -417,7 +417,7 @@ namespace CodeViews
 
                 progress += 1.0f / max;
 
-                if ( CodeViewsWindow.IsHided( objectType ) )
+                if ( CodeViewsWindow.IsHidden( objectType ) )
                 {
                     Helper.ObjectsToHide[ objectType ] = false;
                     continue;

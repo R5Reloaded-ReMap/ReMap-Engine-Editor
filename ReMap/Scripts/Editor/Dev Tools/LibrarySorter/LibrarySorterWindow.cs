@@ -28,7 +28,6 @@ namespace LibrarySorter
     public class LibrarySorterWindow : EditorWindow
     {
         internal static LibraryData libraryData;
-        internal static RpakData all_model;
         internal static bool checkExist = false;
         Vector2 scrollPos = Vector2.zero;
         Vector2 scrollPosSearchPrefabs = Vector2.zero;
@@ -61,7 +60,6 @@ namespace LibrarySorter
         private void OnEnable()
         {
             libraryData = RpakManagerWindow.FindLibraryDataFile();
-            all_model = RpakManagerWindow.FindAllModel();
         }
 
         void OnGUI()
@@ -101,6 +99,9 @@ namespace LibrarySorter
                     {
                         foreach ( RpakData data in libraryData.RpakList )
                         {
+                            if ( data.IsHidden )
+                                continue;
+
                             GUILayout.BeginHorizontal();
                                 if ( WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ), 260 ) )
                                 {
@@ -523,7 +524,7 @@ namespace LibrarySorter
         {
             searchResult = new List< string >();
 
-            foreach ( string prefab in all_model.Data )
+            foreach ( string prefab in libraryData.AllModels().Data )
             {
                 if( search != "" && !prefab.Contains( search ) )
                     continue;

@@ -7,6 +7,7 @@ using UnityEngine;
 namespace WindowUtility
 {
     public delegate void FunctionRef();
+    public delegate Task FunctionRefAsync();
     public delegate Task< string > FunctionRefAsyncString();
 
     public class WindowUtility
@@ -113,14 +114,14 @@ namespace WindowUtility
             GUILayout.Space( value );
         }
 
-        internal static void SeparatorAutoWidth( EditorWindow editorWindow, float width = 0, float height = 4 )
+        internal static void SeparatorAutoWidth( EditorWindow editorWindow, float width = 0, float height = 4, Color color = default )
         {
-            Separator( ( float ) editorWindow.position.width + width, height );
+            Separator( ( float ) editorWindow.position.width + width, height, color );
         }
 
-        internal static void Separator( float width = 0, float height = 4 )
+        internal static void Separator( float width = 0, float height = 4, Color color = default )
         {
-            GUI.backgroundColor = GUI_SettingsColor;
+            GUI.backgroundColor = color != default ? color : GUI_SettingsColor;
             GUILayout.Box( "", SizeOptions( width, height ) );
             GUI.backgroundColor = Color.white;
         }

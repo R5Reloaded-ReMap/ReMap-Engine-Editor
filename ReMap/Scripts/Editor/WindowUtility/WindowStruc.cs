@@ -87,9 +87,17 @@ namespace WindowUtility
             }
         }
 
-        public void OnStartGUICallback()
+        public async void OnStartGUICallback()
         {
-            this.SubTabGUI[ GetCurrentTabIdx() ].OnStartGUI();
+            if ( Helper.IsValid( this.SubTabGUI[ GetCurrentTabIdx() ].OnStartGUI ) )
+            {
+                this.SubTabGUI[ GetCurrentTabIdx() ].OnStartGUI();
+            }
+
+            if ( Helper.IsValid( this.SubTabGUI[ GetCurrentTabIdx() ].OnStartGUIAsync ) )
+            {
+                await this.SubTabGUI[ GetCurrentTabIdx() ].OnStartGUIAsync();
+            }
         }
 
         private void CommonChanges()
@@ -102,6 +110,7 @@ namespace WindowUtility
             {
                 WindowChange = true;
                 if ( Helper.IsValid( ActiveGUIStruct.OnStartGUI ) ) ActiveGUIStruct.OnStartGUI();
+                if ( Helper.IsValid( ActiveGUIStruct.OnStartGUIAsync ) ) ActiveGUIStruct.OnStartGUIAsync();
                 WindowChange = false;
             }
         }
@@ -248,6 +257,7 @@ namespace WindowUtility
         public string Name { get; set; }
         public FunctionRef[] OnGUI { get; set; }
         public FunctionRef OnStartGUI { get; set; }
+        public FunctionRefAsync OnStartGUIAsync { get; set; }
         public Dictionary< string, object > StoredInfo = new Dictionary< string, object >();
 
         public FunctionRef InitCallback { get; set; }

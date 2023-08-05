@@ -46,47 +46,50 @@ namespace CodeViews
 
         private static string[] fileInfo = new string[4];
 
+        private static List< InfoMessage > infoList = InfoMessage.CreateInfoSerialized( 2 );
+
         // Menus
         // Show / Hide Settings Menu
         internal static bool ShowSettingsMenu = false;
 
         // Menu Settings Names
-        internal static string SquirrelMenu = "SquirrelMenu";
-        internal static string SquirrelMenuShowFunction = "SquirrelMenuFunction";
-        internal static string SquirrelMenuShowPrecacheCode = "SquirrelMenuPrecache";
-        internal static string SquirrelMenuShowAdditionalCode = "SquirrelMenuInBlockAdditionalCode";
+        internal static readonly string SquirrelMenu = "SquirrelMenu";
+        internal static readonly string SquirrelMenuShowFunction = "SquirrelMenuFunction";
+        internal static readonly string SquirrelMenuShowPrecacheCode = "SquirrelMenuPrecache";
+        internal static readonly string SquirrelMenuShowAdditionalCode = "SquirrelMenuInBlockAdditionalCode";
 
-        internal static string OffsetMenu = "OffsetMenu";
-        internal static string OffsetMenuOffset = "OffsetMenuOffset";
-        internal static string OffsetMenuShowOffset = "OffsetMenuShowOffset";
+        internal static readonly string OffsetMenu = "OffsetMenu";
+        internal static readonly string OffsetMenuOffset = "OffsetMenuOffset";
+        internal static readonly string OffsetMenuShowOffset = "OffsetMenuShowOffset";
 
-        internal static string SelectionMenu = "SelectionMenu";
+        internal static readonly string SelectionMenu = "SelectionMenu";
 
-        internal static string LiveCodeMenu = "LiveCodeMenu";
-        internal static string LiveCodeMenuGetApexInfo = "LiveCodeMenuGetApexInfo";
-        internal static string LiveCodeMenuRespawn = "LiveCodeMenuRespawn";
-        internal static string LiveCodeMenuTeleportation = "LiveCodeMenuTeleportation";
-        internal static string LiveCodeMenuAutoSend = "LiveCodeMenuAutoSend";
-        internal static string LiveCodeMenuAdvanced = "LiveCodeMenuAdvanced";
+        internal static readonly string LiveCodeMenu = "LiveCodeMenu";
+        internal static readonly string LiveCodeMenuGetApexInfo = "LiveCodeMenuGetApexInfo";
+        internal static readonly string LiveCodeMenuRespawn = "LiveCodeMenuRespawn";
+        internal static readonly string LiveCodeMenuTeleportation = "LiveCodeMenuTeleportation";
+        internal static readonly string LiveCodeMenuAutoSend = "LiveCodeMenuAutoSend";
+        internal static readonly string LiveCodeMenuAdvanced = "LiveCodeMenuAdvanced";
 
-        internal static string AdditionalCodeMenu = "AdditionalCodeMenu";
+        internal static readonly string AdditionalCodeMenu = "AdditionalCodeMenu";
 
-        internal static string AdvancedMenu = "AdvancedMenu";
+        internal static readonly string AdvancedMenu = "AdvancedMenu";
 
-        internal static string FullFileEntMenu = "FullFileEntMenu";
-        internal static string FullFileEntSubMenu = "FullFileEntSubMenu";
+        internal static readonly string FullFileEntMenu = "FullFileEntMenu";
+        internal static readonly string FullFileEntSubMenu = "FullFileEntSubMenu";
 
-        internal static string TipsMenu = "";
+        internal static readonly string TipsMenu = "";
 
-        internal static string DevMenu = "DevMenu";
-        internal static string DevMenuDebugInfo = "DevMenuDebugInfo";
+        internal static readonly string DevMenu = "DevMenu";
+        internal static readonly string DevMenuDebugInfo = "DevMenuDebugInfo";
         //
 
-        internal static bool GenerationIsActive = false;
+        internal static Task GenerationIsActive = Task.CompletedTask;
+        internal static Task SendingObjects = Task.CompletedTask;
 
-        public static bool SendingObjects = false;
         internal static int EntityCount = 0;
         internal static int SendedEntityCount = 0;
+        internal static int NotExitingModel = 0;
         internal static int EntFileID = 27;
         internal static Vector3 InfoPlayerStartOrigin = Vector3.zero;
         internal static Vector3 InfoPlayerStartAngles = Vector3.zero;
@@ -138,8 +141,9 @@ namespace CodeViews
                                 fileInfo = new[] { "Squirrel Server Code Export", "", $"{functionName}.nut", "nut" };
                             }
 
-                            GenerateCorrectCode( () => ScriptTab.GenerateCode() );
                             AdditionalCodeTab.AdditionalCodeInit();
+
+                            GenerationIsActive = GenerateCorrectCode( () => ScriptTab.GenerateCode() );
                         },
 
                         InitCallback = () => // Load on start
@@ -167,7 +171,7 @@ namespace CodeViews
                                 fileInfo = new[] { "Squirrel Client Code Export", "", $"CL_{functionName}.nut", "nut" };
                             }
 
-                            GenerateCorrectCode( () => ScriptClientTab.GenerateCode() );
+                            GenerationIsActive = GenerateCorrectCode( () => ScriptClientTab.GenerateCode() );
                         },
 
                         InitCallback = () => // Load on start
@@ -220,7 +224,7 @@ namespace CodeViews
                                 fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
                             }
 
-                            GenerateCorrectCode( () => DataTableTab.GenerateCode() );
+                            GenerationIsActive = GenerateCorrectCode( () => DataTableTab.GenerateCode() );
                         },
 
                         InitCallback = () => // Load on start
@@ -248,7 +252,7 @@ namespace CodeViews
                                 fileInfo = new[] { "Precache Code Export", "", $"{functionName}.nut", "nut" };
                             }
 
-                            GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
+                            GenerationIsActive = GenerateCorrectCode( () => PrecacheTab.GenerateCode() );
                         },
 
                         InitCallback = () => // Load on start
@@ -275,8 +279,8 @@ namespace CodeViews
                             {
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             }
-                            
-                            GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
+
+                            GenerationIsActive = GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
                         },
 
                         InitCallback = () => // Load on start
@@ -303,7 +307,7 @@ namespace CodeViews
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             }
 
-                            GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
+                            GenerationIsActive = GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
                         },
 
                         InitCallback = () => // Load on start
@@ -330,7 +334,7 @@ namespace CodeViews
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
                             }
 
-                            GenerateCorrectCode( () => SpawnEntTab.GenerateCode() );
+                            GenerationIsActive = GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
                         },
 
                         InitCallback = () => // Load on start
@@ -359,7 +363,7 @@ namespace CodeViews
                                 fileInfo = new[] { "Camera Path Code Export", "", $"{functionName}.nut", "nut" };
                             }
 
-                            GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
+                            GenerationIsActive = GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
                         },
 
                         InitCallback = () => // Load on start
@@ -473,7 +477,7 @@ namespace CodeViews
             }
         }
 
-        public static bool IsHided( ObjectType objectType )
+        public static bool IsHidden( ObjectType objectType )
         {
             // Check if objectType are flaged hide
             if ( Helper.GenerateIgnore.Any( o => o == objectType ) )
@@ -568,8 +572,7 @@ namespace CodeViews
 
         internal static async void SetScrollView( Vector2 scroll )
         {
-            // Hack: As long as the code generation is not finished, then do not continue the script
-            while ( GenerationIsActive ) await Task.Delay( 100 ); // 100 ms
+            while ( !GenerationIsActive.IsCompleted ) await Helper.Wait( 1 ); // 1 secondes
 
             CodeViewsWindow.scroll = scroll;
         }
@@ -581,9 +584,8 @@ namespace CodeViews
             EditorSceneManager.SaveOpenScenes();
 
             Refresh();
-
-            // Hack: As long as the code generation is not finished, then do not continue the script
-            while ( GenerationIsActive ) await Task.Delay( 100 ); // 100 ms
+            
+            await Helper.Wait( 1 ); // 1 secondes
 
             var path = EditorUtility.SaveFilePanel( fileInfo[0], fileInfo[1], fileInfo[2], fileInfo[3] );
 
@@ -650,7 +652,7 @@ namespace CodeViews
                         SettingsMenuButton();
                 GUILayout.EndHorizontal();
 
-                if ( maxLength && !GenerationIsActive )
+                if ( maxLength && GenerationIsActive.IsCompleted )
                 {
                     itemStart = currentPage * maxBuildLine;
                     itemEnd = itemStart + maxBuildLine;
@@ -676,24 +678,12 @@ namespace CodeViews
         {
             GUILayout.BeginHorizontal();
 
-                if ( GenerationIsActive )
-                {
-                    GUILayout.Label( $" // Generating code...", EditorStyles.boldLabel );
-                }
-                else
-                {
-                    SetCorrectColor( EntityCount );
-                    GUILayout.Label( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", EditorStyles.boldLabel );
-                    GUI.contentColor = Color.white;
-                }
+                infoList[ 0 ].ShowMessage();
 
-                if ( SendingObjects )
+                if ( infoList[ 1 ].HasMessage() && infoList[ 0 ].HasMessage() )
                 {
-                    if ( LiveMap.ApexProcessIsActive() )
-                    {
-                        GUILayout.Label( $"|| Sending {SendedEntityCount} Objects to the game", EditorStyles.boldLabel );
-                    }
-                    else GUILayout.Label( $"|| Game not found !", EditorStyles.boldLabel );
+                    WindowUtility.WindowUtility.Separator( 2, 12 );
+                    infoList[ 1 ].ShowMessage();
                 }
 
             GUILayout.EndHorizontal();
@@ -775,7 +765,7 @@ namespace CodeViews
             windowStruct.ReStoreInfo( ref functionName, "FuncNameBase" );
         }
 
-        private static async void GenerateCorrectCode( FunctionRefAsyncString functionRef )
+        private static async Task GenerateCorrectCode( FunctionRefAsyncString functionRef )
         {
             EditorUtility.DisplayProgressBar( $"Generating Code", $"Getting objects in scene...", 0.0f );
                 Helper.GetObjectsInScene();
@@ -783,9 +773,13 @@ namespace CodeViews
 
             EntityCount = 0; code = "";
 
+            NotExitingModel = 0;
+
+            LibrarySorter.RpakManagerWindow.libraryData = LibrarySorter.RpakManagerWindow.FindLibraryDataFile();
+
             functionName = Helper.ReplaceBadCharacters( functionName );
 
-            GenerationIsActive = true;
+            InfoMessage.SetInfoMessage( 0, $" // Generating code...", true );
 
             CodeViewsMenu.VerifyGenerateObjects();
 
@@ -799,7 +793,7 @@ namespace CodeViews
 
             if ( currentPage + 1 > maxPage ) currentPage = maxPage - 1;
 
-            GenerationIsActive = false;
+            InfoMessage.SetInfoMessage( 0, $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", true, SetCorrectColor( EntityCount ) );
         }
 
         private static string SetCorrectEntityLabel( int count )
@@ -813,15 +807,15 @@ namespace CodeViews
             else return "Status: Warning! Game could crash!";
         }
 
-        private static void SetCorrectColor( int count )
+        private static Color SetCorrectColor( int count )
         {
             if ( count < greenPropCount )
-                GUI.contentColor = Color.green;
+                return Color.green;
 
             else if ( count < yellowPropCount ) 
-                GUI.contentColor = Color.yellow;
+                return Color.yellow;
 
-            else GUI.contentColor = Color.red;
+            else return Color.red;
         }
 
         internal static void AppendAdditionalCode( AdditionalCodeType type, ref StringBuilder code, string codeToAdd, bool verify = true )
@@ -880,6 +874,116 @@ namespace CodeViews
         internal static bool AutoSendEnable()
         {
             return MenuInit.IsEnable( LiveCodeMenuAutoSend );
+        }
+    }
+
+    internal class InfoMessage
+    {
+        private static Dictionary< int, InfoMessage > infoDictionary = new Dictionary< int, InfoMessage >();
+
+        public static readonly int simultaneousDisplay = 2;
+
+        public string message = "";
+        public bool bold = false;
+        public int duration = 0;
+        public Color color = Color.white;
+
+        public DateTime showDuration = DateTime.Now;
+
+        private List< InfoMessage > queue = new List< InfoMessage >();
+
+        public static List< InfoMessage > CreateInfoSerialized( int num )
+        {
+            int actualCount = infoDictionary.Count;
+
+            List< InfoMessage > list = new List< InfoMessage >();
+
+            for ( int i = actualCount; i < actualCount + num; i++ )
+            {
+                InfoMessage infoMessage = new InfoMessage();
+                infoDictionary.Add( i, infoMessage );
+                list.Add( infoMessage );
+            }
+
+            return list;
+        }
+
+        public static void SetInfoMessage( int idx, string msg, bool bold = false, Color color = default )
+        {
+            InfoMessage update = infoDictionary[ idx ];
+            update.message = msg;
+            update.bold = bold;
+            update.color = color;
+        }
+
+        public static void AddToQueueMessage( int idx, string msg, int duration, bool bold = false, Color color = default )
+        {
+            InfoMessage infoMessage = new InfoMessage();
+            infoMessage.message = msg;
+            infoMessage.bold = bold;
+            infoMessage.duration = duration;
+            infoMessage.color = color;
+
+            if ( infoDictionary[ idx ].QueueIsEmpty() )
+            {
+                infoDictionary[ idx ].message = infoMessage.message;
+                infoMessage.showDuration = DateTime.Now.AddSeconds( duration );
+            }
+
+            infoDictionary[ idx ].queue.Add( infoMessage );
+        }
+
+        public void ShowMessage()
+        {
+            if ( this.QueueIsEmpty() && this.HasMessage() )
+            {
+                InternalShowMessage( this );
+            }
+            else if ( !this.QueueIsEmpty() )
+            {
+                if ( DateTime.Now > this.queue[0].showDuration )
+                {
+                    this.queue.RemoveAt( 0 );
+                    this.MessageClear();
+
+                    if ( this.QueueIsEmpty() )
+                        return;
+
+                    this.message = this.queue[0].message;
+                    this.queue[0].showDuration = DateTime.Now.AddSeconds( this.queue[0].duration );
+                }
+            
+                InternalShowMessage( this.queue[0] );
+            }
+        }
+
+        private void InternalShowMessage( InfoMessage infoMessage )
+        {
+            GUI.contentColor = infoMessage.color;
+
+            GUILayout.Label( infoMessage.message, infoMessage.bold ? EditorStyles.boldLabel : GUI.skin.label );
+
+            GUI.contentColor = Color.white;
+        }
+
+        public bool HasMessage()
+        {
+            return !string.IsNullOrEmpty( this.message );
+        }
+
+        public void MessageClear()
+        {
+            this.message = "";
+        }
+
+        public bool QueueIsEmpty()
+        {
+            return this.queue.Count == 0;
+        }
+
+        public int QueueCount()
+        {
+            return this.queue.Count;
         }
     }
 }

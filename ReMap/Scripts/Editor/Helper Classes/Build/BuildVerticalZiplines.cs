@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 using static Build.Build;
+using static LibrarySorter.RpakManagerWindow;
 
 namespace Build
 {
@@ -194,7 +195,12 @@ namespace Build
             string array = "[ ";
             for( int i = 0 ; i < objArray.Length ; i++ )
             {
-                array += $"$\"{UnityInfo.GetApexModelName( "mdl/" + objArray[i].name, true )}\"";
+                string model = UnityInfo.GetApexModelName( "mdl/" + objArray[i].name, true );
+
+                if ( !libraryData.IsR5ReloadedModels( model ) )
+                    model = "mdl/props/global_access_panel_button/global_access_panel_button_console_w_stand.rmdl";
+
+                array += $"$\"{model}\"";
 
                 if ( i != objArray.Length - 1 ) array += ", ";
             }

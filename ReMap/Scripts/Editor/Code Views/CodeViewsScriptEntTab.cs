@@ -30,7 +30,7 @@ namespace CodeViews
             () => CodeViewsMenu.OptionalTextInfo( "Info Player Start", "Settings of where to spawn the player", null, MenuType.Small ),
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartOrigin, "- Origin", "Set origin to \"Info Player Start\"", null, MenuType.Small ),
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.InfoPlayerStartAngles, "- Angles", "Set angles to \"Info Player Start\"", null, MenuType.Small ),
-            () => CodeViewsMenu.OptionalButton( "Get Player Origin", "Change origin from player position\nif you have your game on", () => LiveMap.GetApexPlayerInfo( PageType.ENT ), !CodeViewsWindow.SendingObjects, MenuType.Medium )
+            () => CodeViewsMenu.OptionalButton( "Get Player Origin", "Change origin from player position\nif you have your game on", () => LiveMap.GetApexPlayerInfo( PageType.ENT ), CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Medium )
         };
 
         static FunctionRef[] OffsetMenu = new FunctionRef[]
@@ -42,7 +42,7 @@ namespace CodeViews
         {
             () => CodeViewsMenu.OptionalTextInfo( "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
-            () => CodeViewsMenu.OptionalButton( "Get Player Origin", "Change origin from player position\nif you have your game on", () => LiveMap.GetApexPlayerInfo(), !CodeViewsWindow.SendingObjects, MenuType.Medium )
+            () => CodeViewsMenu.OptionalButton( "Get Player Origin", "Change origin from player position\nif you have your game on", () => LiveMap.GetApexPlayerInfo(), CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Medium )
         };
 
         static FunctionRef[] AdvancedMenu = new FunctionRef[]

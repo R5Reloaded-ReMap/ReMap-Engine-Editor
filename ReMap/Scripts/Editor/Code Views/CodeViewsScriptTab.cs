@@ -40,22 +40,22 @@ namespace CodeViews
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuShowOffset, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Medium, "Hide Origin Offset", "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"", true ),
             () => CodeViewsMenu.OptionalTextInfo( "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
-            () => CodeViewsMenu.OptionalButton( "Get Player Origin", "Change origin from player position\nif you have your game on", () => LiveMap.GetApexPlayerInfo(), !CodeViewsWindow.SendingObjects, MenuType.Medium )
+            () => CodeViewsMenu.OptionalButton( "Get Player Origin", "Change origin from player position\nif you have your game on", () => LiveMap.GetApexPlayerInfo(), CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Medium )
         };
 
         internal static FunctionRef[] LiveCodeMenu = new FunctionRef[]
         {
-            () => CodeViewsMenu.OptionalButton( "Fast Load", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(), !CodeViewsWindow.SendingObjects, MenuType.Medium ),
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuGetApexInfo, () => { LiveMap.GetApexInfoOnSend = !LiveMap.GetApexInfoOnSend; Helper.SetUseStartingOffset( true ); }, MenuType.Medium, "Load On Player Position", "Load On Player Position", "Get the player origin before sending code", false, false, !CodeViewsWindow.SendingObjects, true ),
+            () => CodeViewsMenu.OptionalButton( "Fast Load", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(), CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Medium ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuGetApexInfo, () => { LiveMap.GetApexInfoOnSend = !LiveMap.GetApexInfoOnSend; Helper.SetUseStartingOffset( true ); }, MenuType.Medium, "Load On Player Position", "Load On Player Position", "Get the player origin before sending code", false, false, CodeViewsWindow.SendingObjects.IsCompleted, true ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuRespawn, SubLiveCodeRespawnMenu, MenuType.Medium, "Respawn Menu", "Respawn Menu", "" ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAutoSend, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Medium, "Disable Auto Send Live Map Code", "Enable Auto Send Live Map Code", "Automaticly sends live map code" ),
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAdvanced, SubLiveCodeAdvancedMenu, MenuType.Medium, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map", false, true, !CodeViewsWindow.SendingObjects )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuAdvanced, SubLiveCodeAdvancedMenu, MenuType.Medium, "Hide Advanced", "Show Advanced", "Restart your game and rewrite\nthe script to spawn your map", false, true, CodeViewsWindow.SendingObjects.IsCompleted )
         };
 
         internal static FunctionRef[] SubLiveCodeRespawnMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuTeleportation, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Disable Teleport Player To Map", "Enable Teleport Player To Map", "Automaticly teleport all players to the map when sending the code to the game" ),
-            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.ReMapTeleportToMap(), !CodeViewsWindow.SendingObjects, MenuType.Small ),
+            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.ReMapTeleportToMap(), CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Small ),
         };
 
         internal static FunctionRef[] SubLiveCodeAdvancedMenu = new FunctionRef[]

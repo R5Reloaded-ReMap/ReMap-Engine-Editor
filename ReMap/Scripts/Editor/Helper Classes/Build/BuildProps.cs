@@ -8,6 +8,7 @@ using UnityEngine;
 
 using static Build.Build;
 using static ImportExport.SharedFunction;
+using static LibrarySorter.RpakManagerWindow;
 
 namespace Build
 {
@@ -85,6 +86,12 @@ namespace Build
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
                 string scale = Helper.ReplaceComma( obj.transform.localScale.x );
+
+                if ( !libraryData.IsR5ReloadedModels( model ) )
+                {
+                    CodeViews.CodeViewsWindow.NotExitingModel++;
+                    continue;
+                }
 
                 string addToArray = script.Option != PropScriptOptions.NoOption ? $"{ArrayName[script.Option]}.append( " : "";
                 string endFunction = script.Option != PropScriptOptions.NoOption ? $" )" : "";

@@ -100,7 +100,7 @@ namespace CodeViews
             {
                 IsSending = false;
                 MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
-                SendConfirmation( ConfirmationType.ERROR );
+                CodeViewsWindow.SendingObjects = SendConfirmation( ConfirmationType.ERROR );
                 return;
             }
 
@@ -126,7 +126,7 @@ namespace CodeViews
 
             if ( MenuInit.IsEnable( CodeViewsWindow.LiveCodeMenuTeleportation ) ) RespawnPlayers();
 
-            SendConfirmation( ConfirmationType.OPTIMAL );
+            CodeViewsWindow.SendingObjects = SendConfirmation( ConfirmationType.OPTIMAL );
 
             IsSending = false;
         }
@@ -173,7 +173,7 @@ namespace CodeViews
 
             if ( !processFound )
             {
-                SendConfirmation( ConfirmationType.ERROR );
+                CodeViewsWindow.SendingObjects = SendConfirmation( ConfirmationType.ERROR );
                 return;
             }
 
@@ -181,7 +181,7 @@ namespace CodeViews
 
             if( m_hEngine == null )
             {
-                SendConfirmation( ConfirmationType.ERROR );
+                CodeViewsWindow.SendingObjects = SendConfirmation( ConfirmationType.ERROR );
                 return;
             }
 
@@ -287,7 +287,7 @@ namespace CodeViews
             {
                 IsSending = false;
                 MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
-                SendConfirmation( ConfirmationType.ERROR );
+                CodeViewsWindow.SendingObjects = SendConfirmation( ConfirmationType.ERROR );
                 GettingInfo = false;
                 return;
             }
@@ -307,7 +307,7 @@ namespace CodeViews
 
             if ( !processFound )
             {
-                SendConfirmation( ConfirmationType.ERROR );
+                CodeViewsWindow.SendingObjects = SendConfirmation( ConfirmationType.ERROR );
                 GettingInfo = false;
                 return;
             }
@@ -414,24 +414,22 @@ namespace CodeViews
             return new[] { $"[{ origin }]", $"[{ angles }]" };
         }
 
-        private static async void SendConfirmation( ConfirmationType confirmationType )
+        private static async Task SendConfirmation( ConfirmationType confirmationType )
         {
-            CodeViewsWindow.SendingObjects = true;
-
             switch ( confirmationType )
             {
                 case ConfirmationType.ERROR:
                     ReMapConsole.Log( $"[LiveCode] Game not found", ReMapConsole.LogType.Error );
+                    InfoMessage.AddToQueueMessage( 1, "Game not found !", 6, true, Color.red );
                     await Task.Delay( 1000 * 6 ); // Show the message while 6 seconds
                     break;
 
                 case ConfirmationType.OPTIMAL:
                     SendCommands();
+                    InfoMessage.AddToQueueMessage( 1, $"Sending {CodeViewsWindow.SendedEntityCount} Objects to the game", 2, true, Color.white );
                     await Task.Delay( 1000 * 2 ); // Show the message while 2 seconds
                 break;
             }
-
-            CodeViewsWindow.SendingObjects = false;
         }
 
         internal static void ReMapTeleportToMap()
@@ -444,7 +442,7 @@ namespace CodeViews
             {
                 IsSending = false;
                 MenuInit.SetBool( CodeViewsWindow.LiveCodeMenuAutoSend, false );
-                SendConfirmation( ConfirmationType.ERROR );
+                CodeViewsWindow.SendingObjects = SendConfirmation( ConfirmationType.ERROR );
                 return;
             }
 

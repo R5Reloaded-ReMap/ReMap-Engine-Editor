@@ -124,8 +124,16 @@ public class Helper
     public static readonly Dictionary< string, string > ObjectToTag = ObjectToTagDictionaryInit();
 
     // Gen Settings
-    public static readonly Dictionary< ObjectType, bool > GenerateObjects = ObjectGenerateDictionaryInit();
-    public static readonly Dictionary< ObjectType, bool > ObjectsToHide = new Dictionary< ObjectType, bool >( GenerateObjects );
+        /// <summary>
+        /// These are all the objects to display in a given page
+        /// </summary>
+        public static readonly Dictionary< ObjectType, bool > GenerateObjects = ObjectGenerateDictionaryInit();
+    
+        /// <summary>
+        /// If no object to display in 'GenerateObjects' hide the option in advanced options
+        /// </summary>
+        public static readonly Dictionary< ObjectType, bool > ObjectsToHide = new Dictionary< ObjectType, bool >( GenerateObjects );
+    //  
 
     // All ObjectType Inside This [] Will Not Be Generated
     public static ObjectType[] GenerateIgnore = new ObjectType[0];
@@ -349,16 +357,25 @@ public class Helper
     /// </summary>
     public static void FixPropTags()
     {
+        GameObject[] scene = UnityInfo.GetAllGameObjectInScene();
+
+        int min = 0; int max = scene.Length; float progress = 0.0f;
+
         //Retag All Objects
-        foreach ( GameObject go in UnityInfo.GetAllGameObjectInScene() )
+        foreach ( GameObject go in scene )
         {
             go.tag = "Untagged";
+
+            EditorUtility.DisplayProgressBar( $"Fix Prop Tags", $"Processing... ( {min++}/{max} )", progress );
 
             foreach ( string key in ObjectToTag.Keys )
             {
                 if ( go.name.Contains( key ) ) go.tag = ObjectToTag[key];
             }
+
+            progress += 1.0f / max;
         }
+        EditorUtility.ClearProgressBar();
     }
 
     public static NewDataTable BuildDataTable(string item)

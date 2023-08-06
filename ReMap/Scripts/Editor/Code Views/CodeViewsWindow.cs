@@ -784,6 +784,8 @@ namespace CodeViews
 
         private static async Task GenerateCorrectCode( FunctionRefAsyncString functionRef )
         {
+            Helper.FixPropTags();
+            
             EditorUtility.DisplayProgressBar( $"Generating Code", $"Getting objects in scene...", 0.0f );
                 Helper.GetObjectsInScene();
             EditorUtility.ClearProgressBar();

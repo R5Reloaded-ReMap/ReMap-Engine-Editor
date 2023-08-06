@@ -412,7 +412,6 @@ namespace CodeViews
                         Helper.GenerateObjects[ objectType ] = value;
                         CodeViewsWindow.Refresh();
                         
-                        GUILayout.EndHorizontal();
                         GUILayout.EndVertical();
 
                         return;
@@ -429,7 +428,7 @@ namespace CodeViews
 
             foreach ( ObjectType objectType in Helper.GenerateObjects.Keys )
             {
-                EditorUtility.DisplayProgressBar( $"Object Verification {min}/{max}", $"Processing... ({Helper.GetObjNameWithEnum( objectType )})", progress );
+                EditorUtility.DisplayProgressBar( $"Object Verification {min++}/{max}", $"Processing... ({Helper.GetObjNameWithEnum( objectType )})", progress );
 
                 progress += 1.0f / max;
 

@@ -18,7 +18,7 @@ namespace LibrarySorter
 
         internal static async Task ExtractMissingModels()
         {
-            if ( LegionExporting.GetValidRpakPaths() )
+            if ( !LegionExporting.GetValidRpakPaths() )
             {
                 Helper.Ping( "No valid path for LegionPlus." );
                 return;

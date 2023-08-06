@@ -169,9 +169,12 @@ namespace LibrarySorter
                 }
             }
 
+            if ( string.IsNullOrEmpty( ValidPathArg ) )
+                return false;
+
             ValidPathArg = $"{RpakPath}=>{ValidPathArg.TrimEnd( ',' )}";
             
-            return string.IsNullOrEmpty( ValidPathArg );
+            return !string.IsNullOrEmpty( ValidPathArg );
         }
 
         internal static void ChangeRpakPaths()

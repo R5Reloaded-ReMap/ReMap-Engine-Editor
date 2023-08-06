@@ -82,5 +82,11 @@ public class MenuItemRMAPDEV
         {
             LibrarySorter.MaterialManagerWindow.Init();
         }
+
+        [ MenuItem( "Dev Menu/Material Selector", false, 100 ) ]
+        public static void ShowMaterialWindowSelectorWindow()
+        {
+            LibrarySorter.MaterialWindowSelector.Init();
+        }
     #endif
 }

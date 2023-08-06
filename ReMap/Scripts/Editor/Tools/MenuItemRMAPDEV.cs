@@ -46,6 +46,12 @@ public class MenuItemRMAPDEV
             LootRepartitionWindow.WriteLootRepartitionFile();
         }
 
+        [ MenuItem( "Dev Menu/Test Tools/Loot Repartition", false, 100 ) ]
+        public static void ShowLootRepartitionWindow()
+        {
+            LootRepartitionWindow.Init();
+        }
+
         // Debug
         [ MenuItem( "Dev Menu/Debug/File Write Test", false, 100 ) ]
         public static void FileWriteTest()
@@ -59,13 +65,13 @@ public class MenuItemRMAPDEV
             ReMapDebug.Debug_ClearProgressBar();
         }
 
-        [ MenuItem( "Dev Menu/Utility/ReTexture Window", false, 100 ) ]
+        [ MenuItem( "Dev Menu/Test Tools/ReTexture Window", false, 100 ) ]
         public static void ShowReTextureWindow()
         {
             ReTexture.Init();
         }
 
-        [ MenuItem( "Dev Menu/Utility/Delete Multiple Formats", false, 100 ) ]
+        [ MenuItem( "Dev Menu/Test Tools/Delete Multiple Formats", false, 100 ) ]
         public static void DeleteMultipleFormats()
         {
             ReMapDebug.DeleteMultipleFormats();

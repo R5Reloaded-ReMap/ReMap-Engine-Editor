@@ -986,7 +986,7 @@ namespace CodeViews
                     }
                 }
 
-                for ( int i = 1; i < simultaneousDisplay; i++ )
+                for ( int i = 0; i < simultaneousDisplay; i++ )
                 {
                     if ( this.QueueCount() >= i + 1 && DateTime.Now > this.queue[ i ].durationTime )
                     {
@@ -997,10 +997,7 @@ namespace CodeViews
                             this.queue[ i ].durationTime = DateTime.Now.AddSeconds( this.queue[ i ].duration );
                         }
                     }
-                }
 
-                for ( int i = 0; i < simultaneousDisplay; i++ )
-                {
                     if ( this.QueueCount() >= i + 1 )
                     {
                         if ( i == 0 && this.showFirstSeparator )

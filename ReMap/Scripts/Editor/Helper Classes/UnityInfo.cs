@@ -7,37 +7,37 @@ using UnityEngine;
 
 public class UnityInfo
 {
-    public static string ReMapVersion = "Version 1.1.0";
-    public static string JsonVersion = "1.0.7";
+    public static readonly string ReMapVersion = "Version 1.1.0";
+    public static readonly string JsonVersion = "1.0.7";
 
     // Path Utility
-    public static string currentDirectoryPath =                 Directory.GetCurrentDirectory().Replace("\\","/");
-    public static string relativePathLods =                     $"Assets/ReMap/Lods - Dont use these";
-    public static string relativePathLodsUtility =              $"{relativePathLods}/Utility";
-    public static string relativePathEmptyPrefab =              $"{relativePathLodsUtility}/EmptyPrefab.prefab";
-    public static string relativePathCubePrefab =               $"{relativePathLodsUtility}/Cube.prefab";
-    public static string relativePathModel =                    $"{relativePathLods}/Models";
-    public static string relativePathMaterials =                $"{relativePathLods}/Materials";
-    public static string relativePathDevLods =                  $"{relativePathLods}/Developer_Lods";
-    public static string relativePathPrefabs =                  $"Assets/Prefabs";
-    public static string relativePathResources =                $"Assets/ReMap/Resources";
-    public static string relativePathAdditionalCode =           $"{relativePathResources}/AdditionalCode";
-    public static string relativePathAdditionalCodeJson =       $"{relativePathAdditionalCode}/additionalCode.json";
-    public static string relativePathAdditionalCodeInfo =       $"{relativePathAdditionalCode}/additionalCodeInfo.txt";
-    public static string relativePathRpakManager =              $"{relativePathResources}/RpakManager";
-    public static string relativePathRpakManagerList =          $"{relativePathRpakManager}/rpakManagerList.json";
-    public static string relativePathJsonOffset =               $"{relativePathRpakManager}/prefabOffsetList.json";
-    public static string relativePathTextureData =              $"{relativePathResources}/TextureData";
-    public static string relativePathTextureDataList =          $"{relativePathTextureData}/textureData.json";
-    public static string relativePathLegionPlus =               $"Assets/ReMap/LegionPlus";
-    public static string relativePathLegionPlusExportedFiles =  $"{relativePathLegionPlus}/exported_files";
-    public static string relativePathLegionExecutive =          $"{relativePathLegionPlus}/LegionPlus.exe";
-    public static string relativePathNVIDIA =                   $"Assets/ReMap/NVIDIA";
-    public static string relativePathNVTTEExecutive =           $"{relativePathNVIDIA}/nvtt_export.exe";
-    public static string relativePathR5RPlayerInfo =            "\\platform\\scripts\\player_info.txt";
-    public static string relativePathR5RScripts =               "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
+    public static readonly string currentDirectoryPath =                 Directory.GetCurrentDirectory().Replace("\\","/");
+    public static readonly string relativePathLods =                     $"Assets/ReMap/Lods - Dont use these";
+    public static readonly string relativePathLodsUtility =              $"{relativePathLods}/Utility";
+    public static readonly string relativePathEmptyPrefab =              $"{relativePathLodsUtility}/EmptyPrefab.prefab";
+    public static readonly string relativePathCubePrefab =               $"{relativePathLodsUtility}/Cube.prefab";
+    public static readonly string relativePathModel =                    $"{relativePathLods}/Models";
+    public static readonly string relativePathMaterials =                $"{relativePathLods}/Materials";
+    public static readonly string relativePathDevLods =                  $"{relativePathLods}/Developer_Lods";
+    public static readonly string relativePathPrefabs =                  $"Assets/Prefabs";
+    public static readonly string relativePathResources =                $"Assets/ReMap/Resources";
+    public static readonly string relativePathAdditionalCode =           $"{relativePathResources}/AdditionalCode";
+    public static readonly string relativePathAdditionalCodeJson =       $"{relativePathAdditionalCode}/additionalCode.json";
+    public static readonly string relativePathAdditionalCodeInfo =       $"{relativePathAdditionalCode}/additionalCodeInfo.txt";
+    public static readonly string relativePathRpakManager =              $"{relativePathResources}/RpakManager";
+    public static readonly string relativePathRpakManagerList =          $"{relativePathRpakManager}/rpakManagerList.json";
+    public static readonly string relativePathJsonOffset =               $"{relativePathRpakManager}/prefabOffsetList.json";
+    public static readonly string relativePathTextureData =              $"{relativePathResources}/TextureData";
+    public static readonly string relativePathTextureDataList =          $"{relativePathTextureData}/textureData.json";
+    public static readonly string relativePathLegionPlus =               $"Assets/ReMap/LegionPlus";
+    public static readonly string relativePathLegionPlusExportedFiles =  $"{relativePathLegionPlus}/exported_files";
+    public static readonly string relativePathLegionExecutive =          $"{relativePathLegionPlus}/LegionPlus.exe";
+    public static readonly string relativePathNVIDIA =                   $"Assets/ReMap/NVIDIA";
+    public static readonly string relativePathNVTTEExecutive =           $"{relativePathNVIDIA}/nvtt_export.exe";
+    public static readonly string relativePathR5RPlayerInfo =            "\\platform\\scripts\\player_info.txt";
+    public static readonly string relativePathR5RScripts =               "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
 
-    public static string relativeRMAPDEVfolder =                $"{relativePathResources}/DeveloperOnly";
+    public static readonly string relativeRMAPDEVfolder =                $"{relativePathResources}/DeveloperOnly";
 
 
     /// <summary>

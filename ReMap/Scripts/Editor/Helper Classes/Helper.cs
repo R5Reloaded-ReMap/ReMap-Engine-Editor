@@ -1001,6 +1001,11 @@ public class Helper
         UnityInfo.Printt( args.Length > 0 ? string.Join( " ", args.Select( arg => arg.ToString() ) ) : "Ping!" );
     }
 
+    public static Color UnityColor( float r, float g, float b )
+    {
+        return new Color( r/255f, g/255f, b/255f );
+    }
+
     public static Transform FindParent( Transform go )
     {
         return FindParent( go.gameObject );

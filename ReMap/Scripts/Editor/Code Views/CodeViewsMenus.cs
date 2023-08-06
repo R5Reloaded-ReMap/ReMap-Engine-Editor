@@ -73,6 +73,8 @@ namespace CodeViews
             () => OptionalButton( "button ref", "button field", EmptyFunctionRef, null, MenuType.Small )
         };
 
+        internal static FunctionRef[] ColorPreview = ButtonColor();
+
         internal static void SharedFunctions()
         {
             CreateMenu( CodeViewsWindow.TipsMenu, TipsMenu, MenuType.Large, "Tips", "Tips", "" );
@@ -84,7 +86,21 @@ namespace CodeViews
 
                 CreateMenu( CodeViewsWindow.DevMenu, DevMenu, MenuType.Large, "Dev Menu", "Dev Menu", "" );
                 CreateMenu( "LargeFieldPreview", LargeFieldPreview, MenuType.Large, "Field Preview", "Field Preview", "" );
+                CreateMenu( "NotificationColorPreview", ColorPreview, MenuType.Large, "Color Preview", "Color Preview", "" );
             #endif
+        }
+
+        // Dev Only
+        internal static FunctionRef[] ButtonColor()
+        {
+            List< FunctionRef > list = new List< FunctionRef >();
+
+            foreach ( var color in CodeViewsWindow.Color_Array )
+            {
+                list.Add( () => OptionalButton( color.Key, "", () => { CodeViewsWindow.ephemeralMessage.AddToQueueMessage( $"#RMAPDEV_MESSAGE_{color.Key}", $"{color.Key} Notification", 4, true, color.Value ); }, null, MenuType.Medium ) );
+            }
+
+            return list.ToArray();
         }
 
         internal static void SelectionMenu()

@@ -28,7 +28,7 @@ namespace CodeViews
     {
         internal static CodeViewsWindow windowInstance;
         internal static string code = "";
-        internal static string[] codeSplit = new string[0];
+        internal static string[] codeSplit = new string[ 0 ];
         internal static string functionName = "Unnamed";
         internal static Vector2 scroll;
         internal static Vector2 scrollSettings;
@@ -47,6 +47,8 @@ namespace CodeViews
         private static string[] fileInfo = new string[4];
 
         internal static List< InfoMessage > infoList = InfoMessage.CreateInfoSerialized( 2 );
+        internal static InfoMessage staticMessage = infoList[ 0 ];
+        internal static InfoMessage ephemeralMessage = infoList[ 1 ];
 
         // Menus
         // Show / Hide Settings Menu
@@ -109,7 +111,22 @@ namespace CodeViews
         private static int maxPage = 0;
 
         // Empty ObjectType[]
-        internal static readonly ObjectType[] EmptyObjectType = new ObjectType[0];
+        internal static readonly ObjectType[] EmptyObjectType = new ObjectType[ 0 ];
+
+        // Colors
+        internal static readonly Color Color_Orange = Helper.UnityColor( 254f, 156f, 84f );
+        internal static readonly Color Color_Blue   = Helper.UnityColor( 78f, 156f, 228f );
+        internal static readonly Color Color_Red    = Helper.UnityColor( 244f, 67f, 54f );
+        internal static readonly Color Color_White  = Helper.UnityColor( 255f, 255f, 255f );
+        internal static readonly Color Color_Yellow = Helper.UnityColor( 222f, 162f, 58f );
+        internal static readonly Color Color_Green  = Helper.UnityColor( 75f, 187f, 68f );
+
+        internal static readonly Dictionary< string, Color > Color_Array = new Dictionary< string, Color >()
+        {
+            { "Orange", Color_Orange }, { "Blue", Color_Blue }, { "Red", Color_Red },
+            { "White", Color_White }, { "Yellow", Color_Yellow }, { "Green", Color_Green }
+        };
+        //
 
         private static WindowStruct windowStruct = new WindowStruct()
         {
@@ -391,6 +408,7 @@ namespace CodeViews
             InitCallback = () => // Load on start
             {
                 windowStruct.PostRefreshCallback();
+                ephemeralMessage.showFirstSeparator = true;
                 #if RMAPDEV
                     ShowSettingsMenu = true;
                 #endif
@@ -587,7 +605,7 @@ namespace CodeViews
             
             await Helper.Wait( 1 ); // 1 secondes
 
-            var path = EditorUtility.SaveFilePanel( fileInfo[0], fileInfo[1], fileInfo[2], fileInfo[3] );
+            var path = EditorUtility.SaveFilePanel( fileInfo[ 0 ], fileInfo[ 1 ], fileInfo[2], fileInfo[3] );
 
             if ( path.Length == 0 ) return;
 
@@ -678,12 +696,11 @@ namespace CodeViews
         {
             GUILayout.BeginHorizontal();
 
-                infoList[ 0 ].ShowMessage();
+                staticMessage.ShowMessage();
 
-                if ( infoList[ 1 ].HasMessage() && infoList[ 0 ].HasMessage() )
+                if ( staticMessage.HasMessage() && ephemeralMessage.HasMessage() )
                 {
-                    WindowUtility.WindowUtility.Separator( 2, 12 );
-                    infoList[ 1 ].ShowMessage();
+                    ephemeralMessage.ShowMessage();
                 }
 
             GUILayout.EndHorizontal();
@@ -779,7 +796,7 @@ namespace CodeViews
 
             functionName = Helper.ReplaceBadCharacters( functionName );
 
-            infoList[ 0 ].SetInfoMessage( $" // Generating code...", true );
+            staticMessage.SetInfoMessage( $" // Generating code...", true );
 
             CodeViewsMenu.VerifyGenerateObjects();
 
@@ -793,12 +810,11 @@ namespace CodeViews
 
             if ( currentPage + 1 > maxPage ) currentPage = maxPage - 1;
 
-            infoList[ 0 ].SetInfoMessage( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", true, SetCorrectColor( EntityCount ) );
+            staticMessage.SetInfoMessage( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", true, SetCorrectColor( EntityCount ) );
 
             if ( NotExitingModel != 0 )
             {
-                infoList[ 1 ].RemoveToQueue( "NotExitingModelMessage" );
-                infoList[ 1 ].AddToQueueMessage( "NotExitingModelMessage", $"{NotExitingModel} Models don't exist and are not generated", 6, true, new Color( 254, 156, 84 ) );
+                ephemeralMessage.AddToQueueMessage( "NotExitingModelMessage", $"{NotExitingModel} Models don't exist and are not generated", 6, true, Color_Orange );
             }
         }
 
@@ -816,12 +832,12 @@ namespace CodeViews
         private static Color SetCorrectColor( int count )
         {
             if ( count < greenPropCount )
-                return Color.green;
+                return Color_Green;
 
             else if ( count < yellowPropCount ) 
-                return Color.yellow;
+                return Color_Yellow;
 
-            else return Color.red;
+            else return Color_Red;
         }
 
         internal static void AppendAdditionalCode( AdditionalCodeType type, ref StringBuilder code, string codeToAdd, bool verify = true )
@@ -885,7 +901,7 @@ namespace CodeViews
 
     internal class InfoMessage
     {
-         public static readonly int simultaneousDisplay = 2;
+        public static readonly int simultaneousDisplay = 3;
 
         public string name = "InfoMessage";
 
@@ -894,7 +910,9 @@ namespace CodeViews
         public int duration = 0;
         public Color color = Color.white;
 
-        public DateTime showDuration = DateTime.Now;
+        public bool showFirstSeparator = false;
+
+        public DateTime durationTime = DateTime.Now;
 
         private List< InfoMessage > queue = new List< InfoMessage >();
 
@@ -919,9 +937,6 @@ namespace CodeViews
 
         public void AddToQueueMessage( string name, string msg, int duration, bool bold = false, Color color = default )
         {
-            if ( this.Exists( name ) )
-                return;
-
             InfoMessage infoMessage = new InfoMessage();
             infoMessage.name = name;
             infoMessage.message = msg;
@@ -929,24 +944,22 @@ namespace CodeViews
             infoMessage.duration = duration;
             infoMessage.color = color;
 
-            if ( this.QueueIsEmpty() )
+            for ( int i = 0; i < simultaneousDisplay; i++ )
             {
-                this.message = infoMessage.message;
-                infoMessage.showDuration = DateTime.Now.AddSeconds( duration );
-            }
-
-            this.queue.Add( infoMessage );
-        }
-
-        public void RemoveToQueue( string name )
-        {
-            for ( int i = 0; i < this.queue.Count; i++ )
-            {
-                if ( this.queue[ i ].name == name )
+                if ( this.QueueCount() == i )
                 {
-                    this.queue.RemoveAt( i );
+                    if ( i == 0 )
+                        this.message = msg;
+
+                    infoMessage.durationTime = DateTime.Now.AddSeconds( duration );
                 }
             }
+
+            if ( this.Exists( name ) )
+            {
+                this.RemoveToQueue( Find( name ), infoMessage );
+            }
+            else this.queue.Add( infoMessage );
         }
 
         public void ShowMessage()
@@ -957,19 +970,51 @@ namespace CodeViews
             }
             else if ( !this.QueueIsEmpty() )
             {
-                if ( this.QueueCount() >= 1 && DateTime.Now > this.queue[0].showDuration )
+                if ( this.QueueCount() >= 1 && DateTime.Now > this.queue[ 0 ].durationTime )
                 {
                     this.queue.RemoveAt( 0 );
                     this.MessageClear();
-        
-                    if ( this.QueueIsEmpty() )
-                        return;
 
-                    this.message = this.queue[0].message;
-                    this.queue[0].showDuration = DateTime.Now.AddSeconds( this.queue[0].duration );
+                    if ( this.QueueCount() != 0 )
+                    {
+                        this.message = this.queue[ 0 ].message;
+                    }
+
+                    if ( this.QueueCount() >= simultaneousDisplay )
+                    {
+                        this.queue[ simultaneousDisplay - 1 ].durationTime = DateTime.Now.AddSeconds( this.queue[ simultaneousDisplay - 1 ].duration );
+                    }
                 }
-            
-                InternalShowMessage( this.queue[0] );
+
+                for ( int i = 1; i < simultaneousDisplay; i++ )
+                {
+                    if ( this.QueueCount() >= i + 1 && DateTime.Now > this.queue[ i ].durationTime )
+                    {
+                        this.queue.RemoveAt( i );
+
+                        if ( this.QueueCount() >= i + 1 )
+                        {
+                            this.queue[ i ].durationTime = DateTime.Now.AddSeconds( this.queue[ i ].duration );
+                        }
+                    }
+                }
+
+                for ( int i = 0; i < simultaneousDisplay; i++ )
+                {
+                    if ( this.QueueCount() >= i + 1 )
+                    {
+                        if ( i == 0 && this.showFirstSeparator )
+                        {
+                            WindowUtility.WindowUtility.Separator( 2, 12 );
+                        }
+                        else
+                        {
+                            WindowUtility.WindowUtility.Separator( 2, 12 );
+                        }
+
+                        InternalShowMessage( this.queue[ i ] );
+                    }
+                }
             }
         }
 
@@ -977,9 +1022,36 @@ namespace CodeViews
         {
             GUI.contentColor = infoMessage.color;
 
-            GUILayout.Label( infoMessage.message, infoMessage.bold ? EditorStyles.boldLabel : GUI.skin.label );
+            string info = "";
+
+            #if RMAPDEV
+                if ( infoMessage.duration != 0 )
+                    info = $" ({(infoMessage.durationTime - DateTime.Now).TotalSeconds.ToString( "0.0" ).Replace( ',', '.' )}s)";
+            #endif
+
+            GUILayout.Label( $"{infoMessage.message}{info}", infoMessage.bold ? EditorStyles.boldLabel : GUI.skin.label );
 
             GUI.contentColor = Color.white;
+        }
+
+        public InfoMessage Find( string name )
+        {
+            return this.queue.FirstOrDefault( m => m.name == name );
+        }
+
+        public void RemoveToQueue( InfoMessage infoMessage, InfoMessage newInfoMessage = null )
+        {
+            for ( int i = 0; i < this.QueueCount(); i++ )
+            {
+                if ( this.queue[ i ] == infoMessage )
+                {
+                    if ( i < simultaneousDisplay && Helper.IsValid( newInfoMessage ) )
+                    {
+                        this.queue[ i ] = newInfoMessage;
+                    }
+                    else this.queue.RemoveAt( i );
+                }
+            }
         }
 
         public bool HasMessage()

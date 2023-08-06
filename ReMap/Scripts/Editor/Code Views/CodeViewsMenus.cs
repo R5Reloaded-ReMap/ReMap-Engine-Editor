@@ -390,6 +390,13 @@ namespace CodeViews
 
             Space( 4 );
 
+            if ( CodeViewsWindow.objectTypeInSceneCount == 0 )
+            {
+                WindowUtility.WindowUtility.CreateTextInfoCentered( "There is no Objects Types in scene" );
+                
+                return;
+            }
+
             GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
                     WindowUtility.WindowUtility.CreateButton( "Check All", "", () => CheckOptionalAdvancedOption( true ), 156 );
@@ -413,7 +420,6 @@ namespace CodeViews
                         CodeViewsWindow.Refresh();
                         
                         GUILayout.EndVertical();
-
                         return;
                     }
                 }

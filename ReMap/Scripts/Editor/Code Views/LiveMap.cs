@@ -426,7 +426,7 @@ namespace CodeViews
 
                 case ConfirmationType.OPTIMAL:
                     SendCommands();
-                    CodeViewsWindow.ephemeralMessage.AddToQueueMessage( "LiveMap_SendCompleted", $"Sending {CodeViewsWindow.SendedEntityCount} Objects to the game", 2, true, CodeViewsWindow.Color_Green );
+                    CodeViewsWindow.ephemeralMessage.AddToQueueMessage( "LiveMap_SendCompleted", $"Sending {CodeViewsWindow.SendedEntityCount} Objects to the game", 4, true, CodeViewsWindow.Color_Green );
                     await Task.Delay( 1000 * 2 );
                 break;
             }

@@ -38,7 +38,7 @@ namespace CodeViews
         static FunctionRef[] OffsetSubMenu = new FunctionRef[]
         {
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuShowOffset, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Medium, "Hide Origin Offset", "Show Origin Offset", "Show/Hide \"vector startingorg = < 0, 0, 0 >\"", true ),
-            () => CodeViewsMenu.OptionalTextInfo( "Starting Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
+            () => CodeViewsMenu.OptionalTextInfo( "Starting Origin (Apex Vector)", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
             () => CodeViewsMenu.OptionalButton( "Get Player Origin", "Change origin from player position\nif you have your game on", () => LiveMap.GetApexPlayerInfo(), CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Medium )
         };

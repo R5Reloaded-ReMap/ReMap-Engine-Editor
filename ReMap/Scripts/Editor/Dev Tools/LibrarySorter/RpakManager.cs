@@ -17,7 +17,7 @@ namespace LibrarySorter
         internal static string entry = "";
         internal static readonly string allModelsDataName = "all_models";
         internal static readonly string r5reloadedModelsDataName = "r5reloaded_list";
-        internal static readonly string retailModelsDataName = "all_models_retail";
+        internal static readonly string allModelsRetailDataName = "all_models_retail";
         internal static LibraryData libraryData = FindLibraryDataFile();
         internal static string[][] rpakTab = new string[0][];
         internal static RpakData rpakData = libraryData.RpakList[0];
@@ -506,7 +506,7 @@ namespace LibrarySorter
         {
             List< string > retailList = new List< string >();
 
-            RpakData retailListModelsData = libraryData.GetSpecialData().FirstOrDefault( r => r.Name == retailModelsDataName );
+            RpakData retailListModelsData = libraryData.GetSpecialData().FirstOrDefault( r => r.Name == allModelsRetailDataName );
 
             foreach ( RpakData data in libraryData.GetRetailData() )
             {
@@ -519,7 +519,7 @@ namespace LibrarySorter
             if ( !Helper.IsValid( retailListModelsData ) )
             {
                 retailListModelsData = NewRpakData();
-                retailListModelsData.Name = retailModelsDataName;
+                retailListModelsData.Name = allModelsRetailDataName;
                 retailListModelsData.IsSpecial = true;
                 retailListModelsData.IsHidden = true;
 
@@ -577,7 +577,7 @@ namespace LibrarySorter
             libraryData.RpakList = libraryData.RpakList
             .OrderByDescending( x => x.Name == allModelsDataName )
             .ThenByDescending( x => x.Name == r5reloadedModelsDataName )
-            .ThenByDescending( x => x.Name == retailModelsDataName )
+            .ThenByDescending( x => x.Name == allModelsRetailDataName )
             .ThenBy( x => x.Name )
             .ToList();
 

@@ -26,7 +26,14 @@ namespace LibrarySorter
 
             Dictionary< string, string > missingModelList = new Dictionary< string, string >();
 
-            foreach ( string modelName in RpakManagerWindow.libraryData.AllModels().Data )
+            List< string > list = RpakManagerWindow.libraryData.AllModels().Data;
+
+            foreach ( string str in RpakManagerWindow.libraryData.AllModelsRetail().Data )
+            {
+                if ( !list.Contains( str ) ) list.Add( str );
+            }
+
+            foreach ( string modelName in list )
             {
                 string lod0Name = Path.GetFileNameWithoutExtension( modelName );
 

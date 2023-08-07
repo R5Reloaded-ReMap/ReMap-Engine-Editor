@@ -21,6 +21,11 @@ namespace LibrarySorter
             return GetRpakData( RpakManagerWindow.r5reloadedModelsDataName );
         }
 
+        public RpakData AllModelsRetail()
+        {
+            return GetRpakData( RpakManagerWindow.allModelsRetailDataName );
+        }
+
         public RpakData GetRpakData( string name )
         {
             return this.RpakList.FirstOrDefault( data => data.Name == name );

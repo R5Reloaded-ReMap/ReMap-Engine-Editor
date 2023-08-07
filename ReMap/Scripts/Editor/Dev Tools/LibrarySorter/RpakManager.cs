@@ -13,20 +13,19 @@ namespace LibrarySorter
     {
         private static RpakManagerWindow windowInstance;
 
-        internal static string rpakManagerPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathRpakManagerList}";
+        internal static readonly string rpakManagerPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathRpakManagerList}";
         internal static string entry = "";
-        internal static string allModelsDataName = "all_models";
-        internal static string r5reloadedDataName = "r5reloaded";
-        internal static LibraryData libraryData;
+        internal static readonly string allModelsDataName = "all_models";
+        internal static readonly string r5reloadedModelsDataName = "r5reloaded_list";
+        internal static readonly string retailModelsDataName = "all_models_retail";
+        internal static LibraryData libraryData = FindLibraryDataFile();
         internal static string[][] rpakTab = new string[0][];
-        internal static int tabIdx = 0;
-        internal static int tabIdxTemp = 0;
+        internal static RpakData rpakData = libraryData.RpakList[0];
+        internal static RpakData rpakDataTemp = libraryData.RpakList[0];
         internal static int modelCount = 0;
         Vector2 scrollPos = Vector2.zero;
 
         List< string > dataContent = new List< string >();
-
-        private static bool isPreviewOnly = true;
 
         private static bool searchMode = false;
 
@@ -39,6 +38,13 @@ namespace LibrarySorter
         private int itemsPerPage = 100;
         private int currentPage = 0;
         private int maxPage = 0;
+
+        private enum RpakType
+        {
+            Special,
+            R5Reloaded,
+            Retail
+        }
 
         public static void Init()
         {
@@ -62,12 +68,10 @@ namespace LibrarySorter
 
         void OnGUI()
         {
-            isPreviewOnly = libraryData.RpakList[ tabIdx ].Name == allModelsDataName || libraryData.RpakList[ tabIdx ].Name == r5reloadedDataName;
-
             itemStart = currentPage * itemsPerPage;
             itemEnd = itemStart + itemsPerPage;
 
-            dataContent = searchMode ? GetSearchResult() : libraryData.RpakList[ tabIdx ].Data;
+            dataContent = searchMode ? GetSearchResult() : rpakData.Data;
 
             maxPage = modelCount == 0 ? 1 : dataContent.Count / itemsPerPage + 1;
 
@@ -81,10 +85,10 @@ namespace LibrarySorter
 
                 ShowRpakData();
 
-                if ( tabIdx != tabIdxTemp )
+                if ( rpakData != rpakDataTemp )
                 {
                     Refresh();
-                    tabIdxTemp = tabIdx;
+                    rpakDataTemp = rpakData;
                     currentPage = 0;
                 }
 
@@ -121,7 +125,10 @@ namespace LibrarySorter
                 if ( modelCount == 0 )
                 {
                     WindowUtility.WindowUtility.FlexibleSpace();
+                        if ( searchMode )
                         WindowUtility.WindowUtility.CreateTextInfoCentered( "No results." );
+                        else
+                        WindowUtility.WindowUtility.CreateTextInfoCentered( "List is empty." );
                     WindowUtility.WindowUtility.FlexibleSpace();
                     GUILayout.EndScrollView();
                     GUILayout.EndVertical();
@@ -152,7 +159,7 @@ namespace LibrarySorter
                     GUILayout.BeginHorizontal("box");
                         GUILayout.Label( model );
                         WindowUtility.WindowUtility.CreateCopyButton( "Copy", "", model, 100 );
-                        if ( !isPreviewOnly )
+                        if ( !rpakData.IsSpecial )
                         {
                             if ( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveModel( model ), 100 ) )
                             {
@@ -171,22 +178,83 @@ namespace LibrarySorter
 
         private void ShowRpakData()
         {
-            int idx = 0;
-            int totalButtons = libraryData.RpakList.Count;
-            // Calculate how many buttons should be in each line
-            int tabPerLine = totalButtons > maxTabPerLine ? Mathf.CeilToInt( ( float ) totalButtons / Mathf.CeilToInt( ( float ) totalButtons / maxTabPerLine ) ) : totalButtons;
+            int idx; int totalButtons; int tabPerLine;
 
-            GUILayout.BeginHorizontal();
-                foreach ( RpakData data in libraryData.RpakList )
-                {
-                    WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { tabIdx = idx; } ); idx++;
-                    if ( idx % tabPerLine == 0 && idx != 0 )
+            List< RpakData > special = libraryData.GetSpecialData();
+            List< RpakData > r5reloaded = libraryData.GetR5ReloadedData();
+            List< RpakData > retail = libraryData.GetRetailData();
+
+            GUILayout.BeginVertical();
+                idx = 0; totalButtons = special.Count;
+                // Calculate how many buttons should be in each line
+                tabPerLine = totalButtons > maxTabPerLine ? Mathf.CeilToInt( ( float ) totalButtons / Mathf.CeilToInt( ( float ) totalButtons / maxTabPerLine ) ) : totalButtons;
+
+                GUILayout.Label( $"Special:", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+
+                GUILayout.BeginHorizontal();
+                    foreach ( RpakData data in special )
                     {
-                        GUILayout.EndHorizontal();
-                        GUILayout.BeginHorizontal();
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; } ); idx++;
+                        if ( idx % tabPerLine == 0 && idx != 0 )
+                        {
+                            GUILayout.EndHorizontal();
+                            GUILayout.BeginHorizontal();
+                        }
                     }
-                }
-            GUILayout.EndHorizontal();
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+
+            WindowUtility.WindowUtility.SeparatorAutoWidth( windowInstance, -16 );
+
+            GUILayout.BeginVertical();
+                idx = 0; totalButtons = r5reloaded.Count;
+                // Calculate how many buttons should be in each line
+                tabPerLine = totalButtons > maxTabPerLine ? Mathf.CeilToInt( ( float ) totalButtons / Mathf.CeilToInt( ( float ) totalButtons / maxTabPerLine ) ) : totalButtons;
+
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label( $"R5Reloaded:", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+                    WindowUtility.WindowUtility.FlexibleSpace();
+                    WindowUtility.WindowUtility.CreateButton( "Add R5Reloaded Rpak", "", () => AddNewRpakList( RpakType.R5Reloaded ), 200 );
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                    foreach ( RpakData data in r5reloaded )
+                    {
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; } ); idx++;
+                        if ( idx % tabPerLine == 0 && idx != 0 )
+                        {
+                            GUILayout.EndHorizontal();
+                            GUILayout.BeginHorizontal();
+                        }
+                    }
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+
+            WindowUtility.WindowUtility.SeparatorAutoWidth( windowInstance, -16 );
+
+            GUILayout.BeginVertical();
+                idx = 0; totalButtons = retail.Count;
+                // Calculate how many buttons should be in each line
+                tabPerLine = totalButtons > maxTabPerLine ? Mathf.CeilToInt( ( float ) totalButtons / Mathf.CeilToInt( ( float ) totalButtons / maxTabPerLine ) ) : totalButtons;
+
+                GUILayout.BeginHorizontal();
+                    GUILayout.Label( $"Retail:", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+                    WindowUtility.WindowUtility.FlexibleSpace();
+                    WindowUtility.WindowUtility.CreateButton( "Add Retail Rpak", "", () => AddNewRpakList( RpakType.Retail ), 200 );
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                    foreach ( RpakData data in retail )
+                    {
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; } ); idx++;
+                        if ( idx % tabPerLine == 0 && idx != 0 )
+                        {
+                            GUILayout.EndHorizontal();
+                            GUILayout.BeginHorizontal();
+                        }
+                    }
+                GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
 
         private void ShowToolBar()
@@ -194,6 +262,7 @@ namespace LibrarySorter
             GUILayout.BeginHorizontal();
                 WindowUtility.WindowUtility.CreateButton( "Build all_models", "", () => BuildAllModels(), 140 );
                 WindowUtility.WindowUtility.CreateButton( "Build r5reloaded list", "", () => BuildR5ReloadedList(), 140 );
+                WindowUtility.WindowUtility.CreateButton( "Build retail list", "", () => BuildRetailList(), 140 );
 
                 #if RMAPDEV
                     WindowUtility.WindowUtility.GetEditorWindowSize( windowInstance );
@@ -201,7 +270,7 @@ namespace LibrarySorter
 
                     GUILayout.FlexibleSpace();
 
-                WindowUtility.WindowUtility.CreateButton( "Add Rpak", "", () => AddNewRpakList(), 100 );
+                WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => Refresh(), 100 );
                 WindowUtility.WindowUtility.CreateButton( "Save", "", () => SaveJson(), 100 );
             GUILayout.EndHorizontal();
         }
@@ -213,7 +282,7 @@ namespace LibrarySorter
 
                     int end = itemEnd > dataContent.Count ? dataContent.Count : itemEnd;
 
-                    string countShow = libraryData.RpakList[ tabIdx ].Data.Count == modelCount ? $"{modelCount}" : $"{modelCount} / {libraryData.RpakList[ tabIdx ].Data.Count}";
+                    string countShow = rpakData.Data.Count == modelCount ? $"{modelCount}" : $"{modelCount} / {rpakData.Data.Count}";
 
                     WindowUtility.WindowUtility.ShowPageInfo( currentPage, maxPage, itemStart, end, $"Total Models: {countShow} | Page" );
 
@@ -228,8 +297,8 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
                     WindowUtility.WindowUtility.CreateToggle( ref searchMode, "Search Mode", "", 80 );
                     WindowUtility.WindowUtility.CreateTextField( ref entry, "", "", 0, 0, 0, true );
-                    if ( !isPreviewOnly ) WindowUtility.WindowUtility.CreateButton( "Add Model", "To add several models, the script separates\nthe entry from all \";\"", () => AddModel(), 100 );
-                    if ( !isPreviewOnly ) WindowUtility.WindowUtility.CreateButton( "Rename Folder", "", () => RenameTab(), 100 );
+                    if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Add Model", "To add several models, the script separates\nthe entry from all \";\"", () => AddModel(), 100 );
+                    if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Rename Folder", "", () => RenameTab(), 100 );
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
@@ -237,35 +306,52 @@ namespace LibrarySorter
         private void RpakUtility()
         {
             GUILayout.BeginHorizontal();
+                GUILayout.Label( $"Rpak Open => '{rpakData.Name}'", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+
                 GUILayout.FlexibleSpace();
 
-                if ( !isPreviewOnly ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100 );
-                if ( !isPreviewOnly ) WindowUtility.WindowUtility.CreateButton( "Delete List", "", () => DeleteList(), 100 );
+                if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100 );
+                if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Delete List", "", () => DeleteList(), 100 );
 
-                string retail = libraryData.RpakList[ tabIdx ].IsRetail ? "Is Retail Rpak" : "Is R5R Rpak";
-                string hidden = libraryData.RpakList[ tabIdx ].IsHidden ? "Flagged Hidden" : "Flagged Visible";
+                string hidden  = rpakData.IsHidden  ? "Flagged Hidden" : "Flagged Visible";
 
-                WindowUtility.WindowUtility.CreateButton( retail, "", () => { libraryData.RpakList[ tabIdx ].IsRetail = !libraryData.RpakList[ tabIdx ].IsRetail; }, 100 );
-                WindowUtility.WindowUtility.CreateButton( hidden, "", () => { libraryData.RpakList[ tabIdx ].IsHidden = !libraryData.RpakList[ tabIdx ].IsHidden; }, 100 );
+                WindowUtility.WindowUtility.CreateButton( hidden,  "", () => { rpakData.IsHidden  = !rpakData.IsHidden; }, 100 );
             GUILayout.EndHorizontal();
         }
 
-        internal static void AddNewRpakList()
+        private static void AddNewRpakList( RpakType rpakType )
         {
-            libraryData.RpakList.Add( NewRpakData() );
+            RpakData data = NewRpakData();
 
-            tabIdx = rpakTab.Length - 1;
+            switch ( rpakType )
+            {
+                case RpakType.Special:
+                    data.IsSpecial = true;
+                    break;
+
+                case RpakType.Retail:
+                    data.IsRetail = true;
+                    break;
+
+                default: // R5Reloaded
+                    data.IsRetail = false;
+                break;
+            }
+
+            libraryData.RpakList.Add( data );
+
+            rpakData = data;
 
             SaveJson();
         }
 
         internal static void DeleteRpakList()
         {
-            if ( !LibrarySorterWindow.CheckDialog( "Delete Rpak List", $"Are you sure you want delete this rpak list ?\n\n'{libraryData.RpakList[ tabIdx ].Name}'" ) ) return;
+            if ( !LibrarySorterWindow.CheckDialog( "Delete Rpak List", $"Are you sure you want delete this rpak list ?\n\n'{rpakData.Name}'" ) ) return;
 
-            libraryData.RpakList.Remove( libraryData.RpakList[ tabIdx ] );
+            libraryData.RpakList.Remove( rpakData );
 
-            tabIdx = rpakTab.Length - 2;
+            rpakData = libraryData.RpakList[ libraryData.RpakList.Count - 2 ];
 
             BuildAllModels();
 
@@ -280,7 +366,7 @@ namespace LibrarySorter
 
             foreach ( string model in models )
             {
-                if ( libraryData.RpakList[ tabIdx ].Data.Contains( model ) )
+                if ( rpakData.Data.Contains( model ) )
                     continue;
 
                 if ( string.IsNullOrEmpty( model ) )
@@ -292,10 +378,10 @@ namespace LibrarySorter
                 if ( !model.Contains( ".rmdl" ) )
                     continue;
 
-                libraryData.RpakList[ tabIdx ].Data.Add( model );
+                rpakData.Data.Add( model );
             }
 
-            libraryData.RpakList[ tabIdx ].Data.Sort();
+            rpakData.Data.Sort();
 
             entry = "";
 
@@ -304,9 +390,9 @@ namespace LibrarySorter
 
         internal static void DeleteList()
         {
-            if ( !LibrarySorterWindow.CheckDialog( "Delete Rpak Content", $"Are you sure you want delete this rpak content ?\n\n'{libraryData.RpakList[ tabIdx ].Name}'" ) ) return;
+            if ( !LibrarySorterWindow.CheckDialog( "Delete Rpak Content", $"Are you sure you want delete this rpak content ?\n\n'{rpakData.Name}'" ) ) return;
 
-            libraryData.RpakList[ tabIdx ].Data = new List< string >();
+            rpakData.Data = new List< string >();
 
             SaveJson();
         }
@@ -315,7 +401,7 @@ namespace LibrarySorter
         {
             if ( !LibrarySorterWindow.CheckDialog( "Remove Model", $"Are you sure you want remove this model ?\n\n'{model}'" ) ) return;
 
-            libraryData.RpakList[ tabIdx ].Data.Remove( model );
+            rpakData.Data.Remove( model );
 
             SaveJson();
         }
@@ -340,9 +426,9 @@ namespace LibrarySorter
                 }
             } while ( nameExists );
 
-            if ( !LibrarySorterWindow.CheckDialog( "Rename Tab", $"Are you sure you want rename this tab ?\n\n'{libraryData.RpakList[ tabIdx ].Name}' => '{newEntry}'" ) ) return;
+            if ( !LibrarySorterWindow.CheckDialog( "Rename Tab", $"Are you sure you want rename this tab ?\n\n'{rpakData.Name}' => '{newEntry}'" ) ) return;
             
-            libraryData.RpakList[ tabIdx ].Name = newEntry;
+            rpakData.Name = newEntry;
 
             entry = "";
 
@@ -361,16 +447,10 @@ namespace LibrarySorter
         {
             List< string > allModels = new List< string >();
 
-            RpakData allModelsData = null;
+            RpakData allModelsData = libraryData.GetSpecialData().FirstOrDefault( r => r.Name == allModelsDataName );
 
-            foreach ( RpakData data in libraryData.RpakList )
+            foreach ( RpakData data in libraryData.GetR5ReloadedData() )
             {
-                if ( data.Name == allModelsDataName )
-                {
-                    allModelsData = data;
-                    continue;
-                }
-
                 foreach ( string model in data.Data )
                 {
                     if ( !allModels.Contains( model ) ) allModels.Add( model );
@@ -381,11 +461,13 @@ namespace LibrarySorter
             {
                 allModelsData = NewRpakData();
                 allModelsData.Name = allModelsDataName;
+                allModelsData.IsSpecial = true;
 
                 libraryData.RpakList.Add( allModelsData );
             }
 
             allModelsData.Data = allModels;
+            allModelsData.Update = DateTime.UtcNow.ToString();
 
             SaveJson();
         }
@@ -394,20 +476,10 @@ namespace LibrarySorter
         {
             List< string > r5rList = new List< string >();
 
-            RpakData r5rModelsData = null;
+            RpakData r5rModelsData = libraryData.GetSpecialData().FirstOrDefault( r => r.Name == r5reloadedModelsDataName );
 
-            foreach ( RpakData data in libraryData.RpakList )
+            foreach ( RpakData data in libraryData.GetR5ReloadedData() )
             {
-                if ( data.Name == allModelsDataName || data.IsRetail )
-                {
-                    continue;
-                }
-                else if ( data.Name == r5reloadedDataName )
-                {
-                    r5rModelsData = data;
-                    continue;
-                }
-
                 foreach ( string model in data.Data )
                 {
                     if ( !r5rList.Contains( model ) ) r5rList.Add( model );
@@ -417,13 +489,45 @@ namespace LibrarySorter
             if ( !Helper.IsValid( r5rModelsData ) )
             {
                 r5rModelsData = NewRpakData();
-                r5rModelsData.Name = r5reloadedDataName;
+                r5rModelsData.Name = r5reloadedModelsDataName;
+                r5rModelsData.IsSpecial = true;
+                r5rModelsData.IsHidden = true;
 
                 libraryData.RpakList.Add( r5rModelsData );
             }
 
             r5rModelsData.Data = r5rList;
             r5rModelsData.Update = DateTime.UtcNow.ToString();
+
+            SaveJson();
+        }
+
+        internal static void BuildRetailList()
+        {
+            List< string > retailList = new List< string >();
+
+            RpakData retailListModelsData = libraryData.GetSpecialData().FirstOrDefault( r => r.Name == retailModelsDataName );
+
+            foreach ( RpakData data in libraryData.GetRetailData() )
+            {
+                foreach ( string model in data.Data )
+                {
+                    if ( !retailList.Contains( model ) ) retailList.Add( model );
+                }
+            }
+
+            if ( !Helper.IsValid( retailListModelsData ) )
+            {
+                retailListModelsData = NewRpakData();
+                retailListModelsData.Name = retailModelsDataName;
+                retailListModelsData.IsSpecial = true;
+                retailListModelsData.IsHidden = true;
+
+                libraryData.RpakList.Add( retailListModelsData );
+            }
+
+            retailListModelsData.Data = retailList;
+            retailListModelsData.Update = DateTime.UtcNow.ToString();
 
             SaveJson();
         }
@@ -472,7 +576,8 @@ namespace LibrarySorter
             // Sort by priorities
             libraryData.RpakList = libraryData.RpakList
             .OrderByDescending( x => x.Name == allModelsDataName )
-            .ThenByDescending( x => x.Name == r5reloadedDataName )
+            .ThenByDescending( x => x.Name == r5reloadedModelsDataName )
+            .ThenByDescending( x => x.Name == retailModelsDataName )
             .ThenBy( x => x.Name )
             .ToList();
 
@@ -511,7 +616,7 @@ namespace LibrarySorter
             {
                 modelCount = 0;
 
-                foreach ( string model in libraryData.RpakList[ tabIdx ].Data )
+                foreach ( string model in rpakData.Data )
                 {
                     string[] terms = entry.Replace( " ", "" ).Split( ";" );
 
@@ -528,14 +633,14 @@ namespace LibrarySorter
                     if ( found ) modelCount++;
                 }
             }
-            else modelCount = libraryData.RpakList[ tabIdx ].Data.Count;
+            else modelCount = rpakData.Data.Count;
         }
 
         private static List < string > GetSearchResult()
         {
             List < string > list = new List < string >();
 
-            foreach ( string model in libraryData.RpakList[ tabIdx ].Data )
+            foreach ( string model in rpakData.Data )
             {
                 string[] terms = entry.Replace( " ", "" ).Split( ";" );
 

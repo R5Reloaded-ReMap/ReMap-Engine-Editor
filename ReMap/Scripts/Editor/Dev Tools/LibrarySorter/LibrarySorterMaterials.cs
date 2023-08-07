@@ -177,7 +177,9 @@ namespace LibrarySorter
 
             int i = 0; int j = directories.Length;
 
-            await CheckDXT1Format( directories );
+            //await CheckDXT1Format( directories );
+
+            await TextureConverter.ResizeTextures();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

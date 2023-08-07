@@ -32,11 +32,13 @@ public class TextureConverter
         }
     }
 
-    public static async Task ResizeTextures()
+    public static async Task ResizeTextures( string path = null )
     {
+        path = string.IsNullOrEmpty( path ) ? UnityInfo.relativePathMaterials : path;
+
         ProcessStartInfo startInfo = new ProcessStartInfo();
         startInfo.FileName = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathTexConv}";
-        startInfo.Arguments = $"-nologo -bc dx -w 512 -h 512 -m 1 -f BC1_UNORM -o \"{UnityInfo.relativePathMaterials}\" -r \"{UnityInfo.relativePathMaterials}/*.dds\" -y";
+        startInfo.Arguments = $"-nologo -bc dx -w 512 -h 512 -m 1 -f BC1_UNORM -o \"{path}\" -r \"{path}/*.dds\" -y";
 
         Process process = new Process();
         process.StartInfo = startInfo;

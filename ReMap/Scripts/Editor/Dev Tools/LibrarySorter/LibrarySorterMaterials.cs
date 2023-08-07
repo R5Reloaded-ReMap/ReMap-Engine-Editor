@@ -179,7 +179,7 @@ namespace LibrarySorter
 
             //await CheckDXT1Format( directories );
 
-            await TextureConverter.ResizeTextures();
+            await TextureConverter.ResizeTextures( $"{UnityInfo.relativePathLegionPlusExportedFiles}/materials" );
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -341,7 +341,7 @@ namespace LibrarySorter
 
             EditorUtility.ClearProgressBar();
 
-            if ( reset )
+            if ( reset || missingTextures.Count == 0 )
                 return;
 
             if ( LibrarySorterWindow.CheckDialog( $"Texture Checker", $"{missingTextures.Count} Materials Missing. Do you want try to extract them ?" ) )

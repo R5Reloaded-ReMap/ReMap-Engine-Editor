@@ -88,5 +88,11 @@ public class MenuItemRMAPDEV
         {
             LibrarySorter.MaterialWindowSelector.Init();
         }
+
+        [ MenuItem( "Dev Menu/Test Tools/Resize all Textures", false, 100 ) ]
+        public static void ResizeAllTextures()
+        {
+            ReMapDebug.ResizeAllTextures();
+        }
     #endif
 }

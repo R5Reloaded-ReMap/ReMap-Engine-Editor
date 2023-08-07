@@ -83,4 +83,9 @@ public class ReMapDebug
             if ( file.Contains( ".dds.dds" ) ) File.Delete( file );
         }
     }
+
+    public static async void ResizeAllTextures()
+    {
+        await TextureConverter.ResizeTextures();
+    }
 }

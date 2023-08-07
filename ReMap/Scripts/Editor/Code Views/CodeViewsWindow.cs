@@ -33,7 +33,6 @@ namespace CodeViews
         internal static Vector2 scroll;
         internal static Vector2 scrollSettings;
         internal static int objectTypeInSceneCount = 0;
-        internal static int objectTypeInSceneCount_temp = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
 
         private static bool isAdditionalCodeWindow = false;
@@ -440,8 +439,6 @@ namespace CodeViews
             disableLogo = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
 
             Helper.SetShowStartingOffset( true );
-
-            if ( !Helper.IsValid( windowInstance ) ) windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
             
             windowStruct.Awake();
         }

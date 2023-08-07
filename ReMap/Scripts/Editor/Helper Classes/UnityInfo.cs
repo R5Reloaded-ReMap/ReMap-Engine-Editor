@@ -34,6 +34,7 @@ public class UnityInfo
     public static readonly string relativePathLegionExecutive =          $"{relativePathLegionPlus}/LegionPlus.exe";
     public static readonly string relativePathNVIDIA =                   $"Assets/ReMap/NVIDIA";
     public static readonly string relativePathNVTTEExecutive =           $"{relativePathNVIDIA}/nvtt_export.exe";
+    public static readonly string relativePathTexConv =           $"{relativePathNVIDIA}/texconv.exe";
     public static readonly string relativePathR5RPlayerInfo =            "\\platform\\scripts\\player_info.txt";
     public static readonly string relativePathR5RScripts =               "\\platform\\scripts\\vscripts\\mp\\levels\\mp_rr_remap.nut";
 

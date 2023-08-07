@@ -112,7 +112,7 @@ namespace LibrarySorter
 
         internal static async Task ExtractMissingMaterials( List< string > missingMaterialList )
         {
-            if ( LegionExporting.GetValidRpakPaths() )
+            if ( !LegionExporting.GetValidRpakPaths() )
             {
                 Helper.Ping( "No valid path for LegionPlus." );
                 return;
@@ -161,11 +161,9 @@ namespace LibrarySorter
 
                 EditorUtility.ClearProgressBar();
 
-                AppendNewTexture( missingMaterialList );
+                await AppendNewTexture( missingMaterialList );
 
                 Helper.DeleteDirectory( extractedMaterialDirectory, false, false );
-
-                //MoveMaterials( missingMaterialList );
             }
 
             Helper.DeleteDirectory( extractedMaterialDirectory, false, false );
@@ -173,13 +171,16 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
         }
 
-        internal static async void AppendNewTexture( List< string > missingMaterialList, bool byPassCheck = false )
+        internal static async Task AppendNewTexture( List< string > missingMaterialList, bool byPassCheck = false )
         {
             string[] directories = Directory.GetDirectories( extractedMaterialDirectory );
 
             int i = 0; int j = directories.Length;
 
             await CheckDXT1Format( directories );
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
             foreach ( string materialDir in directories )
             {
@@ -215,6 +216,11 @@ namespace LibrarySorter
                     MaterialWindowSelector.AddNewMaterialSelection( rmaterialDir );
                 }
             }
+
+            while ( !MaterialWindowSelector.MaterialListIsEmpty() )
+            {
+                await Helper.Wait( 1 );
+            }
         }
 
         internal static async Task CheckDXT1Format( string[] directories )
@@ -223,14 +229,14 @@ namespace LibrarySorter
             int dirCount = directories.Length; 
             float progress = 0.0f;
 
-            var semaphore = new SemaphoreSlim( 10 );
+            var semaphore = new SemaphoreSlim( 16 );
 
             foreach ( string path in directories )
             {
                 var info = new DirectoryInfo( path );
                 var fileInfo = info.GetFiles();
 
-                EditorUtility.DisplayProgressBar( $"DXT1 Format Checker", $"Patching DDS Files => ({dirIdx}/{dirCount})", 0.0f );
+                EditorUtility.DisplayProgressBar( $"DXT1 Format Checker", $"Patching DDS Files => ({dirIdx}/{dirCount})", progress );
 
                 var tasks = fileInfo.Select( file => ProcessFileWithSemaphore( file, path, semaphore ) ).ToArray();
 
@@ -289,7 +295,7 @@ namespace LibrarySorter
 
             Renderer[] renderers = obj.GetComponentsInChildren< Renderer >();
 
-            Texture2D textureDefault = AssetDatabase.LoadAssetAtPath< Texture2D >( MaterialData.GetPath( "dev_grey_512" ) );
+            Texture2D textureDefault = AssetDatabase.LoadAssetAtPath< Texture2D >( MaterialData.GetPath( "dev_gray_512" ) );
 
             int min = 1; int max = renderers.Length; float progress = 0.0f;
 

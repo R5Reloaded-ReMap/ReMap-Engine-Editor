@@ -31,4 +31,17 @@ public class TextureConverter
             return format == "DXT1";
         }
     }
+
+    public static async Task ResizeTextures()
+    {
+        ProcessStartInfo startInfo = new ProcessStartInfo();
+        startInfo.FileName = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathTexConv}";
+        startInfo.Arguments = $"-nologo -bc dx -w 512 -h 512 -m 1 -f BC1_UNORM -o \"{UnityInfo.relativePathMaterials}\" -r \"{UnityInfo.relativePathMaterials}/*.dds\" -y";
+
+        Process process = new Process();
+        process.StartInfo = startInfo;
+        process.Start();
+
+        await Task.Run( () => process.WaitForExit() );
+    }
 }

@@ -917,6 +917,36 @@ public class Helper
         return false;
     }
 
+    public static bool CopyFile( string origin, string target, bool addDir = true )
+    {
+        string originPath = addDir ? $"{UnityInfo.currentDirectoryPath}/" : "";
+        string targetPath = addDir ? $"{UnityInfo.currentDirectoryPath}/" : "";
+
+        originPath += $"{origin}".Replace( "\\", "/" );
+        targetPath += $"{target}".Replace( "\\", "/" );
+
+        try
+        {
+            if ( File.Exists( originPath ) && !File.Exists( targetPath ) )
+            {
+                File.Copy( originPath, targetPath );
+
+                if ( File.Exists( $"{originPath}.meta" ) && !File.Exists( $"{targetPath}.meta" ) )
+                {
+                    File.Move( $"{originPath}.meta", $"{targetPath}.meta" );
+                }
+
+                return true;
+            }
+        }
+        catch ( Exception msg )
+        {
+            Ping( msg );
+        }
+
+        return false;
+    }
+
     public static bool DeleteFile( string filePath, bool addDir = true )
     {
         filePath = addDir ? $"{UnityInfo.currentDirectoryPath}/{filePath}" : filePath;

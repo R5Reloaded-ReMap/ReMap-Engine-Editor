@@ -265,6 +265,10 @@ namespace LibrarySorter
                     GUILayout.BeginVertical( GUILayout.Width( scale ) );
                         WindowUtility.WindowUtility.CreateTextInfoCentered( texture.Key, "", 0, 20 );
                         GUILayout.Button( buttonContent, GUILayout.Width( scale ), GUILayout.Height( scale ) );
+                        if ( GUILayout.Button( "remove", GUILayout.Height( 26 ) ) )
+                        {
+                            dictionary.Remove( texture.Key );
+                        }
                     GUILayout.EndVertical();
 
                     if ( i % texturePerLine == texturePerLine - 1 )
@@ -336,7 +340,7 @@ namespace LibrarySorter
 
             if ( exportPreview )
             {
-                if ( GUILayout.Button( "ReImport Materials", GUILayout.Height( 80 ) ) && texturesDictionaryExport.Keys.Count != 0 )
+                if ( GUILayout.Button( "ReImport Materials", GUILayout.Height( 60 ) ) && texturesDictionaryExport.Keys.Count != 0 )
                 {
                     ReImportMaterial( texturesDictionaryExport.Keys.ToList() );
                 }

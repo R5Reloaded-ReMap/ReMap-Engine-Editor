@@ -524,7 +524,7 @@ namespace LibrarySorter
         {
             searchResult = new List< string >();
 
-            foreach ( string prefab in libraryData.AllModels().Data )
+            foreach ( string prefab in libraryData.GetAllModelsList() )
             {
                 if( search != "" && !prefab.Contains( search ) )
                     continue;

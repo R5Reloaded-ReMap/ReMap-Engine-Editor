@@ -31,6 +31,11 @@ namespace LibrarySorter
             return this.RpakList.FirstOrDefault( data => data.Name == name );
         }
 
+        public List< string > GetAllModelsList()
+        {
+            return this.AllModels().Data.Union( this.AllModelsRetail().Data ).ToList();
+        }
+
         public bool IsR5ReloadedModels( string model )
         {
             return this.R5ReloadedList().Data.Contains( model );

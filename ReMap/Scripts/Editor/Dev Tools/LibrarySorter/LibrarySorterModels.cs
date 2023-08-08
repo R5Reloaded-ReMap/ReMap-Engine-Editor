@@ -26,14 +26,7 @@ namespace LibrarySorter
 
             Dictionary< string, string > missingModelList = new Dictionary< string, string >();
 
-            List< string > list = RpakManagerWindow.libraryData.AllModels().Data;
-
-            foreach ( string str in RpakManagerWindow.libraryData.AllModelsRetail().Data )
-            {
-                if ( !list.Contains( str ) ) list.Add( str );
-            }
-
-            foreach ( string modelName in list )
+            foreach ( string modelName in RpakManagerWindow.libraryData.GetAllModelsList() )
             {
                 string lod0Name = Path.GetFileNameWithoutExtension( modelName );
 
@@ -124,15 +117,9 @@ namespace LibrarySorter
 
         internal static async Task FixFolder( RpakData data )
         {
-            string rpakPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}";
+            Helper.CreateDirectory( $"{UnityInfo.relativePathPrefabs}/{data.Name}" );
 
-            if ( !Directory.Exists( rpakPath ) )
-            {
-                ReMapConsole.Log( $"[Library Sorter] Creating directory: {UnityInfo.relativePathPrefabs}/{data.Name}", ReMapConsole.LogType.Info );
-                Directory.CreateDirectory( rpakPath );
-            }
-
-            GameObject parent; GameObject obj; string modelName;
+            GameObject parent; GameObject obj; string modelName; string unityName;
 
             float progress = 0.0f; int min = 0; int max = data.Data.Count;
 
@@ -140,10 +127,17 @@ namespace LibrarySorter
             foreach ( string model in data.Data )
             {
                 modelName = Path.GetFileNameWithoutExtension( model );
-                string unityName = UnityInfo.GetUnityModelName( model );
+                unityName = UnityInfo.GetUnityModelName( model );
 
-                if ( !File.Exists( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{data.Name}/{unityName}.prefab" ) )
+                string localModelPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab";
+                string lodsModelPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
+                string allModelsFolder = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/all_models/{unityName}.prefab";
+
+                if ( !File.Exists( localModelPath ) && File.Exists( lodsModelPath ) )
                 {
+                    if ( Helper.CopyFile( allModelsFolder, localModelPath, false ) )
+                        continue;
+
                     parent = Helper.CreateGameObject( unityName );
                     obj = Helper.CreateGameObject( "", $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", parent );
 
@@ -170,10 +164,10 @@ namespace LibrarySorter
 
                     ReMapConsole.Log( $"[Library Sorter] Created and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}", ReMapConsole.LogType.Info ); 
                 }
-                else if ( LibrarySorterWindow.checkExist )
+                else if ( LibrarySorterWindow.checkExist && File.Exists( localModelPath ) )
                 {
                     parent = Helper.CreateGameObject( $"{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab" );
-                    obj = parent.GetComponentsInChildren< Transform >()[1].gameObject;
+                    obj = parent.GetComponentsInChildren< Transform >()[0].gameObject;
                     
                     if ( !Helper.IsValid( parent ) || !Helper.IsValid( obj ) )
                         continue;

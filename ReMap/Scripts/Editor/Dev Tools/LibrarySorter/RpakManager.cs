@@ -23,7 +23,9 @@ namespace LibrarySorter
         internal static RpakData rpakData = libraryData.RpakList[0];
         internal static RpakData rpakDataTemp = libraryData.RpakList[0];
         internal static int modelCount = 0;
-        Vector2 scrollPos = Vector2.zero;
+        private Vector2 scrollPos = Vector2.zero;
+
+        private static string rpakType = "r5reloaded";
 
         List< string > dataContent = new List< string >();
 
@@ -35,9 +37,9 @@ namespace LibrarySorter
         // Page
         private static int itemStart = 0;
         private static int itemEnd = 0;
-        private int itemsPerPage = 100;
-        private int currentPage = 0;
-        private int maxPage = 0;
+        private static int itemsPerPage = 100;
+        private static int currentPage = 0;
+        private static int maxPage = 0;
 
         private enum RpakType
         {
@@ -194,7 +196,7 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
                     foreach ( RpakData data in special )
                     {
-                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; } ); idx++;
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = "special"; } ); idx++;
                         if ( idx % tabPerLine == 0 && idx != 0 )
                         {
                             GUILayout.EndHorizontal();
@@ -220,7 +222,7 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
                     foreach ( RpakData data in r5reloaded )
                     {
-                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; } ); idx++;
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = "r5reloaded"; } ); idx++;
                         if ( idx % tabPerLine == 0 && idx != 0 )
                         {
                             GUILayout.EndHorizontal();
@@ -246,7 +248,7 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
                     foreach ( RpakData data in retail )
                     {
-                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; } ); idx++;
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = "retail"; } ); idx++;
                         if ( idx % tabPerLine == 0 && idx != 0 )
                         {
                             GUILayout.EndHorizontal();
@@ -306,14 +308,14 @@ namespace LibrarySorter
         private void RpakUtility()
         {
             GUILayout.BeginHorizontal();
-                GUILayout.Label( $"Rpak Open => '{rpakData.Name}'", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+                GUILayout.Label( $"Rpak Open => '{rpakType}/{rpakData.Name}'", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
 
                 GUILayout.FlexibleSpace();
 
                 if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100 );
                 if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Delete List", "", () => DeleteList(), 100 );
 
-                string hidden  = rpakData.IsHidden  ? "Flagged Hidden" : "Flagged Visible";
+                string hidden = rpakData.IsHidden ? "Flagged Hidden" : "Flagged Visible";
 
                 WindowUtility.WindowUtility.CreateButton( hidden,  "", () => { rpakData.IsHidden  = !rpakData.IsHidden; }, 100 );
             GUILayout.EndHorizontal();
@@ -347,7 +349,7 @@ namespace LibrarySorter
 
         internal static void DeleteRpakList()
         {
-            if ( !LibrarySorterWindow.CheckDialog( "Delete Rpak List", $"Are you sure you want delete this rpak list ?\n\n'{rpakData.Name}'" ) ) return;
+            if ( !LibrarySorterWindow.CheckDialog( "Delete Rpak List", $"Are you sure you want delete this rpak list ?\n\n'{rpakType}/{rpakData.Name}'" ) ) return;
 
             libraryData.RpakList.Remove( rpakData );
 
@@ -390,7 +392,7 @@ namespace LibrarySorter
 
         internal static void DeleteList()
         {
-            if ( !LibrarySorterWindow.CheckDialog( "Delete Rpak Content", $"Are you sure you want delete this rpak content ?\n\n'{rpakData.Name}'" ) ) return;
+            if ( !LibrarySorterWindow.CheckDialog( "Delete Rpak Content", $"Are you sure you want delete this rpak content ?\n\n'{rpakType}/{rpakData.Name}'" ) ) return;
 
             rpakData.Data = new List< string >();
 
@@ -426,7 +428,7 @@ namespace LibrarySorter
                 }
             } while ( nameExists );
 
-            if ( !LibrarySorterWindow.CheckDialog( "Rename Tab", $"Are you sure you want rename this tab ?\n\n'{rpakData.Name}' => '{newEntry}'" ) ) return;
+            if ( !LibrarySorterWindow.CheckDialog( "Rename Tab", $"Are you sure you want rename this tab ?\n\n'{rpakType}/{rpakData.Name}' => '{rpakType}/{newEntry}'" ) ) return;
             
             rpakData.Name = newEntry;
 
@@ -611,6 +613,7 @@ namespace LibrarySorter
             if ( searchMode && entry.Length < 3 )
             {
                 modelCount = 0;
+                return;
             }
             else if ( searchMode && entry.Length >= 3 )
             {

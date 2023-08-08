@@ -181,9 +181,12 @@ namespace LibrarySorter
 
     public class MaterialManagerWindow : EditorWindow
     {
+        static MaterialManagerWindow windowInstance;
+
         static MaterialData materialData = Materials.GetMaterialData();
         static Dictionary< string, Texture2D > texturesDictionary = new Dictionary< string, Texture2D >();
         static Dictionary< string, Texture2D > texturesDictionarySearch = new Dictionary< string, Texture2D >();
+        static Dictionary< string, Texture2D > texturesDictionaryExport = new Dictionary< string, Texture2D >();
         static Vector2 scroll = Vector2.zero;
         
         static int scale = 256;
@@ -192,6 +195,8 @@ namespace LibrarySorter
         static string search = "";
         static string search_temp = "";
 
+        static bool exportPreview = false;
+
         public static void Init()
         {
             GetWindow< MaterialManagerWindow >( "Material Manager" );
@@ -199,6 +204,8 @@ namespace LibrarySorter
 
         void OnEnable()
         {
+            windowInstance = GetWindow< MaterialManagerWindow >( "Material Manager" );
+
             Refresh();
         }
 
@@ -206,9 +213,14 @@ namespace LibrarySorter
         {
             Dictionary< string, Texture2D > dictionary = search.Length >= 3 ? texturesDictionarySearch : texturesDictionary;
 
+            if ( exportPreview ) dictionary = texturesDictionaryExport;
+
+            string exportPreviewString = exportPreview ? "Hide Export Preview" : "Show Export Preview";
+
             GUILayout.BeginHorizontal( "box" );
 
             WindowUtility.WindowUtility.CreateTextField( ref search, 0, 20 );
+            WindowUtility.WindowUtility.CreateButton( exportPreviewString, "", () => { exportPreview = !exportPreview; }, 200, 20 );
             WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => { Refresh(); }, 100, 20 );
             WindowUtility.WindowUtility.CreateButton( "Page-", "", () => { if ( page > 0 ) page--; }, 100, 20 );
             WindowUtility.WindowUtility.CreateButton( "Page+", "", () => { if ( ( page * itemsPerPage ) < dictionary.Count ) page++; }, 100, 20 );
@@ -231,61 +243,104 @@ namespace LibrarySorter
 
             int loopLimit = Math.Min( dictionary.Count, ( page * itemsPerPage ) + itemsPerPage );
 
-            for ( int i = page * itemsPerPage; i < loopLimit; i++ )
+            int pageIdx = page * itemsPerPage;
+
+            int texturePerLine = ( int ) windowInstance.position.width / scale;
+
+            if ( exportPreview )
+            {
+                pageIdx = 0;
+                loopLimit = dictionary.Count;
+                GUILayout.BeginHorizontal( "box" );
+            }
+
+            for ( int i = pageIdx; i < loopLimit; i++ )
             {
                 var texture = dictionary.ElementAt( i );
 
                 GUIContent buttonContent = new GUIContent( texture.Value );
 
-                GUILayout.BeginVertical( "box" );
-
-                string path = AssetDatabase.GetAssetPath( texture.Value );
-
-                GUILayout.BeginHorizontal();
-                    WindowUtility.WindowUtility.CreateTextInfoCentered( $"{texture.Key} => {Path.GetFileNameWithoutExtension( path )}", "", 0, 20 );
-                    WindowUtility.WindowUtility.CreateCopyButton( "Copy Texture Name", "", texture.Key, scale );
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-
-                GUILayout.BeginVertical();
-
-                if ( GUILayout.Button( $"Remove {texture.Key}", buttonStyle, GUILayout.Height( scale / 2 ) ) )
+                if ( exportPreview )
                 {
-                    Materials.MaterialData.RemoveMaterial( texture.Key );
-                    Materials.SaveMaterialData();
-                    Refresh();
+                    GUILayout.BeginVertical( GUILayout.Width( scale ) );
+                        WindowUtility.WindowUtility.CreateTextInfoCentered( texture.Key, "", 0, 20 );
+                        GUILayout.Button( buttonContent, GUILayout.Width( scale ), GUILayout.Height( scale ) );
+                    GUILayout.EndVertical();
 
-                    Helper.DeleteFile( path );
-
-                    GUILayout.EndVertical();
-                    GUILayout.EndVertical();
-                    GUILayout.EndHorizontal();
-                    EditorGUILayout.EndScrollView();
-                    GUILayout.EndVertical();
-                    return;
+                    if ( i % texturePerLine == texturePerLine - 1 )
+                    {
+                        GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal( "box" );
+                    }
                 }
-
-                if ( GUILayout.Button( $"ReImport {texture.Key}", buttonStyle, GUILayout.Height( scale / 2 ) ) )
+                else
                 {
-                    ReImportMaterial( texture.Key );
+                    GUILayout.BeginVertical( "box" );
+
+                        string path = AssetDatabase.GetAssetPath( texture.Value );
+
+                        GUILayout.BeginHorizontal();
+                            WindowUtility.WindowUtility.CreateTextInfoCentered( $"{texture.Key} => {Path.GetFileNameWithoutExtension( path )}", "", 0, 20 );
+                            WindowUtility.WindowUtility.CreateCopyButton( "Copy Texture Name", "", texture.Key, scale );
+                        GUILayout.EndHorizontal();
+
+                        GUILayout.BeginHorizontal();
+                            GUILayout.BeginVertical();
+
+                                if ( GUILayout.Button( $"Delete '{texture.Key}'", buttonStyle, GUILayout.Height( scale / 2 ) ) )
+                                {
+                                    Materials.MaterialData.RemoveMaterial( texture.Key );
+                                    Materials.SaveMaterialData();
+                                    Refresh();
+
+                                    Helper.DeleteFile( path );
+
+                                    GUILayout.EndVertical();
+                                    GUILayout.EndHorizontal();
+                                    GUILayout.EndVertical();
+                                    GUILayout.EndVertical();
+                                    EditorGUILayout.EndScrollView();
+                                    return;
+                                }
+
+                                string buttonName = texturesDictionaryExport.ContainsKey( texture.Key ) ? $"Remove '{texture.Key}'" : $"Add to import list '{texture.Key}'";
+
+                                if ( GUILayout.Button( buttonName, buttonStyle, GUILayout.Height( scale / 2 ) ) )
+                                {
+                                    if ( !texturesDictionaryExport.ContainsKey( texture.Key ) )
+                                    {
+                                        texturesDictionaryExport.Add( texture.Key, texture.Value );
+                                    }
+                                    else texturesDictionaryExport.Remove( texture.Key );
+                                }
+
+                            GUILayout.EndVertical();
+
+                            if ( GUILayout.Button( buttonContent, GUILayout.Width( scale ), GUILayout.Height( scale ) ) )
+                            {
+                                MaterialManagerPreview.ShowPreview( texture.Value );
+                            }
+
+                        GUILayout.EndHorizontal();
+
+                        WindowUtility.WindowUtility.SeparatorAutoWidth( windowInstance, -30 );
+                    GUILayout.EndVertical();
                 }
-
-                GUILayout.EndVertical();
-
-                if ( GUILayout.Button( buttonContent, GUILayout.Width( scale ), GUILayout.Height( scale ) ) )
-                {
-                    MaterialManagerPreview.ShowPreview( texture.Value );
-                }
-
-                GUILayout.EndVertical();
-
-                GUILayout.EndHorizontal();
             }
+
+            if ( exportPreview ) GUILayout.EndHorizontal();
 
             EditorGUILayout.EndScrollView();
 
             GUILayout.EndVertical();
+
+            if ( exportPreview )
+            {
+                if ( GUILayout.Button( "ReImport Materials", GUILayout.Height( 80 ) ) && texturesDictionaryExport.Keys.Count != 0 )
+                {
+                    ReImportMaterial( texturesDictionaryExport.Keys.ToList() );
+                }
+            }
         }
 
         private static void SearchTextureWithName( string entry )
@@ -301,7 +356,7 @@ namespace LibrarySorter
             }
         }
 
-        private static async void ReImportMaterial( string materialName )
+        private static async void ReImportMaterial( List< string > materialList )
         {
             if ( !LegionExporting.GetValidRpakPaths() )
             {
@@ -309,15 +364,19 @@ namespace LibrarySorter
                 return;
             }
 
-            List< string > singleMaterialList = new List< string > { materialName };
+            StringBuilder legionArgument = new StringBuilder();
 
-            EditorUtility.DisplayProgressBar( $"Material Manager", $"Try Exporting \"{materialName}\"...", 0.0f );
+            materialList.Aggregate( legionArgument, ( sb, textureName ) => sb.Append( $"{textureName}," ) );
 
-            await LegionExporting.ExtractModelFromLegion( materialName );
+            legionArgument.Remove( legionArgument.Length - 1, 1 );
+
+            EditorUtility.DisplayProgressBar( $"Material Manager", $"Try Exporting {materialList.Count} Materials...", 0.0f );
+
+            await LegionExporting.ExtractModelFromLegion( legionArgument.ToString() );
 
             EditorUtility.ClearProgressBar();
 
-            await Materials.AppendNewTexture( singleMaterialList, true );
+            await Materials.AppendNewTexture( materialList, true );
         }
 
         internal static void Refresh()

@@ -219,11 +219,14 @@ namespace LibrarySorter
             prefab.transform.eulerAngles = Vector3.zero;
             prefab.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
 
+            // Set to 0 for BoxCollider
+            obj.transform.eulerAngles = Vector3.zero;
+
+            CheckBoxColliderComponent( obj );
+
             obj.transform.position = Vector3.zero;
             obj.transform.eulerAngles = Models.FindAnglesOffset( apexName );
             obj.transform.localScale = new Vector3( 1, 1, 1 );
-
-            Models.CheckBoxColliderComponent( prefab );
 
             AssetDatabase.SetLabels( ( UnityEngine.Object ) prefab, new[] { apexName.Split( '/' )[1].ToLower() } );
 
@@ -238,13 +241,18 @@ namespace LibrarySorter
         {
             GameObject obj = Helper.CreateGameObject( "", path );
 
+            obj.transform.position = Vector3.zero;
+            obj.transform.eulerAngles = Vector3.zero;
+
             // [0] => Get 'obj', [1] => Get '..._LOD0'
             Transform child = obj.GetComponentsInChildren< Transform >()[1];
 
-            CheckBoxColliderComponent( obj );
+            // Set to 0 for BoxCollider
+            child.transform.eulerAngles = Vector3.zero;
 
-            obj.transform.position = Vector3.zero;
-            obj.transform.eulerAngles = Vector3.zero;
+            RemoveBoxColliderComponent( obj );
+
+            CheckBoxColliderComponent( child.gameObject );
 
             child.transform.position = Vector3.zero;
             child.transform.eulerAngles = FindAnglesOffset( apexName );
@@ -289,28 +297,29 @@ namespace LibrarySorter
             return true;
         }
 
+        internal static void RemoveBoxColliderComponent( GameObject go )
+        {
+            BoxCollider[] colliders = go.GetComponents< BoxCollider >();
+
+            foreach ( BoxCollider coll in colliders )
+            {
+                UnityEngine.Object.DestroyImmediate( coll );
+            }
+        }
+
         internal static void CheckBoxColliderComponent( GameObject go )
         {
-            BoxCollider collider = go.GetComponent< BoxCollider >();
+            SkinnedMeshRenderer[] renderers = go.GetComponentsInChildren< SkinnedMeshRenderer >();
 
-            if ( collider == null )
+            foreach ( var renderer in renderers )
             {
-                go.AddComponent< BoxCollider >();
-                collider = go.GetComponent< BoxCollider >();
+                if ( renderer.sharedMesh != null )
+                {
+                    BoxCollider box = go.AddComponent< BoxCollider >();
+                    box.center = renderer.bounds.center - go.transform.position;
+                    box.size = renderer.bounds.size;
+                }
             }
-
-            float x = 0, y = 0, z = 0;
-
-            foreach( Renderer o in go.GetComponentsInChildren< Renderer >() )
-            {
-                if( o.bounds.size.x > x ) x = o.bounds.size.x;
-
-                if( o.bounds.size.y > y ) y = o.bounds.size.y;
-
-                if( o.bounds.size.z > z ) z = o.bounds.size.z;
-            }
-
-            collider.size = new Vector3( x, y, z );
         }
 
         public static Vector3 FindAnglesOffset( string searchTerm )

@@ -813,7 +813,7 @@ namespace CodeViews
 
             if ( NotExitingModel != 0 )
             {
-                ephemeralMessage.AddToQueueMessage( "NotExitingModelMessage", $"{NotExitingModel} Models don't exist and are not generated", 6, true, Color_Orange );
+                ephemeralMessage.AddToQueueMessage( "NotExitingModelMessage", $"{NotExitingModel} Models don't exist in r5r and are not generated", 6, true, Color_Orange );
             }
         }
 

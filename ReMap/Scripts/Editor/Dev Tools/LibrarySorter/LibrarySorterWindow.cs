@@ -27,7 +27,6 @@ namespace LibrarySorter
 
     public class LibrarySorterWindow : EditorWindow
     {
-        internal static LibraryData libraryData;
         internal static bool checkExist = false;
         Vector2 scrollPos = Vector2.zero;
         Vector2 scrollPosSearchPrefabs = Vector2.zero;
@@ -50,28 +49,21 @@ namespace LibrarySorter
         
         public static void Init()
         {
-            libraryData = RpakManagerWindow.FindLibraryDataFile();
+            RpakManagerWindow.libraryData = RpakManagerWindow.FindLibraryDataFile();
 
-            LibrarySorterWindow window = ( LibrarySorterWindow ) GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Fix Manager" );
+            LibrarySorterWindow window = ( LibrarySorterWindow ) GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Manager" );
             window.minSize = new Vector2( 650, 600 );
             window.Show();
         }
 
         private void OnEnable()
         {
-            libraryData = RpakManagerWindow.FindLibraryDataFile();
+            RpakManagerWindow.libraryData = RpakManagerWindow.FindLibraryDataFile();
         }
 
         void OnGUI()
         {
             GUILayout.BeginVertical( "box" );
-
-                GUILayout.BeginHorizontal();
-
-                    WindowUtility.WindowUtility.CreateButton( "Rpak Manager Window", "", () => RpakManagerWindow.Init() );
-                    WindowUtility.WindowUtility.CreateButton( "Offset Manager Window", "", () => OffsetManagerWindow.Init() );
-
-                GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
 
@@ -97,11 +89,8 @@ namespace LibrarySorter
                     foldoutFixFolders = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutFixFolders, "Fix Folders" );
                     if ( foldoutFixFolders )
                     {
-                        foreach ( RpakData data in libraryData.RpakList )
+                        foreach ( RpakData data in RpakManagerWindow.libraryData.GetVisibleData() )
                         {
-                            if ( data.IsHidden )
-                                continue;
-
                             GUILayout.BeginHorizontal();
                                 if ( WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ), 260 ) )
                                 {
@@ -212,7 +201,7 @@ namespace LibrarySorter
                 case TaskType.FixAllPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
-                    foreach ( RpakData _data in libraryData.RpakList )
+                    foreach ( RpakData _data in RpakManagerWindow.libraryData.RpakList )
                     {
                         await Models.FixFolder( _data );
                         await SetModelLabels( _data.Name );
@@ -486,7 +475,7 @@ namespace LibrarySorter
                 content.location = new List< string >();
                 string rpakName = "";
 
-                foreach ( RpakData data in libraryData.RpakList )
+                foreach ( RpakData data in RpakManagerWindow.libraryData.RpakList )
                 {
                     if ( data.Name == RpakManagerWindow.allModelsDataName ) continue;
 
@@ -524,7 +513,7 @@ namespace LibrarySorter
         {
             searchResult = new List< string >();
 
-            foreach ( string prefab in libraryData.GetAllModelsList() )
+            foreach ( string prefab in RpakManagerWindow.libraryData.GetAllModelsList() )
             {
                 if( search != "" && !prefab.Contains( search ) )
                     continue;

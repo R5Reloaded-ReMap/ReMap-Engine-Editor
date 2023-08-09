@@ -55,6 +55,11 @@ namespace LibrarySorter
         {
             return this.RpakList.Where( r => r.IsRetail && !r.IsSpecial ).ToList();
         }
+
+        public List< RpakData > GetVisibleData()
+        {
+            return this.RpakList.Where( r => !r.IsHidden ).ToList();
+        }
     }
 
     [Serializable]

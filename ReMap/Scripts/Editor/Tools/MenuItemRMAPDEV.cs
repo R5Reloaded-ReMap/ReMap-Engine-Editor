@@ -12,9 +12,9 @@ public class MenuItemRMAPDEV
             LibrarySorter.LegionExporting.RpakListInit();
         }
 
-        // Prefab Fix Manager
-        [ MenuItem( "Dev Menu/Prefab Fix Manager", false, 100 ) ]
-        public static void ShowPrefabFixManager()
+        // Prefab Manager
+        [ MenuItem( "Dev Menu/Windows/Prefab Manager", false, 100 ) ]
+        public static void ShowPrefabManager()
         {
             LibrarySorter.LibrarySorterWindow.Init();
         }
@@ -46,7 +46,7 @@ public class MenuItemRMAPDEV
             LootRepartitionWindow.WriteLootRepartitionFile();
         }
 
-        [ MenuItem( "Dev Menu/Test Tools/Loot Repartition", false, 100 ) ]
+        [ MenuItem( "Dev Menu/Windows/Loot Repartition", false, 100 ) ]
         public static void ShowLootRepartitionWindow()
         {
             LootRepartitionWindow.Init();
@@ -65,7 +65,7 @@ public class MenuItemRMAPDEV
             ReMapDebug.Debug_ClearProgressBar();
         }
 
-        [ MenuItem( "Dev Menu/Test Tools/ReTexture Window", false, 100 ) ]
+        [ MenuItem( "Dev Menu/Windows/ReTexture Window", false, 100 ) ]
         public static void ShowReTextureWindow()
         {
             ReTexture.Init();
@@ -77,16 +77,28 @@ public class MenuItemRMAPDEV
             ReMapDebug.DeleteMultipleFormats();
         }
 
-        [ MenuItem( "Dev Menu/Material Manager", false, 100 ) ]
+        [ MenuItem( "Dev Menu/Windows/Material Manager", false, 100 ) ]
         public static void OpenMaterialManagerWindow()
         {
             LibrarySorter.MaterialManagerWindow.Init();
         }
 
-        [ MenuItem( "Dev Menu/Material Selector", false, 100 ) ]
+        [ MenuItem( "Dev Menu/Windows/Material Selector", false, 100 ) ]
         public static void ShowMaterialWindowSelectorWindow()
         {
             LibrarySorter.MaterialWindowSelector.Init();
+        }
+
+        [ MenuItem( "Dev Menu/Windows/Rpak Manager", false, 100 ) ]
+        public static void ShowRpakManagerWindow()
+        {
+            LibrarySorter.RpakManagerWindow.Init();
+        }
+
+        [ MenuItem( "Dev Menu/Windows/Offset Manager", false, 100 ) ]
+        public static void ShowOffsetManagerWindow()
+        {
+            LibrarySorter.OffsetManagerWindow.Init();
         }
 
         [ MenuItem( "Dev Menu/Test Tools/Resize all Textures", false, 100 ) ]

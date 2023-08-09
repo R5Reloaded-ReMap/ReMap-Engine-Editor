@@ -22,7 +22,8 @@ namespace LibrarySorter
         CreateRpakList,
         FixPrefabsData,
         FixAllPrefabsData,
-        FixSpecificPrefabData
+        FixSpecificPrefabData,
+        ExportMissingModels
     }
 
     public class LibrarySorterWindow : EditorWindow
@@ -100,6 +101,7 @@ namespace LibrarySorter
                                     GUILayout.EndVertical();
                                     return;
                                 }
+                                WindowUtility.WindowUtility.CreateButton( $"Extract Missing Models", "", () => AwaitTask( TaskType.ExportMissingModels, null, rpak ), 160 );
                                 WindowUtility.WindowUtility.CreateButton( $"Find Missing", "TODO", 160 );
                                 WindowUtility.WindowUtility.CreateTextInfo( $"Lastest Check: {rpak.Update}", "" );
                             GUILayout.EndHorizontal();
@@ -151,7 +153,7 @@ namespace LibrarySorter
             GUILayout.EndVertical();
         }
 
-        internal static async void AwaitTask( TaskType taskType, string arg = null, RpakData data = null )
+        internal static async void AwaitTask( TaskType taskType, string arg = null, RpakData rpak = null )
         {
             switch ( taskType )
             {
@@ -193,28 +195,108 @@ namespace LibrarySorter
                 case TaskType.FixPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
-                    await Models.FixFolder( data );
-                    await SetModelLabels( data.Name );
+                    await Models.FixFolder( rpak );
                     RpakManagerWindow.SaveJson();
                     break;
 
                 case TaskType.FixAllPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
-                    foreach ( RpakData _data in RpakManagerWindow.libraryData.RpakList )
-                    {
-                        await Models.FixFolder( _data );
-                        await SetModelLabels( _data.Name );
-                    }
+                    await Models.FixFolders( RpakManagerWindow.libraryData.GetVisibleData() );
                     RpakManagerWindow.SaveJson();
                     break;
 
                 case TaskType.FixSpecificPrefabData:
                     checkExist = true;
                     await Models.FixPrefabs( arg );
-                    await SetModelLabels( arg );
+                    break;
+
+                case TaskType.ExportMissingModels:
+                    if ( !DoStartTask() ) return;
+                    if ( !LegionExporting.GetValidRpakPaths() )
+                    {
+                        Helper.Ping( "No valid path for LegionPlus." );
+                        return;
+                    }
+                    await ExportMissingModels( rpak );
                 break;
             }
+        }
+
+        internal static async Task ExportMissingModels( RpakData rpak )
+        {
+            Dictionary< string, string > missingModelList = new Dictionary< string, string >();
+
+            StringBuilder legionArgument = new StringBuilder();
+            List< string > legionArguments = new List< string >();
+
+            string dirPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{rpak.Name}";
+
+            foreach ( string apexName in rpak.Data )
+            {
+                string lod0Name = Path.GetFileNameWithoutExtension( apexName );
+
+                string unityName = UnityInfo.GetUnityModelName( apexName, true );
+
+                if ( File.Exists( $"{dirPath}/{unityName}" ) )
+                    continue;
+
+                if ( Helper.LOD0_Exist( lod0Name ) )
+                    continue;
+                
+                if ( !Models.HasValidName( lod0Name ) )
+                    continue;
+
+                if ( missingModelList.ContainsKey( apexName ) )
+                    continue;
+
+                missingModelList.Add( apexName, lod0Name );
+
+                legionArgument.Append( $"{lod0Name}," );
+
+                if ( legionArgument.Length > 5000 )
+                {
+                    // Remove last ','
+                    legionArgument.Remove( legionArgument.Length - 1, 1 );
+
+                    legionArguments.Add( legionArgument.ToString() );
+
+                    legionArgument = new ();
+                }
+            }
+
+            if ( legionArgument.Length > 1 )
+            {
+                legionArgument.Remove( legionArgument.Length - 1, 1 );
+                legionArguments.Add( legionArgument.ToString() );
+            }
+
+            string loading = ""; int loadingCount = 0;
+            int min = 1; int max = legionArguments.Count;
+
+            foreach ( string argument in legionArguments )
+            {
+                Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
+
+                string countInfo = max > 1 ? $" ({min}/{max})" : "";
+
+                while ( !legionTask.IsCompleted )
+                {
+                    EditorUtility.DisplayProgressBar( $"Legion Extraction{countInfo}", $"Extracting files{loading}", 0.0f );
+
+                    loading = new string( '.', loadingCount++ % 4 );
+
+                    await Helper.Wait( 1.0 );
+                }
+
+                await Models.MoveModels( missingModelList );
+
+                min++;
+            }
+
+            EditorUtility.ClearProgressBar();
+
+            Helper.DeleteDirectory( Models.extractedModelDirectory, false, false );
         }
 
         internal static Task SetModelLabels( string specificModelOrFolderOrnull = null )
@@ -365,11 +447,13 @@ namespace LibrarySorter
             AssetDatabase.Refresh();
         }
 
-        internal static Task DeleteNotUsedTexture()
+        internal static async Task DeleteNotUsedTexture()
         {
+            Materials.MaterialData = Materials.GetMaterialData();
+
             List< string > texturesList = new List< string >();
 
-            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel, $"{UnityInfo.relativePathLods}/Developer_Lods" } );
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel, UnityInfo.relativePathDevLods } );
 
             int i = 0; int total = modeltextureGUID.Length;
             foreach ( var guid in modeltextureGUID )
@@ -390,45 +474,25 @@ namespace LibrarySorter
 
             string[] usedTextures = texturesList.ToArray();
 
-            string[] defaultAssetGUID = AssetDatabase.FindAssets( "t:defaultAsset", new [] { UnityInfo.relativePathMaterials } );
-            int j = 0; total = defaultAssetGUID.Length;
-            foreach ( var guid in defaultAssetGUID )
-            {
-                string defaultAssetPath = AssetDatabase.GUIDToAssetPath( guid );
-
-                if ( Path.GetExtension( defaultAssetPath ) == ".dds")
-                {
-                    File.Delete( defaultAssetPath );
-                    File.Delete( defaultAssetPath + ".meta");
-                    j++;
-                }
-
-                EditorUtility.DisplayProgressBar( $"Checking default assets {j}/{total}", $"Checking: {guid}", ( j + 1 ) / ( float )total ); j++;
-            }
-
-            string[] textureGUID = AssetDatabase.FindAssets("t:texture", new [] { UnityInfo.relativePathMaterials });
-            int k = 0; total = textureGUID.Length;
+            string[] textureGUID = AssetDatabase.FindAssets( "t:texture", new [] { UnityInfo.relativePathMaterials } );
+            int j = 0; total = textureGUID.Length;
             foreach ( var guid in textureGUID )
             {
                 string texturePath = AssetDatabase.GUIDToAssetPath( guid );
+                string fileName = Path.GetFileNameWithoutExtension( texturePath );
 
-                if( !usedTextures.Contains(Path.GetFileNameWithoutExtension( texturePath ) ) )
-                {
-                    File.Delete( texturePath );
-                    File.Delete( texturePath + ".meta");
-                    k++;
-                }
+                if ( !usedTextures.Contains( fileName ) && !Materials.MaterialData.ContainsFilePath( fileName ) )
+                    Helper.DeleteFile( texturePath.Replace( "\\", "/" ) );
 
-                EditorUtility.DisplayProgressBar( $"Checking textures {k}/{total}", $"Checking: {guid}", ( k + 1 ) / ( float )total ); k++;
+                EditorUtility.DisplayProgressBar( $"Checking textures {j}/{total}", $"Checking: {guid}", ( j + 1 ) / ( float )total ); j++;
             }
 
-            ReMapConsole.Log( $"{j} native assets have been deleted", ReMapConsole.LogType.Success );
-            ReMapConsole.Log( $"{k} textures not used have been deleted", ReMapConsole.LogType.Success );
+            ReMapConsole.Log( $"{j} textures not used have been deleted", ReMapConsole.LogType.Success );
             ReMapConsole.Log( $"Total used textures: {usedTextures.Length} for {modeltextureGUID.Length} models", ReMapConsole.LogType.Info );
 
-            EditorUtility.ClearProgressBar();
+            await Helper.Wait();
 
-            return Task.CompletedTask;
+            EditorUtility.ClearProgressBar();
         }
 
         internal static Task SetScale100ToFBX()

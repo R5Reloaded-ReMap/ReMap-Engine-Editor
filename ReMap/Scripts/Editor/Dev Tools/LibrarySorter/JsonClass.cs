@@ -112,6 +112,16 @@ namespace LibrarySorter
             return this.MaterialList.Any( material => material.Name == name );
         }
 
+        public bool ContainsFilePath( string fileName )
+        {
+            return this.MaterialList.Any( material => material.Path.Contains( fileName ) );
+        }
+
+        public bool ContainsFilePath( string[] fileNames )
+        {
+            return this.MaterialList.Any( material => fileNames.Any( fileName => material.Path.Contains( fileName ) ) );
+        }
+
         public string GetPath( string name )
         {
             MaterialClass material = this.MaterialList.FirstOrDefault( m => m.Name == name );

@@ -24,6 +24,8 @@ namespace LibrarySorter
                 return;
             }
 
+            Materials.MaterialData = Materials.GetMaterialData();
+
             Dictionary< string, string > missingModelList = new Dictionary< string, string >();
 
             foreach ( string modelName in RpakManagerWindow.libraryData.GetAllModelsList() )
@@ -38,8 +40,6 @@ namespace LibrarySorter
 
                 if ( missingModelList.ContainsKey( modelName ) )
                     continue;
-
-                Helper.Ping( modelName );
 
                 missingModelList.Add( modelName, lod0Name );
             }
@@ -113,6 +113,14 @@ namespace LibrarySorter
             AssetDatabase.Refresh();
 
             EditorUtility.ClearProgressBar();
+        }
+
+        internal static async Task FixFolders( List< RpakData > rpaks )
+        {
+            foreach ( RpakData rpak in rpaks )
+            {
+                await FixFolder( rpak );
+            }
         }
 
         internal static async Task FixFolder( RpakData rpak )
@@ -267,7 +275,7 @@ namespace LibrarySorter
             return false;
         }
 
-        private static bool HasValidName( string name )
+        internal static bool HasValidName( string name )
         {
             if ( name.StartsWith( "ptpov_" ) )
                 return false;
@@ -332,7 +340,12 @@ namespace LibrarySorter
 
                 Helper.MoveFile( $"{modelDir}/{modelName}_LOD0.fbx", $"{modelDirectory}/{modelName}_LOD0.fbx", false );
 
-                foreach ( string texture in Directory.GetFiles( $"{modelDir}/_images" ) )
+                string [] filesName = Directory.GetFiles( $"{modelDir}/_images" );
+
+                if ( Materials.MaterialData.ContainsFilePath( filesName ) )
+                    continue;
+
+                foreach ( string texture in filesName )
                 {
                     string textureName = Path.GetFileName( texture );
 

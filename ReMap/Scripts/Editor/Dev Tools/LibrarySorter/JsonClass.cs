@@ -60,6 +60,11 @@ namespace LibrarySorter
         {
             return this.RpakList.Where( r => !r.IsHidden ).ToList();
         }
+
+        public List< RpakData > RpakContains( string name )
+        {
+            return this.GetVisibleData().Where( r => r.Data.Contains( name ) ).ToList();
+        }
     }
 
     [Serializable]
@@ -71,6 +76,16 @@ namespace LibrarySorter
         public bool IsHidden;
         public bool IsSpecial;
         public string Update;
+
+        public bool Contains( string name )
+        {
+            return this.Data.Contains( name );
+        }
+
+        public void UpdateTime()
+        {
+            this.Update = DateTime.UtcNow.ToString();
+        }
     }
 
 

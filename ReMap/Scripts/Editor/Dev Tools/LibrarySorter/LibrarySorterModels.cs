@@ -115,130 +115,157 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
         }
 
-        internal static async Task FixFolder( RpakData data )
+        internal static async Task FixFolder( RpakData rpak )
         {
-            Helper.CreateDirectory( $"{UnityInfo.relativePathPrefabs}/{data.Name}" );
+            Helper.CreateDirectory( $"{UnityInfo.relativePathPrefabs}/{rpak.Name}" );
 
-            GameObject parent; GameObject obj; string modelName; string unityName;
-
-            float progress = 0.0f; int min = 0; int max = data.Data.Count;
+            int min = 0; int max = rpak.Data.Count; float progress = 0.0f; 
 
             // Fix or Create Models in Prefabs/'rpakName'
-            foreach ( string model in data.Data )
+            foreach ( string apexName in rpak.Data )
             {
-                modelName = Path.GetFileNameWithoutExtension( model );
-                unityName = UnityInfo.GetUnityModelName( model );
+                string prefabName = UnityInfo.GetUnityModelName( apexName );
 
-                string localModelPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab";
-                string lodsModelPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
-                string allModelsFolder = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/all_models/{unityName}.prefab";
+                EditorUtility.DisplayProgressBar( $"Sorting '{rpak.Name}' Folder ({min++}/{max})", $"Processing... '{prefabName}'", progress );
 
-                if ( !File.Exists( localModelPath ) && File.Exists( lodsModelPath ) )
-                {
-                    if ( Helper.CopyFile( allModelsFolder, localModelPath, false ) )
-                        continue;
-
-                    parent = Helper.CreateGameObject( unityName );
-                    obj = Helper.CreateGameObject( "", $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", parent );
-
-                    if ( !Helper.IsValid( parent ) || !Helper.IsValid( obj ) )
-                        continue;
-
-                    parent.AddComponent< PropScript >();
-                    parent.transform.position = Vector3.zero;
-                    parent.transform.eulerAngles = Vector3.zero;
-
-                    obj.transform.position = Vector3.zero;
-                    obj.transform.eulerAngles = Models.FindAnglesOffset( model );
-                    obj.transform.localScale = new Vector3(1, 1, 1);
-
-                    parent.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
-
-                    Models.CheckBoxColliderComponent( parent );
-
-                    //AssetDatabase.SetLabels( ( UnityEngine.Object ) parent, new[] { model.Split( '/' )[1] } );
-
-                    PrefabUtility.SaveAsPrefabAsset( parent, $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab" );
-
-                    UnityEngine.Object.DestroyImmediate( parent );
-
-                    ReMapConsole.Log( $"[Library Sorter] Created and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}", ReMapConsole.LogType.Info ); 
-                }
-                else if ( LibrarySorterWindow.checkExist && File.Exists( localModelPath ) )
-                {
-                    parent = Helper.CreateGameObject( $"{UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}.prefab" );
-                    obj = parent.GetComponentsInChildren< Transform >()[0].gameObject;
-                    
-                    if ( !Helper.IsValid( parent ) || !Helper.IsValid( obj ) )
-                        continue;
-
-                    parent.transform.position = Vector3.zero;
-                    parent.transform.eulerAngles = Vector3.zero;
-                    obj.transform.eulerAngles = Models.FindAnglesOffset( model );
-                    obj.transform.position = Vector3.zero;
-
-                    Models.CheckBoxColliderComponent( parent );
-
-                    //AssetDatabase.SetLabels( ( UnityEngine.Object ) parent, new[] { model.Split( '/' )[1] } );
-
-                    PrefabUtility.SavePrefabAsset( parent );
-
-                    ReMapConsole.Log( $"[Library Sorter] Fixed and saved prefab: {UnityInfo.relativePathPrefabs}/{data.Name}/{unityName}", ReMapConsole.LogType.Success );
-                }
-
-                // Update progress bar
+                await FixPrefab( rpak, prefabName, LibrarySorterWindow.checkExist );
+                
                 progress += 1.0f / max;
-                EditorUtility.DisplayProgressBar( $"Sorting Folder ({min++}/{max})", $"Processing... {modelName}", progress );
             }
-
-            await Helper.Wait();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
             EditorUtility.ClearProgressBar();
 
-            data.Update = DateTime.UtcNow.ToString();
+            rpak.UpdateTime();
         }
 
-        internal static Task FixPrefab( string prefabName )
+        internal static async Task FixPrefab( RpakData rpak, string prefabName, bool checkExist = true )
         {
-            string[] prefabs = AssetDatabase.FindAssets( prefabName, new [] { UnityInfo.relativePathPrefabs } );
+            string lodsName = prefabName.Split( '#' )[^1];
+            string apexName = UnityInfo.GetApexModelName( prefabName, true );
 
-            int i = 0; int total = prefabs.Length;
+            if ( !Helper.LOD0_Exist( lodsName ) || !rpak.Contains( apexName ) )
+                return;
 
-            string countInfo = total < 1 ? $"({i}/{total})" : "";
+            await TryFix( rpak, prefabName, apexName, checkExist );
+        }   
 
-            foreach ( string prefab in prefabs )
+        internal static async Task FixPrefabs( string prefabName )
+        {
+            string lodsName = prefabName.Split( '#' )[^1];
+            string apexName = UnityInfo.GetApexModelName( prefabName, true );
+
+            List< RpakData > rpaks = RpakManagerWindow.libraryData.RpakContains( apexName );
+
+            if ( !Helper.LOD0_Exist( lodsName ) )
+                return;
+
+            List< Task > fixObjects = new List< Task >();
+
+            foreach ( RpakData rpak in rpaks )
             {
-                string file = AssetDatabase.GUIDToAssetPath( prefab );
-                string rpakName = UnityInfo.GetApexModelName( prefabName, true );
-
-                GameObject obj = Helper.CreateGameObject( "", file );
-
-                EditorUtility.DisplayProgressBar( $"Fixing Prefabs {countInfo}", $"Prefab: {rpakName} ({prefab})", ( i + 1 ) / ( float ) total );
-
-                Transform child = obj.GetComponentsInChildren< Transform >()[1];
-
-                CheckBoxColliderComponent( obj );
-
-                obj.transform.position = Vector3.zero;
-                obj.transform.eulerAngles = Vector3.zero;
-                child.transform.eulerAngles = FindAnglesOffset( rpakName );
-                child.transform.position = Vector3.zero;
-
-                PrefabUtility.SaveAsPrefabAsset( obj, file );
-
-                UnityEngine.Object.DestroyImmediate( obj );
-
-                ReMapConsole.Log( $"[Library Sorter] Fixed and saved prefab: {file}", ReMapConsole.LogType.Success ); i++;
+                fixObjects.Add( TryFix( rpak, prefabName, apexName ) );
             }
 
-            EditorUtility.ClearProgressBar();
-
-            return Task.CompletedTask;
+            await Task.WhenAll( fixObjects );
         }
 
+        private static async Task TryFix( RpakData rpak, string prefabName, string apexName, bool checkExist = true )
+        {
+            string filePath = $"{UnityInfo.relativePathPrefabs}/{rpak.Name}/{prefabName}.prefab";
+
+            if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{filePath}" ) && checkExist )
+            {
+                UpdatePrefab( apexName, filePath );
+            }
+            else if ( !TryCopyFromAllModels( rpak, apexName ) )
+            {
+                CreatePrefab( apexName, filePath );
+            }
+
+            await Helper.Wait();
+        }
+
+        private static async void CreatePrefab( string apexName, string filePath )
+        {
+            string unityName = UnityInfo.GetUnityModelName( apexName );
+            string modelName = Path.GetFileNameWithoutExtension( apexName );
+
+            GameObject prefab = Helper.CreateGameObject( unityName );
+
+            if ( !Helper.IsValid( prefab ) )
+                return;
+
+            GameObject obj = Helper.CreateGameObject( "", $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", prefab );
+
+            if ( !Helper.IsValid( obj ) )
+            {
+                UnityEngine.Object.DestroyImmediate( prefab );
+                return;
+            } 
+
+            prefab.AddComponent< PropScript >();
+            prefab.transform.position = Vector3.zero;
+            prefab.transform.eulerAngles = Vector3.zero;
+            prefab.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
+
+            obj.transform.position = Vector3.zero;
+            obj.transform.eulerAngles = Models.FindAnglesOffset( apexName );
+            obj.transform.localScale = new Vector3( 1, 1, 1 );
+
+            Models.CheckBoxColliderComponent( prefab );
+
+            AssetDatabase.SetLabels( ( UnityEngine.Object ) prefab, new[] { apexName.Split( '/' )[1].ToLower() } );
+
+            PrefabUtility.SaveAsPrefabAsset( prefab, $"{UnityInfo.currentDirectoryPath}/{filePath}" );
+
+            await Helper.Wait();
+
+            UnityEngine.Object.DestroyImmediate( prefab );
+        }
+
+        private static async void UpdatePrefab( string apexName, string path )
+        {
+            GameObject obj = Helper.CreateGameObject( "", path );
+
+            // [0] => Get 'obj', [1] => Get '..._LOD0'
+            Transform child = obj.GetComponentsInChildren< Transform >()[1];
+
+            CheckBoxColliderComponent( obj );
+
+            obj.transform.position = Vector3.zero;
+            obj.transform.eulerAngles = Vector3.zero;
+
+            child.transform.position = Vector3.zero;
+            child.transform.eulerAngles = FindAnglesOffset( apexName );
+            child.transform.localScale = new Vector3( 1, 1, 1 );
+
+            AssetDatabase.SetLabels( ( UnityEngine.Object ) obj, new[] { apexName.Split( '/' )[1].ToLower() } );
+
+            PrefabUtility.SaveAsPrefabAsset( obj, path );
+
+            await Helper.Wait();
+
+            UnityEngine.Object.DestroyImmediate( obj );
+        }
+
+        private static bool TryCopyFromAllModels( RpakData rpak, string prefabName )
+        {
+            string targetPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{rpak.Name}/{prefabName}.prefab";
+
+            string allModelsPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{RpakManagerWindow.allModelsDataName}/{prefabName}.prefab";
+            string allModelsRetailPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathModel}/{RpakManagerWindow.allModelsRetailDataName}/{prefabName}.prefab";
+
+            if ( Helper.CopyFile( allModelsPath, targetPath, false ) )
+                return true;
+
+            if ( Helper.CopyFile( allModelsRetailPath, targetPath, false ) )
+                return true;
+
+            return false;
+        }
 
         private static bool HasValidName( string name )
         {

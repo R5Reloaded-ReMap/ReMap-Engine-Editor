@@ -18,7 +18,9 @@ namespace LibrarySorter
         internal static readonly string allModelsDataName = "all_models";
         internal static readonly string r5reloadedModelsDataName = "r5reloaded_list";
         internal static readonly string allModelsRetailDataName = "all_models_retail";
+
         internal static LibraryData libraryData = FindLibraryDataFile();
+
         internal static string[][] rpakTab = new string[0][];
         internal static RpakData rpakData = libraryData.RpakList[0];
         internal static RpakData rpakDataTemp = libraryData.RpakList[0];
@@ -50,11 +52,11 @@ namespace LibrarySorter
 
         public static void Init()
         {
-            libraryData = FindLibraryDataFile();
+            libraryData = FindLibraryDataFile(); Helper.Ping( rpakManagerPath );
 
             Refresh();
 
-            windowInstance = ( RpakManagerWindow ) GetWindow( typeof( RpakManagerWindow ), false, "Rpak Manager" );
+            GetWindow( typeof( RpakManagerWindow ), false, "Rpak Manager" );
             windowInstance.minSize = new Vector2( 650, 600 );
             windowInstance.Show();
         }
@@ -469,7 +471,7 @@ namespace LibrarySorter
             }
 
             allModelsData.Data = allModels;
-            allModelsData.Update = DateTime.UtcNow.ToString();
+            allModelsData.UpdateTime();
 
             SaveJson();
         }
@@ -499,7 +501,7 @@ namespace LibrarySorter
             }
 
             r5rModelsData.Data = r5rList;
-            r5rModelsData.Update = DateTime.UtcNow.ToString();
+            r5rModelsData.UpdateTime();
 
             SaveJson();
         }
@@ -529,7 +531,7 @@ namespace LibrarySorter
             }
 
             retailListModelsData.Data = retailList;
-            retailListModelsData.Update = DateTime.UtcNow.ToString();
+            retailListModelsData.UpdateTime();
 
             SaveJson();
         }
@@ -565,12 +567,12 @@ namespace LibrarySorter
 
         private static RpakData NewRpakData()
         {
-            RpakData data = new RpakData();
-            data.Name = "unnamed";
-            data.Data = new List< string >();
-            data.Update = DateTime.UtcNow.ToString();
+            RpakData rpak = new RpakData();
+            rpak.Name = "unnamed";
+            rpak.Data = new List< string >();
+            rpak.UpdateTime();
 
-            return data;
+            return rpak;
         }
 
         private static void Refresh()

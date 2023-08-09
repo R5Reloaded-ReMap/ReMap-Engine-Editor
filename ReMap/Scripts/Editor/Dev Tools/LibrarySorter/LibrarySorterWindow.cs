@@ -89,10 +89,10 @@ namespace LibrarySorter
                     foldoutFixFolders = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutFixFolders, "Fix Folders" );
                     if ( foldoutFixFolders )
                     {
-                        foreach ( RpakData data in RpakManagerWindow.libraryData.GetVisibleData() )
+                        foreach ( RpakData rpak in RpakManagerWindow.libraryData.GetVisibleData() )
                         {
                             GUILayout.BeginHorizontal();
-                                if ( WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, data ), 260 ) )
+                                if ( WindowUtility.WindowUtility.CreateButton( $"{rpak.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, rpak ), 260 ) )
                                 {
                                     GUILayout.EndHorizontal();
                                     EditorGUILayout.EndFoldoutHeaderGroup();
@@ -101,7 +101,7 @@ namespace LibrarySorter
                                     return;
                                 }
                                 WindowUtility.WindowUtility.CreateButton( $"Find Missing", "TODO", 160 );
-                                WindowUtility.WindowUtility.CreateTextInfo( $"Lastest Check: {data.Update}", "" );
+                                WindowUtility.WindowUtility.CreateTextInfo( $"Lastest Check: {rpak.Update}", "" );
                             GUILayout.EndHorizontal();
                         }
                         WindowUtility.WindowUtility.CreateButton( $"Check All", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
@@ -211,7 +211,7 @@ namespace LibrarySorter
 
                 case TaskType.FixSpecificPrefabData:
                     checkExist = true;
-                    await Models.FixPrefab( arg );
+                    await Models.FixPrefabs( arg );
                     await SetModelLabels( arg );
                 break;
             }

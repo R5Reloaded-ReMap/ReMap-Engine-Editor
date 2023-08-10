@@ -135,13 +135,13 @@ namespace WindowUtility
         {
             if ( Helper.IsValid( editorWindow ) )
             {
-                CreateTextInfo( $"Window Size: {Helper.ReplaceComma( editorWindow.position.width )} x {Helper.ReplaceComma( editorWindow.position.height )}", "", 152 );
+                CreateTextInfo( $"Window Size: {Helper.ReplaceComma( editorWindow.position.width )} x {Helper.ReplaceComma( editorWindow.position.height )}", "", 152, 20                                );
             }
         }
 
         public static void ShowPageInfo( int currentPage, int maxPage, int itemStart, int itemEnd, string info = "Page", string type = "" )
         {
-            GUILayout.Label( $"{info} {currentPage + 1} / {maxPage} ( {itemStart} - {itemEnd} {type} )", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+            GUILayout.Label( $"{info} {currentPage + 1} / {maxPage} ( {itemStart} - {itemEnd} {type} )", EditorStyles.boldLabel, GUILayout.Width( 400 ), GUILayout.Height( 20 ) );
         }
 
         public static void GetScrollSize( Vector2 scroll )

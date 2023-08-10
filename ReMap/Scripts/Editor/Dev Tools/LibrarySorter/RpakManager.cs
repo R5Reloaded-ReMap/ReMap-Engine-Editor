@@ -30,8 +30,8 @@ namespace LibrarySorter
         private static string[] rpakTypes = new[] { "special", "r5reloaded", "retail" };
         private static string rpakType = rpakTypes[1];
 
-        //private static Texture2D existsIcon;
-        //private static Texture2D absentIcon;
+        private static Texture2D existsIcon;
+        private static Texture2D absentIcon;
 
         List< string > dataContent = new List< string >();
 
@@ -71,8 +71,8 @@ namespace LibrarySorter
             
             libraryData = FindLibraryDataFile();
 
-            //existsIcon = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
-            //absentIcon = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
+            existsIcon = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
+            absentIcon = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
 
             Refresh();
         }
@@ -167,13 +167,7 @@ namespace LibrarySorter
                         if ( !found ) continue;
                     }
 
-                    //GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
-                    //buttonStyle.alignment = TextAnchor.MiddleCenter;
-
-                    //GUIContent buttonContentInfo = new GUIContent( Helper.LOD0_Exist( Path.GetFileNameWithoutExtension( model ) ) ? existsIcon : absentIcon );
-
                     GUILayout.BeginHorizontal( "box" );
-                        //GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 ) );
                         GUILayout.Label( model, GUILayout.Height( 20 ) );
                         WindowUtility.WindowUtility.CreateCopyButton( "Copy", "", model, 100, 20 );
                         if ( !rpakData.IsSpecial )
@@ -206,7 +200,7 @@ namespace LibrarySorter
                 // Calculate how many buttons should be in each line
                 tabPerLine = totalButtons > maxTabPerLine ? Mathf.CeilToInt( ( float ) totalButtons / Mathf.CeilToInt( ( float ) totalButtons / maxTabPerLine ) ) : totalButtons;
 
-                GUILayout.Label( $"Special:", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+                GUILayout.Label( $"Special:", EditorStyles.boldLabel, GUILayout.Width( 400 ), GUILayout.Height( 20 ) );
 
                 GUILayout.BeginHorizontal();
                     foreach ( RpakData data in special )
@@ -229,9 +223,9 @@ namespace LibrarySorter
                 tabPerLine = totalButtons > maxTabPerLine ? Mathf.CeilToInt( ( float ) totalButtons / Mathf.CeilToInt( ( float ) totalButtons / maxTabPerLine ) ) : totalButtons;
 
                 GUILayout.BeginHorizontal();
-                    GUILayout.Label( $"R5Reloaded:", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+                    GUILayout.Label( $"R5Reloaded:", EditorStyles.boldLabel, GUILayout.Width( 400 ), GUILayout.Height( 20 ) );
                     WindowUtility.WindowUtility.FlexibleSpace();
-                    WindowUtility.WindowUtility.CreateButton( "Add R5Reloaded Rpak", "", () => AddNewRpakList( RpakType.R5Reloaded ), 200 );
+                    WindowUtility.WindowUtility.CreateButton( "Add R5Reloaded Rpak", "", () => AddNewRpakList( RpakType.R5Reloaded ), 200, 20 );
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
@@ -255,9 +249,9 @@ namespace LibrarySorter
                 tabPerLine = totalButtons > maxTabPerLine ? Mathf.CeilToInt( ( float ) totalButtons / Mathf.CeilToInt( ( float ) totalButtons / maxTabPerLine ) ) : totalButtons;
 
                 GUILayout.BeginHorizontal();
-                    GUILayout.Label( $"Retail:", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+                    GUILayout.Label( $"Retail:", EditorStyles.boldLabel, GUILayout.Width( 400 ), GUILayout.Height( 20 ) );
                     WindowUtility.WindowUtility.FlexibleSpace();
-                    WindowUtility.WindowUtility.CreateButton( "Add Retail Rpak", "", () => AddNewRpakList( RpakType.Retail ), 200 );
+                    WindowUtility.WindowUtility.CreateButton( "Add Retail Rpak", "", () => AddNewRpakList( RpakType.Retail ), 200, 20 );
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
@@ -277,9 +271,9 @@ namespace LibrarySorter
         private void ShowToolBar()
         {
             GUILayout.BeginHorizontal();
-                WindowUtility.WindowUtility.CreateButton( "Build all_models", "", () => BuildAllModels(), 140 );
-                WindowUtility.WindowUtility.CreateButton( "Build r5reloaded list", "", () => BuildR5ReloadedList(), 140 );
-                WindowUtility.WindowUtility.CreateButton( "Build retail list", "", () => BuildRetailList(), 140 );
+                WindowUtility.WindowUtility.CreateButton( "Build all_models", "", () => BuildAllModels(), 140, 20 );
+                WindowUtility.WindowUtility.CreateButton( "Build r5reloaded list", "", () => BuildR5ReloadedList(), 140, 20 );
+                WindowUtility.WindowUtility.CreateButton( "Build retail list", "", () => BuildRetailList(), 140, 20 );
 
                 #if RMAPDEV
                     WindowUtility.WindowUtility.GetEditorWindowSize( windowInstance );
@@ -287,8 +281,8 @@ namespace LibrarySorter
 
                     GUILayout.FlexibleSpace();
 
-                WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => Refresh(), 100 );
-                WindowUtility.WindowUtility.CreateButton( "Save", "", () => SaveJson(), 100 );
+                WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => Refresh(), 100, 20 );
+                WindowUtility.WindowUtility.CreateButton( "Save", "", () => SaveJson(), 100, 20 );
             GUILayout.EndHorizontal();
         }
 
@@ -305,17 +299,17 @@ namespace LibrarySorter
 
                     GUILayout.FlexibleSpace();
 
-                    WindowUtility.WindowUtility.CreateButton( "Previous Page", "", () => { if ( currentPage > 0 ) currentPage--; }, 100 );
+                    WindowUtility.WindowUtility.CreateButton( "Previous Page", "", () => { if ( currentPage > 0 ) currentPage--; }, 100, 20 );
 
-                    WindowUtility.WindowUtility.CreateButton( "Next Page", "", () => { if ( itemEnd < dataContent.Count ) currentPage++; }, 100 );
+                    WindowUtility.WindowUtility.CreateButton( "Next Page", "", () => { if ( itemEnd < dataContent.Count ) currentPage++; }, 100, 20 );
 
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
                     WindowUtility.WindowUtility.CreateToggle( ref searchMode, "Search Mode", "", 80 );
                     WindowUtility.WindowUtility.CreateTextField( ref entry, "", "", 0, 0, 0, true );
-                    if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Add Model", "To add several models, the script separates\nthe entry from all \";\"", () => AddModel(), 100 );
-                    if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Rename Folder", "", () => RenameTab(), 100 );
+                    if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Add Model", "To add several models, the script separates\nthe entry from all \";\"", () => AddModel(), 100, 20 );
+                    if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Rename Folder", "", () => RenameTab(), 100, 20 );
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
@@ -323,16 +317,22 @@ namespace LibrarySorter
         private void RpakUtility()
         {
             GUILayout.BeginHorizontal();
-                GUILayout.Label( $"Rpak Open => '{rpakType}/{rpakData.Name}'", EditorStyles.boldLabel, GUILayout.Width( 400 ) );
+                GUILayout.Label( $"Rpak Open => '{rpakType}/{rpakData.Name}'", EditorStyles.boldLabel, GUILayout.Width( 20 ), GUILayout.Width( 400 ) );
 
                 GUILayout.FlexibleSpace();
 
-                if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100 );
-                if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Delete List", "", () => DeleteList(), 100 );
+                if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Remove Rpak", "", () => DeleteRpakList(), 100, 20 );
+                if ( !rpakData.IsSpecial ) WindowUtility.WindowUtility.CreateButton( "Delete List", "", () => DeleteList(), 100, 20 );
 
-                string hidden = rpakData.IsHidden ? "Flagged Hidden" : "Flagged Visible";
+                GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+                buttonStyle.alignment = TextAnchor.MiddleLeft;
 
-                WindowUtility.WindowUtility.CreateButton( hidden,  "", () => { rpakData.IsHidden  = !rpakData.IsHidden; }, 100 );
+                GUIContent buttonContentInfo = new GUIContent( rpakData.IsHidden ? "Hidden" : "Visible", rpakData.IsHidden ? existsIcon : absentIcon );
+
+                if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 76 ) ) )
+                {
+                    rpakData.IsHidden  = !rpakData.IsHidden;
+                }
             GUILayout.EndHorizontal();
         }
 

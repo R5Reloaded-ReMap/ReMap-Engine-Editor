@@ -30,8 +30,8 @@ namespace LibrarySorter
         private static string[] rpakTypes = new[] { "special", "r5reloaded", "retail" };
         private static string rpakType = rpakTypes[1];
 
-        private static Texture2D existsIcon;
-        private static Texture2D absentIcon;
+        private static Texture2D visibleIcon;
+        private static Texture2D hiddenIcon;
 
         List< string > dataContent = new List< string >();
 
@@ -71,8 +71,8 @@ namespace LibrarySorter
             
             libraryData = FindLibraryDataFile();
 
-            existsIcon = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
-            absentIcon = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
+            visibleIcon = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
+            hiddenIcon = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
 
             Refresh();
         }
@@ -327,7 +327,7 @@ namespace LibrarySorter
                 GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
                 buttonStyle.alignment = TextAnchor.MiddleLeft;
 
-                GUIContent buttonContentInfo = new GUIContent( rpakData.IsHidden ? "Hidden" : "Visible", rpakData.IsHidden ? existsIcon : absentIcon );
+                GUIContent buttonContentInfo = new GUIContent( rpakData.IsHidden ? "Hidden" : "Visible", rpakData.IsHidden ? hiddenIcon : visibleIcon );
 
                 if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 76 ) ) )
                 {

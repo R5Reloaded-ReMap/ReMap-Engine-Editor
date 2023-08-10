@@ -52,7 +52,7 @@ namespace LibrarySorter
 
         public static void Init()
         {
-            libraryData = FindLibraryDataFile(); Helper.Ping( rpakManagerPath );
+            libraryData = FindLibraryDataFile();
 
             Refresh();
 
@@ -451,7 +451,7 @@ namespace LibrarySorter
         {
             List< string > allModels = new List< string >();
 
-            RpakData allModelsData = libraryData.GetSpecialData().FirstOrDefault( r => r.Name == allModelsDataName );
+            RpakData allModelsData = libraryData.AllModels();
 
             foreach ( RpakData data in libraryData.GetR5ReloadedData() )
             {
@@ -480,7 +480,7 @@ namespace LibrarySorter
         {
             List< string > r5rList = new List< string >();
 
-            RpakData r5rModelsData = libraryData.GetSpecialData().FirstOrDefault( r => r.Name == r5reloadedModelsDataName );
+            RpakData r5rModelsData = libraryData.R5ReloadedList();
 
             foreach ( RpakData data in libraryData.GetR5ReloadedData() )
             {
@@ -510,7 +510,7 @@ namespace LibrarySorter
         {
             List< string > retailList = new List< string >();
 
-            RpakData retailListModelsData = libraryData.GetSpecialData().FirstOrDefault( r => r.Name == allModelsRetailDataName );
+            RpakData retailListModelsData = libraryData.AllModelsRetail();
 
             foreach ( RpakData data in libraryData.GetRetailData() )
             {

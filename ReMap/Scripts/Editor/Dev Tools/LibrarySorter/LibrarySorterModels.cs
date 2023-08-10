@@ -132,11 +132,11 @@ namespace LibrarySorter
             // Fix or Create Models in Prefabs/'rpakName'
             foreach ( string apexName in rpak.Data )
             {
-                if ( min == 30 )
-                {
-                    EditorUtility.ClearProgressBar();
-                    return;
-                }
+                //if ( min == 30 )
+                //{
+                //    EditorUtility.ClearProgressBar();
+                //    return;
+                //}
                 string prefabName = UnityInfo.GetUnityModelName( apexName );
 
                 EditorUtility.DisplayProgressBar( $"Sorting '{rpak.Name}' Folder ({min++}/{max})", $"Processing... '{prefabName}'", progress );

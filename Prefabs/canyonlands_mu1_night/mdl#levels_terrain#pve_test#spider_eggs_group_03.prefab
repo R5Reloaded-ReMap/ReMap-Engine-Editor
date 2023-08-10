@@ -23,6 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 733593709513780497}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,7 +33,6 @@ Transform:
   - {fileID: 6084066475759798811}
   - {fileID: 1005899395523050075}
   m_Father: {fileID: 5486810109949445713}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &822535876195298691
 GameObject:
@@ -57,6 +57,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822535876195298691}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -64,7 +65,6 @@ Transform:
   m_Children:
   - {fileID: 8883709180545826016}
   m_Father: {fileID: 5486810109949445713}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1093607361266944195
 GameObject:
@@ -76,6 +76,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7244289842824459023}
   - component: {fileID: 1080087555886738276}
+  - component: {fileID: 6744855060421002157}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -90,13 +91,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1093607361266944195}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3720046834017804189}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1080087555886738276
 SkinnedMeshRenderer:
@@ -152,6 +153,27 @@ SkinnedMeshRenderer:
     m_Center: {x: 8.245605, y: 22.921394, z: 62.221695}
     m_Extent: {x: 101.75537, y: 107.90383, z: 62.17189}
   m_DirtyAABB: 0
+--- !u!65 &6744855060421002157
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093607361266944195}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 203.5108, y: 215.80775, z: 124.34382}
+  m_Center: {x: 8.245609, y: 22.921406, z: 62.2217}
 --- !u!1 &3166935676173746164
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +184,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5261402118444508104}
   - component: {fileID: 8117666015374198916}
-  - component: {fileID: 8470320793076600375}
   m_Layer: 0
   m_Name: mdl#levels_terrain#pve_test#spider_eggs_group_03
   m_TagString: Prop
@@ -177,6 +198,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3166935676173746164}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -184,7 +206,6 @@ Transform:
   m_Children:
   - {fileID: 5486810109949445713}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8117666015374198916
 MonoBehaviour:
@@ -201,28 +222,8 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
+  ClientSide: 0
   Option: 0
---- !u!65 &8470320793076600375
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3166935676173746164}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 304.14862, y: 155.05183, z: 293.71002}
-  m_Center: {x: 11.063477, y: 46.867695, z: 3.1079102}
 --- !u!1 &3376134057035166107
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1005899395523050075}
   - component: {fileID: 5208710763438935916}
+  - component: {fileID: 2685384006395307816}
   m_Layer: 0
   m_Name: KoreLibMesh02
   m_TagString: Untagged
@@ -247,13 +249,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3376134057035166107}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3720046834017804189}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5208710763438935916
 SkinnedMeshRenderer:
@@ -309,6 +311,27 @@ SkinnedMeshRenderer:
     m_Center: {x: 3.1079102, y: 11.063477, z: 43.45607}
     m_Extent: {x: 146.85498, y: 152.07425, z: 74.11427}
   m_DirtyAABB: 0
+--- !u!65 &2685384006395307816
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3376134057035166107}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 293.71002, y: 304.14862, z: 148.22859}
+  m_Center: {x: 3.107912, y: 11.063484, z: 43.456074}
 --- !u!1 &4055004520403316931
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +355,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4055004520403316931}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -340,7 +364,6 @@ Transform:
   - {fileID: 2298764999321123509}
   - {fileID: 3720046834017804189}
   m_Father: {fileID: 5261402118444508104}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4355658621255816392
 GameObject:
@@ -365,13 +388,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4355658621255816392}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2298764999321123509}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8484873729235192783
 GameObject:
@@ -383,6 +406,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6084066475759798811}
   - component: {fileID: 7110074213486470330}
+  - component: {fileID: 1277696397714958309}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -397,13 +421,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8484873729235192783}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3720046834017804189}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7110074213486470330
 SkinnedMeshRenderer:
@@ -459,3 +483,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -6.364258, y: 2.2495117, z: 45.252457}
     m_Extent: {x: 136.59277, y: 124.70462, z: 72.12746}
   m_DirtyAABB: 0
+--- !u!65 &1277696397714958309
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8484873729235192783}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 273.1856, y: 249.40935, z: 144.25496}
+  m_Center: {x: -6.3642583, y: 2.2495184, z: 45.25246}

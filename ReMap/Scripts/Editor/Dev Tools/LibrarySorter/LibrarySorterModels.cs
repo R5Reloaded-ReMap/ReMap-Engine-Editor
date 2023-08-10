@@ -219,9 +219,6 @@ namespace LibrarySorter
             prefab.transform.eulerAngles = Vector3.zero;
             prefab.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
 
-            // Set to 0 for BoxCollider
-            obj.transform.eulerAngles = Vector3.zero;
-
             CheckBoxColliderComponent( obj );
 
             obj.transform.position = Vector3.zero;
@@ -247,12 +244,9 @@ namespace LibrarySorter
             // [0] => Get 'obj', [1] => Get '..._LOD0'
             Transform child = obj.GetComponentsInChildren< Transform >()[1];
 
-            // Set to 0 for BoxCollider
-            child.transform.eulerAngles = Vector3.zero;
-
             RemoveBoxColliderComponent( obj );
 
-            CheckBoxColliderComponent( child.gameObject );
+            CheckBoxColliderComponent( obj );
 
             child.transform.position = Vector3.zero;
             child.transform.eulerAngles = FindAnglesOffset( apexName );
@@ -299,7 +293,7 @@ namespace LibrarySorter
 
         internal static void RemoveBoxColliderComponent( GameObject go )
         {
-            BoxCollider[] colliders = go.GetComponents< BoxCollider >();
+            BoxCollider[] colliders = go.GetComponentsInChildren< BoxCollider  >();
 
             foreach ( BoxCollider coll in colliders )
             {
@@ -315,9 +309,12 @@ namespace LibrarySorter
             {
                 if ( renderer.sharedMesh != null )
                 {
-                    BoxCollider box = go.AddComponent< BoxCollider >();
-                    box.center = renderer.bounds.center - go.transform.position;
-                    box.size = renderer.bounds.size;
+                    Vector3 rBoundsCenter = renderer.bounds.center;
+                    Vector3 rBoundsSize = renderer.bounds.size;
+
+                    BoxCollider box = renderer.gameObject.AddComponent< BoxCollider >();
+                    box.center = new Vector3( rBoundsCenter.z, rBoundsCenter.x, rBoundsCenter.y );
+                    box.size = new Vector3( rBoundsSize.z, rBoundsSize.x, rBoundsSize.y );
                 }
             }
         }

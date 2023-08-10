@@ -573,13 +573,16 @@ namespace LibrarySorter
             return rpakContent;
         }
 
-        private static void SearchPrefabs( string search = "" )
+        private static void SearchPrefabs( string search )
         {
             searchResult = new List< string >();
 
+            if ( string.IsNullOrEmpty( search ) || search == "mdl" || search == "mdl#" )
+                return;
+
             foreach ( string prefab in RpakManagerWindow.libraryData.GetAllModelsList() )
             {
-                if( search != "" && !prefab.Contains( search ) )
+                if ( !prefab.Contains( search.Replace( "#", "/" ) ) )
                     continue;
     
                 searchResult.Add( prefab );

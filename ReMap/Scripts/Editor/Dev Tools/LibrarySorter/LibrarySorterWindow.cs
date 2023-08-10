@@ -208,7 +208,7 @@ namespace LibrarySorter
 
                 case TaskType.FixSpecificPrefabData:
                     checkExist = true;
-                    await Models.FixPrefabs( arg );
+                    await Models.FixPrefabs( arg, checkExist );
                     break;
 
                 case TaskType.ExportMissingModels:

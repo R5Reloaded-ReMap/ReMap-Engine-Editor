@@ -23,6 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 531393264834141516}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,7 +33,6 @@ Transform:
   - {fileID: 1922773785473700113}
   - {fileID: 5630838824116823257}
   m_Father: {fileID: 5419886621503331355}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3404572413806648523
 GameObject:
@@ -57,6 +57,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3404572413806648523}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -65,7 +66,6 @@ Transform:
   - {fileID: 4315944541850334318}
   - {fileID: 4994351761671734823}
   m_Father: {fileID: 6522324699399512764}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3576733849222986471
 GameObject:
@@ -77,7 +77,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6522324699399512764}
   - component: {fileID: 5232973938889823204}
-  - component: {fileID: 384277572837407809}
   m_Layer: 0
   m_Name: mdl#desertlands#industrial_drill_01_support_02
   m_TagString: Prop
@@ -92,6 +91,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3576733849222986471}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -99,7 +99,6 @@ Transform:
   m_Children:
   - {fileID: 5419886621503331355}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5232973938889823204
 MonoBehaviour:
@@ -116,28 +115,8 @@ MonoBehaviour:
   AllowMantle: 1
   FadeDistance: 50000
   RealmID: -1
+  ClientSide: 0
   Option: 0
---- !u!65 &384277572837407809
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3576733849222986471}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 48.000076, y: 396.8068, z: 48.17677}
-  m_Center: {x: 0.000022888184, y: 198.4034, z: 0.00048828125}
 --- !u!1 &3805689777698475716
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,6 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1922773785473700113}
   - component: {fileID: 2504618174610731463}
+  - component: {fileID: 575277860627025053}
   m_Layer: 0
   m_Name: KoreLibMesh01
   m_TagString: Untagged
@@ -162,13 +142,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3805689777698475716}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4315944541850334318}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2504618174610731463
 SkinnedMeshRenderer:
@@ -224,6 +204,27 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 198.40776}
     m_Extent: {x: 24, y: 24.000006, z: 198.39897}
   m_DirtyAABB: 0
+--- !u!65 &575277860627025053
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3805689777698475716}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 48.000015, y: 48.000076, z: 396.798}
+  m_Center: {x: 2.8195439e-12, y: 0.000023652052, z: 198.40779}
 --- !u!1 &4449981346926094403
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8546863867270478452}
   - component: {fileID: 4694101165118702260}
+  - component: {fileID: 794921247088819281}
   m_Layer: 0
   m_Name: KoreLibMesh00
   m_TagString: Untagged
@@ -248,13 +250,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4449981346926094403}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4315944541850334318}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4694101165118702260
 SkinnedMeshRenderer:
@@ -310,6 +312,27 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: 0, z: 194.1973}
     m_Extent: {x: 23.029785, y: 14.543949, z: 152.49612}
   m_DirtyAABB: 0
+--- !u!65 &794921247088819281
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4449981346926094403}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 46.059578, y: 29.087948, z: 304.99228}
+  m_Center: {x: 0.0004882813, y: 0.000023150067, z: 194.19733}
 --- !u!1 &5649207780310403118
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,13 +356,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5649207780310403118}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4994351761671734823}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5864052444149973188
 GameObject:
@@ -351,6 +374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5630838824116823257}
   - component: {fileID: 7037291594584724410}
+  - component: {fileID: 6599316508538869105}
   m_Layer: 0
   m_Name: KoreLibMesh02
   m_TagString: Untagged
@@ -365,13 +389,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5864052444149973188}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4315944541850334318}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7037291594584724410
 SkinnedMeshRenderer:
@@ -427,6 +451,27 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00048828125, y: -0.6767578, z: 185.17532}
     m_Extent: {x: 24.088379, y: 16.190434, z: 138.02982}
   m_DirtyAABB: 0
+--- !u!65 &6599316508538869105
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5864052444149973188}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 48.17677, y: 32.380917, z: 276.05966}
+  m_Center: {x: 0.00048820063, y: -0.67673594, z: 185.17534}
 --- !u!1 &7227411476117966029
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +495,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7227411476117966029}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -457,5 +503,4 @@ Transform:
   m_Children:
   - {fileID: 2788624931558506006}
   m_Father: {fileID: 5419886621503331355}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

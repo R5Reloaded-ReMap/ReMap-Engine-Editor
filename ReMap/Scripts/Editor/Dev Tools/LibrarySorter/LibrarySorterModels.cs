@@ -160,7 +160,7 @@ namespace LibrarySorter
             await TryFix( rpak, prefabName, apexName, checkExist );
         }   
 
-        internal static async Task FixPrefabs( string prefabName )
+        internal static async Task FixPrefabs( string prefabName, bool checkExist = true )
         {
             string lodsName = prefabName.Split( '#' )[^1];
             string apexName = UnityInfo.GetApexModelName( prefabName, true );
@@ -174,7 +174,7 @@ namespace LibrarySorter
 
             foreach ( RpakData rpak in rpaks )
             {
-                fixObjects.Add( TryFix( rpak, prefabName, apexName ) );
+                fixObjects.Add( TryFix( rpak, prefabName, apexName, checkExist ) );
             }
 
             await Task.WhenAll( fixObjects );

@@ -132,6 +132,11 @@ namespace LibrarySorter
             // Fix or Create Models in Prefabs/'rpakName'
             foreach ( string apexName in rpak.Data )
             {
+                if ( min == 30 )
+                {
+                    EditorUtility.ClearProgressBar();
+                    return;
+                }
                 string prefabName = UnityInfo.GetUnityModelName( apexName );
 
                 EditorUtility.DisplayProgressBar( $"Sorting '{rpak.Name}' Folder ({min++}/{max})", $"Processing... '{prefabName}'", progress );
@@ -180,7 +185,7 @@ namespace LibrarySorter
             await Task.WhenAll( fixObjects );
         }
 
-        private static async Task TryFix( RpakData rpak, string prefabName, string apexName, bool checkExist = true )
+        private static Task TryFix( RpakData rpak, string prefabName, string apexName, bool checkExist = true )
         {
             string filePath = $"{UnityInfo.relativePathPrefabs}/{rpak.Name}/{prefabName}.prefab";
 
@@ -193,10 +198,10 @@ namespace LibrarySorter
                 CreatePrefab( apexName, filePath );
             }
 
-            await Helper.Wait();
+            return Task.CompletedTask;
         }
 
-        private static async void CreatePrefab( string apexName, string filePath )
+        private static void CreatePrefab( string apexName, string filePath )
         {
             string unityName = UnityInfo.GetUnityModelName( apexName );
             string modelName = Path.GetFileNameWithoutExtension( apexName );
@@ -219,7 +224,7 @@ namespace LibrarySorter
             prefab.transform.eulerAngles = Vector3.zero;
             prefab.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
 
-            CheckBoxColliderComponent( obj );
+            CheckBoxColliderComponent( prefab );
 
             obj.transform.position = Vector3.zero;
             obj.transform.eulerAngles = Models.FindAnglesOffset( apexName );
@@ -229,12 +234,10 @@ namespace LibrarySorter
 
             PrefabUtility.SaveAsPrefabAsset( prefab, $"{UnityInfo.currentDirectoryPath}/{filePath}" );
 
-            await Helper.Wait();
-
             UnityEngine.Object.DestroyImmediate( prefab );
         }
 
-        private static async void UpdatePrefab( string apexName, string path )
+        private static void UpdatePrefab( string apexName, string path )
         {
             GameObject obj = Helper.CreateGameObject( "", path );
 
@@ -244,8 +247,6 @@ namespace LibrarySorter
             // [0] => Get 'obj', [1] => Get '..._LOD0'
             Transform child = obj.GetComponentsInChildren< Transform >()[1];
 
-            RemoveBoxColliderComponent( obj );
-
             CheckBoxColliderComponent( obj );
 
             child.transform.position = Vector3.zero;
@@ -253,10 +254,7 @@ namespace LibrarySorter
             child.transform.localScale = new Vector3( 1, 1, 1 );
 
             AssetDatabase.SetLabels( ( UnityEngine.Object ) obj, new[] { apexName.Split( '/' )[1].ToLower() } );
-
             PrefabUtility.SaveAsPrefabAsset( obj, path );
-
-            await Helper.Wait();
 
             UnityEngine.Object.DestroyImmediate( obj );
         }
@@ -303,6 +301,8 @@ namespace LibrarySorter
 
         internal static void CheckBoxColliderComponent( GameObject go )
         {
+            RemoveBoxColliderComponent( go );
+
             SkinnedMeshRenderer[] renderers = go.GetComponentsInChildren< SkinnedMeshRenderer >();
 
             foreach ( var renderer in renderers )
@@ -312,7 +312,7 @@ namespace LibrarySorter
                     Vector3 rBoundsCenter = renderer.bounds.center;
                     Vector3 rBoundsSize = renderer.bounds.size;
 
-                    BoxCollider box = renderer.gameObject.AddComponent< BoxCollider >();
+                    BoxCollider box = renderer.transform.parent.gameObject.AddComponent< BoxCollider >();
                     box.center = new Vector3( rBoundsCenter.z, rBoundsCenter.x, rBoundsCenter.y );
                     box.size = new Vector3( rBoundsSize.z, rBoundsSize.x, rBoundsSize.y );
                 }

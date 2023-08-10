@@ -376,7 +376,12 @@ namespace LibrarySorter
 
             EditorUtility.DisplayProgressBar( $"Material Manager", $"Try Exporting {materialList.Count} Materials...", 0.0f );
 
-            await LegionExporting.ExtractModelFromLegion( legionArgument.ToString() );
+            Task export = LegionExporting.ExtractModelFromLegion( legionArgument.ToString() );
+
+            while ( !export.IsCompleted )
+            {
+                await Helper.Wait( 1 );
+            }
 
             EditorUtility.ClearProgressBar();
 

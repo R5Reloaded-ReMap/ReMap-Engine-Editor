@@ -9,6 +9,13 @@ using UnityEngine;
 
 namespace LibrarySorter
 {
+    public enum LegionLoadType
+    {
+        Models,
+        Materials,
+        Both
+    }
+
     public class LegionExporting
     {
         internal static string ValidPathArg = "";
@@ -113,13 +120,22 @@ namespace LibrarySorter
             return true;
         }
 
-        public static async Task ExtractModelFromLegion( string assetList )
+        public static async Task ExtractModelFromLegion( string assetList, LegionLoadType legionLoadType = LegionLoadType.Both )
         {
-            if ( string.IsNullOrEmpty( ValidPathArg ) || string.IsNullOrEmpty( assetList ) ) return;
+            if ( string.IsNullOrEmpty( ValidPathArg ) || string.IsNullOrEmpty( assetList ) )
+                return;
+
+            string loadType = legionLoadType switch
+            {
+                LegionLoadType.Models => "--loadmodels",
+                LegionLoadType.Materials => "--loadmaterials",
+                LegionLoadType.Both => "--loadmodels --loadmaterials",
+                _ => ""
+            };
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = $"\"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionExecutive}\"";
-            startInfo.Arguments = $"--loadPaks \"{ValidPathArg}\" --assetsToExport \"{assetList}\" --loadmodels --loadmaterials --loadshadersets --mdlfmt fbx --imgfmt dds --nologfile --usetxtrguids --overwrite";
+            startInfo.Arguments = $"--loadPaks \"{ValidPathArg}\" --assetsToExport \"{assetList}\" {loadType} --loadshadersets --mdlfmt fbx --imgfmt dds --nologfile --usetxtrguids --overwrite";
             startInfo.UseShellExecute = false;
 
             #if RMAPDEV

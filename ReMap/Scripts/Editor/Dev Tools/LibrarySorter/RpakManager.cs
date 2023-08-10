@@ -27,7 +27,11 @@ namespace LibrarySorter
         internal static int modelCount = 0;
         private Vector2 scrollPos = Vector2.zero;
 
-        private static string rpakType = "r5reloaded";
+        private static string[] rpakTypes = new[] { "special", "r5reloaded", "retail" };
+        private static string rpakType = rpakTypes[1];
+
+        //private static Texture2D existsIcon;
+        //private static Texture2D absentIcon;
 
         List< string > dataContent = new List< string >();
 
@@ -66,6 +70,9 @@ namespace LibrarySorter
             windowInstance = ( RpakManagerWindow ) GetWindow( typeof( RpakManagerWindow ), false, "Rpak Manager" );
             
             libraryData = FindLibraryDataFile();
+
+            //existsIcon = Resources.Load( "icons/codeViewEnable" ) as Texture2D;
+            //absentIcon = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
 
             Refresh();
         }
@@ -160,12 +167,18 @@ namespace LibrarySorter
                         if ( !found ) continue;
                     }
 
-                    GUILayout.BeginHorizontal("box");
-                        GUILayout.Label( model );
-                        WindowUtility.WindowUtility.CreateCopyButton( "Copy", "", model, 100 );
+                    //GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+                    //buttonStyle.alignment = TextAnchor.MiddleCenter;
+
+                    //GUIContent buttonContentInfo = new GUIContent( Helper.LOD0_Exist( Path.GetFileNameWithoutExtension( model ) ) ? existsIcon : absentIcon );
+
+                    GUILayout.BeginHorizontal( "box" );
+                        //GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 ) );
+                        GUILayout.Label( model, GUILayout.Height( 20 ) );
+                        WindowUtility.WindowUtility.CreateCopyButton( "Copy", "", model, 100, 20 );
                         if ( !rpakData.IsSpecial )
                         {
-                            if ( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveModel( model ), 100 ) )
+                            if ( WindowUtility.WindowUtility.CreateButton( "Remove", "", () => RemoveModel( model ), 100, 20 ) )
                             {
                                 GUILayout.EndHorizontal();
                                 GUILayout.EndScrollView();
@@ -198,7 +211,7 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
                     foreach ( RpakData data in special )
                     {
-                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = "special"; } ); idx++;
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = rpakTypes[0]; } ); idx++;
                         if ( idx % tabPerLine == 0 && idx != 0 )
                         {
                             GUILayout.EndHorizontal();
@@ -224,7 +237,7 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
                     foreach ( RpakData data in r5reloaded )
                     {
-                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = "r5reloaded"; } ); idx++;
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = rpakTypes[1]; } ); idx++;
                         if ( idx % tabPerLine == 0 && idx != 0 )
                         {
                             GUILayout.EndHorizontal();
@@ -250,7 +263,7 @@ namespace LibrarySorter
                 GUILayout.BeginHorizontal();
                     foreach ( RpakData data in retail )
                     {
-                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = "retail"; } ); idx++;
+                        WindowUtility.WindowUtility.CreateButton( $"{data.Name}", "", () => { rpakData = data; rpakType = rpakTypes[2]; } ); idx++;
                         if ( idx % tabPerLine == 0 && idx != 0 )
                         {
                             GUILayout.EndHorizontal();

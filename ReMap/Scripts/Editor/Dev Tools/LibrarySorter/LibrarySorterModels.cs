@@ -115,6 +115,60 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
         }
 
+        internal static Task FixModels()
+        {
+            RpakManagerWindow.libraryData = RpakManagerWindow.FindLibraryDataFile();
+
+            List< string > modelList = RpakManagerWindow.libraryData.GetAllModelsList();
+
+            int min = 0; int max = modelList.Count; float progress = 0.0f; 
+
+            foreach ( string model in modelList )
+            {
+                string lod0Name = Path.GetFileNameWithoutExtension( model );
+                string prefabName = UnityInfo.GetUnityModelName( model );
+
+                EditorUtility.DisplayProgressBar( $"Checking Models ({min++}/{max})", $"Processing... '{prefabName}'", progress );
+
+                if ( !Helper.LOD0_Exist( lod0Name ) )
+                    continue;
+                
+                if ( !HasValidName( lod0Name ) )
+                    continue;
+
+                GameObject obj = null;
+
+                string filePath = $"{UnityInfo.relativePathPrefabs}/{RpakManagerWindow.allModelsDataName}/{prefabName}.prefab";
+
+                if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{filePath}" ) && LibrarySorterWindow.checkExist )
+                {
+                    obj = UpdatePrefab( model, filePath );
+                }
+                else
+                {
+                    obj = CreatePrefab( model, filePath );
+                }
+
+                if ( !Helper.IsValid( obj ) )
+                    continue;
+
+                foreach ( RpakData rpak in RpakManagerWindow.libraryData.RpakContains( model ) )
+                {
+                    string fileRpakPath = $"{UnityInfo.relativePathPrefabs}/{rpak.Name}/{prefabName}.prefab";
+
+                    PrefabUtility.SaveAsPrefabAsset( obj, fileRpakPath );
+                }
+
+                progress += 1.0f / max;
+
+                UnityEngine.Object.DestroyImmediate( obj );
+            }
+
+            EditorUtility.ClearProgressBar();
+
+            return Task.CompletedTask;
+        }
+
         internal static async Task FixFolders( List< RpakData > rpaks )
         {
             foreach ( RpakData rpak in rpaks )
@@ -127,16 +181,11 @@ namespace LibrarySorter
         {
             Helper.CreateDirectory( $"{UnityInfo.relativePathPrefabs}/{rpak.Name}" );
 
-            int min = 0; int max = rpak.Data.Count; float progress = 0.0f; 
+            int min = 0; int max = rpak.Data.Count; float progress = 0.0f;
 
             // Fix or Create Models in Prefabs/'rpakName'
             foreach ( string apexName in rpak.Data )
             {
-                //if ( min == 30 )
-                //{
-                //    EditorUtility.ClearProgressBar();
-                //    return;
-                //}
                 string prefabName = UnityInfo.GetUnityModelName( apexName );
 
                 EditorUtility.DisplayProgressBar( $"Sorting '{rpak.Name}' Folder ({min++}/{max})", $"Processing... '{prefabName}'", progress );
@@ -191,17 +240,17 @@ namespace LibrarySorter
 
             if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{filePath}" ) && checkExist )
             {
-                UpdatePrefab( apexName, filePath );
+                UpdatePrefab( apexName, filePath, true );
             }
             else if ( !TryCopyFromAllModels( rpak, apexName ) )
             {
-                CreatePrefab( apexName, filePath );
+                CreatePrefab( apexName, filePath, true );
             }
 
             return Task.CompletedTask;
         }
 
-        private static void CreatePrefab( string apexName, string filePath )
+        private static GameObject CreatePrefab( string apexName, string filePath, bool save = false )
         {
             string unityName = UnityInfo.GetUnityModelName( apexName );
             string modelName = Path.GetFileNameWithoutExtension( apexName );
@@ -209,14 +258,14 @@ namespace LibrarySorter
             GameObject prefab = Helper.CreateGameObject( unityName );
 
             if ( !Helper.IsValid( prefab ) )
-                return;
+                return prefab;
 
             GameObject obj = Helper.CreateGameObject( "", $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", prefab );
 
             if ( !Helper.IsValid( obj ) )
             {
                 UnityEngine.Object.DestroyImmediate( prefab );
-                return;
+                return prefab;
             } 
 
             prefab.AddComponent< PropScript >();
@@ -232,12 +281,17 @@ namespace LibrarySorter
 
             AssetDatabase.SetLabels( ( UnityEngine.Object ) prefab, new[] { apexName.Split( '/' )[1].ToLower() } );
 
-            PrefabUtility.SaveAsPrefabAsset( prefab, $"{UnityInfo.currentDirectoryPath}/{filePath}" );
+            if ( save )
+            {
+                PrefabUtility.SaveAsPrefabAsset( prefab, $"{UnityInfo.currentDirectoryPath}/{filePath}" );
 
-            UnityEngine.Object.DestroyImmediate( prefab );
+                UnityEngine.Object.DestroyImmediate( prefab );
+            }
+
+            return prefab;
         }
 
-        private static void UpdatePrefab( string apexName, string path )
+        private static GameObject UpdatePrefab( string apexName, string path, bool save = false )
         {
             GameObject obj = Helper.CreateGameObject( "", path );
 
@@ -254,9 +308,15 @@ namespace LibrarySorter
             child.transform.localScale = new Vector3( 1, 1, 1 );
 
             AssetDatabase.SetLabels( ( UnityEngine.Object ) obj, new[] { apexName.Split( '/' )[1].ToLower() } );
-            PrefabUtility.SaveAsPrefabAsset( obj, path );
 
-            UnityEngine.Object.DestroyImmediate( obj );
+            if ( save )
+            {
+                PrefabUtility.SaveAsPrefabAsset( obj, path );
+
+                UnityEngine.Object.DestroyImmediate( obj );
+            }
+
+            return obj;
         }
 
         private static bool TryCopyFromAllModels( RpakData rpak, string prefabName )
@@ -291,9 +351,12 @@ namespace LibrarySorter
 
         internal static void RemoveBoxColliderComponent( GameObject go )
         {
-            BoxCollider[] colliders = go.GetComponentsInChildren< BoxCollider  >();
+            foreach ( BoxCollider coll in go.GetComponentsInChildren< BoxCollider >() )
+            {
+                UnityEngine.Object.DestroyImmediate( coll );
+            }
 
-            foreach ( BoxCollider coll in colliders )
+            foreach ( MeshCollider coll in go.GetComponentsInChildren< MeshCollider >() )
             {
                 UnityEngine.Object.DestroyImmediate( coll );
             }
@@ -307,14 +370,11 @@ namespace LibrarySorter
 
             foreach ( var renderer in renderers )
             {
-                if ( renderer.sharedMesh != null )
+                if ( Helper.IsValid( renderer ) )
                 {
-                    Vector3 rBoundsCenter = renderer.bounds.center;
-                    Vector3 rBoundsSize = renderer.bounds.size;
-
-                    BoxCollider box = renderer.transform.parent.gameObject.AddComponent< BoxCollider >();
-                    box.center = new Vector3( rBoundsCenter.z, rBoundsCenter.x, rBoundsCenter.y );
-                    box.size = new Vector3( rBoundsSize.z, rBoundsSize.x, rBoundsSize.y );
+                    MeshCollider meshCollider = renderer.gameObject.AddComponent< MeshCollider >();
+                    meshCollider.sharedMesh = renderer.sharedMesh;
+                    meshCollider.convex = false;
                 }
             }
         }

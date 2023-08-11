@@ -106,7 +106,7 @@ namespace LibrarySorter
                                 WindowUtility.WindowUtility.CreateTextInfo( $"Lastest Check: {rpak.Update}", "" );
                             GUILayout.EndHorizontal();
                         }
-                        WindowUtility.WindowUtility.CreateButton( $"Check All", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
+                        WindowUtility.WindowUtility.CreateButton( $"Check All Models", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
                         GUILayout.Space( 4 );
                     }
                     EditorGUILayout.EndFoldoutHeaderGroup();
@@ -202,7 +202,7 @@ namespace LibrarySorter
                 case TaskType.FixAllPrefabsData:
                     if ( !DoStartTask() ) return;
                     CheckExisting();
-                    await Models.FixFolders( RpakManagerWindow.libraryData.GetVisibleData() );
+                    await Models.FixModels();
                     RpakManagerWindow.SaveJson();
                     break;
 

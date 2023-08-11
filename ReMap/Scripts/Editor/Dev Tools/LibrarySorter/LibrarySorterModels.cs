@@ -164,6 +164,11 @@ namespace LibrarySorter
                 UnityEngine.Object.DestroyImmediate( obj );
             }
 
+            foreach ( RpakData rpak in RpakManagerWindow.libraryData.GetVisibleData() )
+            {
+                rpak.UpdateTime();
+            }
+
             EditorUtility.ClearProgressBar();
 
             return Task.CompletedTask;

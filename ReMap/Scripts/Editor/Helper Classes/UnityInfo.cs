@@ -1,9 +1,12 @@
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+
+using LibrarySorter;
 
 public class UnityInfo
 {
@@ -152,7 +155,7 @@ public class UnityInfo
         if( name.Contains( " " ) ) name = name.Split( " " )[0];
 
         //Find Model GUID in Assets
-        string[] results = AssetDatabase.FindAssets( name, new [] {$"{UnityInfo.relativePathPrefabs}/all_models"} );
+        string[] results = AssetDatabase.FindAssets( name, new [] { $"{UnityInfo.relativePathPrefabs}/{RpakManagerWindow.allModelsDataName}", $"{UnityInfo.relativePathPrefabs}/{RpakManagerWindow.allModelsRetailDataName}" } );
         if ( results.Length == 0 ) return null;
 
         //Get model path from guid and load it

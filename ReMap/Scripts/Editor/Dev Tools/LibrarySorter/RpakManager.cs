@@ -15,9 +15,9 @@ namespace LibrarySorter
 
         internal static readonly string rpakManagerPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathRpakManagerList}";
         internal static string entry = "";
-        internal static readonly string allModelsDataName = "all_models";
-        internal static readonly string r5reloadedModelsDataName = "r5reloaded_list";
-        internal static readonly string allModelsRetailDataName = "all_models_retail";
+        public static readonly string allModelsDataName = "all_models";
+        public static readonly string r5reloadedModelsDataName = "r5reloaded_list";
+        public static readonly string allModelsRetailDataName = "all_models_retail";
 
         internal static LibraryData libraryData = FindLibraryDataFile();
 

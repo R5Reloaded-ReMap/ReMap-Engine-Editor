@@ -282,7 +282,7 @@ public class EntCodeDiscoverer : EditorWindow
                 switch ( entity.EditorClass )
                 {
                     case "info_survival_invalid_end_zone":
-                        width = entity.GetValueForKey< float >( "script_radius" );
+                        width = entity.GetValueForKey< float >( "script_radius" ) * 2;
                         transformedObj.localScale = new Vector3( width, 2000, width );
                         break;
                         
@@ -297,7 +297,7 @@ public class EntCodeDiscoverer : EditorWindow
                             case "POI_Ultra":
                             case "POI_sniper":
 
-                                width = entity.GetValueForKey< float >( "script_radius" );
+                                width = entity.GetValueForKey< float >( "script_radius" ) * 2;
                                 height = entity.GetValueForKey< float >( "script_height" );
                                 transformedObj.localScale = new Vector3( width, height, width );
 

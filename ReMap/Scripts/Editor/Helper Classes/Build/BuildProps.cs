@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 using UnityEngine;
 
 using static Build.Build;
@@ -82,7 +83,7 @@ namespace Build
             foreach ( GameObject obj in objectData )
             {
                 PropScript script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
-                if ( script == null ) continue;
+                if ( script == null || script.ClientSide ) continue;
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
                 string scale = Helper.ReplaceComma( obj.transform.localScale.x );
@@ -232,8 +233,10 @@ namespace Build
                     continue;
                 }
 
-                AppendCode( ref code, $"    CreateClientSidePropDynamic( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, $\"{model}\"" );
+                AppendCode( ref code, $"    CreateClientSidePropDynamic( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, $\"{model}\" )" );
             }
+
+            CodeViews.CodeViewsWindow.EntityCount = objectData.Where( o => Helper.GetComponentByEnum( o, ObjectType.Prop ) != null ).Select( o => Helper.GetComponentByEnum( o, ObjectType.Prop ) ).Where( s => ( ( PropScript )s ).ClientSide ).Count();
 
             await Helper.Wait();
 

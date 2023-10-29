@@ -154,6 +154,12 @@ namespace Build
 
             switch ( objectType )
             {
+                case ObjectType.Prop:
+
+                    objectDataLength = objectData.Where( o => Helper.GetComponentByEnum( o, ObjectType.Prop ) != null ).Select( o => Helper.GetComponentByEnum( o, ObjectType.Prop ) ).Where( s => !( ( PropScript )s ).ClientSide ).Count();
+
+                    break;
+
                 case ObjectType.ZipLine:
                 case ObjectType.LinkedZipline:
                 case ObjectType.VerticalZipLine:

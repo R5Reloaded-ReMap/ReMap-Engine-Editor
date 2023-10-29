@@ -17,49 +17,16 @@ namespace Build
     {
         public static List< String > PrecacheList;
 
-        private static Dictionary< PropScriptOptions, string > ArrayName = new Dictionary< PropScriptOptions, string >()
-        {
-            { PropScriptOptions.PlayerClip, "ClipArray" },
-            { PropScriptOptions.NoClimb, "NoClimbArray" },
-            { PropScriptOptions.MakeInvisible, "InvisibleArray" },
-            { PropScriptOptions.NoGrapple, "NoGrappleArray" },
-            { PropScriptOptions.PlayerClipInvisibleNoGrappleNoClimb, "ClipInvisibleNoGrappleNoClimbArray" },
-            { PropScriptOptions.PlayerClipNoGrappleNoClimb, "ClipNoGrappleNoClimb" },
-            { PropScriptOptions.NoCollision, "NoCollisionArray" }
-        };
-
         public static async Task< StringBuilder > BuildPropObjects( GameObject[] objectData, BuildType buildType )
         {
             StringBuilder code = new StringBuilder(); PrecacheList = new List< String >();
-
-            bool ClipArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClip );
-            bool NoClimbArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoClimb );
-            bool InvisibleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.MakeInvisible );
-            bool NoGrappleArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoGrapple );
-            bool ClipInvisibleNoGrappleNoClimb = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClipInvisibleNoGrappleNoClimb );
-            bool PlayerClipNoGrappleNoClimb = ObjHavePropScriptOptions( objectData, PropScriptOptions.PlayerClipNoGrappleNoClimb );
-            bool NoCollisionArrayBool = ObjHavePropScriptOptions( objectData, PropScriptOptions.NoCollision );
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || ClipInvisibleNoGrappleNoClimb || PlayerClipNoGrappleNoClimb || NoCollisionArrayBool )
-                    {
-                        AppendCode( ref code, "    // Props Array" );
-                        AppendCode( ref code, "    ", 0 );
-                        if ( ClipArrayBool ) AppendCode( ref code, $"array < entity > ClipArray; ", 0 );
-                        if ( NoClimbArrayBool ) AppendCode( ref code, $"array < entity > NoClimbArray; ", 0 );
-                        if ( InvisibleArrayBool ) AppendCode( ref code, $"array < entity > InvisibleArray; ", 0 );
-                        if ( NoGrappleArrayBool ) AppendCode( ref code, $"array < entity > NoGrappleArray; ", 0 );
-                        if ( ClipInvisibleNoGrappleNoClimb ) AppendCode( ref code, $"array < entity > ClipInvisibleNoGrappleNoClimbArray; ", 0 );
-                        if ( PlayerClipNoGrappleNoClimb ) AppendCode( ref code, $"array < entity > ClipNoGrappleNoClimb; ", 0 );
-                        if ( NoCollisionArrayBool ) AppendCode( ref code, $"array < entity > NoCollisionArray; ", 0 );
-
-                        AppendCode( ref code, "", 2 );
-                    }
-
                     AppendCode( ref code, "    // Props" );
+                    AppendCode( ref code, "    entity prop" );
                     break;
 
                 case BuildType.EntFile:
@@ -94,13 +61,22 @@ namespace Build
                     continue;
                 }
 
-                string addToArray = script.Option != PropScriptOptions.NoOption ? $"{ArrayName[script.Option]}.append( " : "";
-                string endFunction = script.Option != PropScriptOptions.NoOption ? $" )" : "";
-
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    {addToArray}MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ){endFunction}" );
+                        AppendCode( ref code, $"    prop = MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} )" );
+
+                        if ( script.Options.Length != 0 )
+                        {
+                            AppendCode(ref code, "    ", 0);
+                            string[] lines = script.Options.Split('\n');
+                            for (int i = 0; i < lines.Length; i++)
+                            {
+                                string suffix = i < lines.Length - 1 ? "; " : "";
+                                AppendCode(ref code, $"prop.{lines[i].Replace("\n", "")}{suffix}", 0);
+                            }
+                            AppendCode(ref code, "");
+                        }
                         break;
 
                     case BuildType.EntFile:
@@ -142,52 +118,6 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                
-                    if ( ClipArrayBool || NoClimbArrayBool || InvisibleArrayBool || NoGrappleArrayBool || ClipInvisibleNoGrappleNoClimb || PlayerClipNoGrappleNoClimb || NoCollisionArrayBool )
-                    {
-                        AppendCode( ref code );
-                        
-                        if ( ClipArrayBool )
-                        {
-                            AppendCode( ref code, "    foreach ( entity ent in ClipArray )" );
-                            AppendCode( ref code, "    {" );
-                            AppendCode( ref code, "        ent.MakeInvisible()" );
-                            AppendCode( ref code, "        ent.kv.solid = 6" );
-                            AppendCode( ref code, "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER" );
-                            AppendCode( ref code, "        ent.kv.contents = CONTENTS_PLAYERCLIP" );
-                            AppendCode( ref code, "    }" );
-                        }
-
-                        if ( NoClimbArrayBool ) AppendCode( ref code, "    foreach ( entity ent in NoClimbArray ) ent.kv.solid = 3" );
-
-                        if ( InvisibleArrayBool ) AppendCode( ref code, "    foreach ( entity ent in InvisibleArray ) ent.MakeInvisible()" );
-
-                        if ( NoGrappleArrayBool ) AppendCode( ref code, "    foreach ( entity ent in NoGrappleArray ) ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" );
-
-                        if ( ClipInvisibleNoGrappleNoClimb )
-                        {
-                            AppendCode( ref code, "    foreach ( entity ent in ClipInvisibleNoGrappleNoClimbArray )" );
-                            AppendCode( ref code, "    {" );
-                            AppendCode( ref code, "        ent.MakeInvisible()" );
-                            AppendCode( ref code, "        ent.kv.solid = 3" );
-                            AppendCode( ref code, "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER" );
-                            AppendCode( ref code, "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" );
-                            AppendCode( ref code, "    }" );
-                        }
-
-                        if ( PlayerClipNoGrappleNoClimb )
-                        {
-                            AppendCode( ref code, "    foreach ( entity ent in ClipNoGrappleNoClimb )" );
-                            AppendCode( ref code, "    {" );
-                            AppendCode( ref code, "        ent.kv.solid = 3" );
-                            AppendCode( ref code, "        ent.kv.CollisionGroup = TRACE_COLLISION_GROUP_PLAYER" );
-                            AppendCode( ref code, "        ent.kv.contents = CONTENTS_SOLID | CONTENTS_NOGRAPPLE" );
-                            AppendCode( ref code, "    }" );
-                        }
-
-                        if ( NoCollisionArrayBool ) AppendCode( ref code, "    foreach ( entity ent in NoCollisionArray ) ent.kv.solid = 0" );
-                    }
-
                     AppendCode( ref code );
                     break;
 
@@ -243,17 +173,18 @@ namespace Build
             return code;
         }
 
-        private static bool ObjHavePropScriptOptions( GameObject[] objectData, PropScriptOptions option )
+        private static string BuildPropertiesArray( List< string > args )
         {
-            foreach ( GameObject obj in objectData )
+            string array = "[ ";
+            for( int i = 0 ; i < args.Count ; i++ )
             {
-                PropScript script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
-                if ( script == null ) continue;
+                array += args[i];
 
-                if ( script.Option == option ) return true;
+                if ( i != args.Count - 1 ) array += ", ";
             }
+            array += " ]";
 
-            return false;
+            return array;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Build
             {
                 case BuildType.Script:
                     AppendCode( ref code, "    // Jumppads" );
+                    AppendCode( ref code, "    entity jumppad" );
                     break;
 
                 case BuildType.EntFile:
@@ -52,7 +53,19 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    MapEditor_CreateJumpPad( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ) )" );
+                        AppendCode( ref code, $"    jumppad = MapEditor_CreateJumpPad( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ) )" );
+
+                        if ( script.Options.Length != 0 )
+                        {
+                            AppendCode(ref code, "    ", 0);
+                            string[] lines = script.Options.Split('\n');
+                            for (int i = 0; i < lines.Length; i++)
+                            {
+                                string suffix = i < lines.Length - 1 ? "; " : "";
+                                AppendCode(ref code, $"jumppad.{lines[i].Replace("\n", "")}{suffix}", 0);
+                            }
+                            AppendCode(ref code, "");
+                        }
                         break;
 
                     case BuildType.EntFile:

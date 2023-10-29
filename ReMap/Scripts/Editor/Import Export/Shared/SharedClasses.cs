@@ -80,7 +80,7 @@ namespace ImportExport
         public float FadeDistance;
         public int RealmID;
         public bool ClientSide;
-        public PropScriptOptions Option;
+        public string Options;
     }
 
     [Serializable]
@@ -220,7 +220,7 @@ namespace ImportExport
         public bool AllowMantle;
         public float FadeDistance;
         public int RealmID;
-        public PropScriptOptions Option;
+        public string Options;
     }
 
     [Serializable]

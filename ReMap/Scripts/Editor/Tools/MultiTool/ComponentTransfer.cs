@@ -27,7 +27,7 @@ namespace MultiTool
                 GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
-            if ( !Helper.IsValid( source ) || !Helper.IsValid( objectComponent ) )
+            if ( source == null || objectComponent == null )
             {
                 GUILayout.BeginVertical( "box" );
                     FlexibleSpace();
@@ -111,7 +111,7 @@ namespace MultiTool
 
         private static void CheckObject()
         {
-            if ( !Helper.IsValid( source ) ) return;
+            if ( source == null ) return;
 
             GameObject obj = ( GameObject ) source;
             objectComponent = null;

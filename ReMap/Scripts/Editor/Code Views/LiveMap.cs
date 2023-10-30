@@ -198,7 +198,16 @@ namespace CodeViews
 
                 File.WriteAllText( path, code );
 
-                if ( !reset ) SendCommandToApex( $"GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
+                if ( reset ) return;
+                
+                ResetCommandList();
+
+                AddToGameQueue( $"sv_cheats 1", false );
+                AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999", false );
+                AddToGameQueue( $"cl_quota_stringCmdsPerSecond 9999999", false );
+                AddToGameQueue( $"GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" )
+
+                SendCommands()
             }
         }
 

@@ -22,6 +22,7 @@ namespace Build
             {
                 case BuildType.Script:
                     AppendCode( ref code, "    // Triggers" );
+                    AppendCode( ref code, "    entity trigger" );
                     break;
 
                 case BuildType.EntFile:
@@ -54,14 +55,14 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    entity trigger_{idx} = MapEditor_CreateTrigger( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.Width / 2 )}, {Helper.ReplaceComma( script.Height )}, {Helper.BoolToLower( script.Debug )} )" );
+                        AppendCode( ref code, $"    trigger = MapEditor_CreateTrigger( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.ReplaceComma( script.Width / 2 )}, {Helper.ReplaceComma( script.Height )}, {Helper.BoolToLower( script.Debug )} )" );
 
                         GameObject helper = script.Helper.gameObject;
 
                         if ( TEnterCallback != "" )
                         {
                             ChangeLocalization( ref TEnterCallback, helper );
-                            AppendCode( ref code, $"    trigger_{idx}.SetEnterCallback( void function(entity trigger , entity ent)" );
+                            AppendCode( ref code, $"    trigger.SetEnterCallback( void function( entity trigger, entity ent )" );
                             AppendCode( ref code,  "    {" );
                             AppendCode( ref code, $"    {TEnterCallback}" );
                             AppendCode( ref code,  "    })" );
@@ -70,12 +71,12 @@ namespace Build
                         if ( TLeaveCallback != "" )
                         {
                             ChangeLocalization( ref TLeaveCallback, helper );
-                            AppendCode( ref code, $"    trigger_{idx}.SetLeaveCallback( void function(entity trigger , entity ent)" );
+                            AppendCode( ref code, $"    trigger.SetLeaveCallback( void function( entity trigger, entity ent )" );
                             AppendCode( ref code,  "    {" );
                             AppendCode( ref code, $"    {TLeaveCallback}" );
                             AppendCode( ref code,  "    })" );
                         }
-                        AppendCode( ref code, $"    DispatchSpawn( trigger_{idx} )" );
+                        AppendCode( ref code, $"    DispatchSpawn( trigger )" );
                         break;
 
                     case BuildType.EntFile:

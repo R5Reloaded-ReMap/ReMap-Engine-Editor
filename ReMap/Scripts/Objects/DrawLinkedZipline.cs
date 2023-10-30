@@ -35,8 +35,7 @@ public class DrawLinkedZipline : MonoBehaviour
             {
                 var startPos = Children[i].transform.position;
                 var endPos = Children[i + 1].transform.position;
-                var thickness = 3;
-
+                
                 points.Add(startPos);
 
                 if(i == Children.Count - 2)

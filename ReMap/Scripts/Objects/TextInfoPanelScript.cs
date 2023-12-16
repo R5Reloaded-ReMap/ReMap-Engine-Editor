@@ -1,13 +1,13 @@
 using TMPro;
 using UnityEngine;
 
+[AddComponentMenu("ReMap/Text Info Panel", 0)]
 public class TextInfoPanelScript : MonoBehaviour
 {
-    [Header("Settings:")]
-    [HideInInspector] public TextMeshProUGUI TextMeshTitle;
-    [HideInInspector] public TextMeshProUGUI TextMeshDescription;
-    [HideInInspector] public Transform Panel;
-    [HideInInspector] public Transform Pin;
+    public TextMeshProUGUI TextMeshTitle;
+    public TextMeshProUGUI TextMeshDescription;
+    public Transform Panel;
+    public Transform Pin;
     [SerializeField] public string Title;
     [SerializeField] public string Description;
     public bool showPIN = true;
@@ -18,8 +18,8 @@ public class TextInfoPanelScript : MonoBehaviour
         TextMeshTitle.text = Title;
         TextMeshDescription.text = Description;
 
-        if ( Panel != null ) Panel.localScale = new Vector3( Scale, Scale, Scale );
+        if (Panel != null) Panel.localScale = new Vector3(Scale, Scale, Scale);
 
-        if ( Pin != null ) Pin.gameObject.SetActive( showPIN );
+        if (Pin != null) Pin.gameObject.SetActive(showPIN);
     }
 }

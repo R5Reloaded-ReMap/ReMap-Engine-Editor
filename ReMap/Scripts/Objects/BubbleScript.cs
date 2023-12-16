@@ -1,11 +1,10 @@
 using UnityEngine;
 
+[AddComponentMenu("ReMap/Bubble Shield", 0)]
 public class BubbleScript : MonoBehaviour
 {
-    [Header("Settings:")]
     public Color32 ShieldColor = new Color32(128, 255, 128, 255);
-
-    [HideInInspector] public Transform Mesh;
+    public Transform Mesh;
 
     void OnDrawGizmos()
     {

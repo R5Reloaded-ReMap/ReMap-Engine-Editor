@@ -1,37 +1,36 @@
 using UnityEngine;
 
+[AddComponentMenu("ReMap/Door", 0)]
 public class DoorScript : MonoBehaviour
 {
-    [ HideInInspector ] public Transform DoorLeft;
-    [ HideInInspector ] public Transform DoorRight;
-
-    [Header("Settings:")]
+    public Transform DoorLeft;
+    public Transform DoorRight;
     public bool GoldDoor = false;
     public bool AppearOpen = false;
 
     void OnDrawGizmosSelected()
     {
-        if ( DoorLeft != null )
+        if (DoorLeft != null)
         {
-            if ( AppearOpen )
+            if (AppearOpen)
             {
-                DoorLeft.localEulerAngles = new Vector3( 0, 90, 0 );
+                DoorLeft.localEulerAngles = new Vector3(0, 90, 0);
             }
             else
             {
-                DoorLeft.localEulerAngles = new Vector3( 0, 180, 0 );
+                DoorLeft.localEulerAngles = new Vector3(0, 180, 0);
             }
         }
 
-        if ( DoorRight != null )
+        if (DoorRight != null)
         {
-            if ( AppearOpen )
+            if (AppearOpen)
             {
-                DoorRight.localEulerAngles = new Vector3( 0, 90, 0 );
+                DoorRight.localEulerAngles = new Vector3(0, 90, 0);
             }
             else
             {
-                DoorRight.localEulerAngles = new Vector3( 0, 0, 0 );
+                DoorRight.localEulerAngles = new Vector3(0, 0, 0);
             }
         }
     }

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[AddComponentMenu("ReMap/LootBin", 0)]
 public enum LootBinSkinType
 {
     Default = 0,

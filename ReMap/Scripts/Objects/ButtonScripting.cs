@@ -1,10 +1,8 @@
 using UnityEngine;
 
+[AddComponentMenu("ReMap/Button", 0)]
 public class ButtonScripting : MonoBehaviour
 {
-    [Header("Settings:")]
     public string UseText = "";
-
-    [TextArea(15,20)]
     public string OnUseCallback = "";
 }

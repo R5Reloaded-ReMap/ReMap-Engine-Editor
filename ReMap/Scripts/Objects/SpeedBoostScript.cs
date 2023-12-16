@@ -1,12 +1,11 @@
 using UnityEngine;
 
+[AddComponentMenu("ReMap/Speed Boost", 0)]
 public class SpeedBoostScript : MonoBehaviour
 {
     public Transform Boost;
     public Transform BoostBase;
-
-    [ Header( "Settings:" ) ]
-    public Color32 Color = new Color32( 255, 255, 255, 255 );
+    public Color32 Color = new Color32(255, 255, 255, 255);
     public float RespawnTime = 5f;
     public float Strengh = 0.35f;
     public float Duration = 3f;
@@ -14,18 +13,18 @@ public class SpeedBoostScript : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if ( FadeTime > Duration ) FadeTime = Duration;
+        if (FadeTime > Duration) FadeTime = Duration;
 
-        if ( Boost != null )
+        if (Boost != null)
         {
-            Material[] boostMat = Boost.GetComponent< Renderer >().sharedMaterials;
-            boostMat[0].SetColor( "_EmissionColor", Color );
+            Material[] boostMat = Boost.GetComponent<Renderer>().sharedMaterials;
+            boostMat[0].SetColor("_EmissionColor", Color);
         }
 
-        if ( BoostBase != null )
+        if (BoostBase != null)
         {
-            Material[] mymat = BoostBase.GetComponent< Renderer >().sharedMaterials;
-            mymat[0].SetColor( "_EmissionColor", Color );
+            Material[] mymat = BoostBase.GetComponent<Renderer>().sharedMaterials;
+            mymat[0].SetColor("_EmissionColor", Color);
         }
     }
 }

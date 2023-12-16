@@ -74,8 +74,9 @@ public class CodeImport : EditorWindow
         ReMapConsole.Log("[Code Import] Building Import List", ReMapConsole.LogType.Info);
 
         string[] lines = text.Replace("+ startingorg", "").Split(char.Parse("\n"));
-        foreach(string line in lines) {
-            if(line.Contains("JumpPad_CreatedCallback("))
+        foreach (string line in lines)
+        {
+            if (line.Contains("JumpPad_CreatedCallback("))
                 JumpPads.Add(line.Replace("JumpPad_CreatedCallback( MapEditor_CreateProp(", "").Replace(" ) )", "").Replace(" ", ""));
             else if (line.Contains("MapEditor_CreateProp("))
                 Props.Add(line.Replace("MapEditor_CreateProp(", "").Replace(" )", "").Replace(" ", ""));
@@ -102,7 +103,7 @@ public class CodeImport : EditorWindow
 
     async Task ImportProps()
     {
-        if(Props.Count == 0)
+        if (Props.Count == 0)
             return;
 
         GameObject find = GameObject.Find("Props");
@@ -113,14 +114,14 @@ public class CodeImport : EditorWindow
         }
 
         int i = 0;
-        foreach(string prop in Props)
+        foreach (string prop in Props)
         {
             string[] split = prop.Split(char.Parse(","));
             if (split.Length < 11)
                 continue;
 
             EditorUtility.DisplayProgressBar("Importing Props", "Importing: " + split[0], (i + 1) / (float)Props.Count);
-            
+
 
             string Model = split[0].Replace("/", "#").Replace(".rmdl", "").Replace("\"", "").Replace("\n", "").Replace("\r", "").Replace("$", "");
 
@@ -161,7 +162,7 @@ public class CodeImport : EditorWindow
 
     async Task ImportButtons()
     {
-        if(Buttons.Count == 0)
+        if (Buttons.Count == 0)
             return;
 
         GameObject find = GameObject.Find("Buttons");
@@ -172,7 +173,7 @@ public class CodeImport : EditorWindow
         }
 
         int i = 0;
-        foreach(string button in Buttons)
+        foreach (string button in Buttons)
         {
             string[] split = button.Split(char.Parse(","));
             if (split.Length < 3)
@@ -213,7 +214,7 @@ public class CodeImport : EditorWindow
 
     async Task ImportBubbleSheilds()
     {
-        if(BubbleSheilds.Count == 0)
+        if (BubbleSheilds.Count == 0)
             return;
 
         GameObject find = GameObject.Find("BubbleSheilds");
@@ -222,9 +223,9 @@ public class CodeImport : EditorWindow
             GameObject objToSpawn = new GameObject("BubbleSheilds");
             objToSpawn.name = "BubbleSheilds";
         }
-        
+
         int i = 0;
-        foreach(string bsheild in BubbleSheilds)
+        foreach (string bsheild in BubbleSheilds)
         {
             string[] split = bsheild.Split(char.Parse(","));
             if (split.Length < 9)
@@ -269,7 +270,7 @@ public class CodeImport : EditorWindow
 
     async Task ImportJumpPads()
     {
-        if(JumpPads.Count == 0)
+        if (JumpPads.Count == 0)
             return;
 
         GameObject find = GameObject.Find("JumpPads");
@@ -280,7 +281,7 @@ public class CodeImport : EditorWindow
         }
 
         int i = 0;
-        foreach(string jumppad in JumpPads)
+        foreach (string jumppad in JumpPads)
         {
             string[] split = jumppad.Split(char.Parse(","));
             if (split.Length < 7)
@@ -324,7 +325,7 @@ public class CodeImport : EditorWindow
 
     async Task ImportLootBins()
     {
-        if(LootBins.Count == 0)
+        if (LootBins.Count == 0)
             return;
 
         GameObject find = GameObject.Find("LootBins");
@@ -333,9 +334,9 @@ public class CodeImport : EditorWindow
             GameObject objToSpawn = new GameObject("LootBins");
             objToSpawn.name = "LootBins";
         }
-        
+
         int i = 0;
-        foreach(string bin in LootBins)
+        foreach (string bin in LootBins)
         {
             string[] split = bin.Split(char.Parse(","));
             if (split.Length < 7)
@@ -363,7 +364,7 @@ public class CodeImport : EditorWindow
             obj.name = Model;
 
             LootBinScript script = obj.GetComponent<LootBinScript>();
-            script.LootbinSkin = ( LootBinSkinType ) int.Parse(split[6]);
+            script.LootbinSkin = (LootBinSkinType)int.Parse(split[6]);
 
             GameObject parent = GameObject.Find("LootBins");
             if (parent != null)
@@ -376,7 +377,7 @@ public class CodeImport : EditorWindow
 
     async Task ImportWeaponRacks()
     {
-        if(WeaponRacks.Count == 0)
+        if (WeaponRacks.Count == 0)
             return;
 
         GameObject find = GameObject.Find("WeaponRacks");
@@ -385,9 +386,9 @@ public class CodeImport : EditorWindow
             GameObject objToSpawn = new GameObject("WeaponRacks");
             objToSpawn.name = "WeaponRacks";
         }
-        
+
         int i = 0;
-        foreach(string wrack in WeaponRacks)
+        foreach (string wrack in WeaponRacks)
         {
             string[] split = wrack.Split(char.Parse(","));
             if (split.Length < 8)
@@ -428,7 +429,7 @@ public class CodeImport : EditorWindow
 
     async Task ImportZiplines()
     {
-        if(Ziplines.Count == 0 && LinkedZiplines.Count == 0)
+        if (Ziplines.Count == 0 && LinkedZiplines.Count == 0)
             return;
 
         GameObject find = GameObject.Find("Ziplines");
@@ -484,18 +485,18 @@ public class CodeImport : EditorWindow
         if (LinkedZiplines.Count != 0)
         {
             int f = 0;
-            foreach(string zip in LinkedZiplines)
+            foreach (string zip in LinkedZiplines)
             {
                 bool isSmoothed = false;
                 bool smoothingType = false;
                 int SmoothAmount = 0;
 
-                if(zip.Contains("GetAllPointsOnBezier"))
+                if (zip.Contains("GetAllPointsOnBezier"))
                 {
                     isSmoothed = true;
                     smoothingType = true;
                 }
-                else if(zip.Contains("GetBezierOfPath"))
+                else if (zip.Contains("GetBezierOfPath"))
                 {
                     isSmoothed = true;
                     smoothingType = false;
@@ -509,11 +510,10 @@ public class CodeImport : EditorWindow
                 EditorUtility.DisplayProgressBar("Importing Linked Ziplines", "Importing: custom_linked_zipline " + f, (f + 1) / (float)LinkedZiplines.Count);
 
                 GameObject obj = new GameObject("custom_linked_zipline");
-                obj.AddComponent<DrawLinkedZipline>();
                 obj.AddComponent<LinkedZiplineScript>();
 
                 int i = 0;
-                foreach(string s in split)
+                foreach (string s in split)
                 {
                     string[] split2 = s.Split(char.Parse(","));
 
@@ -523,7 +523,7 @@ public class CodeImport : EditorWindow
                     GameObject child = new GameObject("zipline_node");
                     child.transform.position = new Vector3(float.Parse(split2[1]), float.Parse(split2[2].Replace(">", "")), -(float.Parse(split2[0].Replace("<", ""))));
                     child.transform.parent = obj.transform;
-                    
+
                     i++;
                 }
 
@@ -538,13 +538,13 @@ public class CodeImport : EditorWindow
 
                 await Task.Delay(TimeSpan.FromSeconds(0.001));
                 f++;
-            }   
+            }
         }
     }
 
     async Task ImportDoors()
     {
-        if(Doors.Count == 0)
+        if (Doors.Count == 0)
             return;
 
         GameObject find = GameObject.Find("Doors");
@@ -553,15 +553,15 @@ public class CodeImport : EditorWindow
             GameObject objToSpawn = new GameObject("Doors");
             objToSpawn.name = "Doors";
         }
-        
+
         int i = 0;
-        foreach(string door in Doors)
+        foreach (string door in Doors)
         {
             string[] split = door.Split(char.Parse(","));
 
             string Model = "custom_single_door";
             bool IsSingleOrDouble = false;
-            switch(split[6])
+            switch (split[6])
             {
                 case "eMapEditorDoorType.Single":
                     Model = "custom_single_door";
@@ -598,7 +598,7 @@ public class CodeImport : EditorWindow
             obj.transform.eulerAngles = new Vector3(-(float.Parse(split[3].Replace("<", ""))), -(float.Parse(split[4])), float.Parse(split[5].Replace(">", "")));
             obj.name = Model;
 
-            if(IsSingleOrDouble)
+            if (IsSingleOrDouble)
             {
                 DoorScript script = obj.GetComponent<DoorScript>();
                 script.GoldDoor = bool.Parse(split[7]);
@@ -615,7 +615,7 @@ public class CodeImport : EditorWindow
 
     async Task ImportTriggers()
     {
-        if(Triggers.Count == 0)
+        if (Triggers.Count == 0)
             return;
 
         GameObject find = GameObject.Find("Triggers");
@@ -624,9 +624,9 @@ public class CodeImport : EditorWindow
             GameObject objToSpawn = new GameObject("Triggers");
             objToSpawn.name = "Triggers";
         }
-        
+
         int i = 0;
-        foreach(string trigger in Triggers)
+        foreach (string trigger in Triggers)
         {
             string[] split1 = trigger.Split(char.Parse("="));
             string[] split = split1[1].Split(char.Parse(","));

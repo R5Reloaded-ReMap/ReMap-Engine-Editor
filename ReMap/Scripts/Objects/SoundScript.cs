@@ -1,29 +1,21 @@
 using UnityEngine;
 using UnityEditor;
 
+[AddComponentMenu("ReMap/Sound", 0)]
 public class SoundScript : MonoBehaviour
 {
-    /*
-    [Header("Developer options, do not modify:")]
-    public bool ShowDevelopersOptions = false;
-    */
-    /* [ConditionalHide("ShowDevelopersOptions", true)] */ [ HideInInspector ] public Transform soundModel;
-
-    [Header("Unity Settings:")]
+    public Transform soundModel;
     public bool ShowPolylineSegments = true;
-    [ConditionalHide("ShowPolylineSegments", true)] public float ShowPolylineSegmentsDistance = 8000;
-
-    [Header("Sound Parameters:")]
+    public float ShowPolylineSegmentsDistance = 8000;
     public float Radius = 0;
     public bool IsWaveAmbient = false;
     public bool Enable = true;
     public string SoundName = "";
     public Vector3[] PolylineSegment;
 
-
     void OnDrawGizmos()
     {
-        if(soundModel == null)
+        if (soundModel == null)
             return;
 
         var startPos = soundModel.position;
@@ -49,19 +41,19 @@ public class SoundScript : MonoBehaviour
 
         float dist = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, soundModel.position);
         float dist2 = Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, soundModel.position);
-        if(dist < ShowPolylineSegmentsDistance || dist2 < ShowPolylineSegmentsDistance)
+        if (dist < ShowPolylineSegmentsDistance || dist2 < ShowPolylineSegmentsDistance)
         {
             // Draw all polyline segments
-            for ( int i = 0 ; i < PolylineSegment.Length ; i++ )
+            for (int i = 0; i < PolylineSegment.Length; i++)
             {
-                if ( i == 0 )
+                if (i == 0)
                 {
-                    if ( startPos != polylineSegmentTransformed[i] )
+                    if (startPos != polylineSegmentTransformed[i])
                         Handles.DrawBezier(startPos, polylineSegmentTransformed[i], startPos, polylineSegmentTransformed[i], Color.green, null, thickness);
                 }
-                else if ( polylineSegmentTransformed[i] != polylineSegmentTransformed[i-1] )
+                else if (polylineSegmentTransformed[i] != polylineSegmentTransformed[i - 1])
                 {
-                    Handles.DrawBezier(polylineSegmentTransformed[i], polylineSegmentTransformed[i-1], polylineSegmentTransformed[i], polylineSegmentTransformed[i-1], Color.green, null, thickness);
+                    Handles.DrawBezier(polylineSegmentTransformed[i], polylineSegmentTransformed[i - 1], polylineSegmentTransformed[i], polylineSegmentTransformed[i - 1], Color.green, null, thickness);
                 }
             }
         }

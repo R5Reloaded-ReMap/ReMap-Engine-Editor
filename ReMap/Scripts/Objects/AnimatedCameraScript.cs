@@ -1,10 +1,10 @@
 using UnityEngine;
 
+[AddComponentMenu("ReMap/Animated Camera", 0)]
 public class AnimatedCameraScript : MonoBehaviour
 {
-    [Header( "Settings:" )]
-    [ HideInInspector ] public Transform CameraBase;
-    [ HideInInspector ] public Transform Camera;
+    public Transform CameraBase;
+    public Transform Camera;
     public float AngleOffset = 20f;
     public float MaxLeft = 20f;
     public float MaxRight = 40f;
@@ -13,10 +13,10 @@ public class AnimatedCameraScript : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if ( CameraBase && Camera != null )
+        if (CameraBase && Camera != null)
         {
-            Camera.localPosition = new Vector3( 0, 8, -16  );
-            Camera.localEulerAngles = new Vector3( -AngleOffset, 0, 0 );
+            Camera.localPosition = new Vector3(0, 8, -16);
+            Camera.localEulerAngles = new Vector3(-AngleOffset, 0, 0);
         }
     }
 }

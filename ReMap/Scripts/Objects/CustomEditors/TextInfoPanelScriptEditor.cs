@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(TextInfoPanelScript))]
 public class TextInfoPanelScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

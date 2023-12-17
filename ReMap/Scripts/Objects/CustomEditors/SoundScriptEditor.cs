@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(SoundScript))]
 public class SoundScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -16,13 +21,13 @@ public class SoundScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/Sound_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Unity Settings:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Unity Settings:", CustomEditorStyle.style);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowPolylineSegments"));
         if (myScript.ShowPolylineSegments)
             EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowPolylineSegmentsDistance"));
 
         EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Sound Parameters:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Sound Parameters:", CustomEditorStyle.style);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Radius"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("IsWaveAmbient"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Enable"));

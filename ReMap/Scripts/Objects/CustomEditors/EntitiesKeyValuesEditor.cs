@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(EntitiesKeyValues))]
 public class EntitiesKeyValuesEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

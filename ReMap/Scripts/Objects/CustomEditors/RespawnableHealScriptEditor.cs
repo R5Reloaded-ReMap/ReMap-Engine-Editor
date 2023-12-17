@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(RespawnableHealScript))]
 public class RespawnableHealScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

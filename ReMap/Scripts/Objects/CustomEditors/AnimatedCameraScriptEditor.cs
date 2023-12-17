@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(AnimatedCameraScript))]
 public class AnimatedCameraScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -16,7 +21,7 @@ public class AnimatedCameraScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/AnimatedCamera_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Camera Options:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Camera Options:", CustomEditorStyle.style);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("AngleOffset"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("MaxLeft"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("MaxRight"));

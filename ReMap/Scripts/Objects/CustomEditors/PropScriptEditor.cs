@@ -9,11 +9,16 @@ using UnityEngine.UIElements;
 public class PropScriptEditor : Editor
 {
     bool ShowOptions = false;
+
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
         PropScript myScript = target as PropScript;
-
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/PropSettings_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
@@ -23,7 +28,7 @@ public class PropScriptEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ClientSide"));
 
         EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Prop Options: (One Per Line)", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Prop Options: (One Per Line)", CustomEditorStyle.style);
         ShowOptions = EditorGUILayout.Foldout(ShowOptions, "Example Options");
         if (ShowOptions)
         {

@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(SpawnPointScript))]
 public class SpawnPointScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -16,7 +21,7 @@ public class SpawnPointScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/Spawn_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("No Settings", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("No Settings", CustomEditorStyle.style);
 
         serializedObject.ApplyModifiedProperties();
     }

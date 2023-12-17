@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(WindowHintScript))]
 public class WindowHintScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

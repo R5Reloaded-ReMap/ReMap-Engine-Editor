@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(SpeedBoostScript))]
 public class SpeedBoostScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

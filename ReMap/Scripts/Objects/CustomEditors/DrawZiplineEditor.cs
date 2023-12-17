@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(DrawZipline))]
 public class DrawZiplineEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

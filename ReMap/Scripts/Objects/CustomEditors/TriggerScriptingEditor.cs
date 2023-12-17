@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(TriggerScripting))]
 public class TriggerScriptingEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -16,7 +21,7 @@ public class TriggerScriptingEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/Trigger_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Trigger Visual Look:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Trigger Visual Look:", CustomEditorStyle.style);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("useWireMesh"));
         if (myScript.useWireMesh)
             EditorGUILayout.PropertyField(serializedObject.FindProperty("wireMeshSides"));
@@ -24,7 +29,7 @@ public class TriggerScriptingEditor : Editor
 
         EditorGUILayout.Space(20);
 
-        EditorGUILayout.LabelField("Settings:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Settings:", CustomEditorStyle.style);
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Debug"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Height"));
@@ -32,12 +37,12 @@ public class TriggerScriptingEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UseHelperForTP"));
 
         EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Enter Callback:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Enter Callback:", CustomEditorStyle.style);
         myScript.EnterCallback = EditorGUILayout.TextArea(myScript.EnterCallback, GUILayout.Height(200));
 
         EditorGUILayout.Space(5);
 
-        EditorGUILayout.LabelField("Leave Callback:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Leave Callback:", CustomEditorStyle.style);
         myScript.LeaveCallback = EditorGUILayout.TextArea(myScript.LeaveCallback, GUILayout.Height(200));
 
         serializedObject.ApplyModifiedProperties();

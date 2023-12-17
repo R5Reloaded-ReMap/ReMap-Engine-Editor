@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(LootBinScript))]
 public class LootBinScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

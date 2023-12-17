@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(DrawNonVerticalZipline))]
 public class DrawNonVerticalZiplineEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -16,7 +21,7 @@ public class DrawNonVerticalZiplineEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/NonVerticalZipline_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Unity Settings:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Unity Settings:", CustomEditorStyle.style);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowZipline"));
         if (myScript.ShowZipline)
         {
@@ -25,7 +30,7 @@ public class DrawNonVerticalZiplineEditor : Editor
         }
 
         EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Zipline Parameters:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Zipline Parameters:", CustomEditorStyle.style);
         if (myScript.ShowArmOffsetStart)
             EditorGUILayout.PropertyField(serializedObject.FindProperty("ArmOffsetStart"));
         if (myScript.ShowArmOffsetEnd)
@@ -46,7 +51,7 @@ public class DrawNonVerticalZiplineEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("DetachEndOnUse"));
 
         EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Panel Settings:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Panel Settings:", CustomEditorStyle.style);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Panels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("PanelTimerMin"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("PanelTimerMax"));

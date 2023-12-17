@@ -8,6 +8,12 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(ButtonScripting))]
 public class ButtonScriptingEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -17,7 +23,7 @@ public class ButtonScriptingEditor : Editor
         GUILayout.Label(myTexture);
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UseText"));
-        EditorGUILayout.LabelField("On Use Callback:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("On Use Callback:", CustomEditorStyle.style);
         myScript.OnUseCallback = EditorGUILayout.TextArea(myScript.OnUseCallback, GUILayout.Height(200));
 
         serializedObject.ApplyModifiedProperties();

@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(Trigger))]
 public class TriggerEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

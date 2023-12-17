@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(DeportedDoorScript))]
 public class DeportedDoorScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

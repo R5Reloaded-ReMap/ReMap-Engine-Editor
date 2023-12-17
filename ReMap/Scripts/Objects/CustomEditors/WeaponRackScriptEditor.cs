@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(WeaponRackScript))]
 public class WeaponRackScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -16,7 +21,7 @@ public class WeaponRackScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/WeaponRack_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Weapon respawn time in seconds", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Weapon respawn time in seconds", CustomEditorStyle.style);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("RespawnTime"));
 
         serializedObject.ApplyModifiedProperties();

@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(VerticalDoorScript))]
 public class VerticalDoorScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

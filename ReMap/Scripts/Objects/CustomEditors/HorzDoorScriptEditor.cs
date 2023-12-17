@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(HorzDoorScript))]
 public class HorzDoorScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

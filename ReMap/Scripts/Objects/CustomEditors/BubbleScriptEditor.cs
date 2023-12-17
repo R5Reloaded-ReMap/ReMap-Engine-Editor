@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(BubbleScript))]
 public class BubbleScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();

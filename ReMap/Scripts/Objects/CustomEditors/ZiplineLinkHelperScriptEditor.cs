@@ -8,6 +8,11 @@ using UnityEngine.UIElements;
 [CustomEditor(typeof(ZiplineLinkHelperScript))]
 public class ZiplineLinkHelperScriptEditor : Editor
 {
+    void OnEnable()
+    {
+        CustomEditorStyle.OnEnable();
+    }
+
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -16,7 +21,7 @@ public class ZiplineLinkHelperScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/ZiplineLink_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Unity Settings:", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Unity Settings:", CustomEditorStyle.style);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("zipline"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("origin"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("angles"));

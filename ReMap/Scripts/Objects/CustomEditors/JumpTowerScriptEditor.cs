@@ -21,15 +21,22 @@ public class JumpTowerScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/JumpTower_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Unity Settings:", CustomEditorStyle.style);
+        EditorGUILayout.LabelField(" Unity Settings:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowZipline"));
         if (myScript.ShowZipline)
             EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowZiplineDistance"));
+        EditorGUILayout.EndVertical();
 
-        EditorGUILayout.Space(20);
+        EditorGUILayout.Space(10);
 
-        EditorGUILayout.LabelField("Jump Tower Parameters:", CustomEditorStyle.style);
+        EditorGUILayout.LabelField(" Jump Tower Parameters:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Height"));
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
     }

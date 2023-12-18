@@ -22,9 +22,21 @@ public class ButtonScriptingEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/Button_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
+        EditorGUILayout.LabelField(" Settings:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("UseText"));
-        EditorGUILayout.LabelField("On Use Callback:", CustomEditorStyle.style);
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space(10);
+
+        EditorGUILayout.LabelField(" On Use Callback:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         myScript.OnUseCallback = EditorGUILayout.TextArea(myScript.OnUseCallback, GUILayout.Height(200));
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
     }

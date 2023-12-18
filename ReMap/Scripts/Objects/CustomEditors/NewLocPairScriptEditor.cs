@@ -21,7 +21,7 @@ public class NewLocPairScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/LocPair_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("No Settings", CustomEditorStyle.style);
+        EditorGUILayout.LabelField(" No Settings", CustomEditorStyle.LabelStyle);
 
         serializedObject.ApplyModifiedProperties();
     }

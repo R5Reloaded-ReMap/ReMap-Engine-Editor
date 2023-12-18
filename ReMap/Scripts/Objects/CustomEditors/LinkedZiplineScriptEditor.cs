@@ -29,13 +29,19 @@ public class LinkedZiplineScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/LinkedZipline_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Unity Settings.", CustomEditorStyle.style);
+        EditorGUILayout.LabelField(" Unity Settings.", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowZipline"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowSmoothedZipline"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowZiplineDistance"));
+        EditorGUILayout.EndVertical();
 
-        EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Zipline Settings.", CustomEditorStyle.style);
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField(" Zipline Settings.", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableSmoothing"));
 
         if (myScript.EnableSmoothing)
@@ -48,12 +54,13 @@ public class LinkedZiplineScriptEditor : Editor
                 myScript.SmoothType = this._selected == 0 ? true : false;
             }
         }
+        EditorGUILayout.EndVertical();
 
-        EditorGUILayout.Space(20);
+        EditorGUILayout.Space(10);
 
-        EditorGUILayout.LabelField("Warning: Smoothing will slightly change location of nodes.", CustomEditorStyle.style);
-        EditorGUILayout.LabelField("Smoothing previews will be shown in blue, GetBezierOfPath is a rough estimate of the path", CustomEditorStyle.style);
-        EditorGUILayout.LabelField("Try not to go to crazy on the smooth amount.", CustomEditorStyle.style);
+        EditorGUILayout.LabelField("Warning: Smoothing will slightly change location of nodes.", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Smoothing previews will be shown in blue, GetBezierOfPath is a rough estimate of the path", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Try not to go to crazy on the smooth amount.", EditorStyles.boldLabel);
 
         serializedObject.ApplyModifiedProperties();
     }

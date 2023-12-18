@@ -3,5 +3,5 @@ using UnityEngine;
 [AddComponentMenu("ReMap/Weapon Rack", 0)]
 public class WeaponRackScript : MonoBehaviour
 {
-    public float RespawnTime = 0.5F;
+    public float WeaponRespawnTime = 0.5F;
 }

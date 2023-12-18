@@ -21,11 +21,15 @@ public class RespawnableHealScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/RespawnableHeal_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
+        EditorGUILayout.LabelField(" Respawnable Settings:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("RespawnTime"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("HealDuration"));
         if (myScript.IsSmallHeal)
             EditorGUILayout.PropertyField(serializedObject.FindProperty("HealAmount"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Progressive"));
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
     }

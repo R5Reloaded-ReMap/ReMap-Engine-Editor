@@ -21,16 +21,22 @@ public class DrawNonVerticalZiplineEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/NonVerticalZipline_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Unity Settings:", CustomEditorStyle.style);
+        EditorGUILayout.LabelField(" Unity Settings:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowZipline"));
         if (myScript.ShowZipline)
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowZiplineDistance"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowAutoDetachDistance"));
         }
+        EditorGUILayout.EndVertical();
 
-        EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Zipline Parameters:", CustomEditorStyle.style);
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField(" Zipline Parameters:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         if (myScript.ShowArmOffsetStart)
             EditorGUILayout.PropertyField(serializedObject.FindProperty("ArmOffsetStart"));
         if (myScript.ShowArmOffsetEnd)
@@ -49,13 +55,18 @@ public class DrawNonVerticalZiplineEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("IsMoving"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("DetachEndOnSpawn"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("DetachEndOnUse"));
+        EditorGUILayout.EndVertical();
 
-        EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Panel Settings:", CustomEditorStyle.style);
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField(" Panel Settings:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Panels"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("PanelTimerMin"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("PanelTimerMax"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("PanelMaxUse"));
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
     }

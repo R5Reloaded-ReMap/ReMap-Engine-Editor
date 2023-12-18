@@ -12,15 +12,15 @@ namespace Build
 {
     public class BuildWeaponRack
     {
-        public static async Task< StringBuilder > BuildWeaponRackObjects( GameObject[] objectData, BuildType buildType )
+        public static async Task<StringBuilder> BuildWeaponRackObjects(GameObject[] objectData, BuildType buildType)
         {
             StringBuilder code = new StringBuilder();
 
             // Add something at the start of the text
-            switch ( buildType )
+            switch (buildType)
             {
                 case BuildType.Script:
-                    AppendCode( ref code, "    // Weapon Racks" );
+                    AppendCode(ref code, "    // Weapon Racks");
                     break;
 
                 case BuildType.EntFile:
@@ -37,19 +37,19 @@ namespace Build
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             // Build the code
-            foreach ( GameObject obj in objectData )
+            foreach (GameObject obj in objectData)
             {
-                WeaponRackScript script = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, ObjectType.WeaponRack );
-                if ( script == null ) continue;
+                WeaponRackScript script = (WeaponRackScript)Helper.GetComponentByEnum(obj, ObjectType.WeaponRack);
+                if (script == null) continue;
 
-                switch ( buildType )
+                switch (buildType)
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )} )" );
+                        AppendCode(ref code, $"    MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma(script.WeaponRespawnTime)} )");
                         break;
 
                     case BuildType.EntFile:
@@ -65,16 +65,16 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma( script.RespawnTime )}, true )" );
-                    break;
+                        CodeViews.LiveMap.AddToGameQueue($"MapEditor_CreateRespawnableWeaponRack( {Helper.BuildOrigin(obj, false, true)}, {Helper.BuildAngles(obj)}, \"{obj.name.Replace("custom_weaponrack_", "mp_weapon_")}\", {Helper.ReplaceComma(script.WeaponRespawnTime)}, true )");
+                        break;
                 }
             }
 
             // Add something at the end of the text
-            switch ( buildType )
+            switch (buildType)
             {
                 case BuildType.Script:
-                    AppendCode( ref code );
+                    AppendCode(ref code);
                     break;
 
                 case BuildType.EntFile:
@@ -84,14 +84,14 @@ namespace Build
                 case BuildType.Precache:
                     // Empty
                     break;
-                    
+
                 case BuildType.DataTable:
                     // Empty
                     break;
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             await Helper.Wait();

@@ -21,18 +21,26 @@ public class PathScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/Path_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("Unity Settings:", CustomEditorStyle.style);
+        EditorGUILayout.LabelField(" Unity Settings:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowPath"));
         if (myScript.ShowPath)
             EditorGUILayout.PropertyField(serializedObject.FindProperty("ShowPathDistance"));
 
-        EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Path Parameters:", CustomEditorStyle.style);
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField(" Path Parameters:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("SpeedTransition"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Fov"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("TrackTarget"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("EnableSpacing"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Spacing"));
+
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
     }

@@ -22,13 +22,20 @@ public class PropScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/PropSettings_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
+        EditorGUILayout.LabelField(" Prop Settings:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("AllowMantle"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("FadeDistance"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("RealmID"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("ClientSide"));
+        EditorGUILayout.EndVertical();
 
-        EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Prop Options: (One Per Line)", CustomEditorStyle.style);
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField(" Prop Options: (One Per Line)", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         ShowOptions = EditorGUILayout.Foldout(ShowOptions, "Example Options");
         if (ShowOptions)
         {
@@ -40,6 +47,7 @@ public class PropScriptEditor : Editor
         EditorGUILayout.Space(5);
 
         myScript.Options = EditorGUILayout.TextArea(myScript.Options, GUILayout.Height(200));
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
     }

@@ -21,7 +21,7 @@ public class SpawnPointScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/Spawn_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
-        EditorGUILayout.LabelField("No Settings", CustomEditorStyle.style);
+        EditorGUILayout.LabelField(" No Settings", CustomEditorStyle.LabelStyle);
 
         serializedObject.ApplyModifiedProperties();
     }

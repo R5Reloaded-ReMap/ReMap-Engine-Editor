@@ -21,10 +21,14 @@ public class TextInfoPanelScriptEditor : Editor
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/TextPanel_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 
+        EditorGUILayout.LabelField(" Text Info Panel Settings:", CustomEditorStyle.LabelStyle);
+        EditorGUILayout.Space(5);
+        EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Title"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Description"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("showPIN"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("Scale"));
+        EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();
     }

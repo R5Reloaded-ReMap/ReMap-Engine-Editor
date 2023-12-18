@@ -416,7 +416,7 @@ public class CodeImport : EditorWindow
             obj.name = Model;
 
             WeaponRackScript script = obj.GetComponent<WeaponRackScript>();
-            script.RespawnTime = int.Parse(split[7]);
+            script.WeaponRespawnTime = int.Parse(split[7]);
 
             GameObject parent = GameObject.Find("WeaponRacks");
             if (parent != null)

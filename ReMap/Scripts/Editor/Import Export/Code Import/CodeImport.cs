@@ -144,8 +144,8 @@ public class CodeImport : EditorWindow
             obj.transform.position = new Vector3(float.Parse(split[2]), float.Parse(split[3].Replace(">", "")), -(float.Parse(split[1].Replace("<", ""))));
             obj.transform.eulerAngles = new Vector3(-(float.Parse(split[4].Replace("<", ""))), -(float.Parse(split[5])), float.Parse(split[6].Replace(">", "")));
             obj.name = Model;
-            obj.gameObject.transform.localScale = new Vector3(float.Parse(split[10]), float.Parse(split[10]), float.Parse(split[10]));
-
+            //obj.gameObject.transform.localScale = new Vector3(float.Parse(split[10]), float.Parse(split[10]), float.Parse(split[10]));
+            //
             PropScript script = obj.GetComponent<PropScript>();
             script.FadeDistance = int.Parse(split[8]);
             script.AllowMantle = bool.Parse(split[7]);

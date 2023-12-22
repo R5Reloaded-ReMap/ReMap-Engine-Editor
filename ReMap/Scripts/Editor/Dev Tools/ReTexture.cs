@@ -10,11 +10,9 @@ public class ReTexture : EditorWindow
 {
     private static UnityEngine.Object obj;
 
-    bool expanded = false;
     private static List<Object> SelectedMats = new List<Object>();
     private static Object NewMat;
     private static Object SelectMat;
-    int num = 0;
 
     public static void Init()
     {

@@ -11,12 +11,14 @@ public class ReTexture : EditorWindow
     private static UnityEngine.Object obj;
 
     bool expanded = false;
-    private static Object[] SelectedMats = new Object[0];
+    private static List<Object> SelectedMats = new List<Object>();
+    private static Object NewMat;
+    private static Object SelectMat;
     int num = 0;
 
     public static void Init()
     {
-        ReTexture window = (ReTexture)EditorWindow.GetWindow(typeof(ReTexture), false, "ReMap Debug Console");
+        ReTexture window = (ReTexture)EditorWindow.GetWindow(typeof(ReTexture), false, "Map Helper");
         window.Show();
     }
 
@@ -24,39 +26,70 @@ public class ReTexture : EditorWindow
     {
         CreateObjectField(ref obj, "Object Ref:");
 
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Retexture All Meshes:");
         CreateButton("ReTexture", "", () => OnButtonPressed());
+        GUILayout.EndVertical();
 
-        // "target" can be any class derrived from ScriptableObject 
-        // (could be EditorWindow, MonoBehaviour, etc)
-        CreateButton("Add", "", () =>
-        {
-            Object[] old = SelectedMats;
-            SelectedMats = new Object[old.Length + 1];
-            for (int i = 0; i < old.Length; i++)
-            {
-                SelectedMats[i] = old[i];
-            }
-        });
+        GUILayout.Space(5);
 
-        CreateButton("Remove", "", () =>
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Remove Meshes by Material:");
+        GUILayout.Space(10);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Add Material:", GUILayout.Width(100));
+        NewMat = EditorGUILayout.ObjectField(NewMat, typeof(Material), true);
+        GUILayout.EndHorizontal();
+        if (NewMat != null)
         {
-            if (SelectedMats.Length > 0)
-            {
-                Object[] old = SelectedMats;
-                SelectedMats = new Object[old.Length - 1];
-                for (int i = 0; i < old.Length - 1; i++)
-                {
-                    SelectedMats[i] = old[i];
-                }
-            }
-        });
-
-        for (int i = 0; i < SelectedMats.Length; i++)
-        {
-            SelectedMats[i] = EditorGUILayout.ObjectField(SelectedMats[i], typeof(Material), true);
+            SelectedMats.Add(NewMat);
+            NewMat = null;
         }
 
-        CreateButton("Remove Bolt Decals", "", () => OnButtonPressed2());
+        for (int i = 0; i < SelectedMats.Count; i++)
+        {
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.ObjectField(SelectedMats[i], typeof(Material), true);
+            CreateButton("Remove", "", () =>
+            {
+                SelectedMats.RemoveAt(i);
+            });
+            GUILayout.EndHorizontal();
+        }
+
+        GUILayout.Space(10);
+        CreateButton("Remove Meshes", "", () => OnButtonPressed2());
+        GUILayout.EndVertical();
+
+        GUILayout.Space(5);
+
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Select Meshes by Material:");
+        GUILayout.Space(10);
+        SelectMat = EditorGUILayout.ObjectField(SelectMat, typeof(Material), true);
+        CreateButton("Select All", "", () =>
+            {
+                List<Object> SelectedObjects = new List<Object>();
+
+                Transform[] transforms = obj.GetComponentsInChildren<Transform>();
+                foreach (Transform t in transforms)
+                {
+                    if (t.GetComponent<Renderer>() != null)
+                    {
+                        string matname = t.GetComponent<MeshRenderer>().sharedMaterial.name;
+                        foreach (Material s in SelectedMats)
+                        {
+                            if (matname == SelectMat.name)
+                            {
+                                SelectedObjects.Add(t.gameObject);
+                            }
+                        }
+                    }
+                }
+
+                Selection.objects = SelectedObjects.ToArray();
+            });
+        GUILayout.EndVertical();
     }
 
     private static async void OnButtonPressed()

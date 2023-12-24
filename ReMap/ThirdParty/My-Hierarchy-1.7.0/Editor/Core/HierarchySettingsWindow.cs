@@ -26,11 +26,12 @@ namespace MyHierarchy
         private static HierarchySettingsWindow window;
         private static SerializedObject settingsSO;
 
-        [MenuItem("My Hierarchy/Settings")]
-        private static void ShowWindow() {
+        [MenuItem("ReMap/Third Party/My Hierarchy/Settings", false, 2080)]
+        private static void ShowWindow()
+        {
             window = GetWindow<HierarchySettingsWindow>();
             window.titleContent = new GUIContent("Hierarchy Settings");
-            window.minSize = new Vector2( 450, 700 );
+            window.minSize = new Vector2(450, 700);
             window.maxSize = window.minSize;
             window.Show();
         }
@@ -39,7 +40,7 @@ namespace MyHierarchy
 
         private void OnGUI()
         {
-            if ( settings == null )
+            if (settings == null)
                 settings = HierarchyRenderer.GetAsset_SO<MyHierarchySettings>("MyHierarchySettings", "My Hierarchy Settings");
 
             if (settingsSO == null)
@@ -54,10 +55,10 @@ namespace MyHierarchy
 
 
             GL.Space(10);
-            EGL.PropertyField(settingsSO.FindProperty( nameof(settings.headerFontStyle) ));
-            EGL.PropertyField(settingsSO.FindProperty( nameof(settings.headerAlignment) ));
-            EGL.PropertyField(settingsSO.FindProperty( nameof(settings.groupFontStyle) ));
-            EGL.PropertyField(settingsSO.FindProperty( nameof(settings.labelWidth)  ));
+            EGL.PropertyField(settingsSO.FindProperty(nameof(settings.headerFontStyle)));
+            EGL.PropertyField(settingsSO.FindProperty(nameof(settings.headerAlignment)));
+            EGL.PropertyField(settingsSO.FindProperty(nameof(settings.groupFontStyle)));
+            EGL.PropertyField(settingsSO.FindProperty(nameof(settings.labelWidth)));
 
 
             EGL.Space(10);
@@ -75,70 +76,70 @@ namespace MyHierarchy
                 using (new GroupConstraint(GroupDir.Horizontal))
                 {
                     bandAid.CreateToggle(
-                        settings.showLayers, 
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Show Layer"), 
-                        ()=> settings.showLayers = !settings.showLayers,
+                        settings.showLayers,
+                        onColor,
+                        offColor,
+                        new GUIContent("Show Layer"),
+                        () => settings.showLayers = !settings.showLayers,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2), GUILayout.Height(30)}
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2), GUILayout.Height(30) }
                     );
 
                     bandAid.CreateToggle(
-                        settings.showTags, 
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Show Tag"), 
-                        ()=> settings.showTags = !settings.showTags,
+                        settings.showTags,
+                        onColor,
+                        offColor,
+                        new GUIContent("Show Tag"),
+                        () => settings.showTags = !settings.showTags,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2), GUILayout.Height(30)}
-                    ); 
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2), GUILayout.Height(30) }
+                    );
                 }
 
                 using (new GroupConstraint(GroupDir.Horizontal))
                 {
                     bandAid.CreateToggle(
-                        settings.showStaticObjects, 
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Show Is Static"), 
-                        ()=> settings.showStaticObjects = !settings.showStaticObjects,
+                        settings.showStaticObjects,
+                        onColor,
+                        offColor,
+                        new GUIContent("Show Is Static"),
+                        () => settings.showStaticObjects = !settings.showStaticObjects,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2), GUILayout.Height(30)}
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2), GUILayout.Height(30) }
                     );
 
                     bandAid.CreateToggle(
-                        settings.showDepth, 
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Show Depth"), 
-                        ()=> settings.showDepth = !settings.showDepth,
+                        settings.showDepth,
+                        onColor,
+                        offColor,
+                        new GUIContent("Show Depth"),
+                        () => settings.showDepth = !settings.showDepth,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2), GUILayout.Height(30)}
-                    );   
-                }  
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2), GUILayout.Height(30) }
+                    );
+                }
 
                 using (new GroupConstraint(GroupDir.Horizontal))
                 {
                     bandAid.CreateToggle(
-                        settings.showComponents, 
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Show Components"), 
-                        ()=> settings.showComponents = !settings.showComponents,
+                        settings.showComponents,
+                        onColor,
+                        offColor,
+                        new GUIContent("Show Components"),
+                        () => settings.showComponents = !settings.showComponents,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2), GUILayout.Height(30)}
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2), GUILayout.Height(30) }
                     );
 
                     bandAid.CreateToggle(
-                        settings.hideIconlessComponents, 
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Hide Iconless Components"), 
-                        ()=> settings.hideIconlessComponents = !settings.hideIconlessComponents,
+                        settings.hideIconlessComponents,
+                        onColor,
+                        offColor,
+                        new GUIContent("Hide Iconless Components"),
+                        () => settings.hideIconlessComponents = !settings.hideIconlessComponents,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2), GUILayout.Height(30)}
-                    );   
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2), GUILayout.Height(30) }
+                    );
                 }
 
                 // ====================================================================================================================
@@ -148,39 +149,39 @@ namespace MyHierarchy
                 using (new GroupConstraint(GroupDir.Horizontal))
                 {
                     bandAid.CreateToggle(
-                        settings.highlightSelectedSiblings, 
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Highlight Selected's Siblings"), 
-                        ()=> settings.highlightSelectedSiblings = !settings.highlightSelectedSiblings,
+                        settings.highlightSelectedSiblings,
+                        onColor,
+                        offColor,
+                        new GUIContent("Highlight Selected's Siblings"),
+                        () => settings.highlightSelectedSiblings = !settings.highlightSelectedSiblings,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2), GUILayout.Height(30)}
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2), GUILayout.Height(30) }
                     );
 
                     bandAid.CreateToggle(
-                        settings.highlightSelectedChildren, 
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Highlight Selected's Children"), 
-                        ()=> settings.highlightSelectedChildren = !settings.highlightSelectedChildren,
+                        settings.highlightSelectedChildren,
+                        onColor,
+                        offColor,
+                        new GUIContent("Highlight Selected's Children"),
+                        () => settings.highlightSelectedChildren = !settings.highlightSelectedChildren,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2), GUILayout.Height(30)}
-                    );   
-                } 
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2), GUILayout.Height(30) }
+                    );
+                }
 
                 using (new GroupConstraint(GroupDir.Horizontal))
                 {
                     bandAid.CreateToggle(
                         settings.showRelationshipLines,
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Show Object Relationship"), 
-                        ()=> settings.showRelationshipLines = !settings.showRelationshipLines,
+                        onColor,
+                        offColor,
+                        new GUIContent("Show Object Relationship"),
+                        () => settings.showRelationshipLines = !settings.showRelationshipLines,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2*2+4), GUILayout.Height(30)}
-                    ); 
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2 * 2 + 4), GUILayout.Height(30) }
+                    );
                 }
-    
+
                 // ====================================================================================================================
 
                 EGL.Space(10);
@@ -190,13 +191,13 @@ namespace MyHierarchy
                 {
                     bandAid.CreateToggle(
                         settings.showLabelsOnGroup,
-                        onColor, 
-                        offColor, 
-                        new GUIContent("Show Group Header Labels"), 
-                        ()=> settings.showLabelsOnGroup = !settings.showLabelsOnGroup,
+                        onColor,
+                        offColor,
+                        new GUIContent("Show Group Header Labels"),
+                        () => settings.showLabelsOnGroup = !settings.showLabelsOnGroup,
                         null,
-                        new GUILayoutOption[] {GUILayout.Width(buttonWidthx2*2+4), GUILayout.Height(30)}
-                    ); 
+                        new GUILayoutOption[] { GUILayout.Width(buttonWidthx2 * 2 + 4), GUILayout.Height(30) }
+                    );
                 }
 
                 // ====================================================================================================================
@@ -205,13 +206,13 @@ namespace MyHierarchy
                 EGL.LabelField("All", gs);
 
                 bandAid.CreateToggle(
-                    settings.activate, 
-                    onColor, 
-                    offColor, 
-                    new GUIContent("Toggle Activation"), 
-                    ()=> settings.activate = !settings.activate,
+                    settings.activate,
+                    onColor,
+                    offColor,
+                    new GUIContent("Toggle Activation"),
+                    () => settings.activate = !settings.activate,
                     null,
-                    new GUILayoutOption[] {GUILayout.Width(buttonWidthx2*2+4), GUILayout.Height(30)}
+                    new GUILayoutOption[] { GUILayout.Width(buttonWidthx2 * 2 + 4), GUILayout.Height(30) }
                 );
             }
 
@@ -220,13 +221,13 @@ namespace MyHierarchy
             Flippin.FlippingINF(new Vector2(180, allRect.yMax + 30));
 
             // ====================================================================================================================
-    
-            if ( EditorGUI.EndChangeCheck() )
+
+            if (EditorGUI.EndChangeCheck())
             {
-                EditorUtility.SetDirty( settings );
+                EditorUtility.SetDirty(settings);
                 EditorApplication.RepaintHierarchyWindow();
             }
-                
+
             settingsSO.ApplyModifiedProperties();
         }
     }

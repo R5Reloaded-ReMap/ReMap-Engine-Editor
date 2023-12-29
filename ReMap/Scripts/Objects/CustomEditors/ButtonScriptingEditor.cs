@@ -35,7 +35,7 @@ public class ButtonScriptingEditor : Editor
         EditorGUILayout.Space(5);
 
         EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
-        myScript.OnUseCallback = EditorGUILayout.TextArea(myScript.OnUseCallback, GUILayout.Height(200));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnUseCallback"), new GUIContent("", ""), GUILayout.Height(200));
         EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();

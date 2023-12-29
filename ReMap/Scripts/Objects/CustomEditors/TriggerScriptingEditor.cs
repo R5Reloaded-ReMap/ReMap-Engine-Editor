@@ -46,7 +46,7 @@ public class TriggerScriptingEditor : Editor
         EditorGUILayout.LabelField(" Enter Callback:", CustomEditorStyle.LabelStyle);
         EditorGUILayout.Space(5);
         EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
-        myScript.EnterCallback = EditorGUILayout.TextArea(myScript.EnterCallback, GUILayout.Height(200));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("EnterCallback"), new GUIContent("", ""), GUILayout.Height(200));
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space(5);
@@ -54,7 +54,7 @@ public class TriggerScriptingEditor : Editor
         EditorGUILayout.LabelField(" Leave Callback:", CustomEditorStyle.LabelStyle);
         EditorGUILayout.Space(5);
         EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
-        myScript.LeaveCallback = EditorGUILayout.TextArea(myScript.LeaveCallback, GUILayout.Height(200));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("LeaveCallback"), new GUIContent("", ""), GUILayout.Height(200));
         EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();

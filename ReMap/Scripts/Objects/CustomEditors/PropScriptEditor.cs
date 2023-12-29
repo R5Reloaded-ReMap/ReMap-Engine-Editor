@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public class PropScriptEditor : Editor
 {
     bool ShowOptions = false;
+    string Options = "";
 
     void OnEnable()
     {
@@ -46,7 +47,7 @@ public class PropScriptEditor : Editor
         }
         EditorGUILayout.Space(5);
 
-        myScript.Options = EditorGUILayout.TextArea(myScript.Options, GUILayout.Height(200));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("Options"), new GUIContent("", ""), GUILayout.Height(200));
         EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();

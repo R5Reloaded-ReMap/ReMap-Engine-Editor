@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(WeaponRackScript))]
+[CanEditMultipleObjects]
 public class WeaponRackScriptEditor : Editor
 {
     void OnEnable()

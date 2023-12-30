@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(RespawnableHealScript))]
+[CanEditMultipleObjects]
 public class RespawnableHealScriptEditor : Editor
 {
     void OnEnable()

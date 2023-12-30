@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(HorzDoorScript))]
+[CanEditMultipleObjects]
 public class HorzDoorScriptEditor : Editor
 {
     void OnEnable()

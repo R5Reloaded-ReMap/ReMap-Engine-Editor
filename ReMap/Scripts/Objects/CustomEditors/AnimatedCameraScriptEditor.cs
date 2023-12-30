@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(AnimatedCameraScript))]
+[CanEditMultipleObjects]
 public class AnimatedCameraScriptEditor : Editor
 {
     void OnEnable()

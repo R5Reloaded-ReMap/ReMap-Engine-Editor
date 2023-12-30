@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(DoorScript))]
+[CanEditMultipleObjects]
 public class DoorScriptEditor : Editor
 {
     void OnEnable()

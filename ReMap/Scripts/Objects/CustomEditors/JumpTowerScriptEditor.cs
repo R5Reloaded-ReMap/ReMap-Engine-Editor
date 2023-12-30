@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(JumpTowerScript))]
+[CanEditMultipleObjects]
 public class JumpTowerScriptEditor : Editor
 {
     void OnEnable()

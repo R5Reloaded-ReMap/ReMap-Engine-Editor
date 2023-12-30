@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(DrawNonVerticalZipline))]
+[CanEditMultipleObjects]
 public class DrawNonVerticalZiplineEditor : Editor
 {
     void OnEnable()

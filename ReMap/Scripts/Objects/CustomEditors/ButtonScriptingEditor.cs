@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(ButtonScripting))]
+[CanEditMultipleObjects]
 public class ButtonScriptingEditor : Editor
 {
     void OnEnable()

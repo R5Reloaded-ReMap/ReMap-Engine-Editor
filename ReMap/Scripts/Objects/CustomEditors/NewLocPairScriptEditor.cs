@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(NewLocPairScript))]
+[CanEditMultipleObjects]
 public class NewLocPairScriptEditor : Editor
 {
     void OnEnable()

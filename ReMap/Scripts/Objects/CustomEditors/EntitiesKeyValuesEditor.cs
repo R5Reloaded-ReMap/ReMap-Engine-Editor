@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(EntitiesKeyValues))]
+[CanEditMultipleObjects]
 public class EntitiesKeyValuesEditor : Editor
 {
     void OnEnable()

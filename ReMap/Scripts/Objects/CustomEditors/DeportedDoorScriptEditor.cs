@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(DeportedDoorScript))]
+[CanEditMultipleObjects]
 public class DeportedDoorScriptEditor : Editor
 {
     void OnEnable()

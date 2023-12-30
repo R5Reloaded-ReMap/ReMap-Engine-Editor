@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(SoundScript))]
+[CanEditMultipleObjects]
 public class SoundScriptEditor : Editor
 {
     void OnEnable()

@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(SpawnPointScript))]
+[CanEditMultipleObjects]
 public class SpawnPointScriptEditor : Editor
 {
     void OnEnable()

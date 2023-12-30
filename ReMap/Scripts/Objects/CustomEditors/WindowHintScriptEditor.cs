@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(WindowHintScript))]
+[CanEditMultipleObjects]
 public class WindowHintScriptEditor : Editor
 {
     void OnEnable()

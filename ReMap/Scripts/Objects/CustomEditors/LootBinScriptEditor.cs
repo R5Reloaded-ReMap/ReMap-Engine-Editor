@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(LootBinScript))]
+[CanEditMultipleObjects]
 public class LootBinScriptEditor : Editor
 {
     void OnEnable()

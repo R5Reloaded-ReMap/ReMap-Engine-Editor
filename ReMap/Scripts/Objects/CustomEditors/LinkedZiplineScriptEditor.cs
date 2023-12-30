@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(LinkedZiplineScript))]
+[CanEditMultipleObjects]
 public class LinkedZiplineScriptEditor : Editor
 {
     int _selected = 0;

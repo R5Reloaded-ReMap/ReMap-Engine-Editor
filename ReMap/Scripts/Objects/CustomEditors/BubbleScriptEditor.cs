@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(BubbleScript))]
+[CanEditMultipleObjects]
 public class BubbleScriptEditor : Editor
 {
     void OnEnable()

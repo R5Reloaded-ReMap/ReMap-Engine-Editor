@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(TriggerScripting))]
+[CanEditMultipleObjects]
 public class TriggerScriptingEditor : Editor
 {
     void OnEnable()

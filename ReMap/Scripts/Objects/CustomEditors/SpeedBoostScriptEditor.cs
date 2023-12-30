@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(SpeedBoostScript))]
+[CanEditMultipleObjects]
 public class SpeedBoostScriptEditor : Editor
 {
     void OnEnable()

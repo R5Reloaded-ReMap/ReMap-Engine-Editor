@@ -16,26 +16,25 @@ public class TransformEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        if (Selection.activeTransform)
+        SelectedObject = null;
+        if (Selection.activeTransform && Selection.gameObjects.Length == 1)
             SelectedObject = Selection.activeTransform.gameObject;
-        else
-            SelectedObject = null;
 
         EditorGUILayout.LabelField(" Unity Transforms:", CustomEditorStyle.LabelStyle);
         EditorGUILayout.Space(5);
         transformEditor.OnInspectorGUI();
 
-        EditorGUILayout.Space(20);
-
-        EditorGUILayout.LabelField(" Apex Info:", CustomEditorStyle.LabelStyle);
-        EditorGUILayout.Space(5);
-
         if (SelectedObject)
         {
+            EditorGUILayout.Space(20);
+
+            EditorGUILayout.LabelField(" Apex Info:", CustomEditorStyle.LabelStyle);
+            EditorGUILayout.Space(5);
+
             string[] splitArray = SelectedObject.name.Split(char.Parse(" "));
             string model = "$\"" + splitArray[0].Replace("#", "/") + ".rmdl" + "\"";
             if (!splitArray[0].Contains("mdl#"))
-                model = splitArray[0];
+                model = "(Not a model)";
 
             //Asset
             GUILayout.BeginHorizontal("box");
@@ -91,47 +90,6 @@ public class TransformEditor : Editor
             GUILayout.BeginHorizontal("box");
             GUILayout.Label("Scale:");
             GUILayout.TextField(SelectedObject.transform.localScale.x.ToString().Replace(",", "."), GUILayout.Width(267));
-            GUILayout.EndHorizontal();
-        }
-        else
-        {
-            //Asset
-            GUILayout.BeginHorizontal("box");
-            GUILayout.Label("Asset:");
-            GUILayout.TextField("$\"\"", GUILayout.Width(200));
-            if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "";
-            GUILayout.EndHorizontal();
-
-            //Origin
-            GUILayout.BeginHorizontal("box");
-            GUILayout.Label("Origin:");
-            GUILayout.TextField("<0,0,0>", GUILayout.Width(200));
-            if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "<0,0,0>";
-            GUILayout.EndHorizontal();
-
-            //Angles
-            GUILayout.BeginHorizontal("box");
-            GUILayout.Label("Angle:");
-            GUILayout.TextField("<0,0,0>", GUILayout.Width(200));
-            if (GUILayout.Button("Copy", GUILayout.Width(60)))
-                GUIUtility.systemCopyBuffer = "<0,0,0>";
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal("box");
-            GUILayout.Label("Size (Unity Vector):");
-            GUILayout.TextField("W: 0   D: 0   H: 0", GUILayout.Width(267));
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal("box");
-            GUILayout.Label("Size (Apex Vector):");
-            GUILayout.TextField("W: 0   D: 0   H: 0", GUILayout.Width(267));
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal("box");
-            GUILayout.Label("Scale:");
-            GUILayout.TextField("0", GUILayout.Width(267));
             GUILayout.EndHorizontal();
         }
     }

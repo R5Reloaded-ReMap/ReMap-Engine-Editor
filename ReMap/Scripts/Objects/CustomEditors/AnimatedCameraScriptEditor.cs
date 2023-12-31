@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(AnimatedCameraScript))]
@@ -19,7 +16,6 @@ public class AnimatedCameraScriptEditor : Editor
         GUI.skin = Resources.Load("CustomEditor/skin") as GUISkin;
 
         serializedObject.Update();
-        AnimatedCameraScript myScript = target as AnimatedCameraScript;
 
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/AnimatedCamera_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);

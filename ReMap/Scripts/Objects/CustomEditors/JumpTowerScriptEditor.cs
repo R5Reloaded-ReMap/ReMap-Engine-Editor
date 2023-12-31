@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
+[System.Serializable]
 [CustomEditor(typeof(JumpTowerScript))]
 [CanEditMultipleObjects]
 public class JumpTowerScriptEditor : Editor

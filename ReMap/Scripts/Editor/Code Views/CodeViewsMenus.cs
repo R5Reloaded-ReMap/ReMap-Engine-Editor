@@ -17,16 +17,16 @@ namespace CodeViews
     public class CodeViewsMenu
     {
         // Debug Only
-            static string strRef = "strRef";
-            static bool boolRef = true;
-            static int intRef = 1;
-            static Vector3 vecRef = new Vector3( 0, 0, 0 );
+        static string strRef = "strRef";
+        static bool boolRef = true;
+        static int intRef = 1;
+        static Vector3 vecRef = new Vector3(0, 0, 0);
         //
 
         internal static FunctionRef EmptyFunctionRef = () => { };
         internal static FunctionRef[] EmptyFunctionRefArray = new FunctionRef[0];
 
-        internal static Color GUI_SettingsColor = new Color( 255f, 255f, 255f );
+        internal static Color GUI_SettingsColor = new Color(255f, 255f, 255f);
 
         internal static FunctionRef[] TipsMenu = new FunctionRef[]
         {
@@ -77,27 +77,27 @@ namespace CodeViews
 
         internal static void SharedFunctions()
         {
-            CreateMenu( CodeViewsWindow.TipsMenu, TipsMenu, MenuType.Large, "Tips", "Tips", "" );
+            CreateMenu(CodeViewsWindow.TipsMenu, TipsMenu, MenuType.Large, "Tips", "Tips", "");
 
-            #if RMAPDEV
-                GUILayout.BeginHorizontal();
-                    Space( 2 ); Separator( 314 );
-                GUILayout.EndHorizontal();
+#if RMAPDEV
+            GUILayout.BeginHorizontal();
+            Space(2); Separator(314);
+            GUILayout.EndHorizontal();
 
-                CreateMenu( CodeViewsWindow.DevMenu, DevMenu, MenuType.Large, "Dev Menu", "Dev Menu", "" );
-                CreateMenu( "LargeFieldPreview", LargeFieldPreview, MenuType.Large, "Field Preview", "Field Preview", "" );
-                CreateMenu( "NotificationColorPreview", ColorPreview, MenuType.Large, "Color Preview", "Color Preview", "" );
-            #endif
+            CreateMenu(CodeViewsWindow.DevMenu, DevMenu, MenuType.Large, "Dev Menu", "Dev Menu", "");
+            CreateMenu("LargeFieldPreview", LargeFieldPreview, MenuType.Large, "Field Preview", "Field Preview", "");
+            CreateMenu("NotificationColorPreview", ColorPreview, MenuType.Large, "Color Preview", "Color Preview", "");
+#endif
         }
 
         // Dev Only
         internal static FunctionRef[] ButtonColor()
         {
-            List< FunctionRef > list = new List< FunctionRef >();
+            List<FunctionRef> list = new List<FunctionRef>();
 
-            foreach ( var color in CodeViewsWindow.Color_Array )
+            foreach (var color in CodeViewsWindow.Color_Array)
             {
-                list.Add( () => OptionalButton( color.Key, "", () => { CodeViewsWindow.ephemeralMessage.AddToQueueMessage( $"#RMAPDEV_MESSAGE_{color.Key}", $"{color.Key} Notification", 4, true, color.Value ); }, null, MenuType.Medium ) );
+                list.Add(() => OptionalButton(color.Key, "", () => { CodeViewsWindow.ephemeralMessage.AddToQueueMessage($"#RMAPDEV_MESSAGE_{color.Key}", $"{color.Key} Notification", 4, true, color.Value); }, null, MenuType.Medium));
             }
 
             return list.ToArray();
@@ -105,72 +105,72 @@ namespace CodeViews
 
         internal static void SelectionMenu()
         {
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.SelectionMenu, EmptyFunctionRefArray, MenuType.Large, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true );
+            CodeViewsMenu.CreateMenu(CodeViewsWindow.SelectionMenu, EmptyFunctionRefArray, MenuType.Large, "Disable Selection Only", "Enable Selection Only", "If true, generates the code of the selection only", true);
         }
 
-        internal static MenuInit CreateMenu( string name, FunctionRef functionRef, MenuType menuType = MenuType.Large, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false, bool enableSeparator = true, bool condition = true, bool isButton = false )
+        internal static MenuInit CreateMenu(string name, FunctionRef functionRef, MenuType menuType = MenuType.Large, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false, bool enableSeparator = true, bool condition = true, bool isButton = false)
         {
-            return CreateMenu( name, new FunctionRef[] { functionRef }, menuType, trueText, falseText, tooltip, refresh, enableSeparator, condition, isButton );
+            return CreateMenu(name, new FunctionRef[] { functionRef }, menuType, trueText, falseText, tooltip, refresh, enableSeparator, condition, isButton);
         }
 
-        internal static MenuInit CreateMenu( string name, FunctionRef[] functionRef, MenuType menuType = MenuType.Large, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false, bool enableSeparator = true, bool condition = true, bool isButton = false )
+        internal static MenuInit CreateMenu(string name, FunctionRef[] functionRef, MenuType menuType = MenuType.Large, string trueText = "", string falseText = "", string tooltip = "", bool refresh = false, bool enableSeparator = true, bool condition = true, bool isButton = false)
         {
             MenuInit menu;
 
-            if ( MenuInit.Exist( name ) )
+            if (MenuInit.Exist(name))
             {
-                menu = MenuInit.Find( name );
+                menu = MenuInit.Find(name);
                 menu.Content = functionRef;
             }
-            else menu = new MenuInit( name, functionRef, menuType );
+            else menu = new MenuInit(name, functionRef, menuType);
 
-            if ( !condition ) return menu;
+            if (!condition) return menu;
 
             menu.EnableSeparator = menu.IsButton ? false : enableSeparator;
             menu.IsButton = isButton;
 
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            GUIContent buttonContent = new GUIContent( menu.IsOpen ? trueText : falseText, tooltip );
-            GUIContent buttonContentInfo = new GUIContent( menu.IsOpen ? CodeViewsWindow.enableLogo : CodeViewsWindow.disableLogo, tooltip );
+            GUIContent buttonContent = new GUIContent(menu.IsOpen ? trueText : falseText, tooltip);
+            GUIContent buttonContentInfo = new GUIContent(menu.IsOpen ? CodeViewsWindow.enableLogo : CodeViewsWindow.disableLogo, tooltip);
 
-            if ( menuType != MenuType.Large ) Space( 4 );
+            if (menuType != MenuType.Large) Space(4);
 
             GUILayout.BeginHorizontal();
 
-            Space( menu.Space );
+            Space(menu.Space);
 
-            if ( GUILayout.Button( buttonContentInfo, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( 20 ) ) || GUILayout.Button( buttonContent, buttonStyle, GUILayout.Height( 20 ), GUILayout.Width( menu.Width ) ) )
+            if (GUILayout.Button(buttonContentInfo, buttonStyle, GUILayout.Height(20), GUILayout.Width(20)) || GUILayout.Button(buttonContent, buttonStyle, GUILayout.Height(20), GUILayout.Width(menu.Width)))
             {
                 menu.IsOpen = !menu.IsOpen;
 
-                if ( menu.IsButton ) Internal_FunctionInit( menu );
+                if (menu.IsButton) Internal_FunctionInit(menu);
 
-                if ( refresh ) CodeViewsWindow.Refresh();
+                if (refresh) CodeViewsWindow.Refresh();
 
-                GUI.FocusControl( null );
+                GUI.FocusControl(null);
             }
             GUILayout.EndHorizontal();
 
-            if ( !menu.IsButton ) Internal_FunctionInit( menu );
+            if (!menu.IsButton) Internal_FunctionInit(menu);
 
             return menu;
         }
 
-        internal static void Internal_FunctionInit( MenuInit menu )
+        internal static void Internal_FunctionInit(MenuInit menu)
         {
-            if ( menu.Content.Length != 0 && menu.IsOpen || menu.IsButton )
+            if (menu.Content.Length != 0 && menu.IsOpen || menu.IsButton)
             {
-                foreach ( FunctionRef functionRef in menu.Content ) functionRef();
+                foreach (FunctionRef functionRef in menu.Content) functionRef();
 
-                if ( !menu.EnableSeparator ) return;
+                if (!menu.EnableSeparator) return;
 
-                if ( menu.MenuType == MenuType.Medium || menu.MenuType == MenuType.Small ) GUILayout.BeginHorizontal();
-                Space( menu.Space ); Separator( menu.SeparatorWidth );
-                if ( menu.MenuType == MenuType.Medium || menu.MenuType == MenuType.Small ) GUILayout.EndHorizontal();
+                if (menu.MenuType == MenuType.Medium || menu.MenuType == MenuType.Small) GUILayout.BeginHorizontal();
+                Space(menu.Space); Separator(menu.SeparatorWidth);
+                if (menu.MenuType == MenuType.Medium || menu.MenuType == MenuType.Small) GUILayout.EndHorizontal();
             }
-            else if ( menu.MenuType == MenuType.Large ) Space( 8 );
+            else if (menu.MenuType == MenuType.Large) Space(8);
         }
 
 
@@ -180,15 +180,15 @@ namespace CodeViews
         //  ██║   ██║██╔═══╝    ██║   ██║██║   ██║██║╚██╗██║╚════██║
         //  ╚██████╔╝██║        ██║   ██║╚██████╔╝██║ ╚████║███████║
         //   ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
-        internal static void OptionalTextField( ref string reference, string text = "text field", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Large )
+        internal static void OptionalTextField(ref string reference, string text = "text field", string tooltip = "", bool? condition = null, MenuType menuType = MenuType.Large)
         {
-            if ( condition != null && !condition.Value ) return;
+            if (condition != null && !condition.Value) return;
 
-            Space( 4 );
+            Space(4);
 
             float space = 0, labelSpace = 0, fieldSpace = 0;
 
-            switch ( menuType )
+            switch (menuType)
             {
                 case MenuType.Large:
                     space = 2;
@@ -199,30 +199,30 @@ namespace CodeViews
                     space = 12;
                     labelSpace = 92;
                     fieldSpace = 210;
-                    break; 
+                    break;
                 case MenuType.Small:
                     space = 25;
                     labelSpace = 89;
                     fieldSpace = 200;
-                break;
+                    break;
             }
 
             GUILayout.BeginHorizontal();
-                Space( space );
+            Space(space);
 
-                WindowUtility.WindowUtility.CreateTextField( ref reference, text, tooltip, labelSpace, fieldSpace );
+            WindowUtility.WindowUtility.CreateTextField(ref reference, text, tooltip, labelSpace, fieldSpace);
             GUILayout.EndHorizontal();
         }
 
-        internal static void OptionalToggle( ref bool reference, string text = "toggle", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Large )
+        internal static void OptionalToggle(ref bool reference, string text = "toggle", string tooltip = "", bool? condition = null, MenuType menuType = MenuType.Large)
         {
-            if ( condition != null && !condition.Value ) return;
+            if (condition != null && !condition.Value) return;
 
-            Space( 4 );
+            Space(4);
 
             float space = 0, labelSpace = 0;
 
-            switch ( menuType )
+            switch (menuType)
             {
                 case MenuType.Large:
                     space = 2;
@@ -231,29 +231,29 @@ namespace CodeViews
                 case MenuType.Medium:
                     space = 12;
                     labelSpace = 282;
-                    break; 
+                    break;
                 case MenuType.Small:
                     space = 25;
                     labelSpace = 269;
-                break;
+                    break;
             }
 
             GUILayout.BeginHorizontal();
-                Space( space );
+            Space(space);
 
-                WindowUtility.WindowUtility.CreateToggle( ref reference, text, tooltip, labelSpace );
+            WindowUtility.WindowUtility.CreateToggle(ref reference, text, tooltip, labelSpace);
             GUILayout.EndHorizontal();
         }
 
-        internal static void OptionalIntField( ref int reference, string text = "int field", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Large )
+        internal static void OptionalIntField(ref int reference, string text = "int field", string tooltip = "", bool? condition = null, MenuType menuType = MenuType.Large)
         {
-            if ( condition != null && !condition.Value ) return;
-            
-            Space( 4 );
+            if (condition != null && !condition.Value) return;
+
+            Space(4);
 
             float space = 0, labelSpace = 0, fieldSpace = 0;
 
-            switch ( menuType )
+            switch (menuType)
             {
                 case MenuType.Large:
                     space = 2;
@@ -264,30 +264,30 @@ namespace CodeViews
                     space = 12;
                     labelSpace = 224;
                     fieldSpace = 78;
-                    break; 
+                    break;
                 case MenuType.Small:
                     space = 25;
                     labelSpace = 219;
                     fieldSpace = 70;
-                break;
+                    break;
             }
 
             GUILayout.BeginHorizontal();
-                Space( space );
+            Space(space);
 
-                WindowUtility.WindowUtility.CreateIntField( ref reference, text, tooltip, labelSpace, fieldSpace );
+            WindowUtility.WindowUtility.CreateIntField(ref reference, text, tooltip, labelSpace, fieldSpace);
             GUILayout.EndHorizontal();
         }
 
-        internal static void OptionalVector3Field( ref Vector3 reference, string text = "vector3 field", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Large )
+        internal static void OptionalVector3Field(ref Vector3 reference, string text = "vector3 field", string tooltip = "", bool? condition = null, MenuType menuType = MenuType.Large)
         {
-            if ( condition != null && !condition.Value ) return;
+            if (condition != null && !condition.Value) return;
 
-            Space( 4 );
+            Space(4);
 
             float space = 0, labelSpace = 0, fieldSpace = 0;
 
-            switch ( menuType )
+            switch (menuType)
             {
                 case MenuType.Large:
                     space = 2;
@@ -298,30 +298,30 @@ namespace CodeViews
                     space = 12;
                     labelSpace = 92;
                     fieldSpace = 210;
-                    break; 
+                    break;
                 case MenuType.Small:
                     space = 25;
                     labelSpace = 79;
                     fieldSpace = 210;
-                break;
+                    break;
             }
 
             GUILayout.BeginHorizontal();
-                Space( space );
+            Space(space);
 
-                WindowUtility.WindowUtility.CreateVector3Field( ref reference, text, tooltip, labelSpace, fieldSpace );
+            WindowUtility.WindowUtility.CreateVector3Field(ref reference, text, tooltip, labelSpace, fieldSpace);
             GUILayout.EndHorizontal();
         }
 
-        internal static void OptionalTextInfo( string text = "text", string tooltip = "", bool ? condition = null, MenuType menuType = MenuType.Large, bool centered = false )
+        internal static void OptionalTextInfo(string text = "text", string tooltip = "", bool? condition = null, MenuType menuType = MenuType.Large, bool centered = false)
         {
-            if ( condition != null && !condition.Value ) return;
+            if (condition != null && !condition.Value) return;
 
-            Space( 4 );
+            Space(4);
 
             float space = 0, labelSpace = 0;
 
-            switch ( menuType )
+            switch (menuType)
             {
                 case MenuType.Large:
                     space = 2;
@@ -330,37 +330,37 @@ namespace CodeViews
                 case MenuType.Medium:
                     space = 12;
                     labelSpace = 302;
-                    break; 
+                    break;
                 case MenuType.Small:
                     space = 25;
                     labelSpace = 289;
-                break;
+                    break;
             }
 
             GUILayout.BeginHorizontal();
-                Space( space );
+            Space(space);
 
-                if ( centered )
-                {
-                    WindowUtility.WindowUtility.CreateTextInfoCentered( text, tooltip, labelSpace );
-                }
-                else WindowUtility.WindowUtility.CreateTextInfo( text, tooltip, labelSpace );
+            if (centered)
+            {
+                WindowUtility.WindowUtility.CreateTextInfoCentered(text, tooltip, labelSpace);
+            }
+            else WindowUtility.WindowUtility.CreateTextInfo(text, tooltip, labelSpace);
 
             GUILayout.EndHorizontal();
         }
 
-        internal static void OptionalButton( string text = "button", string tooltip = "", FunctionRef functionRef = null, bool ? condition = null, MenuType menuType = MenuType.Large, bool refresh = false )
+        internal static void OptionalButton(string text = "button", string tooltip = "", FunctionRef functionRef = null, bool? condition = null, MenuType menuType = MenuType.Large, bool refresh = false)
         {
-            if ( condition != null && !condition.Value ) return;
+            if (condition != null && !condition.Value) return;
 
-            Space( 4 );
+            Space(4);
 
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
             float space = 0, labelSpace = 0;
 
-            switch ( menuType )
+            switch (menuType)
             {
                 case MenuType.Large:
                     space = 2;
@@ -369,60 +369,53 @@ namespace CodeViews
                 case MenuType.Medium:
                     space = 12;
                     labelSpace = 305;
-                    break; 
+                    break;
                 case MenuType.Small:
                     space = 25;
                     labelSpace = 292;
-                break;
+                    break;
             }
 
             GUILayout.BeginHorizontal();
-                Space( space );
+            Space(space);
 
-                if ( WindowUtility.WindowUtility.CreateButton( text, tooltip, functionRef, labelSpace, 20 ) && refresh ) CodeViewsWindow.Refresh();
+            if (WindowUtility.WindowUtility.CreateButton(text, tooltip, functionRef, labelSpace, 20) && refresh) CodeViewsWindow.Refresh();
             GUILayout.EndHorizontal();
         }
 
         internal static void OptionalAdvancedOption()
         {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            Space( 4 );
-
-            if ( CodeViewsWindow.objectTypeInSceneCount == 0 )
-            {
-                WindowUtility.WindowUtility.CreateTextInfoCentered( "There is no Objects Types in scene" );
-                
-                return;
-            }
+            Space(4);
 
             GUILayout.BeginVertical();
-                GUILayout.BeginHorizontal();
-                    WindowUtility.WindowUtility.CreateButton( "Check All", "", () => CheckOptionalAdvancedOption( true ), 156 );
+            GUILayout.BeginHorizontal();
+            WindowUtility.WindowUtility.CreateButton("Check All", "", () => CheckOptionalAdvancedOption(true), 156);
 
-                    WindowUtility.WindowUtility.CreateButton( "Uncheck All", "", () => CheckOptionalAdvancedOption( false ), 156 );
+            WindowUtility.WindowUtility.CreateButton("Uncheck All", "", () => CheckOptionalAdvancedOption(false), 156);
+            GUILayout.EndHorizontal();
+
+            foreach (ObjectType objectType in Helper.ObjectsToHide.Keys)
+            {
+                if (!Helper.GetBoolFromObjectsToHide(objectType)) continue;
+
+                GUILayout.BeginHorizontal();
+                bool value = Helper.GenerateObjects[objectType];
+                string name = Helper.GetObjNameWithEnum(objectType);
+                OptionalToggle(ref value, $"Build {name}", value ? $"Disable {name}" : $"Enable {name}");
                 GUILayout.EndHorizontal();
 
-                foreach ( ObjectType objectType in Helper.ObjectsToHide.Keys )
+                if (Helper.GenerateObjects[objectType] != value)
                 {
-                    if ( !Helper.GetBoolFromObjectsToHide( objectType ) ) continue;
+                    Helper.GenerateObjects[objectType] = value;
+                    CodeViewsWindow.Refresh();
 
-                    GUILayout.BeginHorizontal();
-                        bool value = Helper.GenerateObjects[ objectType ];
-                        string name = Helper.GetObjNameWithEnum( objectType );
-                        OptionalToggle( ref value, $"Build {name}", value ? $"Disable {name}" : $"Enable {name}" );
-                    GUILayout.EndHorizontal();
-
-                    if ( Helper.GenerateObjects[ objectType ] != value )
-                    {
-                        Helper.GenerateObjects[ objectType ] = value;
-                        CodeViewsWindow.Refresh();
-                        
-                        GUILayout.EndVertical();
-                        return;
-                    }
+                    GUILayout.EndVertical();
+                    return;
                 }
+            }
 
             GUILayout.EndVertical();
         }
@@ -432,20 +425,20 @@ namespace CodeViews
             int idx = 0; float progress = 0.0f;
             int min = 0; int max = Helper.GenerateObjects.Keys.Count;
 
-            foreach ( ObjectType objectType in Helper.GenerateObjects.Keys )
+            foreach (ObjectType objectType in Helper.GenerateObjects.Keys)
             {
-                EditorUtility.DisplayProgressBar( $"Object Verification {min++}/{max}", $"Processing... ({Helper.GetObjNameWithEnum( objectType )})", progress );
+                EditorUtility.DisplayProgressBar($"Object Verification {min++}/{max}", $"Processing... ({Helper.GetObjNameWithEnum(objectType)})", progress);
 
                 progress += 1.0f / max;
 
-                if ( CodeViewsWindow.IsHidden( objectType ) )
+                if (CodeViewsWindow.IsHidden(objectType))
                 {
-                    Helper.ObjectsToHide[ objectType ] = false;
+                    Helper.ObjectsToHide[objectType] = false;
                     continue;
                 }
-                else Helper.ObjectsToHide[ objectType ] = true;
-                
-                if ( Helper.GenerateObjects[ objectType ] ) idx++;
+                else Helper.ObjectsToHide[objectType] = true;
+
+                if (Helper.GenerateObjects[objectType]) idx++;
             }
 
             EditorUtility.ClearProgressBar();
@@ -457,68 +450,70 @@ namespace CodeViews
 
         internal static void OptionalAdditionalCodeOption()
         {
-            if ( !Helper.IsValid( AdditionalCodeTab.additionalCode ) ) AdditionalCodeTab.additionalCode = AdditionalCodeTab.FindAdditionalCode();
+            if (!Helper.IsValid(AdditionalCodeTab.additionalCode)) AdditionalCodeTab.additionalCode = AdditionalCodeTab.FindAdditionalCode();
 
             GUILayout.BeginVertical();
-                
-                OptionalTextInfo( $"Head Code", "", null, MenuType.Medium );
-                Space( 2 );
 
-                if ( CodeViewsWindow.ShowFunctionEnable() )
+            OptionalTextInfo($"Head Code", "", null, MenuType.Medium);
+            Space(2);
+
+            if (CodeViewsWindow.ShowFunctionEnable())
+            {
+                foreach (AdditionalCodeContent content in AdditionalCodeTab.additionalCode.HeadContent.Content)
                 {
-                    foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.HeadContent.Content )
-                    {
-                        CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeTab.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
-                    }
-                } else OptionalTextInfo( $"\"Show Squirrel Function\" is disable", "", null, MenuType.Small );
-
-                Space( 1 );
-                OptionalTextInfo( $"In-Block Code", "", null, MenuType.Medium );
-                Space( 2 );
-
-                foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.InBlockContent.Content )
-                {
-                    CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeTab.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                    CreateMenu($"{content.Name}_HeadContent", () => AdditionalCodeBoolChange(content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeTab.additionalCode.HeadContent.Content), MenuType.Small, content.Name, content.Name, "", false, false, true, true);
                 }
+            }
+            else OptionalTextInfo($"\"Show Squirrel Function\" is disable", "", null, MenuType.Small);
 
-                Space( 1 );
-                OptionalTextInfo( $"Below Code", "", null, MenuType.Medium );
-                Space( 2 );
+            Space(1);
+            OptionalTextInfo($"In-Block Code", "", null, MenuType.Medium);
+            Space(2);
 
-                if ( CodeViewsWindow.ShowFunctionEnable() )
+            foreach (AdditionalCodeContent content in AdditionalCodeTab.additionalCode.InBlockContent.Content)
+            {
+                CreateMenu($"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange(content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeTab.additionalCode.InBlockContent.Content), MenuType.Small, content.Name, content.Name, "", false, false, true, true);
+            }
+
+            Space(1);
+            OptionalTextInfo($"Below Code", "", null, MenuType.Medium);
+            Space(2);
+
+            if (CodeViewsWindow.ShowFunctionEnable())
+            {
+                foreach (AdditionalCodeContent content in AdditionalCodeTab.additionalCode.BelowContent.Content)
                 {
-                    foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.BelowContent.Content )
-                    {
-                        CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeTab.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
-                    }
-                } else OptionalTextInfo( $"\"Show Squirrel Function\" is disable", "", null, MenuType.Small );
+                    CreateMenu($"{content.Name}_BelowContent", () => AdditionalCodeBoolChange(content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeTab.additionalCode.BelowContent.Content), MenuType.Small, content.Name, content.Name, "", false, false, true, true);
+                }
+            }
+            else OptionalTextInfo($"\"Show Squirrel Function\" is disable", "", null, MenuType.Small);
 
             GUILayout.EndVertical();
 
-            if ( isFirstOpen )
+            if (isFirstOpen)
             {
                 isFirstOpen = false;
 
-                foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.HeadContent.Content )
+                foreach (AdditionalCodeContent content in AdditionalCodeTab.additionalCode.HeadContent.Content)
                 {
-                    CreateMenu( $"{content.Name}_HeadContent", () => AdditionalCodeBoolChange( content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeTab.additionalCode.HeadContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                    CreateMenu($"{content.Name}_HeadContent", () => AdditionalCodeBoolChange(content.Name, "HeadContent", ref CodeViewsWindow.additionalCodeHead, AdditionalCodeTab.additionalCode.HeadContent.Content), MenuType.Small, content.Name, content.Name, "", false, false, true, true);
                 }
 
-                foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.InBlockContent.Content )
+                foreach (AdditionalCodeContent content in AdditionalCodeTab.additionalCode.InBlockContent.Content)
                 {
-                    CreateMenu( $"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange( content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeTab.additionalCode.InBlockContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                    CreateMenu($"{content.Name}_InBlockContent", () => AdditionalCodeBoolChange(content.Name, "InBlockContent", ref CodeViewsWindow.additionalCodeInBlock, AdditionalCodeTab.additionalCode.InBlockContent.Content), MenuType.Small, content.Name, content.Name, "", false, false, true, true);
                 }
 
-                foreach ( AdditionalCodeContent content in AdditionalCodeTab.additionalCode.BelowContent.Content )
+                foreach (AdditionalCodeContent content in AdditionalCodeTab.additionalCode.BelowContent.Content)
                 {
-                    CreateMenu( $"{content.Name}_BelowContent", () => AdditionalCodeBoolChange( content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeTab.additionalCode.BelowContent.Content ), MenuType.Small, content.Name, content.Name, "", false, false, true, true );
+                    CreateMenu($"{content.Name}_BelowContent", () => AdditionalCodeBoolChange(content.Name, "BelowContent", ref CodeViewsWindow.additionalCodeBelow, AdditionalCodeTab.additionalCode.BelowContent.Content), MenuType.Small, content.Name, content.Name, "", false, false, true, true);
                 }
 
-                foreach ( string type in AdditionalCodeTab.contentType )
+                foreach (string type in AdditionalCodeTab.contentType)
                 {
-                    MenuInit menu = MenuInit.Find( $"{AdditionalCodeTab.emptyContentStr}_{type}" );
+                    MenuInit menu = MenuInit.Find($"{AdditionalCodeTab.emptyContentStr}_{type}");
 
-                    if ( Helper.IsValid( menu ) )
+                    if (Helper.IsValid(menu))
                     {
                         menu.IsOpen = true;
                     }
@@ -526,24 +521,24 @@ namespace CodeViews
             }
         }
 
-        private static void AdditionalCodeBoolChange( string name, string type, ref string codeRef, List< AdditionalCodeContent > contents )
+        private static void AdditionalCodeBoolChange(string name, string type, ref string codeRef, List<AdditionalCodeContent> contents)
         {
-            if ( contents.Count == 1 )
+            if (contents.Count == 1)
             {
-                MenuInit umenu = MenuInit.Find( $"{name}_{type}" );
+                MenuInit umenu = MenuInit.Find($"{name}_{type}");
 
-                if ( Helper.IsValid( umenu ) ) umenu.IsOpen = true;
+                if (Helper.IsValid(umenu)) umenu.IsOpen = true;
 
                 return;
             }
 
-            foreach ( AdditionalCodeContent content in contents )
+            foreach (AdditionalCodeContent content in contents)
             {
-                MenuInit menu = MenuInit.Find( $"{content.Name}_{type}" );
+                MenuInit menu = MenuInit.Find($"{content.Name}_{type}");
 
-                if ( !Helper.IsValid( menu ) ) return;
+                if (!Helper.IsValid(menu)) return;
 
-                if ( name == content.Name )
+                if (name == content.Name)
                 {
                     menu.IsOpen = true;
 
@@ -555,28 +550,28 @@ namespace CodeViews
             CodeViewsWindow.Refresh();
         }
 
-        private static void CheckOptionalAdvancedOption( bool value )
+        private static void CheckOptionalAdvancedOption(bool value)
         {
-            Helper.ForceSetBoolToGenerateObjects( Helper.GetAllObjectType(), value );
+            Helper.ForceSetBoolToGenerateObjects(Helper.GetAllObjectType(), value);
             CodeViewsWindow.Refresh();
         }
 
-        internal static void Space( float value )
+        internal static void Space(float value)
         {
-            GUILayout.Space( value );
+            GUILayout.Space(value);
         }
 
-        internal static void Separator( int space )
+        internal static void Separator(int space)
         {
             GUI.backgroundColor = GUI_SettingsColor;
-            GUILayout.Box( "", GUILayout.Width( space ), GUILayout.Height( 4 ) );
+            GUILayout.Box("", GUILayout.Width(space), GUILayout.Height(4));
             GUI.backgroundColor = Color.white;
         }
     }
 
     public class MenuInit
     {
-        public static Dictionary< string, MenuInit > MenuDictionary = new Dictionary< string, MenuInit >();
+        public static Dictionary<string, MenuInit> MenuDictionary = new Dictionary<string, MenuInit>();
         public string Name { get; set; }
         public bool IsOpen { get; set; }
         public bool IsButton { get; set; }
@@ -588,9 +583,9 @@ namespace CodeViews
         public int Width { get; set; }
         public int SeparatorWidth { get; set; }
 
-        public MenuInit( string name, FunctionRef[] functionRef, MenuType menuType )
+        public MenuInit(string name, FunctionRef[] functionRef, MenuType menuType)
         {
-            if ( Exist( name ) ) return;
+            if (Exist(name)) return;
 
             Name = name;
             IsOpen = false;
@@ -598,7 +593,7 @@ namespace CodeViews
             Content = functionRef;
             MenuType = menuType;
 
-            switch ( menuType )
+            switch (menuType)
             {
                 case MenuType.Large:
                     Space = 2;
@@ -609,37 +604,37 @@ namespace CodeViews
                     Space = 12;
                     Width = 282;
                     SeparatorWidth = 304;
-                    break; 
+                    break;
                 case MenuType.Small:
                     Space = 25;
                     Width = 269;
                     SeparatorWidth = 291;
-                break;
+                    break;
             }
 
-            MenuDictionary[ name ] = this;
+            MenuDictionary[name] = this;
         }
 
-        public static bool Exist( string name )
+        public static bool Exist(string name)
         {
-            return Helper.IsValid( Find( name ) );
+            return Helper.IsValid(Find(name));
         }
 
-        public static MenuInit Find( string name )
+        public static MenuInit Find(string name)
         {
-            return MenuDictionary.TryGetValue( name, out MenuInit menu ) ? menu : null;
+            return MenuDictionary.TryGetValue(name, out MenuInit menu) ? menu : null;
         }
 
-        public static bool IsEnable( string name )
+        public static bool IsEnable(string name)
         {
-            return Find( name )?.IsOpen ?? false;
+            return Find(name)?.IsOpen ?? false;
         }
 
-        public static void SetBool( string name, bool value )
+        public static void SetBool(string name, bool value)
         {
-            MenuInit menu = Find( name );
+            MenuInit menu = Find(name);
 
-            if ( Helper.IsValid( menu ) )
+            if (Helper.IsValid(menu))
             {
                 menu.IsOpen = value;
             }

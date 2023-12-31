@@ -6,8 +6,8 @@ using UnityEngine;
 public class TransformEditor : Editor
 {
     GameObject SelectedObject = null;//
-    private static readonly Type transformInspectorType = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.TransformInspector");
-    private UnityEditor.Editor transformEditor = null;
+    private static readonly Type transformInspectorType = typeof(Editor).Assembly.GetType("UnityEditor.TransformInspector");
+    private Editor transformEditor = null;
 
     void OnEnable()
     {

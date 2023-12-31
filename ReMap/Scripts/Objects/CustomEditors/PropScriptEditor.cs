@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
+[System.Serializable]
 [CustomEditor(typeof(PropScript))]
 [CanEditMultipleObjects]
 public class PropScriptEditor : Editor
@@ -18,7 +16,6 @@ public class PropScriptEditor : Editor
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
-        PropScript myScript = target as PropScript;
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/PropSettings_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);
 

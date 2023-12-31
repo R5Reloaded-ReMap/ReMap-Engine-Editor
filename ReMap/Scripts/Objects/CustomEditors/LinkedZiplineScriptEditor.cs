@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
+[System.Serializable]
 [CustomEditor(typeof(LinkedZiplineScript))]
 [CanEditMultipleObjects]
 public class LinkedZiplineScriptEditor : Editor

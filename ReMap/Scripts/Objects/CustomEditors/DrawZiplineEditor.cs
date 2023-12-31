@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [System.Serializable]
 [CustomEditor(typeof(DrawZipline))]
@@ -17,7 +14,6 @@ public class DrawZiplineEditor : Editor
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
-        DrawZipline myScript = target as DrawZipline;
 
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/Draw_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);

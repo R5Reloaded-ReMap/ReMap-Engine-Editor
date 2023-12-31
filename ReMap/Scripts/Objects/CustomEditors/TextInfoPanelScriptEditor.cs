@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
+[System.Serializable]
 [CustomEditor(typeof(TextInfoPanelScript))]
 [CanEditMultipleObjects]
 public class TextInfoPanelScriptEditor : Editor
@@ -16,7 +14,6 @@ public class TextInfoPanelScriptEditor : Editor
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
-        TextInfoPanelScript myScript = target as TextInfoPanelScript;
 
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/TextPanel_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);

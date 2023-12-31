@@ -16,7 +16,6 @@ public class LootBinScriptEditor : Editor
     override public void OnInspectorGUI()
     {
         serializedObject.Update();
-        LootBinScript myScript = target as LootBinScript;
 
         Texture2D myTexture = Resources.Load<Texture2D>("CustomEditor/Lootbin_CustomEditor") as Texture2D;
         GUILayout.Label(myTexture);

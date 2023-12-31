@@ -11,6 +11,7 @@ public class TransformEditor : Editor
 
     void OnEnable()
     {
+        CustomEditorStyle.OnEnable();
         transformEditor = CreateEditor(serializedObject.targetObjects, transformInspectorType);
     }
 

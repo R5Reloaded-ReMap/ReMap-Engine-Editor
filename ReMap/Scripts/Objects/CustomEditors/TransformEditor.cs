@@ -5,7 +5,7 @@ using UnityEngine;
 [CustomEditor(typeof(Transform), true), CanEditMultipleObjects]
 public class TransformEditor : Editor
 {
-    GameObject SelectedObject = null;
+    GameObject SelectedObject = null;//
     private static readonly Type transformInspectorType = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.TransformInspector");
     private UnityEditor.Editor transformEditor = null;
 
@@ -17,6 +17,9 @@ public class TransformEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        if (transformEditor == null)
+            return;
+
         SelectedObject = null;
         if (Selection.activeTransform && Selection.gameObjects.Length == 1)
             SelectedObject = Selection.activeTransform.gameObject;

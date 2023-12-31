@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[System.Serializable]
 [CustomEditor(typeof(PathScript))]
 [CanEditMultipleObjects]
 public class PathScriptEditor : Editor

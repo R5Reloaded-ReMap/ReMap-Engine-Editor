@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[System.Serializable]
 [CustomEditor(typeof(ZiplineLinkHelperScript))]
 [CanEditMultipleObjects]
 public class ZiplineLinkHelperScriptEditor : Editor

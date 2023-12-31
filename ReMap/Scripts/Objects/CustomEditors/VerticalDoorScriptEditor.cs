@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[System.Serializable]
 [CustomEditor(typeof(VerticalDoorScript))]
 [CanEditMultipleObjects]
 public class VerticalDoorScriptEditor : Editor

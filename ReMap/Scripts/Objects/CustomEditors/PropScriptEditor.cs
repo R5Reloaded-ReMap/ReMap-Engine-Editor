@@ -4,13 +4,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[System.Serializable]
 [CustomEditor(typeof(PropScript))]
 [CanEditMultipleObjects]
 public class PropScriptEditor : Editor
 {
     bool ShowOptions = false;
-    string Options = "";
 
     void OnEnable()
     {

@@ -4,5 +4,5 @@ using UnityEngine;
 public class ButtonScripting : MonoBehaviour
 {
     public string UseText = "";
-    public string OnUseCallback = "";
+    [TextArea] public string OnUseCallback = "";
 }

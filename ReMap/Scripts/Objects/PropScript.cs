@@ -10,5 +10,5 @@ public class PropScript : MonoBehaviour
     public float FadeDistance = 50000;
     public int RealmID = -1;
     public bool ClientSide = false;
-    public string Options = "";
+    [ TextArea ] public string Options = "";
 }

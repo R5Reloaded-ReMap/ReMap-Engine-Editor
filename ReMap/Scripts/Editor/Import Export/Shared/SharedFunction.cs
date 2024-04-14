@@ -1,11 +1,7 @@
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 
 namespace ImportExport
@@ -19,30 +15,26 @@ namespace ImportExport
     public class SharedFunction
     {
         /// <summary>
-        /// Transfer all TSource values in TDestination
+        ///     Transfer all TSource values in TDestination
         /// </summary>
-        public static void TransferDataToClass< TSource, TDestination >( TSource source, TDestination destination, string[] propertiesToRemove = null )
+        public static void TransferDataToClass<TSource, TDestination>( TSource source, TDestination destination, string[] propertiesToRemove = null )
         {
             if ( source == null || destination == null )
-            {
                 throw new ArgumentNullException( "Source or destination object cannot be null." );
-            }
 
-            Type sourceType = typeof( TSource );
-            Type destinationType = typeof( TDestination );
+            var sourceType = typeof(TSource);
+            var destinationType = typeof(TDestination);
 
-            FieldInfo[] sourceFields = sourceType.GetFields( BindingFlags.Public | BindingFlags.Instance );
-            FieldInfo[] destinationFields = destinationType.GetFields( BindingFlags.Public | BindingFlags.Instance );
+            var sourceFields = sourceType.GetFields( BindingFlags.Public | BindingFlags.Instance );
+            var destinationFields = destinationType.GetFields( BindingFlags.Public | BindingFlags.Instance );
 
-            foreach ( FieldInfo sourceField in sourceFields )
+            foreach ( var sourceField in sourceFields )
             {
                 // Ignore properties that are in the propertiesToRemove list
                 if ( Helper.IsValid( propertiesToRemove ) && propertiesToRemove.Contains( sourceField.Name, StringComparer.OrdinalIgnoreCase ) )
-                {
                     continue;
-                }
 
-                FieldInfo destinationField = Array.Find( destinationFields, field => field.Name.Equals( sourceField.Name, StringComparison.OrdinalIgnoreCase ) );
+                var destinationField = Array.Find( destinationFields, field => field.Name.Equals( sourceField.Name, StringComparison.OrdinalIgnoreCase ) );
 
                 // Check if the destination field exists and has the same field type as the source field
                 if ( Helper.IsValid( destinationField ) && destinationField.FieldType == sourceField.FieldType )
@@ -52,18 +44,18 @@ namespace ImportExport
                 }
             }
         }
-        
+
         /// <summary>
-        /// Get path for a GameObject
+        ///     Get path for a GameObject
         /// </summary>
         public static List< PathClass > FindPath( GameObject obj )
         {
-            List< GameObject > parents = new List< GameObject >();
-            List< PathClass > pathList = new List< PathClass >();
-            GameObject currentParent = obj;
+            var parents = new List< GameObject >();
+            var pathList = new List< PathClass >();
+            var currentParent = obj;
 
             // find all parented game objects
-            while ( Helper.IsValid( currentParent.transform.parent ) )
+            while (Helper.IsValid( currentParent.transform.parent ))
             {
                 if ( currentParent != obj ) parents.Add( currentParent );
                 currentParent = currentParent.transform.parent.gameObject;
@@ -71,9 +63,9 @@ namespace ImportExport
 
             if ( currentParent != obj ) parents.Add( currentParent );
 
-            foreach ( GameObject parent in parents )
+            foreach ( var parent in parents )
             {
-                PathClass path = new PathClass();
+                var path = new PathClass();
                 path.FolderName = ReplaceBadCharacters( parent.name );
                 path.TransformData = GetSetTransformData( parent );
                 pathList.Add( path );
@@ -85,16 +77,16 @@ namespace ImportExport
         }
 
         /// <summary>
-        /// Get path string for a GameObject
+        ///     Get path string for a GameObject
         /// </summary>
         public static string FindPathString( GameObject obj, bool includeSelf = false )
         {
-            List< GameObject > parents = new List< GameObject >();
+            var parents = new List< GameObject >();
             string path = "";
-            GameObject currentParent = obj;
+            var currentParent = obj;
 
             // find all parented game objects
-            while ( Helper.IsValid( currentParent.transform.parent ) )
+            while (Helper.IsValid( currentParent.transform.parent ))
             {
                 if ( currentParent != obj ) parents.Add( currentParent );
                 currentParent = currentParent.transform.parent.gameObject;
@@ -104,14 +96,10 @@ namespace ImportExport
 
             parents.Reverse();
 
-            foreach ( GameObject parent in parents )
-            {
+            foreach ( var parent in parents )
                 if ( string.IsNullOrEmpty( path ) )
-                {
                     path = $"{ReplaceBadCharacters( parent.name )}";
-                }
                 else path = $"{path}/{ReplaceBadCharacters( parent.name )}";
-            }
 
             if ( includeSelf ) path = $"{path}/{ReplaceBadCharacters( obj.name )}";
 
@@ -124,27 +112,26 @@ namespace ImportExport
         }
 
         /// <summary>
-        /// Create path for a GameObject
+        ///     Create path for a GameObject
         /// </summary>
         public static void CreatePath( List< PathClass > pathList, string pathString, GameObject obj )
         {
             if ( string.IsNullOrEmpty( pathString ) ) return;
 
-            GameObject folder = null; string path = "";
+            GameObject folder = null;
+            string path = "";
 
-            foreach ( PathClass pathClass in pathList )
+            foreach ( var pathClass in pathList )
             {
                 if ( string.IsNullOrEmpty( path ) )
-                {
                     path = $"{pathClass.FolderName}";
-                }
                 else path = $"{path}/{pathClass.FolderName}";
 
-                GameObject newFolder = GameObject.Find( path );
+                var newFolder = GameObject.Find( path );
 
                 if ( !Helper.IsValid( newFolder ) ) newFolder = new GameObject( pathClass.FolderName );
 
-                TransformData transformData = pathClass.TransformData;
+                var transformData = pathClass.TransformData;
                 newFolder.transform.position = transformData.position;
                 newFolder.transform.eulerAngles = transformData.eulerAngles;
                 newFolder.transform.localScale = transformData.localScale;
@@ -158,7 +145,7 @@ namespace ImportExport
         }
 
         /// <summary>
-        /// Get or Set the position, eulerAngles, and localScale for a GameObject
+        ///     Get or Set the position, eulerAngles, and localScale for a GameObject
         /// </summary>
         public static TransformData GetSetTransformData( GameObject obj, TransformData data = null )
         {
@@ -171,14 +158,12 @@ namespace ImportExport
 
                 return data;
             }
-            else // otherwise, define the transformation data provided
-            {
-                obj.transform.position = data.position;
-                obj.transform.eulerAngles = data.eulerAngles;
-                obj.transform.localScale = data.localScale;
+            // otherwise, define the transformation data provided
+            obj.transform.position = data.position;
+            obj.transform.eulerAngles = data.eulerAngles;
+            obj.transform.localScale = data.localScale;
 
-                return null;
-            }
+            return null;
         }
     }
 }

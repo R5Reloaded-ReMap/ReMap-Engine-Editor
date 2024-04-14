@@ -1,20 +1,16 @@
-using UnityEngine;
 using UnityEditor;
-using System.IO;
-using System;
-using System.Linq;
-using System.Reflection;
 
 [InitializeOnLoad]
-public class Startup : EditorWindow {
+public class Startup : EditorWindow
+{
+    //private static string currentDirectory = Directory.GetCurrentDirectory();
+    //private static string relativeConfigFile = "Assets/ReMap/Resources/startupconfig.json";
 
-    static string currentDirectory = Directory.GetCurrentDirectory();
-    static string relativeConfigFile = $"Assets/ReMap/Resources/startupconfig.json";
+    private static readonly bool HasRan;
 
-    static bool HasRan = false;
     static Startup()
     {
-        if(HasRan)
+        if ( HasRan )
             return;
 
         HasRan = true;

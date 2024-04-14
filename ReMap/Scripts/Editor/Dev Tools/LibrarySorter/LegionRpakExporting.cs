@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEditor;
-using UnityEngine;
 
 namespace LibrarySorter
 {
@@ -22,7 +19,7 @@ namespace LibrarySorter
 
         internal static string RpakPath = "";
 
-        private static readonly string[] ValidRpakFile = new []
+        private static readonly string[] ValidRpakFile =
         {
             "common_mp", "common_early", "root_lgnd_", "startup", "mp_lobby", "mp_rr_"
         };
@@ -34,9 +31,9 @@ namespace LibrarySorter
 
         public static async Task CreateAllRpakList()
         {
-            var path = EditorUtility.OpenFolderPanel("Rpak Folder", "", "");
+            string path = EditorUtility.OpenFolderPanel( "Rpak Folder", "", "" );
 
-            List< string > rpakFiles = new List< string >();
+            var rpakFiles = new List< string >();
 
             foreach ( string rpakPath in Directory.GetFiles( path ) )
             {
@@ -50,19 +47,20 @@ namespace LibrarySorter
 
             float progress = 0.0f;
 
-            int fileIdx = 0; int fileTotalIdx = rpakFilesValid.Length;
+            int fileIdx = 0;
+            int fileTotalIdx = rpakFilesValid.Length;
 
             foreach ( string rpakPath in rpakFilesValid )
             {
                 string command = UnityInfo.relativePathLegionExecutive;
-                string arguments = $"--list \"{rpakPath.Replace("\\","/")}\" --loadmodels --fullpath --nologfile --overwrite";
+                string arguments = $"--list \"{rpakPath.Replace( "\\", "/" )}\" --loadmodels --fullpath --nologfile --overwrite";
 
-                ProcessStartInfo startInfo = new ProcessStartInfo();
+                var startInfo = new ProcessStartInfo();
                 startInfo.FileName = command;
                 startInfo.Arguments = arguments;
                 startInfo.UseShellExecute = false;
 
-                using ( Process process = new Process() )
+                using (var process = new Process())
                 {
                     process.StartInfo = startInfo;
                     process.StartInfo.CreateNoWindow = true;
@@ -76,7 +74,7 @@ namespace LibrarySorter
                     EditorUtility.DisplayProgressBar( $"Parsing Rpak Files {fileIdx++}/{fileTotalIdx}", $"Processing {Path.GetFileName( rpakPath )}", progress );
                 }
 
-                string exportedFilePath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionPlusExportedFiles}/lists/{Path.GetFileNameWithoutExtension(rpakPath)}.txt";
+                string exportedFilePath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionPlusExportedFiles}/lists/{Path.GetFileNameWithoutExtension( rpakPath )}.txt";
 
                 if ( File.Exists( exportedFilePath ) )
                 {
@@ -94,8 +92,8 @@ namespace LibrarySorter
 
                         //if ( Path.GetFileNameWithoutExtension(rpakPath).Contains("(") )
 
-                        File.Move( $"{exportedFilePath}", $"{UnityInfo.relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt" );
-                        if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{UnityInfo.relativePathRpakManager}/{Path.GetFileNameWithoutExtension(rpakPath).Replace("mp_rr_", "")}.txt.meta" );
+                        File.Move( $"{exportedFilePath}", $"{UnityInfo.relativePathRpakManager}/{Path.GetFileNameWithoutExtension( rpakPath ).Replace( "mp_rr_", "" )}.txt" );
+                        if ( File.Exists( exportedFilePathMeta ) ) File.Move( $"{exportedFilePath}.meta", $"{UnityInfo.relativePathRpakManager}/{Path.GetFileNameWithoutExtension( rpakPath ).Replace( "mp_rr_", "" )}.txt.meta" );
                     }
                 }
 
@@ -107,15 +105,15 @@ namespace LibrarySorter
 
         public static bool IsValidRpakFile( string rpakPath )
         {
-            string fileName = Path.GetFileName(rpakPath);
+            string fileName = Path.GetFileName( rpakPath );
 
-            if ( Path.GetExtension(fileName) != ".rpak" )    return false;
+            if ( Path.GetExtension( fileName ) != ".rpak" ) return false;
 
-            if ( fileName.Contains( "charm_" ) )             return false;
-            if ( fileName.Contains( "gcard_" ) )             return false;
-            if ( fileName.Contains( "loadscreen" ) )         return false;
+            if ( fileName.Contains( "charm_" ) ) return false;
+            if ( fileName.Contains( "gcard_" ) ) return false;
+            if ( fileName.Contains( "loadscreen" ) ) return false;
             if ( fileName.Contains( "material_stickers_" ) ) return false;
-            if ( fileName.Contains( "subtitles_" ) )         return false;
+            if ( fileName.Contains( "subtitles_" ) ) return false;
 
             return true;
         }
@@ -133,32 +131,32 @@ namespace LibrarySorter
                 _ => ""
             };
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
+            var startInfo = new ProcessStartInfo();
             startInfo.FileName = $"\"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionExecutive}\"";
             startInfo.Arguments = $"--loadPaks \"{ValidPathArg}\" --assetsToExport \"{assetList}\" {loadType} --loadshadersets --mdlfmt fbx --imgfmt dds --nologfile --usetxtrguids --overwrite";
             startInfo.UseShellExecute = false;
 
-            #if RMAPDEV
-                startInfo.RedirectStandardOutput = true;
-                startInfo.RedirectStandardError = true;
-            #endif
+#if RMAPDEV
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+#endif
 
-            using ( Process process = new Process() )
+            using (var process = new Process())
             {
                 process.StartInfo = startInfo;
                 process.StartInfo.CreateNoWindow = true;
 
-                #if RMAPDEV
-                    process.OutputDataReceived += ( sender, args ) => Helper.Ping( "LegionPlus [O] =>", args.Data );
-                    process.ErrorDataReceived  += ( sender, args ) => Helper.Ping( "LegionPlus [E] =>", args.Data );
-                #endif
+#if RMAPDEV
+                process.OutputDataReceived += ( sender, args ) => Helper.Ping( "LegionPlus [O] =>", args.Data );
+                process.ErrorDataReceived += ( sender, args ) => Helper.Ping( "LegionPlus [E] =>", args.Data );
+#endif
 
                 process.Start();
 
-                #if RMAPDEV
-                    process.BeginOutputReadLine();
-                    process.BeginErrorReadLine();
-                #endif
+#if RMAPDEV
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+#endif
 
                 await Task.Run( () => process.WaitForExit() );
             }
@@ -177,19 +175,15 @@ namespace LibrarySorter
                 string file = Path.GetFileName( files );
 
                 foreach ( string match in ValidRpakFile )
-                {
                     if ( file.Contains( match ) && Path.GetExtension( file ) == ".rpak" && !file.Contains( "_loadscreen" ) ) // Ignore loadscreens
-                    {
                         ValidPathArg += $"{file},";
-                    }
-                }
             }
 
             if ( string.IsNullOrEmpty( ValidPathArg ) )
                 return false;
 
             ValidPathArg = $"{RpakPath}=>{ValidPathArg.TrimEnd( ',' )}";
-            
+
             return !string.IsNullOrEmpty( ValidPathArg );
         }
 

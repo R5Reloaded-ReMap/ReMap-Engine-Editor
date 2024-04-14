@@ -1,13 +1,9 @@
-
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using CodeViews;
 using UnityEngine;
-
 using static Build.Build;
-using static ImportExport.SharedFunction;
 
 namespace Build
 {
@@ -15,8 +11,8 @@ namespace Build
     {
         public static async Task< StringBuilder > BuildZiplineObjects( GameObject[] objectData, BuildType buildType )
         {
-            StringBuilder code = new StringBuilder();
-            List< String > precacheList = new List< String >();
+            var code = new StringBuilder();
+            var precacheList = new List< string >();
 
             // Add something at the start of the text
             switch ( buildType )
@@ -39,13 +35,13 @@ namespace Build
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             // Build the code
-            foreach ( GameObject obj in objectData )
+            foreach ( var obj in objectData )
             {
-                DrawZipline script = ( DrawZipline ) Helper.GetComponentByEnum( obj, ObjectType.ZipLine );
+                var script = ( DrawZipline )Helper.GetComponentByEnum( obj, ObjectType.ZipLine );
                 if ( script == null ) continue;
 
                 //string model = "custom_zipline" );
@@ -53,8 +49,7 @@ namespace Build
                 string ziplineend = "";
 
                 foreach ( Transform child in obj.transform )
-                {
-                    if(buildType == BuildType.LiveMap)
+                    if ( buildType == BuildType.LiveMap )
                     {
                         if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject, false, true );
                         if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject, false, true );
@@ -64,7 +59,6 @@ namespace Build
                         if ( child.name == "zipline_start" ) ziplinestart = Helper.BuildOrigin( child.gameObject );
                         if ( child.name == "zipline_end" ) ziplineend = Helper.BuildOrigin( child.gameObject );
                     }
-                }
 
                 switch ( buildType )
                 {
@@ -85,8 +79,8 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateZipline( {ziplinestart}, {ziplineend}, true )" );
-                    break;
+                        LiveMap.AddToGameQueue( $"MapEditor_CreateZipline( {ziplinestart}, {ziplineend}, true )" );
+                        break;
                 }
             }
 
@@ -111,7 +105,7 @@ namespace Build
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             await Helper.Wait();

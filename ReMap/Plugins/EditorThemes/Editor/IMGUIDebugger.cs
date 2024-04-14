@@ -1,10 +1,13 @@
-using UnityEditor;
 using System;
+using UnityEditor;
 
 public static class IMGUIDebugger
 {
-	static Type type = Type.GetType("UnityEditor.GUIViewDebuggerWindow,UnityEditor");
+    private static readonly Type type = Type.GetType( "UnityEditor.GUIViewDebuggerWindow,UnityEditor" );
 
-	[MenuItem("Window/IMGUI Debugger")]
-	public static void Open() => EditorWindow.GetWindow(type).Show();
+    [MenuItem( "Window/IMGUI Debugger" )]
+    public static void Open()
+    {
+        EditorWindow.GetWindow( type ).Show();
+    }
 }

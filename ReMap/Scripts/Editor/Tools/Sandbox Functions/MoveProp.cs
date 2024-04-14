@@ -1,6 +1,5 @@
-
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace Sandbox
 {
@@ -13,14 +12,14 @@ namespace Sandbox
 
         internal static void MoveProps()
         {
-            GameObject[] array = Selection.gameObjects;
+            var array = Selection.gameObjects;
             float offsetX = 0;
             float offsetY = 0;
             float offsetY_Temp = 0;
 
-            for ( int i = 0 ; i < array.Length ; i++ )
+            for ( int i = 0; i < array.Length; i++ )
             {
-                BoxCollider coll = array[i].GetComponent<BoxCollider>();
+                var coll = array[i].GetComponent< BoxCollider >();
                 if ( coll == null ) continue;
 
                 array[i].transform.position = new Vector3( offsetX, offsetY, 0 );

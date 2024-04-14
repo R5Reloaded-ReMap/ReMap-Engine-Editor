@@ -1,56 +1,52 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.EditorTools;
+using UnityEngine;
 
-[EditorTool("Random Scale...", typeof(Transform))]
-class RandomScale : EditorTool
+[EditorTool( "Random Scale...", typeof(Transform) )]
+internal class RandomScale : EditorTool
 {
-    GUIContent someContent;
+    private GUIContent someContent;
 
-    void OnEnable()
+    public override GUIContent toolbarIcon => someContent;
+
+    private void OnEnable()
     {
-        someContent = new GUIContent()
+        someContent = new GUIContent
         {
-            image = (Texture)Resources.Load("Icons/scale"),
+            image = ( Texture )Resources.Load( "Icons/scale" ),
             tooltip = "Random Scale..."
         };
 
         ToolManager.activeToolChanged += OnActiveToolDidChange;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         ToolManager.activeToolChanged -= OnActiveToolDidChange;
     }
 
-    public override GUIContent toolbarIcon
+    private void OnActiveToolDidChange()
     {
-        get { return someContent; }
-    }
-
-    void OnActiveToolDidChange()
-    {   
-        if (ToolManager.IsActiveTool(this))
+        if ( ToolManager.IsActiveTool( this ) )
         {
-            Undo.RegisterCompleteObjectUndo(Selection.transforms, "UndoScale");
+            Undo.RegisterCompleteObjectUndo( Selection.transforms, "UndoScale" );
 
-            foreach (GameObject item in Selection.gameObjects)
+            foreach ( var item in Selection.gameObjects )
             {
-                float randomScale = Random.Range(0.9f, 1.1f);
+                float randomScale = Random.Range( 0.9f, 1.1f );
 
 
-                Vector3 itemScale = item.transform.localScale;
-             
-                itemScale = new Vector3(itemScale.x * randomScale, itemScale.y * randomScale, itemScale.z * randomScale);
+                var itemScale = item.transform.localScale;
+
+                itemScale = new Vector3( itemScale.x * randomScale, itemScale.y * randomScale, itemScale.z * randomScale );
 
                 item.transform.localScale = itemScale;
-
-            }        
+            }
         }
     }
 
-    public override void OnToolGUI(EditorWindow window)
+    public override void OnToolGUI( EditorWindow window )
     {
-        Tools.current = Tool.Move;   
+        Tools.current = Tool.Move;
     }
 }

@@ -1,11 +1,7 @@
-
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using CodeViews;
 using UnityEngine;
-
 using static Build.Build;
 
 namespace Build
@@ -14,7 +10,7 @@ namespace Build
     {
         public static async Task< StringBuilder > BuildJumppadObjects( GameObject[] objectData, BuildType buildType )
         {
-            StringBuilder code = new StringBuilder();
+            var code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
@@ -38,13 +34,13 @@ namespace Build
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             // Build the code
-            foreach ( GameObject obj in objectData )
+            foreach ( var obj in objectData )
             {
-                PropScript script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Jumppad );
+                var script = ( PropScript )Helper.GetComponentByEnum( obj, ObjectType.Jumppad );
                 if ( script == null ) continue;
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
@@ -53,18 +49,19 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    jumppad = MapEditor_CreateJumpPad( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin(obj) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ) )" );
+                        AppendCode( ref code,
+                            $"    jumppad = MapEditor_CreateJumpPad( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ) )" );
 
                         if ( script.Options.Length != 0 )
                         {
-                            AppendCode(ref code, "    ", 0);
-                            string[] lines = script.Options.Split('\n');
-                            for (int i = 0; i < lines.Length; i++)
+                            AppendCode( ref code, "    ", 0 );
+                            string[] lines = script.Options.Split( '\n' );
+                            for ( int i = 0; i < lines.Length; i++ )
                             {
                                 string suffix = i < lines.Length - 1 ? "; " : "";
-                                AppendCode(ref code, $"jumppad.{lines[i].Replace("\n", "")}{suffix}", 0);
+                                AppendCode( ref code, $"jumppad.{lines[i].Replace( "\n", "" )}{suffix}", 0 );
                             }
-                            AppendCode(ref code, "");
+                            AppendCode( ref code );
                         }
                         break;
 
@@ -81,8 +78,9 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateJumpPad( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles(obj)}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ), true )" );
-                    break;
+                        LiveMap.AddToGameQueue(
+                            $"MapEditor_CreateJumpPad( MapEditor_CreateProp( $\"mdl/props/octane_jump_pad/octane_jump_pad.rmdl\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} ), true )" );
+                        break;
                 }
             }
 
@@ -100,14 +98,14 @@ namespace Build
                 case BuildType.Precache:
                     // Empty
                     break;
-                    
+
                 case BuildType.DataTable:
                     // Empty
                     break;
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             await Helper.Wait();

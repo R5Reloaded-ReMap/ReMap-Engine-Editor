@@ -1,58 +1,54 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace AssetLibraryManager
 {
     public class Preview_Window : EditorWindow
     {
-        GameObject selection;
-        Editor gameObjectEditor;
+        private Editor gameObjectEditor;
+        private GameObject selection;
+        private int totalTris;
 
-        int totalVertices = 0;
-        int totalTris = 0;
+        private int totalVertices;
 
         public static void ShowWindow()
         {
-            Preview_Window window = GetWindow<Preview_Window>("Preview Window");
-            window.minSize = new Vector2(20, 20);
+            var window = GetWindow< Preview_Window >( "Preview Window" );
+            window.minSize = new Vector2( 20, 20 );
         }
 
-        void CreateGUI()
+        private void CreateGUI()
         {
             selection = Selection.activeGameObject;
 
-            gameObjectEditor = Editor.CreateEditor(selection);
+            gameObjectEditor = Editor.CreateEditor( selection );
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
-            if (selection != null)
-            {
-                gameObjectEditor.OnInteractivePreviewGUI(GUILayoutUtility.GetRect(0, 2048, 0, 2048), new GUIStyle());
-            }
+            if ( selection != null )
+                gameObjectEditor.OnInteractivePreviewGUI( GUILayoutUtility.GetRect( 0, 2048, 0, 2048 ), new GUIStyle() );
 
             #region FOOTER
+
             GUILayout.FlexibleSpace();
 
             GUILayout.BeginHorizontal();
 
-            if (selection != null)
-            {
-                GUILayout.Label($"Name: {selection.name}");
-            }
+            if ( selection != null )
+                GUILayout.Label( $"Name: {selection.name}" );
 
             else
-            {
-                GUILayout.Label($"Name:");
-            }
+                GUILayout.Label( "Name:" );
 
             GUILayout.FlexibleSpace();
 
-            GUILayout.Label($"Vertices: {totalVertices}");
+            GUILayout.Label( $"Vertices: {totalVertices}" );
 
-            GUILayout.Label($"Triangles: {totalTris}");
+            GUILayout.Label( $"Triangles: {totalTris}" );
 
             GUILayout.EndHorizontal();
+
             #endregion
         }
 
@@ -60,19 +56,19 @@ namespace AssetLibraryManager
         {
             selection = Selection.activeGameObject;
 
-            DestroyImmediate(gameObjectEditor);
+            DestroyImmediate( gameObjectEditor );
 
-            gameObjectEditor = Editor.CreateEditor(selection);
+            gameObjectEditor = Editor.CreateEditor( selection );
 
             totalVertices = 0;
             totalTris = 0;
 
-            if (selection != null)
+            if ( selection != null )
             {
                 // check all meshes
-                MeshFilter[] meshFilters = selection.GetComponentsInChildren<MeshFilter>();
+                var meshFilters = selection.GetComponentsInChildren< MeshFilter >();
 
-                for (int i = 0, length = meshFilters.Length; i < length; i++)
+                for ( int i = 0, length = meshFilters.Length; i < length; i++ )
                 {
                     int verts = meshFilters[i].sharedMesh.vertexCount;
                     totalVertices += verts;
@@ -80,9 +76,9 @@ namespace AssetLibraryManager
                     totalTris += meshFilters[i].sharedMesh.triangles.Length / 3;
                 }
 
-                SkinnedMeshRenderer[] skinMeshRenderer = selection.GetComponentsInChildren<SkinnedMeshRenderer>();
+                var skinMeshRenderer = selection.GetComponentsInChildren< SkinnedMeshRenderer >();
 
-                for (int i = 0, length = skinMeshRenderer.Length; i < length; i++)
+                for ( int i = 0, length = skinMeshRenderer.Length; i < length; i++ )
                 {
                     int verts = skinMeshRenderer[i].sharedMesh.vertexCount;
                     totalVertices += verts;
@@ -92,7 +88,7 @@ namespace AssetLibraryManager
             }
         }
 
-        void OnInspectorUpdate()
+        private void OnInspectorUpdate()
         {
             Repaint();
         }

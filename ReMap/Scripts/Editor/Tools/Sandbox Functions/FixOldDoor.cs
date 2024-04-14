@@ -1,6 +1,4 @@
-
 using UnityEngine;
-using UnityEditor;
 
 namespace Sandbox
 {
@@ -21,37 +19,37 @@ namespace Sandbox
 
         internal static void ReplaceDoorsByType( ObjectType objectType )
         {
-            foreach ( GameObject go in GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
+            foreach ( var go in GameObject.FindGameObjectsWithTag( Helper.GetObjTagNameWithEnum( objectType ) ) )
             {
                 GameObject obj = null;
                 DoorScript doorScript = null;
                 HorzDoorScript horzDoorScript = null;
                 VerticalDoorScript verticalDoorScript = null;
 
-                Vector3 position = go.transform.position;
-                Vector3 angles = go.transform.eulerAngles;
-                Transform parent = go.transform.parent;
+                var position = go.transform.position;
+                var angles = go.transform.eulerAngles;
+                var parent = go.transform.parent;
 
                 switch ( objectType )
                 {
                     case ObjectType.SingleDoor:
                     case ObjectType.DoubleDoor:
-                        doorScript = ( DoorScript ) Helper.GetComponentByEnum( go, objectType );
+                        doorScript = ( DoorScript )Helper.GetComponentByEnum( go, objectType );
                         if ( doorScript == null ) continue;
 
                         break;
 
                     case ObjectType.HorzDoor:
-                        horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( go, objectType );
+                        horzDoorScript = ( HorzDoorScript )Helper.GetComponentByEnum( go, objectType );
                         if ( horzDoorScript == null ) continue;
 
                         break;
 
                     case ObjectType.VerticalDoor:
-                        verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( go, objectType );
+                        verticalDoorScript = ( VerticalDoorScript )Helper.GetComponentByEnum( go, objectType );
                         if ( verticalDoorScript == null ) continue;
 
-                    break;
+                        break;
                 }
 
                 obj = Helper.CreateGameObject( "", Helper.GetObjRefWithEnum( objectType ), PathType.Name );
@@ -66,7 +64,7 @@ namespace Sandbox
                 {
                     case ObjectType.SingleDoor:
                     case ObjectType.DoubleDoor:
-                        DoorScript doorScriptObj = ( DoorScript ) Helper.GetComponentByEnum( obj, objectType );
+                        var doorScriptObj = ( DoorScript )Helper.GetComponentByEnum( obj, objectType );
                         doorScriptObj.GoldDoor = doorScript.GoldDoor;
 
                         break;
@@ -75,10 +73,10 @@ namespace Sandbox
                         break;
 
                     case ObjectType.VerticalDoor:
-                    break;
+                        break;
                 }
 
-                GameObject.DestroyImmediate( go );
+                Object.DestroyImmediate( go );
             }
         }
     }

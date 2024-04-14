@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,63 +27,63 @@ namespace LibrarySorter
 
         public RpakData GetRpakData( string name )
         {
-            return this.RpakList.FirstOrDefault( data => data.Name == name );
+            return RpakList.FirstOrDefault( data => data.Name == name );
         }
 
         public List< string > GetAllModelsList()
         {
-            return this.AllModels().Data.Union( this.AllModelsRetail().Data ).ToList();
+            return AllModels().Data.Union( AllModelsRetail().Data ).ToList();
         }
 
         public bool IsR5ReloadedModels( string model )
         {
-            return this.R5ReloadedList().Data.Contains( model );
+            return R5ReloadedList().Data.Contains( model );
         }
 
         public List< RpakData > GetSpecialData()
         {
-            return this.RpakList.Where( r => r.IsSpecial ).ToList();
+            return RpakList.Where( r => r.IsSpecial ).ToList();
         }
 
         public List< RpakData > GetR5ReloadedData()
         {
-            return this.RpakList.Where( r => !r.IsRetail && !r.IsSpecial ).ToList();
+            return RpakList.Where( r => !r.IsRetail && !r.IsSpecial ).ToList();
         }
 
         public List< RpakData > GetRetailData()
         {
-            return this.RpakList.Where( r => r.IsRetail && !r.IsSpecial ).ToList();
+            return RpakList.Where( r => r.IsRetail && !r.IsSpecial ).ToList();
         }
 
         public List< RpakData > GetVisibleData()
         {
-            return this.RpakList.Where( r => !r.IsHidden ).ToList();
+            return RpakList.Where( r => !r.IsHidden ).ToList();
         }
 
         public List< RpakData > RpakContains( string name )
         {
-            return this.GetVisibleData().Where( r => r.Data.Contains( name ) ).ToList();
+            return GetVisibleData().Where( r => r.Data.Contains( name ) ).ToList();
         }
     }
 
     [Serializable]
     public class RpakData
     {
-        public string Name;
         public List< string > Data;
-        public bool IsRetail;
         public bool IsHidden;
+        public bool IsRetail;
         public bool IsSpecial;
+        public string Name;
         public string Update;
 
         public bool Contains( string name )
         {
-            return this.Data.Contains( name );
+            return Data.Contains( name );
         }
 
         public void UpdateTime()
         {
-            this.Update = DateTime.UtcNow.ToString();
+            Update = DateTime.UtcNow.ToString();
         }
     }
 
@@ -109,39 +108,35 @@ namespace LibrarySorter
 
         public bool ContainsName( string name )
         {
-            return this.MaterialList.Any( material => material.Name == name );
+            return MaterialList.Any( material => material.Name == name );
         }
 
         public bool ContainsFilePath( string fileName )
         {
-            return this.MaterialList.Any( material => material.Path.Contains( fileName ) );
+            return MaterialList.Any( material => material.Path.Contains( fileName ) );
         }
 
         public bool ContainsFilePath( string[] fileNames )
         {
-            return this.MaterialList.Any( material => fileNames.Any( fileName => material.Path.Contains( fileName ) ) );
+            return MaterialList.Any( material => fileNames.Any( fileName => material.Path.Contains( fileName ) ) );
         }
 
         public string GetPath( string name )
         {
-            MaterialClass material = this.MaterialList.FirstOrDefault( m => m.Name == name );
+            var material = MaterialList.FirstOrDefault( m => m.Name == name );
             return material != null ? material.Path : null;
         }
 
         public void RemoveMaterial( string name )
         {
-            if ( this.ContainsName( name ) )
-            {
-                this.MaterialList.RemoveAll( material => material.Name == name );
-            }
+            if ( ContainsName( name ) )
+                MaterialList.RemoveAll( material => material.Name == name );
         }
 
         public void Add( MaterialClass materialClass )
         {
-            if ( !this.ContainsName( materialClass.Name ) )
-            {
-                this.MaterialList.Add( materialClass );
-            }
+            if ( !ContainsName( materialClass.Name ) )
+                MaterialList.Add( materialClass );
         }
     }
 

@@ -1,14 +1,9 @@
-
-using System;
-using System.Collections;
+// Internal
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-
-// Internal
 using static ImportExport.SharedFunction;
 using static ImportExport.Json.JsonShared;
 
@@ -16,17 +11,16 @@ namespace ImportExport.Json
 {
     public class JsonImport
     {
-        
         public static async void ImportJson()
         {
-            var path = EditorUtility.OpenFilePanel( "Json Import", "", "json" );
+            string path = EditorUtility.OpenFilePanel( "Json Import", "", "json" );
 
             if ( path.Length == 0 ) return;
 
-            EditorUtility.DisplayProgressBar( "Starting Import", "Reading File..." , 0 );
+            EditorUtility.DisplayProgressBar( "Starting Import", "Reading File...", 0 );
             ReMapConsole.Log( "[Json Import] Reading file: " + path, ReMapConsole.LogType.Warning );
 
-            string json = System.IO.File.ReadAllText( path );
+            string json = File.ReadAllText( path );
             jsonData = JsonUtility.FromJson< JsonData >( json );
 
             if ( !CheckJsonVersion( jsonData ) )
@@ -36,43 +30,42 @@ namespace ImportExport.Json
             }
 
             // Sort by alphabetical name
-            foreach ( ObjectType objectType in Helper.GetAllObjectType() )
-            {
+            foreach ( var objectType in Helper.GetAllObjectType() )
                 await ExecuteJson( objectType, ExecuteType.SortList );
-            }
 
-            foreach ( ObjectType objectType in Helper.GetAllObjectType() )
-            {
+            foreach ( var objectType in Helper.GetAllObjectType() )
                 await ExecuteJson( objectType, ExecuteType.Import );
-            }
 
             ReMapConsole.Log( "[Json Import] Finished", ReMapConsole.LogType.Success );
 
             EditorUtility.ClearProgressBar();
         }
 
-        internal static async Task ImportObjectsWithEnum< T >( ObjectType objectType, List< T > listType ) where T : GlobalClassData
+        internal static async Task ImportObjectsWithEnum<T>( ObjectType objectType, List< T > listType ) where T : GlobalClassData
         {
-            int i = 0; int j = 1;
+            int i = 0;
+            int j = 1;
 
             int objectsCount = listType.Count;
 
-            foreach( T objData in listType )
+            foreach ( var objData in listType )
             {
                 ProcessImportClassData( objData, DetermineDataName( objData, objectType ), objectType, i, j, objectsCount );
 
-                await Helper.Wait(); i++; j++;
+                await Helper.Wait();
+                i++;
+                j++;
             }
         }
 
-        private static GameObject ProcessImportClassData< T >( T objData, string objName, ObjectType objectType, int i, int j, int objectsCount ) where T : GlobalClassData
+        private static GameObject ProcessImportClassData<T>( T objData, string objName, ObjectType objectType, int i, int j, int objectsCount ) where T : GlobalClassData
         {
-            GameObject obj = null; string importing = "";
+            GameObject obj = null;
+            string importing = "";
 
             if ( string.IsNullOrEmpty( objData.PathString ) )
-            {
                 importing = objName;
-            } else importing = $"{objData.PathString}/{objName}";
+            else importing = $"{objData.PathString}/{objName}";
 
             EditorUtility.DisplayProgressBar( $"Importing {Helper.GetObjNameWithEnum( objectType )} {j}/{objectsCount}", $"Importing: {importing}", ( i + 1 ) / ( float )objectsCount );
             ReMapConsole.Log( "[Json Import] Importing: " + objName, ReMapConsole.LogType.Info );
@@ -88,7 +81,7 @@ namespace ImportExport.Json
             return obj;
         }
 
-        private static string DetermineDataName< T >( T objData, ObjectType objectType ) where T : GlobalClassData
+        private static string DetermineDataName<T>( T objData, ObjectType objectType ) where T : GlobalClassData
         {
             switch ( objData )
             {

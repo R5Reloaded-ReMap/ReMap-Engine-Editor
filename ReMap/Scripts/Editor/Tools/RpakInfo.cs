@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,22 +14,22 @@ public class RpakContentJson
 [Serializable]
 public class RpakContentClass
 {
-    public string modelName;
     public List< string > location;
+    public string modelName;
 }
 
 public class RpakInfo : EditorWindow
 {
-    static string usedRpak = "";
-    static string currentDirectory = UnityInfo.currentDirectoryPath;
-    static string relativePrefabs = UnityInfo.relativePathPrefabs;
+    private static string usedRpak = "";
+    private static readonly string currentDirectory = UnityInfo.currentDirectoryPath;
+    private static readonly string relativePrefabs = UnityInfo.relativePathPrefabs;
 
-    Vector2 scrollPosition;
+    private Vector2 scrollPosition;
 
     //[MenuItem("ReMap/Tools/Rpak Info", false, 100)]
     public static void Init()
     {
-        RpakInfo window = (RpakInfo)EditorWindow.GetWindow(typeof(RpakInfo), false, "Rpak Info");
+        var window = ( RpakInfo )GetWindow( typeof(RpakInfo), false, "Rpak Info" );
         window.Show();
         //window.minSize = new Vector2(375, 140);
         //window.maxSize = new Vector2(375, 140);
@@ -39,67 +37,64 @@ public class RpakInfo : EditorWindow
         RpakDetermine();
     }
 
-    void OnInspectorUpdate()
+    private void OnInspectorUpdate()
     {
         Repaint();
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-            GUILayout.Label( "Models Used:" );
-            if ( GUILayout.Button( "Reload List" ) ) Reload();
+        GUILayout.Label( "Models Used:" );
+        if ( GUILayout.Button( "Reload List" ) ) Reload();
         EditorGUILayout.EndHorizontal();
 
         scrollPosition = EditorGUILayout.BeginScrollView( scrollPosition, GUILayout.Height( 300 ) );
-            GUILayout.TextField( usedRpak );
+        GUILayout.TextField( usedRpak );
         EditorGUILayout.EndScrollView();
     }
 
-    void Update()
+    private void Update()
     {
-        
     }
 
-    static void GetModelsInScene()
+    private static void GetModelsInScene()
     {
         foreach ( string models in UnityInfo.GetModelsListInScene() )
-        {
             usedRpak += $"{models}\n";
-        }
     }
 
-    static void RpakDetermine()
+    private static void RpakDetermine()
     {
-        List<string> modelsInScene = UnityInfo.GetModelsListInScene().ToList();
+        var modelsInScene = UnityInfo.GetModelsListInScene().ToList();
 
         //List<string> rpakLists = new List<string>( UnityInfo.GetAllRpakModelsFile( true, true ) );
 
         //RemoveFromList( rpakLists, "_custom_models" );
 
-        List< List<string> > rpakFiles = new List< List<string> >();
+        var rpakFiles = new List< List< string > >();
 
-        RpakContentJson rpakContent = JsonUtility.FromJson<RpakContentJson>( File.ReadAllText( $"{currentDirectory}/{relativePrefabs}/RpakList.json" ) );
+        var rpakContent = JsonUtility.FromJson< RpakContentJson >( File.ReadAllText( $"{currentDirectory}/{relativePrefabs}/RpakList.json" ) );
 
         usedRpak += $"The map use {modelsInScene.Count} models\n\n";
 
         bool newRpak = true;
 
-        foreach (string modelName in modelsInScene)
+        foreach ( string modelName in modelsInScene )
         {
-            RpakContentClass rpakContentClass = rpakContent.List.Find(x => x.modelName == modelName);
+            var rpakContentClass = rpakContent.List.Find( x => x.modelName == modelName );
 
-            if (rpakContentClass == null) continue;
+            if ( rpakContentClass == null ) continue;
 
             if ( rpakContentClass.location.Contains( "common" ) || rpakContentClass.location.Contains( "common_mp" ) || rpakContentClass.location.Contains( "common_sdk" ) )
             {
                 if ( newRpak )
                 {
                     newRpak = false;
-                    rpakFiles.Add(new List<string>());
+                    rpakFiles.Add( new List< string >() );
                 }
 
-                rpakFiles[rpakFiles.Count - 1].Add(modelName);
+                rpakFiles[rpakFiles.Count - 1].Add( modelName );
             }
         }
 
@@ -108,81 +103,73 @@ public class RpakInfo : EditorWindow
         //RemoveFromList( rpakLists, "common_sdk" );
 
         newRpak = true;
-        if (rpakFiles.Count != 0)
-        foreach (string modelName in rpakFiles[rpakFiles.Count - 1])
-        {
-            if ( newRpak )
+        if ( rpakFiles.Count != 0 )
+            foreach ( string modelName in rpakFiles[rpakFiles.Count - 1] )
             {
-                newRpak = false;
-                usedRpak += "common && common_mp ↓\n";
+                if ( newRpak )
+                {
+                    newRpak = false;
+                    usedRpak += "common && common_mp ↓\n";
+                }
+                usedRpak += $"- {modelName}\n";
+                modelsInScene.Remove( modelName );
+                RemoveFromList( modelsInScene, modelName );
             }
-            usedRpak += $"- {modelName}\n";
-            modelsInScene.Remove( modelName );
-            RemoveFromList( modelsInScene, modelName );
-        }
         usedRpak += "\n";
 
         //for ( int i = 0 ; i < 6 ; i++ )
         //{
-            //debug.Log(modelsInScene.Count);
-            Dictionary<string, int> locationCount = new Dictionary<string, int>();
+        //debug.Log(modelsInScene.Count);
+        var locationCount = new Dictionary< string, int >();
 
-            foreach (string modelName in modelsInScene)
+        foreach ( string modelName in modelsInScene )
+        {
+            var rpakContentClass = rpakContent.List.Find( x => x.modelName == modelName );
+
+            if ( rpakContentClass == null ) continue;
+
+            foreach ( string loc in rpakContentClass.location )
+                if ( locationCount.ContainsKey( loc ) )
+                    locationCount[loc]++;
+                else
+                    locationCount[loc] = 1;
+        }
+
+        // Search for the location with the highest meter
+        string mostCommonLocation = "";
+        int highestCount = 0;
+        foreach ( var pair in locationCount )
+            if ( pair.Value > highestCount )
             {
-                RpakContentClass rpakContentClass = rpakContent.List.Find(x => x.modelName == modelName);
-
-                if (rpakContentClass == null) continue;
-
-                foreach (string loc in rpakContentClass.location)
-                {
-                    if (locationCount.ContainsKey(loc))
-                    {
-                        locationCount[loc]++;
-                    }
-                    else
-                    {
-                        locationCount[loc] = 1;
-                    }
-                }
+                highestCount = pair.Value;
+                mostCommonLocation = pair.Key;
             }
 
-            // Search for the location with the highest meter
-            string mostCommonLocation = "";
-            int highestCount = 0;
-            foreach (KeyValuePair<string, int> pair in locationCount)
+        //Debug.Log("The most common location is : " + mostCommonLocation);
+
+        foreach ( string modelName in modelsInScene )
+        {
+            var rpakContentClass = rpakContent.List.Find( x => x.modelName == modelName );
+
+            if ( rpakContentClass == null ) continue;
+
+            if ( rpakContentClass.location.Contains( mostCommonLocation ) )
             {
-                if (pair.Value > highestCount)
+                if ( newRpak )
                 {
-                    highestCount = pair.Value;
-                    mostCommonLocation = pair.Key;
+                    newRpak = false;
+                    rpakFiles.Add( new List< string >() );
                 }
+
+                rpakFiles[rpakFiles.Count - 1].Add( modelName );
             }
+        }
 
-            //Debug.Log("The most common location is : " + mostCommonLocation);
+        //RemoveFromList( rpakLists, mostCommonLocation );
 
-            foreach (string modelName in modelsInScene)
-            {
-                RpakContentClass rpakContentClass = rpakContent.List.Find(x => x.modelName == modelName);
-
-                if (rpakContentClass == null) continue;
-
-                if ( rpakContentClass.location.Contains( mostCommonLocation ) )
-                {
-                    if ( newRpak )
-                    {
-                        newRpak = false;
-                        rpakFiles.Add(new List<string>());
-                    }
-
-                    rpakFiles[rpakFiles.Count - 1].Add(modelName);
-                }
-            }
-
-            //RemoveFromList( rpakLists, mostCommonLocation );
-
-            newRpak = true;
-            if (rpakFiles.Count != 0)
-            foreach (string modelName in rpakFiles[rpakFiles.Count - 1])
+        newRpak = true;
+        if ( rpakFiles.Count != 0 )
+            foreach ( string modelName in rpakFiles[rpakFiles.Count - 1] )
             {
                 if ( newRpak )
                 {
@@ -193,34 +180,29 @@ public class RpakInfo : EditorWindow
                 modelsInScene.Remove( modelName );
                 RemoveFromList( modelsInScene, modelName );
             }
-            usedRpak += "\n";
+        usedRpak += "\n";
         //}
 
 
-        
-
-
-
         // Remove after tests
-            //usedRpak += $"\n\n\n";
-            //foreach ( string rpakList in rpakLists )
-            //{
-            //    usedRpak += $"- {rpakList}\n";
-            //}
+        //usedRpak += $"\n\n\n";
+        //foreach ( string rpakList in rpakLists )
+        //{
+        //    usedRpak += $"- {rpakList}\n";
+        //}
         //
     }
 
-    static void RemoveFromList( List<string> list, string reference )
+    private static void RemoveFromList( List< string > list, string reference )
     {
         if ( list.Contains( reference ) ) list.Remove( reference );
     }
 
-    static void ProcessingRpak( List<string> modelsInScene, RpakContentJson rpakContent, List<string> reference )
+    private static void ProcessingRpak( List< string > modelsInScene, RpakContentJson rpakContent, List< string > reference )
     {
-
     }
 
-    static void Reload()
+    private static void Reload()
     {
         usedRpak = "";
         //GetModelsInScene();

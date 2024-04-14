@@ -1,9 +1,5 @@
-
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -26,7 +22,7 @@ namespace LibrarySorter
 
             Materials.MaterialData = Materials.GetMaterialData();
 
-            Dictionary< string, string > missingModelList = new Dictionary< string, string >();
+            var missingModelList = new Dictionary< string, string >();
 
             foreach ( string modelName in RpakManagerWindow.libraryData.GetAllModelsList() )
             {
@@ -34,7 +30,7 @@ namespace LibrarySorter
 
                 if ( Helper.LOD0_Exist( lod0Name ) )
                     continue;
-                
+
                 if ( !HasValidName( lod0Name ) )
                     continue;
 
@@ -44,8 +40,8 @@ namespace LibrarySorter
                 missingModelList.Add( modelName, lod0Name );
             }
 
-            StringBuilder legionArgument = new StringBuilder();
-            List< string > legionArguments = new List< string >();
+            var legionArgument = new StringBuilder();
+            var legionArguments = new List< string >();
 
             foreach ( string modelsName in missingModelList.Values )
             {
@@ -58,7 +54,7 @@ namespace LibrarySorter
 
                     legionArguments.Add( legionArgument.ToString() );
 
-                    legionArgument = new ();
+                    legionArgument = new StringBuilder();
                 }
             }
 
@@ -68,16 +64,18 @@ namespace LibrarySorter
                 legionArguments.Add( legionArgument.ToString() );
             }
 
-            string loading = ""; int loadingCount = 0;
-            int min = 1; int max = legionArguments.Count;
+            string loading = "";
+            int loadingCount = 0;
+            int min = 1;
+            int max = legionArguments.Count;
 
             foreach ( string argument in legionArguments )
             {
-                Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
+                var legionTask = LegionExporting.ExtractModelFromLegion( argument );
 
                 string countInfo = max > 1 ? $" ({min}/{max})" : "";
 
-                while ( !legionTask.IsCompleted )
+                while (!legionTask.IsCompleted)
                 {
                     EditorUtility.DisplayProgressBar( $"Legion Extraction{countInfo}", $"Extracting files{loading}", 0.0f );
 
@@ -94,19 +92,21 @@ namespace LibrarySorter
             Helper.DeleteDirectory( extractedModelDirectory, false, false );
 
             // Set Scale 100 to .fbx files
-            min = 0; max = missingModelList.Count; float progress = 0.0f;
+            min = 0;
+            max = missingModelList.Count;
+            float progress = 0.0f;
             foreach ( string modelName in missingModelList.Values )
             {
                 string modelPath = $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx";
-                ModelImporter importer = AssetImporter.GetAtPath( modelPath ) as ModelImporter;
+                var importer = AssetImporter.GetAtPath( modelPath ) as ModelImporter;
                 if ( Helper.IsValid( importer ) && importer.globalScale != 100 )
                 {
                     importer.globalScale = 100;
                     importer.SaveAndReimport();
                 }
-                
+
                 progress += 1.0f / max;
-                EditorUtility.DisplayProgressBar( $"ReImport LOD0", $"Processing... ({min++}/{max})", progress );
+                EditorUtility.DisplayProgressBar( "ReImport LOD0", $"Processing... ({min++}/{max})", progress );
             }
 
             AssetDatabase.SaveAssets();
@@ -119,9 +119,11 @@ namespace LibrarySorter
         {
             RpakManagerWindow.libraryData = RpakManagerWindow.FindLibraryDataFile();
 
-            List< string > modelList = RpakManagerWindow.libraryData.GetAllModelsList();
+            var modelList = RpakManagerWindow.libraryData.GetAllModelsList();
 
-            int min = 0; int max = modelList.Count; float progress = 0.0f; 
+            int min = 0;
+            int max = modelList.Count;
+            float progress = 0.0f;
 
             foreach ( string model in modelList )
             {
@@ -132,7 +134,7 @@ namespace LibrarySorter
 
                 if ( !Helper.LOD0_Exist( lod0Name ) )
                     continue;
-                
+
                 if ( !HasValidName( lod0Name ) )
                     continue;
 
@@ -141,18 +143,14 @@ namespace LibrarySorter
                 string filePath = $"{UnityInfo.relativePathPrefabs}/{RpakManagerWindow.allModelsDataName}/{prefabName}.prefab";
 
                 if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{filePath}" ) && LibrarySorterWindow.checkExist )
-                {
                     obj = UpdatePrefab( model, filePath );
-                }
                 else
-                {
                     obj = CreatePrefab( model, filePath );
-                }
 
                 if ( !Helper.IsValid( obj ) )
                     continue;
 
-                foreach ( RpakData rpak in RpakManagerWindow.libraryData.RpakContains( model ) )
+                foreach ( var rpak in RpakManagerWindow.libraryData.RpakContains( model ) )
                 {
                     string fileRpakPath = $"{UnityInfo.relativePathPrefabs}/{rpak.Name}/{prefabName}.prefab";
 
@@ -161,13 +159,11 @@ namespace LibrarySorter
 
                 progress += 1.0f / max;
 
-                UnityEngine.Object.DestroyImmediate( obj );
+                Object.DestroyImmediate( obj );
             }
 
-            foreach ( RpakData rpak in RpakManagerWindow.libraryData.GetVisibleData() )
-            {
+            foreach ( var rpak in RpakManagerWindow.libraryData.GetVisibleData() )
                 rpak.UpdateTime();
-            }
 
             EditorUtility.ClearProgressBar();
 
@@ -176,17 +172,17 @@ namespace LibrarySorter
 
         internal static async Task FixFolders( List< RpakData > rpaks )
         {
-            foreach ( RpakData rpak in rpaks )
-            {
+            foreach ( var rpak in rpaks )
                 await FixFolder( rpak );
-            }
         }
 
         internal static async Task FixFolder( RpakData rpak )
         {
             Helper.CreateDirectory( $"{UnityInfo.relativePathPrefabs}/{rpak.Name}" );
 
-            int min = 0; int max = rpak.Data.Count; float progress = 0.0f;
+            int min = 0;
+            int max = rpak.Data.Count;
+            float progress = 0.0f;
 
             // Fix or Create Models in Prefabs/'rpakName'
             foreach ( string apexName in rpak.Data )
@@ -196,7 +192,7 @@ namespace LibrarySorter
                 EditorUtility.DisplayProgressBar( $"Sorting '{rpak.Name}' Folder ({min++}/{max})", $"Processing... '{prefabName}'", progress );
 
                 await FixPrefab( rpak, prefabName, LibrarySorterWindow.checkExist );
-                
+
                 progress += 1.0f / max;
             }
 
@@ -217,24 +213,22 @@ namespace LibrarySorter
                 return;
 
             await TryFix( rpak, prefabName, apexName, checkExist );
-        }   
+        }
 
         internal static async Task FixPrefabs( string prefabName, bool checkExist = true )
         {
             string lodsName = prefabName.Split( '#' )[^1];
             string apexName = UnityInfo.GetApexModelName( prefabName, true );
 
-            List< RpakData > rpaks = RpakManagerWindow.libraryData.RpakContains( apexName );
+            var rpaks = RpakManagerWindow.libraryData.RpakContains( apexName );
 
             if ( !Helper.LOD0_Exist( lodsName ) )
                 return;
 
-            List< Task > fixObjects = new List< Task >();
+            var fixObjects = new List< Task >();
 
-            foreach ( RpakData rpak in rpaks )
-            {
+            foreach ( var rpak in rpaks )
                 fixObjects.Add( TryFix( rpak, prefabName, apexName, checkExist ) );
-            }
 
             await Task.WhenAll( fixObjects );
         }
@@ -244,13 +238,9 @@ namespace LibrarySorter
             string filePath = $"{UnityInfo.relativePathPrefabs}/{rpak.Name}/{prefabName}.prefab";
 
             if ( File.Exists( $"{UnityInfo.currentDirectoryPath}/{filePath}" ) && checkExist )
-            {
                 UpdatePrefab( apexName, filePath, true );
-            }
             else if ( !TryCopyFromAllModels( rpak, apexName ) )
-            {
                 CreatePrefab( apexName, filePath, true );
-            }
 
             return Task.CompletedTask;
         }
@@ -260,18 +250,18 @@ namespace LibrarySorter
             string unityName = UnityInfo.GetUnityModelName( apexName );
             string modelName = Path.GetFileNameWithoutExtension( apexName );
 
-            GameObject prefab = Helper.CreateGameObject( unityName );
+            var prefab = Helper.CreateGameObject( unityName );
 
             if ( !Helper.IsValid( prefab ) )
                 return prefab;
 
-            GameObject obj = Helper.CreateGameObject( "", $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", prefab );
+            var obj = Helper.CreateGameObject( "", $"{UnityInfo.relativePathModel}/{modelName}_LOD0.fbx", prefab );
 
             if ( !Helper.IsValid( obj ) )
             {
-                UnityEngine.Object.DestroyImmediate( prefab );
+                Object.DestroyImmediate( prefab );
                 return prefab;
-            } 
+            }
 
             prefab.AddComponent< PropScript >();
             prefab.transform.position = Vector3.zero;
@@ -281,16 +271,16 @@ namespace LibrarySorter
             CheckBoxColliderComponent( prefab );
 
             obj.transform.position = Vector3.zero;
-            obj.transform.eulerAngles = Models.FindAnglesOffset( apexName );
+            obj.transform.eulerAngles = FindAnglesOffset( apexName );
             obj.transform.localScale = new Vector3( 1, 1, 1 );
 
-            AssetDatabase.SetLabels( ( UnityEngine.Object ) prefab, new[] { apexName.Split( '/' )[1].ToLower() } );
+            AssetDatabase.SetLabels( prefab, new[] { apexName.Split( '/' )[1].ToLower() } );
 
             if ( save )
             {
                 PrefabUtility.SaveAsPrefabAsset( prefab, $"{UnityInfo.currentDirectoryPath}/{filePath}" );
 
-                UnityEngine.Object.DestroyImmediate( prefab );
+                Object.DestroyImmediate( prefab );
             }
 
             return prefab;
@@ -298,13 +288,13 @@ namespace LibrarySorter
 
         private static GameObject UpdatePrefab( string apexName, string path, bool save = false )
         {
-            GameObject obj = Helper.CreateGameObject( "", path );
+            var obj = Helper.CreateGameObject( "", path );
 
             obj.transform.position = Vector3.zero;
             obj.transform.eulerAngles = Vector3.zero;
 
             // [0] => Get 'obj', [1] => Get '..._LOD0'
-            Transform child = obj.GetComponentsInChildren< Transform >()[1];
+            var child = obj.GetComponentsInChildren< Transform >()[1];
 
             CheckBoxColliderComponent( obj );
 
@@ -312,13 +302,13 @@ namespace LibrarySorter
             child.transform.eulerAngles = FindAnglesOffset( apexName );
             child.transform.localScale = new Vector3( 1, 1, 1 );
 
-            AssetDatabase.SetLabels( ( UnityEngine.Object ) obj, new[] { apexName.Split( '/' )[1].ToLower() } );
+            AssetDatabase.SetLabels( obj, new[] { apexName.Split( '/' )[1].ToLower() } );
 
             if ( save )
             {
                 PrefabUtility.SaveAsPrefabAsset( obj, path );
 
-                UnityEngine.Object.DestroyImmediate( obj );
+                Object.DestroyImmediate( obj );
             }
 
             return obj;
@@ -356,39 +346,33 @@ namespace LibrarySorter
 
         internal static void RemoveBoxColliderComponent( GameObject go )
         {
-            foreach ( BoxCollider coll in go.GetComponentsInChildren< BoxCollider >() )
-            {
-                UnityEngine.Object.DestroyImmediate( coll );
-            }
+            foreach ( var coll in go.GetComponentsInChildren< BoxCollider >() )
+                Object.DestroyImmediate( coll );
 
-            foreach ( MeshCollider coll in go.GetComponentsInChildren< MeshCollider >() )
-            {
-                UnityEngine.Object.DestroyImmediate( coll );
-            }
+            foreach ( var coll in go.GetComponentsInChildren< MeshCollider >() )
+                Object.DestroyImmediate( coll );
         }
 
         internal static void CheckBoxColliderComponent( GameObject go )
         {
             RemoveBoxColliderComponent( go );
 
-            SkinnedMeshRenderer[] renderers = go.GetComponentsInChildren< SkinnedMeshRenderer >();
+            var renderers = go.GetComponentsInChildren< SkinnedMeshRenderer >();
 
             foreach ( var renderer in renderers )
-            {
                 if ( Helper.IsValid( renderer ) )
                 {
-                    MeshCollider meshCollider = renderer.gameObject.AddComponent< MeshCollider >();
+                    var meshCollider = renderer.gameObject.AddComponent< MeshCollider >();
                     meshCollider.sharedMesh = renderer.sharedMesh;
                     meshCollider.convex = false;
                 }
-            }
         }
 
         public static Vector3 FindAnglesOffset( string searchTerm )
         {
-            Vector3 returnedVector = new Vector3( 0, -90, 0 );
+            var returnedVector = new Vector3( 0, -90, 0 );
 
-            PrefabOffset offset = OffsetManagerWindow.FindPrefabOffsetFile().Find( o => o.ModelName == searchTerm );
+            var offset = OffsetManagerWindow.FindPrefabOffsetFile().Find( o => o.ModelName == searchTerm );
             if ( Helper.IsValid( offset ) )
             {
                 returnedVector = offset.Rotation;
@@ -404,14 +388,14 @@ namespace LibrarySorter
             {
                 string modelName = Path.GetFileName( modelDir );
 
-                EditorUtility.DisplayProgressBar( $"Legion Extraction", $"Moving File '{modelDir}'", 0.0f );
+                EditorUtility.DisplayProgressBar( "Legion Extraction", $"Moving File '{modelDir}'", 0.0f );
 
                 if ( !checker.ContainsValue( modelName ) )
                     continue;
 
                 Helper.MoveFile( $"{modelDir}/{modelName}_LOD0.fbx", $"{modelDirectory}/{modelName}_LOD0.fbx", false );
 
-                string [] filesName = Directory.GetFiles( $"{modelDir}/_images" );
+                string[] filesName = Directory.GetFiles( $"{modelDir}/_images" );
 
                 if ( Materials.MaterialData.ContainsFilePath( filesName ) )
                     continue;

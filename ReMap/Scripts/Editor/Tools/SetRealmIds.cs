@@ -1,38 +1,39 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 public class SetRealmIds : EditorWindow
 {
+    private int RealmID;
     private GameObject source;
-    private int RealmID = 0;
 
     public static void Init()
     {
-        SetRealmIds window = (SetRealmIds)EditorWindow.GetWindow(typeof(SetRealmIds), false, "RealmID Tool");
+        var window = ( SetRealmIds )GetWindow( typeof(SetRealmIds), false, "RealmID Tool" );
         window.Show();
-        window.minSize = new Vector2(375, 70);
-        window.maxSize = new Vector2(375, 70);
+        window.minSize = new Vector2( 375, 70 );
+        window.maxSize = new Vector2( 375, 70 );
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
-        GUILayout.BeginVertical("box");
-        source = EditorGUILayout.ObjectField(source, typeof(Object), true) as GameObject;
-        RealmID = EditorGUILayout.IntField("RealmID:", RealmID);
+        GUILayout.BeginVertical( "box" );
+        source = EditorGUILayout.ObjectField( source, typeof(Object), true ) as GameObject;
+        RealmID = EditorGUILayout.IntField( "RealmID:", RealmID );
         GUILayout.EndVertical();
 
-        if (GUILayout.Button("Set Realm IDS"))
+        if ( GUILayout.Button( "Set Realm IDS" ) )
             SetID();
     }
 
-    void SetID()
+    private void SetID()
     {
-        if(source == null)
+        if ( source == null )
             return;
 
-        foreach (Transform child in source.transform) {
-            PropScript script = child.gameObject.GetComponent<PropScript>();
-            if(script != null)
+        foreach ( Transform child in source.transform )
+        {
+            var script = child.gameObject.GetComponent< PropScript >();
+            if ( script != null )
                 script.RealmID = RealmID;
         }
     }

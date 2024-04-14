@@ -1,38 +1,34 @@
-using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
-using UnityEditorInternal;
 //to do TextColor
 //EditorStyles.label.normal.textColor 
 
-namespace ThemesPlugin 
+namespace ThemesPlugin
 {
     public class CreateThemeWindow : EditorWindow
     {
-        enum UnityTheme { FullDark, FullLight, Dark, Light, Both }
-        UnityTheme unityTheme;
+        private string Name = "EnterName";
+        private UnityTheme unityTheme;
 
         //[MenuItem("Themes/Create Theme")]
         public static void ShowWindow()
         {
             ThemeSettings.ShowWindow();
-            EditorWindow.GetWindow<CreateThemeWindow>("Theme Settings");
+            GetWindow< CreateThemeWindow >( "Theme Settings" );
         }
 
-        string Name = "EnterName";
         private void OnGUI()
         {
-            EditorGUILayout.LabelField("");
-            Name = EditorGUILayout.TextField(Name, GUILayout.Width(200));
-            EditorGUILayout.LabelField("");
-            EditorGUILayout.LabelField("Preset:");
+            EditorGUILayout.LabelField( "" );
+            Name = EditorGUILayout.TextField( Name, GUILayout.Width( 200 ) );
+            EditorGUILayout.LabelField( "" );
+            EditorGUILayout.LabelField( "Preset:" );
 
-            unityTheme = (UnityTheme)EditorGUILayout.EnumPopup(unityTheme, GUILayout.Width(100));
+            unityTheme = ( UnityTheme )EditorGUILayout.EnumPopup( unityTheme, GUILayout.Width( 100 ) );
             string Description = "";
-            switch (unityTheme)
+            switch ( unityTheme )
             {
                 case UnityTheme.FullDark:
                     Description = "Everything you need for a Dark Theme";
@@ -51,37 +47,37 @@ namespace ThemesPlugin
                     break;
             }
 
-            EditorGUILayout.LabelField(Description);
-            EditorGUILayout.LabelField("");
+            EditorGUILayout.LabelField( Description );
+            EditorGUILayout.LabelField( "" );
 
             bool create = false;
-            
-            Event e = Event.current;
-            if (e.type == EventType.KeyDown)
-                if (e.keyCode == KeyCode.Return)
+
+            var e = Event.current;
+            if ( e.type == EventType.KeyDown )
+                if ( e.keyCode == KeyCode.Return )
                     create = true;
 
-            if(GUILayout.Button("Create Custom Theme", GUILayout.Width(200)))
+            if ( GUILayout.Button( "Create Custom Theme", GUILayout.Width( 200 ) ) )
                 create = true;
 
 
-            if (create)
+            if ( create )
             {
                 string Path = Application.dataPath + "/ReMap/Plugins/EditorThemes/Editor/StyleSheets/Extensions/CustomThemes/" + Name + ".json";
-                if (File.Exists(Path))
-                    if( EditorUtility.DisplayDialog("This Theme already exsists", "Do you want to overide the old Theme?", "Yes",  "Cancel") == false)
+                if ( File.Exists( Path ) )
+                    if ( EditorUtility.DisplayDialog( "This Theme already exsists", "Do you want to overide the old Theme?", "Yes", "Cancel" ) == false )
                         return;
 
-                CustomTheme t = new CustomTheme();
+                var t = new CustomTheme();
                 string PresetName = "";
-                switch (unityTheme)
+                switch ( unityTheme )
                 {
                     case UnityTheme.FullDark:
                         PresetName = "FullDark";
                         break;
                     case UnityTheme.FullLight:
                         PresetName = "FullLight";
-                        break ;
+                        break;
                     case UnityTheme.Light:
                         PresetName = "Light";
                         break;
@@ -93,21 +89,30 @@ namespace ThemesPlugin
                         break;
                 }
 
-                t = FetchTheme(PresetName,Name);
-                ThemesUtility.SaveJsonFileForTheme(t);
-                ThemesUtility.OpenEditTheme(t);
+                t = FetchTheme( PresetName, Name );
+                ThemesUtility.SaveJsonFileForTheme( t );
+                ThemesUtility.OpenEditTheme( t );
 
-                this.Close();
+                Close();
             }
         }
 
-        CustomTheme FetchTheme(string PresetName,string Name)
+        private CustomTheme FetchTheme( string PresetName, string Name )
         {
-            CustomTheme CustomTheme = ThemesUtility.GetCustomThemeFromJson(ThemesUtility.PresetsPath + PresetName + ".json");
+            var CustomTheme = ThemesUtility.GetCustomThemeFromJson( ThemesUtility.PresetsPath + PresetName + ".json" );
 
             CustomTheme.Name = Name;
 
             return CustomTheme;
+        }
+
+        private enum UnityTheme
+        {
+            FullDark,
+            FullLight,
+            Dark,
+            Light,
+            Both
         }
     }
 }

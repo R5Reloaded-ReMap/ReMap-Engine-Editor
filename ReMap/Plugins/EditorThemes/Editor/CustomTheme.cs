@@ -1,31 +1,32 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 namespace ThemesPlugin
-{   
-    [System.Serializable]
+{
+    [Serializable]
     public class CustomTheme
     {
-        public string Name;
-        public enum UnityTheme { Dark,Light,Both,Remap}
-        public UnityTheme unityTheme;
+        public enum UnityTheme
+        {
+            Dark,
+            Light,
+            Both,
+            Remap
+        }
+
         public bool IsUnDeletable;
         public bool IsUnEditable;
+        public List< UIItem > Items;
+        public string Name;
+        public UnityTheme unityTheme;
         public string Version;
-        public List<UIItem> Items;
-        
-        [System.Serializable]
+
+        [Serializable]
         public class UIItem
         {
-            public string Name;
             public Color Color;
-        
+            public string Name;
         }
     }
 }
-
-

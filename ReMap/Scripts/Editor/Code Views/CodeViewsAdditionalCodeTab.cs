@@ -1,13 +1,9 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
+using LibrarySorter;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using WindowUtility;
 using static WindowUtility.WindowUtility;
 
@@ -15,39 +11,39 @@ namespace CodeViews
 {
     public class AdditionalCodeTab : EditorWindow
     {
-        private  static readonly string   jsonPath    = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeJson}";
-        private  static readonly string   infoPath    = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeInfo}";
-        internal static readonly string[] contentType = new[] { "HeadContent", "InBlockContent", "BelowContent" };
+        private static readonly string jsonPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeJson}";
+        private static readonly string infoPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathAdditionalCodeInfo}";
+        internal static readonly string[] contentType = { "HeadContent", "InBlockContent", "BelowContent" };
 
         internal static readonly string emptyContentStr = "Empty Code";
-        private  static string          entry = "";
-        internal static bool            isEmptyCode = false;
+        private static string entry = "";
+        internal static bool isEmptyCode;
 
-        internal static bool   showInfo     = false;
-        internal static string textInfo     = File.ReadAllText( infoPath );
+        internal static bool showInfo;
+        internal static string textInfo = File.ReadAllText( infoPath );
         internal static string textInfoTemp = textInfo;
 
         internal static AdditionalCode additionalCode;
         internal static AdditionalCodeClass[] additionalCodeArray;
         internal static AdditionalCodeClass activeCode;
 
-        internal static WindowStruct windowStruct = new WindowStruct()
+        internal static WindowStruct windowStruct = new()
         {
             MainTab = new[] { "Head Code", "In-Block Code", "Below Code" },
 
-            SubTab = new Dictionary< int, string[] >()
+            SubTab = new Dictionary< int, string[] >
             {
                 { 0, new[] { "" } },
                 { 1, new[] { "" } },
                 { 2, new[] { "" } }
             },
 
-            SubTabGUI = new Dictionary< ( int, int ), GUIStruct >()
+            SubTabGUI = new Dictionary< ( int, int ), GUIStruct >
             {
                 // Head Code
                 {
                     ( 0, 0 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         OnStartGUI = () => SaveJson()
                     }
@@ -56,7 +52,7 @@ namespace CodeViews
                 // In-Block Code
                 {
                     ( 1, 0 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         OnStartGUI = () => SaveJson()
                     }
@@ -65,11 +61,11 @@ namespace CodeViews
                 // Below Code
                 {
                     ( 2, 0 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         OnStartGUI = () => SaveJson()
                     }
-                },
+                }
             },
 
             RefreshCallback = () =>
@@ -82,30 +78,30 @@ namespace CodeViews
 
         internal static void MainTab()
         {
-            isEmptyCode = activeCode.Content[ windowStruct.SubTabIdx ].Name == emptyContentStr;
+            isEmptyCode = activeCode.Content[windowStruct.SubTabIdx].Name == emptyContentStr;
 
             GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
             GUILayout.BeginHorizontal();
-                if ( !isEmptyCode )
-                {
-                    CreateTextField( ref entry, "", "", 1, 200, 20, true );
-                    CreateButton( "Rename", "", () => RenameTab(), 100, 20 );
-                }
+            if ( !isEmptyCode )
+            {
+                CreateTextField( ref entry, "", "", 1, 200, 20, true );
+                CreateButton( "Rename", "", () => RenameTab(), 100, 20 );
+            }
 
-                if ( MenuInit.IsEnable( CodeViewsWindow.DevMenuDebugInfo ) )
-                {
-                    WindowUtility.WindowUtility.GetEditorWindowSize( CodeViewsWindow.windowInstance );
-                    WindowUtility.WindowUtility.GetScrollSize( CodeViewsWindow.scroll );
-                }
+            if ( MenuInit.IsEnable( CodeViewsWindow.DevMenuDebugInfo ) )
+            {
+                GetEditorWindowSize( CodeViewsWindow.windowInstance );
+                GetScrollSize( CodeViewsWindow.scroll );
+            }
 
-                FlexibleSpace();
+            FlexibleSpace();
 
-                CreateButton( "Add Code", "", () => AddNewCode(), 100, 20 );
-                if ( !isEmptyCode ) CreateButton( "Remove Code", "", () => DeleteCode(), 100, 20 );
-                CreateButton( "Save", "", () => SaveJson(), 100, 20 );
+            CreateButton( "Add Code", "", () => AddNewCode(), 100, 20 );
+            if ( !isEmptyCode ) CreateButton( "Remove Code", "", () => DeleteCode(), 100, 20 );
+            CreateButton( "Save", "", () => SaveJson(), 100, 20 );
 
-                CreateButton( "Info", "", () => { showInfo = !showInfo; }, 100 );
+            CreateButton( "Info", "", () => { showInfo = !showInfo; }, 100 );
             GUILayout.EndHorizontal();
         }
 
@@ -115,7 +111,7 @@ namespace CodeViews
 
             if ( !Helper.IsValid( additionalCode ) ) return;
 
-            additionalCodeArray = new AdditionalCodeClass[]
+            additionalCodeArray = new[]
             {
                 additionalCode.HeadContent,
                 additionalCode.InBlockContent,
@@ -135,7 +131,7 @@ namespace CodeViews
             }
             else
             {
-                string json = System.IO.File.ReadAllText( jsonPath );
+                string json = File.ReadAllText( jsonPath );
                 additionalCode = JsonUtility.FromJson< AdditionalCode >( json );
             }
 
@@ -144,7 +140,7 @@ namespace CodeViews
 
         internal static void AddNewCode()
         {
-            AdditionalCodeContent newContent = NewAdditionalCodeContent();
+            var newContent = NewAdditionalCodeContent();
 
             activeCode.Content.Add( newContent );
 
@@ -157,9 +153,9 @@ namespace CodeViews
 
         internal static void DeleteCode()
         {
-            if ( !LibrarySorter.LibrarySorterWindow.CheckDialog( "Delete Code", "Are you sure you want delete this code ?" ) ) return;
+            if ( !LibrarySorterWindow.CheckDialog( "Delete Code", "Are you sure you want delete this code ?" ) ) return;
 
-            activeCode.Content.Remove( activeCode.Content[ windowStruct.SubTabIdx ] );
+            activeCode.Content.Remove( activeCode.Content[windowStruct.SubTabIdx] );
 
             windowStruct.SubTabIdx = windowStruct.SubTab.Count - 1;
 
@@ -172,18 +168,16 @@ namespace CodeViews
 
             string newEntry = FindUniqueName( entry );
 
-            activeCode.Content[ windowStruct.SubTabIdx ].Name = newEntry;
+            activeCode.Content[windowStruct.SubTabIdx].Name = newEntry;
 
             SaveJson();
 
             for ( int i = 0; i < activeCode.Content.Count - 1; i++ )
-            {
-                if ( activeCode.Content[ i ].Name == newEntry )
+                if ( activeCode.Content[i].Name == newEntry )
                 {
                     windowStruct.SubTabIdx = i;
                     break;
                 }
-            }
 
             entry = "";
         }
@@ -204,7 +198,7 @@ namespace CodeViews
             additionalCode.BelowContent.Name = "Below Code";
             additionalCode.BelowContent.Content = new List< AdditionalCodeContent >();
 
-            AdditionalCodeContent emptyContent = NewAdditionalCodeContent();
+            var emptyContent = NewAdditionalCodeContent();
             emptyContent.Name = emptyContentStr;
 
             additionalCode.HeadContent.Content.Add( emptyContent );
@@ -216,7 +210,7 @@ namespace CodeViews
 
         internal static AdditionalCodeContent NewAdditionalCodeContent()
         {
-            AdditionalCodeContent content = new AdditionalCodeContent();
+            var content = new AdditionalCodeContent();
 
             content.Name = FindUniqueName( "unnamed" );
             content.Code = "";
@@ -228,21 +222,21 @@ namespace CodeViews
         {
             if ( !Helper.IsValid( activeCode ) ) return "";
 
-            string newEntry = name; int idx = 1; bool nameExists;
+            string newEntry = name;
+            int idx = 1;
+            bool nameExists;
 
             do
             {
                 nameExists = false;
-                foreach ( AdditionalCodeContent content in activeCode.Content )
-                {
+                foreach ( var content in activeCode.Content )
                     if ( content.Name == newEntry )
                     {
                         nameExists = true;
                         newEntry = $"{name} ({++idx})";
                         break;
                     }
-                }
-            } while ( nameExists );
+            } while (nameExists);
 
             return newEntry;
         }
@@ -251,7 +245,7 @@ namespace CodeViews
         {
             if ( !Helper.IsValid( additionalCode ) ) return;
 
-            activeCode = additionalCodeArray[ windowStruct.MainTabIdx ];
+            activeCode = additionalCodeArray[windowStruct.MainTabIdx];
 
             if ( windowStruct.SubTabIdx > activeCode.Content.Count - 1 ) windowStruct.SubTabIdx = activeCode.Content.Count - 1;
 
@@ -259,22 +253,20 @@ namespace CodeViews
 
             int targetIndex = -1;
 
-            List< string > pages = new List< string >();
+            var pages = new List< string >();
 
             for ( int i = 0; i < activeCode.Content.Count; i++ )
             {
-                AdditionalCodeContent content = activeCode.Content[ i ];
+                var content = activeCode.Content[i];
                 pages.Add( content.Name );
 
                 if ( content.Name == emptyContentStr )
-                {
                     targetIndex = i;
-                }
             }
 
             if ( targetIndex != -1 )
             {
-                AdditionalCodeContent targetContent = activeCode.Content[ targetIndex ];
+                var targetContent = activeCode.Content[targetIndex];
                 activeCode.Content.RemoveAt( targetIndex );
                 activeCode.Content.Insert( 0, targetContent );
 
@@ -284,11 +276,11 @@ namespace CodeViews
 
             if ( CodeViewsWindow.windowInstance != null && refreshCodeView ) CodeViewsWindow.Refresh();
 
-            #if RMAPDEV
-                textInfo = File.ReadAllText( infoPath );
-            #endif
+#if RMAPDEV
+            textInfo = File.ReadAllText( infoPath );
+#endif
 
-            windowStruct.SubTab[ windowStruct.MainTabIdx ] = pages.ToArray();
+            windowStruct.SubTab[windowStruct.MainTabIdx] = pages.ToArray();
         }
 
         internal static void SaveJson()
@@ -296,7 +288,7 @@ namespace CodeViews
             if ( !Helper.IsValid( additionalCode ) ) return;
 
             string json = JsonUtility.ToJson( additionalCode );
-            System.IO.File.WriteAllText( jsonPath, json );
+            File.WriteAllText( jsonPath, json );
 
             Refresh();
         }
@@ -305,22 +297,22 @@ namespace CodeViews
     [Serializable]
     public class AdditionalCode
     {
+        public AdditionalCodeClass BelowContent;
         public AdditionalCodeClass HeadContent;
         public AdditionalCodeClass InBlockContent;
-        public AdditionalCodeClass BelowContent;
     }
 
     [Serializable]
     public class AdditionalCodeClass
     {
+        public List< AdditionalCodeContent > Content;
         public string Name;
-        public List < AdditionalCodeContent > Content;
     }
 
     [Serializable]
     public class AdditionalCodeContent
     {
-        public string Name;
         public string Code;
+        public string Name;
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -7,34 +6,35 @@ using UnityEngine;
 namespace WindowUtility
 {
     public delegate void FunctionRef();
+
     public delegate Task FunctionRefAsync();
+
     public delegate Task< string > FunctionRefAsyncString();
 
     public class WindowUtility
     {
-        private static Color GUI_SettingsColor = new Color( 255f, 255f, 255f );
+        private static readonly Color GUI_SettingsColor = new(255f, 255f, 255f);
 
         public static bool CreateButton( string text = "button", string tooltip = "", float width = 0, float height = 0 )
         {
-            return CreateButton( text, tooltip, ( FunctionRef[] ) null, width, height );
+            return CreateButton( text, tooltip, ( FunctionRef[] )null, width, height );
         }
 
         public static bool CreateButton( string text = "button", string tooltip = "", FunctionRef functionRef = null, float width = 0, float height = 0 )
         {
-            return CreateButton( text, tooltip, new FunctionRef[] { functionRef }, width, height );
+            return CreateButton( text, tooltip, new[] { functionRef }, width, height );
         }
 
         public static bool CreateButton( string text = "button", string tooltip = "", FunctionRef[] functionRefs = null, float width = 0, float height = 0 )
         {
-            GUIStyle buttonStyle = new GUIStyle( GUI.skin.button );
+            var buttonStyle = new GUIStyle( GUI.skin.button );
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
-            if( GUILayout.Button( new GUIContent( text, tooltip ), buttonStyle, SizeOptions( width, height ) ) )
+            if ( GUILayout.Button( new GUIContent( text, tooltip ), buttonStyle, SizeOptions( width, height ) ) )
             {
                 if ( Helper.IsValid( functionRefs ) )
-                {
-                    foreach ( var functionRef in functionRefs ) functionRef();
-                }
+                    foreach ( var functionRef in functionRefs )
+                        functionRef();
 
                 GUI.FocusControl( null );
 
@@ -91,21 +91,21 @@ namespace WindowUtility
 
         public static void CreateTextInfoCentered( string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
-            GUIStyle labelStyle = new GUIStyle( EditorStyles.label );
+            var labelStyle = new GUIStyle( EditorStyles.label );
             labelStyle.alignment = TextAnchor.MiddleCenter;
 
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), labelStyle, SizeOptions( labelWidth, height ) );
         }
 
-        public static void CreateObjectField( ref UnityEngine.Object obj, string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
+        public static void CreateObjectField( ref Object obj, string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
             EditorGUILayout.LabelField( new GUIContent( text, tooltip ), SizeOptions( labelWidth, height ) );
-            obj = EditorGUILayout.ObjectField( obj, typeof( UnityEngine.Object ), true );
+            obj = EditorGUILayout.ObjectField( obj, typeof(Object), true );
         }
 
         public static void CreateObjectField( ref GameObject obj, string text = "text", string tooltip = "", float labelWidth = 0, float height = 0 )
         {
-            UnityEngine.Object uobj = ( UnityEngine.Object ) obj;
+            Object uobj = obj;
             CreateObjectField( ref uobj, text, tooltip, labelWidth, height );
         }
 
@@ -116,7 +116,7 @@ namespace WindowUtility
 
         internal static void SeparatorAutoWidth( EditorWindow editorWindow, float width = 0, float height = 4, Color color = default )
         {
-            Separator( ( float ) editorWindow.position.width + width, height, color );
+            Separator( editorWindow.position.width + width, height, color );
         }
 
         internal static void Separator( float width = 0, float height = 4, Color color = default )
@@ -134,9 +134,7 @@ namespace WindowUtility
         public static void GetEditorWindowSize( EditorWindow editorWindow )
         {
             if ( Helper.IsValid( editorWindow ) )
-            {
-                CreateTextInfo( $"Window Size: {Helper.ReplaceComma( editorWindow.position.width )} x {Helper.ReplaceComma( editorWindow.position.height )}", "", 152, 20                                );
-            }
+                CreateTextInfo( $"Window Size: {Helper.ReplaceComma( editorWindow.position.width )} x {Helper.ReplaceComma( editorWindow.position.height )}", "", 152, 20 );
         }
 
         public static void ShowPageInfo( int currentPage, int maxPage, int itemStart, int itemEnd, string info = "Page", string type = "" )
@@ -151,14 +149,14 @@ namespace WindowUtility
 
         private static GUILayoutOption HeightOption( float value )
         {
-            GUILayoutOption heightOption = value != 0 ? GUILayout.Height( value ) : default( GUILayoutOption );
+            var heightOption = value != 0 ? GUILayout.Height( value ) : default;
 
             return heightOption;
         }
 
         private static GUILayoutOption[] SizeOptions( float width, float height )
         {
-            List< GUILayoutOption > options = new List< GUILayoutOption >();
+            var options = new List< GUILayoutOption >();
 
             if ( width != 0 ) options.Add( GUILayout.Width( width ) );
             if ( height != 0 ) options.Add( GUILayout.Height( height ) );

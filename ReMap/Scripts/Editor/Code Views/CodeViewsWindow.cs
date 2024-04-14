@@ -1,19 +1,16 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LibrarySorter;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-
-using Build;
-using static Build.Build;
 using WindowUtility;
+using static Build.Build;
 
 namespace CodeViews
 {
@@ -28,14 +25,14 @@ namespace CodeViews
     {
         internal static CodeViewsWindow windowInstance;
         internal static string code = "";
-        internal static string[] codeSplit = new string[ 0 ];
+        internal static string[] codeSplit = new string[0];
         internal static string functionName = "Unnamed";
         internal static Vector2 scroll;
         internal static Vector2 scrollSettings;
         internal static int objectTypeInSceneCount = 0;
         internal static Vector3 StartingOffset = Vector3.zero;
 
-        private static bool isAdditionalCodeWindow = false;
+        private static bool isAdditionalCodeWindow;
 
         private static string infoCount = "Entity Count";
 
@@ -46,12 +43,12 @@ namespace CodeViews
         private static string[] fileInfo = new string[4];
 
         internal static List< InfoMessage > infoList = InfoMessage.CreateInfoSerialized( 2 );
-        internal static InfoMessage staticMessage = infoList[ 0 ];
-        internal static InfoMessage ephemeralMessage = infoList[ 1 ];
+        internal static InfoMessage staticMessage = infoList[0];
+        internal static InfoMessage ephemeralMessage = infoList[1];
 
         // Menus
         // Show / Hide Settings Menu
-        internal static bool ShowSettingsMenu = false;
+        internal static bool ShowSettingsMenu;
 
         // Menu Settings Names
         internal static readonly string SquirrelMenu = "SquirrelMenu";
@@ -82,15 +79,16 @@ namespace CodeViews
         internal static readonly string TipsMenu = "";
 
         internal static readonly string DevMenu = "DevMenu";
+
         internal static readonly string DevMenuDebugInfo = "DevMenuDebugInfo";
         //
 
         internal static Task GenerationIsActive = Task.CompletedTask;
         internal static Task SendingObjects = Task.CompletedTask;
 
-        internal static int EntityCount = 0;
+        internal static int EntityCount;
         internal static int SendedEntityCount = 0;
-        internal static int NotExitingModel = 0;
+        internal static int NotExitingModel;
         internal static int EntFileID = 27;
         internal static Vector3 InfoPlayerStartOrigin = Vector3.zero;
         internal static Vector3 InfoPlayerStartAngles = Vector3.zero;
@@ -102,49 +100,49 @@ namespace CodeViews
         public static int yellowPropCount = 3000;
 
         // Page utility
-        internal static bool maxLength = false;
+        internal static bool maxLength;
         internal static int maxBuildLine = 800;
-        private static int itemStart = 0;
-        private static int itemEnd = 0;
-        private static int currentPage = 0;
-        private static int maxPage = 0;
+        private static int itemStart;
+        private static int itemEnd;
+        private static int currentPage;
+        private static int maxPage;
 
         // Empty ObjectType[]
-        internal static readonly ObjectType[] EmptyObjectType = new ObjectType[ 0 ];
+        internal static readonly ObjectType[] EmptyObjectType = new ObjectType[0];
 
         // Colors
         internal static readonly Color Color_Orange = Helper.UnityColor( 254f, 156f, 84f );
-        internal static readonly Color Color_Blue   = Helper.UnityColor( 78f, 156f, 228f );
-        internal static readonly Color Color_Red    = Helper.UnityColor( 244f, 67f, 54f );
-        internal static readonly Color Color_White  = Helper.UnityColor( 255f, 255f, 255f );
+        internal static readonly Color Color_Blue = Helper.UnityColor( 78f, 156f, 228f );
+        internal static readonly Color Color_Red = Helper.UnityColor( 244f, 67f, 54f );
+        internal static readonly Color Color_White = Helper.UnityColor( 255f, 255f, 255f );
         internal static readonly Color Color_Yellow = Helper.UnityColor( 222f, 162f, 58f );
-        internal static readonly Color Color_Green  = Helper.UnityColor( 75f, 187f, 68f );
+        internal static readonly Color Color_Green = Helper.UnityColor( 75f, 187f, 68f );
 
-        internal static readonly Dictionary< string, Color > Color_Array = new Dictionary< string, Color >()
+        internal static readonly Dictionary< string, Color > Color_Array = new()
         {
             { "Orange", Color_Orange }, { "Blue", Color_Blue }, { "Red", Color_Red },
             { "White", Color_White }, { "Yellow", Color_Yellow }, { "Green", Color_Green }
         };
         //
 
-        private static WindowStruct windowStruct = new WindowStruct()
+        private static readonly WindowStruct windowStruct = new()
         {
             MainTab = new[] { "Squirrel Code", "DataTable Code", "Precache Code", "Ent Code", "Other Code" },
 
-            SubTab = new Dictionary< int, string[] >()
+            SubTab = new Dictionary< int, string[] >
             {
                 { 0, new[] { "Server Script", "Client Script", "Additional Code" } },
                 { 3, new[] { "script.ent", "snd.ent", "spawn.ent" } },
                 { 4, new[] { "Camera Path" } }
             },
 
-            SubTabGUI = new Dictionary< ( int, int ), GUIStruct >()
+            SubTabGUI = new Dictionary< ( int, int ), GUIStruct >
             {
                 // Squirrel Code
                 {
                     // Server Script
                     ( 0, 0 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "Squirrel Code (Server)",
 
@@ -153,9 +151,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
-                            {
                                 fileInfo = new[] { "Squirrel Server Code Export", "", $"{functionName}.nut", "nut" };
-                            }
 
                             AdditionalCodeTab.AdditionalCodeInit();
 
@@ -174,7 +170,7 @@ namespace CodeViews
                 {
                     // Client Script
                     ( 0, 1 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "Squirrel Code (Client)",
 
@@ -183,9 +179,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
-                            {
                                 fileInfo = new[] { "Squirrel Client Code Export", "", $"CL_{functionName}.nut", "nut" };
-                            }
 
                             GenerationIsActive = GenerateCorrectCode( () => ScriptClientTab.GenerateCode() );
                         },
@@ -201,7 +195,7 @@ namespace CodeViews
                 {
                     // Additional Code
                     ( 0, 2 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "Additional Code",
 
@@ -227,7 +221,7 @@ namespace CodeViews
                 // DataTable Code
                 {
                     ( 1, 0 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "DataTable Code",
 
@@ -236,9 +230,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
-                            {
                                 fileInfo = new[] { "DataTable Code Export", "", $"{functionName}.csv", "csv" };
-                            }
 
                             GenerationIsActive = GenerateCorrectCode( () => DataTableTab.GenerateCode() );
                         },
@@ -254,7 +246,7 @@ namespace CodeViews
                 // Precache Code
                 {
                     ( 2, 0 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "Precache Code",
 
@@ -283,7 +275,7 @@ namespace CodeViews
                 {
                     // Script Code
                     ( 3, 0 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "Script Ent Code",
 
@@ -292,9 +284,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
-                            {
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                            }
 
                             GenerationIsActive = GenerateCorrectCode( () => ScriptEntTab.GenerateCode() );
                         },
@@ -306,11 +296,11 @@ namespace CodeViews
                         }
                     }
                 },
-                
+
                 {
                     // Sound Code
                     ( 3, 1 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "Sound Ent Code",
 
@@ -319,9 +309,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
-                            {
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                            }
 
                             GenerationIsActive = GenerateCorrectCode( () => SoundEntTab.GenerateCode() );
                         },
@@ -337,7 +325,7 @@ namespace CodeViews
                 {
                     // Spawn Code
                     ( 3, 2 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "Spawn Ent Code",
 
@@ -346,9 +334,7 @@ namespace CodeViews
                         OnStartGUI = () =>
                         {
                             if ( windowStruct.OnWindowChange() ) // Execute scope if script changes page
-                            {
                                 fileInfo = new[] { "Ent Code Export", "", $"{functionName}.ent", "ent" };
-                            }
 
                             GenerationIsActive = GenerateCorrectCode( () => CameraPathTab.GenerateCode() );
                         },
@@ -365,7 +351,7 @@ namespace CodeViews
                 {
                     // Camera Path Code
                     ( 4, 0 ),
-                    new GUIStruct()
+                    new GUIStruct
                     {
                         Name = "Camera Path Code",
 
@@ -388,13 +374,10 @@ namespace CodeViews
                             windowStruct.StoreInfo( "FuncName", windowStruct.GetStoredInfo< string >( "FuncNameBase" ) );
                         }
                     }
-                },
+                }
             },
 
-            MainTabCallback = () =>
-            {
-                WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => Refresh( false ), 100 );
-            },
+            MainTabCallback = () => { WindowUtility.WindowUtility.CreateButton( "Refresh", "", () => Refresh( false ), 100 ); },
 
             // PostRefresh is executed first, then OnStartGUI of the window, then Refresh.
             PostRefreshCallback = () =>
@@ -408,9 +391,9 @@ namespace CodeViews
             {
                 windowStruct.PostRefreshCallback();
                 ephemeralMessage.showFirstSeparator = true;
-                #if RMAPDEV
-                    ShowSettingsMenu = true;
-                #endif
+#if RMAPDEV
+                ShowSettingsMenu = true;
+#endif
             },
 
             RefreshCallback = () =>
@@ -418,17 +401,16 @@ namespace CodeViews
                 windowStruct.ReStoreInfo( ref functionName, "FuncName" );
                 Refresh( false );
             }
-
         };
-        
+
         public static void Init()
         {
-            windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
+            windowInstance = ( CodeViewsWindow )GetWindow( typeof(CodeViewsWindow), false, "Code Views" );
             windowInstance.minSize = new Vector2( 1230, 500 );
             windowInstance.Show();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             TagHelper.CheckAndCreateTags();
 
@@ -439,55 +421,56 @@ namespace CodeViews
             disableLogo = Resources.Load( "icons/codeViewDisable" ) as Texture2D;
 
             Helper.SetShowStartingOffset( true );
-            
+
             windowStruct.Awake();
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             MainTab();
 
             if ( isAdditionalCodeWindow )
             {
                 GUILayout.BeginVertical( "box" );
-                    scroll = EditorGUILayout.BeginScrollView( scroll );
-                        if ( AdditionalCodeTab.showInfo )
-                        {
-                            AdditionalCodeTab.textInfoTemp = AdditionalCodeTab.textInfo;
-                            EditorGUILayout.TextArea( AdditionalCodeTab.textInfoTemp, GUILayout.ExpandHeight( true ) );
-                        }
-                        else if ( !AdditionalCodeTab.isEmptyCode )
-                        {
-                            AdditionalCodeTab.activeCode.Content[ AdditionalCodeTab.windowStruct.SubTabIdx ].Code = EditorGUILayout.TextArea( AdditionalCodeTab.activeCode.Content[ AdditionalCodeTab.windowStruct.SubTabIdx ].Code, GUILayout.ExpandHeight( true ) );
-                        }
-                        else
-                        {
-                            WindowUtility.WindowUtility.FlexibleSpace();
-                                WindowUtility.WindowUtility.CreateTextInfoCentered( "Empty Code Reference" );
-                            WindowUtility.WindowUtility.FlexibleSpace();
-                        }
-                    EditorGUILayout.EndScrollView();
+                scroll = EditorGUILayout.BeginScrollView( scroll );
+                if ( AdditionalCodeTab.showInfo )
+                {
+                    AdditionalCodeTab.textInfoTemp = AdditionalCodeTab.textInfo;
+                    EditorGUILayout.TextArea( AdditionalCodeTab.textInfoTemp, GUILayout.ExpandHeight( true ) );
+                }
+                else if ( !AdditionalCodeTab.isEmptyCode )
+                {
+                    AdditionalCodeTab.activeCode.Content[AdditionalCodeTab.windowStruct.SubTabIdx].Code =
+                        EditorGUILayout.TextArea( AdditionalCodeTab.activeCode.Content[AdditionalCodeTab.windowStruct.SubTabIdx].Code, GUILayout.ExpandHeight( true ) );
+                }
+                else
+                {
+                    WindowUtility.WindowUtility.FlexibleSpace();
+                    WindowUtility.WindowUtility.CreateTextInfoCentered( "Empty Code Reference" );
+                    WindowUtility.WindowUtility.FlexibleSpace();
+                }
+                EditorGUILayout.EndScrollView();
                 GUILayout.EndVertical();
             }
             else
             {
                 ShortCut();
-                
+
                 GUILayout.BeginVertical( "box" );
-                    GUILayout.BeginHorizontal();
+                GUILayout.BeginHorizontal();
 
-                        CodeOutput();
-                    
-                        if ( ShowSettingsMenu )
-                        {
-                            GUILayout.BeginVertical( "box", GUILayout.Width( 340 ) );
-                                windowStruct.ShowFunc();
-                            GUILayout.EndVertical();
-                        }
+                CodeOutput();
 
-                    GUILayout.EndHorizontal();
-        
-                    if ( GUILayout.Button( "Copy To Clipboard" ) ) CopyCode();
+                if ( ShowSettingsMenu )
+                {
+                    GUILayout.BeginVertical( "box", GUILayout.Width( 340 ) );
+                    windowStruct.ShowFunc();
+                    GUILayout.EndVertical();
+                }
+
+                GUILayout.EndHorizontal();
+
+                if ( GUILayout.Button( "Copy To Clipboard" ) ) CopyCode();
                 GUILayout.EndVertical();
             }
         }
@@ -501,7 +484,7 @@ namespace CodeViews
             // Ensure the objectData is not empty
             if ( !Helper.IsObjectTypeExistInScene( objectType ) )
                 return true;
-            
+
             return false;
         }
 
@@ -538,7 +521,8 @@ namespace CodeViews
         {
             if ( idx < 0 || idx >= codeSplit.Length )
             {
-                Debug.LogWarning("Index out of range"); return;
+                Debug.LogWarning( "Index out of range" );
+                return;
             }
 
             // Determine the page where the index is located
@@ -550,14 +534,12 @@ namespace CodeViews
             // Update the start and end items
             itemStart = currentPage * maxBuildLine;
             itemEnd = itemStart + maxBuildLine;
-            if ( itemEnd > codeSplit.Length ) 
-            {
+            if ( itemEnd > codeSplit.Length )
                 itemEnd = codeSplit.Length;
-            }
 
             // Estimate scroll position, +60f every 4 lines
             // Modulo idx to keep the index below maxBuildLine
-            scroll.y = ( float ) 60 * ( idx % maxBuildLine / 4 );
+            scroll.y = ( float )60 * ( idx % maxBuildLine / 4 );
 
             HighlightString( currentPage, idx );
 
@@ -566,11 +548,13 @@ namespace CodeViews
 
         private static async void HighlightString( int page, int idx )
         {
-            float time = 0.0f; CodeViewsSearchWindow.SearchedString = idx; bool verify = true;
+            float time = 0.0f;
+            CodeViewsSearchWindow.SearchedString = idx;
+            bool verify = true;
 
-            while ( true )
+            while (true)
             {
-                verify = ( page == currentPage && CodeViewsSearchWindow.SearchedString == idx );
+                verify = page == currentPage && CodeViewsSearchWindow.SearchedString == idx;
 
                 if ( !verify || time >= 4.0f ) break;
 
@@ -580,14 +564,12 @@ namespace CodeViews
             }
 
             if ( verify )
-            {
                 CodeViewsSearchWindow.SearchedString = -1;
-            }
         }
 
         internal static async void SetScrollView( Vector2 scroll )
         {
-            while ( !GenerationIsActive.IsCompleted ) await Helper.Wait( 1 ); // 1 secondes
+            while (!GenerationIsActive.IsCompleted) await Helper.Wait( 1 ); // 1 secondes
 
             CodeViewsWindow.scroll = scroll;
         }
@@ -599,10 +581,10 @@ namespace CodeViews
             EditorSceneManager.SaveOpenScenes();
 
             Refresh();
-            
+
             await Helper.Wait( 1 ); // 1 secondes
 
-            var path = EditorUtility.SaveFilePanel( fileInfo[ 0 ], fileInfo[ 1 ], fileInfo[2], fileInfo[3] );
+            string path = EditorUtility.SaveFilePanel( fileInfo[0], fileInfo[1], fileInfo[2], fileInfo[3] );
 
             if ( path.Length == 0 ) return;
 
@@ -616,12 +598,12 @@ namespace CodeViews
         //  ██║     ██║  ██║██║ ╚████╔╝ ██║  ██║   ██║   ███████╗    ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
         //  ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 
-        private void EditorSceneManager_sceneSaved( UnityEngine.SceneManagement.Scene arg0 )
+        private void EditorSceneManager_sceneSaved( Scene arg0 )
         {
             windowStruct.Awake();
         }
 
-        private void EditorSceneManager_sceneOpened( UnityEngine.SceneManagement.Scene arg0, OpenSceneMode mode )
+        private void EditorSceneManager_sceneOpened( Scene arg0, OpenSceneMode mode )
         {
             windowStruct.Awake();
         }
@@ -637,54 +619,60 @@ namespace CodeViews
         {
             GUILayout.BeginVertical( "box" );
 
-                windowStruct.ShowTab();
+            windowStruct.ShowTab();
+
+            GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
+
+            if ( isAdditionalCodeWindow )
+            {
+                AdditionalCodeTab.windowStruct.ShowTab();
+
+                AdditionalCodeTab.MainTab();
+
+                GUILayout.EndVertical();
+                return;
+            }
+
+            GUILayout.BeginHorizontal();
+            ObjectCount();
+
+            if ( MenuInit.IsEnable( DevMenuDebugInfo ) )
+            {
+                CodeViewsMenu.Space( 10 );
+                WindowUtility.WindowUtility.GetEditorWindowSize( windowInstance );
+                WindowUtility.WindowUtility.GetScrollSize( scroll );
+            }
+
+            WindowUtility.WindowUtility.FlexibleSpace();
+
+            ExportButton();
+            SettingsMenuButton();
+            GUILayout.EndHorizontal();
+
+            if ( maxLength && GenerationIsActive.IsCompleted )
+            {
+                itemStart = currentPage * maxBuildLine;
+                itemEnd = itemStart + maxBuildLine;
+                int end = itemEnd > codeSplit.Length ? codeSplit.Length : itemEnd;
 
                 GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
 
-                if ( isAdditionalCodeWindow )
-                {
-                    AdditionalCodeTab.windowStruct.ShowTab();
-
-                    AdditionalCodeTab.MainTab();
-
-                    GUILayout.EndVertical();
-                    return;
-                }
-
                 GUILayout.BeginHorizontal();
-                        ObjectCount();
+                WindowUtility.WindowUtility.ShowPageInfo( currentPage, maxPage, itemStart, end, " // Page", "line" );
 
-                        if ( MenuInit.IsEnable( CodeViewsWindow.DevMenuDebugInfo ) )
-                        {
-                            CodeViewsMenu.Space( 10 );
-                            WindowUtility.WindowUtility.GetEditorWindowSize( windowInstance );
-                            WindowUtility.WindowUtility.GetScrollSize( scroll );
-                        }
+                WindowUtility.WindowUtility.FlexibleSpace();
 
-                        WindowUtility.WindowUtility.FlexibleSpace();
-
-                        ExportButton();
-                        SettingsMenuButton();
-                GUILayout.EndHorizontal();
-
-                if ( maxLength && GenerationIsActive.IsCompleted )
+                WindowUtility.WindowUtility.CreateButton( "Previous Page", "", () =>
                 {
-                    itemStart = currentPage * maxBuildLine;
-                    itemEnd = itemStart + maxBuildLine;
-                    int end = itemEnd > codeSplit.Length ? codeSplit.Length : itemEnd;
+                    if ( currentPage > 0 ) currentPage--;
+                }, 100 );
 
-                    GUILayout.Box( "", GUILayout.ExpandWidth( true ), GUILayout.Height( 2 ) );
-
-                    GUILayout.BeginHorizontal();
-                        WindowUtility.WindowUtility.ShowPageInfo( currentPage, maxPage, itemStart, end, " // Page", "line" );
-
-                        WindowUtility.WindowUtility.FlexibleSpace();
-
-                        WindowUtility.WindowUtility.CreateButton( "Previous Page", "", () => { if ( currentPage > 0 ) currentPage--; }, 100 );
-
-                        WindowUtility.WindowUtility.CreateButton( "Next Page", "", () => { if ( itemEnd < codeSplit.Length ) currentPage++; }, 100 );
-                    GUILayout.EndHorizontal();
-                }
+                WindowUtility.WindowUtility.CreateButton( "Next Page", "", () =>
+                {
+                    if ( itemEnd < codeSplit.Length ) currentPage++;
+                }, 100 );
+                GUILayout.EndHorizontal();
+            }
 
             GUILayout.EndVertical();
         }
@@ -693,12 +681,10 @@ namespace CodeViews
         {
             GUILayout.BeginHorizontal();
 
-                staticMessage.ShowMessage();
+            staticMessage.ShowMessage();
 
-                if ( staticMessage.HasMessage() && ephemeralMessage.HasMessage() )
-                {
-                    ephemeralMessage.ShowMessage();
-                }
+            if ( staticMessage.HasMessage() && ephemeralMessage.HasMessage() )
+                ephemeralMessage.ShowMessage();
 
             GUILayout.EndHorizontal();
         }
@@ -715,7 +701,7 @@ namespace CodeViews
 
         private static void CodeOutput()
         {
-            GUIStyle style = new GUIStyle( GUI.skin.textArea )
+            var style = new GUIStyle( GUI.skin.textArea )
             {
                 fontSize = 12,
                 wordWrap = false,
@@ -724,15 +710,15 @@ namespace CodeViews
 
             scroll = EditorGUILayout.BeginScrollView( scroll );
 
-            var startIndex = maxLength ? itemStart : 0;
-            var endIndex = maxLength ? Math.Min( itemEnd, codeSplit.Length ) : codeSplit.Length;
+            int startIndex = maxLength ? itemStart : 0;
+            int endIndex = maxLength ? Math.Min( itemEnd, codeSplit.Length ) : codeSplit.Length;
             var lines = codeSplit.Skip( startIndex ).Take( endIndex - startIndex ).Select
             (
                 ( line, index ) => index == CodeViewsSearchWindow.SearchedString ? $"<color=green>{line}</color>" : line
             );
 
-            var originalText = string.Join( "\n", lines );
-            var resultText = EditorGUILayout.TextArea( originalText, style, GUILayout.ExpandHeight( true ) );
+            string originalText = string.Join( "\n", lines );
+            string resultText = EditorGUILayout.TextArea( originalText, style, GUILayout.ExpandHeight( true ) );
 
             // Reset Text
             if ( resultText != originalText )
@@ -754,12 +740,10 @@ namespace CodeViews
 
         internal static void ShortCut()
         {
-            Event currentEvent = Event.current;
+            var currentEvent = Event.current;
 
             if ( currentEvent.type == EventType.KeyDown )
-            {
                 if ( currentEvent.control ) // Ctrl key is pressed
-                {
                     switch ( currentEvent.keyCode )
                     {
                         case KeyCode.R:
@@ -768,10 +752,8 @@ namespace CodeViews
 
                         case KeyCode.F:
                             CodeViewsSearchWindow.Init(); // Press Ctrl + F for Search some code
-                        break;
+                            break;
                     }
-                }
-            }
         }
 
         internal static void ResetFunctionName()
@@ -782,25 +764,26 @@ namespace CodeViews
         private static async Task GenerateCorrectCode( FunctionRefAsyncString functionRef )
         {
             Helper.FixPropTags();
-            
-            EditorUtility.DisplayProgressBar( $"Generating Code", $"Getting objects in scene...", 0.0f );
-                Helper.GetObjectsInScene();
+
+            EditorUtility.DisplayProgressBar( "Generating Code", "Getting objects in scene...", 0.0f );
+            Helper.GetObjectsInScene();
             EditorUtility.ClearProgressBar();
 
-            EntityCount = 0; code = "";
+            EntityCount = 0;
+            code = "";
 
             NotExitingModel = 0;
 
-            LibrarySorter.RpakManagerWindow.libraryData = LibrarySorter.RpakManagerWindow.FindLibraryDataFile();
+            RpakManagerWindow.libraryData = RpakManagerWindow.FindLibraryDataFile();
 
             functionName = Helper.ReplaceBadCharacters( functionName );
 
-            staticMessage.SetInfoMessage( $" // Generating code...", true );
+            staticMessage.SetInfoMessage( " // Generating code...", true );
 
             CodeViewsMenu.VerifyGenerateObjects();
 
-            EditorUtility.DisplayProgressBar( $"Generating Code", $"Processing...", 0.0f );
-                code += await functionRef();
+            EditorUtility.DisplayProgressBar( "Generating Code", "Processing...", 0.0f );
+            code += await functionRef();
             EditorUtility.ClearProgressBar();
 
             maxLength = code.Split( "\n" ).Length > maxBuildLine;
@@ -812,9 +795,7 @@ namespace CodeViews
             staticMessage.SetInfoMessage( $" // {infoCount}: {EntityCount} | {SetCorrectEntityLabel( EntityCount )}", true, SetCorrectColor( EntityCount ) );
 
             if ( NotExitingModel != 0 )
-            {
                 ephemeralMessage.AddToQueueMessage( "NotExitingModelMessage", $"{NotExitingModel} Models don't exist in r5r and are not generated", 6, true, Color_Orange );
-            }
         }
 
         private static string SetCorrectEntityLabel( int count )
@@ -822,10 +803,10 @@ namespace CodeViews
             if ( count < greenPropCount )
                 return "Status: Safe";
 
-            else if ( ( count < yellowPropCount ) ) 
+            if ( count < yellowPropCount )
                 return "Status: Safe";
 
-            else return "Status: Warning! Game could crash!";
+            return "Status: Warning! Game could crash!";
         }
 
         private static Color SetCorrectColor( int count )
@@ -833,10 +814,10 @@ namespace CodeViews
             if ( count < greenPropCount )
                 return Color_Green;
 
-            else if ( count < yellowPropCount ) 
+            if ( count < yellowPropCount )
                 return Color_Yellow;
 
-            else return Color_Red;
+            return Color_Red;
         }
 
         internal static void AppendAdditionalCode( AdditionalCodeType type, ref StringBuilder code, string codeToAdd, bool verify = true )
@@ -848,27 +829,27 @@ namespace CodeViews
             Helper.ReplaceLocalizedString( ref codeToAdd_ );
 
             codeToAdd = codeToAdd_;
-            
+
             switch ( type )
             {
                 case AdditionalCodeType.Head:
-                    Build.Build.AppendCode( ref code, codeToAdd, 0 );
+                    AppendCode( ref code, codeToAdd, 0 );
                     break;
 
                 case AdditionalCodeType.InBlock:
                     codeToAdd = "    " + codeToAdd.Replace( "\n", "\n    " );
 
-                    Build.Build.AppendCode( ref code, codeToAdd, 0 );
+                    AppendCode( ref code, codeToAdd, 0 );
                     break;
 
                 case AdditionalCodeType.Below:
-                    Build.Build.AppendCode( ref code );
-                    
-                    Build.Build.AppendCode( ref code, codeToAdd, 0 );
-                break;
+                    AppendCode( ref code );
+
+                    AppendCode( ref code, codeToAdd, 0 );
+                    break;
             }
 
-            Build.Build.AppendCode( ref code );
+            AppendCode( ref code );
         }
 
 
@@ -901,42 +882,40 @@ namespace CodeViews
     internal class InfoMessage
     {
         public static readonly int simultaneousDisplay = 3;
-
-        public string name = "InfoMessage";
-
-        public string message = "";
-        public bool bold = false;
-        public int duration = 0;
+        public bool bold;
         public Color color = Color.white;
-
-        public bool showFirstSeparator = false;
+        public int duration;
 
         public DateTime durationTime = DateTime.Now;
 
-        private List< InfoMessage > queue = new List< InfoMessage >();
+        public string message = "";
+
+        public string name = "InfoMessage";
+
+        private readonly List< InfoMessage > queue = new();
+
+        public bool showFirstSeparator;
 
         public static List< InfoMessage > CreateInfoSerialized( int num )
         {
-            List< InfoMessage > list = new List< InfoMessage >();
+            var list = new List< InfoMessage >();
 
             for ( int i = 0; i < num; i++ )
-            {
                 list.Add( new InfoMessage() );
-            }
 
             return list;
         }
 
         public void SetInfoMessage( string msg, bool bold = false, Color color = default )
         {
-            this.message = msg;
+            message = msg;
             this.bold = bold;
             this.color = color;
         }
 
         public void AddToQueueMessage( string name, string msg, int duration, bool bold = false, Color color = default )
         {
-            InfoMessage infoMessage = new InfoMessage();
+            var infoMessage = new InfoMessage();
             infoMessage.name = name;
             infoMessage.message = msg;
             infoMessage.bold = bold;
@@ -944,71 +923,57 @@ namespace CodeViews
             infoMessage.color = color;
 
             for ( int i = 0; i < simultaneousDisplay; i++ )
-            {
-                if ( this.QueueCount() == i )
+                if ( QueueCount() == i )
                 {
                     if ( i == 0 )
-                        this.message = msg;
+                        message = msg;
 
                     infoMessage.durationTime = DateTime.Now.AddSeconds( duration );
                 }
-            }
 
-            if ( this.Exists( name ) )
-            {
-                this.RemoveToQueue( Find( name ), infoMessage );
-            }
-            else this.queue.Add( infoMessage );
+            if ( Exists( name ) )
+                RemoveToQueue( Find( name ), infoMessage );
+            else queue.Add( infoMessage );
         }
 
         public void ShowMessage()
         {
-            if ( this.QueueIsEmpty() && this.HasMessage() )
+            if ( QueueIsEmpty() && HasMessage() )
             {
                 InternalShowMessage( this );
             }
-            else if ( !this.QueueIsEmpty() )
+            else if ( !QueueIsEmpty() )
             {
-                if ( this.QueueCount() >= 1 && DateTime.Now > this.queue[ 0 ].durationTime )
+                if ( QueueCount() >= 1 && DateTime.Now > queue[0].durationTime )
                 {
-                    this.queue.RemoveAt( 0 );
-                    this.MessageClear();
+                    queue.RemoveAt( 0 );
+                    MessageClear();
 
-                    if ( this.QueueCount() != 0 )
-                    {
-                        this.message = this.queue[ 0 ].message;
-                    }
+                    if ( QueueCount() != 0 )
+                        message = queue[0].message;
 
-                    if ( this.QueueCount() >= simultaneousDisplay )
-                    {
-                        this.queue[ simultaneousDisplay - 1 ].durationTime = DateTime.Now.AddSeconds( this.queue[ simultaneousDisplay - 1 ].duration );
-                    }
+                    if ( QueueCount() >= simultaneousDisplay )
+                        queue[simultaneousDisplay - 1].durationTime = DateTime.Now.AddSeconds( queue[simultaneousDisplay - 1].duration );
                 }
 
                 for ( int i = 0; i < simultaneousDisplay; i++ )
                 {
-                    if ( this.QueueCount() >= i + 1 && DateTime.Now > this.queue[ i ].durationTime )
+                    if ( QueueCount() >= i + 1 && DateTime.Now > queue[i].durationTime )
                     {
-                        this.queue.RemoveAt( i );
+                        queue.RemoveAt( i );
 
-                        if ( this.QueueCount() >= i + 1 )
-                        {
-                            this.queue[ i ].durationTime = DateTime.Now.AddSeconds( this.queue[ i ].duration );
-                        }
+                        if ( QueueCount() >= i + 1 )
+                            queue[i].durationTime = DateTime.Now.AddSeconds( queue[i].duration );
                     }
 
-                    if ( this.QueueCount() >= i + 1 )
+                    if ( QueueCount() >= i + 1 )
                     {
-                        if ( i == 0 && this.showFirstSeparator )
-                        {
+                        if ( i == 0 && showFirstSeparator )
                             WindowUtility.WindowUtility.Separator( 2, 12 );
-                        }
                         else
-                        {
                             WindowUtility.WindowUtility.Separator( 2, 12 );
-                        }
 
-                        InternalShowMessage( this.queue[ i ] );
+                        InternalShowMessage( queue[i] );
                     }
                 }
             }
@@ -1020,10 +985,10 @@ namespace CodeViews
 
             string info = "";
 
-            #if RMAPDEV
-                if ( infoMessage.duration != 0 )
-                    info = $" ({(infoMessage.durationTime - DateTime.Now).TotalSeconds.ToString( "0.0" ).Replace( ',', '.' )}s)";
-            #endif
+#if RMAPDEV
+            if ( infoMessage.duration != 0 )
+                info = $" ({( infoMessage.durationTime - DateTime.Now ).TotalSeconds.ToString( "0.0" ).Replace( ',', '.' )}s)";
+#endif
 
             GUILayout.Label( $"{infoMessage.message}{info}", infoMessage.bold ? EditorStyles.boldLabel : GUI.skin.label );
 
@@ -1032,47 +997,43 @@ namespace CodeViews
 
         public InfoMessage Find( string name )
         {
-            return this.queue.FirstOrDefault( m => m.name == name );
+            return queue.FirstOrDefault( m => m.name == name );
         }
 
         public void RemoveToQueue( InfoMessage infoMessage, InfoMessage newInfoMessage = null )
         {
-            for ( int i = 0; i < this.QueueCount(); i++ )
-            {
-                if ( this.queue[ i ] == infoMessage )
+            for ( int i = 0; i < QueueCount(); i++ )
+                if ( queue[i] == infoMessage )
                 {
                     if ( i < simultaneousDisplay && Helper.IsValid( newInfoMessage ) )
-                    {
-                        this.queue[ i ] = newInfoMessage;
-                    }
-                    else this.queue.RemoveAt( i );
+                        queue[i] = newInfoMessage;
+                    else queue.RemoveAt( i );
                 }
-            }
         }
 
         public bool HasMessage()
         {
-            return !string.IsNullOrEmpty( this.message );
+            return !string.IsNullOrEmpty( message );
         }
 
         public void MessageClear()
         {
-            this.message = "";
+            message = "";
         }
 
         public bool QueueIsEmpty()
         {
-            return this.queue.Count == 0;
+            return queue.Count == 0;
         }
 
         public int QueueCount()
         {
-            return this.queue.Count;
+            return queue.Count;
         }
 
         public bool Exists( string name )
         {
-            return this.queue.Any( m => m.name == name );
+            return queue.Any( m => m.name == name );
         }
     }
 }

@@ -1,11 +1,6 @@
-
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-
 using static Build.Build;
 
 namespace Build
@@ -14,7 +9,7 @@ namespace Build
     {
         public static async Task< StringBuilder > BuildButtonObjects( GameObject[] objectData, BuildType buildType )
         {
-            StringBuilder code = new StringBuilder();
+            var code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
@@ -37,19 +32,21 @@ namespace Build
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             // Build the code
-            foreach ( GameObject obj in objectData )
+            foreach ( var obj in objectData )
             {
-                ButtonScripting script = ( ButtonScripting ) Helper.GetComponentByEnum( obj, ObjectType.Button );
+                var script = ( ButtonScripting )Helper.GetComponentByEnum( obj, ObjectType.Button );
                 if ( script == null ) continue;
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity ent, int input)" + "\n    {\n" + script.OnUseCallback + "\n    })" + "\n" );
+                        AppendCode( ref code,
+                            $"    AddCallback_OnUseEntity( CreateFRButton({Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, \"{script.UseText}\"), void function(entity panel, entity ent, int input)" +
+                            "\n    {\n" + script.OnUseCallback + "\n    })" + "\n" );
                         break;
 
                     case BuildType.EntFile:
@@ -67,7 +64,7 @@ namespace Build
                     case BuildType.LiveMap:
                         // Remove 1 to the counter since we don't support this object for live map code
                         Helper.RemoveSendedEntityCount();
-                    break;
+                        break;
                 }
             }
 
@@ -85,16 +82,16 @@ namespace Build
                 case BuildType.Precache:
                     // Empty
                     break;
-                    
+
                 case BuildType.DataTable:
                     // Empty
                     break;
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
-            
+
             await Helper.Wait();
 
             return code;

@@ -1,11 +1,7 @@
-
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using CodeViews;
 using UnityEngine;
-
 using static Build.Build;
 
 namespace Build
@@ -14,7 +10,7 @@ namespace Build
     {
         public static async Task< StringBuilder > BuildTextInfoPanelObjects( GameObject[] objectData, BuildType buildType )
         {
-            StringBuilder code = new StringBuilder();
+            var code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
@@ -37,19 +33,21 @@ namespace Build
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             // Build the code
-            foreach ( GameObject obj in objectData )
+            foreach ( var obj in objectData )
             {
-                TextInfoPanelScript script = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, ObjectType.TextInfoPanel );
+                var script = ( TextInfoPanelScript )Helper.GetComponentByEnum( obj, ObjectType.TextInfoPanel );
                 if ( script == null ) continue;
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code, $"    MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.showPIN )}, {Helper.ReplaceComma( script.Scale )} )" + "\n" );
+                        AppendCode( ref code,
+                            $"    MapEditor_CreateTextInfoPanel( \"{script.Title}\", \"{script.Description}\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.showPIN )}, {Helper.ReplaceComma( script.Scale )} )" +
+                            "\n" );
                         break;
 
                     case BuildType.EntFile:
@@ -65,8 +63,9 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateTextInfoPanel(\"{script.Title}\",\"{script.Description}\",{Helper.BuildOrigin( obj, false, true )},{Helper.BuildAngles( obj )},{Helper.BoolToLower( script.showPIN )},{Helper.ReplaceComma( script.Scale )})" );
-                    break;
+                        LiveMap.AddToGameQueue(
+                            $"MapEditor_CreateTextInfoPanel(\"{script.Title}\",\"{script.Description}\",{Helper.BuildOrigin( obj, false, true )},{Helper.BuildAngles( obj )},{Helper.BoolToLower( script.showPIN )},{Helper.ReplaceComma( script.Scale )})" );
+                        break;
                 }
             }
 
@@ -84,14 +83,14 @@ namespace Build
                 case BuildType.Precache:
                     // Empty
                     break;
-                    
+
                 case BuildType.DataTable:
                     // Empty
                     break;
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             await Helper.Wait();

@@ -1,7 +1,5 @@
-
-using UnityEngine;
 using UnityEditor;
-
+using UnityEngine;
 using static WindowUtility.WindowUtility;
 
 namespace MultiTool
@@ -13,8 +11,8 @@ namespace MultiTool
         private static Vector3 sourceOrigin;
         private static Vector3 targetOrigin;
         private static bool axisX = true;
-        private static bool axisY = false;
-        private static bool axisZ = false;
+        private static bool axisY;
+        private static bool axisZ;
         private static string distance = "";
 
         internal static void OnGUI()
@@ -23,39 +21,39 @@ namespace MultiTool
             targetOrigin = new Vector3( 0, 0, 0 );
 
             GUILayout.BeginHorizontal();
-                GUILayout.BeginVertical( "box" );
-                    CreateTextInfo( "Select Axis:", "", 120, 20 );
-                    GUILayout.BeginHorizontal();
-                        CreateToggle( ref axisX, "X", "", 20, 20 );
-                        CreateToggle( ref axisY, "Y", "", 20, 20 );
-                        CreateToggle( ref axisZ, "Z", "", 20, 20 );
-                    GUILayout.EndHorizontal();
-                GUILayout.EndVertical();
+            GUILayout.BeginVertical( "box" );
+            CreateTextInfo( "Select Axis:", "", 120, 20 );
+            GUILayout.BeginHorizontal();
+            CreateToggle( ref axisX, "X", "", 20, 20 );
+            CreateToggle( ref axisY, "Y", "", 20, 20 );
+            CreateToggle( ref axisZ, "Z", "", 20, 20 );
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
 
-                GUILayout.BeginVertical( "box" );
-                    GUILayout.BeginHorizontal();
-                        CreateObjectField( ref source, "Object 1", "", 60, 20 );
-                    GUILayout.EndHorizontal();
+            GUILayout.BeginVertical( "box" );
+            GUILayout.BeginHorizontal();
+            CreateObjectField( ref source, "Object 1", "", 60, 20 );
+            GUILayout.EndHorizontal();
 
-                    GUILayout.BeginHorizontal();
-                        CreateObjectField( ref target, "Object 2", "", 60, 20 );
-                    GUILayout.EndHorizontal();
-                GUILayout.EndVertical();
+            GUILayout.BeginHorizontal();
+            CreateObjectField( ref target, "Object 2", "", 60, 20 );
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
             GUILayout.EndHorizontal();
 
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal();
-                    CreateTextField( ref distance, "Distance", "", 60, 0, 20 );
-                    CreateCopyButton( "Copy", "", distance, 60, 20 );
-                GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            CreateTextField( ref distance, "Distance", "", 60, 0, 20 );
+            CreateCopyButton( "Copy", "", distance, 60, 20 );
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
             if ( ObjectsAreValid() )
             {
                 Selection.selectionChanged += ObjectsUpdate;
 
-                GameObject sourceObj = source as GameObject;
-                GameObject targetObj = target as GameObject;
+                var sourceObj = source as GameObject;
+                var targetObj = target as GameObject;
 
                 if ( axisX )
                 {
@@ -89,7 +87,7 @@ namespace MultiTool
             {
                 return true;
             }
-            else if ( Selection.count >= 2 )
+            if ( Selection.count >= 2 )
             {
                 ObjectsUpdate();
                 return true;

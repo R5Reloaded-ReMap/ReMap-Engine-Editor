@@ -1,44 +1,23 @@
-
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-
+using UnityEngine;
 using static WindowUtility.WindowUtility;
 
 namespace MultiTool
 {
     internal class SerializeTool
     {
-        private enum DirectionType
-        {
-            Top,
-            Bottom,
-            Forward,
-            Backward,
-            Left,
-            Right
-        }
+        private static readonly string[] calculationMethod = { "Bounds only", "Bounds + XYZ entry", "XYZ entry only" };
 
-        private enum BoundsInt
-        {
-            Size,
-            Max,
-            Min,
-            Center,
-            Extents
-        }
-
-        private static string[] calculationMethod = new string[] {"Bounds only", "Bounds + XYZ entry", "XYZ entry only"};
-
-        private static float x_entry = 0.0f;
-        private static float y_entry = 0.0f;
-        private static float z_entry = 0.0f;
-        private static float x_spacing = 0.0f;
-        private static float y_spacing = 0.0f;
-        private static float z_spacing = 0.0f;
-        private static bool unidirectionalMode = false;
-        private static int selectedMethod = 0;
-        private static int selectedMethod_temp = 0;
+        private static float x_entry;
+        private static float y_entry;
+        private static float z_entry;
+        private static float x_spacing;
+        private static float y_spacing;
+        private static float z_spacing;
+        private static bool unidirectionalMode;
+        private static int selectedMethod;
+        private static int selectedMethod_temp;
 
         private static GameObject[] source;
         private static Vector3 BoundsSize;
@@ -56,60 +35,60 @@ namespace MultiTool
             }
 
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal();
-                    CreateToggle( ref unidirectionalMode, "Unidirectional Mode", "", 128 );
-                GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            CreateToggle( ref unidirectionalMode, "Unidirectional Mode", "", 128 );
+            GUILayout.EndHorizontal();
 
-                CreateTextInfo( "Method of calculation:" );
-                selectedMethod = GUILayout.Toolbar( selectedMethod, calculationMethod );
+            CreateTextInfo( "Method of calculation:" );
+            selectedMethod = GUILayout.Toolbar( selectedMethod, calculationMethod );
 
-                if ( selectedMethod != 0 )
-                {
-                    Space( 2 );
-
-                    GUILayout.BeginHorizontal();
-                        CreateTextInfo( "T/U Spacing: ", "", 120 );
-                        float.TryParse( GUILayout.TextField( y_entry.ToString(), GUILayout.Width( 120 ) ), out y_entry );
-                        CreateButton( "Reset T/U values", "", () => { y_entry = 0; } );
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                        CreateTextInfo( "F/B Spacing: ", "", 120 );
-                        float.TryParse( GUILayout.TextField( z_entry.ToString(), GUILayout.Width( 120 ) ), out z_entry );
-                        CreateButton( "Reset F/B values", "", () => { z_entry = 0; } );
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                        CreateTextInfo( "L/R Spacing: ", "", 120 );
-                        float.TryParse( GUILayout.TextField( x_entry.ToString(), GUILayout.Width( 120 ) ), out x_entry );
-                        CreateButton( "Reset L/R values", "", () => { x_entry = 0; } );
-                    GUILayout.EndHorizontal();
-
-                    CreateButton( "Reset all values", "", () => ResetValues() );
-                }
+            if ( selectedMethod != 0 )
+            {
+                Space( 2 );
 
                 GUILayout.BeginHorizontal();
-                    Separator( 584 );
-                GUILayout.EndHorizontal();
-
-                    Space( 8 );
-
-                GUILayout.BeginHorizontal();
-                    Space( 196 );
-                    CreateButton( "Duplicate to FORWARD", "", () => DuplicateInit( DirectionType.Forward ), 193 );
-                GUILayout.EndHorizontal();
-                    
-                GUILayout.BeginHorizontal();
-                    CreateButton( "Duplicate to LEFT", "", () => DuplicateInit( DirectionType.Left ), 193 );
-                    CreateButton( "Duplicate to BACKWARD", "", () => DuplicateInit( DirectionType.Backward ), 193 );
-                    CreateButton( "Duplicate to RIGHT", "", () => DuplicateInit( DirectionType.Right ), 193 );
+                CreateTextInfo( "T/U Spacing: ", "", 120 );
+                float.TryParse( GUILayout.TextField( y_entry.ToString(), GUILayout.Width( 120 ) ), out y_entry );
+                CreateButton( "Reset T/U values", "", () => { y_entry = 0; } );
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
-                    CreateButton( "Duplicate to TOP", "", () => DuplicateInit( DirectionType.Top ), 193 );
-                        Space( 196 );
-                    CreateButton( "Duplicate to BOTTOM", "", () => DuplicateInit( DirectionType.Bottom ), 193 );
+                CreateTextInfo( "F/B Spacing: ", "", 120 );
+                float.TryParse( GUILayout.TextField( z_entry.ToString(), GUILayout.Width( 120 ) ), out z_entry );
+                CreateButton( "Reset F/B values", "", () => { z_entry = 0; } );
                 GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                CreateTextInfo( "L/R Spacing: ", "", 120 );
+                float.TryParse( GUILayout.TextField( x_entry.ToString(), GUILayout.Width( 120 ) ), out x_entry );
+                CreateButton( "Reset L/R values", "", () => { x_entry = 0; } );
+                GUILayout.EndHorizontal();
+
+                CreateButton( "Reset all values", "", () => ResetValues() );
+            }
+
+            GUILayout.BeginHorizontal();
+            Separator( 584 );
+            GUILayout.EndHorizontal();
+
+            Space( 8 );
+
+            GUILayout.BeginHorizontal();
+            Space( 196 );
+            CreateButton( "Duplicate to FORWARD", "", () => DuplicateInit( DirectionType.Forward ), 193 );
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            CreateButton( "Duplicate to LEFT", "", () => DuplicateInit( DirectionType.Left ), 193 );
+            CreateButton( "Duplicate to BACKWARD", "", () => DuplicateInit( DirectionType.Backward ), 193 );
+            CreateButton( "Duplicate to RIGHT", "", () => DuplicateInit( DirectionType.Right ), 193 );
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            CreateButton( "Duplicate to TOP", "", () => DuplicateInit( DirectionType.Top ), 193 );
+            Space( 196 );
+            CreateButton( "Duplicate to BOTTOM", "", () => DuplicateInit( DirectionType.Bottom ), 193 );
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 
@@ -123,20 +102,20 @@ namespace MultiTool
                 return;
             }
 
-            Vector3[] DeterminedBounds = DetermineBoundsInSelection();
-            BoundsSize = DeterminedBounds[ ( int ) BoundsInt.Size ];
-            BoundsMax = DeterminedBounds[ ( int ) BoundsInt.Max ];
-            BoundsMin = DeterminedBounds[ ( int ) BoundsInt.Min ];
-            BoundsCenter = DeterminedBounds[ ( int ) BoundsInt.Center ];
-            BoundsExtents = DeterminedBounds[ ( int ) BoundsInt.Extents ];
+            var DeterminedBounds = DetermineBoundsInSelection();
+            BoundsSize = DeterminedBounds[( int )BoundsInt.Size];
+            BoundsMax = DeterminedBounds[( int )BoundsInt.Max];
+            BoundsMin = DeterminedBounds[( int )BoundsInt.Min];
+            BoundsCenter = DeterminedBounds[( int )BoundsInt.Center];
+            BoundsExtents = DeterminedBounds[( int )BoundsInt.Extents];
 
-            ReMapConsole.Log($"[Serialize Tool] Bounds Size:    {BoundsSize}", ReMapConsole.LogType.Info);
-            ReMapConsole.Log($"[Serialize Tool] Bounds Max:     {BoundsMax}",  ReMapConsole.LogType.Info);
-            ReMapConsole.Log($"[Serialize Tool] Bounds Min:     {BoundsMin}",  ReMapConsole.LogType.Info);
-            ReMapConsole.Log($"[Serialize Tool] Bounds Center:  {BoundsCenter}",  ReMapConsole.LogType.Info);
-            ReMapConsole.Log($"[Serialize Tool] Bounds Extents: {BoundsExtents}",  ReMapConsole.LogType.Info);
+            ReMapConsole.Log( $"[Serialize Tool] Bounds Size:    {BoundsSize}", ReMapConsole.LogType.Info );
+            ReMapConsole.Log( $"[Serialize Tool] Bounds Max:     {BoundsMax}", ReMapConsole.LogType.Info );
+            ReMapConsole.Log( $"[Serialize Tool] Bounds Min:     {BoundsMin}", ReMapConsole.LogType.Info );
+            ReMapConsole.Log( $"[Serialize Tool] Bounds Center:  {BoundsCenter}", ReMapConsole.LogType.Info );
+            ReMapConsole.Log( $"[Serialize Tool] Bounds Extents: {BoundsExtents}", ReMapConsole.LogType.Info );
 
-            switch( selectedMethod )
+            switch ( selectedMethod )
             {
                 case 0:
                     x_spacing = BoundsSize.x;
@@ -152,7 +131,7 @@ namespace MultiTool
                     x_spacing = x_entry;
                     y_spacing = y_entry;
                     z_spacing = z_entry;
-                break;
+                    break;
             }
 
             DuplicateProps( directionType );
@@ -160,21 +139,21 @@ namespace MultiTool
 
         private static void DuplicateProps( DirectionType directionType )
         {
-            GameObject[] newSource = new GameObject[0];
+            var newSource = new GameObject[0];
 
-            foreach ( GameObject go in source )
+            foreach ( var go in source )
             {
                 if ( !Helper.IsValid( go ) ) continue;
 
-                PropScript script = ( PropScript ) Helper.GetComponentByEnum( go, ObjectType.Prop );
+                var script = ( PropScript )Helper.GetComponentByEnum( go, ObjectType.Prop );
 
                 if ( !Helper.IsValid( script ) ) continue;
 
-                GameObject obj = Helper.CreateGameObject( "", go.name, PathType.Name );
+                var obj = Helper.CreateGameObject( "", go.name, PathType.Name );
 
                 if ( !Helper.IsValid( obj ) ) continue;
 
-                PropScript scriptInstance = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
+                var scriptInstance = ( PropScript )Helper.GetComponentByEnum( obj, ObjectType.Prop );
 
                 if ( !Helper.IsValid( scriptInstance ) ) continue;
 
@@ -184,7 +163,7 @@ namespace MultiTool
 
                 obj.transform.SetParent( Helper.FindParent( go ) );
 
-                Helper.ApplyComponentScriptData< PropScript >( script, scriptInstance );
+                Helper.ApplyComponentScriptData( script, scriptInstance );
 
                 Helper.ArrayAppend( ref newSource, obj );
             }
@@ -198,87 +177,71 @@ namespace MultiTool
             float y = y_spacing;
             float z = z_spacing;
 
-            Transform refTranform = reference.transform;
-            Vector3 origin = refTranform.position;
+            var refTranform = reference.transform;
+            var origin = refTranform.position;
 
-            Transform goTranform = newGo.transform;
+            var goTranform = newGo.transform;
 
-            Quaternion referenceRotation = refTranform.rotation;
-            refTranform.rotation = Quaternion.Euler(0, 0, 0);
-            Bounds bounds = new Bounds();
-            foreach( Renderer o in reference.GetComponentsInChildren< Renderer >() )
-            {
+            var referenceRotation = refTranform.rotation;
+            refTranform.rotation = Quaternion.Euler( 0, 0, 0 );
+            var bounds = new Bounds();
+            foreach ( var o in reference.GetComponentsInChildren< Renderer >() )
                 bounds.Encapsulate( o.bounds );
-            }
             refTranform.rotation = referenceRotation;
 
-            switch( directionType )
+            switch ( directionType )
             {
                 case DirectionType.Top:
-                    if( unidirectionalMode )
-                    {
-                        goTranform.position = origin + ( source[0].transform.up * y );
-                    }
-                    else goTranform.position = origin + ( refTranform.up * y );
+                    if ( unidirectionalMode )
+                        goTranform.position = origin + source[0].transform.up * y;
+                    else goTranform.position = origin + refTranform.up * y;
                     break;
 
                 case DirectionType.Bottom:
-                    if( unidirectionalMode )
-                    {
-                        goTranform.position = origin + ( source[0].transform.up * -y );
-                    }
-                    else goTranform.position = origin + ( refTranform.up * -y );
+                    if ( unidirectionalMode )
+                        goTranform.position = origin + source[0].transform.up * -y;
+                    else goTranform.position = origin + refTranform.up * -y;
                     break;
 
                 case DirectionType.Forward:
-                    if( unidirectionalMode )
-                    {
-                        goTranform.position = origin + ( source[0].transform.forward * z );
-                    }
-                    else goTranform.position = origin + ( refTranform.forward * z );
+                    if ( unidirectionalMode )
+                        goTranform.position = origin + source[0].transform.forward * z;
+                    else goTranform.position = origin + refTranform.forward * z;
                     break;
 
                 case DirectionType.Backward:
-                    if( unidirectionalMode )
-                    {
-                        goTranform.position = origin + ( source[0].transform.forward * -z );
-                    }
-                    else goTranform.position = origin + ( refTranform.forward * -z );
+                    if ( unidirectionalMode )
+                        goTranform.position = origin + source[0].transform.forward * -z;
+                    else goTranform.position = origin + refTranform.forward * -z;
                     break;
 
                 case DirectionType.Left:
-                    if( unidirectionalMode )
-                    {
-                        goTranform.position = origin + ( source[0].transform.right * -x );
-                    }
-                    else goTranform.position = origin + ( refTranform.right * -x );
+                    if ( unidirectionalMode )
+                        goTranform.position = origin + source[0].transform.right * -x;
+                    else goTranform.position = origin + refTranform.right * -x;
                     break;
 
                 case DirectionType.Right:
-                    if( unidirectionalMode )
-                    {
-                        goTranform.position = origin + ( source[0].transform.right * x );
-                    }
-                    else goTranform.position = origin + ( refTranform.right * x );
+                    if ( unidirectionalMode )
+                        goTranform.position = origin + source[0].transform.right * x;
+                    else goTranform.position = origin + refTranform.right * x;
                     break;
-
-                default: break;
             }
         }
 
         private static Vector3[] DetermineBoundsInSelection()
         {
-            List< GameObject > newSource = new List< GameObject >();
+            var newSource = new List< GameObject >();
 
-            GameObject sourceParent = new GameObject();
+            var sourceParent = new GameObject();
             sourceParent.transform.position = source[0].transform.position;
             sourceParent.transform.eulerAngles = source[0].transform.eulerAngles;
 
-            foreach ( GameObject go in source )
+            foreach ( var go in source )
             {
                 if ( !Helper.IsValid( go ) ) continue;
 
-                GameObject obj = Helper.CreateGameObject( "", go.name, PathType.Name );
+                var obj = Helper.CreateGameObject( "", go.name, PathType.Name );
 
                 if ( !Helper.IsValid( obj ) ) continue;
 
@@ -291,37 +254,32 @@ namespace MultiTool
 
             sourceParent.transform.eulerAngles = Vector3.zero;
 
-            Bounds bounds = new Bounds();
+            var bounds = new Bounds();
             bool firstRenderer = true;
-            foreach ( GameObject go in newSource )
-            {
-                foreach ( Renderer renderer in go.GetComponentsInChildren< Renderer >() )
+            foreach ( var go in newSource )
+            foreach ( var renderer in go.GetComponentsInChildren< Renderer >() )
+                if ( firstRenderer )
                 {
-                    if ( firstRenderer )
-                    {
-                        bounds = renderer.bounds;
-                        firstRenderer = false;
-                    }
-                    else
-                    {
-                        bounds.Encapsulate( renderer.bounds );
-                    }
+                    bounds = renderer.bounds;
+                    firstRenderer = false;
                 }
-            }
+                else
+                {
+                    bounds.Encapsulate( renderer.bounds );
+                }
 
-            Vector3[] boundsArray = new Vector3[5];
-            boundsArray[ ( int ) BoundsInt.Size ] = bounds.size;
-            boundsArray[ ( int ) BoundsInt.Max ] = bounds.max;
-            boundsArray[ ( int ) BoundsInt.Min ] = bounds.min;
-            boundsArray[ ( int ) BoundsInt.Center ] = bounds.center;
-            boundsArray[ ( int ) BoundsInt.Extents ] = bounds.extents;
+            var boundsArray = new Vector3[5];
+            boundsArray[( int )BoundsInt.Size] = bounds.size;
+            boundsArray[( int )BoundsInt.Max] = bounds.max;
+            boundsArray[( int )BoundsInt.Min] = bounds.min;
+            boundsArray[( int )BoundsInt.Center] = bounds.center;
+            boundsArray[( int )BoundsInt.Extents] = bounds.extents;
 
-            foreach ( GameObject go in newSource )
-            {
-                if ( Helper.IsValid( go ) ) GameObject.DestroyImmediate( go );
-            }
+            foreach ( var go in newSource )
+                if ( Helper.IsValid( go ) )
+                    Object.DestroyImmediate( go );
 
-            if ( Helper.IsValid( sourceParent ) ) GameObject.DestroyImmediate( sourceParent );
+            if ( Helper.IsValid( sourceParent ) ) Object.DestroyImmediate( sourceParent );
 
             return boundsArray;
         }
@@ -351,7 +309,7 @@ namespace MultiTool
         // Unusued
         private static Vector3[] DetermineBoundsInProp( GameObject go )
         {
-            GameObject sourceParent = new GameObject();
+            var sourceParent = new GameObject();
             sourceParent.transform.position = go.transform.position;
             sourceParent.transform.eulerAngles = go.transform.eulerAngles;
 
@@ -360,47 +318,64 @@ namespace MultiTool
             //if( !IsValidGameObject( go ) )
             //    return new Vector3[4];
 
-            UnityEngine.Object loadedPrefabResource = UnityInfo.FindPrefabFromName(name);
-            if (loadedPrefabResource == null)
+            var loadedPrefabResource = UnityInfo.FindPrefabFromName( name );
+            if ( loadedPrefabResource == null )
             {
-                ReMapConsole.Log($"[Serialize Tool] Couldn't find prefab with name of: {name}", ReMapConsole.LogType.Error);
+                ReMapConsole.Log( $"[Serialize Tool] Couldn't find prefab with name of: {name}", ReMapConsole.LogType.Error );
                 return new Vector3[4];
             }
 
-            GameObject obj = PrefabUtility.InstantiatePrefab(loadedPrefabResource as GameObject) as GameObject;
+            var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
             obj.transform.position = go.transform.position;
             obj.transform.eulerAngles = go.transform.eulerAngles;
             obj.transform.localScale = go.transform.localScale;
 
-            obj.transform.SetParent(sourceParent.transform);
+            obj.transform.SetParent( sourceParent.transform );
 
             sourceParent.transform.eulerAngles = Vector3.zero;
 
-            Bounds bounds = new Bounds();
+            var bounds = new Bounds();
             bool firstRenderer = true;
-            foreach (Renderer renderer in go.GetComponentsInChildren<Renderer>())
-            {
-                if (firstRenderer)
+            foreach ( var renderer in go.GetComponentsInChildren< Renderer >() )
+                if ( firstRenderer )
                 {
                     bounds = renderer.bounds;
                     firstRenderer = false;
                 }
                 else
                 {
-                    bounds.Encapsulate(renderer.bounds);
+                    bounds.Encapsulate( renderer.bounds );
                 }
-            }
 
-            Vector3[] boundsArray = new Vector3[4];
-            boundsArray[(int)BoundsInt.Size] = bounds.size;
-            boundsArray[(int)BoundsInt.Max] = bounds.max;
-            boundsArray[(int)BoundsInt.Min] = bounds.min;
-            boundsArray[(int)BoundsInt.Center] = bounds.center;
+            var boundsArray = new Vector3[4];
+            boundsArray[( int )BoundsInt.Size] = bounds.size;
+            boundsArray[( int )BoundsInt.Max] = bounds.max;
+            boundsArray[( int )BoundsInt.Min] = bounds.min;
+            boundsArray[( int )BoundsInt.Center] = bounds.center;
 
-            GameObject.DestroyImmediate(obj);
-            GameObject.DestroyImmediate(sourceParent);
+            Object.DestroyImmediate( obj );
+            Object.DestroyImmediate( sourceParent );
 
             return boundsArray;
+        }
+
+        private enum DirectionType
+        {
+            Top,
+            Bottom,
+            Forward,
+            Backward,
+            Left,
+            Right
+        }
+
+        private enum BoundsInt
+        {
+            Size,
+            Max,
+            Min,
+            Center,
+            Extents
         }
     }
 }

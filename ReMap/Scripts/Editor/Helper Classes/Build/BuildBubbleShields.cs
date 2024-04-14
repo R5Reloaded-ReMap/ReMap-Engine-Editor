@@ -1,12 +1,7 @@
-
-using System.ComponentModel.Design;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using CodeViews;
 using UnityEngine;
-
 using static Build.Build;
 
 namespace Build
@@ -15,7 +10,7 @@ namespace Build
     {
         public static async Task< StringBuilder > BuildBubbleShieldObjects( GameObject[] objectData, BuildType buildType )
         {
-            StringBuilder code = new StringBuilder();
+            var code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
@@ -38,13 +33,13 @@ namespace Build
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             // Build the code
-            foreach ( GameObject obj in objectData )
+            foreach ( var obj in objectData )
             {
-                BubbleScript script = ( BubbleScript ) Helper.GetComponentByEnum( obj, ObjectType.BubbleShield );
+                var script = ( BubbleScript )Helper.GetComponentByEnum( obj, ObjectType.BubbleShield );
                 if ( script == null ) continue;
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
@@ -71,8 +66,8 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        CodeViews.LiveMap.AddToGameQueue( $"MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\", true )" );
-                    break;
+                        LiveMap.AddToGameQueue( $"MapEditor_CreateBubbleShieldWithSettings( {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {scale}, \"{ShieldColor}\", $\"{model}\", true )" );
+                        break;
                 }
             }
 
@@ -90,14 +85,14 @@ namespace Build
                 case BuildType.Precache:
                     // Empty
                     break;
-                    
+
                 case BuildType.DataTable:
                     // Empty
                     break;
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             await Helper.Wait();

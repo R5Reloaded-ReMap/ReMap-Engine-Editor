@@ -1,75 +1,62 @@
-
-using UnityEngine;
 using UnityEditor;
-
+using UnityEngine;
 using static WindowUtility.WindowUtility;
 
 namespace MultiTool
 {
     public class MultiToolWindow : EditorWindow
     {
-        private enum ToolType
-        {
-            DistanceMeter,
-            SelectionTool,
-            OffsetTool,
-            ModelSwap,
-            Serialize,
-            ObjectInfo,
-            ComponentTransfer,
-            ModelPosition
-        }
-        internal protected static MultiToolWindow windowInstance;
+        protected internal static MultiToolWindow windowInstance;
         private static ToolType toolTypeSelection = ToolType.DistanceMeter;
         private static string toolInfo = "";
 
         public static void Init()
         {
-            windowInstance = ( MultiToolWindow ) EditorWindow.GetWindow( typeof( MultiToolWindow ), false, "Multi Tool");
+            windowInstance = ( MultiToolWindow )GetWindow( typeof(MultiToolWindow), false, "Multi Tool" );
             windowInstance.Show();
 
             ChangeToolType( toolTypeSelection );
         }
 
-        void OnInspectorUpdate()
+        private void OnInspectorUpdate()
         {
             Repaint();
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             GUILayout.BeginVertical( "box" );
-                MenuSelector();
+            MenuSelector();
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical( "box" );
-                GUILayout.BeginHorizontal();
-                    CreateTextInfo( toolInfo );
-                    #if RMAPDEV
-                        FlexibleSpace();
-                        GetEditorWindowSize( windowInstance );
-                    #endif
-                GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            CreateTextInfo( toolInfo );
+#if RMAPDEV
+            FlexibleSpace();
+            GetEditorWindowSize( windowInstance );
+#endif
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
-                
+
             ShowTool( toolTypeSelection );
         }
 
         private static void MenuSelector()
         {
             GUILayout.BeginHorizontal();
-                CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ), 194 );
-                CreateButton( "Selection Tool", "", () => ChangeToolType( ToolType.SelectionTool ), 194 );
-                CreateButton( "Offset Tool", "", () => ChangeToolType( ToolType.OffsetTool ), 194 );
+            CreateButton( "Distance Meter", "", () => ChangeToolType( ToolType.DistanceMeter ), 194 );
+            CreateButton( "Selection Tool", "", () => ChangeToolType( ToolType.SelectionTool ), 194 );
+            CreateButton( "Offset Tool", "", () => ChangeToolType( ToolType.OffsetTool ), 194 );
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-                CreateButton( "Model Swap Tool", "", () => ChangeToolType( ToolType.ModelSwap ), 194 );
-                CreateButton( "Serialize Tool", "", () => ChangeToolType( ToolType.Serialize ), 194 );
-                CreateButton( "Object Info", "", () => ChangeToolType( ToolType.ObjectInfo ), 194 );
+            CreateButton( "Model Swap Tool", "", () => ChangeToolType( ToolType.ModelSwap ), 194 );
+            CreateButton( "Serialize Tool", "", () => ChangeToolType( ToolType.Serialize ), 194 );
+            CreateButton( "Object Info", "", () => ChangeToolType( ToolType.ObjectInfo ), 194 );
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-                CreateButton( "Component Transfer Tool", "", () => ChangeToolType( ToolType.ComponentTransfer ), 194 );
-                CreateButton( "Model Position Tool", "", () => ChangeToolType( ToolType.ModelPosition ), 194 );
+            CreateButton( "Component Transfer Tool", "", () => ChangeToolType( ToolType.ComponentTransfer ), 194 );
+            CreateButton( "Model Position Tool", "", () => ChangeToolType( ToolType.ModelPosition ), 194 );
             GUILayout.EndHorizontal();
         }
 
@@ -77,14 +64,30 @@ namespace MultiTool
         {
             switch ( toolTypeSelection )
             {
-                case ToolType.DistanceMeter: DistanceMeter.OnGUI(); break;
-                case ToolType.SelectionTool: SelectionTool.OnGUI(); break;
-                case ToolType.OffsetTool: OffsetTool.OnGUI(); break;
-                case ToolType.ModelSwap: ModelSwap.OnGUI(); break;
-                case ToolType.Serialize: SerializeTool.OnGUI(); break;
-                case ToolType.ObjectInfo: ObjectInfo.OnGUI(); break;
-                case ToolType.ComponentTransfer: ComponentTransfer.OnGUI(); break;
-                case ToolType.ModelPosition: ModelPosition.OnGUI(); break;
+                case ToolType.DistanceMeter:
+                    DistanceMeter.OnGUI();
+                    break;
+                case ToolType.SelectionTool:
+                    SelectionTool.OnGUI();
+                    break;
+                case ToolType.OffsetTool:
+                    OffsetTool.OnGUI();
+                    break;
+                case ToolType.ModelSwap:
+                    ModelSwap.OnGUI();
+                    break;
+                case ToolType.Serialize:
+                    SerializeTool.OnGUI();
+                    break;
+                case ToolType.ObjectInfo:
+                    ObjectInfo.OnGUI();
+                    break;
+                case ToolType.ComponentTransfer:
+                    ComponentTransfer.OnGUI();
+                    break;
+                case ToolType.ModelPosition:
+                    ModelPosition.OnGUI();
+                    break;
             }
         }
 
@@ -92,7 +95,7 @@ namespace MultiTool
         {
             toolTypeSelection = toolType;
 
-            if ( !Helper.IsValid( windowInstance ) ) windowInstance = ( MultiToolWindow ) EditorWindow.GetWindow( typeof( MultiToolWindow ), false, "Multi Tool");
+            if ( !Helper.IsValid( windowInstance ) ) windowInstance = ( MultiToolWindow )GetWindow( typeof(MultiToolWindow), false, "Multi Tool" );
 
             switch ( toolTypeSelection )
             {
@@ -108,7 +111,7 @@ namespace MultiTool
                     windowInstance.maxSize = new Vector2( 600, 130 + size );
                     toolInfo = "Selection Tool:";
                     break;
-                
+
                 case ToolType.OffsetTool:
                     windowInstance.minSize = new Vector2( 600, 152 );
                     windowInstance.maxSize = new Vector2( 600, 152 );
@@ -120,7 +123,7 @@ namespace MultiTool
                     windowInstance.maxSize = new Vector2( 600, 296 );
                     toolInfo = "Model Swap Tool:";
                     break;
-                
+
                 case ToolType.Serialize:
                     SerializeTool.ChangeWindowSize();
                     toolInfo = "Serialize Tool:";
@@ -142,8 +145,20 @@ namespace MultiTool
                     windowInstance.minSize = new Vector2( 600, 200 );
                     windowInstance.maxSize = new Vector2( 600, 200 );
                     toolInfo = "Model Position Tool:";
-                break;
+                    break;
             }
+        }
+
+        private enum ToolType
+        {
+            DistanceMeter,
+            SelectionTool,
+            OffsetTool,
+            ModelSwap,
+            Serialize,
+            ObjectInfo,
+            ComponentTransfer,
+            ModelPosition
         }
     }
 }

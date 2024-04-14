@@ -1,28 +1,20 @@
-
-using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEditor;
-using UnityEditor.SceneManagement;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-
 using Build;
-using static Build.Build;
+using UnityEngine;
 using WindowUtility;
+using static Build.Build;
 
 namespace CodeViews
 {
     public class DataTableTab
     {
-        static FunctionRef[] OffsetMenu = new FunctionRef[]
+        private static readonly FunctionRef[] OffsetMenu =
         {
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenuOffset, OffsetSubMenu, MenuType.Medium, "Disable Origin Offset", "Enable Origin Offset", "If true, add a position offset to objects", true )
         };
 
-        static FunctionRef[] OffsetSubMenu = new FunctionRef[]
+        private static readonly FunctionRef[] OffsetSubMenu =
         {
             () => CodeViewsMenu.OptionalTextInfo( "Starting Origin (Apex Vector)", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small ),
             () => CodeViewsMenu.OptionalVector3Field( ref CodeViewsWindow.StartingOffset, "- Origin", "Change origins in \"vector startingorg = < 0, 0, 0 >\"", null, MenuType.Small )
@@ -33,12 +25,12 @@ namespace CodeViews
             GUILayout.BeginVertical();
             CodeViewsWindow.scrollSettings = GUILayout.BeginScrollView( CodeViewsWindow.scrollSettings, false, false );
 
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Large, "Offset Menu", "Offset Menu", "" );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.OffsetMenu, OffsetMenu, MenuType.Large, "Offset Menu", "Offset Menu" );
 
             CodeViewsMenu.SelectionMenu();
 
             CodeViewsMenu.SharedFunctions();
-            
+
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
@@ -47,7 +39,7 @@ namespace CodeViews
         {
             Helper.ForceHideBoolToGenerateObjects( CodeViewsWindow.EmptyObjectType );
 
-            StringBuilder code = new StringBuilder();
+            var code = new StringBuilder();
 
             AppendCode( ref code, await BuildObjectsWithEnum( ObjectType.Prop, BuildType.DataTable, CodeViewsWindow.SelectionEnable() ), 0 );
 

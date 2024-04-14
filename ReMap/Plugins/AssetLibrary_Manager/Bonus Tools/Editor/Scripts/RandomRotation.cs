@@ -1,48 +1,43 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.EditorTools;
+using UnityEngine;
 
-[EditorTool("Random Rotation...", typeof(Transform))]
-class RandomRotation : EditorTool
+[EditorTool( "Random Rotation...", typeof(Transform) )]
+internal class RandomRotation : EditorTool
 {
-    GUIContent someContent;
+    private GUIContent someContent;
 
-    void OnEnable()
+    public override GUIContent toolbarIcon => someContent;
+
+    private void OnEnable()
     {
-        someContent = new GUIContent()
+        someContent = new GUIContent
         {
-            image = (Texture)Resources.Load("Icons/rotation"),
+            image = ( Texture )Resources.Load( "Icons/rotation" ),
             tooltip = "Random Rotation..."
         };
 
         ToolManager.activeToolChanged += OnActiveToolDidChange;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         ToolManager.activeToolChanged -= OnActiveToolDidChange;
     }
 
-    public override GUIContent toolbarIcon
+    private void OnActiveToolDidChange()
     {
-        get { return someContent; }
-    }
-
-    void OnActiveToolDidChange()
-    {   
-        if (ToolManager.IsActiveTool(this))
+        if ( ToolManager.IsActiveTool( this ) )
         {
-            Undo.RegisterCompleteObjectUndo(Selection.transforms, "UndoRotation");
+            Undo.RegisterCompleteObjectUndo( Selection.transforms, "UndoRotation" );
 
-            foreach (GameObject item in Selection.gameObjects)
-            {
-                item.transform.Rotate(new Vector3( Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360) ) );
-            }       
+            foreach ( var item in Selection.gameObjects )
+                item.transform.Rotate( new Vector3( Random.Range( 0, 360 ), Random.Range( 0, 360 ), Random.Range( 0, 360 ) ) );
         }
     }
 
-    public override void OnToolGUI(EditorWindow window)
+    public override void OnToolGUI( EditorWindow window )
     {
-        Tools.current = Tool.Move;   
+        Tools.current = Tool.Move;
     }
 }

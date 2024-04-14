@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Build;
 using UnityEditor;
 using UnityEngine;
-
 using static Build.Build;
-
-using WindowUtility;
 
 namespace CodeViews
 {
@@ -22,43 +21,29 @@ namespace CodeViews
 
     public static class LiveMap
     {
-        private enum ConfirmationType
-        {
-            ERROR,
-            OPTIMAL
-        }
+        private const int WM_COPYDATA = 0x4A;
 
-        public static List< String > Commands;
-        public static bool IsSending = false;
-        static IntPtr m_hEngine;
+        public static List< string > Commands;
+        public static bool IsSending;
+        private static IntPtr m_hEngine;
         public static Vector3 PlayerInfoOrigin;
         public static Vector3 PlayerInfoAngles;
 
-        public static bool GettingInfo = false;
+        public static bool GettingInfo;
         public static bool GetApexInfoOnSend = false;
 
         public static int commandDelay = 50;
 
-        [ DllImport( "user32.dll" ) ]
+        [DllImport( "user32.dll" )]
         public static extern int SendMessage( IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam );
 
-        [ DllImport( "user32.dll", SetLastError = true ) ]
-        static extern IntPtr FindWindow( string lpClassName, string lpWindowName );
-
-        [ StructLayout( LayoutKind.Sequential ) ]
-        public struct COPYDATASTRUCT
-        {
-            public IntPtr dwData;
-            public int cbData;
-            public IntPtr lpData;
-        }
-
-        const int WM_COPYDATA = 0x4A;
+        [DllImport( "user32.dll", SetLastError = true )]
+        private static extern IntPtr FindWindow( string lpClassName, string lpWindowName );
 
 
         public static IntPtr FindApexWindow()
-        { 
-            return FindWindow("Respawn001", "Apex Legends"); 
+        {
+            return FindWindow( "Respawn001", "Apex Legends" );
         }
 
         public static bool ApexProcessIsActive()
@@ -71,28 +56,28 @@ namespace CodeViews
             m_hEngine = FindApexWindow();
         }
 
-        public static void SendCommandToApex(string command)
+        public static void SendCommandToApex( string command )
         {
             if ( !ApexProcessIsActive() ) return;
-                
+
             string m_pCommand = command;
 
             COPYDATASTRUCT m_cData;
             m_cData.cbData = m_pCommand.Length + 1;
             m_cData.dwData = IntPtr.Zero;
-            m_cData.lpData = Marshal.StringToHGlobalAnsi(m_pCommand);
+            m_cData.lpData = Marshal.StringToHGlobalAnsi( m_pCommand );
 
-            IntPtr ptrCopyData = Marshal.AllocCoTaskMem(Marshal.SizeOf(m_cData));
-            Marshal.StructureToPtr(m_cData, ptrCopyData, false);
+            var ptrCopyData = Marshal.AllocCoTaskMem( Marshal.SizeOf( m_cData ) );
+            Marshal.StructureToPtr( m_cData, ptrCopyData, false );
 
-            SendMessage(m_hEngine, WM_COPYDATA, IntPtr.Zero, ptrCopyData);
+            SendMessage( m_hEngine, WM_COPYDATA, IntPtr.Zero, ptrCopyData );
         }
 
         public static async void Send()
         {
-            if( IsSending )
+            if ( IsSending )
                 return;
-            
+
             IsSending = true;
             //find and set window once
             m_hEngine = FindApexWindow();
@@ -106,23 +91,23 @@ namespace CodeViews
 
             if ( GetApexInfoOnSend )
             {
-                EditorUtility.DisplayProgressBar( $"Live Map Code", $"Getting Player Info...", 0.0f );
-                    GetApexPlayerInfo();
+                EditorUtility.DisplayProgressBar( "Live Map Code", "Getting Player Info...", 0.0f );
+                GetApexPlayerInfo();
                 EditorUtility.ClearProgressBar();
 
-                while ( GettingInfo ) await Task.Delay( 100 ); // 100 ms
+                while (GettingInfo) await Task.Delay( 100 ); // 100 ms
             }
 
             ResetCommandList();
 
-            AddToGameQueue( $"sv_cheats 1", false );
-            AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999", false );
-            AddToGameQueue( $"cl_quota_stringCmdsPerSecond 9999999", false );
-            AddToGameQueue( $"External_ReMapRemoveAllEnts()" );
+            AddToGameQueue( "sv_cheats 1", false );
+            AddToGameQueue( "sv_quota_stringCmdsPerSecond 9999999", false );
+            AddToGameQueue( "cl_quota_stringCmdsPerSecond 9999999", false );
+            AddToGameQueue( "External_ReMapRemoveAllEnts()" );
 
             CodeViewsWindow.SendedEntityCount = 0;
 
-            await Helper.BuildMapCode( Build.BuildType.LiveMap, CodeViewsWindow.SelectionEnable() );
+            await Helper.BuildMapCode( BuildType.LiveMap, CodeViewsWindow.SelectionEnable() );
 
             if ( MenuInit.IsEnable( CodeViewsWindow.LiveCodeMenuTeleportation ) ) RespawnPlayers();
 
@@ -133,25 +118,32 @@ namespace CodeViews
 
         public static void AddToGameQueue( string command, bool isScript = true )
         {
-            command = Helper.RemoveSpacesAfterChars($"{( isScript ? "script " : "" )}{command}");
-            ReMapConsole.Log($"[LiveCode] Adding Command: \"{command}\"", ReMapConsole.LogType.Info);
-            Commands.Add(command);
+            command = Helper.RemoveSpacesAfterChars( $"{( isScript ? "script " : "" )}{command}" );
+            ReMapConsole.Log( $"[LiveCode] Adding Command: \"{command}\"", ReMapConsole.LogType.Info );
+            Commands.Add( command );
         }
 
         public static void SendCommands()
         {
-            ReMapConsole.Log( $"[LiveCode] Sending Commands", ReMapConsole.LogType.Success );
-            int min = 0; int max = Commands.Count; float progress = 0.0f;
-            
+            ReMapConsole.Log( "[LiveCode] Sending Commands", ReMapConsole.LogType.Success );
+            int min = 0;
+            int max = Commands.Count;
+            float progress = 0.0f;
+
             foreach ( string command in Commands )
             {
-                EditorUtility.DisplayProgressBar( $"Live Map Code", $"Sending Map Code... ({min++}/{max})", progress );
+                EditorUtility.DisplayProgressBar( "Live Map Code", $"Sending Map Code... ({min++}/{max})", progress );
 
-                SendCommandToApex( command ); progress += 1.0f / max;
+                SendCommandToApex( command );
+                progress += 1.0f / max;
 
-                for ( int i = 0; i < commandDelay * 100000; i++ ) 
+                for ( int i = 0; i < commandDelay * 100000; i++ )
                 {
-                    ;;;;;
+                    ;
+                    ;
+                    ;
+                    ;
+                    ;
                 }
             }
 
@@ -161,7 +153,7 @@ namespace CodeViews
         public static void ResetCommandList()
         {
             Commands = new List< string >();
-            ReMapConsole.Log( $"[LiveCode] Reset Command Queue", ReMapConsole.LogType.Success );
+            ReMapConsole.Log( "[LiveCode] Reset Command Queue", ReMapConsole.LogType.Success );
         }
 
         public static async void ReloadLevel( bool reset = false, string code = null )
@@ -179,7 +171,7 @@ namespace CodeViews
 
             m_hEngine = FindApexWindow();
 
-            if( m_hEngine == null )
+            if ( m_hEngine == null )
             {
                 CodeViewsWindow.SendingObjects = SendConfirmation( ConfirmationType.ERROR );
                 return;
@@ -190,22 +182,20 @@ namespace CodeViews
                 path += UnityInfo.relativePathR5RScripts;
 
                 if ( !File.Exists( path ) ) File.Create( path );
-                
+
                 if ( code == null )
-                {
                     code = await BuildScriptFile( reset );
-                }
 
                 File.WriteAllText( path, code );
 
                 if ( reset ) return;
-                
+
                 ResetCommandList();
 
-                AddToGameQueue( $"sv_cheats 1", false );
-                AddToGameQueue( $"sv_quota_stringCmdsPerSecond 9999999", false );
-                AddToGameQueue( $"cl_quota_stringCmdsPerSecond 9999999", false );
-                AddToGameQueue( $"GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
+                AddToGameQueue( "sv_cheats 1", false );
+                AddToGameQueue( "sv_quota_stringCmdsPerSecond 9999999", false );
+                AddToGameQueue( "cl_quota_stringCmdsPerSecond 9999999", false );
+                AddToGameQueue( "GameRules_ChangeMap( GetMapName(), \"survival_dev\" )" );
 
                 SendCommands();
             }
@@ -214,12 +204,11 @@ namespace CodeViews
         private static ( bool, string ) GetApexPath()
         {
             string processName = "r5apex";
-            Process[] processes = Process.GetProcesses();
+            var processes = Process.GetProcesses();
             bool processFound = false;
             string path = "";
 
-            foreach ( Process process in processes )
-            {
+            foreach ( var process in processes )
                 if ( process.ProcessName == processName )
                 {
                     try
@@ -227,23 +216,22 @@ namespace CodeViews
                         path = Path.GetDirectoryName( process.MainModule.FileName );
                         processFound = true;
                     }
-                    catch ( System.ComponentModel.Win32Exception )
+                    catch (Win32Exception)
                     {
                         UnityInfo.Printt( "System.ComponentModel.Win32Exception: Process Not Found" );
                     }
 
                     break;
                 }
-            }
 
             return ( processFound, path );
         }
 
         public static async Task< string > BuildScriptFile( bool reset = false )
         {
-            StringBuilder code = new StringBuilder();
+            var code = new StringBuilder();
 
-            Build.Build.IgnoreCounter = true;
+            IgnoreCounter = true;
 
             AppendCode( ref code, "\nglobal function ReMapLive_Init", 2 );
             AppendCode( ref code, Helper.ReMapCredit( true ), 0 );
@@ -251,7 +239,7 @@ namespace CodeViews
             CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Head, ref code, CodeViewsWindow.additionalCodeHead, !reset );
 
             AppendCode( ref code, "void function ReMapLive_Init()" );
-            
+
             if ( reset )
             {
                 AppendCode( ref code, "{" );
@@ -261,14 +249,14 @@ namespace CodeViews
             else
             {
                 AppendCode( ref code, "{" );
-                AppendCode( ref code, await Build.Build.BuildObjectsWithEnum( ObjectType.Prop, Build.BuildType.Precache, false ) );
+                AppendCode( ref code, await BuildObjectsWithEnum( ObjectType.Prop, BuildType.Precache ) );
                 AppendCode( ref code, "    AddCallback_EntitiesDidLoad( ReMapLive )" );
                 AppendCode( ref code, "}", 2 );
 
                 AppendCode( ref code, "void function ReMapLive()" );
                 AppendCode( ref code, "{" );
                 AppendCode( ref code, Helper.ShouldAddStartingOrg( StartingOriginType.SquirrelFunction, CodeViewsWindow.StartingOffset.x, CodeViewsWindow.StartingOffset.y, CodeViewsWindow.StartingOffset.z ), 0 );
-                AppendCode( ref code, await Helper.BuildMapCode( Build.BuildType.Script, false ), 0 );
+                AppendCode( ref code, await Helper.BuildMapCode(), 0 );
 
                 CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.InBlock, ref code, CodeViewsWindow.additionalCodeInBlock );
 
@@ -277,7 +265,7 @@ namespace CodeViews
                 CodeViewsWindow.AppendAdditionalCode( AdditionalCodeType.Below, ref code, CodeViewsWindow.additionalCodeBelow );
             }
 
-            Build.Build.IgnoreCounter = false;
+            IgnoreCounter = false;
 
             return code.ToString();
         }
@@ -303,7 +291,7 @@ namespace CodeViews
 
             ResetCommandList();
 
-            AddToGameQueue( $"External_ReMapWritePlayerInfoToFile()" );
+            AddToGameQueue( "External_ReMapWritePlayerInfoToFile()" );
 
             SendCommands();
 
@@ -337,12 +325,12 @@ namespace CodeViews
                     if ( line.Contains( "angles" ) ) angles = line.Replace( "angles =", "" ).Replace( "<", "" ).Replace( " ", "" ).Replace( ">", "" );
                 }
 
-                string[] value = origin.Split( "," ); float x, y, z;
+                string[] value = origin.Split( "," );
+                float x, y, z;
 
                 if ( float.TryParse( value[0].Replace( ".", "," ), out x ) && float.TryParse( value[1].Replace( ".", "," ), out y ) && float.TryParse( value[2].Replace( ".", "," ), out z ) )
                 {
                     if ( !ignoreCodeViews )
-                    {
                         switch ( pageType )
                         {
                             case PageType.SQUIRREL:
@@ -350,14 +338,11 @@ namespace CodeViews
                                 break;
 
                             case PageType.ENT:
-                                CodeViewsWindow.InfoPlayerStartOrigin  = new Vector3( x, y, z );
-                            break;
+                                CodeViewsWindow.InfoPlayerStartOrigin = new Vector3( x, y, z );
+                                break;
                         }
-                    }
                     else
-                    {
                         PlayerInfoOrigin = new Vector3( x, y, z );
-                    }
                 }
 
                 value = angles.Split( "," );
@@ -365,7 +350,6 @@ namespace CodeViews
                 if ( float.TryParse( value[0].Replace( ".", "," ), out x ) && float.TryParse( value[1].Replace( ".", "," ), out y ) && float.TryParse( value[2].Replace( ".", "," ), out z ) )
                 {
                     if ( !ignoreCodeViews )
-                    {
                         switch ( pageType )
                         {
                             case PageType.SQUIRREL:
@@ -373,13 +357,10 @@ namespace CodeViews
 
                             case PageType.ENT:
                                 CodeViewsWindow.InfoPlayerStartAngles = new Vector3( x, y, z );
-                            break;
+                                break;
                         }
-                    }
                     else
-                    {
                         PlayerInfoAngles = new Vector3( x, y, z );
-                    }
                 }
 
                 CodeViewsWindow.Refresh();
@@ -393,24 +374,25 @@ namespace CodeViews
             string[] data = GetLiveMapCodePlayerSpawnData();
             AddToGameQueue( $"External_ReMapSetVectorArray01( {data[0]} )" );
             AddToGameQueue( $"External_ReMapSetVectorArray02( {data[1]} )" );
-            AddToGameQueue( $"External_ReMapTeleportToMap()" );
+            AddToGameQueue( "External_ReMapTeleportToMap()" );
         }
 
         private static string[] GetLiveMapCodePlayerSpawnData()
         {
-            GameObject[] obj = Helper.GetAllObjectTypeWithEnum( ObjectType.LiveMapCodePlayerSpawn );
+            var obj = Helper.GetAllObjectTypeWithEnum( ObjectType.LiveMapCodePlayerSpawn );
 
             int objLength = obj.Length;
 
-            if ( objLength == 0 ) return new[] { $"[{ Helper.BuildOrigin( new Vector3( 0, 40, 0 ), false, true ) }]", $"[{ Helper.BuildAngles( new Vector3( 0, 0, 0 ), false ) }]" };
+            if ( objLength == 0 ) return new[] { $"[{Helper.BuildOrigin( new Vector3( 0, 40, 0 ), false, true )}]", $"[{Helper.BuildAngles( new Vector3( 0, 0, 0 ) )}]" };
 
-            StringBuilder origin = new StringBuilder(); int i = 1;
-            StringBuilder angles = new StringBuilder();
+            var origin = new StringBuilder();
+            int i = 1;
+            var angles = new StringBuilder();
 
-            foreach ( GameObject playerSpawn in obj )
+            foreach ( var playerSpawn in obj )
             {
                 AppendCode( ref origin, Helper.BuildOrigin( playerSpawn, false, true ), 0 );
-                AppendCode( ref angles, Helper.BuildAngles( playerSpawn, false ), 0 );
+                AppendCode( ref angles, Helper.BuildAngles( playerSpawn ), 0 );
 
                 if ( i != objLength )
                 {
@@ -420,7 +402,7 @@ namespace CodeViews
                 }
             }
 
-            return new[] { $"[{ origin }]", $"[{ angles }]" };
+            return new[] { $"[{origin}]", $"[{angles}]" };
         }
 
         private static async Task SendConfirmation( ConfirmationType confirmationType )
@@ -428,7 +410,7 @@ namespace CodeViews
             switch ( confirmationType )
             {
                 case ConfirmationType.ERROR:
-                    ReMapConsole.Log( $"[LiveCode] Game not found", ReMapConsole.LogType.Error );
+                    ReMapConsole.Log( "[LiveCode] Game not found", ReMapConsole.LogType.Error );
                     CodeViewsWindow.ephemeralMessage.AddToQueueMessage( "LiveMap_GameNotFound", "Game not found !", 6, true, CodeViewsWindow.Color_Red );
                     await Task.Delay( 1000 * 6 );
                     break;
@@ -437,7 +419,7 @@ namespace CodeViews
                     SendCommands();
                     CodeViewsWindow.ephemeralMessage.AddToQueueMessage( "LiveMap_SendCompleted", $"Sending {CodeViewsWindow.SendedEntityCount} Objects to the game", 4, true, CodeViewsWindow.Color_Green );
                     await Task.Delay( 1000 * 2 );
-                break;
+                    break;
             }
         }
 
@@ -456,11 +438,25 @@ namespace CodeViews
             }
 
             ResetCommandList();
-            
+
             RespawnPlayers();
             SendCommands();
 
             IsSending = false;
+        }
+
+        private enum ConfirmationType
+        {
+            ERROR,
+            OPTIMAL
+        }
+
+        [StructLayout( LayoutKind.Sequential )]
+        public struct COPYDATASTRUCT
+        {
+            public IntPtr dwData;
+            public int cbData;
+            public IntPtr lpData;
         }
     }
 }

@@ -1,7 +1,4 @@
-
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,12 +13,12 @@ namespace LibrarySorter
     {
         internal static MaterialData MaterialData = GetMaterialData();
 
-        private static string MaterialDataJsonPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathTextureDataList}";
+        private static readonly string MaterialDataJsonPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathTextureDataList}";
 
         internal static readonly string materialDirectory = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}";
         internal static readonly string extractedMaterialDirectory = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathLegionPlusExportedFiles}/materials";
 
-        internal static bool checkNonAlbedoTexture = false;
+        internal static bool checkNonAlbedoTexture;
 
         internal static MaterialData GetMaterialData()
         {
@@ -34,7 +31,7 @@ namespace LibrarySorter
             }
             else
             {
-                string jsonData = System.IO.File.ReadAllText( MaterialDataJsonPath );
+                string jsonData = File.ReadAllText( MaterialDataJsonPath );
                 materialData = JsonUtility.FromJson< MaterialData >( jsonData );
             }
 
@@ -43,34 +40,38 @@ namespace LibrarySorter
 
         internal static async Task CreateMaterialData()
         {
-            MaterialData materialData = new MaterialData();
+            var materialData = new MaterialData();
             materialData.MaterialList = new List< MaterialClass >();
 
-            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel, UnityInfo.relativePathDevLods } );
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new[] { UnityInfo.relativePathModel, UnityInfo.relativePathDevLods } );
 
-            int min = 1; int max = modeltextureGUID.Length; float progress = 0.0f;
-            int rmin = 0; int rmax = 1;
-            
-            foreach ( var guid in modeltextureGUID )
+            int min = 1;
+            int max = modeltextureGUID.Length;
+            float progress = 0.0f;
+            int rmin = 0;
+            int rmax = 1;
+
+            foreach ( string guid in modeltextureGUID )
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath( guid );
-                GameObject obj = Helper.CreateGameObject( "", assetPath );
+                var obj = Helper.CreateGameObject( "", assetPath );
 
                 EditorUtility.DisplayProgressBar( $"MaterialData ({min}/{max})", $"Processing... {obj.name} ({rmin}/{rmax})", progress );
 
-                Renderer[] renderers = obj.GetComponentsInChildren< Renderer >(); rmax = renderers.Length;
+                var renderers = obj.GetComponentsInChildren< Renderer >();
+                rmax = renderers.Length;
 
                 rmin = 0;
 
-                foreach ( Renderer renderer in renderers )
+                foreach ( var renderer in renderers )
                 {
                     rmin++;
-                    
-                    if ( !Helper.IsValid( renderer ) )
-                        continue; 
-                     
 
-                    foreach ( Material mat in renderer.sharedMaterials )
+                    if ( !Helper.IsValid( renderer ) )
+                        continue;
+
+
+                    foreach ( var mat in renderer.sharedMaterials )
                     {
                         if ( !Helper.IsValid( mat ) || !mat.HasProperty( "_MainTex" ) )
                             continue;
@@ -83,22 +84,21 @@ namespace LibrarySorter
                         string texturePath = AssetDatabase.GetAssetPath( mat.mainTexture );
 
                         if ( !string.IsNullOrEmpty( texturePath ) )
-                        {
                             materialData.MaterialList.Add
                             (
-                                new MaterialClass()
+                                new MaterialClass
                                 {
                                     Name = name,
                                     Path = texturePath
                                 }
                             );
-                        }
                     }
                 }
 
-                UnityEngine.Object.DestroyImmediate( obj );
+                Object.DestroyImmediate( obj );
 
-                progress += 1.0f / max; min++;
+                progress += 1.0f / max;
+                min++;
             }
 
             EditorUtility.ClearProgressBar();
@@ -106,7 +106,7 @@ namespace LibrarySorter
             Helper.CreateDirectory( UnityInfo.relativePathTextureData );
 
             SaveMaterialData( materialData );
-            
+
             await Helper.Wait();
         }
 
@@ -118,8 +118,8 @@ namespace LibrarySorter
                 return;
             }
 
-            StringBuilder legionArgument = new StringBuilder();
-            List< string > legionArguments = new List< string >();
+            var legionArgument = new StringBuilder();
+            var legionArguments = new List< string >();
 
             foreach ( string textureName in missingMaterialList )
             {
@@ -132,23 +132,25 @@ namespace LibrarySorter
 
                     legionArguments.Add( legionArgument.ToString() );
 
-                    legionArgument = new ();
+                    legionArgument = new StringBuilder();
                 }
             }
 
             legionArgument.Remove( legionArgument.Length - 1, 1 );
             legionArguments.Add( legionArgument.ToString() );
 
-            string loading = ""; int loadingCount = 0;
-            int min = 1; int max = legionArguments.Count;
+            string loading = "";
+            int loadingCount = 0;
+            int min = 1;
+            int max = legionArguments.Count;
 
             foreach ( string argument in legionArguments )
             {
-                Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
+                var legionTask = LegionExporting.ExtractModelFromLegion( argument );
 
                 string countInfo = max > 1 ? $" ({min}/{max})" : "";
 
-                while ( !legionTask.IsCompleted )
+                while (!legionTask.IsCompleted)
                 {
                     EditorUtility.DisplayProgressBar( $"Legion Extraction{countInfo}", $"Extracting files{loading}", 0.0f );
 
@@ -175,7 +177,8 @@ namespace LibrarySorter
         {
             string[] directories = Directory.GetDirectories( extractedMaterialDirectory );
 
-            int i = 0; int j = directories.Length;
+            int i = 0;
+            int j = directories.Length;
 
             //await CheckDXT1Format( directories );
 
@@ -188,14 +191,15 @@ namespace LibrarySorter
             {
                 string rmaterialDir = materialDir.Replace( "\\", "/" );
 
-                string materialName = Path.GetFileName( rmaterialDir ); i++;
+                string materialName = Path.GetFileName( rmaterialDir );
+                i++;
 
                 if ( !missingMaterialList.Contains( materialName ) )
                     continue;
 
                 string[] files = Directory.GetFiles( $"{rmaterialDir}" );
 
-                var fileToMove = files.FirstOrDefault( f => f.Contains( "_albedoTexture" ) || f.Contains( "_albedo2Texture" ) );
+                string fileToMove = files.FirstOrDefault( f => f.Contains( "_albedoTexture" ) || f.Contains( "_albedo2Texture" ) );
 
                 if ( Helper.IsValid( fileToMove ) )
                 {
@@ -203,7 +207,7 @@ namespace LibrarySorter
                     {
                         MaterialData.MaterialList.Add
                         (
-                            new MaterialClass()
+                            new MaterialClass
                             {
                                 Name = materialName,
                                 Path = GetAssetPath( $"{materialDirectory}/{Path.GetFileName( fileToMove )}" )
@@ -219,16 +223,14 @@ namespace LibrarySorter
                 }
             }
 
-            while ( !MaterialWindowSelector.MaterialListIsEmpty() )
-            {
+            while (!MaterialWindowSelector.MaterialListIsEmpty())
                 await Helper.Wait( 1 );
-            }
         }
 
         internal static async Task CheckDXT1Format( string[] directories )
         {
-            int dirIdx = 0; 
-            int dirCount = directories.Length; 
+            int dirIdx = 0;
+            int dirCount = directories.Length;
             float progress = 0.0f;
 
             var semaphore = new SemaphoreSlim( 16 );
@@ -238,13 +240,13 @@ namespace LibrarySorter
                 var info = new DirectoryInfo( path );
                 var fileInfo = info.GetFiles();
 
-                EditorUtility.DisplayProgressBar( $"DXT1 Format Checker", $"Patching DDS Files => ({dirIdx}/{dirCount})", progress );
+                EditorUtility.DisplayProgressBar( "DXT1 Format Checker", $"Patching DDS Files => ({dirIdx}/{dirCount})", progress );
 
                 var tasks = fileInfo.Select( file => ProcessFileWithSemaphore( file, path, semaphore ) ).ToArray();
 
                 await Task.WhenAll( tasks );
 
-                dirIdx++; 
+                dirIdx++;
                 progress += 1.0f / dirCount;
             }
 
@@ -258,9 +260,7 @@ namespace LibrarySorter
             try
             {
                 if ( file.Extension.ToLower() == ".dds" && !TextureConverter.IsDXT1( $"{path}/{file.Name}" ) )
-                {
                     await TextureConverter.ConvertDDSToDXT1( $"{path}/{file.Name}" );
-                }
             }
             finally
             {
@@ -282,9 +282,7 @@ namespace LibrarySorter
                     string textureName = Path.GetFileName( texture );
 
                     if ( textureName.Contains( "0x" ) || textureName.Contains( "_albedoTexture" ) )
-                    {
                         Helper.MoveFile( texture, $"{materialDirectory}/{textureName}", false );
-                    }
                 }
             }
         }
@@ -293,25 +291,27 @@ namespace LibrarySorter
         {
             MaterialData = GetMaterialData();
 
-            List< string > missingTextures = new List< string >();
+            var missingTextures = new List< string >();
 
-            Renderer[] renderers = obj.GetComponentsInChildren< Renderer >();
+            var renderers = obj.GetComponentsInChildren< Renderer >();
 
-            Texture2D textureDefault = AssetDatabase.LoadAssetAtPath< Texture2D >( MaterialData.GetPath( "dev_gray_512" ) );
+            var textureDefault = AssetDatabase.LoadAssetAtPath< Texture2D >( MaterialData.GetPath( "dev_gray_512" ) );
 
-            int min = 1; int max = renderers.Length; float progress = 0.0f;
+            int min = 1;
+            int max = renderers.Length;
+            float progress = 0.0f;
 
-            foreach ( Renderer renderer in renderers )
+            foreach ( var renderer in renderers )
             {
                 if ( Helper.IsValid( renderer ) )
                 {
-                    EditorUtility.DisplayProgressBar( $"Material Setter", $"Processing... ( {renderer.name} => {min}/{max} )", progress );
+                    EditorUtility.DisplayProgressBar( "Material Setter", $"Processing... ( {renderer.name} => {min}/{max} )", progress );
 
-                    foreach ( Material mat in renderer.sharedMaterials )
+                    foreach ( var mat in renderer.sharedMaterials )
                     {
                         if ( !Helper.IsValid( mat ) || !mat.HasProperty( "_MainTex" ) )
                             continue;
-                            
+
                         string name = mat.name;
 
                         if ( MaterialData.ContainsName( name ) )
@@ -327,14 +327,15 @@ namespace LibrarySorter
                     }
                 }
 
-                min++; progress += 1.0f / max;
+                min++;
+                progress += 1.0f / max;
             }
 
             string assetPath = AssetDatabase.GetAssetPath( PrefabUtility.GetCorrespondingObjectFromSource( obj ) );
 
             if ( !string.IsNullOrEmpty( assetPath ) && Path.GetExtension( assetPath ) == ".prefab" )
             {
-                EditorUtility.DisplayProgressBar( $"Saving Prefab", $"Processing...", progress );
+                EditorUtility.DisplayProgressBar( "Saving Prefab", "Processing...", progress );
 
                 PrefabUtility.SaveAsPrefabAsset( obj, assetPath );
             }
@@ -344,18 +345,16 @@ namespace LibrarySorter
             if ( reset || missingTextures.Count == 0 )
                 return;
 
-            if ( LibrarySorterWindow.CheckDialog( $"Texture Checker", $"{missingTextures.Count} Materials Missing. Do you want try to extract them ?" ) )
+            if ( LibrarySorterWindow.CheckDialog( "Texture Checker", $"{missingTextures.Count} Materials Missing. Do you want try to extract them ?" ) )
             {
-                checkNonAlbedoTexture = LibrarySorterWindow.CheckDialog( $"Texture Checker", $"Do you want to manually choose the textures not found or ignore them ?" );
+                checkNonAlbedoTexture = LibrarySorterWindow.CheckDialog( "Texture Checker", "Do you want to manually choose the textures not found or ignore them ?" );
 
-                bool resetTextures = LibrarySorterWindow.CheckDialog( $"Texture Checker", $"Do you want apply textures once extracted ?" );
+                bool resetTextures = LibrarySorterWindow.CheckDialog( "Texture Checker", "Do you want apply textures once extracted ?" );
 
                 await ExtractMissingMaterials( missingTextures );
 
                 if ( resetTextures )
-                {
                     ReSetMaterialsToObject( obj );
-                }
             }
         }
 
@@ -366,12 +365,12 @@ namespace LibrarySorter
 
         internal static void SaveMaterialData( MaterialData data = null )
         {
-            MaterialData materialData = Helper.IsValid( data ) ? data : MaterialData;
+            var materialData = Helper.IsValid( data ) ? data : MaterialData;
 
             UnityInfo.SortListByKey( materialData.MaterialList, x => x.Name );
 
             string jsonData = JsonUtility.ToJson( materialData );
-            System.IO.File.WriteAllText( UnityInfo.relativePathTextureDataList, jsonData );
+            File.WriteAllText( UnityInfo.relativePathTextureDataList, jsonData );
 
             MaterialData = GetMaterialData();
         }

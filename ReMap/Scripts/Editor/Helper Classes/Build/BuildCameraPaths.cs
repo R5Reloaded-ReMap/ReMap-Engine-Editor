@@ -1,11 +1,6 @@
-
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-
 using static Build.Build;
 
 namespace Build
@@ -14,13 +9,13 @@ namespace Build
     {
         public static async Task< StringBuilder > BuildCameraPathObjects( GameObject[] objectData, BuildType buildType )
         {
-            StringBuilder code = new StringBuilder();
+            var code = new StringBuilder();
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    AppendCode( ref code, $"    // Camera Paths" );
+                    AppendCode( ref code, "    // Camera Paths" );
                     break;
 
                 case BuildType.EntFile:
@@ -37,18 +32,19 @@ namespace Build
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             int idx = 0;
 
             // Build the code
-            foreach ( GameObject obj in objectData )
+            foreach ( var obj in objectData )
             {
-                PathScript script = ( PathScript ) Helper.GetComponentByEnum( obj, ObjectType.CameraPath );
+                var script = ( PathScript )Helper.GetComponentByEnum( obj, ObjectType.CameraPath );
                 if ( script == null ) continue;
 
-                string idxStr = idx.ToString( "00" ); bool isFirst = true;
+                string idxStr = idx.ToString( "00" );
+                bool isFirst = true;
 
                 string fov = Helper.ReplaceComma( script.Fov );
                 string speed = Helper.ReplaceComma( script.SpeedTransition );
@@ -63,7 +59,7 @@ namespace Build
                             if ( isFirst )
                             {
                                 AppendCode( ref code, $"    // Path_{idxStr}" );
-                                AppendCode( ref code, $"    if ( !IsValid( GetLocalClientPlayer() ) ) return" );
+                                AppendCode( ref code, "    if ( !IsValid( GetLocalClientPlayer() ) ) return" );
                                 AppendCode( ref code, $"    float fov_{idxStr} = {fov}" );
                                 AppendCode( ref code, $"    float speed_{idxStr} = {speed}" );
                                 AppendCode( ref code, $"    vector origin_{idxStr} = {Helper.BuildOrigin( node.gameObject ) + Helper.ShouldAddStartingOrg()}" );
@@ -86,7 +82,7 @@ namespace Build
                             }
                         }
 
-                        AppendCode( ref code, $"    if ( IsValid( GetLocalClientPlayer() ) ) GetLocalClientPlayer().ClearMenuCameraEntity()" );
+                        AppendCode( ref code, "    if ( IsValid( GetLocalClientPlayer() ) ) GetLocalClientPlayer().ClearMenuCameraEntity()" );
                         AppendCode( ref code, $"    if ( IsValid( scriptMover_{idxStr} ) ) scriptMover_{idxStr}.Destroy()" );
                         AppendCode( ref code, $"    if ( IsValid( camera_{idxStr} ) ) camera_{idxStr}.Destroy()" );
                         AppendCode( ref code );
@@ -108,7 +104,7 @@ namespace Build
                     case BuildType.LiveMap:
                         // Remove 1 to the counter since we don't support this object for live map code
                         Helper.RemoveSendedEntityCount();
-                    break;
+                        break;
                 }
 
                 idx++;
@@ -128,14 +124,14 @@ namespace Build
                 case BuildType.Precache:
                     // Empty
                     break;
-                    
+
                 case BuildType.DataTable:
                     // Empty
                     break;
 
                 case BuildType.LiveMap:
                     // Empty
-                break;
+                    break;
             }
 
             await Helper.Wait();

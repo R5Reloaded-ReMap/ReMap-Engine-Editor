@@ -1,7 +1,4 @@
-
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,31 +25,32 @@ namespace LibrarySorter
 
     public class LibrarySorterWindow : EditorWindow
     {
-        internal static bool checkExist = false;
-        Vector2 scrollPos = Vector2.zero;
-        Vector2 scrollPosSearchPrefabs = Vector2.zero;
+        internal static bool checkExist;
 
-        static bool foldoutFixFolders = true;
-        static bool foldoutSearchPrefab = true;
-        static string searchEntry = "";
-        static string search = "";
-        static List< string > searchResult = new List< string >();
-        static string relativeLegionPlus = $"Assets/ReMap/LegionPlus";
-        static string relativeLegionPlusExportedFiles = $"Assets/ReMap/LegionPlus/exported_files";
-        static string relativeLegionExecutive = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlus}/LegionPlus.exe";
+        private static bool foldoutFixFolders = true;
+        private static bool foldoutSearchPrefab = true;
+        private static string searchEntry = "";
+        private static string search = "";
+        private static List< string > searchResult = new();
 
-        internal static Dictionary< string, Texture2D > existingTextures = new Dictionary< string, Texture2D >();
+        //private static readonly string relativeLegionPlus = "Assets/ReMap/LegionPlus";
+        //private static readonly string relativeLegionPlusExportedFiles = "Assets/ReMap/LegionPlus/exported_files";
+        //private static readonly string relativeLegionExecutive = $"{UnityInfo.currentDirectoryPath}/{relativeLegionPlus}/LegionPlus.exe";
 
-        internal static List< string > missingTextures = new List< string >();
+        //internal static Dictionary< string, Texture2D > existingTextures = new();
 
-        internal static StringBuilder legionArgument = new StringBuilder();
-        internal static List< string > legionArguments = new List< string >();
-        
+        //internal static List< string > missingTextures = new();
+
+        //internal static StringBuilder legionArgument = new();
+        //internal static List< string > legionArguments = new();
+        private Vector2 scrollPos = Vector2.zero;
+        private Vector2 scrollPosSearchPrefabs = Vector2.zero;
+
         public static void Init()
         {
             RpakManagerWindow.libraryData = RpakManagerWindow.FindLibraryDataFile();
 
-            LibrarySorterWindow window = ( LibrarySorterWindow ) GetWindow( typeof( LibrarySorterWindow ), false, "Prefab Manager" );
+            var window = ( LibrarySorterWindow )GetWindow( typeof(LibrarySorterWindow), false, "Prefab Manager" );
             window.minSize = new Vector2( 650, 600 );
             window.Show();
         }
@@ -62,93 +60,89 @@ namespace LibrarySorter
             RpakManagerWindow.libraryData = RpakManagerWindow.FindLibraryDataFile();
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             GUILayout.BeginVertical( "box" );
 
-                GUILayout.BeginHorizontal();
+            GUILayout.BeginHorizontal();
 
-                    WindowUtility.WindowUtility.CreateButton( "Check Prefabs Tags", "", () => AwaitTask( TaskType.FixPrefabsTags ) );
-                    WindowUtility.WindowUtility.CreateButton( "Check Prefabs Labels", "", () => AwaitTask( TaskType.FixPrefabsLabels ) );
-                    WindowUtility.WindowUtility.CreateButton( "Check Lods Scale", "", () => AwaitTask( TaskType.FixLodsScale ) );
-                    WindowUtility.WindowUtility.CreateButton( "Create Rpak List", "", () => AwaitTask( TaskType.CreateRpakList ) );
+            WindowUtility.WindowUtility.CreateButton( "Check Prefabs Tags", "", () => AwaitTask( TaskType.FixPrefabsTags ) );
+            WindowUtility.WindowUtility.CreateButton( "Check Prefabs Labels", "", () => AwaitTask( TaskType.FixPrefabsLabels ) );
+            WindowUtility.WindowUtility.CreateButton( "Check Lods Scale", "", () => AwaitTask( TaskType.FixLodsScale ) );
+            WindowUtility.WindowUtility.CreateButton( "Create Rpak List", "", () => AwaitTask( TaskType.CreateRpakList ) );
 
-                GUILayout.EndHorizontal();
+            GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal();
+            GUILayout.BeginHorizontal();
 
-                    WindowUtility.WindowUtility.CreateButton( "Extract Missing Models", "", () => AwaitTask( TaskType.ExtractMissingModels ) );
-                    WindowUtility.WindowUtility.CreateButton( "Update Materials List", "", () => AwaitTask( TaskType.CreateMaterialsList ) );
-                    WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
-                    
+            WindowUtility.WindowUtility.CreateButton( "Extract Missing Models", "", () => AwaitTask( TaskType.ExtractMissingModels ) );
+            WindowUtility.WindowUtility.CreateButton( "Update Materials List", "", () => AwaitTask( TaskType.CreateMaterialsList ) );
+            WindowUtility.WindowUtility.CreateButton( "Unusued Textures", "", () => AwaitTask( TaskType.DeleteUnusuedTextures ) );
 
-                GUILayout.EndHorizontal();
 
-                GUILayout.Space( 4 );
+            GUILayout.EndHorizontal();
 
-                scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
-                    foldoutFixFolders = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutFixFolders, "Fix Folders" );
-                    if ( foldoutFixFolders )
+            GUILayout.Space( 4 );
+
+            scrollPos = EditorGUILayout.BeginScrollView( scrollPos );
+            foldoutFixFolders = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutFixFolders, "Fix Folders" );
+            if ( foldoutFixFolders )
+            {
+                foreach ( var rpak in RpakManagerWindow.libraryData.GetVisibleData() )
+                {
+                    GUILayout.BeginHorizontal();
+                    if ( WindowUtility.WindowUtility.CreateButton( $"{rpak.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, rpak ), 260 ) )
                     {
-                        foreach ( RpakData rpak in RpakManagerWindow.libraryData.GetVisibleData() )
-                        {
-                            GUILayout.BeginHorizontal();
-                                if ( WindowUtility.WindowUtility.CreateButton( $"{rpak.Name}", "", () => AwaitTask( TaskType.FixPrefabsData, null, rpak ), 260 ) )
-                                {
-                                    GUILayout.EndHorizontal();
-                                    EditorGUILayout.EndFoldoutHeaderGroup();
-                                    GUILayout.EndScrollView();
-                                    GUILayout.EndVertical();
-                                    return;
-                                }
-                                WindowUtility.WindowUtility.CreateButton( $"Extract Missing Models", "", () => AwaitTask( TaskType.ExportMissingModels, null, rpak ), 160 );
-                                WindowUtility.WindowUtility.CreateButton( $"Find Missing", "TODO", 160 );
-                                WindowUtility.WindowUtility.CreateTextInfo( $"Lastest Check: {rpak.Update}", "" );
-                            GUILayout.EndHorizontal();
-                        }
-                        WindowUtility.WindowUtility.CreateButton( $"Check All Models", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
-                        GUILayout.Space( 4 );
-                    }
-                    EditorGUILayout.EndFoldoutHeaderGroup();
-
-                    foldoutSearchPrefab = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutSearchPrefab, "Fix Prefabs" );
-                    if ( foldoutSearchPrefab )
-                    {
-                        searchEntry = EditorGUILayout.TextField( searchEntry );
-
-                        if ( searchEntry.Length >= 3 )
-                        {
-                            if ( searchEntry != search )
-                            {
-                                search = searchEntry;
-                                SearchPrefabs( search );
-                            }
-                        }
-
-                        scrollPosSearchPrefabs = EditorGUILayout.BeginScrollView( scrollPosSearchPrefabs );
-
-                            GUILayout.Space( 10 );
-                            if ( searchEntry.Length >= 3 )
-                            {
-                                if ( searchResult.Count != 0 )
-                                {
-                                    foreach ( string prefab in searchResult )
-                                    {
-                                        string prefabName = UnityInfo.GetUnityModelName( prefab );
-                                        WindowUtility.WindowUtility.CreateButton( $"{prefabName}", "", () => AwaitTask( TaskType.FixSpecificPrefabData, prefabName ) );
-                                    }
-                                }
-                                else WindowUtility.WindowUtility.CreateTextInfoCentered( "No results.", "" );
-                            }
-                            else if ( searchEntry.Length != 0 )
-                            {
-                                WindowUtility.WindowUtility.CreateTextInfoCentered( "Search must be at least 3 characters long.", "" );
-                            }
-
+                        GUILayout.EndHorizontal();
+                        EditorGUILayout.EndFoldoutHeaderGroup();
                         GUILayout.EndScrollView();
+                        GUILayout.EndVertical();
+                        return;
                     }
-                    EditorGUILayout.EndFoldoutHeaderGroup();
+                    WindowUtility.WindowUtility.CreateButton( "Extract Missing Models", "", () => AwaitTask( TaskType.ExportMissingModels, null, rpak ), 160 );
+                    WindowUtility.WindowUtility.CreateButton( "Find Missing", "TODO", 160 );
+                    WindowUtility.WindowUtility.CreateTextInfo( $"Lastest Check: {rpak.Update}" );
+                    GUILayout.EndHorizontal();
+                }
+                WindowUtility.WindowUtility.CreateButton( "Check All Models", "", () => AwaitTask( TaskType.FixAllPrefabsData ) );
+                GUILayout.Space( 4 );
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+
+            foldoutSearchPrefab = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutSearchPrefab, "Fix Prefabs" );
+            if ( foldoutSearchPrefab )
+            {
+                searchEntry = EditorGUILayout.TextField( searchEntry );
+
+                if ( searchEntry.Length >= 3 )
+                    if ( searchEntry != search )
+                    {
+                        search = searchEntry;
+                        SearchPrefabs( search );
+                    }
+
+                scrollPosSearchPrefabs = EditorGUILayout.BeginScrollView( scrollPosSearchPrefabs );
+
+                GUILayout.Space( 10 );
+                if ( searchEntry.Length >= 3 )
+                {
+                    if ( searchResult.Count != 0 )
+                        foreach ( string prefab in searchResult )
+                        {
+                            string prefabName = UnityInfo.GetUnityModelName( prefab );
+                            WindowUtility.WindowUtility.CreateButton( $"{prefabName}", "", () => AwaitTask( TaskType.FixSpecificPrefabData, prefabName ) );
+                        }
+                    else WindowUtility.WindowUtility.CreateTextInfoCentered( "No results." );
+                }
+                else if ( searchEntry.Length != 0 )
+                {
+                    WindowUtility.WindowUtility.CreateTextInfoCentered( "Search must be at least 3 characters long." );
+                }
+
                 GUILayout.EndScrollView();
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+            GUILayout.EndScrollView();
 
             GUILayout.EndVertical();
         }
@@ -176,7 +170,7 @@ namespace LibrarySorter
                     if ( !DoStartTask() ) return;
                     await Models.ExtractMissingModels();
                     break;
-                
+
                 case TaskType.CreateMaterialsList:
                     if ( !DoStartTask() ) return;
                     await Materials.CreateMaterialData();
@@ -219,16 +213,16 @@ namespace LibrarySorter
                         return;
                     }
                     await ExportMissingModels( rpak );
-                break;
+                    break;
             }
         }
 
         internal static async Task ExportMissingModels( RpakData rpak )
         {
-            Dictionary< string, string > missingModelList = new Dictionary< string, string >();
+            var missingModelList = new Dictionary< string, string >();
 
-            StringBuilder legionArgument = new StringBuilder();
-            List< string > legionArguments = new List< string >();
+            var legionArgument = new StringBuilder();
+            var legionArguments = new List< string >();
 
             string dirPath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/{rpak.Name}";
 
@@ -243,7 +237,7 @@ namespace LibrarySorter
 
                 if ( Helper.LOD0_Exist( lod0Name ) )
                     continue;
-                
+
                 if ( !Models.HasValidName( lod0Name ) )
                     continue;
 
@@ -261,7 +255,7 @@ namespace LibrarySorter
 
                     legionArguments.Add( legionArgument.ToString() );
 
-                    legionArgument = new ();
+                    legionArgument = new StringBuilder();
                 }
             }
 
@@ -271,16 +265,18 @@ namespace LibrarySorter
                 legionArguments.Add( legionArgument.ToString() );
             }
 
-            string loading = ""; int loadingCount = 0;
-            int min = 1; int max = legionArguments.Count;
+            string loading = "";
+            int loadingCount = 0;
+            int min = 1;
+            int max = legionArguments.Count;
 
             foreach ( string argument in legionArguments )
             {
-                Task legionTask = LegionExporting.ExtractModelFromLegion( argument );
+                var legionTask = LegionExporting.ExtractModelFromLegion( argument );
 
                 string countInfo = max > 1 ? $" ({min}/{max})" : "";
 
-                while ( !legionTask.IsCompleted )
+                while (!legionTask.IsCompleted)
                 {
                     EditorUtility.DisplayProgressBar( $"Legion Extraction{countInfo}", $"Extracting files{loading}", 0.0f );
 
@@ -301,24 +297,23 @@ namespace LibrarySorter
 
         internal static Task SetModelLabels( string specificModelOrFolderOrnull = null )
         {
-            string specificFolder = $"";
-            string specificModel = $"mdl#";
+            string specificFolder = "";
+            string specificModel = "mdl#";
 
             if ( Helper.IsValid( specificModelOrFolderOrnull ) )
             {
-                if ( specificModelOrFolderOrnull.Contains("mdl#") )
-                {
+                if ( specificModelOrFolderOrnull.Contains( "mdl#" ) )
                     specificModel = specificModelOrFolderOrnull;
-                }
                 else specificFolder = $"/{specificModelOrFolderOrnull}";
             }
 
-            string[] guids = AssetDatabase.FindAssets( $"{specificModel}", new [] {$"{UnityInfo.relativePathPrefabs}{specificFolder}"} );
-            int i = 0; int total = guids.Length;
-            foreach ( var guid in guids )
+            string[] guids = AssetDatabase.FindAssets( $"{specificModel}", new[] { $"{UnityInfo.relativePathPrefabs}{specificFolder}" } );
+            int i = 0;
+            int total = guids.Length;
+            foreach ( string guid in guids )
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath( guid );
-                UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath( assetPath );
+                var asset = AssetDatabase.LoadMainAssetAtPath( assetPath );
                 string category = assetPath.Split( "#" )[1].Replace( "Assets/Prefabs/", "" ).Replace( ".prefab", "" ).ToLower();
 
                 string[] modelnamesplit = assetPath.Split( "/" );
@@ -326,16 +321,17 @@ namespace LibrarySorter
 
                 string[] labels = AssetDatabase.GetLabels( asset );
 
-                if( !labels.Contains( category ) )
+                if ( !labels.Contains( category ) )
                 {
-                    AssetDatabase.SetLabels(asset, new []{category});
+                    AssetDatabase.SetLabels( asset, new[] { category } );
                     ReMapConsole.Log( $"[Library Sorter] Setting label for {modelname} to {category}", ReMapConsole.LogType.Info );
                 }
 
-                EditorUtility.DisplayProgressBar( $"Sorting Tags {i}/{total}", $"Setting {modelname} to {category}", ( i + 1 ) / ( float )total ); i++;
+                EditorUtility.DisplayProgressBar( $"Sorting Tags {i}/{total}", $"Setting {modelname} to {category}", ( i + 1 ) / ( float )total );
+                i++;
             }
 
-            ReMapConsole.Log($"[Library Sorter] Finished setting labels", ReMapConsole.LogType.Success);
+            ReMapConsole.Log( "[Library Sorter] Finished setting labels", ReMapConsole.LogType.Success );
             EditorUtility.ClearProgressBar();
 
             return Task.CompletedTask;
@@ -343,9 +339,10 @@ namespace LibrarySorter
 
         internal static Task FixPrefabsTags()
         {
-            string[] prefabs = AssetDatabase.FindAssets("t:prefab", new[] { UnityInfo.relativePathPrefabs });
+            string[] prefabs = AssetDatabase.FindAssets( "t:prefab", new[] { UnityInfo.relativePathPrefabs } );
 
-            int i = 0; int total = prefabs.Length;
+            int i = 0;
+            int total = prefabs.Length;
             foreach ( string prefab in prefabs )
             {
                 string path = AssetDatabase.GUIDToAssetPath( prefab );
@@ -357,7 +354,7 @@ namespace LibrarySorter
                     continue;
                 }
 
-                UnityEngine.GameObject loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof( UnityEngine.Object ) ) as GameObject;
+                var loadedPrefabResource = AssetDatabase.LoadAssetAtPath( $"{path}", typeof(Object) ) as GameObject;
                 if ( loadedPrefabResource == null )
                 {
                     ReMapConsole.Log( $"[Library Sorter] Error loading prefab: {path}", ReMapConsole.LogType.Error );
@@ -367,12 +364,13 @@ namespace LibrarySorter
 
                 EditorUtility.DisplayProgressBar( $"Fixing Prefabs Tags {i}/{total}", $"Checking: {path}", ( i + 1 ) / ( float )total );
 
-                if( loadedPrefabResource.tag != Helper.GetObjTagNameWithEnum( ObjectType.Prop ) )
+                if ( loadedPrefabResource.tag != Helper.GetObjTagNameWithEnum( ObjectType.Prop ) )
                     loadedPrefabResource.tag = Helper.GetObjTagNameWithEnum( ObjectType.Prop );
 
                 ReMapConsole.Log( $"[Library Sorter] Set {path} tag to: {Helper.GetObjTagNameWithEnum( ObjectType.Prop )}", ReMapConsole.LogType.Info );
 
-                PrefabUtility.SavePrefabAsset( loadedPrefabResource ); i++;
+                PrefabUtility.SavePrefabAsset( loadedPrefabResource );
+                i++;
             }
 
             EditorUtility.ClearProgressBar();
@@ -383,29 +381,28 @@ namespace LibrarySorter
         // We keep this func but don't use it lol
         internal static async Task RenameTextures()
         {
-            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel } );
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new[] { UnityInfo.relativePathModel } );
 
-            float progress = 0.0f; int min = 0; int max = modeltextureGUID.Length;
-            
-            foreach ( var guid in modeltextureGUID )
+            float progress = 0.0f;
+            int min = 0;
+            int max = modeltextureGUID.Length;
+
+            foreach ( string guid in modeltextureGUID )
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath( guid );
-                GameObject obj = Helper.CreateGameObject( "", assetPath );
+                var obj = Helper.CreateGameObject( "", assetPath );
 
-                foreach ( Renderer renderer in obj.GetComponentsInChildren< Renderer >() )
-                {
+                foreach ( var renderer in obj.GetComponentsInChildren< Renderer >() )
                     if ( Helper.IsValid( renderer ) )
-                    {
-                        foreach ( Material mat in renderer.sharedMaterials )
-                        {
+                        foreach ( var mat in renderer.sharedMaterials )
                             if ( Helper.IsValid( mat ) )
                             {
                                 string name = mat.name;
 
                                 // Obtain the name of the main map albedo
-                                if( mat.HasProperty( "_MainTex" ) )
+                                if ( mat.HasProperty( "_MainTex" ) )
                                 {
-                                    Texture mainTexture = mat.mainTexture;
+                                    var mainTexture = mat.mainTexture;
 
                                     string texturePath = AssetDatabase.GetAssetPath( mainTexture );
 
@@ -419,27 +416,20 @@ namespace LibrarySorter
                                             string dirToTexture = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathMaterials}";
 
                                             if ( File.Exists( $"{dirToTexture}/{fileName}" ) && !File.Exists( $"{dirToTexture}/{newName}" ) )
-                                            {
-                                                System.IO.File.Move( $"{dirToTexture}/{fileName}", $"{dirToTexture}/{newName}" );
-                                            }
+                                                File.Move( $"{dirToTexture}/{fileName}", $"{dirToTexture}/{newName}" );
 
                                             if ( File.Exists( $"{dirToTexture}/{fileName}.meta" ) && !File.Exists( $"{dirToTexture}/{newName}.meta" ) )
-                                            {
-                                                System.IO.File.Move( $"{dirToTexture}/{fileName}.meta", $"{dirToTexture}/{newName}.meta" );
-                                            }
+                                                File.Move( $"{dirToTexture}/{fileName}.meta", $"{dirToTexture}/{newName}.meta" );
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
-                }
 
-                UnityEngine.Object.DestroyImmediate( obj );
+                DestroyImmediate( obj );
 
                 progress += 1.0f / max;
 
-                EditorUtility.DisplayProgressBar( $"Renaming Textures", $"Processing... ({min++}/{max})", progress );
+                EditorUtility.DisplayProgressBar( "Renaming Textures", $"Processing... ({min++}/{max})", progress );
             }
 
             await Helper.Wait();
@@ -451,32 +441,33 @@ namespace LibrarySorter
         {
             Materials.MaterialData = Materials.GetMaterialData();
 
-            List< string > texturesList = new List< string >();
+            var texturesList = new List< string >();
 
-            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new [] { UnityInfo.relativePathModel, UnityInfo.relativePathDevLods } );
+            string[] modeltextureGUID = AssetDatabase.FindAssets( "t:model", new[] { UnityInfo.relativePathModel, UnityInfo.relativePathDevLods } );
 
-            int i = 0; int total = modeltextureGUID.Length;
-            foreach ( var guid in modeltextureGUID )
+            int i = 0;
+            int total = modeltextureGUID.Length;
+            foreach ( string guid in modeltextureGUID )
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath( guid );
                 string[] dependencie = AssetDatabase.GetDependencies( assetPath );
-                foreach( string dependencies in dependencie )
+                foreach ( string dependencies in dependencie )
                 {
                     string fileName = Path.GetFileNameWithoutExtension( dependencies );
                     if ( Path.GetExtension( dependencies ) == ".dds" && !texturesList.Contains( fileName ) )
-                    {
                         texturesList.Add( fileName );
-                    }
                 }
 
-                EditorUtility.DisplayProgressBar( $"Obtaining dependencies {i}/{total}", $"Checking: {guid}", ( i + 1 ) / ( float )total ); i++;
+                EditorUtility.DisplayProgressBar( $"Obtaining dependencies {i}/{total}", $"Checking: {guid}", ( i + 1 ) / ( float )total );
+                i++;
             }
 
             string[] usedTextures = texturesList.ToArray();
 
-            string[] textureGUID = AssetDatabase.FindAssets( "t:texture", new [] { UnityInfo.relativePathMaterials } );
-            int j = 0; total = textureGUID.Length;
-            foreach ( var guid in textureGUID )
+            string[] textureGUID = AssetDatabase.FindAssets( "t:texture", new[] { UnityInfo.relativePathMaterials } );
+            int j = 0;
+            total = textureGUID.Length;
+            foreach ( string guid in textureGUID )
             {
                 string texturePath = AssetDatabase.GUIDToAssetPath( guid );
                 string fileName = Path.GetFileNameWithoutExtension( texturePath );
@@ -484,7 +475,8 @@ namespace LibrarySorter
                 if ( !usedTextures.Contains( fileName ) && !Materials.MaterialData.ContainsFilePath( fileName ) )
                     Helper.DeleteFile( texturePath.Replace( "\\", "/" ) );
 
-                EditorUtility.DisplayProgressBar( $"Checking textures {j}/{total}", $"Checking: {guid}", ( j + 1 ) / ( float )total ); j++;
+                EditorUtility.DisplayProgressBar( $"Checking textures {j}/{total}", $"Checking: {guid}", ( j + 1 ) / ( float )total );
+                j++;
             }
 
             ReMapConsole.Log( $"{j} textures not used have been deleted", ReMapConsole.LogType.Success );
@@ -497,26 +489,28 @@ namespace LibrarySorter
 
         internal static Task SetScale100ToFBX()
         {
-            string[] models = AssetDatabase.FindAssets( "t:Model", new string[] { UnityInfo.relativePathModel } );
+            string[] models = AssetDatabase.FindAssets( "t:Model", new[] { UnityInfo.relativePathModel } );
 
-            List< ModelImporter > modelImporter = new List< ModelImporter >();
+            var modelImporter = new List< ModelImporter >();
 
-            int i = 0; int total = models.Length;
+            int i = 0;
+            int total = models.Length;
             foreach ( string model in models )
             {
                 string path = AssetDatabase.GUIDToAssetPath( model );
-                EditorUtility.DisplayProgressBar( $"Checking FBX Scale {i}/{total}", $"Checking: {Path.GetFileName( path )}", ( i + 1 ) / ( float )models.Length);
-                ModelImporter importer = AssetImporter.GetAtPath( path ) as ModelImporter;
+                EditorUtility.DisplayProgressBar( $"Checking FBX Scale {i}/{total}", $"Checking: {Path.GetFileName( path )}", ( i + 1 ) / ( float )models.Length );
+                var importer = AssetImporter.GetAtPath( path ) as ModelImporter;
                 if ( Helper.IsValid( importer ) )
                 {
                     importer.globalScale = 100;
                     modelImporter.Add( importer );
-                } i++;
+                }
+                i++;
             }
 
             EditorUtility.ClearProgressBar();
 
-            foreach ( ModelImporter model in modelImporter ) model.SaveAndReimport();
+            foreach ( var model in modelImporter ) model.SaveAndReimport();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -526,29 +520,28 @@ namespace LibrarySorter
 
         private static Task CreateRpakList()
         {
-            RpakContentJson rpakContentJson = CreateRpakContentJson();
+            var rpakContentJson = CreateRpakContentJson();
 
             string[] files = Directory.GetFiles( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/all_models", "*.prefab", SearchOption.TopDirectoryOnly ).ToArray();
 
-            int i = 0; int total = files.Length;
+            int i = 0;
+            int total = files.Length;
 
             foreach ( string file in files )
             {
-                RpakContentClass content = new RpakContentClass();
+                var content = new RpakContentClass();
                 content.modelName = Path.GetFileNameWithoutExtension( file );
                 content.location = new List< string >();
                 string rpakName = "";
 
-                foreach ( RpakData data in RpakManagerWindow.libraryData.RpakList )
+                foreach ( var data in RpakManagerWindow.libraryData.RpakList )
                 {
                     if ( data.Name == RpakManagerWindow.allModelsDataName ) continue;
 
                     rpakName = UnityInfo.GetApexModelName( content.modelName, true );
 
                     if ( data.Data.Contains( rpakName ) )
-                    {
                         content.location.Add( data.Name );
-                    }
                 }
 
                 rpakContentJson.List.Add( content );
@@ -560,14 +553,14 @@ namespace LibrarySorter
             EditorUtility.ClearProgressBar();
 
             string json = JsonUtility.ToJson( rpakContentJson );
-            System.IO.File.WriteAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/RpakList.json", json );
+            File.WriteAllText( $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/RpakList.json", json );
 
             return Task.CompletedTask;
         }
 
         private static RpakContentJson CreateRpakContentJson()
         {
-            RpakContentJson rpakContent = new RpakContentJson();
+            var rpakContent = new RpakContentJson();
             rpakContent.List = new List< RpakContentClass >();
 
             return rpakContent;
@@ -584,7 +577,7 @@ namespace LibrarySorter
             {
                 if ( !prefab.Contains( search.Replace( "#", "/" ) ) )
                     continue;
-    
+
                 searchResult.Add( prefab );
             }
         }

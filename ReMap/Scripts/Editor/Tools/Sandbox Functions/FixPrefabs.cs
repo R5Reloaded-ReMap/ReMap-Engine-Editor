@@ -1,6 +1,4 @@
-
 using System.IO;
-using UnityEngine;
 using UnityEditor;
 
 namespace Sandbox
@@ -14,15 +12,13 @@ namespace Sandbox
 
         internal static void FixPrefabsInScene()
         {
-            foreach ( GameObject go in Helper.GetAllObjectTypeInScene() )
+            foreach ( var go in Helper.GetAllObjectTypeInScene() )
             {
-                GameObject origin = PrefabUtility.GetCorrespondingObjectFromSource( go ) as GameObject;
+                var origin = PrefabUtility.GetCorrespondingObjectFromSource( go );
                 string filePath = $"{UnityInfo.currentDirectoryPath}/{UnityInfo.relativePathPrefabs}/all_models/{UnityInfo.GetUnityModelName( go, true )}";
 
                 if ( !Helper.IsValid( origin ) && File.Exists( filePath ) )
-                {
                     PrefabUtility.SaveAsPrefabAssetAndConnect( go, filePath, InteractionMode.UserAction );
-                }
             }
         }
     }

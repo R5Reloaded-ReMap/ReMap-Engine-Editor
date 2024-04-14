@@ -1,54 +1,49 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.EditorTools;
+using UnityEngine;
 
-[EditorTool("Drop to Ground...", typeof(Transform))]
-class DropToGroundTool : EditorTool
+[EditorTool( "Drop to Ground...", typeof(Transform) )]
+internal class DropToGroundTool : EditorTool
 {
-    GUIContent someContent;
+    private GUIContent someContent;
 
-    void OnEnable()
+    public override GUIContent toolbarIcon => someContent;
+
+    private void OnEnable()
     {
-        someContent = new GUIContent()
+        someContent = new GUIContent
         {
-            image = (Texture)Resources.Load("Icons/dropToGround"),
+            image = ( Texture )Resources.Load( "Icons/dropToGround" ),
             tooltip = "Drop to Ground..."
         };
 
         ToolManager.activeToolChanged += OnActiveToolDidChange;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         ToolManager.activeToolChanged -= OnActiveToolDidChange;
     }
 
-    public override GUIContent toolbarIcon
-    {
-        get { return someContent; }
-    }
-
-    void OnActiveToolDidChange()
+    private void OnActiveToolDidChange()
     {
         if ( ToolManager.IsActiveTool( this ) )
-        {
-            foreach ( GameObject go in Selection.gameObjects )
+            foreach ( var go in Selection.gameObjects )
             {
                 RaycastHit hit;
                 if ( Physics.Raycast( go.transform.position, Vector3.down, out hit, 20000 ) )
                 {
                     go.transform.position = hit.point;
 
-                    Quaternion rotation = Quaternion.FromToRotation( Vector3.up, hit.normal );
+                    var rotation = Quaternion.FromToRotation( Vector3.up, hit.normal );
                     rotation *= go.transform.rotation;
                     go.transform.rotation = rotation;
                 }
             }
-        }
     }
 
-    public override void OnToolGUI(EditorWindow window)
+    public override void OnToolGUI( EditorWindow window )
     {
-        Tools.current = Tool.Move;   
+        Tools.current = Tool.Move;
     }
 }

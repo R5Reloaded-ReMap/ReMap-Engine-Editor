@@ -130,12 +130,12 @@ public class UnityInfo
 
     public static string GetObjName( string name )
     {
-        return name.Split( char.Parse( " " ) )[0];
+        return name.Split( char.Parse( " " ) )[ 0 ];
     }
 
     public static string GetObjName( GameObject obj )
     {
-        return obj.name.Split( char.Parse( " " ) )[0];
+        return obj.name.Split( char.Parse( " " ) )[ 0 ];
     }
 
     public static void SortListByKey<T, TKey>( List< T > list, Func< T, TKey > keySelector ) where TKey : IComparable
@@ -146,14 +146,15 @@ public class UnityInfo
     public static Object FindPrefabFromName( string name )
     {
         // Hack so that the models named at the end with "(number)" still work
-        if ( name.Contains( " " ) ) name = name.Split( " " )[0];
+        if ( name.Contains( " " ) ) name = name.Split( " " )[ 0 ];
 
         //Find Model GUID in Assets
-        string[] results = AssetDatabase.FindAssets( name, new[] { $"{relativePathPrefabs}/{RpakManagerWindow.allModelsDataName}", $"{relativePathPrefabs}/{RpakManagerWindow.allModelsRetailDataName}" } );
+        string[] results = AssetDatabase.FindAssets( name,
+            new[] { $"{relativePathPrefabs}/_custom_prefabs", $"{relativePathPrefabs}/{RpakManagerWindow.allModelsDataName}", $"{relativePathPrefabs}/{RpakManagerWindow.allModelsRetailDataName}" } );
         if ( results.Length == 0 ) return null;
 
         //Get model path from guid and load it
-        Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+        Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
         return loadedPrefabResource;
     }
 

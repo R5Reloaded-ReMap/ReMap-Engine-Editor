@@ -23,7 +23,7 @@ public class CodeImport : EditorWindow
 
     public static void Init()
     {
-        var window = ( CodeImport )GetWindow( typeof(CodeImport), false, "Import Map Code" );
+        var window = ( CodeImport ) GetWindow( typeof( CodeImport ), false, "Import Map Code" );
         window.Show();
     }
 
@@ -117,10 +117,10 @@ public class CodeImport : EditorWindow
             if ( split.Length < 11 )
                 continue;
 
-            EditorUtility.DisplayProgressBar( "Importing Props", "Importing: " + split[0], ( i + 1 ) / ( float )Props.Count );
+            EditorUtility.DisplayProgressBar( "Importing Props", "Importing: " + split[ 0 ], ( i + 1 ) / ( float ) Props.Count );
 
 
-            string Model = split[0].Replace( "/", "#" ).Replace( ".rmdl", "" ).Replace( "\"", "" ).Replace( "\n", "" ).Replace( "\r", "" ).Replace( "$", "" );
+            string Model = split[ 0 ].Replace( "/", "#" ).Replace( ".rmdl", "" ).Replace( "\"", "" ).Replace( "\n", "" ).Replace( "\r", "" ).Replace( "$", "" );
 
             ReMapConsole.Log( "[Code Import] Importing: " + Model, ReMapConsole.LogType.Info );
 
@@ -133,20 +133,20 @@ public class CodeImport : EditorWindow
             }
 
             //Get model path from guid and load it
-            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
             if ( loadedPrefabResource == null )
                 continue;
 
             var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            obj.transform.position = new Vector3( float.Parse( split[2] ), float.Parse( split[3].Replace( ">", "" ) ), -float.Parse( split[1].Replace( "<", "" ) ) );
-            obj.transform.eulerAngles = new Vector3( -float.Parse( split[4].Replace( "<", "" ) ), -float.Parse( split[5] ), float.Parse( split[6].Replace( ">", "" ) ) );
+            obj.transform.position = new Vector3( float.Parse( split[ 2 ] ), float.Parse( split[ 3 ].Replace( ">", "" ) ), -float.Parse( split[ 1 ].Replace( "<", "" ) ) );
+            obj.transform.eulerAngles = new Vector3( -float.Parse( split[ 4 ].Replace( "<", "" ) ), -float.Parse( split[ 5 ] ), float.Parse( split[ 6 ].Replace( ">", "" ) ) );
             obj.name = Model;
             //obj.gameObject.transform.localScale = new Vector3(float.Parse(split[10]), float.Parse(split[10]), float.Parse(split[10]));
             //
             var script = obj.GetComponent< PropScript >();
-            script.FadeDistance = int.Parse( split[8] );
-            script.AllowMantle = bool.Parse( split[7] );
-            script.RealmID = int.Parse( split[9] );
+            script.FadeDistance = int.Parse( split[ 8 ] );
+            script.AllowMantle = bool.Parse( split[ 7 ] );
+            script.RealmID = int.Parse( split[ 9 ] );
 
             var parent = GameObject.Find( "Props" );
             if ( parent != null )
@@ -176,7 +176,7 @@ public class CodeImport : EditorWindow
             if ( split.Length < 3 )
                 continue;
 
-            EditorUtility.DisplayProgressBar( "Importing Buttons", "Importing: Button " + i, ( i + 1 ) / ( float )Buttons.Count );
+            EditorUtility.DisplayProgressBar( "Importing Buttons", "Importing: Button " + i, ( i + 1 ) / ( float ) Buttons.Count );
 
             string Model = "custom_button";
 
@@ -188,17 +188,17 @@ public class CodeImport : EditorWindow
                 continue;
 
             //Get model path from guid and load it
-            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
             if ( loadedPrefabResource == null )
                 continue;
 
             var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            obj.transform.position = new Vector3( float.Parse( split[1] ), float.Parse( split[2].Replace( ">", "" ).Replace( " ", "" ) ), -float.Parse( split[0].Replace( "<", "" ).Replace( " ", "" ) ) );
-            obj.transform.eulerAngles = new Vector3( -float.Parse( split[3].Replace( "<", "" ).Replace( " ", "" ) ), -float.Parse( split[4] ), float.Parse( split[5].Replace( ">", "" ).Replace( " ", "" ) ) );
+            obj.transform.position = new Vector3( float.Parse( split[ 1 ] ), float.Parse( split[ 2 ].Replace( ">", "" ).Replace( " ", "" ) ), -float.Parse( split[ 0 ].Replace( "<", "" ).Replace( " ", "" ) ) );
+            obj.transform.eulerAngles = new Vector3( -float.Parse( split[ 3 ].Replace( "<", "" ).Replace( " ", "" ) ), -float.Parse( split[ 4 ] ), float.Parse( split[ 5 ].Replace( ">", "" ).Replace( " ", "" ) ) );
             obj.name = Model;
 
             var script = obj.GetComponent< ButtonScripting >();
-            script.UseText = split[6].Replace( "\"", "" );
+            script.UseText = split[ 6 ].Replace( "\"", "" );
 
             var parent = GameObject.Find( "Buttons" );
             if ( parent != null )
@@ -228,9 +228,9 @@ public class CodeImport : EditorWindow
             if ( split.Length < 9 )
                 continue;
 
-            EditorUtility.DisplayProgressBar( "Importing BubbleSheilds", "Importing: BubbleSheild" + i, ( i + 1 ) / ( float )BubbleSheilds.Count );
+            EditorUtility.DisplayProgressBar( "Importing BubbleSheilds", "Importing: BubbleSheild" + i, ( i + 1 ) / ( float ) BubbleSheilds.Count );
 
-            string Model = split[8].Replace( "/", "#" ).Replace( ".rmdl", "" ).Replace( "\"", "" ).Replace( "\n", "" ).Replace( "\r", "" ).Replace( "$", "" ).Replace( " ", "" );
+            string Model = split[ 8 ].Replace( "/", "#" ).Replace( ".rmdl", "" ).Replace( "\"", "" ).Replace( "\n", "" ).Replace( "\r", "" ).Replace( "$", "" ).Replace( " ", "" );
 
             ReMapConsole.Log( "[Code Import] Importing: " + Model, ReMapConsole.LogType.Info );
 
@@ -240,21 +240,21 @@ public class CodeImport : EditorWindow
                 continue;
 
             //Get model path from guid and load it
-            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
             if ( loadedPrefabResource == null )
                 continue;
 
             var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            obj.transform.position = new Vector3( float.Parse( split[1].Replace( " ", "" ) ), float.Parse( split[2].Replace( ">", "" ).Replace( " ", "" ) ), -float.Parse( split[0].Replace( "<", "" ).Replace( " ", "" ) ) );
-            obj.transform.eulerAngles = new Vector3( -float.Parse( split[3].Replace( "<", "" ).Replace( " ", "" ) ), -float.Parse( split[4].Replace( " ", "" ) ), float.Parse( split[5].Replace( ">", "" ).Replace( " ", "" ) ) );
+            obj.transform.position = new Vector3( float.Parse( split[ 1 ].Replace( " ", "" ) ), float.Parse( split[ 2 ].Replace( ">", "" ).Replace( " ", "" ) ), -float.Parse( split[ 0 ].Replace( "<", "" ).Replace( " ", "" ) ) );
+            obj.transform.eulerAngles = new Vector3( -float.Parse( split[ 3 ].Replace( "<", "" ).Replace( " ", "" ) ), -float.Parse( split[ 4 ].Replace( " ", "" ) ), float.Parse( split[ 5 ].Replace( ">", "" ).Replace( " ", "" ) ) );
             obj.name = Model;
-            obj.gameObject.transform.localScale = new Vector3( float.Parse( split[6].Replace( " ", "" ) ), float.Parse( split[6].Replace( " ", "" ) ), float.Parse( split[6].Replace( " ", "" ) ) );
+            obj.gameObject.transform.localScale = new Vector3( float.Parse( split[ 6 ].Replace( " ", "" ) ), float.Parse( split[ 6 ].Replace( " ", "" ) ), float.Parse( split[ 6 ].Replace( " ", "" ) ) );
 
-            string[] colorsplit = split[7].Split( char.Parse( " " ) );
+            string[] colorsplit = split[ 7 ].Split( char.Parse( " " ) );
             var script = obj.GetComponent< BubbleScript >();
-            script.ShieldColor.r = byte.Parse( colorsplit[1].Replace( "\"", "" ) );
-            script.ShieldColor.g = byte.Parse( colorsplit[2].Replace( "\"", "" ) );
-            script.ShieldColor.b = byte.Parse( colorsplit[3].Replace( "\"", "" ) );
+            script.ShieldColor.r = byte.Parse( colorsplit[ 1 ].Replace( "\"", "" ) );
+            script.ShieldColor.g = byte.Parse( colorsplit[ 2 ].Replace( "\"", "" ) );
+            script.ShieldColor.b = byte.Parse( colorsplit[ 3 ].Replace( "\"", "" ) );
 
             var parent = GameObject.Find( "BubbleSheilds" );
             if ( parent != null )
@@ -284,7 +284,7 @@ public class CodeImport : EditorWindow
             if ( split.Length < 7 )
                 continue;
 
-            EditorUtility.DisplayProgressBar( "Importing Jumppads", "Importing: Jumppad" + i, ( i + 1 ) / ( float )JumpPads.Count );
+            EditorUtility.DisplayProgressBar( "Importing JumpPads", "Importing: Jumppad" + i, ( i + 1 ) / ( float ) JumpPads.Count );
 
             string Model = "custom_jumppad";
 
@@ -296,20 +296,20 @@ public class CodeImport : EditorWindow
                 continue;
 
             //Get model path from guid and load it
-            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
             if ( loadedPrefabResource == null )
                 continue;
 
             var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            obj.transform.position = new Vector3( float.Parse( split[2] ), float.Parse( split[3].Replace( ">", "" ) ), -float.Parse( split[1].Replace( "<", "" ) ) );
-            obj.transform.eulerAngles = new Vector3( -float.Parse( split[4].Replace( "<", "" ) ), -float.Parse( split[5] ), float.Parse( split[6].Replace( ">", "" ) ) );
+            obj.transform.position = new Vector3( float.Parse( split[ 2 ] ), float.Parse( split[ 3 ].Replace( ">", "" ) ), -float.Parse( split[ 1 ].Replace( "<", "" ) ) );
+            obj.transform.eulerAngles = new Vector3( -float.Parse( split[ 4 ].Replace( "<", "" ) ), -float.Parse( split[ 5 ] ), float.Parse( split[ 6 ].Replace( ">", "" ) ) );
             obj.name = Model;
-            obj.gameObject.transform.localScale = new Vector3( float.Parse( split[10] ), float.Parse( split[10] ), float.Parse( split[10] ) );
+            obj.gameObject.transform.localScale = new Vector3( float.Parse( split[ 10 ] ), float.Parse( split[ 10 ] ), float.Parse( split[ 10 ] ) );
 
             var script = obj.GetComponent< PropScript >();
-            script.FadeDistance = int.Parse( split[8] );
-            script.AllowMantle = bool.Parse( split[7] );
-            script.RealmID = int.Parse( split[9] );
+            script.FadeDistance = int.Parse( split[ 8 ] );
+            script.AllowMantle = bool.Parse( split[ 7 ] );
+            script.RealmID = int.Parse( split[ 9 ] );
 
             var parent = GameObject.Find( "JumpPads" );
             if ( parent != null )
@@ -339,7 +339,7 @@ public class CodeImport : EditorWindow
             if ( split.Length < 7 )
                 continue;
 
-            EditorUtility.DisplayProgressBar( "Importing Lootbins", "Importing: Lootbin" + i, ( i + 1 ) / ( float )LootBins.Count );
+            EditorUtility.DisplayProgressBar( "Importing Lootbins", "Importing: Lootbin" + i, ( i + 1 ) / ( float ) LootBins.Count );
 
             string Model = "custom_lootbin";
 
@@ -351,17 +351,17 @@ public class CodeImport : EditorWindow
                 continue;
 
             //Get model path from guid and load it
-            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
             if ( loadedPrefabResource == null )
                 continue;
 
             var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            obj.transform.position = new Vector3( float.Parse( split[1] ), float.Parse( split[2].Replace( ">", "" ) ), -float.Parse( split[0].Replace( "<", "" ) ) );
-            obj.transform.eulerAngles = new Vector3( -float.Parse( split[3].Replace( "<", "" ) ), -float.Parse( split[4] ), float.Parse( split[5].Replace( ">", "" ) ) );
+            obj.transform.position = new Vector3( float.Parse( split[ 1 ] ), float.Parse( split[ 2 ].Replace( ">", "" ) ), -float.Parse( split[ 0 ].Replace( "<", "" ) ) );
+            obj.transform.eulerAngles = new Vector3( -float.Parse( split[ 3 ].Replace( "<", "" ) ), -float.Parse( split[ 4 ] ), float.Parse( split[ 5 ].Replace( ">", "" ) ) );
             obj.name = Model;
 
             var script = obj.GetComponent< LootBinScript >();
-            script.LootbinSkin = ( LootBinSkinType )int.Parse( split[6] );
+            script.LootbinSkin = ( LootBinSkinType ) int.Parse( split[ 6 ] );
 
             var parent = GameObject.Find( "LootBins" );
             if ( parent != null )
@@ -391,11 +391,11 @@ public class CodeImport : EditorWindow
             if ( split.Length < 8 )
                 continue;
 
-            string Model = split[6].Replace( "\"", "" ).Replace( "mp_weapon_", "custom_weaponrack_" );
+            string Model = split[ 6 ].Replace( "\"", "" ).Replace( "mp_weapon_", "custom_weaponrack_" );
 
             ReMapConsole.Log( "[Code Import] Importing: " + Model, ReMapConsole.LogType.Info );
 
-            EditorUtility.DisplayProgressBar( "Importing WeaponRacks", "Importing: " + Model, ( i + 1 ) / ( float )WeaponRacks.Count );
+            EditorUtility.DisplayProgressBar( "Importing WeaponRacks", "Importing: " + Model, ( i + 1 ) / ( float ) WeaponRacks.Count );
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets( Model );
@@ -403,17 +403,17 @@ public class CodeImport : EditorWindow
                 continue;
 
             //Get model path from guid and load it
-            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
             if ( loadedPrefabResource == null )
                 continue;
 
             var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            obj.transform.position = new Vector3( float.Parse( split[1] ), float.Parse( split[2].Replace( ">", "" ) ), -float.Parse( split[0].Replace( "<", "" ) ) );
-            obj.transform.eulerAngles = new Vector3( -float.Parse( split[3].Replace( "<", "" ) ), -float.Parse( split[4] ), float.Parse( split[5].Replace( ">", "" ) ) );
+            obj.transform.position = new Vector3( float.Parse( split[ 1 ] ), float.Parse( split[ 2 ].Replace( ">", "" ) ), -float.Parse( split[ 0 ].Replace( "<", "" ) ) );
+            obj.transform.eulerAngles = new Vector3( -float.Parse( split[ 3 ].Replace( "<", "" ) ), -float.Parse( split[ 4 ] ), float.Parse( split[ 5 ].Replace( ">", "" ) ) );
             obj.name = Model;
 
             var script = obj.GetComponent< WeaponRackScript >();
-            script.WeaponRespawnTime = int.Parse( split[7] );
+            script.WeaponRespawnTime = int.Parse( split[ 7 ] );
 
             var parent = GameObject.Find( "WeaponRacks" );
             if ( parent != null )
@@ -445,7 +445,7 @@ public class CodeImport : EditorWindow
                 if ( split.Length < 6 )
                     continue;
 
-                EditorUtility.DisplayProgressBar( "Importing Ziplines", "Importing: custom_zipline " + i, ( i + 1 ) / ( float )Ziplines.Count );
+                EditorUtility.DisplayProgressBar( "Importing Ziplines", "Importing: custom_zipline " + i, ( i + 1 ) / ( float ) Ziplines.Count );
 
                 string Model = "custom_zipline";
 
@@ -457,16 +457,16 @@ public class CodeImport : EditorWindow
                     continue;
 
                 //Get model path from guid and load it
-                Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+                Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
                 if ( loadedPrefabResource == null )
                     continue;
 
                 var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
                 foreach ( Transform child in obj.transform )
                     if ( child.name == "zipline_start" )
-                        child.transform.position = new Vector3( float.Parse( split[1] ), float.Parse( split[2].Replace( ">", "" ) ), -float.Parse( split[0].Replace( "<", "" ) ) );
+                        child.transform.position = new Vector3( float.Parse( split[ 1 ] ), float.Parse( split[ 2 ].Replace( ">", "" ) ), -float.Parse( split[ 0 ].Replace( "<", "" ) ) );
                     else if ( child.name == "zipline_end" )
-                        child.transform.position = new Vector3( float.Parse( split[4] ), float.Parse( split[5].Replace( ">", "" ) ), -float.Parse( split[3].Replace( "<", "" ) ) );
+                        child.transform.position = new Vector3( float.Parse( split[ 4 ] ), float.Parse( split[ 5 ].Replace( ">", "" ) ), -float.Parse( split[ 3 ].Replace( "<", "" ) ) );
 
                 var parent = GameObject.Find( "Ziplines" );
                 if ( parent != null )
@@ -502,7 +502,7 @@ public class CodeImport : EditorWindow
 
                 ReMapConsole.Log( "[Code Import] Importing: custom_linked_zipline", ReMapConsole.LogType.Info );
 
-                EditorUtility.DisplayProgressBar( "Importing Linked Ziplines", "Importing: custom_linked_zipline " + f, ( f + 1 ) / ( float )LinkedZiplines.Count );
+                EditorUtility.DisplayProgressBar( "Importing Linked Ziplines", "Importing: custom_linked_zipline " + f, ( f + 1 ) / ( float ) LinkedZiplines.Count );
 
                 var obj = new GameObject( "custom_linked_zipline" );
                 obj.AddComponent< LinkedZiplineScript >();
@@ -513,10 +513,10 @@ public class CodeImport : EditorWindow
                     string[] split2 = s.Split( char.Parse( "," ) );
 
                     if ( i == split.Length - 1 && isSmoothed )
-                        SmoothAmount = int.Parse( split2[3] );
+                        SmoothAmount = int.Parse( split2[ 3 ] );
 
                     var child = new GameObject( "zipline_node" );
-                    child.transform.position = new Vector3( float.Parse( split2[1] ), float.Parse( split2[2].Replace( ">", "" ) ), -float.Parse( split2[0].Replace( "<", "" ) ) );
+                    child.transform.position = new Vector3( float.Parse( split2[ 1 ] ), float.Parse( split2[ 2 ].Replace( ">", "" ) ), -float.Parse( split2[ 0 ].Replace( "<", "" ) ) );
                     child.transform.parent = obj.transform;
 
                     i++;
@@ -556,7 +556,7 @@ public class CodeImport : EditorWindow
 
             string Model = "custom_single_door";
             bool IsSingleOrDouble = false;
-            switch ( split[6] )
+            switch ( split[ 6 ] )
             {
                 case "eMapEditorDoorType.Single":
                     Model = "custom_single_door";
@@ -576,7 +576,7 @@ public class CodeImport : EditorWindow
 
             ReMapConsole.Log( "[Code Import] Importing: " + Model, ReMapConsole.LogType.Info );
 
-            EditorUtility.DisplayProgressBar( "Importing Doors", "Importing: " + Model, ( i + 1 ) / ( float )Doors.Count );
+            EditorUtility.DisplayProgressBar( "Importing Doors", "Importing: " + Model, ( i + 1 ) / ( float ) Doors.Count );
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets( Model );
@@ -584,19 +584,19 @@ public class CodeImport : EditorWindow
                 continue;
 
             //Get model path from guid and load it
-            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
             if ( loadedPrefabResource == null )
                 continue;
 
             var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            obj.transform.position = new Vector3( float.Parse( split[1] ), float.Parse( split[2].Replace( ">", "" ) ), -float.Parse( split[0].Replace( "<", "" ) ) );
-            obj.transform.eulerAngles = new Vector3( -float.Parse( split[3].Replace( "<", "" ) ), -float.Parse( split[4] ), float.Parse( split[5].Replace( ">", "" ) ) );
+            obj.transform.position = new Vector3( float.Parse( split[ 1 ] ), float.Parse( split[ 2 ].Replace( ">", "" ) ), -float.Parse( split[ 0 ].Replace( "<", "" ) ) );
+            obj.transform.eulerAngles = new Vector3( -float.Parse( split[ 3 ].Replace( "<", "" ) ), -float.Parse( split[ 4 ] ), float.Parse( split[ 5 ].Replace( ">", "" ) ) );
             obj.name = Model;
 
             if ( IsSingleOrDouble )
             {
                 var script = obj.GetComponent< DoorScript >();
-                script.GoldDoor = bool.Parse( split[7] );
+                script.GoldDoor = bool.Parse( split[ 7 ] );
             }
 
             var parent = GameObject.Find( "Doors" );
@@ -624,13 +624,13 @@ public class CodeImport : EditorWindow
         foreach ( string trigger in Triggers )
         {
             string[] split1 = trigger.Split( char.Parse( "=" ) );
-            string[] split = split1[1].Split( char.Parse( "," ) );
+            string[] split = split1[ 1 ].Split( char.Parse( "," ) );
 
             string Model = "trigger_cylinder";
 
             ReMapConsole.Log( "[Code Import] Importing: " + Model, ReMapConsole.LogType.Info );
 
-            EditorUtility.DisplayProgressBar( "Importing Doors", "Importing: trigger_cylinder " + i, ( i + 1 ) / ( float )Triggers.Count );
+            EditorUtility.DisplayProgressBar( "Importing Doors", "Importing: trigger_cylinder " + i, ( i + 1 ) / ( float ) Triggers.Count );
 
             //Find Model GUID in Assets
             string[] results = AssetDatabase.FindAssets( Model );
@@ -638,18 +638,18 @@ public class CodeImport : EditorWindow
                 continue;
 
             //Get model path from guid and load it
-            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[0] ), typeof(Object) ) as GameObject;
+            Object loadedPrefabResource = AssetDatabase.LoadAssetAtPath( AssetDatabase.GUIDToAssetPath( results[ 0 ] ), typeof( Object ) ) as GameObject;
             if ( loadedPrefabResource == null )
                 continue;
 
             var obj = PrefabUtility.InstantiatePrefab( loadedPrefabResource as GameObject ) as GameObject;
-            obj.transform.position = new Vector3( float.Parse( split[1] ), float.Parse( split[2].Replace( ">", "" ) ), -float.Parse( split[0].Replace( "<", "" ) ) );
-            obj.transform.eulerAngles = new Vector3( -float.Parse( split[3].Replace( "<", "" ) ), -float.Parse( split[4] ), float.Parse( split[5].Replace( ">", "" ) ) );
+            obj.transform.position = new Vector3( float.Parse( split[ 1 ] ), float.Parse( split[ 2 ].Replace( ">", "" ) ), -float.Parse( split[ 0 ].Replace( "<", "" ) ) );
+            obj.transform.eulerAngles = new Vector3( -float.Parse( split[ 3 ].Replace( "<", "" ) ), -float.Parse( split[ 4 ] ), float.Parse( split[ 5 ].Replace( ">", "" ) ) );
             obj.name = Model;
-            obj.gameObject.transform.localScale = new Vector3( float.Parse( split[6] ), float.Parse( split[7] ), float.Parse( split[6] ) );
+            obj.gameObject.transform.localScale = new Vector3( float.Parse( split[ 6 ] ), float.Parse( split[ 7 ] ), float.Parse( split[ 6 ] ) );
 
             var script = obj.GetComponent< TriggerScripting >();
-            script.Debug = bool.Parse( split[8] );
+            script.Debug = bool.Parse( split[ 8 ] );
 
             var parent = GameObject.Find( "Triggers" );
             if ( parent != null )

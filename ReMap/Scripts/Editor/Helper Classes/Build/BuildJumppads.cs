@@ -16,7 +16,7 @@ namespace Build
             switch ( buildType )
             {
                 case BuildType.Script:
-                    AppendCode( ref code, "    // Jumppads" );
+                    AppendCode( ref code, "    // JumpPads" );
                     AppendCode( ref code, "    entity jumppad" );
                     break;
 
@@ -40,7 +40,7 @@ namespace Build
             // Build the code
             foreach ( var obj in objectData )
             {
-                var script = ( PropScript )Helper.GetComponentByEnum( obj, ObjectType.Jumppad );
+                var script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Jumppad );
                 if ( script == null ) continue;
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
@@ -59,7 +59,7 @@ namespace Build
                             for ( int i = 0; i < lines.Length; i++ )
                             {
                                 string suffix = i < lines.Length - 1 ? "; " : "";
-                                AppendCode( ref code, $"jumppad.{lines[i].Replace( "\n", "" )}{suffix}", 0 );
+                                AppendCode( ref code, $"jumppad.{lines[ i ].Replace( "\n", "" )}{suffix}", 0 );
                             }
                             AppendCode( ref code );
                         }

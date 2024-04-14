@@ -1,4 +1,5 @@
 // Internal
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,8 +32,8 @@ namespace ImportExport.Json
             switch ( objectType )
             {
                 case ObjectType.BubbleShield:
-                    var bubbleShieldData = ( BubbleShieldClassData )( object )scriptData;
-                    var bubbleScript = ( BubbleScript )Helper.GetComponentByEnum( obj, objectType );
+                    var bubbleShieldData = ( BubbleShieldClassData ) ( object ) scriptData;
+                    var bubbleScript = ( BubbleScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -46,8 +47,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.Button:
-                    var buttonData = ( ButtonClassData )( object )scriptData;
-                    var buttonScripting = ( ButtonScripting )Helper.GetComponentByEnum( obj, objectType );
+                    var buttonData = ( ButtonClassData ) ( object ) scriptData;
+                    var buttonScripting = ( ButtonScripting ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( buttonScripting, buttonData );
@@ -55,8 +56,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.CameraPath:
-                    var cameraPathData = ( CameraPathClassData )( object )scriptData;
-                    var cameraPathScript = ( PathScript )Helper.GetComponentByEnum( obj, objectType );
+                    var cameraPathData = ( CameraPathClassData ) ( object ) scriptData;
+                    var cameraPathScript = ( PathScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -76,8 +77,8 @@ namespace ImportExport.Json
                         for ( int i = 0; i < obj.transform.childCount; i++ )
                             path_point.Add( obj.transform.GetChild( i ) );
                         for ( int i = 0; i < path_point.Count; i++ )
-                            if ( Helper.IsValid( path_point[i].gameObject ) )
-                                Object.DestroyImmediate( path_point[i].gameObject );
+                            if ( Helper.IsValid( path_point[ i ].gameObject ) )
+                                Object.DestroyImmediate( path_point[ i ].gameObject );
                         TransferDataToClass( cameraPathData, cameraPathScript );
                         cameraPathScript.targetRef = Helper.CreateGameObject( "targetRef", UnityInfo.relativePathCubePrefab );
                         GetSetTransformData( cameraPathScript.targetRef, cameraPathData.TargetRef );
@@ -93,8 +94,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.DoubleDoor:
-                    var doubleDoorData = ( DoubleDoorClassData )( object )scriptData;
-                    var doorScriptDouble = ( DoorScript )Helper.GetComponentByEnum( obj, objectType );
+                    var doubleDoorData = ( DoubleDoorClassData ) ( object ) scriptData;
+                    var doorScriptDouble = ( DoorScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( doorScriptDouble, doubleDoorData );
@@ -102,8 +103,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.FuncWindowHint:
-                    var windowHintData = ( FuncWindowHintClassData )( object )scriptData;
-                    var windowHintScript = ( WindowHintScript )Helper.GetComponentByEnum( obj, objectType );
+                    var windowHintData = ( FuncWindowHintClassData ) ( object ) scriptData;
+                    var windowHintScript = ( WindowHintScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( windowHintScript, windowHintData );
@@ -111,8 +112,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.HorzDoor:
-                    var horzDoorData = ( HorzDoorClassData )( object )scriptData;
-                    var horzDoorScript = ( HorzDoorScript )Helper.GetComponentByEnum( obj, objectType );
+                    var horzDoorData = ( HorzDoorClassData ) ( object ) scriptData;
+                    var horzDoorScript = ( HorzDoorScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( horzDoorScript, horzDoorData );
@@ -120,8 +121,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.Jumppad:
-                    var jumppadData = ( JumppadClassData )( object )scriptData;
-                    var propScriptJumppad = ( PropScript )Helper.GetComponentByEnum( obj, objectType );
+                    var jumppadData = ( JumppadClassData ) ( object ) scriptData;
+                    var propScriptJumppad = ( PropScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( propScriptJumppad, jumppadData );
@@ -129,8 +130,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.JumpTower:
-                    var jumpTowerData = ( JumpTowerClassData )( object )scriptData;
-                    var jumpTowerScript = ( JumpTowerScript )Helper.GetComponentByEnum( obj, objectType );
+                    var jumpTowerData = ( JumpTowerClassData ) ( object ) scriptData;
+                    var jumpTowerScript = ( JumpTowerScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( jumpTowerScript, jumpTowerData );
@@ -138,8 +139,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.LinkedZipline:
-                    var linkedZiplineData = ( LinkedZipLinesClassData )( object )scriptData;
-                    var linkedZiplineScript = ( LinkedZiplineScript )Helper.GetComponentByEnum( obj, objectType );
+                    var linkedZiplineData = ( LinkedZipLinesClassData ) ( object ) scriptData;
+                    var linkedZiplineScript = ( LinkedZiplineScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -153,8 +154,8 @@ namespace ImportExport.Json
                         for ( int i = 0; i < obj.transform.childCount; i++ )
                             nodes.Add( obj.transform.GetChild( i ) );
                         for ( int i = 0; i < nodes.Count; i++ )
-                            if ( Helper.IsValid( nodes[i].gameObject ) )
-                                Object.DestroyImmediate( nodes[i].gameObject );
+                            if ( Helper.IsValid( nodes[ i ].gameObject ) )
+                                Object.DestroyImmediate( nodes[ i ].gameObject );
                         TransferDataToClass( linkedZiplineData, linkedZiplineScript );
                         foreach ( var nodesPos in linkedZiplineData.Nodes )
                         {
@@ -167,8 +168,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.LootBin:
-                    var lootBinData = ( LootBinClassData )( object )scriptData;
-                    var lootBinScript = ( LootBinScript )Helper.GetComponentByEnum( obj, objectType );
+                    var lootBinData = ( LootBinClassData ) ( object ) scriptData;
+                    var lootBinScript = ( LootBinScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( lootBinScript, lootBinData );
@@ -176,8 +177,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.NewLocPair:
-                    var newLocPairData = ( NewLocPairClassData )( object )scriptData;
-                    var newLocPairScript = ( NewLocPairScript )Helper.GetComponentByEnum( obj, objectType );
+                    var newLocPairData = ( NewLocPairClassData ) ( object ) scriptData;
+                    var newLocPairScript = ( NewLocPairScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( newLocPairScript, newLocPairData );
@@ -185,8 +186,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.NonVerticalZipLine:
-                    var nonVerticalZipLineData = ( NonVerticalZipLineClassData )( object )scriptData;
-                    var drawNonVerticalZipline = ( DrawNonVerticalZipline )Helper.GetComponentByEnum( obj, objectType );
+                    var nonVerticalZipLineData = ( NonVerticalZipLineClassData ) ( object ) scriptData;
+                    var drawNonVerticalZipline = ( DrawNonVerticalZipline ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -219,14 +220,14 @@ namespace ImportExport.Json
                             CreatePath( panelData.Path, panelData.PathString, panel );
 
                             Array.Resize( ref drawNonVerticalZipline.Panels, drawNonVerticalZipline.Panels.Length + 1 );
-                            drawNonVerticalZipline.Panels[drawNonVerticalZipline.Panels.Length - 1] = panel;
+                            drawNonVerticalZipline.Panels[ drawNonVerticalZipline.Panels.Length - 1 ] = panel;
                         }
                     }
                     break;
 
                 case ObjectType.Prop:
-                    var propData = ( PropClassData )( object )scriptData;
-                    var propScript = ( PropScript )Helper.GetComponentByEnum( obj, objectType );
+                    var propData = ( PropClassData ) ( object ) scriptData;
+                    var propScript = ( PropScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -240,8 +241,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.SingleDoor:
-                    var singleDoorData = ( SingleDoorClassData )( object )scriptData;
-                    var doorScriptSingle = ( DoorScript )Helper.GetComponentByEnum( obj, objectType );
+                    var singleDoorData = ( SingleDoorClassData ) ( object ) scriptData;
+                    var doorScriptSingle = ( DoorScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( doorScriptSingle, singleDoorData );
@@ -249,8 +250,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.Sound:
-                    var soundData = ( SoundClassData )( object )scriptData;
-                    var soundScript = ( SoundScript )Helper.GetComponentByEnum( obj, objectType );
+                    var soundData = ( SoundClassData ) ( object ) scriptData;
+                    var soundScript = ( SoundScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( soundScript, soundData );
@@ -258,8 +259,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.SpawnPoint:
-                    var spawnPointData = ( SpawnPointClassData )( object )scriptData;
-                    var spawnPointScript = ( SpawnPointScript )Helper.GetComponentByEnum( obj, objectType );
+                    var spawnPointData = ( SpawnPointClassData ) ( object ) scriptData;
+                    var spawnPointScript = ( SpawnPointScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( spawnPointScript, spawnPointData );
@@ -267,8 +268,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.TextInfoPanel:
-                    var textInfoPanelData = ( TextInfoPanelClassData )( object )scriptData;
-                    var textInfoPanelScript = ( TextInfoPanelScript )Helper.GetComponentByEnum( obj, objectType );
+                    var textInfoPanelData = ( TextInfoPanelClassData ) ( object ) scriptData;
+                    var textInfoPanelScript = ( TextInfoPanelScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( textInfoPanelScript, textInfoPanelData );
@@ -276,8 +277,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.Trigger:
-                    var triggerData = ( TriggerClassData )( object )scriptData;
-                    var triggerScripting = ( TriggerScripting )Helper.GetComponentByEnum( obj, objectType );
+                    var triggerData = ( TriggerClassData ) ( object ) scriptData;
+                    var triggerScripting = ( TriggerScripting ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -292,8 +293,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.VerticalDoor:
-                    var verticalDoorData = ( VerticalDoorClassData )( object )scriptData;
-                    var verticalDoorScript = ( VerticalDoorScript )Helper.GetComponentByEnum( obj, objectType );
+                    var verticalDoorData = ( VerticalDoorClassData ) ( object ) scriptData;
+                    var verticalDoorScript = ( VerticalDoorScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( verticalDoorScript, verticalDoorData );
@@ -301,8 +302,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.VerticalZipLine:
-                    var verticalZipLineData = ( VerticalZipLineClassData )( object )scriptData;
-                    var drawVerticalZipline = ( DrawVerticalZipline )Helper.GetComponentByEnum( obj, objectType );
+                    var verticalZipLineData = ( VerticalZipLineClassData ) ( object ) scriptData;
+                    var drawVerticalZipline = ( DrawVerticalZipline ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -330,14 +331,14 @@ namespace ImportExport.Json
                             CreatePath( panelData.Path, panelData.PathString, panel );
 
                             Array.Resize( ref drawVerticalZipline.Panels, drawVerticalZipline.Panels.Length + 1 );
-                            drawVerticalZipline.Panels[drawVerticalZipline.Panels.Length - 1] = panel;
+                            drawVerticalZipline.Panels[ drawVerticalZipline.Panels.Length - 1 ] = panel;
                         }
                     }
                     break;
 
                 case ObjectType.WeaponRack:
-                    var weaponRackData = ( WeaponRackClassData )( object )scriptData;
-                    var weaponRackScript = ( WeaponRackScript )Helper.GetComponentByEnum( obj, objectType );
+                    var weaponRackData = ( WeaponRackClassData ) ( object ) scriptData;
+                    var weaponRackScript = ( WeaponRackScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -351,8 +352,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.ZipLine:
-                    var ziplineData = ( ZipLineClassData )( object )scriptData;
-                    var drawZipline = ( DrawZipline )Helper.GetComponentByEnum( obj, objectType );
+                    var ziplineData = ( ZipLineClassData ) ( object ) scriptData;
+                    var drawZipline = ( DrawZipline ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                     {
@@ -369,8 +370,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.LiveMapCodePlayerSpawn:
-                    var UOPlayerSpawnData = ( UOPlayerSpawnClassData )( object )scriptData;
-                    var UOPlayerSpawnScript = ( EmptyScript )Helper.GetComponentByEnum( obj, objectType );
+                    var UOPlayerSpawnData = ( UOPlayerSpawnClassData ) ( object ) scriptData;
+                    var UOPlayerSpawnScript = ( EmptyScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( UOPlayerSpawnScript, UOPlayerSpawnData );
@@ -378,8 +379,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.RespawnableHeal:
-                    var respawnableHealData = ( RespawnableHealClassData )( object )scriptData;
-                    var respawnableHealScript = ( RespawnableHealScript )Helper.GetComponentByEnum( obj, objectType );
+                    var respawnableHealData = ( RespawnableHealClassData ) ( object ) scriptData;
+                    var respawnableHealScript = ( RespawnableHealScript ) Helper.GetComponentByEnum( obj, objectType );
                     respawnableHealData.Name = UnityInfo.GetObjName( obj );
 
                     if ( getSet == GetSetData.Get )
@@ -388,8 +389,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.SpeedBoost:
-                    var speedBoostData = ( SpeedBoostClassData )( object )scriptData;
-                    var speedBoostScript = ( SpeedBoostScript )Helper.GetComponentByEnum( obj, objectType );
+                    var speedBoostData = ( SpeedBoostClassData ) ( object ) scriptData;
+                    var speedBoostScript = ( SpeedBoostScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( speedBoostScript, speedBoostData );
@@ -397,8 +398,8 @@ namespace ImportExport.Json
                     break;
 
                 case ObjectType.AnimatedCamera:
-                    var animatedCameraData = ( AnimatedCameraClassData )( object )scriptData;
-                    var animatedCameraScript = ( AnimatedCameraScript )Helper.GetComponentByEnum( obj, objectType );
+                    var animatedCameraData = ( AnimatedCameraClassData ) ( object ) scriptData;
+                    var animatedCameraScript = ( AnimatedCameraScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
                         TransferDataToClass( animatedCameraScript, animatedCameraData );
@@ -487,13 +488,13 @@ namespace ImportExport.Json
                     switch ( executeType )
                     {
                         case ExecuteType.SortList:
-                            UnityInfo.SortListByKey( jsonData.HorzDoors, x => x.PathString );
+                            UnityInfo.SortListByKey( jsonData.HorizontalDoors, x => x.PathString );
                             break;
                         case ExecuteType.Import:
-                            await ImportObjectsWithEnum( objectType, jsonData.HorzDoors );
+                            await ImportObjectsWithEnum( objectType, jsonData.HorizontalDoors );
                             break;
                         case ExecuteType.Export:
-                            await ExportObjectsWithEnum( objectType, jsonData.HorzDoors, selectionOnly );
+                            await ExportObjectsWithEnum( objectType, jsonData.HorizontalDoors, selectionOnly );
                             break;
                     }
                     break;
@@ -501,13 +502,13 @@ namespace ImportExport.Json
                     switch ( executeType )
                     {
                         case ExecuteType.SortList:
-                            UnityInfo.SortListByKey( jsonData.Jumppads, x => x.PathString );
+                            UnityInfo.SortListByKey( jsonData.JumpPads, x => x.PathString );
                             break;
                         case ExecuteType.Import:
-                            await ImportObjectsWithEnum( objectType, jsonData.Jumppads );
+                            await ImportObjectsWithEnum( objectType, jsonData.JumpPads );
                             break;
                         case ExecuteType.Export:
-                            await ExportObjectsWithEnum( objectType, jsonData.Jumppads, selectionOnly );
+                            await ExportObjectsWithEnum( objectType, jsonData.JumpPads, selectionOnly );
                             break;
                     }
                     break;

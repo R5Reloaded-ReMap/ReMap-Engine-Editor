@@ -1,4 +1,5 @@
 // Internal
+
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -60,17 +61,16 @@ namespace ImportExport.Json
 
         private static GameObject ProcessImportClassData<T>( T objData, string objName, ObjectType objectType, int i, int j, int objectsCount ) where T : GlobalClassData
         {
-            GameObject obj = null;
-            string importing = "";
+            string importing;
 
             if ( string.IsNullOrEmpty( objData.PathString ) )
                 importing = objName;
             else importing = $"{objData.PathString}/{objName}";
 
-            EditorUtility.DisplayProgressBar( $"Importing {Helper.GetObjNameWithEnum( objectType )} {j}/{objectsCount}", $"Importing: {importing}", ( i + 1 ) / ( float )objectsCount );
+            EditorUtility.DisplayProgressBar( $"Importing {Helper.GetObjNameWithEnum( objectType )} {j}/{objectsCount}", $"Importing: {importing}", ( i + 1 ) / ( float ) objectsCount );
             ReMapConsole.Log( "[Json Import] Importing: " + objName, ReMapConsole.LogType.Info );
 
-            obj = Helper.CreateGameObject( "", objName, PathType.Name );
+            var obj = Helper.CreateGameObject( "", objName, PathType.Name );
 
             if ( !Helper.IsValid( obj ) ) return null;
 

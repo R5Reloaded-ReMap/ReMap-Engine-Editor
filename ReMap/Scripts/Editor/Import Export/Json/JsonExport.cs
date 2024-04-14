@@ -1,4 +1,5 @@
 // Internal
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -90,9 +91,9 @@ namespace ImportExport.Json
                 else exporting = $"{objPath}/{objName}";
 
                 ReMapConsole.Log( "[Json Export] Exporting: " + objName, ReMapConsole.LogType.Info );
-                EditorUtility.DisplayProgressBar( $"Exporting {objType} {j}/{objectsCount}", $"Exporting: {exporting}", ( i + 1 ) / ( float )objectsCount );
+                EditorUtility.DisplayProgressBar( $"Exporting {objType} {j}/{objectsCount}", $"Exporting: {exporting}", ( i + 1 ) / ( float ) objectsCount );
 
-                var classData = Activator.CreateInstance( typeof(T) ) as T;
+                var classData = Activator.CreateInstance( typeof( T ) ) as T;
 
                 ProcessExportClassData( classData, obj, objPath, objectType );
 
@@ -126,11 +127,11 @@ namespace ImportExport.Json
             jsonData.NonVerticalZipLines = new List< NonVerticalZipLineClassData >();
             jsonData.SingleDoors = new List< SingleDoorClassData >();
             jsonData.DoubleDoors = new List< DoubleDoorClassData >();
-            jsonData.HorzDoors = new List< HorzDoorClassData >();
+            jsonData.HorizontalDoors = new List< HorzDoorClassData >();
             jsonData.VerticalDoors = new List< VerticalDoorClassData >();
             jsonData.JumpTowers = new List< JumpTowerClassData >();
             jsonData.Buttons = new List< ButtonClassData >();
-            jsonData.Jumppads = new List< JumppadClassData >();
+            jsonData.JumpPads = new List< JumppadClassData >();
             jsonData.LootBins = new List< LootBinClassData >();
             jsonData.WeaponRacks = new List< WeaponRackClassData >();
             jsonData.Triggers = new List< TriggerClassData >();

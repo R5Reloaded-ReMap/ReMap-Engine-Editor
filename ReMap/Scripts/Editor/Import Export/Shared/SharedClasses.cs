@@ -13,8 +13,8 @@ namespace ImportExport
         public List< CameraPathClassData > CameraPaths;
         public List< DoubleDoorClassData > DoubleDoors;
         public List< FuncWindowHintClassData > FuncWindowHints;
-        public List< HorzDoorClassData > HorzDoors;
-        public List< JumppadClassData > Jumppads;
+        public List< HorzDoorClassData > HorizontalDoors;
+        public List< JumppadClassData > JumpPads;
         public List< JumpTowerClassData > JumpTowers;
         public List< LinkedZipLinesClassData > LinkedZiplines;
         public List< LootBinClassData > LootBins;

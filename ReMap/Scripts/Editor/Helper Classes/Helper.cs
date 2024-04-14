@@ -85,34 +85,34 @@ public class Helper
 
     private static readonly Dictionary< ObjectType, ObjectTypeData > _objectTypeData = new()
     {
-        { ObjectType.AnimatedCamera, new ObjectTypeData( new[] { "animated_camera", "AnimatedCamera", "Animated Camera" }, typeof(AnimatedCameraScript), typeof(AnimatedCameraClassData) ) },
-        { ObjectType.BubbleShield, new ObjectTypeData( new[] { "mdl#fx#bb_shield", "BubbleShield", "Bubble Shield" }, typeof(BubbleScript), typeof(BubbleShieldClassData) ) },
-        { ObjectType.Button, new ObjectTypeData( new[] { "custom_button", "Button", "Button" }, typeof(ButtonScripting), typeof(ButtonClassData) ) },
-        { ObjectType.CameraPath, new ObjectTypeData( new[] { "custom_camera_path", "CameraPath", "Camera Path" }, typeof(PathScript), typeof(CameraPathClassData) ) },
-        { ObjectType.DoubleDoor, new ObjectTypeData( new[] { "custom_double_door", "DoubleDoor", "Double Door" }, typeof(DoorScript), typeof(DoubleDoorClassData) ) },
-        { ObjectType.FuncWindowHint, new ObjectTypeData( new[] { "custom_window_hint", "FuncWindowHint", "Window Hint" }, typeof(WindowHintScript), typeof(FuncWindowHintClassData) ) },
-        { ObjectType.HorzDoor, new ObjectTypeData( new[] { "custom_sliding_door", "HorzDoor", "Horizontal Door" }, typeof(HorzDoorScript), typeof(HorzDoorClassData) ) },
-        { ObjectType.Jumppad, new ObjectTypeData( new[] { "custom_jumppad", "Jumppad", "Jump Pad" }, typeof(PropScript), typeof(JumppadClassData) ) },
-        { ObjectType.JumpTower, new ObjectTypeData( new[] { "custom_jump_tower", "JumpTower", "Jump Tower" }, typeof(JumpTowerScript), typeof(JumpTowerClassData) ) },
-        { ObjectType.LinkedZipline, new ObjectTypeData( new[] { "custom_linked_zipline", "LinkedZipline", "Linked Zipline" }, typeof(LinkedZiplineScript), typeof(LinkedZipLinesClassData) ) },
-        { ObjectType.LootBin, new ObjectTypeData( new[] { "custom_lootbin", "LootBin", "Loot Bin" }, typeof(LootBinScript), typeof(LootBinClassData) ) },
-        { ObjectType.NewLocPair, new ObjectTypeData( new[] { "custom_new_loc_pair", "NewLocPair", "New Loc Pair" }, typeof(NewLocPairScript), typeof(NewLocPairClassData) ) },
-        { ObjectType.NonVerticalZipLine, new ObjectTypeData( new[] { "_non_vertical_zipline", "NonVerticalZipLine", "Non Vertical ZipLine" }, typeof(DrawNonVerticalZipline), typeof(NonVerticalZipLineClassData) ) },
-        { ObjectType.Prop, new ObjectTypeData( new[] { "mdl", "Prop", "Prop" }, typeof(PropScript), typeof(PropClassData) ) },
-        { ObjectType.RespawnableHeal, new ObjectTypeData( new[] { "custom_respawnable_heal_", "RespawnableHeal", "Respawnable Heal" }, typeof(RespawnableHealScript), typeof(RespawnableHealClassData) ) },
-        { ObjectType.SingleDoor, new ObjectTypeData( new[] { "custom_single_door", "SingleDoor", "Single Door" }, typeof(DoorScript), typeof(SingleDoorClassData) ) },
-        { ObjectType.Sound, new ObjectTypeData( new[] { "custom_sound", "Sound", "Sound" }, typeof(SoundScript), typeof(SoundClassData) ) },
-        { ObjectType.SpawnPoint, new ObjectTypeData( new[] { "custom_info_spawnpoint_human", "SpawnPoint", "Spawn Point" }, typeof(SpawnPointScript), typeof(SpawnPointClassData) ) },
-        { ObjectType.SpeedBoost, new ObjectTypeData( new[] { "custom_speed_boost", "SpeedBoost", "Speed Boost" }, typeof(SpeedBoostScript), typeof(SpeedBoostClassData) ) },
-        { ObjectType.TextInfoPanel, new ObjectTypeData( new[] { "custom_text_info_panel", "TextInfoPanel", "Text Info Panel" }, typeof(TextInfoPanelScript), typeof(TextInfoPanelClassData) ) },
-        { ObjectType.Trigger, new ObjectTypeData( new[] { "trigger_cylinder", "Trigger", "Trigger" }, typeof(TriggerScripting), typeof(TriggerClassData) ) },
-        { ObjectType.VerticalDoor, new ObjectTypeData( new[] { "custom_vertical_door", "VerticalDoor", "Vertical Door" }, typeof(VerticalDoorScript), typeof(VerticalDoorClassData) ) },
-        { ObjectType.VerticalZipLine, new ObjectTypeData( new[] { "_vertical_zipline", "VerticalZipLine", "Vertical ZipLine" }, typeof(DrawVerticalZipline), typeof(VerticalZipLineClassData) ) },
-        { ObjectType.WeaponRack, new ObjectTypeData( new[] { "custom_weaponrack", "WeaponRack", "Weapon Rack" }, typeof(WeaponRackScript), typeof(WeaponRackClassData) ) },
-        { ObjectType.ZipLine, new ObjectTypeData( new[] { "custom_zipline", "ZipLine", "ZipLine" }, typeof(DrawZipline), typeof(ZipLineClassData) ) },
+        { ObjectType.AnimatedCamera, new ObjectTypeData( new[] { "animated_camera", "AnimatedCamera", "Animated Camera" }, typeof( AnimatedCameraScript ), typeof( AnimatedCameraClassData ) ) },
+        { ObjectType.BubbleShield, new ObjectTypeData( new[] { "mdl#fx#bb_shield", "BubbleShield", "Bubble Shield" }, typeof( BubbleScript ), typeof( BubbleShieldClassData ) ) },
+        { ObjectType.Button, new ObjectTypeData( new[] { "custom_button", "Button", "Button" }, typeof( ButtonScripting ), typeof( ButtonClassData ) ) },
+        { ObjectType.CameraPath, new ObjectTypeData( new[] { "custom_camera_path", "CameraPath", "Camera Path" }, typeof( PathScript ), typeof( CameraPathClassData ) ) },
+        { ObjectType.DoubleDoor, new ObjectTypeData( new[] { "custom_double_door", "DoubleDoor", "Double Door" }, typeof( DoorScript ), typeof( DoubleDoorClassData ) ) },
+        { ObjectType.FuncWindowHint, new ObjectTypeData( new[] { "custom_window_hint", "FuncWindowHint", "Window Hint" }, typeof( WindowHintScript ), typeof( FuncWindowHintClassData ) ) },
+        { ObjectType.HorzDoor, new ObjectTypeData( new[] { "custom_sliding_door", "HorzDoor", "Horizontal Door" }, typeof( HorzDoorScript ), typeof( HorzDoorClassData ) ) },
+        { ObjectType.Jumppad, new ObjectTypeData( new[] { "custom_jumppad", "Jumppad", "Jump Pad" }, typeof( PropScript ), typeof( JumppadClassData ) ) },
+        { ObjectType.JumpTower, new ObjectTypeData( new[] { "custom_jump_tower", "JumpTower", "Jump Tower" }, typeof( JumpTowerScript ), typeof( JumpTowerClassData ) ) },
+        { ObjectType.LinkedZipline, new ObjectTypeData( new[] { "custom_linked_zipline", "LinkedZipline", "Linked Zipline" }, typeof( LinkedZiplineScript ), typeof( LinkedZipLinesClassData ) ) },
+        { ObjectType.LootBin, new ObjectTypeData( new[] { "custom_lootbin", "LootBin", "Loot Bin" }, typeof( LootBinScript ), typeof( LootBinClassData ) ) },
+        { ObjectType.NewLocPair, new ObjectTypeData( new[] { "custom_new_loc_pair", "NewLocPair", "New Loc Pair" }, typeof( NewLocPairScript ), typeof( NewLocPairClassData ) ) },
+        { ObjectType.NonVerticalZipLine, new ObjectTypeData( new[] { "_non_vertical_zipline", "NonVerticalZipLine", "Non Vertical ZipLine" }, typeof( DrawNonVerticalZipline ), typeof( NonVerticalZipLineClassData ) ) },
+        { ObjectType.Prop, new ObjectTypeData( new[] { "mdl", "Prop", "Prop" }, typeof( PropScript ), typeof( PropClassData ) ) },
+        { ObjectType.RespawnableHeal, new ObjectTypeData( new[] { "custom_respawnable_heal_", "RespawnableHeal", "Respawnable Heal" }, typeof( RespawnableHealScript ), typeof( RespawnableHealClassData ) ) },
+        { ObjectType.SingleDoor, new ObjectTypeData( new[] { "custom_single_door", "SingleDoor", "Single Door" }, typeof( DoorScript ), typeof( SingleDoorClassData ) ) },
+        { ObjectType.Sound, new ObjectTypeData( new[] { "custom_sound", "Sound", "Sound" }, typeof( SoundScript ), typeof( SoundClassData ) ) },
+        { ObjectType.SpawnPoint, new ObjectTypeData( new[] { "custom_info_spawnpoint_human", "SpawnPoint", "Spawn Point" }, typeof( SpawnPointScript ), typeof( SpawnPointClassData ) ) },
+        { ObjectType.SpeedBoost, new ObjectTypeData( new[] { "custom_speed_boost", "SpeedBoost", "Speed Boost" }, typeof( SpeedBoostScript ), typeof( SpeedBoostClassData ) ) },
+        { ObjectType.TextInfoPanel, new ObjectTypeData( new[] { "custom_text_info_panel", "TextInfoPanel", "Text Info Panel" }, typeof( TextInfoPanelScript ), typeof( TextInfoPanelClassData ) ) },
+        { ObjectType.Trigger, new ObjectTypeData( new[] { "trigger_cylinder", "Trigger", "Trigger" }, typeof( TriggerScripting ), typeof( TriggerClassData ) ) },
+        { ObjectType.VerticalDoor, new ObjectTypeData( new[] { "custom_vertical_door", "VerticalDoor", "Vertical Door" }, typeof( VerticalDoorScript ), typeof( VerticalDoorClassData ) ) },
+        { ObjectType.VerticalZipLine, new ObjectTypeData( new[] { "_vertical_zipline", "VerticalZipLine", "Vertical ZipLine" }, typeof( DrawVerticalZipline ), typeof( VerticalZipLineClassData ) ) },
+        { ObjectType.WeaponRack, new ObjectTypeData( new[] { "custom_weaponrack", "WeaponRack", "Weapon Rack" }, typeof( WeaponRackScript ), typeof( WeaponRackClassData ) ) },
+        { ObjectType.ZipLine, new ObjectTypeData( new[] { "custom_zipline", "ZipLine", "ZipLine" }, typeof( DrawZipline ), typeof( ZipLineClassData ) ) },
 
         // Unity Only
-        { ObjectType.LiveMapCodePlayerSpawn, new ObjectTypeData( new[] { "unityonly_player_spawn", "LMCPlayerSpawn", "Player Spawn ( UO )" }, typeof(EmptyScript), typeof(UOPlayerSpawnClassData) ) }
+        { ObjectType.LiveMapCodePlayerSpawn, new ObjectTypeData( new[] { "unityonly_player_spawn", "LMCPlayerSpawn", "Player Spawn ( UO )" }, typeof( EmptyScript ), typeof( UOPlayerSpawnClassData ) ) }
     };
 
     private static readonly List< ObjectType > ObjectToTagPriorities = new()
@@ -157,9 +157,9 @@ public class Helper
 
     public static readonly Dictionary< string, (string SearchTerm, Func< GameObject, string > ReplacementFunc) > LocalizedStringTrigger = new()
     {
-        ["#TRIGGER_H_ORIGIN"] = ( "#TRIGGER_H_ORIGIN", obj => obj != null && obj.activeSelf ? BuildOrigin( obj ) : "< 0, 0, 0 >" ),
-        ["#TRIGGER_H_ANGLES"] = ( "#TRIGGER_H_ANGLES", obj => obj != null && obj.activeSelf ? BuildAngles( obj ) : "< 0, 0, 0 >" ),
-        ["#TRIGGER_H_OFFSET"] = ( "#TRIGGER_H_OFFSET", obj => "+ startingorg" )
+        [ "#TRIGGER_H_ORIGIN" ] = ( "#TRIGGER_H_ORIGIN", obj => obj != null && obj.activeSelf ? BuildOrigin( obj ) : "< 0, 0, 0 >" ),
+        [ "#TRIGGER_H_ANGLES" ] = ( "#TRIGGER_H_ANGLES", obj => obj != null && obj.activeSelf ? BuildAngles( obj ) : "< 0, 0, 0 >" ),
+        [ "#TRIGGER_H_OFFSET" ] = ( "#TRIGGER_H_OFFSET", obj => "+ startingorg" )
     };
 
     public static readonly Dictionary< string, string > BadChars = new()
@@ -316,13 +316,13 @@ public class Helper
             var matches = Regex.Matches( line, @"\s*(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)\s+(-?\d+(\.\d+)?)\s*" );
             if ( matches.Count == 0 ) return Vector3.zero;
 
-            string[] values = matches[0].Value.Split( ' ' );
+            string[] values = matches[ 0 ].Value.Split( ' ' );
 
             return new Vector3
             (
-                float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x ) ? x : 0,
-                float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y ) ? y : 0,
-                float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z ) ? z : 0
+                float.TryParse( values[ 0 ], NumberStyles.Float, CultureInfo.InvariantCulture, out float x ) ? x : 0,
+                float.TryParse( values[ 1 ], NumberStyles.Float, CultureInfo.InvariantCulture, out float y ) ? y : 0,
+                float.TryParse( values[ 2 ], NumberStyles.Float, CultureInfo.InvariantCulture, out float z ) ? z : 0
             );
         }
         else
@@ -330,13 +330,13 @@ public class Helper
             var matches = Regex.Matches( line, "<\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)\\s*>" );
             if ( matches.Count == 0 ) return Vector3.zero;
 
-            string[] values = matches[0].Value.Replace( "<", "" ).Replace( ">", "" ).Split( ',' );
+            string[] values = matches[ 0 ].Value.Replace( "<", "" ).Replace( ">", "" ).Split( ',' );
 
             return new Vector3
             (
-                float.TryParse( values[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x ) ? x : 0,
-                float.TryParse( values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y ) ? y : 0,
-                float.TryParse( values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float z ) ? z : 0
+                float.TryParse( values[ 0 ], NumberStyles.Float, CultureInfo.InvariantCulture, out float x ) ? x : 0,
+                float.TryParse( values[ 1 ], NumberStyles.Float, CultureInfo.InvariantCulture, out float y ) ? y : 0,
+                float.TryParse( values[ 2 ], NumberStyles.Float, CultureInfo.InvariantCulture, out float z ) ? z : 0
             );
         }
     }
@@ -361,7 +361,7 @@ public class Helper
 
             foreach ( string key in ObjectToTag.Keys )
                 if ( go.name.Contains( key ) )
-                    go.tag = ObjectToTag[key];
+                    go.tag = ObjectToTag[ key ];
 
             progress += 1.0f / max;
         }
@@ -373,15 +373,15 @@ public class Helper
         string[] items = item.Replace( "\"", "" ).Split( char.Parse( "," ) );
 
         var dt = new NewDataTable();
-        dt.Type = items[0];
-        dt.Origin = new Vector3( float.Parse( items[2] ), float.Parse( items[3].Replace( ">", "" ) ), -float.Parse( items[1].Replace( "<", "" ) ) );
-        dt.Angles = new Vector3( -float.Parse( items[4].Replace( "<", "" ) ), -float.Parse( items[5] ), float.Parse( items[6].Replace( ">", "" ) ) );
-        dt.Scale = float.Parse( items[7] );
-        dt.FadeDistance = items[8];
-        dt.canMantle = items[9];
-        dt.isVisible = items[10];
-        dt.Model = items[11].Replace( "/", "#" ).Replace( ".rmdl", "" ).Replace( "\"", "" ).Replace( "\n", "" ).Replace( "\r", "" );
-        dt.Collection = items[12].Replace( "\"", "" );
+        dt.Type = items[ 0 ];
+        dt.Origin = new Vector3( float.Parse( items[ 2 ] ), float.Parse( items[ 3 ].Replace( ">", "" ) ), -float.Parse( items[ 1 ].Replace( "<", "" ) ) );
+        dt.Angles = new Vector3( -float.Parse( items[ 4 ].Replace( "<", "" ) ), -float.Parse( items[ 5 ] ), float.Parse( items[ 6 ].Replace( ">", "" ) ) );
+        dt.Scale = float.Parse( items[ 7 ] );
+        dt.FadeDistance = items[ 8 ];
+        dt.canMantle = items[ 9 ];
+        dt.isVisible = items[ 10 ];
+        dt.Model = items[ 11 ].Replace( "/", "#" ).Replace( ".rmdl", "" ).Replace( "\"", "" ).Replace( "\n", "" ).Replace( "\r", "" );
+        dt.Collection = items[ 12 ].Replace( "\"", "" );
 
         return dt;
     }
@@ -417,7 +417,7 @@ public class Helper
             if ( itemsplit.Length < 12 )
                 continue;
 
-            string collection = itemsplit[12].Replace( "\"", "" );
+            string collection = itemsplit[ 12 ].Replace( "\"", "" );
 
             if ( collection == "" )
                 continue;
@@ -449,7 +449,7 @@ public class Helper
 
     public static void ApplyComponentScriptData<T>( T source, T target ) where T : Component
     {
-        typeof(T).GetFields( BindingFlags.Public | BindingFlags.Instance ).ToList().ForEach
+        typeof( T ).GetFields( BindingFlags.Public | BindingFlags.Instance ).ToList().ForEach
         (
             f => f.SetValue( target, f.GetValue( source ) )
         );
@@ -492,7 +492,7 @@ public class Helper
 
     private static string Internal_GetStringByEnum( ObjectType objectType, StringType stringType )
     {
-        return _objectTypeData.TryGetValue( objectType, out var objectTypeData ) && IsValid( objectTypeData ) ? objectTypeData.StringData[( int )stringType] : string.Empty;
+        return _objectTypeData.TryGetValue( objectType, out var objectTypeData ) && IsValid( objectTypeData ) ? objectTypeData.StringData[ ( int ) stringType ] : string.Empty;
     }
 
     public static Component GetComponentByEnum( GameObject obj, ObjectType objectType )
@@ -513,10 +513,9 @@ public class Helper
 
     private static Dictionary< string, string > ObjectToTagDictionaryInit()
     {
-        return GetAllObjectType().ToDictionary
-        (
-            objectType => GetObjRefWithEnum( objectType ),
-            objectType => GetObjTagNameWithEnum( objectType )
+        return GetAllObjectType().ToDictionary(
+            GetObjRefWithEnum,
+            GetObjTagNameWithEnum
         );
     }
 
@@ -527,23 +526,23 @@ public class Helper
 
     public static ObjectType[] GetAllObjectType()
     {
-        return ( ObjectType[] )Enum.GetValues( typeof(ObjectType) );
+        return ( ObjectType[] ) Enum.GetValues( typeof( ObjectType ) );
     }
 
     public static bool GetBoolFromGenerateObjects( ObjectType objectType )
     {
-        return GenerateObjects[objectType];
+        return GenerateObjects[ objectType ];
     }
 
     public static bool GetBoolFromObjectsToHide( ObjectType objectType )
     {
-        return ObjectsToHide[objectType];
+        return ObjectsToHide[ objectType ];
     }
 
     public static void ForceSetBoolToGenerateObjects( ObjectType[] array, bool value )
     {
         foreach ( var objectType in array )
-            GenerateObjects[objectType] = value;
+            GenerateObjects[ objectType ] = value;
     }
 
     /// <summary>
@@ -646,7 +645,7 @@ public class Helper
 
         var loadedPrefabResource = pathType switch
         {
-            PathType.Path => AssetDatabase.LoadAssetAtPath( $"{modelPath}", typeof(Object) ) as GameObject,
+            PathType.Path => AssetDatabase.LoadAssetAtPath( $"{modelPath}", typeof( Object ) ) as GameObject,
             PathType.Name => UnityInfo.FindPrefabFromName( modelPath ),
             _ => null
         };
@@ -984,7 +983,7 @@ public class Helper
     {
         int currentLength = array.Length;
         ArrayResize( ref array, currentLength + 1 );
-        array[currentLength] = obj;
+        array[ currentLength ] = obj;
     }
 
     public static void Ping( params object[] args )

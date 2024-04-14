@@ -442,7 +442,7 @@ public class Helper
             async objectType => AppendCode( ref code, await BuildObjectsWithEnum( objectType, buildType, Selection ), 0 )
         );
 
-        await Task.WhenAll( objectTasks ); //
+        await Task.WhenAll( objectTasks );
 
         return code.ToString();
     }

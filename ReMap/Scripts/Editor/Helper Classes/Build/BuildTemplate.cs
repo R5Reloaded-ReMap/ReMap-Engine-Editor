@@ -38,7 +38,7 @@ namespace Build
             // Build the code
             foreach ( var obj in objectData )
             {
-                var script = ( PropScript )Helper.GetComponentByEnum( obj, ObjectType.Prop );
+                var script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
                 if ( script == null ) continue;
 
                 switch ( buildType )
@@ -61,7 +61,7 @@ namespace Build
 
                     case BuildType.LiveMap:
                         // Remove 1 to the counter since we don't support this object for live map code
-                        Helper.RemoveSendedEntityCount();
+                        Helper.RemoveSendEntityCount();
                         break;
                 }
             }

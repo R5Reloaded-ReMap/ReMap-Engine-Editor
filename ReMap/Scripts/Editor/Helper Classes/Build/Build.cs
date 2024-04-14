@@ -186,7 +186,7 @@ namespace Build
                     objectDataLength = objectData.Count( o =>
                     {
                         var component = Helper.GetComponentByEnum( o, ObjectType.Prop );
-                        return component != null && !( ( PropScript )component ).ClientSide;
+                        return component != null && !( ( PropScript ) component ).ClientSide;
                     } );
                     break;
 
@@ -228,7 +228,7 @@ namespace Build
 
                     break;
                 case BuildType.LiveMap:
-                    Helper.IncrementSendedEntityCount( objectDataLength );
+                    Helper.IncrementSendEntityCount( objectDataLength );
                     break;
 
                 default:

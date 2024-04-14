@@ -630,11 +630,11 @@ public class Helper
     {
         var obj = CreateGameObject( name, modelPath, pathType );
 
-        if ( IsValid( obj ) && IsValid( parent ) )
-        {
-            obj.transform.position = parent.transform.position;
-            obj.transform.parent = parent.transform;
-        }
+        if ( !IsValid( obj ) || !IsValid( parent ) )
+            return obj;
+
+        obj.transform.position = parent.transform.position;
+        obj.transform.parent = parent.transform;
 
         return obj;
     }
@@ -675,8 +675,9 @@ public class Helper
         if ( !IsValid( subFolder ) )
             subFolder = CreateGameObject( name, "", GetParent( obj ) );
 
-        if ( IsValid( subFolder ) )
+        if ( IsValid( subFolder ) && IsValid( subFolder.transform ) )
             obj.transform.parent = subFolder.transform;
+
         return subFolder;
     }
 
@@ -709,9 +710,7 @@ public class Helper
 
         foreach ( string paths in pathStrings )
         {
-            if ( string.IsNullOrEmpty( paths ) )
-                path = $"{paths}";
-            else path = $"{path}/{paths}";
+            path = string.IsNullOrEmpty( path ) ? paths : $"{path}/{paths}";
 
             var newFolder = GameObject.Find( path );
 
@@ -742,18 +741,18 @@ public class Helper
 
     public static void SetOriginAndAngles( GameObject obj, Vector3 origin, Vector3 angles, bool local = false )
     {
-        if ( IsValid( obj ) )
+        if ( !IsValid( obj ) )
+            return;
+
+        if ( local )
         {
-            if ( local )
-            {
-                obj.transform.localPosition = origin;
-                obj.transform.localEulerAngles = angles;
-            }
-            else
-            {
-                obj.transform.position = origin;
-                obj.transform.eulerAngles = angles;
-            }
+            obj.transform.localPosition = origin;
+            obj.transform.localEulerAngles = angles;
+        }
+        else
+        {
+            obj.transform.position = origin;
+            obj.transform.eulerAngles = angles;
         }
     }
 
@@ -782,12 +781,12 @@ public class Helper
         EntityCount -= value;
     }
 
-    public static void IncrementSendedEntityCount( int value = 1 )
+    public static void IncrementSendEntityCount( int value = 1 )
     {
         SendedEntityCount += value;
     }
 
-    public static void RemoveSendedEntityCount( int value = 1 )
+    public static void RemoveSendEntityCount( int value = 1 )
     {
         SendedEntityCount -= value;
     }

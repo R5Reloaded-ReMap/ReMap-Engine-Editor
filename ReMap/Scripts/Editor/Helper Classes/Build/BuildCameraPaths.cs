@@ -40,7 +40,7 @@ namespace Build
             // Build the code
             foreach ( var obj in objectData )
             {
-                var script = ( PathScript )Helper.GetComponentByEnum( obj, ObjectType.CameraPath );
+                var script = ( PathScript ) Helper.GetComponentByEnum( obj, ObjectType.CameraPath );
                 if ( script == null ) continue;
 
                 string idxStr = idx.ToString( "00" );
@@ -103,7 +103,7 @@ namespace Build
 
                     case BuildType.LiveMap:
                         // Remove 1 to the counter since we don't support this object for live map code
-                        Helper.RemoveSendedEntityCount();
+                        Helper.RemoveSendEntityCount();
                         break;
                 }
 

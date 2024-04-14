@@ -38,7 +38,7 @@ namespace Build
             // Build the code
             foreach ( var obj in objectData )
             {
-                var script = ( SoundScript )Helper.GetComponentByEnum( obj, ObjectType.Sound );
+                var script = ( SoundScript ) Helper.GetComponentByEnum( obj, ObjectType.Sound );
                 if ( script == null ) continue;
 
                 string isWaveAmbient = script.IsWaveAmbient ? "1" : "0";
@@ -56,11 +56,11 @@ namespace Build
                         // Polyline segments
                         for ( int i = script.PolylineSegment.Length - 1; i > -1; i-- )
                         {
-                            string polylineSegmentEnd = Helper.BuildOrigin( script.PolylineSegment[i], true ).Replace( ",", "" );
+                            string polylineSegmentEnd = Helper.BuildOrigin( script.PolylineSegment[ i ], true ).Replace( ",", "" );
 
                             if ( i != 0 )
                             {
-                                string polylineSegmentStart = Helper.BuildOrigin( script.PolylineSegment[i - 1], true ).Replace( ",", "" );
+                                string polylineSegmentStart = Helper.BuildOrigin( script.PolylineSegment[ i - 1 ], true ).Replace( ",", "" );
 
                                 AppendCode( ref code, $"\"polyline_segment_{i}\" \"({polylineSegmentStart}) ({polylineSegmentEnd})\"" );
                             }
@@ -90,7 +90,7 @@ namespace Build
 
                     case BuildType.LiveMap:
                         // Remove 1 to the counter since we don't support this object for live map code
-                        Helper.RemoveSendedEntityCount();
+                        Helper.RemoveSendEntityCount();
                         break;
                 }
             }

@@ -240,11 +240,20 @@ public class Helper
     {
         bool isUnity = vectorType == VectorType.Unity;
 
+        if ( RoundValueEnable() && !isUnity )
+            vec = new Vector3( RoundValue( vec.x, GetRoundValue() ), RoundValue( vec.y, GetRoundValue() ), RoundValue( vec.z, GetRoundValue() ) );
+
         string x = ReplaceComma( isUnity ? WrapAngle( vec.x ) : -WrapAngle( vec.x ) );
         string y = ReplaceComma( isUnity ? WrapAngle( vec.y ) : -WrapAngle( vec.y ) );
-        string z = ReplaceComma( isUnity ? WrapAngle( vec.z ) : WrapAngle( vec.z ) );
+        string z = ReplaceComma( WrapAngle( vec.z ) );
 
         return isEntFile ? $"{x} {y} {z}" : $"< {x}, {y}, {z} >";
+    }
+
+    private static float RoundValue( float value, int decimals )
+    {
+        float multiplier = Mathf.Pow( 10, decimals );
+        return Mathf.Round( value * multiplier ) / multiplier;
     }
 
     public static string BuildRightVector( Vector3 vec, bool isEntFile = false, VectorType vectorType = VectorType.Apex )
@@ -296,6 +305,9 @@ public class Helper
         var offset = UseStartingOffset() && returnWithOffset ? StartingOffset : Vector3.zero;
 
         bool isUnity = vectorType == VectorType.Unity;
+
+        if ( RoundValueEnable() && !isUnity )
+            vec = new Vector3( RoundValue( vec.x, GetRoundValue() ), RoundValue( vec.y, GetRoundValue() ), RoundValue( vec.z, GetRoundValue() ) );
 
         string x = ReplaceComma( isUnity ? vec.x : -vec.z + offset.x );
         string y = ReplaceComma( isUnity ? vec.y : vec.x + offset.y );

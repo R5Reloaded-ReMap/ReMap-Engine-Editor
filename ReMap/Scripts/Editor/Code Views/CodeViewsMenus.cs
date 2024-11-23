@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace CodeViews
         //
 
         internal static FunctionRef EmptyFunctionRef = () => { };
-        internal static FunctionRef[] EmptyFunctionRefArray = new FunctionRef[0];
+        internal static FunctionRef[] EmptyFunctionRefArray = Array.Empty< FunctionRef >();
 
         internal static Color GUI_SettingsColor = new(255f, 255f, 255f);
 
@@ -410,14 +411,14 @@ namespace CodeViews
                 if ( !Helper.GetBoolFromObjectsToHide( objectType ) ) continue;
 
                 GUILayout.BeginHorizontal();
-                bool value = Helper.GenerateObjects[objectType];
+                bool value = Helper.GenerateObjects[ objectType ];
                 string name = Helper.GetObjNameWithEnum( objectType );
                 OptionalToggle( ref value, $"Build {name}", value ? $"Disable {name}" : $"Enable {name}" );
                 GUILayout.EndHorizontal();
 
-                if ( Helper.GenerateObjects[objectType] != value )
+                if ( Helper.GenerateObjects[ objectType ] != value )
                 {
-                    Helper.GenerateObjects[objectType] = value;
+                    Helper.GenerateObjects[ objectType ] = value;
                     CodeViewsWindow.Refresh();
 
                     GUILayout.EndVertical();
@@ -443,12 +444,12 @@ namespace CodeViews
 
                 if ( CodeViewsWindow.IsHidden( objectType ) )
                 {
-                    Helper.ObjectsToHide[objectType] = false;
+                    Helper.ObjectsToHide[ objectType ] = false;
                     continue;
                 }
-                Helper.ObjectsToHide[objectType] = true;
+                Helper.ObjectsToHide[ objectType ] = true;
 
-                if ( Helper.GenerateObjects[objectType] ) idx++;
+                if ( Helper.GenerateObjects[ objectType ] ) idx++;
             }
 
             EditorUtility.ClearProgressBar();
@@ -601,7 +602,7 @@ namespace CodeViews
                     break;
             }
 
-            MenuDictionary[name] = this;
+            MenuDictionary[ name ] = this;
         }
 
         public string Name { get; set; }

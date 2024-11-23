@@ -43,8 +43,8 @@ namespace CodeViews
         private static string[] fileInfo = new string[4];
 
         internal static List< InfoMessage > infoList = InfoMessage.CreateInfoSerialized( 2 );
-        internal static InfoMessage staticMessage = infoList[0];
-        internal static InfoMessage ephemeralMessage = infoList[1];
+        internal static InfoMessage staticMessage = infoList[ 0 ];
+        internal static InfoMessage ephemeralMessage = infoList[ 1 ];
 
         // Menus
         // Show / Hide Settings Menu
@@ -55,6 +55,7 @@ namespace CodeViews
         internal static readonly string SquirrelMenuShowFunction = "SquirrelMenuFunction";
         internal static readonly string SquirrelMenuShowPrecacheCode = "SquirrelMenuPrecache";
         internal static readonly string SquirrelMenuShowAdditionalCode = "SquirrelMenuInBlockAdditionalCode";
+        internal static readonly string SquirrelMenuRoundValue = "SquirrelMenuRoundValue";
 
         internal static readonly string OffsetMenu = "OffsetMenu";
         internal static readonly string OffsetMenuOffset = "OffsetMenuOffset";
@@ -403,13 +404,6 @@ namespace CodeViews
             }
         };
 
-        public static void Init()
-        {
-            windowInstance = ( CodeViewsWindow )GetWindow( typeof(CodeViewsWindow), false, "Code Views" );
-            windowInstance.minSize = new Vector2( 1230, 500 );
-            windowInstance.Show();
-        }
-
         private void OnEnable()
         {
             TagHelper.CheckAndCreateTags();
@@ -440,8 +434,8 @@ namespace CodeViews
                 }
                 else if ( !AdditionalCodeTab.isEmptyCode )
                 {
-                    AdditionalCodeTab.activeCode.Content[AdditionalCodeTab.windowStruct.SubTabIdx].Code =
-                        EditorGUILayout.TextArea( AdditionalCodeTab.activeCode.Content[AdditionalCodeTab.windowStruct.SubTabIdx].Code, GUILayout.ExpandHeight( true ) );
+                    AdditionalCodeTab.activeCode.Content[ AdditionalCodeTab.windowStruct.SubTabIdx ].Code =
+                        EditorGUILayout.TextArea( AdditionalCodeTab.activeCode.Content[ AdditionalCodeTab.windowStruct.SubTabIdx ].Code, GUILayout.ExpandHeight( true ) );
                 }
                 else
                 {
@@ -473,6 +467,13 @@ namespace CodeViews
                 if ( GUILayout.Button( "Copy To Clipboard" ) ) CopyCode();
                 GUILayout.EndVertical();
             }
+        }
+
+        public static void Init()
+        {
+            windowInstance = ( CodeViewsWindow ) GetWindow( typeof( CodeViewsWindow ), false, "Code Views" );
+            windowInstance.minSize = new Vector2( 1230, 500 );
+            windowInstance.Show();
         }
 
         public static bool IsHidden( ObjectType objectType )
@@ -539,7 +540,7 @@ namespace CodeViews
 
             // Estimate scroll position, +60f every 4 lines
             // Modulo idx to keep the index below maxBuildLine
-            scroll.y = ( float )60 * ( idx % maxBuildLine / 4 );
+            scroll.y = ( float ) 60 * ( idx % maxBuildLine / 4 );
 
             HighlightString( currentPage, idx );
 
@@ -584,7 +585,7 @@ namespace CodeViews
 
             await Helper.Wait( 1 ); // 1 secondes
 
-            string path = EditorUtility.SaveFilePanel( fileInfo[0], fileInfo[1], fileInfo[2], fileInfo[3] );
+            string path = EditorUtility.SaveFilePanel( fileInfo[ 0 ], fileInfo[ 1 ], fileInfo[ 2 ], fileInfo[ 3 ] );
 
             if ( path.Length == 0 ) return;
 
@@ -742,18 +743,22 @@ namespace CodeViews
         {
             var currentEvent = Event.current;
 
-            if ( currentEvent.type == EventType.KeyDown )
-                if ( currentEvent.control ) // Ctrl key is pressed
-                    switch ( currentEvent.keyCode )
-                    {
-                        case KeyCode.R:
-                            Refresh(); // Press Ctrl + R for Refresh the page
-                            break;
+            if ( currentEvent.type != EventType.KeyDown )
+                return;
 
-                        case KeyCode.F:
-                            CodeViewsSearchWindow.Init(); // Press Ctrl + F for Search some code
-                            break;
-                    }
+            if ( !currentEvent.control ) // Ctrl key is pressed
+                return;
+
+            switch ( currentEvent.keyCode )
+            {
+                case KeyCode.R:
+                    Refresh(); // Press Ctrl + R for Refresh the page
+                    break;
+
+                case KeyCode.F:
+                    CodeViewsSearchWindow.Init(); // Press Ctrl + F for Search some code
+                    break;
+            }
         }
 
         internal static void ResetFunctionName()
@@ -868,6 +873,16 @@ namespace CodeViews
             return MenuInit.IsEnable( SquirrelMenuShowAdditionalCode );
         }
 
+        public static bool RoundValueEnable()
+        {
+            return MenuInit.IsEnable( SquirrelMenuRoundValue );
+        }
+
+        public static int GetRoundValue()
+        {
+            return ScriptTab.RoundValue;
+        }
+
         internal static bool SelectionEnable()
         {
             return MenuInit.IsEnable( SelectionMenu );
@@ -882,6 +897,8 @@ namespace CodeViews
     internal class InfoMessage
     {
         public static readonly int simultaneousDisplay = 3;
+
+        private readonly List< InfoMessage > queue = new();
         public bool bold;
         public Color color = Color.white;
         public int duration;
@@ -891,8 +908,6 @@ namespace CodeViews
         public string message = "";
 
         public string name = "InfoMessage";
-
-        private readonly List< InfoMessage > queue = new();
 
         public bool showFirstSeparator;
 
@@ -944,26 +959,26 @@ namespace CodeViews
             }
             else if ( !QueueIsEmpty() )
             {
-                if ( QueueCount() >= 1 && DateTime.Now > queue[0].durationTime )
+                if ( QueueCount() >= 1 && DateTime.Now > queue[ 0 ].durationTime )
                 {
                     queue.RemoveAt( 0 );
                     MessageClear();
 
                     if ( QueueCount() != 0 )
-                        message = queue[0].message;
+                        message = queue[ 0 ].message;
 
                     if ( QueueCount() >= simultaneousDisplay )
-                        queue[simultaneousDisplay - 1].durationTime = DateTime.Now.AddSeconds( queue[simultaneousDisplay - 1].duration );
+                        queue[ simultaneousDisplay - 1 ].durationTime = DateTime.Now.AddSeconds( queue[ simultaneousDisplay - 1 ].duration );
                 }
 
                 for ( int i = 0; i < simultaneousDisplay; i++ )
                 {
-                    if ( QueueCount() >= i + 1 && DateTime.Now > queue[i].durationTime )
+                    if ( QueueCount() >= i + 1 && DateTime.Now > queue[ i ].durationTime )
                     {
                         queue.RemoveAt( i );
 
                         if ( QueueCount() >= i + 1 )
-                            queue[i].durationTime = DateTime.Now.AddSeconds( queue[i].duration );
+                            queue[ i ].durationTime = DateTime.Now.AddSeconds( queue[ i ].duration );
                     }
 
                     if ( QueueCount() >= i + 1 )
@@ -973,7 +988,7 @@ namespace CodeViews
                         else
                             WindowUtility.WindowUtility.Separator( 2, 12 );
 
-                        InternalShowMessage( queue[i] );
+                        InternalShowMessage( queue[ i ] );
                     }
                 }
             }
@@ -1003,10 +1018,10 @@ namespace CodeViews
         public void RemoveToQueue( InfoMessage infoMessage, InfoMessage newInfoMessage = null )
         {
             for ( int i = 0; i < QueueCount(); i++ )
-                if ( queue[i] == infoMessage )
+                if ( queue[ i ] == infoMessage )
                 {
                     if ( i < simultaneousDisplay && Helper.IsValid( newInfoMessage ) )
-                        queue[i] = newInfoMessage;
+                        queue[ i ] = newInfoMessage;
                     else queue.RemoveAt( i );
                 }
         }

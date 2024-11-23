@@ -9,17 +9,25 @@ namespace CodeViews
 {
     public class ScriptTab
     {
+        internal static int RoundValue = 2;
+
         private static readonly FunctionRef[] SquirrelMenu =
         {
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowFunction, SquirrelFunction, MenuType.Medium, "Hide Squirrel Function", "Show Squirrel Function", "If true, display the code as a function", true ),
-            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowAdditionalCode, () => CodeViewsMenu.OptionalAdditionalCodeOption(), MenuType.Medium, "Add Additional Code", "Add Additional Code", "", true )
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowAdditionalCode, CodeViewsMenu.OptionalAdditionalCodeOption, MenuType.Medium, "Add Additional Code", "Add Additional Code", "", true ),
+            () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuRoundValue, RoundMenu, MenuType.Medium, "Round Origin/Angle Value", "Round Origin/Angle Value", "", true )
         };
 
         private static readonly FunctionRef[] SquirrelFunction =
         {
             () => CodeViewsMenu.OptionalTextField( ref CodeViewsWindow.functionName, "Function Name", "Change the name of the function", null, MenuType.Small ),
-            () => CodeViewsMenu.OptionalButton( "Reset Name", "", () => CodeViewsWindow.ResetFunctionName(), null, MenuType.Small, true ),
+            () => CodeViewsMenu.OptionalButton( "Reset Name", "", CodeViewsWindow.ResetFunctionName, null, MenuType.Small, true ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.SquirrelMenuShowPrecacheCode, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Medium, "Hide Precache Code", "Show Precache Code", "", true )
+        };
+
+        private static readonly FunctionRef[] RoundMenu =
+        {
+            () => CodeViewsMenu.OptionalIntField( ref RoundValue, "Round", "Round up by how much after the decimal point", null, MenuType.Small )
         };
 
         private static readonly FunctionRef[] OffsetMenu =
@@ -37,7 +45,7 @@ namespace CodeViews
 
         internal static FunctionRef[] LiveCodeMenu =
         {
-            () => CodeViewsMenu.OptionalButton( "Fast Load", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", () => LiveMap.Send(),
+            () => CodeViewsMenu.OptionalButton( "Fast Load", "Sends the code live if you have your game on\nNote: Some objects / features do not work,\nuse \"Restart Level And Write Script\" instead", LiveMap.Send,
                 CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Medium ),
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuGetApexInfo, () =>
             {
@@ -55,7 +63,7 @@ namespace CodeViews
         {
             () => CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenuTeleportation, CodeViewsMenu.EmptyFunctionRefArray, MenuType.Small, "Disable Teleport Player To Map", "Enable Teleport Player To Map",
                 "Automaticly teleport all players to the map when sending the code to the game" ),
-            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", () => LiveMap.ReMapTeleportToMap(), CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Small )
+            () => CodeViewsMenu.OptionalButton( "Respawn Players", "Makes players respawn without regenerating the map", LiveMap.ReMapTeleportToMap, CodeViewsWindow.SendingObjects.IsCompleted, MenuType.Small )
         };
 
         internal static FunctionRef[] SubLiveCodeAdvancedMenu =
@@ -84,7 +92,7 @@ namespace CodeViews
 
             CodeViewsMenu.CreateMenu( CodeViewsWindow.LiveCodeMenu, LiveCodeMenu, MenuType.Large, "Live Generation", "Live Generation", "Allows you to send commands to\nspawn prop if your game is open" );
 
-            CodeViewsMenu.CreateMenu( CodeViewsWindow.AdvancedMenu, () => CodeViewsMenu.OptionalAdvancedOption(), MenuType.Large, "Advanced Options", "Advanced Options", "Choose the objects you want to\ngenerate or not" );
+            CodeViewsMenu.CreateMenu( CodeViewsWindow.AdvancedMenu, CodeViewsMenu.OptionalAdvancedOption, MenuType.Large, "Advanced Options", "Advanced Options", "Choose the objects you want to\ngenerate or not" );
 
             CodeViewsMenu.SharedFunctions();
 

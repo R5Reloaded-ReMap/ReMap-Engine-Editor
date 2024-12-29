@@ -56,6 +56,10 @@ namespace Build
                     AppendCode( ref code, await BuildCameraPath.BuildCameraPathObjects( objectData, buildType ), 0 );
                     break;
 
+                case ObjectType.CheckPoint:
+                    AppendCode( ref code, await BuildCheckPoint.BuildCheckPointObjects( objectData, buildType ), 0 );
+                    break;
+
                 case ObjectType.FuncWindowHint:
                     AppendCode( ref code, await BuildFuncWindowHint.BuildFuncWindowHintObjects( objectData, buildType ), 0 );
                     break;

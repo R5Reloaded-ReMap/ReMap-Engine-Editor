@@ -11,6 +11,7 @@ namespace ImportExport
         public List< BubbleShieldClassData > BubbleShields;
         public List< ButtonClassData > Buttons;
         public List< CameraPathClassData > CameraPaths;
+        public List< CheckPointClassData > CheckPoints;
         public List< DoubleDoorClassData > DoubleDoors;
         public List< FuncWindowHintClassData > FuncWindowHints;
         public List< HorzDoorClassData > HorizontalDoors;
@@ -343,6 +344,12 @@ namespace ImportExport
         public float MaxRight;
         public float RotationTime;
         public float TransitionTime;
+    }
+
+    [Serializable]
+    public class CheckPointClassData : GlobalClassData
+    {
+        // Stub class
     }
 
     [Serializable]

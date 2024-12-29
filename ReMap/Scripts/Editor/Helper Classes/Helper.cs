@@ -74,6 +74,7 @@ public enum ObjectType
     FuncWindowHint,
     Sound,
     CameraPath,
+    CheckPoint,
 
     // Unity Only
     LiveMapCodePlayerSpawn
@@ -89,6 +90,7 @@ public class Helper
         { ObjectType.BubbleShield, new ObjectTypeData( new[] { "mdl#fx#bb_shield", "BubbleShield", "Bubble Shield" }, typeof( BubbleScript ), typeof( BubbleShieldClassData ) ) },
         { ObjectType.Button, new ObjectTypeData( new[] { "custom_button", "Button", "Button" }, typeof( ButtonScripting ), typeof( ButtonClassData ) ) },
         { ObjectType.CameraPath, new ObjectTypeData( new[] { "custom_camera_path", "CameraPath", "Camera Path" }, typeof( PathScript ), typeof( CameraPathClassData ) ) },
+        { ObjectType.CheckPoint, new ObjectTypeData( new[] { "custom_check_point", "CheckPoint", "Check Point" }, typeof( CheckPointScript ), typeof( CheckPointClassData ) ) },
         { ObjectType.DoubleDoor, new ObjectTypeData( new[] { "custom_double_door", "DoubleDoor", "Double Door" }, typeof( DoorScript ), typeof( DoubleDoorClassData ) ) },
         { ObjectType.FuncWindowHint, new ObjectTypeData( new[] { "custom_window_hint", "FuncWindowHint", "Window Hint" }, typeof( WindowHintScript ), typeof( FuncWindowHintClassData ) ) },
         { ObjectType.HorzDoor, new ObjectTypeData( new[] { "custom_sliding_door", "HorzDoor", "Horizontal Door" }, typeof( HorzDoorScript ), typeof( HorzDoorClassData ) ) },

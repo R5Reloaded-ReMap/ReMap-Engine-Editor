@@ -16,8 +16,8 @@ public class TriggerScripting : MonoBehaviour
     public float Height = 50;
     public float Width = 200;
     public bool UseHelperForTP = false;
-    public string EnterCallback = "";
-    public string LeaveCallback = "";
+    [ TextArea ] public string EnterCallback = "";
+    [ TextArea ] public string LeaveCallback = "";
 
     void OnDrawGizmos()
     {

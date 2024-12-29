@@ -8,7 +8,7 @@ public class DrawZipline : MonoBehaviour
     public Transform zipline_start;
     public Transform zipline_end;
     public bool showZipline = true;
-    public float showZiplineDistance = 15000;//
+    public float showZiplineDistance = 15000;
 
     void OnDrawGizmos()
     {

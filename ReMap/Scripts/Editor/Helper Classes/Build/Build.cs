@@ -64,6 +64,10 @@ namespace Build
                     AppendCode( ref code, await BuildHorzDoor.BuildHorzDoorObjects( objectData, buildType ), 0 );
                     break;
 
+                case ObjectType.InvisButton:
+                    AppendCode( ref code, await BuildInvisButton.BuildInvisButtonObjects( objectData, buildType ), 0 );
+                    break;
+
                 case ObjectType.Jumppad:
                     AppendCode( ref code, await BuildJumppad.BuildJumppadObjects( objectData, buildType ), 0 );
                     break;

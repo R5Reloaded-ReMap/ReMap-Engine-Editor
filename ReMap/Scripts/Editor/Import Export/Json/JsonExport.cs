@@ -146,7 +146,7 @@ namespace ImportExport.Json
             jsonData.RespawnableHeals = new List< RespawnableHealClassData >();
             jsonData.SpeedBoosts = new List< SpeedBoostClassData >();
             jsonData.AnimatedCameras = new List< AnimatedCameraClassData >();
-            jsonData.CheckPoints = new List< CheckPointClassData >();
+            jsonData.InvisButtons = new List< InvisButtonClassData >();
         }
     }
 }

@@ -56,16 +56,16 @@ namespace Build
                     AppendCode( ref code, await BuildCameraPath.BuildCameraPathObjects( objectData, buildType ), 0 );
                     break;
 
-                case ObjectType.CheckPoint:
-                    AppendCode( ref code, await BuildCheckPoint.BuildCheckPointObjects( objectData, buildType ), 0 );
-                    break;
-
                 case ObjectType.FuncWindowHint:
                     AppendCode( ref code, await BuildFuncWindowHint.BuildFuncWindowHintObjects( objectData, buildType ), 0 );
                     break;
 
                 case ObjectType.HorzDoor:
                     AppendCode( ref code, await BuildHorzDoor.BuildHorzDoorObjects( objectData, buildType ), 0 );
+                    break;
+
+                case ObjectType.InvisButton:
+                    AppendCode( ref code, await BuildInvisButton.BuildInvisButtonObjects( objectData, buildType ), 0 );
                     break;
 
                 case ObjectType.Jumppad:

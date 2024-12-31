@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace ImportExport
 {
-    [Serializable]
+    [ Serializable ]
     public class JsonData
     {
         public List< AnimatedCameraClassData > AnimatedCameras;
         public List< BubbleShieldClassData > BubbleShields;
         public List< ButtonClassData > Buttons;
         public List< CameraPathClassData > CameraPaths;
-        public List< CheckPointClassData > CheckPoints;
         public List< DoubleDoorClassData > DoubleDoors;
         public List< FuncWindowHintClassData > FuncWindowHints;
         public List< HorzDoorClassData > HorizontalDoors;
+        public List< InvisButtonClassData > InvisButtons;
         public List< JumppadClassData > JumpPads;
         public List< JumpTowerClassData > JumpTowers;
         public List< LinkedZipLinesClassData > LinkedZiplines;
@@ -40,7 +40,7 @@ namespace ImportExport
     /// <summary>
     ///     Use this to create derivative classes
     /// </summary>
-    [Serializable]
+    [ Serializable ]
     public class GlobalClassData
     {
         public List< PathClass > Path;
@@ -51,7 +51,7 @@ namespace ImportExport
     /// <summary>
     ///     TransformData is used to determine the position / angles of a prefab
     /// </summary>
-    [Serializable]
+    [ Serializable ]
     public class TransformData
     {
         public Vector3 eulerAngles;
@@ -62,14 +62,14 @@ namespace ImportExport
     /// <summary>
     ///     Save the part of a path for the creation of a prefab
     /// </summary>
-    [Serializable]
+    [ Serializable ]
     public class PathClass
     {
         public string FolderName;
         public TransformData TransformData;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class PropClassData : GlobalClassData
     {
         public bool AllowMantle;
@@ -83,7 +83,7 @@ namespace ImportExport
         public int RealmID;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class ZipLineClassData : GlobalClassData
     {
         public bool ShowZipline;
@@ -92,16 +92,16 @@ namespace ImportExport
         public Vector3 Zipline_start;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class LinkedZipLinesClassData : GlobalClassData
     {
         public bool EnableSmoothing;
-        public List< Vector3 > Nodes;
         public int SmoothAmount;
         public bool SmoothType;
+        public List< Vector3 > Nodes;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class VerticalZipLineClassData : GlobalClassData
     {
         public float AnglesOffset;
@@ -133,7 +133,7 @@ namespace ImportExport
         public float Width;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class NonVerticalZipLineClassData : GlobalClassData
     {
         public float ArmOffsetEnd;
@@ -166,39 +166,39 @@ namespace ImportExport
         public TransformData ZiplineStart;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class VCPanelsClassData : GlobalClassData
     {
         public string Model;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class SingleDoorClassData : GlobalClassData
     {
         public bool AppearOpen;
         public bool GoldDoor;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class DoubleDoorClassData : GlobalClassData
     {
         public bool AppearOpen;
         public bool GoldDoor;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class HorzDoorClassData : GlobalClassData
     {
         public bool AppearOpen;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class VerticalDoorClassData : GlobalClassData
     {
         public bool AppearOpen;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class JumpTowerClassData : GlobalClassData
     {
         public float Height;
@@ -206,14 +206,14 @@ namespace ImportExport
         public float ShowZiplineDistance;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class ButtonClassData : GlobalClassData
     {
         public string OnUseCallback;
         public string UseText;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class JumppadClassData : GlobalClassData
     {
         // Uses the same classes as PropClassData ( except string Name )
@@ -223,20 +223,20 @@ namespace ImportExport
         public int RealmID;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class LootBinClassData : GlobalClassData
     {
         public LootBinSkinType LootbinSkin;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class WeaponRackClassData : GlobalClassData
     {
         public string Name;
         public float RespawnTime;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class TriggerClassData : GlobalClassData
     {
         public bool Debug;
@@ -248,20 +248,20 @@ namespace ImportExport
         public float Width;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class BubbleShieldClassData : GlobalClassData
     {
         public string Name;
         public Color32 ShieldColor;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class SpawnPointClassData : GlobalClassData
     {
         // Stub class
     }
 
-    [Serializable]
+    [ Serializable ]
     public class TextInfoPanelClassData : GlobalClassData
     {
         public string Description;
@@ -270,7 +270,7 @@ namespace ImportExport
         public string Title;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class FuncWindowHintClassData : GlobalClassData
     {
         public float HalfHeight;
@@ -278,19 +278,19 @@ namespace ImportExport
         public Vector3 Right;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class SoundClassData : GlobalClassData
     {
         public bool Enable;
         public bool IsWaveAmbient;
-        public Vector3[] PolylineSegment;
         public float Radius;
         public bool ShowPolylineSegments;
         public float ShowPolylineSegmentsDistance;
         public string SoundName;
+        public Vector3[] PolylineSegment;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class CameraPathClassData : GlobalClassData
     {
         public bool EnableSpacing;
@@ -304,19 +304,19 @@ namespace ImportExport
         public bool TrackTarget;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class NewLocPairClassData : GlobalClassData
     {
         // Stub script
     }
 
-    [Serializable]
+    [ Serializable ]
     public class UOPlayerSpawnClassData : GlobalClassData
     {
         // Stub script
     }
 
-    [Serializable]
+    [ Serializable ]
     public class RespawnableHealClassData : GlobalClassData
     {
         public int HealAmount;
@@ -326,7 +326,7 @@ namespace ImportExport
         public float RespawnTime;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class SpeedBoostClassData : GlobalClassData
     {
         public Color32 Color;
@@ -336,7 +336,7 @@ namespace ImportExport
         public float Strengh;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class AnimatedCameraClassData : GlobalClassData
     {
         public float AngleOffset;
@@ -346,13 +346,21 @@ namespace ImportExport
         public float TransitionTime;
     }
 
-    [Serializable]
-    public class CheckPointClassData : GlobalClassData
+    [ Serializable ]
+    public class InvisButtonClassData : GlobalClassData
     {
-        // Stub class
+        public bool Up = true;
+        public string Message = "";
+        public string SubMessage = "";
+        public int Type = 4;
+        public float Duration = 5.0f;
+        public string Token = "#FS_STRING_VAR";
+
+        public TransformData ButtonLocalisation;
+        public TransformData DestinationLocalisation;
     }
 
-    [Serializable]
+    [ Serializable ]
     public class EmptyClassData : GlobalClassData
     {
         // Stub script

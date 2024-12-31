@@ -74,7 +74,7 @@ public enum ObjectType
     FuncWindowHint,
     Sound,
     CameraPath,
-    CheckPoint,
+    InvisButton,
 
     // Unity Only
     LiveMapCodePlayerSpawn
@@ -90,10 +90,10 @@ public class Helper
         { ObjectType.BubbleShield, new ObjectTypeData( new[] { "mdl#fx#bb_shield", "BubbleShield", "Bubble Shield" }, typeof( BubbleScript ), typeof( BubbleShieldClassData ) ) },
         { ObjectType.Button, new ObjectTypeData( new[] { "custom_button", "Button", "Button" }, typeof( ButtonScripting ), typeof( ButtonClassData ) ) },
         { ObjectType.CameraPath, new ObjectTypeData( new[] { "custom_camera_path", "CameraPath", "Camera Path" }, typeof( PathScript ), typeof( CameraPathClassData ) ) },
-        { ObjectType.CheckPoint, new ObjectTypeData( new[] { "custom_check_point", "CheckPoint", "Check Point" }, typeof( CheckPointScript ), typeof( CheckPointClassData ) ) },
         { ObjectType.DoubleDoor, new ObjectTypeData( new[] { "custom_double_door", "DoubleDoor", "Double Door" }, typeof( DoorScript ), typeof( DoubleDoorClassData ) ) },
         { ObjectType.FuncWindowHint, new ObjectTypeData( new[] { "custom_window_hint", "FuncWindowHint", "Window Hint" }, typeof( WindowHintScript ), typeof( FuncWindowHintClassData ) ) },
         { ObjectType.HorzDoor, new ObjectTypeData( new[] { "custom_sliding_door", "HorzDoor", "Horizontal Door" }, typeof( HorzDoorScript ), typeof( HorzDoorClassData ) ) },
+        { ObjectType.InvisButton, new ObjectTypeData( new[] { "custom_invis_button", "InvisButton", "Invis Button" }, typeof( InvisButtonScript ), typeof( InvisButtonClassData ) ) },
         { ObjectType.Jumppad, new ObjectTypeData( new[] { "custom_jumppad", "Jumppad", "Jump Pad" }, typeof( PropScript ), typeof( JumppadClassData ) ) },
         { ObjectType.JumpTower, new ObjectTypeData( new[] { "custom_jump_tower", "JumpTower", "Jump Tower" }, typeof( JumpTowerScript ), typeof( JumpTowerClassData ) ) },
         { ObjectType.LinkedZipline, new ObjectTypeData( new[] { "custom_linked_zipline", "LinkedZipline", "Linked Zipline" }, typeof( LinkedZiplineScript ), typeof( LinkedZipLinesClassData ) ) },
@@ -1074,7 +1074,7 @@ public class Helper
         return credit.ToString();
     }
 
-    public static string GetScopeName( [CallerMemberName] string memberName = "" )
+    public static string GetScopeName( [ CallerMemberName ] string memberName = "" )
     {
         return memberName;
     }
@@ -1115,7 +1115,7 @@ public class Helper
         public ObjectTypeData( string[] stringData, Type componentType, Type importExportClass )
         {
             if ( stringData.Length != 3 )
-                throw new ArgumentException( "stringData must have exactly 3 elements", nameof(stringData) );
+                throw new ArgumentException( "stringData must have exactly 3 elements", nameof( stringData ) );
 
             StringData = stringData;
             ComponentType = componentType;

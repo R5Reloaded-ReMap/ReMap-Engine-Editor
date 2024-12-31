@@ -405,13 +405,22 @@ namespace ImportExport.Json
                         TransferDataToClass( animatedCameraScript, animatedCameraData );
                     else TransferDataToClass( animatedCameraData, animatedCameraScript );
                     break;
-                case ObjectType.CheckPoint:
-                    var checkPointData = ( CheckPointClassData ) ( object ) scriptData;
-                    var checkPoint = ( CheckPointScript ) Helper.GetComponentByEnum( obj, objectType );
+                case ObjectType.InvisButton:
+                    var invisButtonData = ( InvisButtonClassData ) ( object ) scriptData;
+                    var invisButton = ( InvisButtonScript ) Helper.GetComponentByEnum( obj, objectType );
 
                     if ( getSet == GetSetData.Get )
-                        TransferDataToClass( checkPoint, checkPointData );
-                    else TransferDataToClass( checkPointData, checkPoint );
+                    {
+                        TransferDataToClass( invisButton, invisButtonData );
+                        invisButtonData.ButtonLocalisation = GetSetTransformData( invisButton.Button.gameObject, invisButtonData.ButtonLocalisation );
+                        invisButtonData.DestinationLocalisation = GetSetTransformData( invisButton.Destination.gameObject, invisButtonData.DestinationLocalisation );
+                    }
+                    else
+                    {
+                        TransferDataToClass( invisButtonData, invisButton );
+                        GetSetTransformData( invisButton.Button.gameObject, invisButtonData.ButtonLocalisation );
+                        GetSetTransformData( invisButton.Destination.gameObject, invisButtonData.DestinationLocalisation );
+                    }
                     break;
 
                 default: return;
@@ -464,20 +473,6 @@ namespace ImportExport.Json
                             break;
                     }
                     break;
-                case ObjectType.CheckPoint:
-                    switch ( executeType )
-                    {
-                        case ExecuteType.SortList:
-                            UnityInfo.SortListByKey( jsonData.CheckPoints, x => x.PathString );
-                            break;
-                        case ExecuteType.Import:
-                            await ImportObjectsWithEnum( objectType, jsonData.CheckPoints );
-                            break;
-                        case ExecuteType.Export:
-                            await ExportObjectsWithEnum( objectType, jsonData.CheckPoints, selectionOnly );
-                            break;
-                    }
-                    break;
                 case ObjectType.DoubleDoor:
                     switch ( executeType )
                     {
@@ -517,6 +512,20 @@ namespace ImportExport.Json
                             break;
                         case ExecuteType.Export:
                             await ExportObjectsWithEnum( objectType, jsonData.HorizontalDoors, selectionOnly );
+                            break;
+                    }
+                    break;
+                case ObjectType.InvisButton:
+                    switch ( executeType )
+                    {
+                        case ExecuteType.SortList:
+                            UnityInfo.SortListByKey( jsonData.InvisButtons, x => x.PathString );
+                            break;
+                        case ExecuteType.Import:
+                            await ImportObjectsWithEnum( objectType, jsonData.InvisButtons );
+                            break;
+                        case ExecuteType.Export:
+                            await ExportObjectsWithEnum( objectType, jsonData.InvisButtons, selectionOnly );
                             break;
                     }
                     break;

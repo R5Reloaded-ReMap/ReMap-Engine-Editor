@@ -47,7 +47,7 @@ namespace Build
             // Build the code
             foreach ( var obj in objectData )
             {
-                var script = ( PropScript )Helper.GetComponentByEnum( obj, ObjectType.Prop );
+                var script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
                 if ( script == null || script.ClientSide ) continue;
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
@@ -62,8 +62,7 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code,
-                            $"    prop = MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} )" );
+                        AppendCode( ref code, $"    prop = MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale} )" );
 
                         if ( script.Options.Length != 0 )
                         {
@@ -72,7 +71,7 @@ namespace Build
                             for ( int i = 0; i < lines.Length; i++ )
                             {
                                 string suffix = i < lines.Length - 1 ? "; " : "";
-                                AppendCode( ref code, $"prop.{lines[i].Replace( "\n", "" )}{suffix}", 0 );
+                                AppendCode( ref code, $"prop.{lines[ i ].Replace( "\n", "" )}{suffix}", 0 );
                             }
                             AppendCode( ref code );
                         }
@@ -104,13 +103,11 @@ namespace Build
                         break;
 
                     case BuildType.DataTable:
-                        AppendCode( ref code,
-                            $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"" );
+                        AppendCode( ref code, $"\"prop_dynamic\",\"{Helper.BuildOrigin( obj, false, true )}\",\"{Helper.BuildAngles( obj )}\",{scale},{Helper.ReplaceComma( script.FadeDistance )},{Helper.BoolToLower( script.AllowMantle )},true,\"{model}\",\"{FindPathString( obj )}\"" );
                         break;
 
                     case BuildType.LiveMap:
-                        LiveMap.AddToGameQueue(
-                            $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale}, true )" );
+                        LiveMap.AddToGameQueue( $"MapEditor_CreateProp( $\"{model}\", {Helper.BuildOrigin( obj, false, true )}, {Helper.BuildAngles( obj )}, {Helper.BoolToLower( script.AllowMantle )}, {Helper.ReplaceComma( script.FadeDistance )}, {script.RealmID}, {scale}, true )" );
                         break;
                 }
             }
@@ -153,7 +150,7 @@ namespace Build
             // Build the code
             foreach ( var obj in objectData )
             {
-                var script = ( PropScript )Helper.GetComponentByEnum( obj, ObjectType.Prop );
+                var script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
                 if ( script == null || !script.ClientSide ) continue;
 
                 string model = UnityInfo.GetApexModelName( UnityInfo.GetObjName( obj ), true );
@@ -167,7 +164,7 @@ namespace Build
                 AppendCode( ref code, $"    CreateClientSidePropDynamic( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, $\"{model}\" )" );
             }
 
-            CodeViewsWindow.EntityCount = objectData.Where( o => Helper.GetComponentByEnum( o, ObjectType.Prop ) != null ).Select( o => Helper.GetComponentByEnum( o, ObjectType.Prop ) ).Where( s => ( ( PropScript )s ).ClientSide )
+            CodeViewsWindow.EntityCount = objectData.Where( o => Helper.GetComponentByEnum( o, ObjectType.Prop ) != null ).Select( o => Helper.GetComponentByEnum( o, ObjectType.Prop ) ).Where( s => ( ( PropScript ) s ).ClientSide )
                 .Count();
 
             await Helper.Wait();
@@ -180,7 +177,7 @@ namespace Build
             string array = "[ ";
             for ( int i = 0; i < args.Count; i++ )
             {
-                array += args[i];
+                array += args[ i ];
 
                 if ( i != args.Count - 1 ) array += ", ";
             }

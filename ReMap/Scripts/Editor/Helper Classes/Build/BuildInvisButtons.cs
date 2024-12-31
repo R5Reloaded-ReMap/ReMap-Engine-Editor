@@ -1,22 +1,22 @@
 using System.Text;
 using System.Threading.Tasks;
+using CodeViews;
 using UnityEngine;
 using static Build.Build;
 
 namespace Build
 {
-    public class BuildCheckPoint
+    public class BuildInvisButton
     {
-        public static async Task< StringBuilder > BuildCheckPointObjects( GameObject[] objectData, BuildType buildType )
+        public static async Task< StringBuilder > BuildInvisButtonObjects( GameObject[] objectData, BuildType buildType )
         {
             var code = new StringBuilder();
-            int currentCp = 0;
 
             // Add something at the start of the text
             switch ( buildType )
             {
                 case BuildType.Script:
-                    AppendCode( ref code, "    // Check Points" );
+                    AppendCode( ref code, "    // Invis Buttons" );
                     break;
 
                 case BuildType.EntFile:
@@ -39,29 +39,13 @@ namespace Build
             // Build the code
             foreach ( var obj in objectData )
             {
-                var script = ( PropScript ) Helper.GetComponentByEnum( obj, ObjectType.Prop );
+                var script = ( InvisButtonScript ) Helper.GetComponentByEnum( obj, ObjectType.InvisButton );
                 if ( script == null ) continue;
-
-                //foreach ( Transform child in obj.transform )
-                //{
-                //    string next = "";
-                //    string back = "";
-                //    if ( child.name == "next" )
-                //        next =
-                //            $"Invis_Button({Helper.BuildOrigin( obj.gameObject, false, true )}, {Helper.BuildAngles( obj.gameObject, false, true )}, true, {Helper.BuildOrigin( child.gameObject, false, true )}, {Helper.BuildAngles( child.gameObject, false, true )})";
-                //    if ( child.name == "back" )
-                //        back =
-                //            $"Invis_Button({Helper.BuildOrigin( obj.gameObject, false, true )}, {Helper.BuildAngles( obj.gameObject, false, true )}, false, {Helper.BuildOrigin( child.gameObject, false, true )}, {Helper.BuildAngles( child.gameObject, false, true )})";
-                //}
-
-                //++currentCp;
 
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        //AppendCode( ref code, $"    //{currentCp}" );
-                        //AppendCode( ref code, $"    {next}" );
-                        //AppendCode( ref code, $"    {back}" );
+                        AppendCode( ref code, $"    Invis_Button( {Helper.BuildOrigin( script.Button.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Button.eulerAngles )}, {Helper.BoolToLower( script.Up )}, {Helper.BuildOrigin( script.Destination.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Destination.eulerAngles )}, \"{script.Message}\", \"{script.SubMessage}\", {script.Type}, {script.Duration}, \"{script.Token}\" )" );
                         break;
 
                     case BuildType.EntFile:
@@ -77,8 +61,7 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        // Remove 1 to the counter since we don't support this object for live map code
-                        Helper.RemoveSendEntityCount();
+                        LiveMap.AddToGameQueue( $"Invis_Button( {Helper.BuildOrigin( script.Button.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Button.eulerAngles )}, {Helper.BoolToLower( script.Up )}, {Helper.BuildOrigin( script.Destination.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Destination.eulerAngles )}, \"{script.Message}\", \"{script.SubMessage}\", {script.Type}, {script.Duration}, \"{script.Token}\" )" );
                         break;
                 }
             }

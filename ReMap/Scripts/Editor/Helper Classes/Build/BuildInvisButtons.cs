@@ -46,6 +46,8 @@ namespace Build
                 {
                     case BuildType.Script:
                         AppendCode( ref code, $"    Invis_Button( {Helper.BuildOrigin( script.Button.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Button.eulerAngles )}, {Helper.BoolToLower( script.Up )}, {Helper.BuildOrigin( script.Destination.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Destination.eulerAngles )}, \"{script.Message}\", \"{script.SubMessage}\", {script.Type}, {script.Duration}, \"{script.Token}\" )" );
+                        // New Code (wait r5_flowstate update)
+                        //AppendCode( ref code, $"    RemapCreateInvisButton( {Helper.BuildOrigin( script.Button.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Button.eulerAngles )}, {Helper.BoolToLower( script.Up )}, {Helper.BuildOrigin( script.Destination.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Destination.eulerAngles )}, \"{script.Message}\", \"{script.SubMessage}\", {script.Type}, {script.Duration}, \"{script.Token}\" )" );
                         break;
 
                     case BuildType.EntFile:
@@ -61,7 +63,9 @@ namespace Build
                         break;
 
                     case BuildType.LiveMap:
-                        LiveMap.AddToGameQueue( $"Invis_Button( {Helper.BuildOrigin( script.Button.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Button.eulerAngles )}, {Helper.BoolToLower( script.Up )}, {Helper.BuildOrigin( script.Destination.position ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( script.Destination.eulerAngles )}, \"{script.Message}\", \"{script.SubMessage}\", {script.Type}, {script.Duration}, \"{script.Token}\" )" );
+                        LiveMap.AddToGameQueue( $"Invis_Button( {Helper.BuildOrigin( script.Button.position, false, true )}, {Helper.BuildAngles( script.Button.eulerAngles )}, {Helper.BoolToLower( script.Up )}, {Helper.BuildOrigin( script.Destination.position, false, true )}, {Helper.BuildAngles( script.Destination.eulerAngles )}, \"{script.Message}\", \"{script.SubMessage}\", {script.Type}, {script.Duration}, \"{script.Token}\" )" );
+                        // New Code (wait r5_flowstate update)
+                        //LiveMap.AddToGameQueue( $"RemapCreateInvisButton( {Helper.BuildOrigin( script.Button.position, false, true )}, {Helper.BuildAngles( script.Button.eulerAngles )}, {Helper.BoolToLower( script.Up )}, {Helper.BuildOrigin( script.Destination.position, false, true )}, {Helper.BuildAngles( script.Destination.eulerAngles )}, \"{script.Message}\", \"{script.SubMessage}\", {script.Type}, {script.Duration}, \"{script.Token}\", true )" );
                         break;
                 }
             }

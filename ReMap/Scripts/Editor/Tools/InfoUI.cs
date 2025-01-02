@@ -5,17 +5,9 @@ public class InfoUI : EditorWindow
 {
     private Texture2D m_Logo;
 
-    public static void Init()
-    {
-        var window = ( InfoUI )GetWindow( typeof(InfoUI), false, "ReMap Info" );
-        window.minSize = new Vector2( 678, 310 );
-        window.maxSize = new Vector2( 678, 310 );
-        window.Show();
-    }
-
     private void OnEnable()
     {
-        m_Logo = ( Texture2D )Resources.Load( "Images/logo", typeof(Texture2D) );
+        m_Logo = ( Texture2D ) Resources.Load( "Images/logo", typeof( Texture2D ) );
     }
 
     private void OnGUI()
@@ -74,9 +66,9 @@ public class InfoUI : EditorWindow
         GUILayout.BeginVertical( "box", GUILayout.Height( 120 ) );
         GUILayout.Label( "Credits:", EditorStyles.boldLabel );
         GUILayout.Label( "Unity Scripts/Export Code/Custom Prefabs:", EditorStyles.boldLabel );
-        GUILayout.Label( "  AyeZee#6969 \n" );
+        GUILayout.Label( "  Discord: zee_x64 \n" );
         GUILayout.Label( "Unity Scripts/Export Code/Importing Models:", EditorStyles.boldLabel );
-        GUILayout.Label( "  Julefox#0050" );
+        GUILayout.Label( "  Discord: julefox" );
         GUILayout.EndVertical();
         //Donate
         GUILayout.BeginVertical( "box", GUILayout.Height( 120 ) );
@@ -94,5 +86,13 @@ public class InfoUI : EditorWindow
         GUILayout.BeginVertical( "box" );
         GUILayout.Label( $"{UnityInfo.ReMapVersion}" );
         GUILayout.EndVertical();
+    }
+
+    public static void Init()
+    {
+        var window = ( InfoUI ) GetWindow( typeof( InfoUI ), false, "ReMap Info" );
+        window.minSize = new Vector2( 678, 310 );
+        window.maxSize = new Vector2( 678, 310 );
+        window.Show();
     }
 }

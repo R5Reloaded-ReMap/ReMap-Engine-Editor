@@ -199,6 +199,7 @@ namespace Build
                 case ObjectType.VerticalZipLine:
                 case ObjectType.NonVerticalZipLine:
                 case ObjectType.DoubleDoor:
+                case ObjectType.InvisButton:
                     objectDataLength *= 2;
                     break;
 

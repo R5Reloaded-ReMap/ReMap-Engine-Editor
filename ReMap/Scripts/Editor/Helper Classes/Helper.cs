@@ -447,13 +447,13 @@ public class Helper
     ///     Build Map Code
     /// </summary>
     /// <returns>Map Code as string</returns>
-    public static async Task< string > BuildMapCode( BuildType buildType = BuildType.Script, bool Selection = false )
+    public static async Task< string > BuildMapCode( BuildType buildType = BuildType.Script, bool selection = false )
     {
         var code = new StringBuilder();
 
         var objectTasks = GetAllObjectType().Where( GetBoolFromGenerateObjects ).Select
         (
-            async objectType => AppendCode( ref code, await BuildObjectsWithEnum( objectType, buildType, Selection ), 0 )
+            async objectType => AppendCode( ref code, await BuildObjectsWithEnum( objectType, buildType, selection ), 0 )
         );
 
         await Task.WhenAll( objectTasks );
@@ -1069,7 +1069,7 @@ public class Helper
         string space = noSpace ? "" : "    ";
 
         AppendCode( ref credit, $"{space}// Generated with Unity ReMap Editor {UnityInfo.ReMapVersion}" );
-        AppendCode( ref credit, $"{space}// Made with love by AyeZee#6969 & Julefox#0050 :)", 2 );
+        AppendCode( ref credit, $"{space}// Made with love by zee_x64 & julefox (discord) :)", 2 );
 
         return credit.ToString();
     }

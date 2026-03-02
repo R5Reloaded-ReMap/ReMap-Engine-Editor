@@ -5,6 +5,7 @@ public class VerticalDoorScript : MonoBehaviour
 {
     public Transform Door;
     public bool AppearOpen = false;
+    [ TextArea ] public string Options = "";
 
     void OnDrawGizmosSelected()
     {

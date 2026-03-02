@@ -17,6 +17,7 @@ namespace Build
             {
                 case BuildType.Script:
                     AppendCode( ref code, "    // Horizontal Doors" );
+                    AppendCode( ref code, "    array < entity > horizontalDoorEnts" );
                     break;
 
                 case BuildType.EntFile:
@@ -46,7 +47,23 @@ namespace Build
                 {
                     case BuildType.Script:
                         AppendCode( ref code,
-                            $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Horizontal, false, {Helper.BoolToLower( script.AppearOpen )} )" );
+                            $"    horizontalDoorEnts = MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Horizontal, false, {Helper.BoolToLower( script.AppearOpen )} )" );
+                            if ( !string.IsNullOrEmpty( script.Options ) )
+                            {
+                                AppendCode( ref code, "    foreach ( ent in horizontalDoorEnts )" );
+                                AppendCode( ref code, "    {" );
+                                string[] lines = script.Options.Split( '\n' );
+                                for ( int i = 0; i < lines.Length; i++ )
+                                {
+                                    string line = lines[ i ].Replace( "\n", "" );
+                                    if ( string.IsNullOrEmpty( line ) )
+                                        continue;
+                                    string suffix = i < lines.Length - 1 ? "; " : "";
+                                    AppendCode( ref code, $"        ent.{line}{suffix}", 0 );
+                                }
+                                AppendCode( ref code );
+                                AppendCode( ref code, "    }" );
+                            }
                         break;
 
                     case BuildType.EntFile:

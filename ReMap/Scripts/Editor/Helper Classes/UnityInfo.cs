@@ -49,7 +49,7 @@ public class UnityInfo
     /// <returns></returns>
     public static GameObject[] GetAllGameObjectInScene( bool selection = false )
     {
-        return selection ? Selection.gameObjects : Object.FindObjectsOfType< GameObject >();
+        return selection ? Selection.gameObjects : Object.FindObjectsByType< GameObject >( FindObjectsSortMode.None );
     }
 
     /// <summary>

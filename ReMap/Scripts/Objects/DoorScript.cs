@@ -7,6 +7,7 @@ public class DoorScript : MonoBehaviour
     public Transform DoorRight;
     public bool GoldDoor = false;
     public bool AppearOpen = false;
+    [ TextArea ] public string Options = "";
 
     void OnDrawGizmosSelected()
     {

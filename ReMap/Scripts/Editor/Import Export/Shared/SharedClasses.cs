@@ -176,6 +176,7 @@ namespace ImportExport
     {
         public bool AppearOpen;
         public bool GoldDoor;
+        public string Options;
     }
 
     [Serializable]
@@ -183,18 +184,21 @@ namespace ImportExport
     {
         public bool AppearOpen;
         public bool GoldDoor;
+        public string Options;
     }
 
     [Serializable]
     public class HorzDoorClassData : GlobalClassData
     {
         public bool AppearOpen;
+        public string Options;
     }
 
     [Serializable]
     public class VerticalDoorClassData : GlobalClassData
     {
         public bool AppearOpen;
+        public string Options;
     }
 
     [Serializable]

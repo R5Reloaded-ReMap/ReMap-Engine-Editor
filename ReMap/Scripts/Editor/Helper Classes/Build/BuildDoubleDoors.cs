@@ -17,6 +17,7 @@ namespace Build
             {
                 case BuildType.Script:
                     AppendCode( ref code, "    // Double Doors" );
+                    AppendCode( ref code, "    array < entity > doubleDoorEnts" );
                     break;
 
                 case BuildType.EntFile:
@@ -50,8 +51,23 @@ namespace Build
                 switch ( buildType )
                 {
                     case BuildType.Script:
-                        AppendCode( ref code,
-                            $"    MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Double, {Helper.BoolToLower( script.GoldDoor )}, {Helper.BoolToLower( script.AppearOpen )} )" );
+                        AppendCode( ref code, $"    doubleDoorEnts = MapEditor_SpawnDoor( {Helper.BuildOrigin( obj ) + Helper.ShouldAddStartingOrg()}, {Helper.BuildAngles( obj )}, eMapEditorDoorType.Double, {Helper.BoolToLower( script.GoldDoor )}, {Helper.BoolToLower( script.AppearOpen )} )" );
+                        if ( !string.IsNullOrEmpty( script.Options ) )
+                        {
+                            AppendCode( ref code, "    foreach ( ent in doubleDoorEnts )" );
+                            AppendCode( ref code, "    {" );
+                            string[] lines = script.Options.Split( '\n' );
+                            for ( int i = 0; i < lines.Length; i++ )
+                            {
+                                string line = lines[ i ].Replace( "\n", "" );
+                                if ( string.IsNullOrEmpty( line ) )
+                                    continue;
+                                string suffix = i < lines.Length - 1 ? "; " : "";
+                                AppendCode( ref code, $"        ent.{line}{suffix}", 0 );
+                            }
+                            AppendCode( ref code );
+                            AppendCode( ref code, "    }" );
+                        }
                         break;
 
                     case BuildType.EntFile:

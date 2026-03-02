@@ -24,6 +24,7 @@ public class DeportedDoorScriptEditor : Editor
         EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("GoldDoor"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("AppearOpen"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("Options"));
         EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();

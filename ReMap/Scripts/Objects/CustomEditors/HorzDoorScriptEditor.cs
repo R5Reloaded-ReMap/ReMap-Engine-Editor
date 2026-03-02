@@ -23,6 +23,7 @@ public class HorzDoorScriptEditor : Editor
 
         EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("AppearOpen"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("Options"));
         EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();

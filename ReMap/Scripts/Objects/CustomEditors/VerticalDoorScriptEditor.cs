@@ -22,6 +22,7 @@ public class VerticalDoorScriptEditor : Editor
         EditorGUILayout.Space(5);
         EditorGUILayout.BeginVertical(CustomEditorStyle.BoxStyle);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("AppearOpen"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("Options"));
         EditorGUILayout.EndVertical();
 
         serializedObject.ApplyModifiedProperties();

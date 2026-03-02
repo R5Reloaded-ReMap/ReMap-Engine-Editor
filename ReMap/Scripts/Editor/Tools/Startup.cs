@@ -16,7 +16,7 @@ public class Startup : EditorWindow
         HasRan = true;
 
         //These will run when Unity starts up
-        TagHelper.CheckAndCreateTags();
+        //TagHelper.CheckAndCreateTags();
 
         /*if (!File.Exists(currentDirectory + "/" + relativeConfigFile))
         {

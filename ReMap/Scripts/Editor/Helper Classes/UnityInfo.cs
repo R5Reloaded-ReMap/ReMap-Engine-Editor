@@ -49,7 +49,7 @@ public class UnityInfo
     /// <returns></returns>
     public static GameObject[] GetAllGameObjectInScene( bool selection = false )
     {
-        return selection ? Selection.gameObjects : Object.FindObjectsOfType< GameObject >();
+        return selection ? Selection.gameObjects : Object.FindObjectsByType< GameObject >( FindObjectsSortMode.None );
     }
 
     /// <summary>
@@ -150,7 +150,9 @@ public class UnityInfo
 
         //Find Model GUID in Assets
         string[] results = AssetDatabase.FindAssets( name,
-            new[] { $"{relativePathPrefabs}/_custom_prefabs", $"{relativePathPrefabs}/{RpakManagerWindow.allModelsDataName}", $"{relativePathPrefabs}/{RpakManagerWindow.allModelsRetailDataName}" } );
+            new[] { $"{relativePathPrefabs}/_custom_prefabs",
+            $"{relativePathPrefabs}/{RpakManagerWindow.allModelsDataName}",
+            $"{relativePathPrefabs}/{RpakManagerWindow.allModelsRetailDataName}" } );
         if ( results.Length == 0 ) return null;
 
         //Get model path from guid and load it
